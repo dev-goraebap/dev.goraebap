@@ -13,11 +13,11 @@ async function put(relative, content) {
   await fs.writeFile(destination, content);
 }
 
-async function copyFiles(source, destination) {
+async function copyFiles(source, destination, extensions = ['.md', '.mjs', '.yaml']) {
   for (const entry of await fs.readdir(source, { withFileTypes: true })) {
     const next = path.join(source, entry.name);
-    if (entry.isDirectory()) await copyFiles(next, `${destination}/${entry.name}`);
-    else if (entry.isFile() && ['.md', '.mjs', '.yaml'].includes(path.extname(entry.name))) await put(`${destination}/${entry.name}`, await fs.readFile(next));
+    if (entry.isDirectory()) await copyFiles(next, `${destination}/${entry.name}`, extensions);
+    else if (entry.isFile() && extensions.includes(path.extname(entry.name))) await put(`${destination}/${entry.name}`, await fs.readFile(next));
     else throw new Error(`배포 허용 목록 밖의 파일: ${next}`);
   }
 }
@@ -36,7 +36,7 @@ export async function packagePlugins() {
     await copyFiles(path.join(root, 'manager/skills'), `${pluginPath}/manager/skills`);
     await copyFiles(path.join(root, 'manager/scripts'), `${pluginPath}/manager/scripts`);
     await copyFiles(path.join(root, 'manager/templates'), `${pluginPath}/manager/templates`);
-    await copyFiles(path.join(root, 'skills'), `${pluginPath}/manager/skills`);
+    await copyFiles(path.join(root, 'skills'), `${pluginPath}/manager/skills`, ['.md', '.mjs', '.yaml', '.tsx', '.ts', '.css', '.json']);
     const skillRoot = path.join(root, 'dist', pluginPath, 'manager/skills');
     for (const name of await fs.readdir(skillRoot)) {
       const file = path.join(skillRoot, name, 'SKILL.md');

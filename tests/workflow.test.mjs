@@ -50,6 +50,10 @@ test('설치·이름 변환·오프라인 비교·동기화가 팀 경로에서 
   await f.call('sync');
   assert.equal((await f.call('sync', '--check')).synchronized, true);
   await missing(path.join(f.project, 'AGENTS.md'));
+  const reference = 'acme-design-system/assets/workspace/';
+  assert((await read(localFile(f.project, `${reference}Page.tsx`))).includes('export function Page'));
+  assert((await read(localFile(f.project, `${reference}theme.ts`))).includes('workspaceTheme'));
+  await missing(path.join(f.project, 'src'));
 });
 
 test('기존 프로젝트 스킬을 설치로 덮어쓰지 않는다', async t => {
@@ -186,6 +190,10 @@ test('생성 패키지는 개발·관리 스킬 모두 명시 호출만 허용�
     assert.deepEqual((await fs.readdir(plugin)).sort(), [`.${agent}-plugin`, 'manager', 'package.json', 'README.md'].sort());
     const names = await fs.readdir(path.join(plugin, 'manager/skills'));
     assert.equal(names.length, 8);
+    for (const asset of ['Page.tsx', 'theme.ts', 'reference.css', 'manifest.json']) {
+      const relative = `design-system/assets/workspace/${asset}`;
+      assert.equal(await read(path.join(plugin, 'manager/skills', relative)), await read(path.join(root, 'skills', relative)));
+    }
     assert.deepEqual(names.sort(), ['api', 'architecture', 'backend', 'database', 'design-system', 'frontend', 'goraebap-mode', 'manage-workflow'].sort());
     for (const name of names) {
       assert((await read(path.join(plugin, 'manager/skills', name, 'SKILL.md'))).includes('disable-model-invocation: true'));

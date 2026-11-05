@@ -16,7 +16,7 @@ skills/                         공통 개발 지침 원본
   backend/                      Spring·jOOQ·모듈 경계
   api/                          HTTP·오류·권한·생성 타입
   database/                     마이그레이션
-  design-system/                Astryx·Solar·테마
+  design-system/                Astryx·Solar·테마·레이아웃과 선택형 코드 레퍼런스
   architecture/                 시스템 경계·운영
 manager/skills/manage-workflow/  설치·비교·업데이트 관리 지침
 manager/scripts/                관리 CLI와 설정 도구
@@ -27,6 +27,8 @@ dist/                           Git으로 함께 배포하는 생성 플러그�
 ```
 
 ## 사용자 범위 플러그인 설치
+
+프론트엔드는 상태·코드 구조, 디자인 시스템은 화면 표현, 백엔드는 도메인·서비스, DB는 스키마·마이그레이션을 소유합니다. 함께 적용할 수 있지만 규칙 본문은 책임 영역 한 곳에 둡니다. 화면 레퍼런스는 프로젝트가 디자인을 정하지 않았을 때 검토하는 선택형 판본입니다. 스킬 설치만으로 제품 소스에 UI를 추가하지 않으며 프로젝트의 기존 디자인을 우선합니다.
 
 Claude Code:
 

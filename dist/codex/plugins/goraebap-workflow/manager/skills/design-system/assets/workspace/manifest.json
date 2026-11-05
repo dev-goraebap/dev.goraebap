@@ -1,0 +1,16 @@
+{
+  "id": "workspace-layout",
+  "revision": 1,
+  "updated": "2026-11-05",
+  "kind": "opt-in-reference",
+  "compatibility": {
+    "react": "19",
+    "@astryxdesign/core": "0.5.2",
+    "@astryxdesign/theme-stone": "0.5.2"
+  },
+  "automaticProductInstallation": false,
+  "validation": {
+    "typecheck": "passed: React 19, Astryx core/theme-stone 0.5.2, strict TypeScript",
+    "visualParity": "not-verified"
+  }
+}
