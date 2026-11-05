@@ -31,6 +31,67 @@ const read = file => fs.readFile(file, 'utf8');
 const localFile = (project, name = 'backend/SKILL.md') => path.join(project, '.agents/skills', name);
 const missing = file => assert.rejects(fs.access(file), { code: 'ENOENT' });
 
+test('온보딩은 에이전트가 불명확하면 쓰지 않고 선택 후 일반 입구와 스킬을 준비한다', async t => {
+  const f = await fixture(t);
+  const start = () => f.call('onboard', '--source', f.source);
+  assert.equal((await start()).status, 'needs-agents');
+  await missing(path.join(f.project, '.agents'));
+  await missing(path.join(f.project, 'AGENTS.md'));
+  const result = await f.call('onboard', '--source', f.source, '--agents', 'claude-code,codex');
+  assert.equal(result.status, 'installed');
+  assert.deepEqual(result.agents, ['claude-code', 'codex']);
+  const guidance = await read(path.join(f.project, 'AGENTS.md'));
+  assert(guidance.includes('.agents/skills/development/SKILL.md'));
+  assert(!guidance.includes('goraebap-workflow'));
+  assert(!guidance.includes(f.source));
+  await missing(path.join(f.project, '.grok'));
+  await f.call('sync');
+  assert.equal((await f.call('sync', '--check')).synchronized, true);
+});
+
+test('온보딩은 기존 에이전트를 감지하고 기존 AGENTS·다른 스킬을 보존한다', async t => {
+  const f = await fixture(t);
+  await fs.mkdir(path.join(f.project, '.codex'));
+  await fs.writeFile(path.join(f.project, '.codex/hooks.json'), '{}');
+  await fs.writeFile(path.join(f.project, 'AGENTS.md'), '# 팀 규칙\n업무 기록은 팀 문서에 둔다.\n');
+  const other = localFile(f.project, 'external/SKILL.md');
+  await fs.mkdir(path.dirname(other), { recursive: true });
+  await fs.writeFile(other, '외부 지침');
+  const result = await f.call('onboard', '--source', f.source, '--prefix', 'team');
+  assert.equal(result.status, 'installed');
+  assert.deepEqual(result.agents, ['codex']);
+  assert(result.guidance.suggested.includes('team-mode/SKILL.md'));
+  assert.equal(await read(path.join(f.project, 'AGENTS.md')), '# 팀 규칙\n업무 기록은 팀 문서에 둔다.\n');
+  assert.equal(await read(other), '외부 지침');
+  await missing(path.join(f.project, '.claude'));
+});
+
+test('재호출은 새 원본과 로컬 개선을 자동 병합하지 않고 설치 상태만 읽는다', async t => {
+  const f = await fixture(t);
+  await f.call('onboard', '--source', f.source, '--agents', 'codex');
+  await fs.appendFile(localFile(f.project), '\n팀의 개선\n');
+  await fs.appendFile(path.join(f.source, 'skills/backend/SKILL.md'), '\n새 공통 개선\n');
+  const lock = path.join(f.project, '.git/goraebap-workflow/lock.json');
+  const before = await read(lock);
+  const result = await f.call('onboard', '--source', f.source);
+  assert.equal(result.status, 'managed');
+  assert(result.comparison.changed.some(c => c.file === 'backend/SKILL.md' && c.localChanged));
+  assert.equal(await read(lock), before);
+  assert(!(await read(localFile(f.project))).includes('새 공통 개선'));
+});
+
+test('관리 기준 없는 기존 지침은 온보딩으로 덮거나 최신 기준으로 등록하지 않는다', async t => {
+  const f = await fixture(t);
+  await fs.mkdir(path.dirname(localFile(f.project)), { recursive: true });
+  await fs.writeFile(localFile(f.project), '기존 백엔드');
+  const result = await f.call('onboard', '--source', f.source, '--agents', 'codex');
+  assert.equal(result.status, 'existing-skills');
+  assert.deepEqual(result.skills, ['backend']);
+  assert.equal(await read(localFile(f.project)), '기존 백엔드');
+  await missing(path.join(f.project, '.git/goraebap-workflow/lock.json'));
+  await missing(path.join(f.project, 'AGENTS.md'));
+});
+
 test('설치·이름 변환·오프라인 비교·동기화가 팀 경로에서 동작한다', async t => {
   const f = await fixture(t);
   const result = await f.install('--prefix', 'acme');
@@ -187,7 +248,7 @@ test('생성 패키지는 개발·관리 스킬 모두 명시 호출만 허용�
   const dist = await packagePlugins();
   for (const agent of ['claude', 'codex']) {
     const plugin = path.join(dist, agent, 'plugins/goraebap-workflow');
-    assert.deepEqual((await fs.readdir(plugin)).sort(), [`.${agent}-plugin`, 'manager', 'package.json', 'README.md'].sort());
+    assert.deepEqual((await fs.readdir(plugin)).sort(), [`.${agent}-plugin`, 'manager', 'project-source', 'package.json', 'README.md'].sort());
     const names = await fs.readdir(path.join(plugin, 'manager/skills'));
     assert.equal(names.length, 8);
     for (const asset of ['Page.tsx', 'theme.ts', 'reference.css', 'manifest.json']) {
@@ -200,13 +261,31 @@ test('생성 패키지는 개발·관리 스킬 모두 명시 호출만 허용�
       assert.equal(await read(path.join(plugin, 'manager/skills', name, 'agents/openai.yaml')), 'policy:\n  allow_implicit_invocation: false\n');
     }
     assert.equal(await read(path.join(plugin, 'manager/scripts/workflow.mjs')), await read(path.join(root, 'manager/scripts/workflow.mjs')));
-    const cli = path.join(plugin, 'manager/scripts/workflow.mjs');
+    // A relocated installation must work without the original repo or --source.
+    const isolated = path.join(f.temp, `설치된 플러그인-${agent}`);
+    await fs.cp(plugin, isolated, { recursive: true });
+    const cli = path.join(isolated, 'manager/scripts/workflow.mjs');
     assert.equal(spawnSync(process.execPath, [cli, 'help'], { encoding: 'utf8' }).status, 0);
     const project = path.join(f.temp, agent);
     await fs.mkdir(project);
   assert.equal(spawnSync('git', ['init', project], { encoding: 'utf8' }).status, 0);
-    const installed = spawnSync(process.execPath, [cli, 'install', '--project', project, '--source', f.source], { encoding: 'utf8' });
+    const installed = spawnSync(process.execPath, [cli, 'onboard', '--project', project, '--agents', 'claude-code,codex'], { encoding: 'utf8' });
     assert.equal(installed.status, 0, installed.stderr);
     assert(!(await read(localFile(project))).includes('disable-model-invocation'));
+    assert.equal(JSON.parse(installed.stdout).status, 'installed');
+    await missing(localFile(project, 'manage-workflow/SKILL.md'));
+    await missing(localFile(project, 'backend/agents/openai.yaml'));
+    assert.equal(await read(localFile(project)), await read(path.join(root, 'skills/backend/SKILL.md')));
+    assert((await read(path.join(project, 'AGENTS.md'))).includes('development/SKILL.md'));
+    const sourceFile = path.join(isolated, 'project-source/skills/api/SKILL.md');
+    await fs.appendFile(sourceFile, '\n새 설치본의 API 개선\n');
+    const preview = spawnSync(process.execPath, [cli, 'update', '--project', project], { encoding: 'utf8' });
+    assert.equal(preview.status, 0, preview.stderr);
+    assert.equal(JSON.parse(preview.stdout).applied, false);
+    assert(JSON.parse(preview.stdout).files.includes('api/SKILL.md'));
+    assert(!(await read(localFile(project, 'api/SKILL.md'))).includes('새 설치본의 API 개선'));
+    const applied = spawnSync(process.execPath, [cli, 'update', '--project', project, '--apply'], { encoding: 'utf8' });
+    assert.equal(applied.status, 0, applied.stderr);
+    assert((await read(localFile(project, 'api/SKILL.md'))).includes('새 설치본의 API 개선'));
   }
 });

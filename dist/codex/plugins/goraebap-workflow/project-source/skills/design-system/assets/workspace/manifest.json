@@ -1,0 +1,32 @@
+{
+  "id": "workspace-layout",
+  "revision": 2,
+  "updated": "2026-11-05",
+  "kind": "opt-in-reference",
+  "compatibility": {
+    "react": "19",
+    "@astryxdesign/core": "0.5.2",
+    "@astryxdesign/theme-stone": "0.5.2"
+  },
+  "automaticProductInstallation": false,
+  "validation": {
+    "typecheck": "passed: React 19, Astryx core/theme-stone 0.5.2, strict TypeScript",
+    "visualParity": "not-verified",
+    "browserSmoke": {
+      "result": "passed",
+      "date": "2026-11-05",
+      "viewports": [
+        "1440x960",
+        "1024x800",
+        "390x844",
+        "320x740"
+      ],
+      "screens": [
+        "list",
+        "settings",
+        "detail"
+      ],
+      "scope": "Local fixture: filters, save/cancel, theme/layout changes, draft preservation across breakpoints; no source pixel parity or physical mobile keyboard verification"
+    }
+  }
+}

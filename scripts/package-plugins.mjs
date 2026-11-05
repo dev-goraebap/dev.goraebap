@@ -37,6 +37,9 @@ export async function packagePlugins() {
     await copyFiles(path.join(root, 'manager/scripts'), `${pluginPath}/manager/scripts`);
     await copyFiles(path.join(root, 'manager/templates'), `${pluginPath}/manager/templates`);
     await copyFiles(path.join(root, 'skills'), `${pluginPath}/manager/skills`, ['.md', '.mjs', '.yaml', '.tsx', '.ts', '.css', '.json']);
+    // Unmodified project source is separate from explicitly invoked plugin skills.
+    await copyFiles(path.join(root, 'skills'), `${pluginPath}/project-source/skills`, ['.md', '.mjs', '.yaml', '.tsx', '.ts', '.css', '.json']);
+    await put(`${pluginPath}/project-source/package.json`, json({ name: pkg.name, version: pkg.version, private: true, type: 'module' }));
     const skillRoot = path.join(root, 'dist', pluginPath, 'manager/skills');
     for (const name of await fs.readdir(skillRoot)) {
       const file = path.join(skillRoot, name, 'SKILL.md');

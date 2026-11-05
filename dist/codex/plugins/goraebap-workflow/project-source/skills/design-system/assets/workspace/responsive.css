@@ -1,0 +1,8 @@
+@media (width < 64rem) {
+  [data-astryx-theme] { --size-element-sm: 2rem; --size-element-md: 2.5rem; --size-element-lg: 2.75rem; }
+  :is(.astryx-text-input, .astryx-text-area, .astryx-selector) { --size-element-sm: 3rem; --size-element-md: 3rem; --size-element-lg: 3rem; }
+  :is(.astryx-text-input, .astryx-text-area) :is(input, textarea) { font-size: 1rem; }
+}
+@media (width >= 64rem) {
+  :is(.astryx-text-input, .astryx-text-area) :is(input, textarea) { font-size: var(--text-body-size); }
+}

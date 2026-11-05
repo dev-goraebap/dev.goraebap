@@ -111,6 +111,41 @@ async function sourceBundle(source, mapping) {
   return { identity: pkg.name, version: pkg.version, mapping, files: output, digest: digest(json(output)) };
 }
 
+async function defaultSource() {
+  const bundled = await safe(ROOT, 'project-source');
+  return await exists(bundled) ? bundled : ROOT;
+}
+
+async function onboard(project, source, options) {
+  const git = await gitDirectory(project);
+  const guidance = await read(project, 'AGENTS.md');
+  if (await exists(await safe(git, LOCK))) {
+    const lock = await readMeta(project, LOCK);
+    validateLock(lock);
+    return { status: 'managed', project, comparison: await compare(project, lock), guidance: guidance === undefined ? 'missing' : 'existing', next: '설치된 프로젝트입니다. 상태와 관리 작업을 안내하세요. 요청 없이 업데이트·재설치·기준 재등록을 하지 마세요.' };
+  }
+  const initial = await sourceBundle(source);
+  if (options.prefix !== undefined && !slug(options.prefix)) throw new Error('prefix는 소문자·숫자·하이픈으로 지정하세요.');
+  const entry = options.prefix ? `${options.prefix}-mode` : 'development';
+  const names = options.prefix ? Object.keys(initial.mapping).map(name => `${options.prefix}-${name.replace(/^goraebap-/, '')}`) : Object.values(initial.mapping);
+  const collisions = [];
+  for (const name of names) if (await exists(await safe(project, `.agents/skills/${name}`))) collisions.push(name);
+  if (collisions.length) return { status: 'existing-skills', project, skills: collisions, next: '기존 지침을 읽고 현재 입구를 유지하세요. 동기화만 필요한지 확인하고 setup-sync를 사용하세요. 기준이 필요하면 실제 채택했던 원본으로 adopt하며 최신 설치본을 과거 기준으로 추정하지 마세요.' };
+  const agents = options.agents ? selectedAgents(options) : [];
+  if (!options.agents) {
+    for (const [agent, file] of Object.entries({ 'claude-code': '.claude/settings.json', codex: '.codex/hooks.json', grok: '.grok/hooks/skill-sync.json' })) {
+      if (await exists(await safe(project, file))) agents.push(agent);
+    }
+  }
+  if (!agents.length) return { status: 'needs-agents', project, next: '대화·프로젝트 설정에서 사용 에이전트를 확인하세요. 확인할 수 없을 때만 한 번 짧게 질문하고 --agents로 다시 실행하세요. 아직 파일을 변경하지 않았습니다.' };
+  // Validate AGENTS.md and all install/setup targets before the first mutation.
+  await safe(project, 'AGENTS.md');
+  const result = await install(project, source, { ...options, agents: agents.join(',') });
+  const content = `개발 작업은 .agents/skills/${entry}/SKILL.md에서 시작한다.\n스킬 원본은 .agents/skills다. 에이전트별 skills 폴더는 생성 사본이다.\n사본은 직접 수정하지 않고 node scripts/sync-skills.mjs로 동기화한다.\n`;
+  if (guidance === undefined) await write(project, 'AGENTS.md', `# 프로젝트 작업 지침\n\n${content}`);
+  return { ...result, status: 'installed', project, agents, guidance: guidance === undefined ? { created: 'AGENTS.md' } : { existing: 'AGENTS.md', suggested: content, next: '기존 규칙과 입구를 읽고 중복·충돌 없이 통합하세요. 개인 플러그인 이름과 로컬 경로는 넣지 마세요.' }, next: 'AGENTS.md 연결을 마친 뒤 독립 sync와 --check를 실행하세요. 훅 설정 생성과 실제 세션의 신뢰·실행 여부를 구분해 보고하세요.' };
+}
+
 function validateLock(lock) {
   if (lock.schemaVersion !== 1 || lock.source?.identity !== 'goraebap-workflow' || !lock.mapping || !lock.base) throw new Error('지원하지 않는 lock 형식입니다.');
   for (const [from, target] of Object.entries(lock.mapping)) if (!slug(from) || !slug(target)) throw new Error('잘못된 스킬 이름입니다.');
@@ -261,7 +296,8 @@ async function propose(project, lock, options) {
 const HELP = `goraebap-workflow (Node >=22, 병합에는 Git 필요)
 node manager/scripts/workflow.mjs <명령> --project <프로젝트 경로> [옵션]
 
-install   [--source <공통 원본>] [--prefix <이름>]  기존 스킬 덮어쓰기 금지
+onboard   [--agents claude-code,codex] [--source <개발용 원본>] 프로젝트 판별·신규 온보딩
+install   [--source <개발용 원본>] [--prefix <이름>] 기존 스킬 덮어쓰기 금지
 adopt     --source <채택했던 원본> [--prefix <이름>] 로컬 관리 기준 재등록
 setup-sync [--agents claude-code,grok,codex]       독립 동기화 도구·시작 훅·gitignore 준비
 compare   [--source <새 원본>] [--file <스킬/파일>] 변경 목록과 선택한 파일의 세 버전
@@ -270,15 +306,18 @@ sync      [--check] [--agents claude-code,grok,codex] 프로젝트 전체 스킬
 classify  --file <스킬/파일> --kind project|upstream|trial --reason <이유>
 propose   --name <이름>                           upstream 변경의 로컬 제안
 
-기본 source는 이 CLI가 있는 goraebap-workflow입니다. lock에는 로컬 절대 경로를 저장하지 않습니다.
+기본 source는 설치된 플러그인의 project-source이며 개발 체크아웃에서는 이 저장소입니다.
+--source는 개발·시험용 선택 옵션입니다. adopt의 과거 기준은 명시해야 합니다.
+lock에는 로컬 절대 경로를 저장하지 않습니다.
 관리 기준·분류·제안은 Git이 알려주는 로컬 .git 경로에만 보관합니다.
-AGENTS.md, 앱 코드, 사용자 전역 설정은 자동으로 수정하지 않습니다.\n`;
+onboard는 AGENTS.md가 없을 때 일반 작업 지침을 만듭니다. 기존 파일은 통합할 내용을 반환합니다.
+install과 나머지 명령은 AGENTS.md·앱 코드·사용자 전역 설정을 수정하지 않습니다.\n`;
 
 export async function run(args) {
   const [command, ...rest] = args;
   if (!command || command === 'help' || command === '--help') return { help: HELP };
   const options = {};
-  const allowed = { install: ['source', 'prefix', 'agents'], adopt: ['source', 'prefix'], 'setup-sync': ['agents'], compare: ['source', 'file'], update: ['source', 'apply'], sync: ['check', 'agents'], classify: ['file', 'kind', 'reason'], propose: ['name'] };
+  const allowed = { onboard: ['source', 'prefix', 'agents'], install: ['source', 'prefix', 'agents'], adopt: ['source', 'prefix'], 'setup-sync': ['agents'], compare: ['source', 'file'], update: ['source', 'apply'], sync: ['check', 'agents'], classify: ['file', 'kind', 'reason'], propose: ['name'] };
   if (!allowed[command]) throw new Error(`알 수 없는 명령: ${command}`);
   for (let i = 0; i < rest.length; i++) {
     const key = rest[i].startsWith('--') ? rest[i].slice(2) : '';
@@ -292,7 +331,8 @@ export async function run(args) {
   }
   if (!options.project) throw new Error('--project를 명시하세요.');
   const project = await fs.realpath(path.resolve(options.project));
-  const source = options.source ? await fs.realpath(path.resolve(options.source)) : ROOT;
+  const source = options.source ? await fs.realpath(path.resolve(options.source)) : await defaultSource();
+  if (command === 'onboard') return onboard(project, source, options);
   if (command === 'setup-sync') return applySetup(project, await setupPlan(project, selectedAgents(options)));
   if (command === 'sync') return synchronize(project, { agents: options.agents ? selectedAgents(options) : undefined, check: Boolean(options.check) });
   if (command === 'install') return install(project, source, options);

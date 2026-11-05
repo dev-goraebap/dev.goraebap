@@ -18,14 +18,17 @@ codex plugin add goraebap-workflow@goraebap-workflow
 
 Claude의 입구는 `/goraebap-workflow:goraebap-mode`, 관리 기능은 `/goraebap-workflow:manage-workflow`입니다. 분야별 지침은 frontend·backend 같은 이름으로 제공하며 Codex에서는 설치 후 표시되는 명시적 스킬 선택을 사용합니다. 모든 플러그인 스킬은 명시 호출 전용입니다.
 
-Node 22 이상과 Git이 필요합니다. 실제 설치 경로의 CLI를 사용하고 PROJECT에는 Git 저장소 루트, SOURCE에는 공통 원본 체크아웃을 지정합니다.
+새 프로젝트에서는 관리 스킬만 호출하면 온보딩을 시작합니다. 별도의 요청문이나 로컬 원본 경로를 입력할 필요가 없습니다. 현재 프로젝트의 기존 규칙과 사용 에이전트를 확인하고, 판단할 수 없는 선택만 질문합니다. 이미 설치된 프로젝트라면 상태를 안내하며 요청 없이 지침을 업데이트하지 않습니다.
+
+Node 22 이상과 Git이 필요합니다. 아래는 에이전트가 실행하는 명령입니다. PROJECT는 확인한 Git 루트이며 기본 원본은 설치된 플러그인에 포함됩니다. --source는 개발·시험 원본을 따로 지정할 때 사용합니다.
 
 ```text
-node manager/scripts/workflow.mjs install --project PROJECT --source SOURCE
+node manager/scripts/workflow.mjs onboard --project PROJECT --agents claude-code,codex
+node manager/scripts/workflow.mjs install --project PROJECT
 node manager/scripts/workflow.mjs setup-sync --project PROJECT
 node manager/scripts/workflow.mjs compare --project PROJECT --source SOURCE
-node manager/scripts/workflow.mjs update --project PROJECT --source SOURCE
-node manager/scripts/workflow.mjs update --project PROJECT --source SOURCE --apply
+node manager/scripts/workflow.mjs update --project PROJECT
+node manager/scripts/workflow.mjs update --project PROJECT --apply
 node manager/scripts/workflow.mjs adopt --project PROJECT --source KNOWN_BASELINE
 ```
 

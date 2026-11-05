@@ -13,22 +13,27 @@ codex plugin add goraebap-workflow@goraebap-workflow
 
 ## 명령
 
-CLI는 이 스킬의 위치에서 찾은 절대 경로로 지정한다. PROJECT는 Git 저장소 루트, SOURCE는 공통 원본 체크아웃이다. 경로와 이유는 셸에서 한 인자로 인용한다.
+사용자는 관리 스킬 호출만으로 시작한다. 아래 명령은 에이전트가 실행하며 사용자에게 복사·입력을 요구하지 않는다. CLI는 이 스킬의 위치에서 찾은 절대 경로, PROJECT는 확인한 Git 루트다. 기본 원본은 플러그인의 project-source이며 개발 체크아웃에서는 이 저장소다. 경로와 이유는 셸에서 한 인자로 인용한다.
 
 ```text
-node <CLI> install --project PROJECT --source SOURCE
+node <CLI> onboard --project PROJECT --agents claude-code,codex
+node <CLI> install --project PROJECT
 node <CLI> install --project PROJECT --source SOURCE --prefix myapp --agents claude-code,codex
 node <CLI> setup-sync --project PROJECT
 node <CLI> setup-sync --project PROJECT --agents grok
 node <CLI> sync --project PROJECT
 node <CLI> sync --project PROJECT --agents claude-code --check
 node <CLI> compare --project PROJECT --source SOURCE --file backend/SKILL.md
-node <CLI> update --project PROJECT --source SOURCE
-node <CLI> update --project PROJECT --source SOURCE --apply
+node <CLI> update --project PROJECT
+node <CLI> update --project PROJECT --apply
 node <CLI> classify --project PROJECT --file backend/SKILL.md --kind upstream --reason "공통 개선의 근거"
 node <CLI> propose --project PROJECT --name batch-query
 node <CLI> adopt --project PROJECT --source KNOWN_BASELINE
 ```
+
+onboard는 설치 상태를 먼저 판별한다. 신규 프로젝트는 확인한 에이전트만 설정하고 새 AGENTS.md를 만든다. 기존 AGENTS.md는 변경하지 않고 에이전트가 통합할 내용을 반환한다. 기존 관리 기준이 있으면 읽기 전용 상태 조회로 끝내며 플러그인 갱신을 프로젝트 갱신으로 연결하지 않는다. 별도 원본 시험에는 --source를 사용한다. compare의 --source 생략은 로컬 기준과의 오프라인 비교이며, 새 설치본과의 비교는 CLI가 있는 플러그인의 project-source를 명시한다.
+
+project-source에는 관리 스킬과 플러그인의 호출 제한을 넣지 않는다. 같은 개발 원본에서 생성한 배포 스냅샷으로, 직접 호출용 manager/skills와 용도가 다르다. 설치에 원본 저장소 체크아웃이 필요하지 않다. adopt만은 과거 기준을 복구하는 작업이므로 알려진 원본의 명시 지정을 유지한다.
 
 ## 프로젝트 구성
 
