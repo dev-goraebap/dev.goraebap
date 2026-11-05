@@ -30,7 +30,7 @@ export const workspaceTheme = defineTheme({
     '--color-background-body': ['#efeff0', '#09090a'],
     '--color-background-surface': ['#f9f9fa', '#121213'],
     '--color-background-muted': ['#ececed', '#232326'],
-    '--color-border': ['#e4e4e5', '#212224'],
+    '--color-border': [mix(18), mix(16)],
     '--color-text-primary': ['#1b1b1b', '#f7f8f8'],
     '--color-text-secondary': ['#5c5c5e', '#8a8f98'],
     '--color-icon-secondary': ['#6b6b6f', '#8a8f98'],
@@ -43,7 +43,7 @@ export const workspaceTheme = defineTheme({
     '--color-background-card': ['color-mix(in srgb, var(--color-background-surface) 25%, #ffffff)', mix(3)],
     '--color-background-popover': ['color-mix(in srgb, var(--color-background-surface) 15%, #ffffff)', mix(6)],
     '--color-background-gray': [mix(10), mix(13)],
-    '--color-border-emphasized': [mix(18), mix(16)],
+    '--color-border-emphasized': 'var(--color-border)',
     '--color-text-disabled': 'color-mix(in srgb, var(--color-text-secondary) 62%, var(--color-background-surface))',
     '--color-icon-primary': mix(88),
     '--color-overlay-hover': [tint(4), tint(5)],
@@ -165,7 +165,7 @@ export const workspaceTheme = defineTheme({
     card: {
       base: { borderRadius: '1rem', cornerShape: 'squircle' },
 
-      'variant:page': { backgroundColor: 'var(--color-background-surface)' },
+      'variant:page': { backgroundColor: 'var(--color-background-surface)', border: '1px solid var(--color-border)' },
       'variant:page-flat': { backgroundColor: 'var(--color-background-surface)', borderRadius: '0', borderWidth: '0' },
       'elevation:low': { boxShadow: '0 1px 2px light-dark(rgb(0 0 0 / 0.03), rgb(0 0 0 / 0.25)), 0 2px 6px -2px light-dark(rgb(0 0 0 / 0.04), rgb(0 0 0 / 0.3))' },
     },
@@ -185,11 +185,10 @@ export const workspaceTheme = defineTheme({
 
     'popover-surface': {
       base: {
-        padding: 'var(--spacing-1-5)', border: `1px solid light-dark(${tint(10)}, ${tint(12)})`, borderRadius: 'var(--radius-container)', background: 'var(--color-background-popover)', boxShadow: 'var(--shadow-med)' },
+        padding: 'var(--spacing-1-5)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-container)', background: 'var(--color-background-popover)', boxShadow: 'var(--shadow-med)' },
     },
     dialog: {
-      base: { border: `1px solid light-dark(${tint(10)}, ${tint(12)})`, borderRadius: '1rem', background: 'var(--color-background-popover)', boxShadow: 'var(--shadow-high)' },
-      'variant:standard': { marginBlock: '12dvh auto' },
+      base: { border: '1px solid var(--color-border)', borderRadius: '1rem', background: 'var(--color-background-popover)', boxShadow: 'var(--shadow-high)' },
     },
   },
 });
