@@ -1,0 +1,13 @@
+{
+  "name": "goraebap-workflow",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "workflow": "node manager/scripts/workflow.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node scripts/check.mjs",
+    "package:plugins": "node scripts/package-plugins.mjs"
+  }
+}

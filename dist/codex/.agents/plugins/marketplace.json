@@ -1,0 +1,20 @@
+{
+  "name": "goraebap-workflow",
+  "interface": {
+    "displayName": "goraebap-workflow"
+  },
+  "plugins": [
+    {
+      "name": "goraebap-workflow",
+      "source": {
+        "source": "local",
+        "path": "./plugins/goraebap-workflow"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "name": "goraebap-workflow",
+  "version": "0.1.0",
+  "description": "명시 호출용 웹 개발 지침과 프로젝트 설치·비교·업데이트 관리",
+  "author": {
+    "name": "goraebap"
+  },
+  "skills": "./manager/skills/",
+  "requires_local_executor": true,
+  "interface": {
+    "displayName": "goraebap-workflow",
+    "shortDescription": "명시 호출용 웹 개발 지침과 프로젝트 설치·비교·업데이트 관리",
+    "developerName": "goraebap"
+  }
+}
