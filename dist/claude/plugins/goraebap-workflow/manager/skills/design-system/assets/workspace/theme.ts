@@ -166,6 +166,7 @@ export const workspaceTheme = defineTheme({
       base: { borderRadius: '1rem', cornerShape: 'squircle' },
 
       'variant:page': { backgroundColor: 'var(--color-background-surface)' },
+      'variant:page-flat': { backgroundColor: 'var(--color-background-surface)', borderRadius: '0', borderWidth: '0' },
       'elevation:low': { boxShadow: '0 1px 2px light-dark(rgb(0 0 0 / 0.03), rgb(0 0 0 / 0.25)), 0 2px 6px -2px light-dark(rgb(0 0 0 / 0.04), rgb(0 0 0 / 0.3))' },
     },
 

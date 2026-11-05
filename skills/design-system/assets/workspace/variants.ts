@@ -14,5 +14,6 @@ export {};
 declare module '@astryxdesign/core/Card' {
   interface CardVariantMap {
     page: true;
+    'page-flat': true;
   }
 }
