@@ -37,7 +37,7 @@ project-source에는 관리 스킬과 플러그인의 호출 제한을 넣지 �
 
 ## 프로젝트 구성
 
-기본 프로젝트 입구는 development, 분야별 지침은 frontend·backend다. --prefix myapp이면 입구는 myapp-mode, 나머지는 myapp-frontend 같은 이름으로 바뀐다. 스킬 메타데이터와 상대 링크만 바꾸고 코드 식별자·API 경로는 유지한다.
+온보딩은 프로젝트 이름·약어를 기본 접두사로 사용한다. myapp이면 myapp-mode·myapp-frontend처럼 설치하며 --prefix로 지정할 수도 있다. 저수준 install을 직접 호출할 때도 프로젝트 접두사를 전달한다. 스킬 메타데이터와 상대 링크만 바꾸고 코드 식별자·API 경로는 유지한다.
 
 install은 스킬·독립 동기화 스크립트·시작 훅·gitignore를 준비한다. setup-sync는 기존 스킬을 유지하고 동기화만 준비한다. AGENTS.md에는 프로젝트 입구와 원본/사본 정책만 연결한다. 개인 플러그인 사용법이나 원본 버전 관리 절차를 팀의 필수 지침으로 넣지 않는다.
 

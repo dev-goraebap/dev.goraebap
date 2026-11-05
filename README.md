@@ -56,14 +56,14 @@ Node 22 이상과 Git이 필요합니다. 아래는 에이전트가 실행하는
 npm run workflow -- onboard --project PROJECT --agents claude-code,codex
 ```
 
-기본 프로젝트 입구는 `development`, 나머지는 `frontend`·`backend` 같은 이름입니다. 플러그인의 개인 이름을 프로젝트 스킬에 강제하지 않습니다. `--prefix myapp`이면 입구는 `myapp-mode`, 다른 지침은 `myapp-frontend`처럼 바뀝니다. 이름 변환은 메타데이터와 스킬 상대 링크에만 적용합니다.
+온보딩은 프로젝트 이름·약어를 접두사로 사용합니다. 예를 들어 myapp은 `myapp-mode`, `myapp-frontend`, `myapp-backend`로 설치합니다. 이름은 대화와 프로젝트 설정에서 확인하며 --prefix로 명시할 수 있습니다. 플러그인의 개인 이름을 프로젝트에 강제하지 않습니다. 이름 변환은 메타데이터와 스킬 상대 링크에만 적용합니다.
 
 install은 스킬 배포와 함께 독립 동기화 스크립트·시작 훅·gitignore를 준비합니다. 기존 스킬과 다른 사람이 만든 동기화 스크립트를 덮어쓰지 않습니다. 기존 훅·권한·설정은 보존합니다. Git에서 추적 중인 사본은 자동 추적 해제하지 않고 원본 대조를 먼저 요구합니다.
 
 프로젝트 AGENTS.md에는 다음처럼 일반적인 정책만 연결합니다. onboard는 파일이 없을 때 생성하고, 기존 파일은 에이전트가 읽어 입구와 충돌 없이 통합합니다. 저수준 install은 AGENTS.md를 수정하지 않습니다.
 
 ```markdown
-개발 작업은 .agents/skills/development/SKILL.md에서 시작한다.
+개발 작업은 .agents/skills/myapp-mode/SKILL.md에서 시작한다.
 스킬의 원본은 .agents/skills다. 에이전트별 skills 폴더는 생성 사본이다.
 사본은 직접 수정하지 않고 node scripts/sync-skills.mjs로 동기화한다.
 ```

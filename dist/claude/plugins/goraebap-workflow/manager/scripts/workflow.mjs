@@ -116,6 +116,17 @@ async function defaultSource() {
   return await exists(bundled) ? bundled : ROOT;
 }
 
+async function projectPrefix(project, options) {
+  if (options.prefix !== undefined) {
+    if (!slug(options.prefix)) throw new Error('prefix는 소문자·숫자·하이픈으로 지정하세요.');
+    return options.prefix;
+  }
+  const packageText = await read(project, 'package.json');
+  const name = packageText ? JSON.parse(packageText).name : undefined;
+  const candidate = (name?.split('/').pop() || path.basename(project)).toLowerCase().replace(/[ ._]+/g, '-');
+  return slug(candidate) ? candidate : undefined;
+}
+
 async function onboard(project, source, options) {
   const git = await gitDirectory(project);
   const guidance = await read(project, 'AGENTS.md');
@@ -124,13 +135,16 @@ async function onboard(project, source, options) {
     validateLock(lock);
     return { status: 'managed', project, comparison: await compare(project, lock), guidance: guidance === undefined ? 'missing' : 'existing', next: '설치된 프로젝트입니다. 상태와 관리 작업을 안내하세요. 요청 없이 업데이트·재설치·기준 재등록을 하지 마세요.' };
   }
-  const initial = await sourceBundle(source);
-  if (options.prefix !== undefined && !slug(options.prefix)) throw new Error('prefix는 소문자·숫자·하이픈으로 지정하세요.');
-  const entry = options.prefix ? `${options.prefix}-mode` : 'development';
-  const names = options.prefix ? Object.keys(initial.mapping).map(name => `${options.prefix}-${name.replace(/^goraebap-/, '')}`) : Object.values(initial.mapping);
-  const collisions = [];
-  for (const name of names) if (await exists(await safe(project, `.agents/skills/${name}`))) collisions.push(name);
-  if (collisions.length) return { status: 'existing-skills', project, skills: collisions, next: '기존 지침을 읽고 현재 입구를 유지하세요. 동기화만 필요한지 확인하고 setup-sync를 사용하세요. 기준이 필요하면 실제 채택했던 원본으로 adopt하며 최신 설치본을 과거 기준으로 추정하지 마세요.' };
+  await sourceBundle(source);
+  const prefix = await projectPrefix(project, options);
+  const skillRoot = await safe(project, '.agents/skills');
+  const existing = [];
+  if (await exists(skillRoot)) for (const entry of await fs.readdir(skillRoot, { withFileTypes: true })) {
+    if (entry.isDirectory() && await read(project, `.agents/skills/${entry.name}/SKILL.md`) !== undefined) existing.push(entry.name);
+  }
+  if (existing.length) return { status: 'existing-skills', project, skills: existing.sort(), prefix, next: '기존 지침을 먼저 읽으세요. 다른 이름의 프로젝트 입구도 확인해 이중 설치하지 마세요. 공통 전환 요청이면 전용 규칙을 분리한 뒤 install --prefix로 설치합니다. 동기화만 필요하면 setup-sync를 사용하고 과거 기준은 추정하지 마세요.' };
+  if (!prefix) return { status: 'needs-prefix', project, next: '프로젝트 이름·약어를 대화와 설정에서 확인해 --prefix로 전달하세요. 확인할 수 없을 때만 한 번 질문하세요. 아직 파일을 변경하지 않았습니다.' };
+  const entry = `${prefix}-mode`;
   const agents = options.agents ? selectedAgents(options) : [];
   if (!options.agents) {
     for (const [agent, file] of Object.entries({ 'claude-code': '.claude/settings.json', codex: '.codex/hooks.json', grok: '.grok/hooks/skill-sync.json' })) {
@@ -140,7 +154,7 @@ async function onboard(project, source, options) {
   if (!agents.length) return { status: 'needs-agents', project, next: '대화·프로젝트 설정에서 사용 에이전트를 확인하세요. 확인할 수 없을 때만 한 번 짧게 질문하고 --agents로 다시 실행하세요. 아직 파일을 변경하지 않았습니다.' };
   // Validate AGENTS.md and all install/setup targets before the first mutation.
   await safe(project, 'AGENTS.md');
-  const result = await install(project, source, { ...options, agents: agents.join(',') });
+  const result = await install(project, source, { ...options, prefix, agents: agents.join(',') });
   const content = `개발 작업은 .agents/skills/${entry}/SKILL.md에서 시작한다.\n스킬 원본은 .agents/skills다. 에이전트별 skills 폴더는 생성 사본이다.\n사본은 직접 수정하지 않고 node scripts/sync-skills.mjs로 동기화한다.\n`;
   if (guidance === undefined) await write(project, 'AGENTS.md', `# 프로젝트 작업 지침\n\n${content}`);
   return { ...result, status: 'installed', project, agents, guidance: guidance === undefined ? { created: 'AGENTS.md' } : { existing: 'AGENTS.md', suggested: content, next: '기존 규칙과 입구를 읽고 중복·충돌 없이 통합하세요. 개인 플러그인 이름과 로컬 경로는 넣지 마세요.' }, next: 'AGENTS.md 연결을 마친 뒤 독립 sync와 --check를 실행하세요. 훅 설정 생성과 실제 세션의 신뢰·실행 여부를 구분해 보고하세요.' };
