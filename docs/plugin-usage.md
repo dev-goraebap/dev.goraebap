@@ -1,43 +1,38 @@
 # goraebap-workflow 로컬 플러그인
 
-플러그인은 사용자 범위 설치를 기본으로 합니다. 한 번 설치하고 여러 프로젝트에서 명시적으로 호출합니다. 다른 범위를 요청한 경우에만 해당 범위를 선택합니다.
+웹 플랫폼 개발 지침을 명시적으로 사용하고, 프로젝트에 배포한 지침의 비교·업데이트·개선 회수를 관리합니다. 플러그인은 사용자 범위에 설치하며 설치만으로 프로젝트 규칙에 개입하지 않습니다.
 
-Claude Code에서 GitHub 마켓플레이스를 사용자 범위에 등록하고 설치합니다.
+Claude Code:
 
 ```text
 /plugin marketplace add dev-goraebap/goraebap-workflow --scope user
 /plugin install goraebap-workflow@goraebap-workflow --scope user
 ```
 
-Codex에서는 다음 명령으로 사용자 설정에 등록하고 설치합니다.
+Codex:
 
 ```text
 codex plugin marketplace add https://github.com/dev-goraebap/goraebap-workflow.git --ref main
 codex plugin add goraebap-workflow@goraebap-workflow
 ```
 
-플러그인 설치와 프로젝트 스킬 배포는 별개입니다. 프로젝트별 규칙과 업데이트 정책은 해당 저장소에서 관리하며, 팀원에게 개인 플러그인 설치를 필수로 요구하지 않습니다.
+Claude의 입구는 `/goraebap-workflow:goraebap-mode`, 관리 기능은 `/goraebap-workflow:manage-workflow`입니다. 분야별 지침은 frontend·backend 같은 이름으로 제공하며 Codex에서는 설치 후 표시되는 명시적 스킬 선택을 사용합니다. 모든 플러그인 스킬은 명시 호출 전용입니다.
 
-프로젝트가 채택한 개발 지침을 저장소에서 관리하도록 돕습니다. 공통 원본의 스킬을 프로젝트에 설치하고, 원본과 프로젝트의 차이를 비교하고, 새 버전을 검토해 반영하고, 공통으로 가져갈 개선을 로컬 제안으로 만듭니다.
-
-이 플러그인에는 명시 호출용 개발 스킬과 관리 스킬·CLI가 있습니다. 설치만으로 작업에 자동 적용하지 않습니다. 프론트·백엔드 지침을 직접 호출해서 사용할 수 있고, 프로젝트의 규칙으로 채택하려면 별도 goraebap-workflow 원본 체크아웃에서 프로젝트로 배포합니다. 프로젝트 팀원은 플러그인을 설치하지 않아도 저장소에 있는 지침을 사용할 수 있습니다.
-
-Claude에서는 플러그인 이름 아래의 스킬 명령을, Codex에서는 설치 후 표시되는 스킬 선택 메뉴 또는 명시적 스킬 호출을 사용합니다. 모든 패키지 스킬에 Claude의 `disable-model-invocation: true`와 Codex의 `policy.allow_implicit_invocation: false`를 생성합니다. 입구를 호출한 작업에서는 입구가 필요한 지침을 읽습니다.
-
-Claude의 개발 입구는 `/goraebap-workflow:goraebap-mode`, 분야별 지침은 `/goraebap-workflow:frontend`·`/goraebap-workflow:backend`, 관리 기능은 `/goraebap-workflow:manage-workflow`로 호출합니다. 프로젝트로 배포할 때는 플러그인 네임스페이스가 없으므로 필요하면 프로젝트 접두사를 선택합니다.
-
-Node 22 이상이 필요합니다. 텍스트 병합에는 Git이 필요합니다. `manage-workflow` 스킬에 프로젝트와 공통 원본의 경로를 알려 주세요. 일반 제품 구현 요청만으로 관리 작업을 시작하지 않습니다.
-
-실행 예시는 다음과 같습니다. 플러그인의 실제 위치에서 실행하거나 경로를 절대 경로로 바꿉니다.
+Node 22 이상과 Git이 필요합니다. 실제 설치 경로의 CLI를 사용하고 PROJECT에는 Git 저장소 루트, SOURCE에는 공통 원본 체크아웃을 지정합니다.
 
 ```text
 node manager/scripts/workflow.mjs install --project PROJECT --source SOURCE
+node manager/scripts/workflow.mjs setup-sync --project PROJECT
 node manager/scripts/workflow.mjs compare --project PROJECT --source SOURCE
 node manager/scripts/workflow.mjs update --project PROJECT --source SOURCE
 node manager/scripts/workflow.mjs update --project PROJECT --source SOURCE --apply
-node manager/scripts/workflow.mjs sync --project PROJECT
+node manager/scripts/workflow.mjs adopt --project PROJECT --source KNOWN_BASELINE
 ```
 
-기존 스킬·직접 수정한 Claude 사본은 덮어쓰지 않습니다. 충돌이 있으면 업데이트를 적용하지 않습니다. 커밋·푸시·외부 전송·원본 자동 수정·전역 설정 변경은 수행하지 않습니다. 업데이트 뒤에는 실제 프로젝트의 검사와 바뀐 규칙의 의미를 확인해야 합니다.
+프로젝트는 .agents/skills만 원본으로 관리합니다. 독립 scripts/sync-skills.mjs와 선택한 에이전트의 SessionStart 훅을 공유하고, .claude/skills·.grok/skills는 gitignore로 제외합니다. Codex는 원본을 직접 읽습니다. 기존 스킬·훅·다른 동기화 도구·사본의 직접 수정을 자동 덮어쓰지 않습니다.
 
-플러그인 자체의 업데이트와 프로젝트에 배포한 스킬의 업데이트는 별개입니다. 프로젝트 업데이트는 기본 수동이고, 플러그인 버전이 바뀌어도 프로젝트 지침은 유지됩니다. 현재 자동 업데이트나 주기 실행 기능은 없습니다.
+팀원은 개인 플러그인 없이 프로젝트의 `node scripts/sync-skills.mjs`로 모든 프로젝트 스킬을 동기화할 수 있습니다. 에이전트별 훅의 신뢰 승인은 각 사용자가 진행합니다. 시작 훅은 네트워크나 공통 원본 업데이트를 실행하지 않습니다.
+
+관리 기준·분류·개선 제안은 Git이 알려주는 로컬 관리 경로에만 저장하고 프로젝트의 공유 파일에는 넣지 않습니다. clone에 따라오지 않으므로 새 관리자는 실제 채택했던 원본으로 adopt를 진행합니다. 프로젝트의 현재 수정본을 과거 원본이라고 추정하지 않습니다.
+
+플러그인 갱신과 프로젝트 원본 업데이트는 별개이며 프로젝트 업데이트는 기본 수동입니다. 충돌 시 적용하지 않습니다. 커밋·푸시·외부 전송·원본 자동 수정은 이 플러그인 설치만으로 허용되지 않습니다.

@@ -35,6 +35,7 @@ export async function packagePlugins() {
     const pluginPath = `${agent}/plugins/goraebap-workflow`;
     await copyFiles(path.join(root, 'manager/skills'), `${pluginPath}/manager/skills`);
     await copyFiles(path.join(root, 'manager/scripts'), `${pluginPath}/manager/scripts`);
+    await copyFiles(path.join(root, 'manager/templates'), `${pluginPath}/manager/templates`);
     await copyFiles(path.join(root, 'skills'), `${pluginPath}/manager/skills`);
     const skillRoot = path.join(root, 'dist', pluginPath, 'manager/skills');
     for (const name of await fs.readdir(skillRoot)) {

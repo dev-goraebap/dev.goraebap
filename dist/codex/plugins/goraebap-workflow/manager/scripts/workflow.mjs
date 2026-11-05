@@ -5,11 +5,12 @@ import os from 'node:os';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { gitDirectory, synchronize, AGENTS } from '../templates/sync-skills.mjs';
+import { setupPlan, applySetup } from './setup-sync.mjs';
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
-const LOCK = '.workflow/lock.json';
-const MIRRORS = '.workflow/mirrors.json';
-const DECISIONS = '.workflow/decisions.json';
+const LOCK = 'goraebap-workflow/lock.json';
+const DECISIONS = 'goraebap-workflow/decisions.json';
 const digest = value => createHash('sha256').update(value).digest('hex');
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
 const normalize = value => value.replace(/\r\n/g, '\n');
@@ -54,9 +55,21 @@ async function readJson(root, relative, fallback) {
   const content = await read(root, relative);
   if (content === undefined) {
     if (fallback !== undefined) return fallback;
-    throw new Error(`${relative}가 없습니다. install을 먼저 실행하세요.`);
+    throw new Error(`로컬 관리 기준 ${relative}가 없습니다. install 또는 알려진 원본을 지정한 adopt가 필요합니다.`);
   }
   return JSON.parse(content);
+}
+
+async function readMeta(project, relative, fallback) {
+  return readJson(await gitDirectory(project), relative, fallback);
+}
+
+async function writeMeta(project, relative, value) {
+  return write(await gitDirectory(project), relative, json(value));
+}
+
+function selectedAgents(options) {
+  return options.agents === undefined ? Object.keys(AGENTS) : options.agents.split(',');
 }
 
 async function files(root, relative) {
@@ -77,7 +90,7 @@ async function sourceBundle(source, mapping) {
   if (pkg.name !== 'goraebap-workflow') throw new Error('goraebap-workflow 원본을 지정하세요.');
   const available = (await fs.readdir(await safe(source, 'skills'), { withFileTypes: true }))
     .filter(e => e.isDirectory()).map(e => e.name).sort();
-  if (!mapping) mapping = Object.fromEntries(available.map(name => [name, name]));
+  if (!mapping) mapping = Object.fromEntries(available.map(name => [name, name === 'goraebap-mode' ? 'development' : name]));
   if (!Object.keys(mapping).length || Object.values(mapping).some(name => !slug(name)) || new Set(Object.values(mapping)).size !== Object.keys(mapping).length) {
     throw new Error('스킬 이름 대응 관계가 잘못됐습니다.');
   }
@@ -118,7 +131,8 @@ async function localFiles(project, lock) {
 }
 
 async function install(project, source, options) {
-  if (await exists(await safe(project, LOCK))) throw new Error('이미 설치된 프로젝트입니다. compare 또는 update를 쓰세요.');
+  const git = await gitDirectory(project);
+  if (await exists(await safe(git, LOCK))) throw new Error('이미 설치된 프로젝트입니다. compare 또는 update를 쓰세요.');
   const initial = await sourceBundle(source);
   const prefix = options.prefix;
   if (prefix !== undefined && !slug(prefix)) throw new Error('prefix는 소문자·숫자·하이픈으로 지정하세요.');
@@ -127,16 +141,32 @@ async function install(project, source, options) {
   for (const target of Object.values(mapping)) {
     if (await exists(await safe(project, `.agents/skills/${target}`))) throw new Error(`기존 스킬을 덮어쓰지 않습니다: ${target}`);
   }
+  const plan = await setupPlan(project, selectedAgents(options));
   const lock = { schemaVersion: 1, source: { identity: bundle.identity, version: bundle.version, digest: bundle.digest }, mapping, base: bundle.files };
   for (const [file, content] of Object.entries(bundle.files)) await write(project, `.agents/skills/${file}`, content);
-  await write(project, LOCK, json(lock));
-  return { installed: Object.values(mapping), source: lock.source, next: '프로젝트 AGENTS.md에 입구 스킬을 연결하고 sync를 실행하세요.' };
+  await applySetup(project, plan);
+  await writeMeta(project, LOCK, lock);
+  return { installed: Object.values(mapping), source: lock.source, setup: plan.changes.map(c => c.file), metadata: await safe(git, LOCK), next: '프로젝트 AGENTS.md에는 프로젝트 입구와 원본/사본 정책만 연결하세요. 훅 신뢰 승인은 각 사용자가 진행합니다.' };
+}
+
+async function adopt(project, source, options) {
+  const git = await gitDirectory(project);
+  if (await exists(await safe(git, LOCK))) throw new Error('이미 관리 기준이 있습니다.');
+  if (!options.source) throw new Error('adopt에는 채택했던 원본 체크아웃을 --source로 명시하세요. 현재 파일을 원본으로 추정하지 않습니다.');
+  if (options.prefix !== undefined && !slug(options.prefix)) throw new Error('prefix가 잘못됐습니다.');
+  const initial = await sourceBundle(source);
+  const mapping = options.prefix ? Object.fromEntries(Object.keys(initial.mapping).map(name => [name, `${options.prefix}-${name.replace(/^goraebap-/, '')}`])) : initial.mapping;
+  const bundle = await sourceBundle(source, mapping);
+  for (const name of Object.values(mapping)) if (await read(project, `.agents/skills/${name}/SKILL.md`) === undefined) throw new Error(`등록할 프로젝트 스킬이 없습니다: ${name}`);
+  const lock = { schemaVersion: 1, source: { identity: bundle.identity, version: bundle.version, digest: bundle.digest }, mapping, base: bundle.files };
+  await writeMeta(project, LOCK, lock);
+  return { metadata: await safe(git, LOCK), comparison: await compare(project, lock), message: '지정한 원본을 로컬 기준으로 등록했습니다. 프로젝트 파일은 변경하지 않았습니다.' };
 }
 
 async function compare(project, lock, source, selectedFile) {
   const current = await localFiles(project, lock);
   const incoming = source ? await sourceBundle(source, lock.mapping) : undefined;
-  const decisions = await readJson(project, DECISIONS, {});
+  const decisions = await readMeta(project, DECISIONS, {});
   const changed = [];
   for (const file of [...new Set([...Object.keys(lock.base), ...Object.keys(current), ...Object.keys(incoming?.files ?? {})])].sort()) {
     const localChanged = current[file] !== lock.base[file];
@@ -191,30 +221,9 @@ async function update(project, lock, source, apply) {
     for (const { file, content } of changes) await write(project, `.agents/skills/${file}`, content);
     lock.source = { identity: incoming.identity, version: incoming.version, digest: incoming.digest };
     lock.base = incoming.files;
-    await write(project, LOCK, json(lock));
+    await writeMeta(project, LOCK, lock);
   }
   return { applied: apply, files: changes.map(c => c.file), incoming: { version: incoming.version, digest: incoming.digest }, next: apply ? '차이를 검토하고 프로젝트 검증 후 sync를 실행하세요.' : '--apply를 주면 적용합니다.' };
-}
-
-async function sync(project, lock, check) {
-  const local = await localFiles(project, lock);
-  const previous = await readJson(project, MIRRORS, { schemaVersion: 1, files: {} });
-  if (previous.schemaVersion !== 1 || !previous.files) throw new Error('지원하지 않는 mirror 형식입니다.');
-  const desired = Object.fromEntries(Object.entries(local).map(([file, content]) => [`.claude/skills/${file}`, content]));
-  const changes = [];
-  for (const file of new Set([...Object.keys(desired), ...Object.keys(previous.files)])) {
-    if (!file.startsWith('.claude/skills/') || !Object.values(lock.mapping).includes(file.split('/')[2])) throw new Error(`관리 범위 밖의 mirror: ${file}`);
-    const current = await read(project, file);
-    const wanted = desired[file];
-    if (current === wanted) continue;
-    if (current !== undefined && digest(current) !== previous.files[file]) throw new Error(`Claude 사본이 직접 수정됐습니다. .agents 원본으로 회수하세요: ${file}`);
-    changes.push({ file, content: wanted });
-  }
-  if (!check) {
-    for (const { file, content } of changes) await write(project, file, content);
-    await write(project, MIRRORS, json({ schemaVersion: 1, files: Object.fromEntries(Object.entries(desired).map(([file, content]) => [file, digest(content)])) }));
-  }
-  return { check, synchronized: changes.length === 0 || !check, files: changes.map(c => c.file) };
 }
 
 async function classify(project, lock, options) {
@@ -223,16 +232,16 @@ async function classify(project, lock, options) {
   if (!['project', 'upstream', 'trial'].includes(options.kind) || typeof options.reason !== 'string' || !options.reason.trim()) throw new Error('--kind project|upstream|trial 및 --reason이 필요합니다.');
   const current = await read(project, `.agents/skills/${file}`);
   if (current === lock.base[file]) throw new Error('기준과 달라진 파일만 분류할 수 있습니다.');
-  const decisions = await readJson(project, DECISIONS, {});
+  const decisions = await readMeta(project, DECISIONS, {});
   decisions[file] = { kind: options.kind, reason: options.reason, hash: digest(current ?? '<deleted>') };
-  await write(project, DECISIONS, json(decisions));
+  await writeMeta(project, DECISIONS, decisions);
   return { file, ...decisions[file] };
 }
 
 async function propose(project, lock, options) {
   if (!slug(options.name)) throw new Error('--name에 제안 이름을 주세요.');
   const current = await localFiles(project, lock);
-  const decisions = await readJson(project, DECISIONS, {});
+  const decisions = await readMeta(project, DECISIONS, {});
   const changes = [];
   for (const [file, decision] of Object.entries(decisions)) {
     if (!Object.values(lock.mapping).includes(file.split('/')[0])) throw new Error('관리 범위 밖의 제안입니다.');
@@ -242,30 +251,34 @@ async function propose(project, lock, options) {
     changes.push({ file, upstreamFile: `${original}/${file.slice(target.length + 1)}`, reason: decision.reason, base: lock.base[file] ?? null, proposed: current[file] ?? null });
   }
   if (!changes.length) throw new Error('현재 변경 중 upstream으로 분류한 파일이 없습니다. classify를 먼저 실행하세요.');
-  const destination = `.workflow/proposals/${options.name}.json`;
-  if (await exists(await safe(project, destination))) throw new Error('같은 이름의 제안이 있습니다.');
-  await write(project, destination, json({ schemaVersion: 1, source: lock.source, mapping: lock.mapping, status: 'draft', changes }));
-  return { destination, files: changes.map(c => c.file), message: '로컬 초안만 만들었습니다. 회사 정보와 제품 전용 내용을 검토한 뒤 공통 원본에 별도로 반영하세요.' };
+  const relative = `goraebap-workflow/proposals/${options.name}.json`;
+  const destination = await safe(await gitDirectory(project), relative);
+  if (await exists(destination)) throw new Error('같은 이름의 제안이 있습니다.');
+  await writeMeta(project, relative, { schemaVersion: 1, source: lock.source, mapping: lock.mapping, status: 'draft', changes });
+  return { destination, files: changes.map(c => c.file), message: '로컬 Git 경로에 초안만 만들었습니다. 회사 정보와 제품 전용 내용을 검토한 뒤 공통 원본에 별도로 반영하세요.' };
 }
 
 const HELP = `goraebap-workflow (Node >=22, 병합에는 Git 필요)
 node manager/scripts/workflow.mjs <명령> --project <프로젝트 경로> [옵션]
 
 install   [--source <공통 원본>] [--prefix <이름>]  기존 스킬 덮어쓰기 금지
+adopt     --source <채택했던 원본> [--prefix <이름>] 로컬 관리 기준 재등록
+setup-sync [--agents claude-code,grok,codex]       독립 동기화 도구·시작 훅·gitignore 준비
 compare   [--source <새 원본>] [--file <스킬/파일>] 변경 목록과 선택한 파일의 세 버전
 update    [--source <새 원본>] [--apply]           기본은 미리보기, 충돌 시 미적용
-sync      [--check]                              관리하는 스킬만 Claude에 동기화
+sync      [--check] [--agents claude-code,grok,codex] 프로젝트 전체 스킬의 로컬 사본 동기화
 classify  --file <스킬/파일> --kind project|upstream|trial --reason <이유>
 propose   --name <이름>                           upstream 변경의 로컬 제안
 
 기본 source는 이 CLI가 있는 goraebap-workflow입니다. lock에는 로컬 절대 경로를 저장하지 않습니다.
-AGENTS.md, 앱 코드, 전역 설정은 자동으로 수정하지 않습니다.\n`;
+관리 기준·분류·제안은 Git이 알려주는 로컬 .git 경로에만 보관합니다.
+AGENTS.md, 앱 코드, 사용자 전역 설정은 자동으로 수정하지 않습니다.\n`;
 
 export async function run(args) {
   const [command, ...rest] = args;
   if (!command || command === 'help' || command === '--help') return { help: HELP };
   const options = {};
-  const allowed = { install: ['source', 'prefix'], compare: ['source', 'file'], update: ['source', 'apply'], sync: ['check'], classify: ['file', 'kind', 'reason'], propose: ['name'] };
+  const allowed = { install: ['source', 'prefix', 'agents'], adopt: ['source', 'prefix'], 'setup-sync': ['agents'], compare: ['source', 'file'], update: ['source', 'apply'], sync: ['check', 'agents'], classify: ['file', 'kind', 'reason'], propose: ['name'] };
   if (!allowed[command]) throw new Error(`알 수 없는 명령: ${command}`);
   for (let i = 0; i < rest.length; i++) {
     const key = rest[i].startsWith('--') ? rest[i].slice(2) : '';
@@ -280,14 +293,16 @@ export async function run(args) {
   if (!options.project) throw new Error('--project를 명시하세요.');
   const project = await fs.realpath(path.resolve(options.project));
   const source = options.source ? await fs.realpath(path.resolve(options.source)) : ROOT;
+  if (command === 'setup-sync') return applySetup(project, await setupPlan(project, selectedAgents(options)));
+  if (command === 'sync') return synchronize(project, { agents: options.agents ? selectedAgents(options) : undefined, check: Boolean(options.check) });
   if (command === 'install') return install(project, source, options);
-  const lock = await readJson(project, LOCK);
+  if (command === 'adopt') return adopt(project, source, options);
+  const lock = await readMeta(project, LOCK);
   validateLock(lock);
   // Validate baseline paths before any command, including classifications/proposals.
   for (const file of Object.keys(lock.base)) await safe(project, `.agents/skills/${file}`);
   if (command === 'compare') return compare(project, lock, options.source ? source : undefined, options.file);
   if (command === 'update') return update(project, lock, source, Boolean(options.apply));
-  if (command === 'sync') return sync(project, lock, Boolean(options.check));
   if (command === 'classify') return classify(project, lock, options);
   return propose(project, lock, options);
 }

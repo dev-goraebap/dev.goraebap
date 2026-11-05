@@ -20,6 +20,7 @@ async function fixture(t) {
   const project = path.join(temp, '팀 프로젝트');
   await fs.mkdir(source);
   await fs.mkdir(project);
+  assert.equal(spawnSync('git', ['init', project], { encoding: 'utf8' }).status, 0);
   await fs.cp(path.join(root, 'skills'), path.join(source, 'skills'), { recursive: true });
   await fs.copyFile(path.join(root, 'package.json'), path.join(source, 'package.json'));
   const call = (command, ...args) => run([command, '--project', project, ...args]);
@@ -42,7 +43,7 @@ test('설치·이름 변환·오프라인 비교·동기화가 팀 경로에서 
   assert((await read(localFile(f.project, 'acme-frontend/references/structure.md'))).includes('pages/<페이지>/{ui,model,api}'));
   assert(!entry.includes('disable-model-invocation'));
   await missing(localFile(f.project, 'acme-mode/agents/openai.yaml'));
-  const lock = await read(path.join(f.project, '.workflow/lock.json'));
+  const lock = await read(path.join(f.project, '.git/goraebap-workflow/lock.json'));
   assert(!lock.includes(f.source.replaceAll('\\', '\\\\')));
   assert.deepEqual((await f.call('compare')).changed, []);
   assert.equal((await f.call('sync', '--check')).synchronized, false);
@@ -58,7 +59,7 @@ test('기존 프로젝트 스킬을 설치로 덮어쓰지 않는다', async t =
   await fs.writeFile(file, '팀의 기존 지침');
   await assert.rejects(f.install(), /기존 스킬/);
   assert.equal(await read(file), '팀의 기존 지침');
-  await missing(path.join(f.project, '.workflow/lock.json'));
+  await missing(path.join(f.project, '.git/goraebap-workflow/lock.json'));
 });
 
 test('업데이트 미리보기는 쓰지 않고 적용은 로컬 예외와 새 원본을 함께 보존한다', async t => {
@@ -68,10 +69,10 @@ test('업데이트 미리보기는 쓰지 않고 적용은 로컬 예외와 새 
   const sourceFile = path.join(f.source, 'skills/api/SKILL.md');
   await fs.appendFile(local, '\n팀의 백엔드 예외\n');
   await fs.appendFile(sourceFile, '\n공통 API 개선\n');
-  const lockBefore = await read(path.join(f.project, '.workflow/lock.json'));
+  const lockBefore = await read(path.join(f.project, '.git/goraebap-workflow/lock.json'));
   const preview = await f.call('update', '--source', f.source);
   assert.equal(preview.applied, false);
-  assert.equal(await read(path.join(f.project, '.workflow/lock.json')), lockBefore);
+  assert.equal(await read(path.join(f.project, '.git/goraebap-workflow/lock.json')), lockBefore);
   assert(!(await read(localFile(f.project, 'api/SKILL.md'))).includes('공통 API 개선'));
   assert.equal((await f.call('update', '--source', f.source, '--apply')).applied, true);
   assert((await read(local)).includes('팀의 백엔드 예외'));
@@ -104,11 +105,11 @@ test('한 파일이라도 충돌하면 다른 파일과 lock도 적용하지 않
   await fs.writeFile(local, original.replace('# 백엔드', '# 팀 백엔드'));
   await fs.writeFile(upstream, original.replace('# 백엔드', '# 새 공통 백엔드'));
   await fs.appendFile(path.join(f.source, 'skills/api/SKILL.md'), '\n새 API 규칙\n');
-  const before = await read(path.join(f.project, '.workflow/lock.json'));
+  const before = await read(path.join(f.project, '.git/goraebap-workflow/lock.json'));
   const result = await f.call('update', '--source', f.source, '--apply');
   assert.equal(result.applied, false);
   assert.deepEqual(result.conflicts, ['backend/SKILL.md']);
-  assert.equal(await read(path.join(f.project, '.workflow/lock.json')), before);
+  assert.equal(await read(path.join(f.project, '.git/goraebap-workflow/lock.json')), before);
   assert(!(await read(localFile(f.project, 'api/SKILL.md'))).includes('새 API 규칙'));
   assert((await read(local)).includes('# 팀 백엔드'));
 });
@@ -147,7 +148,7 @@ test('upstream 분류만 제안하고 분류 후 바뀐 파일은 다시 분류�
   await f.call('classify', '--file', 'backend/SKILL.md', '--kind', 'upstream', '--reason', '배치 처리 개선');
   await f.call('classify', '--file', 'api/SKILL.md', '--kind', 'project', '--reason', '팀 합의');
   const result = await f.call('propose', '--name', 'batch');
-  const proposal = JSON.parse(await read(path.join(f.project, result.destination)));
+  const proposal = JSON.parse(await read(result.destination));
   assert.equal(proposal.changes.length, 1);
   assert(proposal.changes[0].proposed.includes('공통 개선'));
   await fs.appendFile(localFile(f.project), '\n추가 변경\n');
@@ -161,7 +162,7 @@ test('경로 탈출·알 수 없는 옵션·기준 변조를 거절한다', asyn
   await assert.rejects(f.install('--force'), /옵션/);
   await f.install();
   await assert.rejects(f.call('classify', '--file', 'backend/../../escape', '--kind', 'project', '--reason', 'x'), /경로/);
-  const lockPath = path.join(f.project, '.workflow/lock.json');
+  const lockPath = path.join(f.project, '.git/goraebap-workflow/lock.json');
   const lock = JSON.parse(await read(lockPath));
   lock.base['backend/SKILL.md'] = '바꾼 기준';
   await fs.writeFile(lockPath, JSON.stringify(lock));
@@ -195,6 +196,7 @@ test('생성 패키지는 개발·관리 스킬 모두 명시 호출만 허용�
     assert.equal(spawnSync(process.execPath, [cli, 'help'], { encoding: 'utf8' }).status, 0);
     const project = path.join(f.temp, agent);
     await fs.mkdir(project);
+  assert.equal(spawnSync('git', ['init', project], { encoding: 'utf8' }).status, 0);
     const installed = spawnSync(process.execPath, [cli, 'install', '--project', project, '--source', f.source], { encoding: 'utf8' });
     assert.equal(installed.status, 0, installed.stderr);
     assert(!(await read(localFile(project))).includes('disable-model-invocation'));
