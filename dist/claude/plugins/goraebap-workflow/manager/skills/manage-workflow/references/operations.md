@@ -1,5 +1,20 @@
 # 운영 절차
 
+## 플러그인 설치 범위
+
+플러그인은 사용자 범위에 한 번 설치해 여러 프로젝트에서 명시 호출한다. 별도 범위 요청이 없으면 설치 범위를 다시 묻지 않는다. 프로젝트 범위 설치나 프로젝트 설정 변경은 기본 절차에 넣지 않는다.
+
+```text
+claude plugin marketplace add https://github.com/dev-goraebap/goraebap-workflow.git --scope user
+claude plugin install goraebap-workflow@goraebap-workflow --scope user
+codex plugin marketplace add https://github.com/dev-goraebap/goraebap-workflow.git --ref main
+codex plugin add goraebap-workflow@goraebap-workflow
+```
+
+Codex 명령은 사용자 설정에 설치한다. 프로젝트에 개발 스킬을 배포하는 아래 CLI의 install은 별도 작업이다. 팀원은 프로젝트에 배포된 스킬을 사용하면 되며 개인 플러그인을 설치할 의무가 없다.
+
+## 프로젝트 스킬 관리 명령
+
 아래 CLI 경로는 실제 설치된 이 스킬에서 찾은 절대 경로로 바꾼다. `PROJECT`, `SOURCE`는 사용자의 프로젝트와 공통 원본 체크아웃이다. 쉘에서 각 경로와 이유를 하나의 인자로 인용한다.
 
 ```text

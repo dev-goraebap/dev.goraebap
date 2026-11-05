@@ -1,13 +1,22 @@
 # goraebap-workflow 로컬 플러그인
 
-Claude Code에서 GitHub 마켓플레이스를 등록하고 설치합니다.
+플러그인은 사용자 범위 설치를 기본으로 합니다. 한 번 설치하고 여러 프로젝트에서 명시적으로 호출합니다. 다른 범위를 요청한 경우에만 해당 범위를 선택합니다.
+
+Claude Code에서 GitHub 마켓플레이스를 사용자 범위에 등록하고 설치합니다.
 
 ```text
-/plugin marketplace add dev-goraebap/goraebap-workflow
-/plugin install goraebap-workflow@goraebap-workflow
+/plugin marketplace add dev-goraebap/goraebap-workflow --scope user
+/plugin install goraebap-workflow@goraebap-workflow --scope user
 ```
 
-Codex에서는 `codex plugin marketplace add https://github.com/dev-goraebap/goraebap-workflow.git --ref main`으로 등록한 뒤 앱에서 설치합니다.
+Codex에서는 다음 명령으로 사용자 설정에 등록하고 설치합니다.
+
+```text
+codex plugin marketplace add https://github.com/dev-goraebap/goraebap-workflow.git --ref main
+codex plugin add goraebap-workflow@goraebap-workflow
+```
+
+플러그인 설치와 프로젝트 스킬 배포는 별개입니다. 프로젝트별 규칙과 업데이트 정책은 해당 저장소에서 관리하며, 팀원에게 개인 플러그인 설치를 필수로 요구하지 않습니다.
 
 프로젝트가 채택한 개발 지침을 저장소에서 관리하도록 돕습니다. 공통 원본의 스킬을 프로젝트에 설치하고, 원본과 프로젝트의 차이를 비교하고, 새 버전을 검토해 반영하고, 공통으로 가져갈 개선을 로컬 제안으로 만듭니다.
 

@@ -96,22 +96,23 @@ npm run workflow -- sync --project "C:/work/myapp" --check
 
 ## Claude·Codex 플러그인
 
-GitHub 저장소의 `main`에서 설치할 수 있습니다.
+GitHub 저장소의 `main`에서 설치할 수 있습니다. 플러그인은 **사용자 범위 설치가 기본**입니다. 한 번 설치하고 여러 프로젝트에서 명시 호출하며, 다른 범위를 요청한 경우에만 그 범위를 사용합니다. 프로젝트별 개발 규칙과 업데이트 정책은 프로젝트 저장소에서 관리합니다.
 
 Claude Code:
 
 ```text
-/plugin marketplace add dev-goraebap/goraebap-workflow
-/plugin install goraebap-workflow@goraebap-workflow
+/plugin marketplace add dev-goraebap/goraebap-workflow --scope user
+/plugin install goraebap-workflow@goraebap-workflow --scope user
 ```
 
 Codex:
 
 ```text
 codex plugin marketplace add https://github.com/dev-goraebap/goraebap-workflow.git --ref main
+codex plugin add goraebap-workflow@goraebap-workflow
 ```
 
-Codex에서는 마켓플레이스를 등록한 뒤 앱의 플러그인 화면에서 설치합니다. 로컬 플러그인의 갱신과 프로젝트 스킬 업데이트는 별개입니다.
+Codex 명령은 사용자 설정에 마켓플레이스를 등록하고 플러그인을 설치합니다. 등록 후 앱의 플러그인 화면에서 설치하는 방법도 사용할 수 있습니다. 로컬 플러그인의 갱신과 프로젝트 스킬 업데이트는 별개입니다.
 
 개발 스킬과 관리 기능을 두 도구용 로컬 패키지로 생성합니다. 모든 플러그인 스킬은 명시적으로 호출해야 적용됩니다. 두 패키지의 본문·실행 코드는 같은 원본을 사용합니다.
 
@@ -138,14 +139,15 @@ npm run package:plugins
 Claude Code에서 생성한 로컬 마켓플레이스를 등록하고 설치합니다. 아래는 실행 예시이며 이 저장소 생성만으로 설치되지는 않습니다.
 
 ```text
-/plugin marketplace add C:/path/to/goraebap-workflow/dist/claude
-/plugin install goraebap-workflow@goraebap-workflow
+/plugin marketplace add C:/path/to/goraebap-workflow/dist/claude --scope user
+/plugin install goraebap-workflow@goraebap-workflow --scope user
 ```
 
 Codex에서는 지원하는 CLI로 로컬 마켓플레이스를 등록한 뒤 앱의 플러그인 화면에서 설치합니다.
 
 ```text
 codex plugin marketplace add C:/path/to/goraebap-workflow/dist/codex
+codex plugin add goraebap-workflow@goraebap-workflow
 ```
 
 플러그인에서 install·update할 때는 `--source`에 공통 원본 체크아웃을 명시합니다. 프로젝트 팀원 모두에게 관리 플러그인을 설치할 필요는 없습니다. 저장소에 배포된 스킬을 읽는 데는 플러그인이 필요하지 않습니다.
