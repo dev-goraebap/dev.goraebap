@@ -20,15 +20,15 @@ plugin/
   docs/                         플러그인 사용 안내
   dist/                         Claude·Codex 생성 배포본
   package.json                  플러그인 식별자·버전
+site/                           화면 규칙 가이드(Astro + 키트 앱 셸). 스킬 규칙의 해설
 frontend/
-  reference/                    공통 UI 구현·기본 시나리오
-  src/                          부품·패턴·화면 예제·문서
-  .storybook/                   카탈로그 실행·검증 설정
+  reference/                    채택할 수 있는 공통 UI 키트(기초·조합·레이아웃·패턴)
+  src/                          범주별 견본·조작 검증과 Playground 화면 템플릿
 .claude-plugin/marketplace.json  Claude 설치용 연결
 .agents/plugins/marketplace.json Codex 설치용 연결
 ```
 
-플러그인에는 Markdown 지침과 관리 도구만 포함합니다. 프론트엔드 구현·Storybook·자산은 frontend에서 별도로 관리하고, 지침은 공개 소스 링크로 연결합니다. 루트의 마켓플레이스 파일은 설치 도구의 검색 위치를 유지하는 얇은 연결 파일입니다.
+플러그인에는 Markdown 지침과 관리 도구만 포함합니다. 프론트엔드 구현·견본·자산은 frontend에서, 가이드는 site에서 별도로 관리하고, 지침은 공개 소스 링크로 연결합니다. 루트의 마켓플레이스 파일은 설치 도구의 검색 위치를 유지하는 얇은 연결 파일입니다.
 
 ## 사용자 범위 플러그인 설치
 
@@ -144,6 +144,10 @@ adopt는 주어진 원본을 기준으로 등록하고 차이를 보여 주며 �
 
 적용은 전원 중단까지 보장하는 트랜잭션이 아닙니다. 변경 전 상태와 적용 후 diff를 확인합니다. 로컬 메타데이터는 접근 권한 장치가 아니며 스킬 수정·리뷰 권한은 프로젝트의 Git 정책이 정합니다.
 
+## 화면 규칙 가이드
+
+`site/`는 화면 유형별 설계 규칙을 사람이 읽도록 풀어 쓴 문서 사이트입니다. `npm ci` 후 `npm run guide`로 4451 포트에서 열고 `npm run guide:build`로 빌드합니다. 규칙 문서 안과 "견본" 메뉴에서 키트로 그린 실제 화면을 조작할 수 있습니다. 가이드 자체를 키트의 앱 셸(AppFrame·Page)로 그립니다. 문서는 정적 HTML이지만 Astro 클라이언트 라우터로 셸을 유지한 채 본문만 바꿔 끼웁니다. 메뉴는 `site/src/guide/nav.ts`, 문서 찾기(Ctrl K)는 Astryx 명령 창, 문서 안 목차는 Outline입니다. 규칙의 원본은 `plugin/skills/design-system`의 Markdown이며 가이드는 그 해설입니다. 규칙이 바뀌면 스킬을 먼저 고치고 가이드를 다시 씁니다. 가이드는 플러그인 패키지에 포함하지 않습니다.
+
 ## 개발과 배포
 
 ```text
@@ -157,6 +161,6 @@ claude plugin validate .
 
 ## 화면 패턴 카탈로그
 
-[패턴 지침](plugin/skills/design-system/references/pattern-catalog.md)은 생성 양식·공통 다이얼로그·Split·Inset·라우트 마스킹의 사용 기준을 코드와 실행 견본에 연결합니다. `npm ci` 후 `npm run patterns`로 Storybook(4431)을 엽니다. `npm run patterns:check`는 타입을, `npm run patterns:build`는 정적 내보내기를, `npm run patterns:test`는 Story의 상호작용을 검사합니다. 지침은 Markdown이 원본이고 MDX에서 같은 내용을 가져옵니다. 견본은 선택형 레퍼런스이며 프로젝트에 자동 설치하지 않습니다.
+[패턴 지침](plugin/skills/design-system/references/pattern-catalog.md)은 Foundations·Primitives·Composites·Layouts·Patterns·Playground의 사용 기준을 키트 코드와 실행 견본에 연결합니다. 견본은 가이드에서 봅니다. `npm run frontend:check`는 타입을, `npm run frontend:test`는 견본 그리기와 조작 검증을 Chromium에서 검사합니다. 견본은 선택형 레퍼런스이며 프로젝트에 자동 설치하지 않습니다.
 
-[프론트엔드 카탈로그](frontend/README.md)는 디자인 기초·기본 부품·조합 부품·레이아웃·사용 패턴·화면 예제를 Storybook 하나에서 보여줍니다. 별도 앱 서버는 두지 않습니다. 서가 예제는 같은 부품으로 목록·상세·등록을 연결하며, Story마다 메모리 라우터와 모의 저장소를 새로 만듭니다. 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 유지하지 않습니다. `frontend/`는 개발·검토용 소스이며 플러그인 패키지에 자동으로 포함하지 않습니다.
+[프론트엔드 키트와 견본](frontend/README.md)은 Foundations (디자인 기초)·Primitives (기본 부품)·Composites (조합 부품)·Layouts (레이아웃)·Patterns (사용 패턴)·Playground (플레이그라운드)의 견본을 관리합니다. 별도 앱 서버는 두지 않습니다. Playground는 서가 앱으로 목록·목록 + 미리보기·상세·작성·설정 템플릿을 보이며, 견본마다 메모리 라우터와 모의 저장소를 새로 만듭니다. 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 유지하지 않습니다. `frontend/`는 개발·검토용 소스이며 플러그인 패키지에 자동으로 포함하지 않습니다.
