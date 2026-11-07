@@ -57,11 +57,13 @@
 .prose :global(details > summary) { padding: var(--spacing-2) var(--spacing-3); cursor: pointer; font-size: var(--text-body-size); font-weight: 500; }
 .prose :global(details > pre) { margin: 0; border: 0; border-block-start: 1px solid var(--color-border); border-radius: 0; }
 
-/* 본문 자리: 다음 문서가 180ms 넘게 걸릴 때만 덮개를 씌운다. 바뀌는 순간은 본문 자리만 160ms 교차 페이드다. */
+/*
+ * 본문 자리: 다음 문서가 180ms 넘게 걸릴 때만 덮개를 씌운다. 새 문서는 160ms에 걸쳐 나타난다(교차 페이드의 들어오는 쪽).
+ * 화면 전환 API(view transition)는 쓰지 않는다. 전환 중인 본문을 맨 위층에 따로 그려 휴대폰 하단 탭·머리 줄 위로 겹치기 때문이다.
+ */
 .stage { position: relative; min-block-size: 100%; }
-.content { view-transition-name: guide-content; }
 .cover { position: absolute; inset: 0; z-index: 2; display: grid; place-items: start center; padding-block-start: 30vh;
   background: var(--color-background-surface); }
-:global(::view-transition-group(guide-content)), :global(::view-transition-old(guide-content)), :global(::view-transition-new(guide-content)) { animation-duration: 160ms; }
-:global(::view-transition-old(root)), :global(::view-transition-new(root)) { animation: none; }
-@media (prefers-reduced-motion: reduce) { :global(::view-transition-group(*)), :global(::view-transition-old(*)), :global(::view-transition-new(*)) { animation: none; } }
+.body[data-arrive] { animation: arrive 160ms ease-out; }
+@keyframes arrive { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .body[data-arrive] { animation: none; } }

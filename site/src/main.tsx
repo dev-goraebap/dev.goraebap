@@ -33,19 +33,6 @@ const router = createRouter({
   defaultPreload: 'intent',
   // 다음 문서가 준비될 때까지 지금 문서를 그대로 둔다. 덮개는 셸이 180ms 뒤에 씌운다.
   defaultPendingMs: Infinity,
-  defaultViewTransition: !matchMedia('(prefers-reduced-motion: reduce)').matches,
-});
-
-// 문서를 옮기면 본문을 맨 위에서(주소에 #이 있으면 그 제목에서) 보인다. 본문은 페이지 안에서 스크롤한다.
-router.subscribe('onResolved', ({ pathChanged }) => {
-  if (!pathChanged) return;
-  requestAnimationFrame(() => {
-    const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
-    if (target) { target.scrollIntoView(); return; }
-    let node = document.querySelector('article')?.parentElement ?? null;
-    while (node && !/(auto|scroll)/.test(getComputedStyle(node).overflowY)) node = node.parentElement;
-    if (node) node.scrollTop = 0;
-  });
 });
 
 declare module '@tanstack/react-router' { interface Register { router: typeof router } }

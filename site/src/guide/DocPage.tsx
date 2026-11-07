@@ -13,6 +13,14 @@ export function DocPage({ doc, Content }: { doc: GuideDoc | null; Content: Compo
   const isPhone = useIsPhone();
   const article = useRef<HTMLElement>(null);
   const [headings, setHeadings] = useState<Heading[]>([]);
+  // 새 문서는 그리기 전에 맨 위(주소에 #이 있으면 그 제목)로 놓는다. 이전 스크롤 위치에서 잠깐 보이지 않게 한다.
+  useLayoutEffect(() => {
+    const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
+    if (target) { target.scrollIntoView(); return; }
+    let node = article.current?.parentElement ?? null;
+    while (node && !/(auto|scroll)/.test(getComputedStyle(node).overflowY)) node = node.parentElement;
+    if (node) node.scrollTop = 0;
+  }, [doc?.path]);
   useLayoutEffect(() => {
     const node = article.current;
     if (!node) return undefined;
@@ -24,7 +32,7 @@ export function DocPage({ doc, Content }: { doc: GuideDoc | null; Content: Compo
     observer.observe(node, { childList: true, subtree: true });
     return () => observer.disconnect();
   }, [doc?.path]);
-  return <div className={styles.body}>
+  return <div className={styles.body} data-arrive>
     <article ref={article} className={styles.prose}>
       {doc ? <>{doc.hasTitle ? null : <h1>{doc.title}</h1>}{Content ? <Content /> : null}</> : <>
         <h1>없는 문서</h1>

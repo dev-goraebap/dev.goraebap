@@ -83,7 +83,7 @@ function useFirstResolved() {
 
 /**
  * 데이터 상태 규칙의 전환: 다음 문서가 준비될 때까지 지금 문서를 보이고, 180ms가 넘을 때만 본문 자리에 덮개를 씌운다.
- * 바뀌는 순간은 본문 자리만 160ms 교차 페이드(view transition)다.
+ * 새 문서는 160ms에 걸쳐 나타난다(DocPage).
  */
 function useCover() {
   const isPending = useRouterState({ select: state => state.status === 'pending' && !!state.resolvedLocation && state.location.pathname !== state.resolvedLocation.pathname });
@@ -128,7 +128,7 @@ export function GuideShell() {
           onNavigate={path => void router.navigate({ href: firstOf(path) ?? path })}>
           <Page crumbs={crumbs} pageActions={themeButton} hasHeading={false} hasPattern={false}>
             <div className={styles.stage} aria-busy={isCovered || undefined}>
-              <div className={styles.content} inert={isCovered || undefined}><Outlet /></div>
+              <div inert={isCovered || undefined}><Outlet /></div>
               {isCovered ? <div className={styles.cover} role="status" aria-label="문서를 불러오는 중">
                 <Text type="supporting" color="secondary">불러오는 중입니다</Text>
               </div> : null}
