@@ -26,10 +26,14 @@
 /* 일반 페이지 본문 바탕의 옅은 점 무늬. 행·카드는 불투명해서 빈 여백과 상태 화면에만 보인다. */
 .pattern { background-image: radial-gradient(circle, var(--app-page-dot) 0.0625rem, transparent 0.0625rem); background-size: var(--spacing-4) var(--spacing-4); }
 
-/* 휴대폰 만들기 FAB: 하단 탭(3.5rem)과 홈 표시줄 위. 본문 끝에 FAB와 간격만큼 여유를 두어 마지막 행을 가리지 않는다. */
-.fab { position: fixed; z-index: 2; inset-inline-end: var(--spacing-4);
+/*
+ * 휴대폰 만들기 FAB: 56px(Material FAB 기준) 정사각에 24px 아이콘, 하단 탭(3.5rem)과 홈 표시줄 위. 본문 끝에 FAB와 간격만큼
+ * 여유를 두어 마지막 행을 가리지 않는다.
+ */
+.fab { position: fixed; z-index: 2; inset-inline-end: var(--spacing-4); inline-size: 3.5rem; block-size: 3.5rem;
   inset-block-end: calc(var(--app-tab-bar-height, 3.5rem) + env(safe-area-inset-bottom, 0px) + var(--spacing-4)); }
-[data-fab-space] { padding-block-end: calc(var(--size-element-lg) + 2 * var(--spacing-4)); }
+[data-fab-space] { padding-block-end: calc(3.5rem + 2 * var(--spacing-4)); }
+.fab svg { inline-size: 1.5rem; block-size: 1.5rem; }
 
 .docked { min-block-size: 0; }
 .docked > :first-child { flex: 1 1 0; min-block-size: 0; }

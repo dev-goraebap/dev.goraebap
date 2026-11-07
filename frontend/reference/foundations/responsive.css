@@ -1,12 +1,15 @@
 /*
- * 테마의 부품 규칙은 @media를 받지 않아 휴대폰 크기를 여기서 정한다. 엄지로 누르는 버튼은 32·40·44px, 입력 칸은 48px에
- * 16px 글자(그보다 작으면 iOS가 입력 중 확대한다). 데스크톱은 거친 포인터에서도 13px 글자를 유지한다.
+ * 테마의 부품 규칙은 @media를 받지 않아 휴대폰 크기를 여기서 정한다. 휴대폰은 손가락으로 누르고 화면을 가까이 보지 않으므로
+ * 누르는 것은 44px 이상(Apple HIG 44pt, Material 48dp 기준), 본문은 15px(데스크톱 13px), 보조 글자는 13px, 큰 본문은 17px이다.
+ * 입력 칸은 48px에 16px 글자(그보다 작으면 iOS가 입력 중 확대한다). 데스크톱은 거친 포인터에서도 13px 글자를 유지한다.
  * Astryx의 안정된 부품 클래스와 토큰만 사용하며 클래스 중복·!important는 쓰지 않는다.
  */
 [data-astryx-theme] { --app-field-height: 2.25rem; }
 
 @media (width < 64rem) {
-  [data-astryx-theme] { --size-element-sm: 2rem; --size-element-md: 2.5rem; --size-element-lg: 2.75rem; --app-field-height: 3rem; }
+  [data-astryx-theme] { --size-element-sm: 2.75rem; --size-element-md: 2.75rem; --size-element-lg: 3rem; --app-field-height: 3rem;
+    --font-size-base: 0.9375rem; --text-body-size: 0.9375rem; --text-label-size: 0.9375rem; --text-supporting-size: 0.8125rem;
+    --text-large-size: 1.0625rem; --text-heading-3-size: 1.0625rem; --text-heading-4-size: 0.9375rem; }
   :is(.astryx-text-input, .astryx-text-area) :is(input, textarea) { font-size: 1rem; }
 }
 @media (width >= 64rem) {
