@@ -32,5 +32,4 @@ async function check(directory) {
   }
 }
 await check(path.join(root, 'skills'));
-await check(path.join(root, 'manager/skills'));
 process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크 확인\n`);

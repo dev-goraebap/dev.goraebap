@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
-const description = '명시 호출용 웹 개발 지침과 프로젝트 설치·비교·업데이트 관리';
+const description = '웹 플랫폼 개발 지침(프론트·디자인 시스템·백엔드·API·DB·아키텍처)과 프로젝트 연결';
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
 
 async function put(relative, content) {
@@ -37,22 +37,10 @@ export async function packagePlugins() {
   } catch (e) { if (e.code !== 'ENOENT') throw e; }
   for (const agent of ['claude', 'codex']) {
     const pluginPath = `${agent}/plugins/goraebap-workflow`;
-    await copyFiles(path.join(root, 'manager/skills'), `${pluginPath}/manager/skills`);
-    await copyFiles(path.join(root, 'manager/scripts'), `${pluginPath}/manager/scripts`);
-    await copyFiles(path.join(root, 'manager/templates'), `${pluginPath}/manager/templates`);
-    await copyFiles(path.join(root, 'skills'), `${pluginPath}/manager/skills`, ['.md', '.mjs', '.yaml']);
-    // Unmodified project source is separate from explicitly invoked plugin skills.
-    await copyFiles(path.join(root, 'skills'), `${pluginPath}/project-source/skills`, ['.md', '.mjs', '.yaml']);
-    await put(`${pluginPath}/project-source/package.json`, json({ name: pkg.name, version: pkg.version, private: true, type: 'module' }));
-    const skillRoot = path.join(root, 'dist', pluginPath, 'manager/skills');
-    for (const name of await fs.readdir(skillRoot)) {
-      const file = path.join(skillRoot, name, 'SKILL.md');
-      const original = await fs.readFile(file, 'utf8');
-      await put(`${pluginPath}/manager/skills/${name}/SKILL.md`, original.replace(/^---\r?\n/, '---\ndisable-model-invocation: true\n'));
-      await put(`${pluginPath}/manager/skills/${name}/agents/openai.yaml`, 'policy:\n  allow_implicit_invocation: false\n');
-    }
+    // 지침은 에이전트가 설명을 보고 스스로 불러 쓴다. 프로젝트는 사본 없이 AGENTS.md로 이 플러그인을 가리킨다.
+    await copyFiles(path.join(root, 'skills'), `${pluginPath}/skills`, ['.md', '.yaml']);
     await put(`${pluginPath}/README.md`, await fs.readFile(path.join(root, 'docs/plugin-usage.md')));
-    const manifest = { name: pkg.name, version: pkg.version, description, author: { name: 'goraebap' }, skills: './manager/skills/' };
+    const manifest = { name: pkg.name, version: pkg.version, description, author: { name: 'goraebap' }, skills: './skills/' };
     if (agent === 'codex') {
       manifest.requires_local_executor = true;
       manifest.interface = { displayName: 'goraebap-workflow', shortDescription: description, developerName: 'goraebap' };

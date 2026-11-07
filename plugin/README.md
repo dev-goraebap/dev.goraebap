@@ -1,12 +1,15 @@
 # 고래밥 워크플로우 플러그인
 
-프로젝트의 개발 지침과 설치·비교·업데이트 관리 도구를 배포한다. 식별자와 버전은 이 폴더의 package.json이 소유한다.
+웹 플랫폼 개발 지침을 배포한다. 식별자와 버전은 이 폴더의 package.json이 소유한다.
 
-- skills는 프로젝트에 제공하는 개발 지침이다.
-- manager는 명시 호출용 관리 스킬·CLI·동기화 템플릿이다.
-- scripts와 tests는 플러그인 검사·배포·회귀 검증을 담당한다.
+- skills는 지침의 원본이다. goraebap-mode가 작업 입구, manage-workflow가 프로젝트 연결·프로젝트 규칙·사본 전환·회수다.
+- scripts와 tests는 지침 검사·배포본 생성·배포본 검증을 맡는다.
 - dist는 두 에이전트의 생성 배포본이다. 직접 수정하지 않는다.
 
-설치와 사용은 [플러그인 안내](docs/plugin-usage.md)를 따른다. 저장소 루트의 npm run workflow, npm test, npm run check, npm run package:plugins는 이 폴더의 명령에 연결한다. 이 폴더에서는 npm run workflow, npm test, npm run check, npm run package로 같은 도구를 실행할 수 있다.
+설치와 사용은 [플러그인 안내](docs/plugin-usage.md)를 따른다. 저장소 루트의 npm test, npm run check, npm run package:plugins는 이 폴더의 명령에 연결한다.
 
 프론트엔드 구현과 견본은 [frontend](../frontend/README.md)에서, 가이드 사이트는 `site/`에서 관리하며 배포하지 않는다. 스킬에는 사용 기준과 공개 코드 링크만 둔다. 루트의 마켓플레이스 연결 파일을 통해 plugin/dist의 생성본을 설치한다.
+
+## 결정 기록
+
+- 2026-11-08 · 사본 방식 폐지(사용자): 프로젝트에 지침 사본과 동기화 훅을 두던 방식을 걷어냈다. 지침을 쓰는 사람이 플러그인을 설치한 본인뿐이라 양쪽 관리가 비용만 늘렸다. 프로젝트는 AGENTS.md로 플러그인을 가리키고, 다른 결정만 "프로젝트 규칙" 표에 적는다. 지침은 에이전트가 스스로 불러 쓰도록 명시 호출 전용을 풀었다. 감수한 것: 플러그인 갱신이 모든 프로젝트에 바로 적용되고, 프로젝트 저장소만으로는 당시 지침 판을 알 수 없다(AGENTS.md의 최소 판으로만 남는다).

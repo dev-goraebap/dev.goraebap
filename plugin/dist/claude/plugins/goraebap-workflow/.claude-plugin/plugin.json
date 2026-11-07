@@ -1,9 +1,9 @@
 {
   "name": "goraebap-workflow",
-  "version": "0.4.0",
-  "description": "명시 호출용 웹 개발 지침과 프로젝트 설치·비교·업데이트 관리",
+  "version": "0.5.0",
+  "description": "웹 플랫폼 개발 지침(프론트·디자인 시스템·백엔드·API·DB·아키텍처)과 프로젝트 연결",
   "author": {
     "name": "goraebap"
   },
-  "skills": "./manager/skills/"
+  "skills": "./skills/"
 }

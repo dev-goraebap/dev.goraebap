@@ -11,7 +11,7 @@
 | Composites (조합 부품) | 다이얼로그·곁에 여는 내용·검색·필터·표시·속성·올리기·상태·본문 칸 | [조합 부품](composed-components.md), [다이얼로그](dialog.md), [검색·필터·표시](search-filter.md) | [composites](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites) |
 | Layouts (레이아웃) | 앱 셸·사이드바·모바일 탐색·페이지 머리·툴바·목록·상세·설정·옆 패널 | [앱 셸](app-layout.md), [페이지 배치](layout-patterns.md) | [layouts](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/layouts) |
 | Patterns (사용 패턴) | 여러 화면에 걸리는 동작 계약: 라우트 마스킹, 조건의 주소, 대기·빈 상태·실패, 행 클릭·키보드 | [라우트 마스킹](route-masking.md), [데이터 상태](data-states.md), [입력과 상호작용](interaction-patterns.md) | [patterns](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/patterns) |
-| Playground (플레이그라운드) | 앞의 요소로 만든 화면 템플릿: 목록(행·문서 카드·표), 목록 + 미리보기, 상세, 작성, 설정과 각각의 휴대폰 화면 | [생성 양식](creation-form.md), [미리보기 패널](peek.md), 이 문서 | [playground](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/src/playground) |
+| Playground (플레이그라운드) | 앞의 요소로 만든 화면 템플릿: 목록(행·문서 카드·표), 목록 + 미리보기, 상세, 작성, 문서 편집, 자료 올리기, 설정 | [생성 양식](creation-form.md), [미리보기 패널](peek.md), 이 문서 | [playground](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/src/playground) |
 
 Primitives와 Composites는 재사용 코드의 단위다. Layouts와 Patterns는 공간과 행동의 기준이며 더 큰 부품이라는 이유로 분류하지 않는다. 화면 하나로 완결되어 그대로 옮겨 쓸 수 있으면 Playground 템플릿이고, 여러 템플릿이 함께 지키는 여는 방식·상태·조작이면 Patterns다. Patterns의 견본은 따로 화면을 만들지 않고 Playground 템플릿을 그 상태로 띄운다. 새 화면 유형이 필요하면 Playground에 템플릿을 더한다. 같은 구현을 여러 설명에서 참조하되 코드와 규칙의 원본은 한 곳에 둔다. 파일 배치는 공식 FSD 지침에 맡기고 상태·캐시·URL·초안은 frontend 지침을 따른다. 접근성·반응형·키보드·문구는 모든 범주의 공통 검토 기준이며 [문구·본문과 검증](content-and-review.md)을 따른다.
 
@@ -27,7 +27,7 @@ SKILL.md는 지침을 찾는 입구다. 규칙의 원본은 이 스킬의 Markdo
 
 워크플로우 저장소에서 `npm ci` 후 `npm run guide`로 가이드(4451)를 연다. 견본은 규칙 문서 안과 "견본" 메뉴에 있다. `frontend:check`는 타입, `frontend:test`는 모든 견본이 그려지는지와 조작 검증을 Chromium에서 검사한다. 테스트용 브라우저가 없으면 `npx playwright install chromium`으로 준비한다.
 
-라이트·다크는 가이드의 테마 선택을 따른다. 모드별 견본이나 견본 안의 테마 전환을 만들지 않는다. 휴대폰 견본은 따로 두고 390px 폭으로 그린다. 대표 견본은 사용자가 조작하기 전에 초점을 옮기지 않는다. 자동 검증과 사람이 본 시각·키보드·실기기 범위를 구분해 기록한다.
+라이트·다크는 가이드의 테마 선택을 따른다. 모드별 견본이나 견본 안의 테마 전환을 만들지 않는다. 휴대폰 견본을 따로 만들지 않는다. 가이드의 견본 틀에서 데스크톱(1024px)과 휴대폰(390px)을 바꿔 같은 견본을 보고, 검사도 모든 견본을 두 기기로 그린다. 대표 견본은 사용자가 조작하기 전에 초점을 옮기지 않는다. 자동 검증과 사람이 본 시각·키보드·실기기 범위를 구분해 기록한다.
 
 프로젝트의 비밀값·실제 계정·업무 데이터를 견본에 넣지 않는다. 서버 응답은 경계에서 모의 저장소로 대체하고, 예제를 실행해도 실제 업무가 생기지 않게 한다.
 
