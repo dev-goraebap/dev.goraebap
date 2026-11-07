@@ -1,0 +1,19 @@
+---
+title: "검색·필터·표시"
+sidebar:
+  order: 3
+---
+
+import SampleGroup from '../../../../components/SampleGroup.astro';
+import Source from '../../../../components/Source.astro';
+import source0 from '@kit/composites/search/SearchTool.tsx?raw';
+import source1 from '@kit/composites/filter/use-filters.tsx?raw';
+
+규칙 원본: [search-filter](https://github.com/dev-goraebap/goraebap-workflow/blob/main/plugin/skills/design-system/references/search-filter.md) · 해설: [가이드](/app-shell/filters-and-display/)
+
+<SampleGroup group="composites-list-tools" />
+
+## 구현 코드
+
+<Source name="SearchTool.tsx" code={source0} lang="tsx" />
+<Source name="use-filters.tsx" code={source1} lang="tsx" />

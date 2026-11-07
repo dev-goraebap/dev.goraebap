@@ -1,0 +1,23 @@
+/* 견본 틀. iframe 안의 모양은 키트가 정하고, 여기서는 가이드 본문 위의 자리만 잡는다. 값은 키트 토큰이다. */
+.sample { margin: var(--spacing-6, 1.5rem) 0; }
+.sample-stage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-container, 0.75rem);
+  background: var(--color-background-body);
+}
+.sample iframe { display: block; border: 0; transform-origin: top left; background: transparent; }
+.sample figcaption {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block-start: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+.sample figcaption a { color: inherit; }
+.sample-section + .sample-section { margin-block-start: 2.5rem; }
+.sample-wait { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.75rem; color: var(--color-text-secondary); pointer-events: none; }
+guide-sample[data-loaded] .sample-wait { display: none; }

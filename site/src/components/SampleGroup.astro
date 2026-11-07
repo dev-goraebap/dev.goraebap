@@ -1,0 +1,14 @@
+---
+// 견본 묶음 전체를 차례로 띄운다(견본 범주 페이지용).
+import Sample from './Sample.astro';
+import { groupSamples } from '../samples';
+
+interface Props { group: string }
+const list = await groupSamples(Astro.props.group);
+---
+{list.map((entry) => (
+  <section class="sample-section">
+    <h2 id={entry.key}>{entry.name}</h2>
+    <Sample id={entry.id} />
+  </section>
+))}

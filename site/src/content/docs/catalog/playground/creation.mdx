@@ -1,0 +1,19 @@
+---
+title: "작성"
+sidebar:
+  order: 4
+---
+
+import SampleGroup from '../../../../components/SampleGroup.astro';
+import Source from '../../../../components/Source.astro';
+import source0 from '@kit/patterns/compose/ComposeSurface.tsx?raw';
+import source1 from '@kit/patterns/compose/draft-store.tsx?raw';
+
+규칙 원본: [creation-form](https://github.com/dev-goraebap/goraebap-workflow/blob/main/plugin/skills/design-system/references/creation-form.md) · 해설: [가이드](/app-shell/choosing-presentation/)
+
+<SampleGroup group="playground-creation" />
+
+## 구현 코드
+
+<Source name="ComposeSurface.tsx" code={source0} lang="tsx" />
+<Source name="draft-store.tsx" code={source1} lang="tsx" />

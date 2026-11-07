@@ -1,0 +1,49 @@
+---
+// 가이드 문서의 틀. 셸(GuideShell)은 문서를 옮겨도 유지되고(transition:persist), 각 문서는 본문(#guide-article)과
+// 문서 정보(#guide-page)만 실어 보낸다. 셸이 이동할 때마다 그것을 받아 본문 자리에 끼운다. 주소로 바로 들어오거나
+// 새로고침해도 같은 HTML이 오므로 그 문서가 뜬다.
+import { ClientRouter } from 'astro:transitions';
+import { GuideShell, type GuidePageData } from './GuideShell';
+import { guidePages, guideSpace } from './nav';
+import '../styles/kit-tokens.css';
+import '../styles/samples.css';
+
+interface Props { title: string; pageTitle: string; description?: string; data: GuidePageData }
+const { title, pageTitle, description, data } = Astro.props;
+const pages = await guidePages();
+const space = await guideSpace();
+const search = pages.map((item) => ({ id: item.path, label: item.title, group: item.group, description: item.description }));
+---
+<!doctype html>
+<html lang="ko" transition:animate="none">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{pageTitle}</title>
+    {description ? <meta name="description" content={description} /> : null}
+    <script is:inline>
+      // 첫 그리기 전에 저장한 모드를 적용해 다크 화면이 밝게 깜빡이지 않게 한다. 문서 이동 뒤에는 셸이 다시 적는다.
+      (() => {
+        let mode;
+        try { mode = localStorage.getItem('guide-theme'); } catch {}
+        if (mode !== 'dark' && mode !== 'light') mode = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = mode;
+        document.documentElement.style.colorScheme = mode;
+      })();
+    </script>
+    <style is:global>
+      html, body { block-size: 100%; margin: 0; background: var(--color-background-body); color: var(--color-text-primary); font-family: var(--font-family-body); }
+      /* 키트 테마는 브라우저에서 넣어진다. 처음 열 때 그 전의 서버 화면(기본 글자 크기·배치)이 보였다가 바뀌지 않도록 셸이 넘겨받을 때까지 감춘다. */
+      astro-island[ssr] { visibility: hidden; }
+    </style>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body>
+    <GuideShell client:load transition:persist="guide-shell" space={space} search={search} />
+    <script is:inline type="application/json" id="guide-page" set:html={JSON.stringify(data)} />
+    <div id="guide-article" hidden>
+      <h1>{title}</h1>
+      <slot />
+    </div>
+  </body>
+</html>

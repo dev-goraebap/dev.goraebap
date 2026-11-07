@@ -1,0 +1,19 @@
+---
+title: "목록 + 미리보기"
+sidebar:
+  order: 2
+---
+
+import SampleGroup from '../../../../components/SampleGroup.astro';
+import Source from '../../../../components/Source.astro';
+import source0 from '@kit/patterns/routing/peek.ts?raw';
+import source1 from '@kit/layouts/peek/PeekPanel.tsx?raw';
+
+규칙 원본: [peek](https://github.com/dev-goraebap/goraebap-workflow/blob/main/plugin/skills/design-system/references/peek.md) · 해설: [가이드](/app-shell/peek/)
+
+<SampleGroup group="playground-peek" />
+
+## 구현 코드
+
+<Source name="peek.ts" code={source0} lang="ts" />
+<Source name="PeekPanel.tsx" code={source1} lang="tsx" />

@@ -1,0 +1,21 @@
+---
+title: "페이지"
+sidebar:
+  order: 2
+---
+
+import SampleGroup from '../../../../components/SampleGroup.astro';
+import Source from '../../../../components/Source.astro';
+import source0 from '@kit/layouts/page/Page.tsx?raw';
+import source1 from '@kit/layouts/page/PageParts.tsx?raw';
+import source2 from '@kit/layouts/detail/DetailLayout.tsx?raw';
+
+규칙 원본: [layout-patterns](https://github.com/dev-goraebap/goraebap-workflow/blob/main/plugin/skills/design-system/references/layout-patterns.md) · 해설: [가이드](/app-shell/header-and-toolbar/)
+
+<SampleGroup group="layouts-page" />
+
+## 구현 코드
+
+<Source name="Page.tsx" code={source0} lang="tsx" />
+<Source name="PageParts.tsx" code={source1} lang="tsx" />
+<Source name="DetailLayout.tsx" code={source2} lang="tsx" />

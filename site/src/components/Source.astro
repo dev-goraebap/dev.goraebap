@@ -1,0 +1,11 @@
+---
+// 구현 코드를 접어서 보인다. 하이라이트는 본문 코드 덩어리와 같은 두 테마를 쓴다.
+import { Code } from 'astro:components';
+
+interface Props { name: string; code: string; lang?: 'ts' | 'tsx' | 'css' }
+const { name, code, lang = 'tsx' } = Astro.props;
+---
+<details>
+  <summary>{name}</summary>
+  <Code code={code} lang={lang} themes={{ light: 'github-light', dark: 'github-dark' }} defaultColor={false} />
+</details>

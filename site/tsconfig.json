@@ -1,0 +1,12 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "paths": {
+      "@kit/*": ["../frontend/reference/*"],
+      "@frontend/*": ["../frontend/src/*"]
+    }
+  },
+  "include": [".astro/types.d.ts", "**/*", "../frontend/reference/foundations/variants.ts"],
+  "exclude": ["dist"]
+}

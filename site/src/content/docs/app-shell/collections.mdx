@@ -1,0 +1,60 @@
+---
+title: "목록·표·보드"
+description: "무엇으로 보일지, 행의 구성, 그룹·개수·페이지"
+sidebar:
+  order: 5
+---
+
+import Sample from '../../../components/Sample.astro';
+
+여러 항목을 모아서 보여 주는 컬렉션 화면을 설계할 때 무엇으로 보일지 고르고, 행의 요소와 그룹·페이지·주소를 구성하는 기준을 다룬다. 컬렉션은 한 행에 여러 속성을 나란히 두고 훑어야 하므로 본문 전체 폭을 쓴다([콘텐츠 폭](/app-shell/content-width/) 참고). 규칙마다 붙은 `[관례]`, `[고래밥]`, `[선호]` 표시의 뜻은 [읽는 법](/start/how-to-read/)을 따른다.
+
+## 무엇으로 보일지 고른다
+
+사용자가 항목으로 무엇을 하려는지와 데이터의 모양에 따라 표현을 고른다.
+
+| 상황 | 표현 | 구분과 근거 |
+| --- | --- | --- |
+| 항목을 위아래로 훑고 하나씩 열어 보는 일이 주 목적일 때 | 목록 | `[관례]` [Primer DataTable](https://primer.style/product/components/data-table/guidelines/) |
+| 여러 속성을 행끼리 비교해야 하고 구조가 평평한 대량 데이터일 때 | 표 | `[관례]` [Primer DataTable](https://primer.style/product/components/data-table/guidelines/) |
+| 상태 흐름에 따라 항목을 옮기며 관리할 때 | 보드 | `[관례]` Linear·Plane 기본 레이아웃 |
+| 날짜와 기간이 핵심일 때 | 달력·타임라인 | Linear(타임라인)·Plane(달력·간트) |
+| 좁은 화면(휴대폰)에서 표를 보일 때 | 핵심 속성만 남긴 행 목록 | `[고래밥]` |
+| 좁은 화면(휴대폰)에서 보드를 보일 때 | 열 하나씩 좌우로 넘김 | `[고래밥]` |
+
+- `[관례]` 여러 속성을 가로로 비교하는 목적이 아니면 표 대신 목록을 기본으로 쓴다([Primer DataTable](https://primer.style/product/components/data-table/guidelines/)). 실제 제품에서도 Linear는 표 대신 목록과 보드를 기본으로 두고, Plane은 목록·보드(칸반)에 달력·스프레드시트·간트 레이아웃을 추가해 제공한다.
+- `[관례]` 목록의 개별 항목은 카드로 감싸지 않는다. 카드는 서로 독립된 묶음을 나눌 때만 쓴다.
+- `[고래밥]` 좁은 화면에서는 표를 핵심 속성만 남긴 행 목록으로 바꾼다. [NN/g Mobile tables](https://www.nngroup.com/articles/mobile-tables/) 지침은 머리 줄과 첫 열을 고정한 채 가로로 스크롤하는 방식을 제시하며, 표를 행 목록으로 전환하는 방식은 확인된 1차 출처가 없어 우리 결정으로 정했다([적응형](/app-shell/adaptive/) 참고).
+
+<Sample id="playground-list/grid" />
+
+## 행을 구성하고 배치한다
+
+1. `[관례]` 행의 앞에는 종류나 상태 표시를 두고, 가운데에 제목, 끝에 상태·힌트 등 속성을 둔다([Primer ActionList](https://primer.style/product/components/action-list/guidelines/)). 화면 폭이 줄어들 때는 제목만 한 줄 말줄임으로 줄이고, 전체 제목은 툴팁이나 `title` 속성으로 확인할 수 있게 한다. 앞 표시와 끝 속성은 줄이지 않는다.
+2. `[관례]` 끝 속성은 날짜나 담당자처럼 모든 행에 늘 있는 값을 가장 바깥(오른쪽 끝)에 두고, 라벨이나 마감일처럼 일부 행에만 있는 값을 그 안쪽에 둔다. 늘 있는 값이 바깥을 지켜야 위아래 행을 훑을 때 같은 열에 맞는다.
+3. `[관례]` 행 끝의 보조 동작은 포인터를 올렸을 때(hover)만 드러낼 수 있다. 다만 키보드 초점(포커스)은 개별 동작마다 따로 닿아야 한다([Primer ActionList](https://primer.style/product/components/action-list/guidelines/)).
+4. `[고래밥]` 사람을 표시할 때는 사진과 이름을 함께 보인다. 담당자가 지정되지 않은 상태도 같은 자리를 유지해 열 정렬이 흔들리지 않게 한다.
+5. `[관례]` 행 높이(밀도)는 개별 화면마다 따로 정하지 않고 앱 설정 한 곳에서 정한다. 한 줄 행은 32~44px, 두 줄 행은 48px 이상으로 둔다.
+   - 참고 수치: [Carbon Data table](https://carbondesignsystem.com/components/data-table/usage/)은 행 높이를 24·32·40·48·64px(64px은 두 줄)로 정의하고, [Plane 목록 행](https://github.com/makeplane/plane/blob/preview/apps/web/components/issues/issue-layouts/list/block.tsx)은 44px을 쓴다. Linear도 compact·comfortable 두 단계 밀도 설정을 제공하지만 실제 px 수치는 공개 자료에서 확인하지 못했다.
+6. `[선호]` 일반 목록 바탕에는 옅은 점 무늬를 깔고, 상세·작성 화면 바탕은 평평하게 둔다([선호 화면](/app-shell/preferred-screens/) 참고).
+
+## 행 전체를 누를 수 있게 연결한다
+
+- `[관례]` 행 전체가 대상 주소로 이동하는 링크 역할을 하되, 행 전체를 `<a>` 요소로 감싸지 않는다. 블록 전체를 링크로 감싸면 텍스트를 드래그해 선택하기 어렵고 스크린 리더가 행의 모든 내용을 한 번에 읽는 문제가 생긴다([Inclusive Components: Cards](https://inclusive-components.design/cards/), [Adrian Roselli: Block links](https://adrianroselli.com/2020/02/block-links-cards-clickable-regions-etc.html)).
+- `[관례]` 대신 제목 링크의 가상 요소(`::after`)를 행 전체 영역으로 늘리고, 행 안에 있는 다른 링크나 버튼(담당자, 별표, 더보기 메뉴 등)은 그 위로 올려 각각 따로 누를 수 있게 한다.
+- `[고래밥]` 행을 눌렀을 때 미리보기 패널을 열지 자기 페이지로 이동할지는 목록의 성격에 따라 정하고, 한 목록 안에서는 한 가지로 통일한다. 받은 항목이나 승인 대기처럼 여러 항목을 연달아 확인하는 처리 목록은 미리보기(`?peek=ID`)를 열고, 업무나 문서처럼 하나를 골라 들어가 일하는 작업 목록은 대상의 자기 페이지로 이동한다. 어느 쪽이든 행 제목은 실제 링크로 두어 새 탭 열기와 주소 복사가 그대로 동작하게 한다([표현 고르기](/app-shell/choosing-presentation/), [미리보기 패널](/app-shell/peek/) 참고).
+
+<Sample id="patterns-interaction/rows" />
+
+## 표의 셀과 정렬을 맞춘다
+
+- `[관례]` 표에서 숫자와 날짜 열은 오른쪽으로 정렬하고 고정폭 숫자를 써서 위아래 행의 자릿수를 맞춘다([Primer DataTable](https://primer.style/product/components/data-table/guidelines/)).
+- `[관례]` 값이 없는 빈 셀은 `-` 같은 문자를 넣지 않고 그대로 비워 둔다([Primer DataTable](https://primer.style/product/components/data-table/guidelines/)).
+
+<Sample id="layouts-page/table" />
+
+## 그룹·정렬·개수와 주소를 다룬다
+
+1. `[관례]` 항목을 그룹이나 하위 그룹으로 묶을 때 그룹 머리 줄에는 그룹 이름, 항목 개수, 접기 버튼을 둔다([Linear Display options](https://linear.app/docs/display-options)). 그룹 순서는 상태 흐름이나 우선순위처럼 정해진 순서를 따르며, 수동 정렬도 지원할 수 있다. 항목이 없는 빈 그룹은 기본으로 감추고 표시 도구에서 빈 그룹 표시 여부를 토글할 수 있게 한다.
+2. `[관례]` 특정 항목을 찾거나 비교하는 업무 목록에는 무한 스크롤을 쓰지 않는다([NN/g Infinite scrolling](https://www.nngroup.com/articles/infinite-scrolling-tips/)). 무한 스크롤은 목적 없이 훑는 피드에만 쓰고, 업무 목록은 "전체 중 몇 개"인지 개수를 함께 보이며 '더 보기' 버튼이나 페이지 나눔을 쓴다. 표를 페이지로 나눌 때는 페이지당 약 20행에서 시작한다([Primer DataTable](https://primer.style/product/components/data-table/guidelines/)).
+3. `[고래밥]` 검색어, 필터, 표시 옵션(레이아웃·정렬·그룹·보일 속성)은 모두 URL 주소에 둔다([필터와 표시](/app-shell/filters-and-display/) 참고). 검색어를 입력하는 동안에는 방문 기록을 새로 쌓지 않고(`replace`) 주소만 고친다. 뒤로가기, 새로고침, 링크 공유를 했을 때 보고 있던 목록 조건이 그대로 돌아오게 하기 위해서다.
