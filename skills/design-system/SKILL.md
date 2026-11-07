@@ -12,7 +12,11 @@ description: Astryx 기반 웹 앱에서 부품 선택, 테마, Solar 아이콘�
 | 작업 | 읽을 자료 |
 | --- | --- |
 | 부품 선택·props·테마·버전 확인 | [Astryx 작업 절차](references/astryx-workflow.md) |
-| 면·간격·글자·크기·아이콘 | [기본 표현](references/foundations.md) |
+| 면·간격·글자·크기 | [기본 표현](references/foundations.md) |
+| 테마·색상·변형의 적용 경계 | [테마와 색상](references/theme.md) |
+| Solar 선택·크기·정렬·접근성 | [아이콘](references/icons.md) |
+| 버튼·뱃지·아바타·입력·Dialog | [기본 부품](references/basic-components.md) |
+| 공통 다이얼로그·검색 도구·선택 메뉴·빈 상태 | [조합 부품](references/composed-components.md) |
 | 셸·페이지·목록·설정·상세 | [화면 구성](references/layout-patterns.md) |
 | 필터·검색·선택·양식·팝업 | [입력과 상호작용](references/interaction-patterns.md) |
 | UI 문구·본문·피드백·플레이그라운드·검증 | [문구·본문과 검증](references/content-and-review.md) |

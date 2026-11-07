@@ -1,0 +1,10 @@
+/* 전체 화면용 루트 높이가 Storybook의 중앙 배치를 밀어내지 않게 한다. */
+body.sb-main-centered #storybook-root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  inline-size: 100%;
+  block-size: 100dvh;
+  min-inline-size: 0;
+}

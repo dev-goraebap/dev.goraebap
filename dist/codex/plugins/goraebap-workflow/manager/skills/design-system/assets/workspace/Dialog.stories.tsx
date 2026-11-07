@@ -1,15 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { DialogPattern } from './DialogPattern';
-const meta = { title: '패턴/공통 다이얼로그', id: 'patterns-dialog', component: DialogPattern,
-  args: { long: false, divider: false, initialOpen: false },
+const meta = { title: '조합 부품/공통 다이얼로그', id: 'patterns-dialog', component: DialogPattern,
+  parameters: { layout: 'centered', docs: { story: { height: '420px' } } },
+  args: { long: false, divider: false },
   argTypes: { long: { name: '긴 본문', control: 'boolean' }, divider: { name: '푸터 구분선', control: 'boolean' } },
 } satisfies Meta<typeof DialogPattern>;
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const Basic: Story = { name: '기본' };
-export const LongBody: Story = { name: '긴 본문', args: { long: true, initialOpen: true } };
-export const FooterDivider: Story = { name: '푸터 구분선', args: { divider: true, initialOpen: true } };
+export const LongBody: Story = { name: '긴 본문', args: { long: true } };
+export const FooterDivider: Story = { name: '푸터 구분선', args: { divider: true } };
 export const Keyboard: Story = { name: '닫기와 초점 복귀', play: async ({ canvasElement, step }) => {
   const screen = within(canvasElement.ownerDocument.body);
   await step('닫고 다시 열기', async () => {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { LayoutPattern } from './LayoutPattern';
-const meta = { title: '패턴/앱 레이아웃', id: 'patterns-layout', component: LayoutPattern,
+const meta = { title: '레이아웃/Split·Inset', id: 'patterns-layout', component: LayoutPattern,
   args: { layout: 'inset', long: false },
   argTypes: { layout: { name: '레이아웃', control: 'inline-radio', options: ['split', 'inset'] }, long: { name: '긴 목록', control: 'boolean' } },
 } satisfies Meta<typeof LayoutPattern>;

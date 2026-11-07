@@ -1,6 +1,7 @@
 import meta, * as reference from "../../../../skills/design-system/assets/workspace/AppLayout.stories";
 export default {
   ...meta,
+  parameters: { layout: "fullscreen", docs: { story: { height: "620px" } } },
   id: "patterns-layout",
   title: "레이아웃/Split·Inset",
 };

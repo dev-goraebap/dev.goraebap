@@ -1,7 +1,20 @@
 import { addons } from "storybook/manager-api";
-import { create } from "storybook/theming";
+import { GLOBALS_UPDATED, SET_GLOBALS } from "storybook/internal/core-events";
+import {
+  catalogMode,
+  catalogThemes,
+  initialCatalogMode,
+} from "./catalog-theme";
 addons.setConfig({
-  theme: create({ base: "light", brandTitle: "고래밥 워크플로우 · 화면 패턴" }),
+  theme: catalogThemes[initialCatalogMode()],
   sidebar: { showRoots: true },
-  panelPosition: "bottom",
+  layout: { panelPosition: "bottom" },
+});
+addons.register("goraebap/catalog-theme", (api) => {
+  const update = ({ globals }: { globals: Record<string, unknown> }) => {
+    addons.setConfig({ theme: catalogThemes[catalogMode(globals.theme)] });
+  };
+  update({ globals: api.getGlobals() });
+  addons.getChannel().on(GLOBALS_UPDATED, update);
+  addons.getChannel().on(SET_GLOBALS, update);
 });

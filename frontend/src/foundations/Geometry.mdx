@@ -1,0 +1,9 @@
+import { storybookMarkdown } from "../../../skills/design-system/assets/workspace/storybook-markdown";
+import { Meta, Canvas, Markdown } from '@storybook/addon-docs/blocks';
+import * as Stories from './Geometry.stories';
+import guide from '../../../skills/design-system/references/foundations.md?raw';
+
+<Meta of={Stories} />
+<Markdown>{storybookMarkdown(guide)}</Markdown>
+<Canvas of={Stories.Typography} />
+<Canvas of={Stories.Spacing} />

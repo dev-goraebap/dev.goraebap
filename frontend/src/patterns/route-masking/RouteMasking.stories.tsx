@@ -1,5 +1,10 @@
 import meta, * as reference from "../../../../skills/design-system/assets/workspace/RouteMasking.stories";
-export default { ...meta, id: "patterns-routing", title: "패턴/라우트 마스킹" };
+export default {
+  ...meta,
+  parameters: { layout: "fullscreen", docs: { story: { height: "620px" } } },
+  id: "patterns-routing",
+  title: "사용 패턴/라우트 마스킹",
+};
 export const FromList = { ...reference.FromList, name: "목록에서 열기" };
 export const Verification = {
   ...reference.Verification,

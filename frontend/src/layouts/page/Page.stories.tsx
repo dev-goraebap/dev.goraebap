@@ -4,6 +4,7 @@ import { Icon } from "../../foundations/Icon";
 const meta = {
   title: "레이아웃/페이지 영역",
   component: PageLayout,
+  parameters: { layout: "fullscreen", docs: { story: { height: "420px" } } },
   args: {
     title: "자료",
     icon: <Icon name="library" />,

@@ -1,8 +1,10 @@
 import "../src/foundations/styles.css";
+import './preview.css';
 import type { Preview } from "@storybook/react-vite";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 import { ReferenceTheme } from "../../skills/design-system/assets/workspace/ReferenceTheme";
 import "../../skills/design-system/assets/workspace/catalog.css";
+import { ThemedDocsContainer } from "./ThemedDocsContainer";
 const preview: Preview = {
   initialGlobals: { theme: "light" },
   globalTypes: {
@@ -33,11 +35,23 @@ const preview: Preview = {
     },
     backgrounds: { disable: true },
     controls: { expanded: true },
-    docs: { story: { inline: false, height: "620px" }, codePanel: true },
+    docs: {
+      container: ThemedDocsContainer,
+      story: { inline: false, height: "320px" },
+      codePanel: true,
+    },
     a11y: { test: "todo" },
     options: {
       storySort: {
-        order: ["시작하기", "기초", "컴포넌트", "패턴", "레이아웃", "예제"],
+        order: [
+          "시작하기",
+          "디자인 기초",
+          "기본 부품",
+          "조합 부품",
+          "레이아웃",
+          "사용 패턴",
+          "화면 예제",
+        ],
       },
     },
   },

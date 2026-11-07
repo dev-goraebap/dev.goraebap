@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
 import { RoutingPattern } from './RoutingPattern';
-const meta = { title: '패턴/라우트 마스킹', id: 'patterns-routing', component: RoutingPattern,
+const meta = { title: '사용 패턴/라우트 마스킹', id: 'patterns-routing', component: RoutingPattern,
   args: { direct: false }, argTypes: { direct: { table: { disable: true } } },
 } satisfies Meta<typeof RoutingPattern>;
 export default meta;

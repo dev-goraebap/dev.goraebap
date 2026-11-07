@@ -3,14 +3,13 @@ import { expect, userEvent, within, waitFor } from "storybook/test";
 import { LibraryApp } from "./LibraryApp";
 import { createResourceApi } from "../mocks/resource-api";
 const meta = {
-  title: "예제/서가",
+  title: "화면 예제/서가",
   id: "example-library",
   component: LibraryApp,
-  parameters: { layout: "fullscreen" },
+  parameters: { layout: "fullscreen", docs: { story: { height: "620px" } } },
   globals: { viewport: { value: "desktop", isRotated: false } },
   argTypes: {
     api: { table: { disable: true } },
-    initialTheme: { table: { disable: true } },
     initialPath: { name: "시작 주소" },
     initialLayout: {
       name: "레이아웃",
@@ -18,11 +17,10 @@ const meta = {
       options: ["inset", "split"],
     },
   },
-  render: (args, context) => (
+  render: (args) => (
     <LibraryApp
-      key={`${context.globals.theme}-${args.initialPath}-${args.initialLayout}`}
+      key={`${args.initialPath}-${args.initialLayout}`}
       {...args}
-      initialTheme={context.globals.theme === "dark" ? "dark" : "light"}
       api={createResourceApi({ delay: 60 })}
     />
   ),
@@ -74,11 +72,6 @@ export const Collection: Story = {
 export const Split: Story = {
   name: "Split 레이아웃",
   args: { initialPath: "/resources?view=list", initialLayout: "split" },
-};
-export const Dark: Story = {
-  name: "다크",
-  args: { initialPath: "/resources" },
-  globals: { theme: "dark" },
 };
 export const Detail: Story = {
   name: "상세 직접 진입",

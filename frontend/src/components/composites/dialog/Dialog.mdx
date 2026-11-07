@@ -1,0 +1,28 @@
+import { storybookMarkdown } from "../../../../../skills/design-system/assets/workspace/storybook-markdown";
+import { Canvas, Meta, Markdown, Source } from "@storybook/addon-docs/blocks";
+import guidance from "../../../../../skills/design-system/references/dialog.md?raw";
+import implementation from "../../../../../skills/design-system/assets/workspace/ReferenceDialog.tsx?raw";
+import * as Stories from "./Dialog.stories";
+
+<Meta of={Stories} />
+
+<Markdown>{storybookMarkdown(guidance)}</Markdown>
+
+<Canvas of={Stories.Basic} />
+
+<ul>
+  <li>
+    <a href="?path=/story/patterns-dialog--long-body">긴 본문</a>
+  </li>
+  <li>
+    <a href="?path=/story/patterns-dialog--footer-divider">푸터 구분선</a>
+  </li>
+  <li>
+    <a href="?path=/story/patterns-dialog--keyboard">닫기와 초점 복귀 검증</a>
+  </li>
+</ul>
+
+<details id="implementation">
+  <summary>구현 코드 · ReferenceDialog.tsx</summary>
+  <Source code={implementation} language="tsx" />
+</details>

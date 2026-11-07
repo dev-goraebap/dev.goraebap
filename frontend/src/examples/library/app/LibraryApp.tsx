@@ -27,7 +27,6 @@ import {
   Button,
   DropdownMenu,
   Icon,
-  ReferenceTheme,
   useOpenPanel,
   useRoutedPanel,
 } from "../shared/ui";
@@ -35,18 +34,15 @@ import { createResourceApi } from "../mocks/resource-api";
 import "../../../foundations/styles.css";
 
 function Shell({
-  initialTheme = "light",
   initialLayout = "inset",
   persistSidebar = false,
 }: {
-  initialTheme?: "light" | "dark";
   initialLayout?: "inset" | "split";
   persistSidebar?: boolean;
 }) {
   const location = useLocation();
   const navigate = useNavigate();
   const search = validateLibrarySearch(location.search);
-  const [mode, setMode] = useState(initialTheme);
   const [layout, setLayout] = useState(initialLayout);
   const sidebar = useResizable({
     defaultSize: 340,
@@ -100,7 +96,7 @@ function Shell({
     </a>
   );
   return (
-    <ReferenceTheme mode={mode}>
+    <>
       <div
         className="library-app"
         data-layout={layout}
@@ -157,13 +153,6 @@ function Shell({
           </nav>
           <div className="library-sidebar-bottom">
             <div className="library-preferences">
-              <Button
-                label={mode === "light" ? "다크 모드" : "라이트 모드"}
-                isIconOnly={sidebar.isCollapsed}
-                icon={<Icon name={mode === "light" ? "moon" : "sun"} />}
-                variant="ghost"
-                onClick={() => setMode(mode === "light" ? "dark" : "light")}
-              />
               <Button
                 className="library-layout-toggle"
                 label={layout === "inset" ? "Split 레이아웃" : "Inset 레이아웃"}
@@ -230,16 +219,9 @@ function Shell({
               onClick: () => go({ collection: item.id }),
             }))}
           />
-          <Button
-            label={mode === "light" ? "다크 모드" : "라이트 모드"}
-            isIconOnly
-            icon={<Icon name={mode === "light" ? "moon" : "sun"} />}
-            variant="ghost"
-            onClick={() => setMode(mode === "light" ? "dark" : "light")}
-          />
         </nav>
       </div>
-    </ReferenceTheme>
+    </>
   );
 }
 function ResourceListRoute() {
@@ -307,16 +289,11 @@ function RouterFallback({ error, reset }: ErrorComponentProps) {
 }
 export function createLibraryRouter(
   initialPath?: string,
-  initialTheme?: "light" | "dark",
   initialLayout?: "inset" | "split",
 ) {
   const root = createRootRoute({
     component: () => (
-      <Shell
-        initialTheme={initialTheme}
-        initialLayout={initialLayout}
-        persistSidebar={false}
-      />
+      <Shell initialLayout={initialLayout} persistSidebar={false} />
     ),
     errorComponent: RouterFallback,
     notFoundComponent: () => (
@@ -361,12 +338,10 @@ export function createLibraryRouter(
 export function LibraryApp({
   api,
   initialPath,
-  initialTheme,
   initialLayout,
 }: {
   api?: ResourceApi;
   initialPath?: string;
-  initialTheme?: "light" | "dark";
   initialLayout?: "inset" | "split";
 }) {
   const [client] = useState(
@@ -379,7 +354,7 @@ export function LibraryApp({
   );
   const [repository] = useState(() => api ?? createResourceApi());
   const [router] = useState(() =>
-    createLibraryRouter(initialPath, initialTheme, initialLayout),
+    createLibraryRouter(initialPath, initialLayout),
   );
   return (
     <QueryClientProvider client={client}>

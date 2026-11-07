@@ -1,0 +1,10 @@
+import { storybookMarkdown } from "../../../skills/design-system/assets/workspace/storybook-markdown";
+import { Meta, Canvas, Markdown, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './Theme.stories';
+import guide from '../../../skills/design-system/references/theme.md?raw';
+import theme from '../../../skills/design-system/assets/workspace/theme.ts?raw';
+
+<Meta of={Stories} />
+<Markdown>{storybookMarkdown(guide)}</Markdown>
+<Canvas of={Stories.Surfaces} />
+<details id="implementation"><summary>테마 구현</summary><Source code={theme} language="tsx" /></details>

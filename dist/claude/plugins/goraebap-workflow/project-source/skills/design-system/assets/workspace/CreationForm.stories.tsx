@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CreationPattern } from './CreationPattern';
-const meta = { title: '패턴/생성 양식', id: 'patterns-creation', component: CreationPattern,
+const meta = { title: '사용 패턴/생성 양식', id: 'patterns-creation', component: CreationPattern,
   args: { surface: 'dialog' }, argTypes: { surface: { name: '표현', control: 'inline-radio', options: ['dialog', 'page'] } },
 } satisfies Meta<typeof CreationPattern>;
 export default meta;

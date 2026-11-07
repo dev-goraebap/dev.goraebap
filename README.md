@@ -155,4 +155,4 @@ claude plugin validate .
 
 [패턴 지침](skills/design-system/references/pattern-catalog.md)은 생성 양식·공통 다이얼로그·Split·Inset·라우트 마스킹의 사용 기준을 코드와 실행 견본에 연결합니다. `npm ci` 후 `npm run patterns`로 Storybook(4431)을 엽니다. `npm run patterns:check`는 타입을, `npm run patterns:build`는 정적 내보내기를, `npm run patterns:test`는 Story의 상호작용을 검사합니다. 지침은 Markdown이 원본이고 MDX에서 같은 내용을 가져옵니다. 견본은 선택형 레퍼런스이며 프로젝트에 자동 설치하지 않습니다.
 
-[프론트엔드 카탈로그](frontend/README.md)는 기초·컴포넌트·패턴·레이아웃·예제를 Storybook 하나에서 보여줍니다. 별도 앱 서버는 두지 않습니다. 서가 예제는 같은 부품으로 목록·상세·등록을 연결하며, Story마다 메모리 라우터와 모의 저장소를 새로 만듭니다. 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 유지하지 않습니다. `frontend/`는 개발·검토용 소스이며 플러그인 패키지에 자동으로 포함하지 않습니다.
+[프론트엔드 카탈로그](frontend/README.md)는 디자인 기초·기본 부품·조합 부품·레이아웃·사용 패턴·화면 예제를 Storybook 하나에서 보여줍니다. 별도 앱 서버는 두지 않습니다. 서가 예제는 같은 부품으로 목록·상세·등록을 연결하며, Story마다 메모리 라우터와 모의 저장소를 새로 만듭니다. 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 유지하지 않습니다. `frontend/`는 개발·검토용 소스이며 플러그인 패키지에 자동으로 포함하지 않습니다.
