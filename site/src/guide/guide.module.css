@@ -42,8 +42,8 @@
 .prose :global(pre) { padding: var(--spacing-4); overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius-element);
   background: var(--color-background-card); font-size: var(--text-body-size); line-height: 1.6; }
 .prose :global(pre code) { font-size: inherit; }
-.prose :global(.astro-code span) { color: var(--shiki-light); }
-:global(html[data-theme='dark']) .prose :global(.astro-code span) { color: var(--shiki-dark); }
+:global(.shiki span) { color: var(--shiki-light); }
+:global(html[data-theme='dark']) :global(.shiki span) { color: var(--shiki-dark); }
 
 /* 표: 바깥 경계 하나, 안쪽은 가로 선만. 좁으면 표 안에서 가로로 넘긴다. */
 .prose :global(table) { display: block; max-inline-size: 100%; overflow-x: auto; border-collapse: collapse; font-size: var(--text-body-size); line-height: 1.6;
@@ -57,14 +57,11 @@
 .prose :global(details > summary) { padding: var(--spacing-2) var(--spacing-3); cursor: pointer; font-size: var(--text-body-size); font-weight: 500; }
 .prose :global(details > pre) { margin: 0; border: 0; border-block-start: 1px solid var(--color-border); border-radius: 0; }
 
-/* 다음 문서를 준비하는 동안 보이지 않게 겹쳐 둔다. 자리를 잡아야 글꼴 조각과 견본 크기를 미리 받는다. */
-.prose { position: relative; }
-.staged { position: absolute; inset-block-start: 0; inset-inline: 0; visibility: hidden; pointer-events: none; }
-/* 180ms가 넘게 걸릴 때만 씌우는 덮개. 본문 열 위를 페이지 면으로 덮는다. */
-.body { position: relative; }
+/* 본문 자리: 다음 문서가 180ms 넘게 걸릴 때만 덮개를 씌운다. 바뀌는 순간은 본문 자리만 160ms 교차 페이드다. */
+.stage { position: relative; min-block-size: 100%; }
+.content { view-transition-name: guide-content; }
 .cover { position: absolute; inset: 0; z-index: 2; display: grid; place-items: start center; padding-block-start: 30vh;
   background: var(--color-background-surface); }
-/* 본문 자리만 160ms 교차 페이드로 바꾼다. 셸은 그대로다. 이름은 셸이 바꿔 끼우는 동안에만 붙여 Astro 라우터의 전환과 겹치지 않게 한다. */
-.fading { view-transition-name: guide-content; }
 :global(::view-transition-group(guide-content)), :global(::view-transition-old(guide-content)), :global(::view-transition-new(guide-content)) { animation-duration: 160ms; }
 :global(::view-transition-old(root)), :global(::view-transition-new(root)) { animation: none; }
+@media (prefers-reduced-motion: reduce) { :global(::view-transition-group(*)), :global(::view-transition-old(*)), :global(::view-transition-new(*)) { animation: none; } }

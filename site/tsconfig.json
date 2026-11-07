@@ -1,12 +1,21 @@
 {
-  "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["vite/client", "node"],
+    "resolveJsonModule": true,
     "paths": {
       "@kit/*": ["../frontend/reference/*"],
-      "@frontend/*": ["../frontend/src/*"]
+      "@frontend/*": ["../frontend/src/*"],
+      "@guide/*": ["./src/*"]
     }
   },
-  "include": [".astro/types.d.ts", "**/*", "../frontend/reference/foundations/variants.ts"],
+  "include": ["src", "content-plugin.ts", "vite.config.ts", "../frontend/reference/foundations/variants.ts"],
   "exclude": ["dist"]
 }
