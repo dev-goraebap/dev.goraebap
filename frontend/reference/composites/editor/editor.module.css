@@ -1,11 +1,19 @@
-/* 종이 위의 본문: 최소 높이(대화상자 3.5rem, 페이지 12rem)만 두고 테두리·도구 막대는 없다. 긴 URL은 줄을 넘긴다. */
-.prose { min-block-size: 3.5rem; padding: 0; outline: none; line-height: 1.6; overflow-wrap: anywhere; color: var(--color-text-primary); }
+/*
+ * 종이 위의 본문: 최소 높이(대화상자 3.5rem, 페이지 12rem)만 두고 테두리·도구 막대는 없다. 긴 URL은 줄을 넘긴다.
+ * 긴 글을 쓰고 읽는 칸이라 화면 글자(13px)보다 한 단계 큰 본문(15px)으로 쓴다. 큰 화면 배율에서도 함께 커진다.
+ */
+.prose { min-block-size: 3.5rem; padding: 0; outline: none; font-size: var(--text-large-size); line-height: 1.65; overflow-wrap: anywhere; color: var(--color-text-primary); }
 .prose[data-page] { min-block-size: 12rem; }
 .prose > :first-child { margin-block-start: 0; }
 .prose > :last-child { margin-block-end: 0; }
 .prose p { margin-block: 0 var(--spacing-2); }
-.prose h2 { margin-block: var(--spacing-4) var(--spacing-2); font-size: var(--text-heading-3-size); }
+/* Astryx 테마의 본문 스타일이 문단에 화면 글자 크기를 직접 주므로 칸의 크기를 따르게 한다. */
+.prose :is(p, li, blockquote) { font-size: inherit; line-height: inherit; }
+.prose h2 { margin-block: var(--spacing-4) var(--spacing-2); font-size: var(--text-heading-2-size); }
 .prose ul, .prose ol { padding-inline-start: var(--spacing-5); }
+/* 전역 reset이 목록 기호를 지우므로 본문 칸에서는 되살린다. */
+.prose ul { list-style: disc; }
+.prose ol { list-style: decimal; }
 /* 문서가 비면 첫 줄에 안내를 보인다. */
 .prose:has(> p:only-child:empty)::before, .prose:has(> p:only-child > br:global(.ProseMirror-trailingBreak):only-child)::before {
   content: attr(data-placeholder); position: absolute; color: var(--color-text-disabled); pointer-events: none; }

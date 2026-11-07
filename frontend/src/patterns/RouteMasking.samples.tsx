@@ -14,5 +14,4 @@ type Sample = SampleOf<typeof meta>;
 
 export const OverList: Sample = { name: "목록 위에서 열기", args: { initialPath: "/resources?panel=/resources/new" } };
 export const DirectEntry: Sample = { name: "직접 진입", args: { initialPath: "/resources/new" } };
-export const Phone: Sample = { name: "휴대폰은 페이지로", args: { initialPath: "/resources?panel=/resources/new" }, device: "phone" };
 

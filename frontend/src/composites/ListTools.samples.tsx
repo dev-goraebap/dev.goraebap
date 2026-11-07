@@ -36,5 +36,4 @@ type Sample = SampleOf<typeof meta>;
 
 export const Default: Sample = { name: "기본", render: () => <Tools /> };
 export const Applied: Sample = { name: "검색어와 필터가 있을 때", render: () => <Tools query="기준" state={{ kind: ["document", "link"], author: ["서윤"] }} /> };
-export const Phone: Sample = { name: "휴대폰", render: () => <Tools state={{ author: ["지우"] }} />, device: "phone" };
 

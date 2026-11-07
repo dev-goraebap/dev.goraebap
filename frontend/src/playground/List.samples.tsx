@@ -15,4 +15,3 @@ export const Table: Sample = { name: "표", args: { initialPath: "/resources?lay
 export const TableGrouped: Sample = { name: "표와 그룹", args: { initialPath: "/resources?layout=table&group=collection" } };
 export const Collection: Sample = { name: "컬렉션", args: { initialPath: "/resources?collection=design" } };
 export const Split: Sample = { name: "Split 배치", args: { initialPath: "/resources", initialLayout: "split" } };
-export const Phone: Sample = { name: "휴대폰", args: { initialPath: "/resources" }, device: "phone" };

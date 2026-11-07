@@ -27,4 +27,3 @@ export const Menus: Sample = {
     { label: "행 메뉴", content: <RowMenu label="자료 메뉴" actions={[{ id: "edit", label: "수정", icon: "edit" }, { id: "delete", label: "삭제", icon: "delete" }]} /> },
   ]} />,
 };
-export const MenusOnPhone: Sample = { ...Menus, name: "휴대폰 바텀시트", device: "phone" };

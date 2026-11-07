@@ -1,7 +1,7 @@
 {
   "id": "workspace-kit",
-  "revision": 6,
-  "updated": "2026-11-07",
+  "revision": 7,
+  "updated": "2026-11-08",
   "kind": "opt-in-reference",
   "compatibility": {
     "react": "19",
@@ -17,10 +17,17 @@
     "interactionTests": "passed: every sample renders and interaction tests pass in Chromium (npm run frontend:test, vitest browser)",
     "guideBuild": "see npm run guide:build (samples are served as iframes under /samples/)",
     "browserCheck": {
-      "date": "2026-11-07",
-      "viewports": ["1440x900"],
-      "themes": ["light", "dark"],
-      "scope": "Guide pages with embedded samples: desktop screens scaled from 1280px, components at 1024px document width, theme following the guide selector.",
+      "date": "2026-11-08",
+      "viewports": [
+        "1440x900",
+        "390x844",
+        "2560x1440"
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "scope": "Guide pages with embedded samples (desktop 1024px / phone 390px toggle), theme following the guide selector, page transitions (keep current page, 180ms cover, 160ms fade), first-visit boot cover with and without JavaScript, large-screen root scaling.",
       "notVerified": "physical device keyboard occlusion, screen readers, browser refresh/share of masked routes (samples use memory history), pixel parity with any product"
     }
   }

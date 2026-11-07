@@ -10,4 +10,3 @@ export default meta;
 type Sample = SampleOf<typeof meta>;
 
 export const Detail: Sample = { name: "상세", args: { initialPath: "/resources/long-title" } };
-export const Phone: Sample = { name: "휴대폰", args: { initialPath: "/resources/seed-loading" }, device: "phone" };

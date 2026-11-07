@@ -11,4 +11,3 @@ type Sample = SampleOf<typeof meta>;
 
 export const Filtered: Sample = { name: "필터 적용", args: { initialPath: "/resources?author=서윤&kind=document" } };
 export const Searched: Sample = { name: "검색어", args: { initialPath: "/resources?q=주소" } };
-export const Phone: Sample = { name: "휴대폰", args: { initialPath: "/resources?author=서윤" }, device: "phone" };

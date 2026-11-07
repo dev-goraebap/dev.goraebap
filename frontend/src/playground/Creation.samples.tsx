@@ -67,5 +67,4 @@ type Sample = SampleOf<typeof meta>;
 export const Dialog: Sample = { name: "대화상자", render: () => <Composer /> };
 export const Page: Sample = { name: "작성 페이지", layout: "fullscreen", height: "40rem", render: () => <LibrarySample initialPath="/resources/new" /> };
 export const StepForm: Sample = { name: "단계형", layout: "fullscreen", render: () => <Steps /> };
-export const Phone: Sample = { name: "휴대폰", layout: "fullscreen", render: () => <LibrarySample initialPath="/resources/new" />, device: "phone" };
 

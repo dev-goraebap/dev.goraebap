@@ -59,7 +59,6 @@ export default meta;
 type Sample = SampleOf<typeof meta>;
 
 export const Properties: Sample = { name: "속성 알약", render: () => <Pills /> };
-export const PropertiesOnPhone: Sample = { name: "휴대폰 속성 알약", render: () => <Pills />, device: "phone" };
 export const Dropzone: Sample = { name: "파일 올리기 칸", render: () => <Upload /> };
 export const Body: Sample = { name: "본문 칸", render: () => <Editor /> };
 export const GroupHeader: Sample = { name: "그룹 머리", render: () => <Group /> };

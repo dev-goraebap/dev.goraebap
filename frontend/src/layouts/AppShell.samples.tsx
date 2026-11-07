@@ -39,5 +39,4 @@ export const Inset: Sample = { name: "Inset", render: () => <Shell /> };
 export const Split: Sample = { name: "Split", render: () => <Shell layout="split" /> };
 export const SubSpace: Sample = { name: "하위 메뉴 공간", render: () => <Shell space={demoAccount} /> };
 export const LongList: Sample = { name: "긴 목록", render: () => <Shell rowCount={40} /> };
-export const Phone: Sample = { name: "휴대폰", render: () => <Shell rowCount={20} />, device: "phone" };
 

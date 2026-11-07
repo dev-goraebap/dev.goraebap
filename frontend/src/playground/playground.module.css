@@ -1,0 +1,16 @@
+/* Playground 템플릿의 본문 열: 읽고 쓰는 화면이라 약 720px로 제한하고 가운데 둔다(콘텐츠 폭 규칙). */
+.column { inline-size: 100%; max-inline-size: 45rem; margin-inline: auto; padding: var(--spacing-8) var(--spacing-6) var(--spacing-12); box-sizing: border-box; }
+@media (width < 64rem) { .column { padding: var(--spacing-5) var(--spacing-4) var(--spacing-10); } }
+
+/* 자료 올리기: 행 시작의 종류 표시와 행 끝의 진행 막대. */
+.fileMark { display: inline-grid; place-items: center; inline-size: 1.5rem; block-size: 1.5rem; border-radius: var(--radius-element);
+  background: var(--color-background-muted); color: var(--color-icon-secondary); }
+.uploadEnd { flex-wrap: nowrap; }
+.uploadBar { inline-size: 6rem; }
+
+/* 문서 편집: 제목은 테두리 없는 큰 글자, 본문 칸과 같은 종이 위에 둔다. 휴대폰은 iOS 확대를 피하려 16px 이상이다. */
+.docTitle { inline-size: 100%; padding: 0; border: 0; outline: none; background: transparent; color: var(--color-text-primary);
+  font: inherit; font-size: var(--text-heading-1-size); font-weight: 600; line-height: 1.35; }
+.docTitle::placeholder { color: var(--color-text-disabled); }
+/* 실패한 파일의 상태 문구는 오류 글자색. */
+.failed { color: var(--color-text-red, var(--color-text-secondary)); }

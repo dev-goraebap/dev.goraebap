@@ -10,4 +10,3 @@ export default meta;
 type Sample = SampleOf<typeof meta>;
 
 export const Display: Sample = { name: "화면 설정", args: { initialPath: "/settings" } };
-export const Phone: Sample = { name: "휴대폰", args: { initialPath: "/settings" }, device: "phone" };

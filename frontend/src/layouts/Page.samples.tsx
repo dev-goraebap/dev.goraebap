@@ -114,8 +114,6 @@ export const HeaderAndToolbar: Sample = { name: "머리 줄·툴바·목록", re
 export const Banner: Sample = { name: "페이지 배너", render: () => <ListPage hasBanner /> };
 export const Table: Sample = { name: "표", render: () => <TablePage /> };
 export const Detail: Sample = { name: "상세", render: () => <DetailPage /> };
-export const DetailNarrow: Sample = { name: "좁은 상세", render: () => <DetailPage />, device: "phone" };
 export const SettingsScreen: Sample = { name: "설정", render: () => <Settings /> };
 export const SidePanel: Sample = { name: "옆 패널", render: () => <Panel /> };
-export const ListOnPhone: Sample = { name: "휴대폰 목록", render: () => <ListPage />, device: "phone" };
 

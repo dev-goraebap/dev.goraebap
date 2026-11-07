@@ -41,6 +41,19 @@ export const groupOfPath = (path: string) => {
   return `${dir}-${kebab(file ?? "")}`;
 };
 
+/** 견본 파일 원문. 모듈 이름공간은 내보내기를 알파벳순으로 주므로, 파일에 쓴 순서는 원문에서 읽는다. */
+const sources = import.meta.glob<string>("../**/*.samples.tsx", { query: "?raw", import: "default" });
+
+/** 묶음 하나의 견본을 파일에 쓴 순서대로. */
+export async function loadGroup(group: string) {
+  const entry = Object.entries(loaders).find(([path]) => groupOfPath(path) === group);
+  if (!entry) return [];
+  const [module, text] = await Promise.all([entry[1](), sources[entry[0]]?.() ?? Promise.resolve("")]);
+  const written = [...text.matchAll(/^export const (\w+)/gm)].map(match => match[1]);
+  const position = (key: string) => (written.indexOf(key) + 1 || 999);
+  return samplesOf(module).sort((a, b) => position(a.key) - position(b.key));
+}
+
 /** 견본 하나만 그 파일을 불러와 찾는다. */
 export async function loadSample(id: string) {
   const group = id.split("/")[0];

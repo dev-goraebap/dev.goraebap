@@ -14,5 +14,4 @@ type Sample = SampleOf<typeof meta>;
 
 export const Open: Sample = { name: "목록 옆 미리보기", args: { initialPath: "/resources?peek=router" } };
 export const Missing: Sample = { name: "없는 대상", args: { initialPath: "/resources?peek=unknown" } };
-export const Phone: Sample = { name: "휴대폰은 페이지로", args: { initialPath: "/resources?peek=router" }, device: "phone" };
 
