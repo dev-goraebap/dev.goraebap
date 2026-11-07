@@ -26,3 +26,15 @@
 .sample-section + .sample-section { margin-block-start: 2.5rem; }
 .sample-wait { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.75rem; color: var(--color-text-secondary); pointer-events: none; }
 guide-sample[data-loaded] .sample-wait { display: none; }
+
+/*
+ * 휴대폰(64rem 미만)에서는 기기 전환을 보이는 높이 32px로 키우고, 누르는 영역은 속성 알약과 같은 방식으로 위아래를 넓혀
+ * 44px를 맞춘다. "새 창에서 열기"도 글자 줄(20px) 위아래로 13px씩 넓힌다.
+ */
+@media (width < 64rem) {
+  .sample-bar { margin-block-end: var(--spacing-3, 0.75rem); }
+  .sample-devices button, .sample-open { position: relative; }
+  .sample-devices button { block-size: 2rem; }
+  .sample-devices button::after { content: ''; position: absolute; inset-block: -0.375rem; inset-inline: 0; }
+  .sample-open::after { content: ''; position: absolute; inset-block: -0.8125rem; inset-inline: 0; }
+}
