@@ -1,0 +1,16 @@
+/* 페이지는 남은 높이를 차지한다. 휴대폰은 하단 탭 위의 공간. 위쪽·좌우 안전 영역을 피한다(viewport-fit=cover). */
+.page { flex: 1; min-block-size: 0; min-inline-size: 0; }
+@media (width < 64rem) {
+  .page { padding-block-start: env(safe-area-inset-top, 0px); padding-inline: env(safe-area-inset-left, 0px) env(safe-area-inset-right, 0px); }
+}
+/* 접힌 메뉴의 묶음 사이 가는 선. */
+.navRule { align-self: stretch; flex-shrink: 0; margin: var(--spacing-2); border: 0; border-block-start: 1px solid var(--color-border); }
+/* 하위 메뉴 공간의 ← 이름: 보조 글자의 조용한 누름, 포인터 아래에서 한 단계 진하게. */
+.back { display: inline-flex; align-items: center; gap: var(--spacing-2); min-inline-size: 0; max-inline-size: 100%;
+  min-block-size: 2rem; padding: 0 var(--spacing-1); border: 0; background: none; color: var(--color-text-secondary); font: inherit; cursor: pointer; }
+.back:hover { color: var(--color-text-primary); }
+.back:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: var(--focus-outline-offset); border-radius: 0.375rem; }
+.back > :last-child { color: var(--color-text-primary); }
+.brandTools { flex: none; }
+/* SideNav가 위에 한 단계 여백을 둔다. split에서는 머리 줄이 페이지 머리와 같은 선에 놓이게 당긴다. */
+.splitBrandRow { margin-block-start: calc(-1 * var(--spacing-2)); }

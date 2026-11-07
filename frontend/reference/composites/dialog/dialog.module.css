@@ -1,0 +1,17 @@
+/* 위치를 지정한 대화상자에 공통 margin을 더하면 top과 겹쳐 아래로 밀린다. 위·아래 여유를 같은 변수로 정한다. */
+dialog.positioned {
+  --app-dialog-edge: 12dvh;
+  inset-block: var(--app-dialog-edge) auto;
+  margin-block: 0;
+}
+
+.frame { flex: 1 1 auto; min-block-size: 0; }
+.header, .body, .footer { padding: var(--spacing-4); }
+.header, .footer { flex: none; }
+.header { padding-block-end: var(--spacing-2); }
+.heading { flex: 1 1 auto; min-inline-size: 0; overflow-wrap: anywhere; }
+.heading h2:focus { outline: none; }
+.body { padding-block-start: var(--spacing-2); flex: 1 1 auto; min-block-size: 0; overflow-wrap: anywhere; }
+.footer[data-divider] { border-block-start: 1px solid var(--color-border); }
+.frame[data-fullscreen] .header { padding-block-start: max(var(--spacing-4), env(safe-area-inset-top)); }
+.frame[data-fullscreen] > :last-child { padding-block-end: max(var(--spacing-4), env(safe-area-inset-bottom)); }

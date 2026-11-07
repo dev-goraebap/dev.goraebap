@@ -1,0 +1,2 @@
+/* 메뉴 행은 팝오버 자체 여백 안에서 8px 들여 쓴다. */
+.row { padding-inline: var(--spacing-2); }

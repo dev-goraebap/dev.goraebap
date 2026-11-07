@@ -1,0 +1,28 @@
+.kind { display: inline-grid; place-items: center; inline-size: 1.5rem; block-size: 1.5rem; flex: none; border-radius: var(--radius-element);
+  background: var(--color-background-muted); color: var(--color-icon-secondary); }
+/* 줄 끝 값: 같은 간격, 줄바꿈하지 않는다. */
+.meta { column-gap: calc(var(--spacing-2) + var(--spacing-0-5)); flex-wrap: nowrap; }
+/* 긴 이름은 최대 폭에서 말줄임한다. */
+.limit { display: inline-flex; min-inline-size: 0; max-inline-size: 7rem; overflow: hidden; }
+.person { display: inline-flex; align-items: center; min-inline-size: 0; max-inline-size: 6rem; padding: 0.125rem 0.25rem; border: 0; border-radius: var(--radius-full);
+  background: none; color: inherit; font: inherit; cursor: pointer; }
+.person:hover { background: var(--color-overlay-hover); }
+.person:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: var(--focus-outline-offset); }
+.card { block-size: 100%; background: var(--color-background-card); min-inline-size: 0; overflow-wrap: anywhere; }
+/* 카드 위쪽의 종이 미리보기. 바탕색은 자료 종류(링크·문서·그림)를 나누는 데만 쓴다. */
+.card { overflow: hidden; }
+.preview { position: relative; display: grid; place-items: center; block-size: 10rem; overflow: hidden;
+  background: light-dark(#e8edf1, #26313b); color: light-dark(#54728d, #a4c1d8); }
+.preview[data-kind='document'] { background: light-dark(#efebe4, #342f27); color: light-dark(#766244, #c5ae87); }
+.preview[data-kind='image'] { background: light-dark(#e5ebe2, #29352c); color: light-dark(#5a7655, #b1c7a7); }
+.paper { position: relative; inset-block-start: 1.6rem; display: flex; flex-direction: column; gap: 0.5rem; inline-size: 72%; block-size: 10rem;
+  padding: 1.3rem 1rem 1rem; box-sizing: border-box; border-radius: 0.5rem 0.5rem 0 0; transform: rotate(-4deg);
+  background: light-dark(rgb(255 255 255 / 0.75), rgb(255 255 255 / 0.06)); border: 1px solid light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.12)); }
+.paper > svg { inline-size: 1.875rem; block-size: 1.875rem; }
+.preview[data-kind='link'] .paper { transform: rotate(3deg); }
+.preview[data-kind='image'] .paper { transform: rotate(-6deg); }
+.source { font-size: 0.5rem; letter-spacing: 0.04em; }
+.paperTitle { max-inline-size: 90%; font-size: 0.7rem; line-height: 1.6; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.lines { display: flex; flex-direction: column; gap: 0.3rem; }
+.lines i { block-size: 2px; background: currentColor; opacity: 0.16; }
+.lines i:last-child { inline-size: 65%; }

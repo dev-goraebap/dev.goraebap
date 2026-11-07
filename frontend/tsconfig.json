@@ -13,13 +13,19 @@
       "DOM.Iterable"
     ],
     "types": [
-      "vite/client"
+      "vite/client",
+      "@vitest/browser-playwright"
     ],
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "paths": {
+      "@kit/*": [
+        "./reference/*"
+      ]
+    }
   },
   "include": [
     "src",
     "reference",
-    ".storybook"
+    "vitest.config.ts"
   ]
 }

@@ -1,0 +1,5 @@
+/* 펼친 검색 칸도 둥근 도구와 같은 높이(데스크톱 28px, 휴대폰 32px)를 쓴다. */
+.search .input { block-size: var(--size-element-md); }
+@media (width < 64rem) { .search .input { block-size: var(--size-element-sm); } }
+.trigger { position: relative; }
+.dot { position: absolute; inset-block-start: 0; inset-inline-end: 0; pointer-events: none; }

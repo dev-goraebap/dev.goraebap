@@ -1,0 +1,7 @@
+/* 불투명한 옅은 띠: 행이 아래로 지나가도 읽힌다. 아래는 셸과 같은 가는 선. */
+.head { position: sticky; inset-block-start: 0; z-index: 1; flex-shrink: 0;
+  background: color-mix(in srgb, var(--color-background-muted) 55%, var(--color-background-surface));
+  border-block-end: 1px solid var(--color-border); }
+.closed { rotate: -90deg; }
+.chevron { transition: rotate var(--duration-fast) ease; }
+@media (prefers-reduced-motion: reduce) { .chevron { transition: none; } }

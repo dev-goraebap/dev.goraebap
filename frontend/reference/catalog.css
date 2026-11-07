@@ -1,7 +1,0 @@
-@layer reset, astryx-base, astryx-theme, app;
-@import '@astryxdesign/core/reset.css';
-@import '@astryxdesign/core/astryx.css';
-html, body, #storybook-root { block-size: 100%; margin: 0; }
-.reference-catalog { block-size: 100dvh; min-block-size: 0; }
-.reference-catalog > :last-child { flex: 1; min-block-size: 0; }
-.reference-route-state { padding: var(--spacing-2) var(--spacing-4); border-block-end: 1px solid var(--color-border); background: var(--color-background-surface); overflow-wrap: anywhere; }

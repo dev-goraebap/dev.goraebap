@@ -1,24 +1,23 @@
-# 화면 패턴 카탈로그
+# workspace 키트
 
-디자인 기초·기본 부품·조합 부품·레이아웃·사용 패턴·화면 예제 순서로 탐색한다. 기본 부품은 Astryx를 직접 사용하고 조합 부품은 반복되는 슬롯·동작을 묶는다. 테마와 아이콘은 디자인 기초의 별도 항목이다.
+Astryx를 쓰는 업무 앱이 같은 화면 구성과 상호작용을 재현할 수 있도록 고른 공통 UI 구현이다. 사용 기준은 `plugin/skills/design-system/references`의 Markdown이 원본이고, 실행 견본은 `frontend/src`의 Storybook에 있다. 이 폴더는 플러그인에 포함하지 않는다.
 
-왼쪽에서 해당 항목의 사용 기준을 읽고, 같은 항목의 Story를 열어 실제 화면을 조작한다. 테마와 화면 크기는 상단 도구 모음에서 바꾸고, 본문 길이·구분선·배치는 Controls에서 조절한다. Code는 조합 예제, 문서 아래 구현 코드는 실제 부품을 보여준다.
-
-| 패턴 | 확인할 내용 |
+| 폴더 | 담는 것 |
 | --- | --- |
-| 생성 양식 | 제목·리치 본문·필수 속성, 페이지·다이얼로그·모바일, 단계별 초안 |
-| 공통 다이얼로그 | 헤더·본문·푸터, 긴 내용의 스크롤, 푸터 구분선, Esc와 초점 복귀 |
-| 앱 레이아웃 | Split·Inset, 긴 목록, 테마와 모바일 전환 |
-| 라우트 마스킹 | 목록 위에서 열기, 직접 진입, 페이지 확장, 경로와 초안 보존 |
+| `foundations` | Stone 확장 테마, 버튼·카드 변형 타입, 휴대폰 크기(responsive.css), 앱 진입 CSS(base.css), 분기점 훅, Solar 아이콘 |
+| `composites` | 공통 다이얼로그·확인 창·짧은 양식, 팝오버↔바텀시트, 동작·행 메뉴, 검색, 필터·표시, 속성 알약, 파일 올리기, 상태 화면, 본문 칸, 그룹 머리 |
+| `layouts` | 앱 셸(사이드바·하단 탭·더보기), 페이지(머리·배너·툴바·적용 줄·목록·표·읽은 수), 상세, 설정, 옆 패널 |
+| `patterns` | 작성 양식과 초안 저장소, 라우트 마스킹·라우터 링크, 목록 조건의 주소 |
 
-## 관리
+Astryx 기본 부품은 다시 구현하지 않는다. 폴더끼리는 상대 경로로 이어져 있으므로 채택할 때는 필요한 파일과 그 의존만 프로젝트의 공통 UI 위치로 옮기고 경로를 고친다.
 
-패턴 규칙은 스킬의 Markdown이 원본이다. MDX에서 그 파일을 가져와 Story와 구현 코드에 연결한다. Story에는 실제 부품·시작 상태·가상 데이터·상호작용 검증만 둔다. 제품 동작을 Story 안에서 다시 구현하지 않는다.
+## 채택 순서
 
-공통 워크플로우의 코드는 선택형 레퍼런스다. 채택할 때 프로젝트의 UI·테마 위치로 필요한 파일만 옮기고 기존 Provider·리치에디터·아이콘에 연결한다. 설치·동기화만으로 제품에 자동 적용하지 않는다.
+1. 앱 진입점에서 `foundations/base.css`를 UI 모듈보다 먼저 읽는다. 레이어 순서(reset → astryx-base → astryx-theme), 글꼴(Pretendard Variable·JetBrains Mono Variable), 휴대폰 크기·스크롤바·큰 화면 배율이 함께 온다. 글꼴 패키지 `pretendard`와 `@fontsource-variable/jetbrains-mono`를 함께 설치한다. 빠지면 Windows에서 맑은 고딕으로 대체되어 작은 글자가 흐려 보인다.
+2. 루트를 `ReferenceTheme`(라이트·다크는 앱의 설정 하나)과 라우터 루트의 `LinkProvider component={RouterLink}`로 감싼다.
+3. 작성 양식을 쓰면 라우터보다 위에 `DraftProvider`를 둔다.
+4. 아이콘 이름을 더하면 `frontend/scripts/generate-icons.mjs`의 매핑을 고치고 `npm run frontend:icons`를 실행한다.
 
-원본 저장소에서 npm ci 후 npm run patterns로 4431 포트에서 실행한다. npm run patterns:check, npm run patterns:build, npm run patterns:test로 타입·정적 출력·상호작용을 검사한다. 테스트용 Chromium은 npx playwright install chromium으로 준비한다.
+## 검증 범위
 
-예제의 값은 메모리에만 저장한다. 라우트 Story의 메모리 히스토리는 실제 브라우저 주소·새로고침 검사와 구분한다. 구현과 규칙이 달라지면 Markdown·코드·Story와 검증을 함께 갱신한다.
-
-이 폴더의 구현·Story·MDX·스타일은 frontend에서 관리하며 플러그인에 포함하지 않는다. 사용 기준은 저장소의 plugin/skills/design-system/references에서 관리하고, 설치된 지침에서는 공개 저장소 링크로 이 코드를 찾는다.
+자동 검사(타입·견본 그리기·조작 검증)와 브라우저 확인 범위는 `manifest.json`에 기록한다. 실기기 키보드·화면 낭독기·실제 서버 연동은 채택한 프로젝트에서 확인한다.
