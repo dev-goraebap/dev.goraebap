@@ -111,7 +111,10 @@ test('설치·이름 변환·오프라인 비교·동기화가 팀 경로에서 
   assert(entry.includes('acme-backend'));
   assert(!entry.includes('../backend/SKILL.md'));
   assert(entry.includes('../acme-api/SKILL.md'));
-  assert((await read(localFile(f.project, 'acme-frontend/references/structure.md'))).includes('pages/<페이지>/{ui,model,api}'));
+  assert.equal(
+    await read(localFile(f.project, 'acme-frontend/references/structure.md')),
+    await read(path.join(f.source, 'skills/frontend/references/structure.md')),
+  );
   assert(!entry.includes('disable-model-invocation'));
   await missing(localFile(f.project, 'acme-mode/agents/openai.yaml'));
   const lock = await read(path.join(f.project, '.git/goraebap-workflow/lock.json'));

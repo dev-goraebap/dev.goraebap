@@ -1,0 +1,22 @@
+import { storybookMarkdown } from './storybook-markdown';
+import { Canvas, Meta, Markdown, Source } from '@storybook/addon-docs/blocks';
+import guidance from '../../references/route-masking.md?raw';
+import implementation from './RoutedPanel.ts?raw';
+import * as Stories from './RouteMasking.stories';
+
+<Meta of={Stories} />
+
+<Markdown>{storybookMarkdown(guidance)}</Markdown>
+
+<Canvas of={Stories.FromList} />
+
+<ul>
+  <li><a href="?path=/story/patterns-routing--direct">직접 진입</a></li>
+  <li><a href="?path=/story/patterns-routing--mobile">모바일 전체 화면</a></li>
+  <li><a href="?path=/story/patterns-routing--verification">전환·초안 보존 검증</a></li>
+</ul>
+
+<details id="implementation">
+  <summary>구현 코드 · RoutedPanel.ts</summary>
+  <Source code={implementation} language="tsx" />
+</details>

@@ -119,8 +119,7 @@ export const workspaceTheme = defineTheme({
 
       'variant:view': {
         gap: 'var(--spacing-1)',
-        paddingBlockStart: 'calc(var(--spacing-2) + 1.5px)',
-        paddingBlockEnd: 'calc(var(--spacing-2) - 1.5px)',
+        paddingBlock: 'var(--spacing-1)',
         backgroundColor: 'var(--color-background-muted)',
         color: 'var(--color-text-secondary)',
         ':hover': { color: 'var(--color-text-primary)', backgroundColor: 'var(--color-background-gray)' },
@@ -149,8 +148,7 @@ export const workspaceTheme = defineTheme({
       },
       'variant:view-active': {
         gap: 'var(--spacing-1)',
-        paddingBlockStart: 'calc(var(--spacing-2) + 1.5px)',
-        paddingBlockEnd: 'calc(var(--spacing-2) - 1.5px)',
+        paddingBlock: 'var(--spacing-1)',
         backgroundColor: 'var(--color-background-gray)',
         color: 'var(--color-text-primary)',
         boxShadow: `inset 0 0 0 1px ${tint(10)}`,

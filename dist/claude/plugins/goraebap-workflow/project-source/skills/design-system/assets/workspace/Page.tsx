@@ -7,9 +7,12 @@ import type { ReactNode } from 'react';
 
 export type Crumb = { label: string; href?: string };
 
-export function Page({ crumbs, actions, views, tools, applied, isDetail = false, onBack, mobileAppBar, mobileActions, children }: {
+export function Page({ crumbs, actions, views, tools, applied, isDetail = false, onBack, mobileAppBar, mobileActions, aboveFooter, footer, notice, children }: {
   crumbs: Crumb[]; actions?: ReactNode; views?: ReactNode; tools?: ReactNode; applied?: ReactNode;
   isDetail?: boolean; onBack?: () => void; mobileAppBar?: ReactNode; mobileActions?: ReactNode; children: ReactNode;
+  footer?: ReactNode;
+  notice?: ReactNode;
+  aboveFooter?: ReactNode;
 }) {
   const isPhone = useMediaQuery('(width < 64rem)');
   const shown = isPhone ? crumbs.slice(-1) : crumbs;
@@ -27,12 +30,15 @@ export function Page({ crumbs, actions, views, tools, applied, isDetail = false,
       </HStack>
       <HStack gap={2} vAlign="center">{views ? null : tools}{actions}</HStack>
     </HStack>
+    {notice}
     {views ? <HStack className="reference-rule" height={isPhone ? '3.25rem' : '2.75rem'} paddingInline={4} gap={3} vAlign="center">
       <nav className="reference-views" aria-label="보기">{views}</nav>
       <HStack className="reference-tools" gap={1} vAlign="center">{tools}</HStack>
     </HStack> : null}
     {applied ? <HStack className="reference-applied" paddingInline={4} paddingBlock={2}>{applied}</HStack> : null}
     <VStack className="reference-page-body">{children}</VStack>
+    {aboveFooter}
+    {footer}
     {isPhone && mobileActions ? <HStack className="reference-actions" padding={4} gap={2}>{mobileActions}</HStack> : null}
   </VStack>;
 }

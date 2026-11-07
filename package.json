@@ -3,11 +3,41 @@
   "version": "0.4.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "workflow": "node manager/scripts/workflow.mjs",
     "test": "node --test tests/*.test.mjs",
     "check": "node scripts/check.mjs",
-    "package:plugins": "node scripts/package-plugins.mjs"
+    "package:plugins": "node scripts/package-plugins.mjs",
+    "patterns": "storybook dev --config-dir frontend/.storybook -p 4431 --no-open --disable-telemetry",
+    "patterns:build": "storybook build --config-dir frontend/.storybook --output-dir .tmp/storybook-static --disable-telemetry",
+    "patterns:check": "tsc -p frontend/tsconfig.json",
+    "patterns:test": "vitest run --config frontend/.storybook/vitest.config.ts",
+    "frontend:icons": "node scripts/generate-frontend-icons.mjs"
+  },
+  "devDependencies": {
+    "@astryxdesign/core": "^0.5.2",
+    "@astryxdesign/theme-stone": "^0.5.2",
+    "@babel/parser": "^8.1.0",
+    "@iconify-json/solar": "^1.2.13",
+    "@storybook/addon-a11y": "10.6.6",
+    "@storybook/addon-docs": "10.6.6",
+    "@storybook/addon-vitest": "10.6.6",
+    "@storybook/react-vite": "10.6.6",
+    "@tanstack/react-query": "^5.107.1",
+    "@tanstack/react-router": "^1.170.46",
+    "@tiptap/react": "^3.32.0",
+    "@tiptap/starter-kit": "^3.32.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/browser-playwright": "4.1.12",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "storybook": "10.6.6",
+    "typescript": "^7.0.2",
+    "vite": "^7.3.7",
+    "vitest": "4.1.12"
   }
 }

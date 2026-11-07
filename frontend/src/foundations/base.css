@@ -1,0 +1,9 @@
+@layer reset, astryx-base, astryx-theme, app;
+@import "@astryxdesign/core/reset.css";
+@import "@astryxdesign/core/astryx.css";
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}

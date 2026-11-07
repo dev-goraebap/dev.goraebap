@@ -1,12 +1,15 @@
 {
   "id": "workspace-layout",
-  "revision": 2,
-  "updated": "2026-11-05",
+  "revision": 4,
+  "updated": "2026-11-07",
   "kind": "opt-in-reference",
   "compatibility": {
     "react": "19",
     "@astryxdesign/core": "0.5.2",
-    "@astryxdesign/theme-stone": "0.5.2"
+    "@astryxdesign/theme-stone": "0.5.2",
+    "@tanstack/react-router": "1",
+    "@tiptap/react": "3",
+    "storybook": "10.6.6"
   },
   "automaticProductInstallation": false,
   "validation": {
@@ -27,6 +30,14 @@
         "detail"
       ],
       "scope": "Local fixture: filters, save/cancel, theme/layout changes, draft preservation across breakpoints; no source pixel parity or physical mobile keyboard verification"
+    },
+    "catalog": {
+      "date": "2026-11-07",
+      "tool": "Storybook 10.6.6",
+      "typecheck": "passed",
+      "staticBuild": "passed",
+      "interactionTests": 16,
+      "scope": "Markdown import, real source code, theme/viewport controls, dialog close/Escape/focus return, route masking and draft preservation. Memory routing does not verify browser refresh/share. Physical keyboard/mobile not verified."
     }
   }
 }

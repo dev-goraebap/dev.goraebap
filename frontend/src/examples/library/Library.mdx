@@ -1,0 +1,12 @@
+import { Meta, Canvas, Markdown, Source } from "@storybook/addon-docs/blocks";
+import * as Stories from "./app/LibraryApp.stories";
+import guide from "../../../README.md?raw";
+import app from "./app/LibraryApp.tsx?raw";
+
+<Meta title="예제/사용 방법" />
+<Markdown>{guide}</Markdown>
+<Canvas of={Stories.Library} />
+
+## 앱 조립 코드
+
+<Source code={app} language="tsx" />

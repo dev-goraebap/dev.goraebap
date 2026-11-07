@@ -11,6 +11,19 @@
 .reference-filter-chip { flex: none; border: 1px solid var(--color-border); border-radius: var(--radius-full); }
 .reference-actions { flex-shrink: 0; border-block-start: 1px solid var(--color-border); padding-block-end: max(1rem, env(safe-area-inset-bottom)); }
 .reference-detail { container: reference-detail / inline-size; }
+.reference-dialog { --reference-dialog-edge: 12dvh; inset-block: var(--reference-dialog-edge) auto; margin-block: 0; }
+.reference-dialog-frame { flex: 1; min-block-size: 0; }
+.reference-dialog-header, .reference-dialog-body, .reference-dialog-footer { padding: var(--spacing-4); }
+.reference-dialog-header { padding-block-end: var(--spacing-2); flex: none; }
+.reference-dialog-heading { flex: 1; min-inline-size: 0; }
+.reference-dialog-body { padding-block-start: var(--spacing-2); flex: 1; min-block-size: 0; }
+.reference-dialog-footer { flex: none; }
+.reference-dialog-footer[data-divider] { border-block-start: 1px solid var(--color-border); }
+.reference-creation-title { inline-size: 100%; padding: 0; border: 0; background: none; color: var(--color-text-primary); font: inherit; font-size: var(--text-heading-2-size); font-weight: 600; }
+.reference-creation-form { min-inline-size: 0; }
+.reference-creation-dock { flex: none; padding: var(--spacing-2) var(--spacing-4); }
+.reference-creation-dock:empty { display: none; }
+.reference-creation-body { min-block-size: 10rem; padding: 0; outline: none; line-height: 1.6; }
 .reference-detail-grid { box-sizing: border-box; display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "title" "side" "body"; gap: var(--spacing-4); max-inline-size: 45rem; margin-inline: auto; padding: var(--spacing-5) var(--spacing-4) var(--spacing-10); }
 .reference-detail-head { grid-area: head; min-inline-size: 0; }
 .reference-detail-title { grid-area: title; min-inline-size: 0; }
@@ -24,3 +37,5 @@
   .reference-detail-section { display: flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-0-5); }
   .reference-detail-section-title { display: block; padding-inline: 0.5rem; margin-block-end: var(--spacing-1); }
 }
+
+.reference-dialog-heading:focus { outline: none; }

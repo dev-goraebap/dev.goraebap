@@ -10,7 +10,11 @@ const json = value => `${JSON.stringify(value, null, 2)}\n`;
 async function put(relative, content) {
   const destination = path.join(root, 'dist', relative);
   await fs.mkdir(path.dirname(destination), { recursive: true });
-  await fs.writeFile(destination, content);
+  // Windows readers may memory-map a copied skill before its metadata is set.
+  // Replace the file atomically rather than truncating that mapped file.
+  const next = `${destination}.next`;
+  await fs.writeFile(next, content);
+  await fs.rename(next, destination);
 }
 
 async function copyFiles(source, destination, extensions = ['.md', '.mjs', '.yaml']) {
@@ -36,15 +40,15 @@ export async function packagePlugins() {
     await copyFiles(path.join(root, 'manager/skills'), `${pluginPath}/manager/skills`);
     await copyFiles(path.join(root, 'manager/scripts'), `${pluginPath}/manager/scripts`);
     await copyFiles(path.join(root, 'manager/templates'), `${pluginPath}/manager/templates`);
-    await copyFiles(path.join(root, 'skills'), `${pluginPath}/manager/skills`, ['.md', '.mjs', '.yaml', '.tsx', '.ts', '.css', '.json']);
+    await copyFiles(path.join(root, 'skills'), `${pluginPath}/manager/skills`, ['.md', '.mjs', '.yaml', '.tsx', '.ts', '.css', '.json', '.mdx']);
     // Unmodified project source is separate from explicitly invoked plugin skills.
-    await copyFiles(path.join(root, 'skills'), `${pluginPath}/project-source/skills`, ['.md', '.mjs', '.yaml', '.tsx', '.ts', '.css', '.json']);
+    await copyFiles(path.join(root, 'skills'), `${pluginPath}/project-source/skills`, ['.md', '.mjs', '.yaml', '.tsx', '.ts', '.css', '.json', '.mdx']);
     await put(`${pluginPath}/project-source/package.json`, json({ name: pkg.name, version: pkg.version, private: true, type: 'module' }));
     const skillRoot = path.join(root, 'dist', pluginPath, 'manager/skills');
     for (const name of await fs.readdir(skillRoot)) {
       const file = path.join(skillRoot, name, 'SKILL.md');
       const original = await fs.readFile(file, 'utf8');
-      await fs.writeFile(file, original.replace(/^---\r?\n/, '---\ndisable-model-invocation: true\n'));
+      await put(`${pluginPath}/manager/skills/${name}/SKILL.md`, original.replace(/^---\r?\n/, '---\ndisable-model-invocation: true\n'));
       await put(`${pluginPath}/manager/skills/${name}/agents/openai.yaml`, 'policy:\n  allow_implicit_invocation: false\n');
     }
     await put(`${pluginPath}/README.md`, await fs.readFile(path.join(root, 'docs/plugin-usage.md')));
