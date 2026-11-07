@@ -2,8 +2,8 @@ import "../src/foundations/styles.css";
 import './preview.css';
 import type { Preview } from "@storybook/react-vite";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
-import { ReferenceTheme } from "../../skills/design-system/assets/workspace/ReferenceTheme";
-import "../../skills/design-system/assets/workspace/catalog.css";
+import { ReferenceTheme } from "../reference/ReferenceTheme";
+import "../reference/catalog.css";
 import { ThemedDocsContainer } from "./ThemedDocsContainer";
 const preview: Preview = {
   initialGlobals: { theme: "light" },

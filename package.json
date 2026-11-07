@@ -1,21 +1,20 @@
 {
-  "name": "goraebap-workflow",
-  "version": "0.4.0",
+  "name": "goraebap-workflow-workspace",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "workflow": "node manager/scripts/workflow.mjs",
-    "test": "node --test tests/*.test.mjs",
-    "check": "node scripts/check.mjs",
-    "package:plugins": "node scripts/package-plugins.mjs",
+    "workflow": "node plugin/manager/scripts/workflow.mjs",
+    "test": "node --test plugin/tests/*.test.mjs",
+    "check": "node plugin/scripts/check.mjs",
+    "package:plugins": "node plugin/scripts/package-plugins.mjs",
     "patterns": "storybook dev --config-dir frontend/.storybook -p 4431 --no-open --disable-telemetry",
     "patterns:build": "storybook build --config-dir frontend/.storybook --output-dir .tmp/storybook-static --disable-telemetry",
     "patterns:check": "tsc -p frontend/tsconfig.json",
     "patterns:test": "vitest run --config frontend/.storybook/vitest.config.ts",
-    "frontend:icons": "node scripts/generate-frontend-icons.mjs"
+    "frontend:icons": "node frontend/scripts/generate-icons.mjs"
   },
   "devDependencies": {
     "@astryxdesign/core": "^0.5.2",

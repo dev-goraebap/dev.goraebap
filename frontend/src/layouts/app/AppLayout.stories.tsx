@@ -1,4 +1,4 @@
-import meta, * as reference from "../../../../skills/design-system/assets/workspace/AppLayout.stories";
+import meta, * as reference from "../../../reference/AppLayout.stories";
 export default {
   ...meta,
   parameters: { layout: "fullscreen", docs: { story: { height: "620px" } } },

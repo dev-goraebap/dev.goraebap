@@ -1,4 +1,4 @@
-import meta, * as reference from "../../../../skills/design-system/assets/workspace/CreationForm.stories";
+import meta, * as reference from "../../../reference/CreationForm.stories";
 export default {
   ...meta,
   parameters: { layout: "fullscreen", docs: { story: { height: "620px" } } },

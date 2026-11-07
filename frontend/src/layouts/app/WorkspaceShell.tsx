@@ -1,1 +1,1 @@
-export * from "../../../../skills/design-system/assets/workspace/WorkspaceShell";
+export * from "../../../reference/WorkspaceShell";

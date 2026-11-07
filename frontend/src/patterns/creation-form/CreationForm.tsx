@@ -1,1 +1,1 @@
-export * from "../../../../skills/design-system/assets/workspace/CreationForm";
+export * from "../../../reference/CreationForm";

@@ -1,4 +1,4 @@
-import meta, * as reference from "../../../../../skills/design-system/assets/workspace/Dialog.stories";
+import meta, * as reference from "../../../../reference/Dialog.stories";
 export default {
   ...meta,
   parameters: { layout: "centered", docs: { story: { height: "420px" } } },

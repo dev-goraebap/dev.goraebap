@@ -1,1 +1,1 @@
-export * from "../../../../../skills/design-system/assets/workspace/RichTextBody";
+export * from "../../../../reference/RichTextBody";

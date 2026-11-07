@@ -1,4 +1,4 @@
-import meta, * as reference from "../../../../skills/design-system/assets/workspace/RouteMasking.stories";
+import meta, * as reference from "../../../reference/RouteMasking.stories";
 export default {
   ...meta,
   parameters: { layout: "fullscreen", docs: { story: { height: "620px" } } },

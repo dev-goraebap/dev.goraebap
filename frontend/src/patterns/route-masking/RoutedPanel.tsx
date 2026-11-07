@@ -1,1 +1,1 @@
-export * from "../../../../skills/design-system/assets/workspace/RoutedPanel";
+export * from "../../../reference/RoutedPanel";

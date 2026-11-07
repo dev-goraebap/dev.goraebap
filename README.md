@@ -10,21 +10,25 @@
 ## 저장소 구성
 
 ```text
-skills/                         공통 개발 지침 원본
-  goraebap-mode/                개발 작업 입구·플레이북
-  frontend/                     Storybook · 부품 · 패턴 · 화면 예제
-  backend/                      Spring·jOOQ·모듈 경계
-  api/                          HTTP·오류·권한·생성 타입
-  database/                     마이그레이션
-  design-system/                Astryx·Solar·테마·레이아웃과 선택형 코드 레퍼런스
-  architecture/                 시스템 경계·운영
-manager/skills/manage-workflow/  설치·비교·업데이트 관리 지침
-manager/scripts/                관리 CLI와 설정 도구
-manager/templates/              프로젝트에 배포할 독립 동기화 스크립트
-scripts/                        검사·패키지 생성
-tests/                          임시 Git 저장소·clone·worktree 검증
-dist/                           Git으로 함께 배포하는 생성 플러그인
+plugin/
+  skills/                       프로젝트로 배포하는 공통 개발 지침
+  manager/skills/               설치·비교·업데이트 관리 지침
+  manager/scripts/              관리 CLI와 설정 도구
+  manager/templates/            프로젝트용 독립 동기화 스크립트
+  scripts/                      플러그인 검사·패키지 생성
+  tests/                        설치·동기화·업데이트·배포 경계 검증
+  docs/                         플러그인 사용 안내
+  dist/                         Claude·Codex 생성 배포본
+  package.json                  플러그인 식별자·버전
+frontend/
+  reference/                    공통 UI 구현·기본 시나리오
+  src/                          부품·패턴·화면 예제·문서
+  .storybook/                   카탈로그 실행·검증 설정
+.claude-plugin/marketplace.json  Claude 설치용 연결
+.agents/plugins/marketplace.json Codex 설치용 연결
 ```
+
+플러그인에는 Markdown 지침과 관리 도구만 포함합니다. 프론트엔드 구현·Storybook·자산은 frontend에서 별도로 관리하고, 지침은 공개 소스 링크로 연결합니다. 루트의 마켓플레이스 파일은 설치 도구의 검색 위치를 유지하는 얇은 연결 파일입니다.
 
 ## 사용자 범위 플러그인 설치
 
@@ -50,7 +54,7 @@ codex plugin add goraebap-workflow@goraebap-workflow
 
 새 프로젝트에서 관리 스킬만 호출하면 에이전트가 온보딩을 시작합니다. 설치된 플러그인이 기본 원본이므로 별도 요청문·원본 경로·체크아웃이 필요하지 않습니다. 사용 에이전트는 대화와 프로젝트 설정에서 확인하고 불명확할 때만 질문합니다. 이미 설치된 프로젝트는 상태를 안내하며 자동 갱신하지 않습니다.
 
-Node 22 이상과 Git이 필요합니다. 아래는 에이전트가 실행하는 CLI 예시입니다. 개발 체크아웃에서는 이 저장소가 기본 원본이고, 플러그인에서는 포함된 project-source가 기본입니다. --source는 개발·시험용 선택 옵션입니다.
+Node 22 이상과 Git이 필요합니다. 아래는 에이전트가 실행하는 CLI 예시입니다. 개발 체크아웃에서는 plugin 폴더가 기본 원본이고, 플러그인에서는 포함된 project-source가 기본입니다. --source는 개발·시험용 선택 옵션입니다.
 
 ```text
 npm run workflow -- onboard --project PROJECT --agents claude-code,codex
@@ -153,6 +157,6 @@ claude plugin validate .
 
 ## 화면 패턴 카탈로그
 
-[패턴 지침](skills/design-system/references/pattern-catalog.md)은 생성 양식·공통 다이얼로그·Split·Inset·라우트 마스킹의 사용 기준을 코드와 실행 견본에 연결합니다. `npm ci` 후 `npm run patterns`로 Storybook(4431)을 엽니다. `npm run patterns:check`는 타입을, `npm run patterns:build`는 정적 내보내기를, `npm run patterns:test`는 Story의 상호작용을 검사합니다. 지침은 Markdown이 원본이고 MDX에서 같은 내용을 가져옵니다. 견본은 선택형 레퍼런스이며 프로젝트에 자동 설치하지 않습니다.
+[패턴 지침](plugin/skills/design-system/references/pattern-catalog.md)은 생성 양식·공통 다이얼로그·Split·Inset·라우트 마스킹의 사용 기준을 코드와 실행 견본에 연결합니다. `npm ci` 후 `npm run patterns`로 Storybook(4431)을 엽니다. `npm run patterns:check`는 타입을, `npm run patterns:build`는 정적 내보내기를, `npm run patterns:test`는 Story의 상호작용을 검사합니다. 지침은 Markdown이 원본이고 MDX에서 같은 내용을 가져옵니다. 견본은 선택형 레퍼런스이며 프로젝트에 자동 설치하지 않습니다.
 
 [프론트엔드 카탈로그](frontend/README.md)는 디자인 기초·기본 부품·조합 부품·레이아웃·사용 패턴·화면 예제를 Storybook 하나에서 보여줍니다. 별도 앱 서버는 두지 않습니다. 서가 예제는 같은 부품으로 목록·상세·등록을 연결하며, Story마다 메모리 라우터와 모의 저장소를 새로 만듭니다. 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 유지하지 않습니다. `frontend/`는 개발·검토용 소스이며 플러그인 패키지에 자동으로 포함하지 않습니다.
