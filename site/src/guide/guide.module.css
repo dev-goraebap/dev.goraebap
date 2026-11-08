@@ -19,7 +19,7 @@
   font-size: var(--text-heading-2-size); line-height: 1.4; font-weight: 600; scroll-margin-block-start: var(--spacing-6); }
 .prose :global(h3) { margin: var(--spacing-8) 0 var(--spacing-2); font-size: var(--text-heading-3-size); line-height: 1.5; font-weight: 600; scroll-margin-block-start: var(--spacing-6); }
 .prose :global(h4) { margin: var(--spacing-6) 0 var(--spacing-2); font-size: var(--text-body-size); font-weight: 600; }
-.prose :global(p), .prose :global(ul), .prose :global(ol), .prose :global(table), .prose :global(pre), .prose :global(blockquote) { margin: 0 0 var(--spacing-4); }
+.prose :global(p), .prose :global(ul), .prose :global(ol), .prose :global(pre), .prose :global(blockquote) { margin: 0 0 var(--spacing-4); }
 .prose :global(ul), .prose :global(ol) { padding-inline-start: var(--spacing-6); }
 .prose :global(ul) { list-style: disc; }
 .prose :global(ol) { list-style: decimal; }
@@ -45,9 +45,9 @@
 :global(.shiki span) { color: var(--shiki-light); }
 :global(html[data-theme='dark']) :global(.shiki span) { color: var(--shiki-dark); }
 
-/* 표: 바깥 경계 하나, 안쪽은 가로 선만. 좁으면 표 안에서 가로로 넘긴다. */
-.prose :global(table) { display: block; max-inline-size: 100%; overflow-x: auto; border-collapse: collapse; font-size: var(--text-body-size); line-height: 1.6;
-  border: 1px solid var(--color-border); border-radius: var(--radius-element); }
+/* 표: 바깥 경계 하나, 안쪽은 가로 선만. 표는 상자 폭을 다 채우고, 좁으면 상자 안에서 가로로 넘긴다. */
+.table { max-inline-size: 100%; overflow-x: auto; margin: 0 0 var(--spacing-4); border: 1px solid var(--color-border); border-radius: var(--radius-element); }
+.prose .table > :global(table) { inline-size: 100%; margin: 0; border-collapse: collapse; font-size: var(--text-body-size); line-height: 1.6; }
 .prose :global(th), .prose :global(td) { padding: var(--spacing-2) var(--spacing-3); text-align: start; vertical-align: top; border-block-end: 1px solid var(--color-border); }
 .prose :global(tr:last-child td) { border-block-end: 0; }
 .prose :global(th) { font-weight: 600; background: var(--color-background-muted); white-space: nowrap; }

@@ -43,7 +43,12 @@ function DocLink({ href = '', ...props }: ComponentPropsWithRef<'a'>) {
   const isExternal = /^https?:/.test(href);
   return <RouterLink href={href} {...(isExternal ? { target: '_blank', rel: 'noopener' } : {})} {...props} />;
 }
-const mdxComponents = { a: DocLink, Sample, SampleGroup, Source };
+/** 표는 테두리·가로 스크롤을 맡는 상자에 넣는다. 표 자체는 상자 폭을 다 채워 머리 행 바탕과 행 구분선이 끝까지 닿는다. */
+function Table(props: ComponentPropsWithRef<'table'>) {
+  return <div className={styles.table}><table {...props} /></div>;
+}
+
+const mdxComponents = { a: DocLink, table: Table, Sample, SampleGroup, Source };
 
 function Brand({ isFolded }: { isFolded: boolean }) {
   return <RouterLink href="/" className={styles.brand} aria-label="고래밥 지침 처음으로">
