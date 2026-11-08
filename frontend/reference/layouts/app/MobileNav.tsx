@@ -32,13 +32,25 @@ export function MobileTabBar({ tabs, isSelected, isMoreOpen, hasMore, onNavigate
   </nav>;
 }
 
-/** 더보기 시트: 탭에 없는 목적지. 하위 공간이면 그 이름을 제목으로, 돌아가기를 앞에 둔다. */
+/**
+ * 더보기 시트: 탭에 없는 목적지. 하위 목적지는 상위 항목 아래 묶음으로 두고 묶음 사이를 선으로 나눈다. 하위 공간이면 그 이름을
+ * 제목으로, 돌아가기를 앞에 둔다.
+ */
 export function MobileMenuSheet({ isOpen, onOpenChange, entries, isSelected, onSelect, back }: {
   isOpen: boolean; onOpenChange: (isOpen: boolean) => void; entries: NavEntry[];
   isSelected: (path: string) => boolean; onSelect: (path: string) => MouseEventHandler | undefined;
   back?: { path: string; label: string; title: string };
 }) {
   const title = back?.title ?? '더보기';
+  // 하위 항목은 상위 아이콘 뒤 글자 시작선에 맞춰 들인다(사이드바와 같은 위계).
+  const row = (entry: NavEntry, isIndented = false) => {
+    const isCurrent = isSelected(entry.path);
+    return <a href={entry.path} onClick={onSelect(entry.path)} className={styles.link} data-indented={isIndented || undefined}
+      aria-current={isCurrent ? 'page' : undefined}>
+      {entry.icon ? icon(entry.icon, isCurrent) : null}
+      <Text className={styles.label} maxLines={1}>{entry.label}</Text>
+    </a>;
+  };
   return <BottomSheet isOpen={isOpen} onOpenChange={onOpenChange} label={title} height="hug">
     <SheetBody>
       <HStack className={styles.header} gap={2} vAlign="center">
@@ -47,12 +59,11 @@ export function MobileMenuSheet({ isOpen, onOpenChange, entries, isSelected, onS
         <IconButton label="메뉴 닫기" variant="ghost" size="sm" icon={icon('close')} onClick={() => onOpenChange(false)} />
       </HStack>
       {entries.length ? <nav aria-label={title}><ul className={styles.menu}>{entries.map(entry => {
-        const isCurrent = isSelected(entry.path);
-        return <li key={entry.path}>
-          <a href={entry.path} onClick={onSelect(entry.path)} className={styles.link} aria-current={isCurrent ? 'page' : undefined}>
-            {entry.icon ? icon(entry.icon, isCurrent) : null}
-            <Text className={styles.label} maxLines={1}>{entry.label}</Text>
-          </a>
+        const children = entry.children ?? [];
+        return <li key={entry.path} className={children.length ? styles.group : undefined}>
+          {row(entry)}
+          {children.length ? <ul className={styles.menu}>{children.map(child =>
+            <li key={child.path}>{row(child, !!entry.icon)}</li>)}</ul> : null}
         </li>;
       })}</ul></nav> : null}
     </SheetBody>

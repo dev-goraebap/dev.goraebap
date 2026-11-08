@@ -2,6 +2,7 @@ import { test } from "vitest";
 import { expect, userEvent, waitFor, within } from "../catalog/testing";
 import { runSample } from "../catalog/run-sample";
 import type { SampleOf } from "../catalog/types";
+import type { NavSpace } from "@kit/layouts/app/nav";
 import meta, * as samples from "./AppShell.samples";
 
 type Sample = SampleOf<typeof meta>;
@@ -35,5 +36,32 @@ const VerifyPhoneTabs: Sample = {
   },
 };
 
+const nestedSpace: NavSpace = { id: "main", title: "문서", sections: [{ title: "문서", isHeaderHidden: true, entries: [
+  { path: "/a", label: "첫째", icon: "home" }, { path: "/b", label: "둘째", icon: "folder" }, { path: "/c", label: "셋째", icon: "star" },
+  { path: "/d", label: "넷째", icon: "library", children: [{ path: "/d/1", label: "넷째 하위" }] },
+  { path: "/e", label: "다섯째", icon: "filter", children: [{ path: "/e/1", label: "다섯째 하위 1" }, { path: "/e/2", label: "다섯째 하위 2" }] },
+] }] };
+const VerifyNestedMore: Sample = {
+  name: "더보기 하위 메뉴 묶음 검증",
+  render: () => <samples.Shell space={nestedSpace} />,
+  device: "phone",
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(await page.findByRole("button", { name: "더보기" }));
+    const sheet = await page.findByRole("dialog", { name: "더보기" });
+    const parent = within(sheet).getByRole("link", { name: "다섯째" });
+    const child = within(sheet).getByRole("link", { name: "다섯째 하위 1" });
+    // 탭에 있는 상위(넷째)도 남은 하위가 있으면 묶음 머리로 보이고, 하위는 상위의 묶음 안에 놓인다.
+    await expect(within(sheet).getByRole("link", { name: "넷째" })).toBeVisible();
+    await expect(parent.closest("li")).toContainElement(child);
+    // 하위 글자는 상위 아이콘 뒤 글자 시작선에 맞춘다.
+    const textLeft = (link: HTMLElement) => link.querySelector("span, p, div")!.getBoundingClientRect().left;
+    await expect(Math.abs(textLeft(child) - textLeft(parent))).toBeLessThan(1);
+    // 묶음 사이에 선과 간격이 있다.
+    await expect(getComputedStyle(parent.closest("li")!).borderBlockStartWidth).toBe("1px");
+  },
+};
+
+test(VerifyNestedMore.name, () => runSample(meta, VerifyNestedMore));
 test(VerifySidebar.name, () => runSample(meta, VerifySidebar));
 test(VerifyPhoneTabs.name, () => runSample(meta, VerifyPhoneTabs));

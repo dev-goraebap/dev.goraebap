@@ -112,7 +112,11 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   if (isPhone) {
     const shownTabs = tabs ?? entries.slice(0, 4);
     const tabPaths = new Set(shownTabs.map(tab => tab.path));
-    const more = entries.flatMap(entry => [entry, ...(entry.children ?? [])]).filter(entry => !tabPaths.has(entry.path));
+    // 하위 목적지는 상위 항목 아래 묶음으로 남긴다. 상위가 탭에 있어도 남은 하위가 있으면 묶음 머리로 다시 보인다.
+    const more = entries.flatMap(entry => {
+      const children = (entry.children ?? []).filter(child => !tabPaths.has(child.path));
+      return tabPaths.has(entry.path) && !children.length ? [] : [{ ...entry, children }];
+    });
     return <AppShell variant="surface">
       <VStack height="100%">
         <VStack className={styles.page}>{page}</VStack>
