@@ -6,7 +6,7 @@ import { SideNav, SideNavItem, SideNavSection } from '@astryxdesign/core/SideNav
 import { Text } from '@astryxdesign/core/Text';
 import { Token } from '@astryxdesign/core/Token';
 import { VStack } from '@astryxdesign/core/VStack';
-import { Fragment, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import { icon, solarIcon } from '../../foundations/icons/solar-icon';
 import { useIsPhone } from '../../foundations/media';
 import { PageAppBarContext, PageChromeContext } from '../page/page-context';
@@ -28,7 +28,7 @@ const rootScale = () => typeof window === 'undefined' || window.innerWidth < 192
  * 본문의 부모 요소 종류는 분기점·배치를 바꿔도 같게 유지해 작성 중인 초안이 다시 마운트되지 않게 한다.
  */
 export function AppFrame({ space, pathname, isSelected, brand, headerTools, profile, footer, phoneAppBar, layout = 'inset',
-  tabs, onNavigate, children }: {
+  tabs, onNavigate, openGroups = 'all', children }: {
   space: NavSpace;
   pathname: string;
   /** 메뉴 항목이 현재인지. 기본은 주소의 가장 긴 접두사. 검색 조건으로 나뉜 메뉴는 직접 판단한다. */
@@ -48,6 +48,11 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   tabs?: NavEntry[];
   /** 메뉴 선택을 라우터로 넘긴다. 없으면 링크를 따른다. */
   onNavigate?: (path: string) => void;
+  /**
+   * 하위 메뉴 묶음을 처음에 어떻게 펼칠지. 'all'은 모두 펼침(메뉴가 짧은 업무 앱), 'current'는 현재 위치의 묶음만 펼침
+   * (문서 사이트처럼 묶음이 많을 때). 'current'에서는 다른 묶음으로 옮겨 가면 그 묶음도 펼치고, 사용자가 연 묶음은 둔다.
+   */
+  openGroups?: 'all' | 'current';
   children: ReactNode;
 }) {
   const isPhone = useIsPhone();
@@ -61,6 +66,19 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
     .filter(entry => pathname === entry.path.split('?')[0] || pathname.startsWith(`${entry.path.split('?')[0]}/`))
     .sort((a, b) => b.path.length - a.path.length)[0]?.path;
   const selected = isSelected ?? ((path: string) => path === current);
+  const currentGroup = entries.find(entry => entry.children?.length && (selected(entry.path) || entry.children.some(child => selected(child.path))))?.path;
+  const [openPaths, setOpenPaths] = useState(() => new Set(currentGroup ? [currentGroup] : []));
+  useEffect(() => {
+    if (currentGroup) setOpenPaths(paths => (paths.has(currentGroup) ? paths : new Set(paths).add(currentGroup)));
+  }, [currentGroup]);
+  const groupCollapse = (path: string) => (openGroups === 'all' ? { defaultIsCollapsed: false } : {
+    isCollapsed: !openPaths.has(path),
+    onCollapsedChange: (isClosed: boolean) => setOpenPaths(paths => {
+      const next = new Set(paths);
+      if (isClosed) next.delete(path); else next.add(path);
+      return next;
+    }),
+  });
   const navigate = (path: string) => { onNavigate?.(path); setMenuOpen(false); };
   const go = (path: string) => onNavigate && ((event: MouseEvent) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey) return;
@@ -70,7 +88,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   const isFolded = isCollapsed && !isPhone;
   const item = (entry: NavEntry): ReactNode => <SideNavItem key={entry.path} label={entry.label} href={entry.path} isSelected={selected(entry.path)}
     onClick={go(entry.path)} icon={entry.icon && solarIcon(entry.icon)} selectedIcon={entry.icon && solarIcon(entry.icon, true)}
-    collapsible={entry.children?.length ? { defaultIsCollapsed: false } : undefined}
+    collapsible={entry.children?.length ? groupCollapse(entry.path) : undefined}
     endContent={entry.badge ? <Token label={entry.badge > 99 ? '99+' : String(entry.badge)} size="sm" /> : undefined}>
     {entry.children?.length ? entry.children.map(item) : undefined}
   </SideNavItem>;

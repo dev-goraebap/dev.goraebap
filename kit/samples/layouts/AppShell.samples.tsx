@@ -12,10 +12,12 @@ import { PageList } from "@kit/layouts/page/PageParts";
 import { useState } from "react";
 import { DemoBrand, demoAccount, demoSpace, rows } from "./demo";
 
-export function Shell({ layout = "inset", space = demoSpace, rowCount = 8 }: { layout?: ShellLayout; space?: NavSpace; rowCount?: number }) {
+export function Shell({ layout = "inset", space = demoSpace, rowCount = 8, openGroups }: {
+  layout?: ShellLayout; space?: NavSpace; rowCount?: number; openGroups?: "all" | "current";
+}) {
   const [path, setPath] = useState(space.sections[0].entries[space.id === "main" ? 1 : 0].path);
   const [note, setNote] = useState("");
-  return <AppFrame space={space} pathname={path} onNavigate={setPath} layout={layout} brand={isFolded => <DemoBrand isFolded={isFolded} />}
+  return <AppFrame space={space} pathname={path} onNavigate={setPath} layout={layout} openGroups={openGroups} brand={isFolded => <DemoBrand isFolded={isFolded} />}
     headerTools={<Button label="검색" tooltip="검색" variant="box" size="sm" isIconOnly icon={icon("search")} />}
     phoneAppBar={<Avatar name="서윤" size="sm" shape="circle" />}>
     <Page crumbs={[{ label: "작업 공간" }, { label: "모든 항목" }]} create={{ label: "항목 추가", onClick: () => {} }}>

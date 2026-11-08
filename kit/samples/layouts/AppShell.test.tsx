@@ -76,6 +76,21 @@ const VerifyNestedSidebar: Sample = {
   },
 };
 
+const VerifyCurrentGroupOpen: Sample = {
+  name: "현재 묶음만 펼치기 검증",
+  render: () => <samples.Shell space={nestedSpace} openGroups="current" />,
+  play: async ({ canvasElement }) => {
+    const nav = within(await within(canvasElement.ownerDocument.body).findByRole("navigation", { name: "주 메뉴" }));
+    // 처음에는 현재 위치(둘째)가 묶음 밖이라 하위 묶음이 모두 접혀 있다.
+    await expect(nav.queryByRole("link", { name: "넷째 하위" })).toBeNull();
+    // 다른 묶음의 하위로 옮겨 가면 그 묶음이 펼쳐지고 현재 항목이 보인다.
+    await userEvent.click(nav.getByRole("link", { name: "다섯째" }));
+    await expect(await nav.findByRole("link", { name: "다섯째 하위 1" })).toBeVisible();
+    await expect(nav.queryByRole("link", { name: "넷째 하위" })).toBeNull();
+  },
+};
+
+test(VerifyCurrentGroupOpen.name, () => runSample(meta, VerifyCurrentGroupOpen));
 test(VerifyNestedSidebar.name, () => runSample(meta, VerifyNestedSidebar));
 test(VerifyNestedMore.name, () => runSample(meta, VerifyNestedMore));
 test(VerifySidebar.name, () => runSample(meta, VerifySidebar));
