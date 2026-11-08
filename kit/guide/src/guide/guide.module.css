@@ -67,8 +67,12 @@
  * 화면 전환 API(view transition)는 쓰지 않는다. 전환 중인 본문을 맨 위층에 따로 그려 휴대폰 하단 탭·머리 줄 위로 겹치기 때문이다.
  */
 .stage { position: relative; min-block-size: 100%; }
-.cover { position: absolute; inset: 0; z-index: 2; display: grid; place-items: start center; padding-block-start: 30vh;
-  background: var(--color-background-surface); }
+.cover { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: var(--spacing-3);
+  padding-block-start: 25vh; background: var(--color-background-surface); }
+/* 전환 덮개의 로켓: 첫 방문 덮개(10rem)의 절반. 선은 보조 글자색, 면은 덮개 면 색으로 칠한다. */
+.coverMark { inline-size: 5rem; block-size: 5rem; }
+.coverMark :global(svg) [stroke="rgb(0,0,0)"] { stroke: var(--color-text-secondary); }
+.coverMark :global(svg) [fill="rgb(254,254,255)"] { fill: var(--color-background-surface); }
 .body[data-arrive] { animation: arrive 160ms ease-out; }
 @keyframes arrive { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .body[data-arrive] { animation: none; } }

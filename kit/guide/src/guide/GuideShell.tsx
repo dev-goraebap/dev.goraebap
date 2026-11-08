@@ -16,6 +16,8 @@ import { docAt, firstOf, groupLabel, guideSpace, searchEntries } from '../docs';
 import { Sample } from '../samples/Sample';
 import { SampleGroup } from '../samples/SampleGroup';
 import { Source } from '../samples/Source';
+import logo from '../brand/logo.svg?raw';
+import { RocketMark } from '../loading/RocketMark';
 import styles from './guide.module.css';
 
 type Mode = 'light' | 'dark';
@@ -52,7 +54,7 @@ const mdxComponents = { a: DocLink, table: Table, Sample, SampleGroup, Source };
 
 function Brand({ isFolded }: { isFolded: boolean }) {
   return <RouterLink href="/" className={styles.brand} aria-label="웹 플랫폼 매뉴얼 처음으로">
-    <span className={styles.mark}>{icon('library')}</span>
+    <span className={styles.mark} dangerouslySetInnerHTML={{ __html: logo }} />
     {isFolded ? null : <Text weight="semibold" maxLines={1}>웹 플랫폼 매뉴얼</Text>}
   </RouterLink>;
 }
@@ -127,7 +129,7 @@ export function GuideShell() {
   return <ReferenceTheme mode={mode}>
     <LinkProvider component={RouterLink}>
       <MDXProvider components={mdxComponents}>
-        <AppFrame space={guideSpace} pathname={pathname} tabs={tabs} brand={isFolded => <Brand isFolded={isFolded} />}
+        <AppFrame space={guideSpace} pathname={pathname} tabs={tabs} openGroups="current" brand={isFolded => <Brand isFolded={isFolded} />}
           headerTools={<Search />} phoneAppBar={<Search />}
           // 묶음 메뉴는 묶음의 첫 문서로 바로 간다.
           onNavigate={path => void router.navigate({ href: firstOf(path) ?? path })}>
@@ -135,12 +137,13 @@ export function GuideShell() {
             <div className={styles.stage} aria-busy={isCovered || undefined}>
               <div inert={isCovered || undefined}><Outlet /></div>
               {isCovered ? <div className={styles.cover} role="status" aria-label="문서를 불러오는 중">
+                <span className={styles.coverMark} aria-hidden="true"><RocketMark /></span>
                 <Text type="supporting" color="secondary">불러오는 중입니다</Text>
               </div> : null}
             </div>
           </Page>
         </AppFrame>
-        <BootCover isReady={isReady} />
+        <BootCover isReady={isReady} mark={<RocketMark />} />
       </MDXProvider>
     </LinkProvider>
   </ReferenceTheme>;

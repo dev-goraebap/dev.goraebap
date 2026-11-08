@@ -32,7 +32,7 @@ export default defineConfig({
       }),
     },
     react({ include: /\.(jsx|tsx|md|mdx)$/ }),
-    bootCover({ mark: readFileSync(local('reference/patterns/boot/boot-mark.svg'), 'utf8'), modeKey: 'guide-theme',
+    bootCover({ mark: readFileSync(local('guide/src/loading/rocket-still.svg'), 'utf8'), modeKey: 'guide-theme',
       include: path => path === '/index.html' }),
   ],
   resolve: {

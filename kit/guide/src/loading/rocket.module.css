@@ -1,0 +1,4 @@
+/* 미리 그린 첫 장면과 재생기의 그림이 같은 정사각 자리에 겹쳐, 하나가 다른 하나를 제자리에서 바꾼다. */
+.rocket { position: relative; display: block; inline-size: 100%; block-size: 100%; }
+.frame { position: absolute; inset: 0; display: block; }
+.frame :global(svg) { display: block; inline-size: 100%; block-size: 100%; }
