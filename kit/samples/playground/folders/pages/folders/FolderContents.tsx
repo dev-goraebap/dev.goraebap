@@ -20,7 +20,7 @@ const dateText = (value: string) => `${Number(value.slice(5, 7))}월 ${Number(va
 type Handlers = { onOpen: (id: string) => void; onMove: (node: FolderNode) => void; onRename: (node: FolderNode) => void };
 
 const rowMenu = (node: FolderNode, { onMove, onRename }: Handlers) => <RowMenu label={`${node.name} 메뉴`} actions={[
-  { id: 'move', label: '옮기기', icon: 'forward', onSelect: () => onMove(node) },
+  { id: 'move', label: '옮기기', icon: 'move', onSelect: () => onMove(node) },
   { id: 'rename', label: '이름 바꾸기', icon: 'edit', onSelect: () => onRename(node) },
 ]} />;
 

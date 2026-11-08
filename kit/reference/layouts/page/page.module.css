@@ -46,6 +46,7 @@
 .foot { padding: var(--spacing-3) max(var(--spacing-4), calc((100% - 45rem) / 2));
   border-block-start: 1px solid var(--color-border); background: var(--color-background-surface); }
 .foot:empty { display: none; }
+.foot[data-full] { padding-inline: var(--spacing-4); }
 .footActions { inline-size: 100%; justify-content: flex-end; }
 @media (width < 64rem) {
   .foot { padding: var(--spacing-2) var(--spacing-4) calc(var(--spacing-3) + env(safe-area-inset-bottom, 0px)); }

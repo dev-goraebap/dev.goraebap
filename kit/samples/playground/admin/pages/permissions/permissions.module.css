@@ -17,11 +17,3 @@
 /* 휴대폰: 고른 역할의 기능 목록. */
 .column { display: flex; flex-direction: column; gap: var(--spacing-5); padding: var(--spacing-4); box-sizing: border-box; }
 .notice { margin: 0; }
-
-/* 바닥 고정 저장 줄: 동작만 둔다. 데스크톱은 끝으로 모으고, 휴대폰은 홈 표시줄을 피하며 저장이 남은 폭을 쓴다. */
-.foot { display: flex; justify-content: flex-end; gap: var(--spacing-2); padding: var(--spacing-3) var(--spacing-4);
-  border-block-start: 1px solid var(--color-border); background: var(--color-background-surface); }
-@media (width < 64rem) {
-  .foot { padding: var(--spacing-2) var(--spacing-4) var(--spacing-3); }
-  .foot > :last-child { flex: 1 1 auto; }
-}

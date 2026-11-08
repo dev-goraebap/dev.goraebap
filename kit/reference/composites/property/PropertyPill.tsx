@@ -70,12 +70,22 @@ export function dueText(day: string, today: string) {
 }
 
 /** 날짜 속성: 자주 쓰는 날과 공통 달력, 지우기. 날짜 입력은 언제나 같은 Astryx 달력을 쓴다. */
-export function DatePill({ label, value, onChange, today = isoOf(new Date()), isDisabled }: {
+/**
+ * 날짜 속성. 기본은 마감처럼 오늘과의 거리("3일 뒤")로 보이고, 휴가·예약처럼 날짜 자체가 중요하면 dateStyle="absolute"로
+ * "11월 12일 (목)"을 보인다. 필수·빠짐 표시는 OptionPill과 같다.
+ */
+/** "11월 12일 (목)". 날짜 문자열(YYYY-MM-DD)을 그날로 읽는다(시간대에 따라 하루 밀리지 않게 UTC로). */
+const absoluteText = (day: string) => new Intl.DateTimeFormat('ko', { month: 'long', day: 'numeric', weekday: 'short', timeZone: 'UTC' })
+  .format(new Date(`${day}T00:00:00Z`));
+
+export function DatePill({ label, value, onChange, today = isoOf(new Date()), isDisabled, isRequired, isInvalid, dateStyle = 'relative' }: {
   label: string; value?: string; onChange: (day?: string) => void; today?: string; isDisabled?: boolean;
+  isRequired?: boolean; isInvalid?: boolean; dateStyle?: 'relative' | 'absolute';
 }) {
   const presets: [string, string][] = [['오늘', today], ['내일', daysFrom(today, 1)], ['다음 주', daysFrom(today, 7)]];
-  return <PropertyPill label={label} icon={icon('calendar', !!value)} isEmpty={!value} isDisabled={isDisabled}
-    text={value ? `${label} ${dueText(value, today)}` : undefined}
+  const shown = value ? (dateStyle === 'absolute' ? absoluteText(value) : `${label} ${dueText(value, today)}`) : undefined;
+  return <PropertyPill label={label} icon={icon('calendar', !!value)} isEmpty={!value} isDisabled={isDisabled} isRequired={isRequired} isInvalid={isInvalid}
+    text={shown}
     width="18rem" content={close => <VStack gap={2}>
       <HStack gap={1} wrap="wrap">
         {presets.map(([name, day]) => <Button key={name} label={name} variant="view" size="sm" onClick={() => { onChange(day); close(); }} />)}

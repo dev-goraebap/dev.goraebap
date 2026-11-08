@@ -35,4 +35,4 @@ Astryx `ToggleButton`의 눌림 상태는 테마가 칠할 수 없어 버튼 변
 
 테마의 부품 규칙은 `@media`를 받지 않습니다. 휴대폰 크기는 [responsive.css](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/foundations/responsive.css) 한 파일에서 Astryx의 안정된 부품 클래스와 토큰으로만 정합니다. Astryx 토큰이 아닌 앱 값(그림 강조색, 점 무늬 색)은 모든 화면이 놓이는 `app-shell`에 `--app-*`로 둡니다.
 
-라이트·다크는 앱 루트의 `Theme mode` 하나가 정합니다. 견본과 화면 안에 별도 테마 전환을 두지 않습니다. 아이콘을 고르는 기준은 [아이콘](icons.md), 면의 단계는 [면과 경계](surfaces.md)가 소유합니다.
+라이트·다크는 앱 루트의 `Theme mode` 하나가 정합니다. 견본과 화면 안에 별도 테마 전환을 두지 않습니다. `ReferenceTheme`은 앱 루트에서 한 번 적용하며, `Theme` 바깥에 `InternationalizationProvider`(`locale="ko-KR"`)를 두어 Astryx `ko-KR.json`을 `messages`로, `foundations/i18n/ko-KR-extra.json`을 `overrides`로 전달합니다. 보충 파일은 기본 번역에서 빠진 문구를 채웁니다. 아이콘을 고르는 기준은 [아이콘](icons.md), 면의 단계는 [면과 경계](surfaces.md)가 소유합니다.

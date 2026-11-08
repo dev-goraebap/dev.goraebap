@@ -16,9 +16,9 @@ const VerifyRequest: Sample = {
     await userEvent.click(await page.findByRole("button", { name: "다음" }));
     await expect(await page.findByText("시작일과 종료일을 정해 주세요.")).toBeVisible();
     await expect(page.getAllByText("사유를 입력해 주세요.").length).toBeGreaterThan(0);
-    await userEvent.click(page.getByRole("button", { name: "시작일" }));
+    await userEvent.click(page.getByRole("button", { name: /^시작일/ }));
     await userEvent.click(await page.findByRole("button", { name: "내일" }));
-    await userEvent.click(await page.findByRole("button", { name: "종료일" }));
+    await userEvent.click(await page.findByRole("button", { name: /^종료일/ }));
     await userEvent.click(await page.findByRole("button", { name: "다음 주" }));
     await userEvent.type(page.getByRole("textbox", { name: "사유" }), "가족 행사로 쉽니다.");
     await userEvent.click(page.getByRole("button", { name: "다음" }));

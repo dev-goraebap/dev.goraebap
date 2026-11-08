@@ -13,7 +13,7 @@ const SOLAR = {
   clock: 'clock-circle', sun: 'sun', moon: 'moon', computer: 'monitor', search: 'magnifier', filter: 'tuning-2',
   sort: 'sort-vertical', 'layout-list': 'list', 'layout-grid': 'widget-2', 'layout-table': 'table', 'layout-board': 'kanban',
   'expand-page': 'full-screen', archive: 'archive-down', restore: 'restart', lock: 'lock-keyhole-minimalistic',
-  comment: 'chat-round-dots', grip: 'grip-vertical', fold: 'double-alt-arrow-left', unfold: 'double-alt-arrow-right',
+  comment: 'chat-round-dots', grip: 'grip-vertical', move: 'move-to-folder', fold: 'double-alt-arrow-left', unfold: 'double-alt-arrow-right',
 };
 
 const solar = JSON.parse(await fs.readFile(new URL('../../node_modules/@iconify-json/solar/icons.json', import.meta.url), 'utf8'));

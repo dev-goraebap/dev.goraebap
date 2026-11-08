@@ -80,8 +80,10 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
       <HStack gap={1.5} wrap="wrap" vAlign="center" role="group" aria-label="종류와 기간" data-invalid-field={showDatesError ? '' : undefined}>
         <OptionPill label="종류" icon="document" value={draft.kind} options={leaveKinds.map(each => ({ value: each.id, label: each.label }))}
           onChange={kind => set({ kind: kind as LeaveKind })} />
-        <DatePill label="시작일" value={draft.start} today={today} onChange={start => set({ start })} />
-        <DatePill label="종료일" value={draft.end} today={today} onChange={end => set({ end })} />
+        <DatePill label="시작일" value={draft.start} today={today} onChange={start => set({ start })} dateStyle="absolute" isRequired
+          isInvalid={showDatesError && !draft.start} />
+        <DatePill label="종료일" value={draft.end} today={today} onChange={end => set({ end })} dateStyle="absolute" isRequired
+          isInvalid={showDatesError && !!draft.start} />
       </HStack>
       {showDatesError ? <Text className={styles.error} type="supporting" role="alert">{checked.dates}</Text>
         : <Text type="supporting" color="secondary" hasTabularNumbers>{range}</Text>}

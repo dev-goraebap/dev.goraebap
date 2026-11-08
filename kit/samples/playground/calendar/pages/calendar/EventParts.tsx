@@ -4,7 +4,7 @@ import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
 import { AdaptivePopover } from '@kit/composites/popup/AdaptivePopover';
 import { icon } from '@kit/foundations/icons/solar-icon';
-import { createContext, useContext, useEffect, useRef, type CSSProperties } from 'react';
+import { createContext, useContext, type CSSProperties } from 'react';
 import { dayText, eventsOn, whenText, type CalendarEvent, type DateKey } from '../../entities/event';
 import { useCalendarAddress } from './address';
 import styles from './calendar.module.css';
@@ -40,18 +40,16 @@ export function EventPopover({ event, variant, day, style, continuesBefore, cont
   event: CalendarEvent; variant: EventVariant; day?: DateKey; style?: CSSProperties; continuesBefore?: boolean; continuesAfter?: boolean;
 }) {
   const address = useCalendarAddress();
-  const trigger = useRef<HTMLButtonElement>(null);
-  // 주소로 들어온 일정은 이 요소가 처음 그려질 때 한 번 연다. 이후 열고 닫는 것은 사용자가 하고 주소가 따라간다.
-  const isLinked = address.event === event.id;
-  useEffect(() => { if (isLinked) trigger.current?.click(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  // 주소로 들어온 일정은 처음부터 열어 둔다(여러 날에 걸친 일정은 첫 막대만). 이후 열고 닫는 것은 사용자가 하고 주소가 따라간다.
+  const isLinked = address.event === event.id && !continuesBefore;
   const timeText = event.time ?? (variant === 'row' || variant === 'card' ? '종일' : undefined);
   const resumed = variant === 'card' && day && event.start < day;
   // Popover는 트리거를 자기 앵커 요소로 감싸므로 격자 자리는 그 바깥의 slot이 가진다.
   return <div className={styles.slot} style={style} data-variant={variant} data-before={continuesBefore || undefined} data-after={continuesAfter || undefined}>
-    <AdaptivePopover label={event.title} width="20rem" placement="below" alignment="start"
+    <AdaptivePopover label={event.title} width="20rem" placement="below" alignment="start" defaultOpen={isLinked}
     onOpenChange={isOpen => { if (isOpen !== (address.event === event.id)) address.go({ event: isOpen ? event.id : undefined }, { replace: true }); }}
     content={close => <EventDetail event={event} close={close} />}
-    trigger={<button ref={trigger} type="button" className={styles[variant]} data-color={event.color} aria-label={`${event.title}, ${whenText(event)}`}>
+    trigger={<button type="button" className={styles[variant]} data-color={event.color} aria-label={`${event.title}, ${whenText(event)}`}>
       {variant === 'row' ? <span className={styles.rowTime}>{timeText}</span> : null}
       {variant === 'card' ? <span className={styles.cardTime}>{resumed ? '이어서' : timeText}</span> : null}
       {variant === 'bar' && event.time ? <span className={styles.barTime}>{event.time}</span> : null}

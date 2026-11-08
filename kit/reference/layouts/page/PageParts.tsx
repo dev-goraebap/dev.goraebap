@@ -19,6 +19,17 @@ export function PageBanner(props: Omit<BannerProps, 'container' | 'collapsible'>
 }
 
 /**
+ * Page의 footer에 넣는 바닥 고정 동작 줄(상세가 아닌 화면용: 권한 격자처럼 여러 칸을 바꿔 한 번에 저장하는 페이지).
+ * 상세·작성 페이지는 PageActions가 같은 줄을 채운다. 줄에는 동작만 둔다. 본문이 45rem 열이면 그 선에, 표·격자처럼 폭을
+ * 다 쓰는 본문이면 isFullWidth로 페이지 끝 선에 맞춘다.
+ */
+export function PageFootBar({ label, isFullWidth = false, children }: { label?: string; isFullWidth?: boolean; children: ReactNode }) {
+  return <HStack className={styles.foot} data-full={isFullWidth || undefined} role={label ? 'region' : undefined} aria-label={label}>
+    <HStack className={styles.footActions} gap={2} vAlign="center">{children}</HStack>
+  </HStack>;
+}
+
+/**
  * 양식의 마무리 동작(취소·이전·다음·제출)만 둔다. 상세·작성 페이지는 데스크톱·휴대폰 모두 바닥 고정 줄에 들어가고,
  * 휴대폰은 마지막(양식 자체의 동작)이 남은 폭을 차지한다. start는 줄의 처음(데스크톱은 왼쪽으로 민다).
  * 안내("날짜를 고르세요")와 저장 실패는 넣지 않는다: 안내는 칸 곁, 실패는 양식 위 PageBanner.

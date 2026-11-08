@@ -16,7 +16,7 @@ import { PageState } from '@kit/composites/state/PageState';
 import { icon } from '@kit/foundations/icons/solar-icon';
 import { useIsPhone } from '@kit/foundations/media';
 import { Page } from '@kit/layouts/page/Page';
-import { PageBanner } from '@kit/layouts/page/PageParts';
+import { PageBanner, PageFootBar } from '@kit/layouts/page/PageParts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useBlocker } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -65,10 +65,10 @@ export function PermissionsPage() {
       : <Grid valueOf={valueOf} isChanged={(target, feature) => changed.has(cellKey(target, feature))} onToggle={toggle} />;
   };
   return <Page crumbs={[{ label: '관리', href: '/tags', icon: 'settings' }, { label: '권한' }]}
-    footer={changed.size > 0 ? <HStack className={styles.foot} role="region" aria-label="변경 사항 저장" gap={2} vAlign="center">
+    footer={changed.size > 0 ? <PageFootBar label="변경 사항 저장" isFullWidth>
       <Button label="되돌리기" variant="ghost" isDisabled={save.isPending} onClick={() => setChanged(new Set())} />
       <Button label={`변경 ${changed.size}개 저장`} variant="primary" isLoading={save.isPending} onClick={submit} />
-    </HStack> : undefined}>
+    </PageFootBar> : undefined}>
     {save.isError ? <PageBanner status="error" title="권한을 저장하지 못했습니다" description="바꾼 칸은 그대로 남아 있습니다. 다시 저장해 주세요." /> : null}
     {content()}
     <AlertDialog isOpen={blocker.status === 'blocked'} onOpenChange={open => { if (!open) blocker.reset?.(); }} title="저장하지 않고 나갈까요?"
