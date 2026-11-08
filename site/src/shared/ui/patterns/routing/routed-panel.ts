@@ -3,6 +3,7 @@ import { useIsPhone } from '../../foundations/media';
 
 /** 이 세션에서 목록 위에 연 패널인지 표시하는 히스토리 상태 키. */
 const OPENED = 'openedPanel';
+const ROOT_ENTRY = 'root';
 
 /**
  * 데스크톱에서는 지금 목록을 둔 채 ?panel=에 대상 주소를 넣고, 주소창에는 대상의 실제 주소를 마스크로 보인다. 휴대폰은
@@ -15,9 +16,11 @@ export function useOpenPanel() {
   return (href: string) => {
     if (isPhone) return void navigate({ href });
     const target = new URL(href, 'https://panel.invalid');
+    const replacing = typeof (location.search as Record<string, unknown>).panel === 'string';
+    const marker = replacing ? (location.state as unknown as Record<string, unknown> | undefined)?.[OPENED] : ROOT_ENTRY;
     void navigate({
-      to: location.pathname, search: { ...(location.search as Record<string, unknown>), panel: href }, state: { [OPENED]: true } as never,
-      mask: { to: target.pathname, search: Object.fromEntries(target.searchParams), state: { [OPENED]: true } as never, unmaskOnReload: true },
+      replace: replacing, to: location.pathname, search: { ...(location.search as Record<string, unknown>), panel: href }, state: { [OPENED]: marker } as never,
+      mask: { to: target.pathname, search: Object.fromEntries(target.searchParams), state: { [OPENED]: marker } as never, unmaskOnReload: true },
     });
   };
 }
@@ -32,7 +35,7 @@ export function useRoutedPanel() {
   const router = useRouter();
   const isPhone = useIsPhone();
   const { panel, ...rest } = location.search as Record<string, unknown>;
-  const openedHere = !!(location.state as unknown as Record<string, unknown> | undefined)?.[OPENED];
+  const openedHere = (location.state as unknown as Record<string, unknown> | undefined)?.[OPENED] === ROOT_ENTRY;
   const href = typeof panel === 'string' && panel.startsWith('/') ? panel : undefined;
   return {
     /** 휴대폰 폭에서는 패널을 그리지 않고 페이지로 옮긴다. */
