@@ -1,0 +1,11 @@
+/* 보드: 상태별 칸을 가로로 늘어놓고 보드 안에서만 가로로 넘긴다. 좁은 화면은 85% 폭 칸에 스냅. */
+.scroll { overflow-x: auto; min-inline-size: 0; }
+.scroll:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: calc(var(--focus-outline-offset) * -1); }
+.board { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(15rem, 1fr); gap: var(--spacing-3); align-items: start; padding: var(--spacing-4); box-sizing: border-box; min-inline-size: min-content; }
+.column { display: flex; flex-direction: column; gap: var(--spacing-2); min-inline-size: 0; padding: var(--spacing-2); border-radius: var(--radius-container); background: var(--color-background-muted); }
+.head { padding: var(--spacing-1) var(--spacing-1) var(--spacing-1-5); }
+.none { padding: var(--spacing-4) var(--spacing-2); text-align: center; }
+@media (width < 64rem) {
+  .board { grid-auto-columns: 85%; padding-inline: var(--spacing-4); scroll-snap-type: x mandatory; scroll-padding-inline: var(--spacing-4); }
+  .column { scroll-snap-align: start; }
+}

@@ -14,7 +14,7 @@ plugin/
   package.json                  플러그인 식별자·버전
 kit/
   reference/                    채택할 수 있는 공통 UI 키트(기초·조합·레이아웃·패턴)
-  samples/                      범주별 견본·조작 검증과 Playground 화면 템플릿
+  samples/                      범주별 견본·조작 검증과 Playground 기능 단위 앱
   guide/                        지침을 사람이 읽기 쉽게 보여 주는 가이드 사이트
   scripts/                      Solar 아이콘 매핑 생성
 .claude-plugin/marketplace.json  Claude 설치용 연결
@@ -83,4 +83,4 @@ npm run package:plugins
 
 [패턴 지침](plugin/skills/design-system/references/pattern-catalog.md)은 Foundations·Primitives·Composites·Layouts·Patterns·Playground의 사용 기준을 키트 코드와 실행 견본에 연결합니다. 견본은 가이드에서 봅니다. `npm run kit:check`는 타입을, `npm run kit:test`는 견본 그리기와 조작 검증을 Chromium에서 검사합니다. 견본은 선택형 레퍼런스이며 프로젝트에 자동 설치하지 않습니다.
 
-[키트와 견본](kit/README.md)은 Foundations (디자인 기초)·Primitives (기본 부품)·Composites (조합 부품)·Layouts (레이아웃)·Patterns (사용 패턴)·Playground (플레이그라운드)의 견본을 관리합니다. 별도 앱 서버는 두지 않습니다. Playground는 목록·목록 + 미리보기·상세·작성·문서 편집·자료 올리기·설정 템플릿을 보이며, 견본마다 메모리 라우터와 모의 저장소를 새로 만듭니다. 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 유지하지 않습니다. `kit/`는 개발·검토용 소스이며 플러그인 패키지에 자동으로 포함하지 않습니다.
+[키트와 견본](kit/README.md)은 Foundations (디자인 기초)·Primitives (기본 부품)·Composites (조합 부품)·Layouts (레이아웃)·Patterns (사용 패턴)·Playground (플레이그라운드)의 견본을 관리합니다. 별도 앱 서버는 두지 않습니다. Playground는 인박스·이슈·로그인·문서함·설정·일정·결재 신청·권한 설정·댓글·대화·활동 기록·가져오기·오류·권한 페이지·폴더 탐색·태그 관리·사용자 관리·처음 시작 등 기능 단위 앱 16개를 보이며, 견본마다 메모리 라우터와 모의 저장소를 새로 만듭니다. 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 유지하지 않습니다. `kit/`는 개발·검토용 소스이며 플러그인 패키지에 자동으로 포함하지 않습니다.

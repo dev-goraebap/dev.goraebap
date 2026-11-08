@@ -1,0 +1,10 @@
+/* 가져오기 본문 열: 단계마다 읽는 폭(45rem). 미리보기 표는 넓게. */
+.column { inline-size: 100%; max-inline-size: 45rem; margin-inline: auto; padding: var(--spacing-6) var(--spacing-6) var(--spacing-12); box-sizing: border-box; }
+.column[data-wide] { max-inline-size: 64rem; }
+@media (width < 64rem) { .column { padding: var(--spacing-4) var(--spacing-4) var(--spacing-8); } }
+
+.mark { display: inline-grid; place-items: center; inline-size: 1.5rem; block-size: 1.5rem; border-radius: var(--radius-element);
+  background: var(--color-background-muted); color: var(--color-icon-secondary); }
+.problem { color: var(--color-text-red, var(--color-text-secondary)); }
+.done { display: inline-grid; place-items: center; color: var(--color-icon-green); }
+tr[data-error] { background: var(--color-background-red); }

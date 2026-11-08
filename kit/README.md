@@ -14,14 +14,14 @@ Astryx 기반 화면의 공통 구현(키트)과 그 견본을 둔다. 견본은
 | `samples/<범주>/*.samples.tsx` | 견본. 기본 내보내기가 묶음(제목·id·틀), 이름 있는 내보내기가 견본 하나다 |
 | `samples/<범주>/*.test.tsx` | 조작 검증. 견본 파일의 부품을 그려 누르고 확인한다 |
 | `samples/catalog` | 견본 형식, 그리기, 목록, 검사 도구 |
-| `samples/playground` | 화면 템플릿(목록, 목록 + 미리보기, 상세, 작성, 문서 편집, 자료 올리기, 설정)과 그 바탕인 서가 앱·모의 저장소(`library`) |
+| `samples/playground` | 기능 단위 앱 16개(인박스, 이슈, 로그인, 문서함, 설정, 일정, 결재 신청, 권한 설정, 댓글·대화, 활동 기록, 가져오기, 오류·권한 페이지, 폴더 탐색, 태그 관리, 사용자 관리, 처음 시작)와 문서함이 쓰는 공통 서가 앱·모의 저장소(`library`) |
 | `guide` | 가이드 사이트. `src`, `content`(화면 해설·견본·참고 MDX), `content-plugin.ts`, `index.html`, `sample.html` |
 | `scripts` | Solar 아이콘 매핑 생성 |
 | `vite.config.ts` | 가이드 사이트 빌드·개발 서버(4451) |
 | `vitest.config.ts` | 견본 검사(Chromium) |
 | `tsconfig.json` | 키트·견본·가이드 타입 검사 |
 
-범주는 Foundations (디자인 기초) → Primitives (기본 부품) → Composites (조합 부품) → Layouts (레이아웃) → Patterns (사용 패턴) → Playground (플레이그라운드) 순서다. 범주는 영문(한글), 그 안의 항목은 한글로 쓴다. 화면 하나로 완결되어 옮겨 쓸 수 있으면 Playground 템플릿, 여러 템플릿이 지키는 여는 방식·상태·조작이면 Patterns다. 새 화면 유형은 Playground에 템플릿 파일을 더한다. 견본과 예제는 키트를 `@kit/…`로 가져와 채택한 프로젝트와 같은 방식으로 쓴다. 서가 예제의 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 두지 않는다.
+범주는 Foundations (디자인 기초) → Primitives (기본 부품) → Composites (조합 부품) → Layouts (레이아웃) → Patterns (사용 패턴) → Playground (플레이그라운드) 순서다. 범주는 영문(한글), 그 안의 항목은 한글로 쓴다. 기능 하나를 작은 앱 하나로 묶어 본뜰 수 있게 한 것은 Playground(16개 앱, 공통 서가 앱 `library`는 문서함이 씀)이고, 여러 앱이 지키는 여는 방식·상태·조작이면 Patterns다. Playground는 앱마다 느낌이 확실히 다른 화면만 다루고 같은 모양의 화면은 한 앱에서만 다루며, 기존 앱과 느낌이 다른 화면이 필요하면 새 앱을 더한다. 견본 앱은 `kit/samples/catalog/shell-layout.ts`의 `useShellLayout()`을 `AppFrame`의 `layout`에 넘겨 가이드 머리 줄의 배치 전환(Inset·Split)을 따른다. 견본과 예제는 키트를 `@kit/…`로 가져와 채택한 프로젝트와 같은 방식으로 쓴다. 서가 예제의 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 두지 않는다.
 
 ## 견본 쓰기
 

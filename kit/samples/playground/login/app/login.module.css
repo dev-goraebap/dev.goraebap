@@ -1,0 +1,12 @@
+/* 셸 없는 인증 화면: 바탕 위 가운데 카드. 휴대폰(64rem 미만)은 카드 테두리와 면 없이 화면 전체를 쓴다. */
+.screen { display: grid; place-items: center; min-block-size: 100%; box-sizing: border-box; padding: var(--spacing-6) var(--spacing-4);
+  background: var(--color-background-body); }
+.card { inline-size: 100%; max-inline-size: 25rem; box-sizing: border-box; padding: var(--spacing-8);
+  border: 1px solid var(--color-border); border-radius: var(--radius-container); background: var(--color-background-card); }
+.logo { display: inline-grid; place-items: center; inline-size: 2rem; block-size: 2rem; border-radius: var(--radius-element);
+  background: var(--color-background-muted); color: var(--color-icon-secondary); }
+.form { inline-size: 100%; }
+@media (width < 64rem) {
+  .screen { place-items: start center; padding: var(--spacing-10) 0 0; background: var(--color-background-card); }
+  .card { max-inline-size: none; padding: var(--spacing-4) var(--spacing-5) var(--spacing-8); border: 0; border-radius: 0; }
+}

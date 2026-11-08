@@ -1,0 +1,61 @@
+import type { JSONContent } from '@tiptap/react';
+
+export type IssueStatus = 'todo' | 'doing' | 'review' | 'done';
+export type IssuePriority = 'urgent' | 'high' | 'medium' | 'low';
+export type IssueComment = { id: string; author: string; text: string; at: string };
+export type Issue = {
+  /** 사람이 부르는 키(ISS-12). 주소에도 쓴다. */
+  id: string;
+  title: string;
+  body: JSONContent;
+  status: IssueStatus;
+  priority: IssuePriority;
+  assignee?: string;
+  /** 마감일(YYYY-MM-DD). */
+  due?: string;
+  /** 상위 이슈의 키. */
+  parent?: string;
+  author: string;
+  createdAt: string;
+  updatedAt: string;
+  comments: IssueComment[];
+};
+export type NewIssue = Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due' | 'parent'>;
+export type IssuePatch = Partial<Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due'>>;
+
+/** 보드의 칸이자 목록의 그룹 순서. dot은 StatusDot의 색 의미. */
+export const statuses: { id: IssueStatus; label: string; dot: 'neutral' | 'accent' | 'warning' | 'success' }[] = [
+  { id: 'todo', label: '할 일', dot: 'neutral' },
+  { id: 'doing', label: '진행 중', dot: 'accent' },
+  { id: 'review', label: '검토 중', dot: 'warning' },
+  { id: 'done', label: '완료', dot: 'success' },
+];
+export const statusOf = (id: IssueStatus) => statuses.find(each => each.id === id)!;
+
+/** rank가 클수록 급하다(정렬 기준). */
+export const priorities: { id: IssuePriority; label: string; rank: number }[] = [
+  { id: 'urgent', label: '긴급', rank: 4 },
+  { id: 'high', label: '높음', rank: 3 },
+  { id: 'medium', label: '보통', rank: 2 },
+  { id: 'low', label: '낮음', rank: 1 },
+];
+export const priorityOf = (id: IssuePriority) => priorities.find(each => each.id === id)!;
+
+export const people = ['서윤', '지우', '도현', '민준', '하은'];
+/** 지정하지 않은 담당자를 거르는 필터 값. */
+export const NONE = 'none';
+/** 이 앱을 쓰는 사람. */
+export const me = '서윤';
+/** 견본의 오늘. 마감이 지났는지와 "N일 뒤"를 이 날짜로 계산한다. */
+export const today = '2026-11-08';
+
+export const isOverdue = (issue: Pick<Issue, 'due' | 'status'>) => !!issue.due && issue.status !== 'done' && issue.due < today;
+
+export const dateText = (value: string) =>
+  new Intl.DateTimeFormat('ko', { month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(value.length === 10 ? `${value}T00:00:00Z` : value));
+export const timeText = (value: string) =>
+  new Intl.DateTimeFormat('ko', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'UTC' }).format(new Date(value));
+
+export function plainText(node?: JSONContent): string {
+  return node?.text ?? node?.content?.map(plainText).join(' ') ?? '';
+}

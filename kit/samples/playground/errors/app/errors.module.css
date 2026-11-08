@@ -1,0 +1,9 @@
+/* 셸 밖 전체 화면(점검 중): 위에 표시만, 아래는 상태 화면이 남은 높이를 쓴다. */
+.bare { display: flex; flex-direction: column; block-size: 100%; box-sizing: border-box; background: var(--color-background-body); }
+.bareBrand { display: flex; align-items: center; gap: var(--spacing-2); block-size: 3.25rem; padding-inline: var(--spacing-4); flex: none; }
+.bareBody { flex: 1; min-block-size: 0; }
+/* 작성 화면 본문 열: 읽고 쓰는 폭(약 720px)을 가운데 둔다. */
+.column { inline-size: 100%; max-inline-size: 45rem; margin-inline: auto; padding: var(--spacing-8) var(--spacing-6) var(--spacing-12); box-sizing: border-box; }
+@media (width < 64rem) { .column { padding: var(--spacing-5) var(--spacing-4) var(--spacing-10); } }
+/* 세션 만료 대화상자 안의 칸은 한 열. */
+.relogin { inline-size: 100%; }

@@ -1,0 +1,17 @@
+/* 결재선: 번호·사진·이름·동작의 한 줄. 구분선만 쓰고 카드로 감싸지 않는다. */
+.line { list-style: none; margin: 0; padding: 0; border-block-start: 1px solid var(--color-border); }
+.person { display: flex; align-items: center; gap: var(--spacing-3); min-block-size: 3rem; padding-block: var(--spacing-1-5); border-block-end: 1px solid var(--color-border); }
+.order { display: inline-grid; place-items: center; inline-size: 1.25rem; flex: none; color: var(--color-icon-secondary); }
+.order svg { inline-size: 1rem; block-size: 1rem; }
+.name { min-inline-size: 0; flex: 1; }
+.tools { flex: none; flex-wrap: nowrap; }
+.up { display: inline-flex; transform: rotate(180deg); }
+.error { color: var(--color-text-red, var(--color-icon-red)); }
+
+/* 확인 단계: 이름과 값이 두 칸으로 나란히 오고, 좁으면 이름 아래로 값이 내려온다. */
+.summary { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: var(--spacing-2) var(--spacing-4); margin: 0; }
+.summary dt { color: var(--color-text-secondary); }
+.summary dd { margin: 0; min-inline-size: 0; overflow-wrap: anywhere; }
+@media (width < 64rem) { .summary { grid-template-columns: minmax(0, 1fr); gap: var(--spacing-0-5); } .summary dd { margin-block-end: var(--spacing-2); } }
+.review { display: flex; flex-direction: column; gap: var(--spacing-2); }
+.note { margin: 0; }

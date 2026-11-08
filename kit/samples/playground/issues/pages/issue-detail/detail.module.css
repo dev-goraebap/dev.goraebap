@@ -1,0 +1,6 @@
+.body { min-inline-size: 0; font-size: var(--text-large-size); line-height: 1.7; overflow-wrap: anywhere; }
+.body p { margin: 0 0 var(--spacing-3); }
+.body :is(p, li, blockquote) { font-size: inherit; line-height: inherit; }
+.body h2 { margin: var(--spacing-5) 0 var(--spacing-2); font-size: var(--text-heading-2-size); }
+.comment { min-inline-size: 0; flex: 1; overflow-wrap: anywhere; }
+.failed { color: var(--color-text-red, var(--color-icon-red)); }
