@@ -1,0 +1,20 @@
+{
+  "name": "dev-goraebap",
+  "interface": {
+    "displayName": "데브 고래밥"
+  },
+  "plugins": [
+    {
+      "name": "webcraft",
+      "source": {
+        "source": "local",
+        "path": "./plugins/webcraft"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

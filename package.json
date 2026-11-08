@@ -1,20 +1,20 @@
 {
-  "name": "goraebap-workflow-workspace",
+  "name": "dev-goraebap",
   "private": true,
   "type": "module",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test plugin/tests/*.test.mjs",
-    "check": "node plugin/scripts/check.mjs",
-    "package:plugins": "node plugin/scripts/package-plugins.mjs",
-    "guide": "vite --config kit/vite.config.ts",
-    "guide:build": "vite build --config kit/vite.config.ts",
-    "guide:preview": "vite preview --config kit/vite.config.ts",
-    "kit:check": "tsc -p kit/tsconfig.json",
-    "kit:test": "vitest run --config kit/vitest.config.ts",
-    "kit:icons": "node kit/scripts/generate-icons.mjs"
+    "test": "node --test plugins/webcraft/tests/*.test.mjs",
+    "check": "node plugins/webcraft/scripts/check.mjs",
+    "package:plugins": "node plugins/webcraft/scripts/package-plugins.mjs",
+    "site": "vite --config site/vite.config.ts",
+    "site:build": "vite build --config site/vite.config.ts && node site/scripts/static-routes.mjs",
+    "site:preview": "vite preview --config site/vite.config.ts",
+    "site:check": "tsc -p site/tsconfig.json",
+    "site:test": "vitest run --config site/vitest.config.ts",
+    "site:icons": "node site/scripts/generate-icons.mjs"
   },
   "devDependencies": {
     "@astryxdesign/core": "^0.5.2",
@@ -39,6 +39,7 @@
     "@vitejs/plugin-react": "^5.2.0",
     "@vitest/browser-playwright": "4.1.12",
     "lottie-web": "^5.13.0",
+    "mermaid": "^11.17.2",
     "pretendard": "^1.3.9",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
