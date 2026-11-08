@@ -12,13 +12,17 @@
 @media (width < 80rem) { .outline { display: none; } }
 @media (width < 64rem) { .body { padding: var(--spacing-5) var(--spacing-4) var(--spacing-10); } }
 
-.prose { font-size: var(--text-body-size); line-height: 1.75; color: var(--color-text-primary); }
+/*
+ * 본문 글자: 키트의 --text-body-size(데스크톱 13px)는 목록·도구가 빽빽한 앱 화면용이다. 가이드는 긴 글을 읽는 곳이라
+ * 데스크톱·휴대폰 모두 1rem(16px)으로 두고 표·요약 줄도 따른다. 코드 블록은 고정폭 글꼴이 커 보여 한 단계 작게 둔다.
+ */
+.prose { --prose-size: 1rem; font-size: var(--prose-size); line-height: 1.7; color: var(--color-text-primary); }
 .prose :global(:is(p, li, blockquote, dd, dt)) { font-size: inherit; line-height: inherit; }
 .prose :global(h1) { margin: 0 0 var(--spacing-6); font-size: var(--text-heading-1-size); line-height: 1.35; font-weight: 600; letter-spacing: -0.01em; }
 .prose :global(h2) { margin: var(--spacing-12) 0 var(--spacing-3); padding-block-start: var(--spacing-6); border-block-start: 1px solid var(--color-border);
   font-size: var(--text-heading-2-size); line-height: 1.4; font-weight: 600; scroll-margin-block-start: var(--spacing-6); }
-.prose :global(h3) { margin: var(--spacing-8) 0 var(--spacing-2); font-size: var(--text-heading-3-size); line-height: 1.5; font-weight: 600; scroll-margin-block-start: var(--spacing-6); }
-.prose :global(h4) { margin: var(--spacing-6) 0 var(--spacing-2); font-size: var(--text-body-size); font-weight: 600; }
+.prose :global(h3) { margin: var(--spacing-8) 0 var(--spacing-2); font-size: 1.125rem; line-height: 1.5; font-weight: 600; scroll-margin-block-start: var(--spacing-6); }
+.prose :global(h4) { margin: var(--spacing-6) 0 var(--spacing-2); font-size: var(--prose-size); font-weight: 600; }
 .prose :global(p), .prose :global(ul), .prose :global(ol), .prose :global(pre), .prose :global(blockquote) { margin: 0 0 var(--spacing-4); }
 .prose :global(ul), .prose :global(ol) { padding-inline-start: var(--spacing-6); }
 .prose :global(ul) { list-style: disc; }
@@ -37,24 +41,25 @@
 .prose :global(blockquote > :last-child) { margin-block-end: 0; }
 
 /* 코드: 줄 안은 옅은 채움, 덩어리는 카드 면. 하이라이트 색은 Shiki의 두 테마를 모드에 맞춰 고른다. */
-.prose :global(code) { font-family: var(--font-family-code); font-size: 0.85em; }
+/* 짧은 코드 표시([고래밥] 등)는 줄 끝에서 쪼개지 않고 다음 줄로 넘긴다. 한 줄보다 긴 코드만 쪼갠다. */
+.prose :global(code) { font-family: var(--font-family-code); font-size: 0.85em; overflow-wrap: break-word; word-break: keep-all; }
 .prose :global(:not(pre) > code) { padding: 0.1em 0.35em; border-radius: var(--radius-inner); background: var(--color-background-muted); }
 .prose :global(pre) { padding: var(--spacing-4); overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius-element);
-  background: var(--color-background-card); font-size: var(--text-body-size); line-height: 1.6; }
+  background: var(--color-background-card); font-size: 0.9375rem; line-height: 1.6; }
 .prose :global(pre code) { font-size: inherit; }
 :global(.shiki span) { color: var(--shiki-light); }
 :global(html[data-theme='dark']) :global(.shiki span) { color: var(--shiki-dark); }
 
 /* 표: 바깥 경계 하나, 안쪽은 가로 선만. 표는 상자 폭을 다 채우고, 좁으면 상자 안에서 가로로 넘긴다. */
 .table { max-inline-size: 100%; overflow-x: auto; margin: 0 0 var(--spacing-4); border: 1px solid var(--color-border); border-radius: var(--radius-element); }
-.prose .table > :global(table) { inline-size: 100%; margin: 0; border-collapse: collapse; font-size: var(--text-body-size); line-height: 1.6; }
+.prose .table > :global(table) { inline-size: 100%; margin: 0; border-collapse: collapse; font-size: var(--prose-size); line-height: 1.6; }
 .prose :global(th), .prose :global(td) { padding: var(--spacing-2) var(--spacing-3); text-align: start; vertical-align: top; border-block-end: 1px solid var(--color-border); }
 .prose :global(tr:last-child td) { border-block-end: 0; }
 .prose :global(th) { font-weight: 600; background: var(--color-background-muted); white-space: nowrap; }
 
 /* 견본 묶음 페이지의 구현 코드 접기. */
 .prose :global(details) { margin-block: var(--spacing-3); border: 1px solid var(--color-border); border-radius: var(--radius-element); }
-.prose :global(details > summary) { padding: var(--spacing-2) var(--spacing-3); cursor: pointer; font-size: var(--text-body-size); font-weight: 500; }
+.prose :global(details > summary) { padding: var(--spacing-2) var(--spacing-3); cursor: pointer; font-size: var(--prose-size); font-weight: 500; }
 .prose :global(details > pre) { margin: 0; border: 0; border-block-start: 1px solid var(--color-border); border-radius: 0; }
 
 /*
