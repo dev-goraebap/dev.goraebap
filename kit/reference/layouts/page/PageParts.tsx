@@ -25,7 +25,7 @@ export function PageBanner(props: Omit<BannerProps, 'container' | 'collapsible'>
  */
 export function PageFootBar({ label, isFullWidth = false, children }: { label?: string; isFullWidth?: boolean; children: ReactNode }) {
   return <HStack className={styles.foot} data-full={isFullWidth || undefined} role={label ? 'region' : undefined} aria-label={label}>
-    <HStack className={styles.footActions} gap={2} vAlign="center">{children}</HStack>
+    <HStack data-action-row className={styles.footActions} gap={2} vAlign="center">{children}</HStack>
   </HStack>;
 }
 
@@ -36,7 +36,7 @@ export function PageFootBar({ label, isFullWidth = false, children }: { label?: 
  */
 export function PageActions({ start, children }: { start?: ReactNode; children: ReactNode }) {
   const foot = useContext(PageFootContext);
-  if (foot) return createPortal(<HStack className={styles.footActions} gap={2} vAlign="center">
+  if (foot) return createPortal(<HStack data-action-row className={styles.footActions} gap={2} vAlign="center">
     {start ? <HStack gap={2} vAlign="center" className={styles.footStart}>{start}</HStack> : null}{children}
   </HStack>, foot);
   return <HStack gap={2} hAlign={start ? 'between' : 'end'} vAlign="center" wrap="wrap">

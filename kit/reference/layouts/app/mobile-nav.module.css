@@ -11,14 +11,15 @@
 /* 더보기 시트 */
 .header { padding-inline: var(--spacing-2); padding-block-end: var(--spacing-2); }
 .menu { list-style: none; padding: 0; margin: 0; }
-.link { display: flex; align-items: center; gap: var(--spacing-3); min-block-size: 2.75rem; padding-inline: var(--spacing-3);
+.link { display: flex; align-items: center; gap: var(--spacing-3); min-block-size: 3rem; padding-inline: var(--spacing-3);
   color: var(--color-text-secondary); text-decoration: none; border-radius: var(--radius-element); }
 /* 사이드바와 같이 보조 글자색에서 시작해 포인터가 올라오거나 현재인 항목만 본문 글자색으로 올린다. */
 .link:hover, .link[aria-current="page"] { background: var(--color-background-muted); color: var(--color-text-primary); }
 .link:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: var(--focus-outline-offset); }
-.link > svg { flex: none; inline-size: 1.125rem; block-size: 1.125rem; }
+.link > svg { flex: none; inline-size: 1.25rem; block-size: 1.25rem; }
+.header svg { flex: none; inline-size: 1.5rem; block-size: 1.5rem; }
 .label { flex: 1; min-inline-size: 0; }
-.link[data-indented] { padding-inline-start: calc(var(--spacing-3) * 2 + 1.125rem); }
+.link[data-indented] { padding-inline-start: calc(var(--spacing-3) * 2 + 1.25rem); }
 /* 하위 목적지가 있는 묶음은 앞뒤를 가는 선과 같은 간격으로 나눈다. 접힌 사이드바가 묶음을 선으로 나누는 것과 같다. */
 .group + li, li + .group { margin-block-start: var(--spacing-2); padding-block-start: var(--spacing-2); border-block-start: 1px solid var(--color-border); }
 

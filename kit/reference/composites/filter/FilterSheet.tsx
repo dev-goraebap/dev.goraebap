@@ -42,7 +42,7 @@ export function FilterSheet({ filters, state, isOpen, step, onStepChange, onOpen
             </button>
           </li>)}
         </ul>}
-      <HStack gap={2} hAlign="end" paddingBlockStart={2}>
+      <HStack data-action-row gap={2} hAlign="end" paddingBlockStart={2}>
         {hasActive ? <Button label="모두 지우기" variant="subtle" onClick={onClear} /> : null}
         <Button label="완료" variant="view-active" onClick={() => onOpenChange(false)} />
       </HStack>

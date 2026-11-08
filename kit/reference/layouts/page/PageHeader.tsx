@@ -29,7 +29,7 @@ export function PageHeader({ crumbs, actions, onBack, head, appBar, hasHeading =
   const last = crumbs.length - 1;
   const up = isPhone && last > 0 ? crumbs[last - 1] : undefined;
   const shown = isPhone ? crumbs.slice(last) : crumbs;
-  return <HStack as="header" className={styles.header} height={PAGE_HEADER_HEIGHT} paddingInline={4} gap={appBar ? 2 : 3} hAlign="between" vAlign="center">
+  return <HStack as="header" className={styles.header} height={isPhone ? '3.75rem' : PAGE_HEADER_HEIGHT} paddingInline={4} gap={appBar ? 2 : 3} hAlign="between" vAlign="center">
     <HStack className={styles.path} data-back={!!(up && (up.href || up.onClick) || onBack) || undefined} gap={1} vAlign="center">
       {up && (up.href || up.onClick)
         ? <Button label={up.label} tooltip={up.label} variant="ghost" size="sm" isIconOnly icon={icon('back')} href={up.href} onClick={up.onClick} />

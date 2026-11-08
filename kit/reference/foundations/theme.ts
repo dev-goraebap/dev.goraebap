@@ -1,5 +1,6 @@
 import { defineTheme } from '@astryxdesign/core/theme';
 import { stoneTheme as stoneSource } from '@astryxdesign/theme-stone';
+import { themeColors } from './colors';
 
 /*
  * Stone 위에 조밀한 업무 화면의 기준을 테마로만 표현한다. Astryx 내부 클래스 덮어쓰기와 !important는 쓰지 않는다.
@@ -32,11 +33,11 @@ export const workspaceTheme = defineTheme({
   },
   tokens: {
     // 기준 색: 바닥·페이지 면·글자·강조. 나머지는 여기서 섞어 만든다.
-    '--color-background-body': ['#efeff0', '#09090a'],
-    '--color-background-surface': ['#f9f9fa', '#121213'],
+    '--color-background-body': [...themeColors.body],
+    '--color-background-surface': [...themeColors.surface],
     '--color-background-muted': ['#ececed', '#232326'],
     '--color-text-primary': ['#1b1b1b', '#f7f8f8'],
-    '--color-text-secondary': ['#5c5c5e', '#8a8f98'],
+    '--color-text-secondary': [...themeColors.secondary],
     '--color-icon-secondary': ['#6b6b6f', '#8a8f98'],
     '--color-accent': ['#1b1b1b', '#f7f8f8'],
     '--color-on-accent': ['#ffffff', 'color-mix(in srgb, var(--color-background-surface) 85%, #000000)'],

@@ -6,7 +6,7 @@ import { useIsPhone, useToolSize } from '../../foundations/media';
 import styles from './page.module.css';
 
 /**
- * 머리 아래 툴바: 44px(휴대폰 52px). 왼쪽은 보기·탭이 자기 안에서 가로로 넘기고(넘친 쪽 가장자리를 흐리게, 세로 휠도
+ * 머리 아래 툴바: 44px(휴대폰 60px). 왼쪽은 보기·탭이 자기 안에서 가로로 넘기고(넘친 쪽 가장자리를 흐리게, 세로 휠도
  * 가로로), 오른쪽 도구(검색·필터·표시)는 고정한다. 페이지 전체는 가로로 넘치지 않는다.
  */
 export function PageToolbar({ start, end }: { start?: ReactNode; end?: ReactNode }) {
@@ -33,7 +33,7 @@ export function PageToolbar({ start, end }: { start?: ReactNode; end?: ReactNode
     box.addEventListener('wheel', wheel, { passive: false });
     return () => { observer.disconnect(); box.removeEventListener('wheel', wheel); };
   }, [hasViews]);
-  return <HStack className={styles.rule} height={isPhone ? '3.25rem' : '2.75rem'} paddingInline={4} gap={3} vAlign="center" hAlign={hasViews ? undefined : 'end'}>
+  return <HStack className={`${styles.rule} ${styles.toolbar}`} height={isPhone ? '3.75rem' : '2.75rem'} paddingInline={4} gap={3} vAlign="center" hAlign={hasViews ? undefined : 'end'}>
     {/* Stack은 자식을 줄이지 않으므로 줄어들며 넘길 이 영역은 자기 요소로 둔다. */}
     {hasViews ? <nav ref={views} className={styles.views} aria-label="보기" onScroll={measure}
       data-more-start={more.start || undefined} data-more-end={more.end || undefined}>{start}</nav> : null}

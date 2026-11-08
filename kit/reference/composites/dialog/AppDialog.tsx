@@ -58,7 +58,7 @@ export function AppDialog({ title, subtitle, headerLeading, headerContent, heade
           icon={icon('close')} onClick={() => dialog.onOpenChange(false)} /> : null}
       </HStack>
       <VStack className={styles.body} isScrollable>{children}</VStack>
-      {footer != null ? <VStack as="footer" className={styles.footer} data-divider={hasFooterDivider || undefined}>{footer}</VStack> : null}
+      {footer != null ? <VStack as="footer" data-action-row className={styles.footer} data-divider={hasFooterDivider || undefined}>{footer}</VStack> : null}
     </VStack>
   </Dialog>;
 }

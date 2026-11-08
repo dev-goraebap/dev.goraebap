@@ -36,3 +36,9 @@ Astryx `ToggleButton`의 눌림 상태는 테마가 칠할 수 없어 버튼 변
 테마의 부품 규칙은 `@media`를 받지 않습니다. 휴대폰 크기는 [responsive.css](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/foundations/responsive.css) 한 파일에서 Astryx의 안정된 부품 클래스와 토큰으로만 정합니다. Astryx 토큰이 아닌 앱 값(그림 강조색, 점 무늬 색)은 모든 화면이 놓이는 `app-shell`에 `--app-*`로 둡니다.
 
 라이트·다크는 앱 루트의 `Theme mode` 하나가 정합니다. 견본과 화면 안에 별도 테마 전환을 두지 않습니다. `ReferenceTheme`은 앱 루트에서 한 번 적용하며, `Theme` 바깥에 `InternationalizationProvider`(`locale="ko-KR"`)를 두어 Astryx `ko-KR.json`을 `messages`로, `foundations/i18n/ko-KR-extra.json`을 `overrides`로 전달합니다. 보충 파일은 기본 번역에서 빠진 문구를 채웁니다. 아이콘을 고르는 기준은 [아이콘](icons.md), 면의 단계는 [면과 경계](surfaces.md)가 소유합니다.
+
+## 모바일 주변 영역과 테마
+
+PWA를 제공하면 앱 안의 면과 상태바·제스처 영역의 색을 함께 확인합니다. 문서의 `theme-color`와 앱이 그리는 세이프 영역 배경을 현재 테마의 실제 면 색에 맞춥니다. manifest의 기본 색만 고정하고 다크 모드에서도 그대로 쓰지 않습니다. 첫 화면 전에 저장한 모드를 적용하고, 시스템 모드를 쓸 때는 기기의 모드 변경도 따라가게 합니다. 색 값의 원본은 테마 한 곳에 두며 특정 제품의 색을 공통 값으로 복사하지 않습니다.
+
+앱이 그리는 세이프 영역은 `env(safe-area-inset-top)`·`env(safe-area-inset-bottom)`으로 공간을 확보합니다. 브라우저나 OS가 그리는 영역의 최종 표현은 실제 설치 앱에서 확인하고, 브라우저 화면만 확인한 결과와 구분합니다.
