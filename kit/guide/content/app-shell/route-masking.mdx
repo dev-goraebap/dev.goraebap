@@ -8,7 +8,7 @@ sidebar:
 
 라우트 마스킹은 하나의 주소에 대화상자와 페이지 두 모습을 두는 규칙입니다. 데스크톱 앱 안에서 클릭해 열면 목록 위에 대화상자로 띄우고, 같은 주소로 직접 진입하거나 새로고침하면 독립된 페이지로 엽니다. 새 자료 만들기나 자료 수정처럼 짧게 끝내고 목록으로 돌아오지만, 내용이 길어질 수 있고 주소 공유와 새로고침이 의미 있는 작업에 적용합니다.
 
-규칙의 성격은 세 가지로 표시합니다. `[관례]`는 여러 제품과 외부 지침이 같은 방향으로 수렴한 규칙이고, `[고래밥]`은 관례가 없거나 관례와 다르게 정한 자체 결정이며, `[선호]`는 기능 규칙이 아닌 모양 취향입니다. 전체 표시 기준과 결정 배경은 [문서 읽는 법](/start/how-to-read/)과 [결정 기록](/start/decisions/)을 참고합니다.
+규칙의 성격은 세 가지로 표시합니다. `[관례]`는 여러 제품과 외부 지침이 같은 방향으로 수렴한 규칙이고, `[고래밥]`은 관례가 없거나 관례와 다르게 정한 자체 결정이며, `[선호]`는 기능 규칙이 아닌 모양 취향입니다. 전체 표시 기준은 [문서 읽는 법](/#규칙의-세-가지-표시)을 참고합니다.
 
 ## 라우트 마스킹을 쓰는 이유
 
@@ -24,8 +24,6 @@ sidebar:
 
 - [TanStack Router: Route masking](https://tanstack.com/router/latest/docs/framework/react/guide/route-masking): 실제 렌더링하는 라우트와 다른 주소를 브라우저 주소창에 표시합니다. 마스크 정보는 브라우저 히스토리 state에 저장하며, `unmaskOnReload` 옵션으로 새로고침 시 마스크를 해제합니다. 주소창의 URL을 복사해 새 탭에서 열면 히스토리 state가 없으므로 마스크 없이 실제 페이지가 열립니다.
 - [Next.js: Intercepting routes](https://nextjs.org/docs/app/api-reference/file-conventions/intercepting-routes)와 [Parallel routes](https://nextjs.org/docs/app/api-reference/file-conventions/parallel-routes): 사진 모달 패턴에서 앱 안 클릭(soft navigation)은 모달로 가로채서 열고, 새로고침이나 링크 공유를 통한 진입(hard navigation)은 전체 페이지로 엽니다. 브라우저 뒤로가기가 모달을 닫고 앞으로가기가 다시 엽니다.
-
-제품과 외부 지침의 전체 비교는 [비교 조사](/references/comparison/)와 [읽기 목록](/references/reading-list/)에서 다룹니다.
 
 ## 언제 라우트 마스킹을 선택하는가
 

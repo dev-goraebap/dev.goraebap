@@ -35,14 +35,19 @@ const entriesOf = (groups: { path: string; label: string; icon: string }[]): Nav
 const content = (dirs: string[]) => contentGroups.filter(item => dirs.some(dir => item.dir === dir || item.dir.startsWith(`${dir}/`)))
   .map(item => ({ path: `/${item.dir}/`, label: item.label, icon: item.icon }));
 
-/** 메뉴: 시작하기 → 지침(플러그인 스킬) → 화면 해설 → 견본 → 참고. */
+const rules = (skills: string[]) => skillGroups.filter(item => skills.includes(item.skill))
+  .map(item => ({ path: `/rules/${item.skill}/`, label: item.label, icon: item.icon }));
+
+/**
+ * 메뉴: 소개 → 공통(작업 방식·구조·연결) → 클라이언트(지침·화면 해설·견본) → 서버(지침). 문서 종류가 아니라 영역으로 묶어
+ * 화면을 만드는 사람이 지침·해설·견본을 한 묶음 안에서 오간다.
+ */
 export const guideSpace: NavSpace = {
-  id: 'guide', title: '고래밥 지침',
+  id: 'guide', title: '웹 플랫폼 매뉴얼',
   sections: [
-    { title: '시작하기', isHeaderHidden: true, entries: entriesOf(content(['start'])) },
-    { title: '지침', entries: entriesOf(skillGroups.map(item => ({ path: `/rules/${item.skill}/`, label: item.label, icon: item.icon }))) },
-    { title: '화면 해설', entries: entriesOf(content(['common', 'app-shell', 'landing'])) },
-    { title: '견본', entries: entriesOf(content(['catalog'])) },
-    { title: '참고', entries: entriesOf(content(['references'])) },
+    { title: '소개', isHeaderHidden: true, entries: [{ path: '/', label: '소개', icon: 'home' }] },
+    { title: '공통', entries: entriesOf(rules(['goraebap-mode', 'architecture', 'manage-workflow'])) },
+    { title: '클라이언트', entries: [...entriesOf(rules(['frontend', 'design-system'])), ...entriesOf(content(['common', 'app-shell', 'catalog']))] },
+    { title: '서버', entries: entriesOf(rules(['backend', 'api', 'database'])) },
   ],
 };

@@ -51,9 +51,9 @@ function Table(props: ComponentPropsWithRef<'table'>) {
 const mdxComponents = { a: DocLink, table: Table, Sample, SampleGroup, Source };
 
 function Brand({ isFolded }: { isFolded: boolean }) {
-  return <RouterLink href="/" className={styles.brand} aria-label="고래밥 지침 처음으로">
+  return <RouterLink href="/" className={styles.brand} aria-label="웹 플랫폼 매뉴얼 처음으로">
     <span className={styles.mark}>{icon('library')}</span>
-    {isFolded ? null : <Text weight="semibold" maxLines={1}>고래밥 지침</Text>}
+    {isFolded ? null : <Text weight="semibold" maxLines={1}>웹 플랫폼 매뉴얼</Text>}
   </RouterLink>;
 }
 
@@ -117,7 +117,7 @@ export function GuideShell() {
     onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')} />;
   const groups = guideSpace.sections.flatMap(section => section.entries);
   // 휴대폰 하단 탭: 자주 여는 네 묶음. 나머지는 더보기에서 고른다. 탭은 좁으므로 괄호 속 한글명을 뗀다.
-  const tabs = ['/start/', '/rules/goraebap-mode/', '/rules/design-system/', '/catalog/playground/']
+  const tabs = ['/', '/rules/goraebap-mode/', '/rules/design-system/', '/catalog/playground/']
     .map(path => groups.find(entry => entry.path === path)).filter((entry): entry is NonNullable<typeof entry> => !!entry)
     .map(entry => ({ ...entry, label: entry.label.replace(/ \(.*\)$/, '') }));
   // 묶음 › 문서. 지침의 첫 장(묶음 주소와 같은 문서)과 첫 화면은 이름 하나만 둔다.

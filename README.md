@@ -72,10 +72,10 @@ npm run package:plugins
 
 ## 가이드 사이트
 
-`kit/guide/`는 플러그인 지침을 사람이 읽기 쉽게 보여 주는 사이트입니다. 키트로 만드는 업무 앱과 같은 스택(Vite + React + TanStack Router + MDX)의 SPA입니다. `npm ci` 후 `npm run guide`로 4451 포트에서 열고, `npm run guide:build`로 빌드, `npm run kit:check`로 타입을 검사합니다.
+`kit/guide/`는 플러그인 지침을 사람이 읽기 쉽게 보여 주는 사이트입니다. 사이트 이름은 "웹 플랫폼 매뉴얼"이며, 메뉴는 공통·클라이언트·서버 세 영역으로 묶습니다. 키트로 만드는 업무 앱과 같은 스택(Vite + React + TanStack Router + MDX)의 SPA입니다. `npm ci` 후 `npm run guide`로 4451 포트에서 열고, `npm run guide:build`로 빌드, `npm run kit:check`로 타입을 검사합니다.
 
 - 지침 문서는 `plugin/skills`의 Markdown을 원본 그대로 빌드합니다. 사본을 두지 않으므로 스킬을 고치면 사이트도 바뀝니다. 스킬 안의 상대 링크는 사이트 주소로 바뀝니다.
-- 화면 해설·견본·참고 문서는 `kit/guide/content`의 MDX입니다. 해설은 스킬 규칙의 풀이이며, 규칙이 바뀌면 스킬을 먼저 고치고 해설을 다시 씁니다.
+- 화면 해설·견본 문서는 `kit/guide/content`의 MDX입니다. 해설은 스킬 규칙의 풀이이며, 규칙이 바뀌면 스킬을 먼저 고치고 해설을 다시 씁니다. 조사 메모는 사이트에 두지 않습니다.
 - 견본은 `sample.html`을 iframe으로 띄워 실제 기기 폭으로 그립니다. 첫 방문 덮개와 전환(지금 문서 유지, 180ms 덮개, 160ms 교차 페이드)은 키트 규칙대로입니다.
 - 메뉴·제목·주소는 빌드 때 `kit/guide/content-plugin.ts`가 만듭니다.
 

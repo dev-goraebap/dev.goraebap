@@ -36,19 +36,16 @@ export const skillGroups = [
   { skill: 'manage-workflow', label: '프로젝트 연결', icon: 'attachment' },
 ] as const;
 
-/** 화면 해설·견본·참고 묶음(kit/guide/content의 폴더). */
+/** 화면 해설·견본 묶음(kit/guide/content의 폴더). */
 export const contentGroups = [
-  { dir: 'start', label: '시작하기', icon: 'home' },
-  { dir: 'common', label: '공통', icon: 'layout-grid' },
+  { dir: 'common', label: '화면 공통', icon: 'layout-grid' },
   { dir: 'app-shell', label: '앱 셸', icon: 'sidebar' },
-  { dir: 'landing', label: '랜딩 (준비 중)', icon: 'home' },
   { dir: 'catalog/foundations', label: 'Foundations (디자인 기초)', icon: 'sun' },
   { dir: 'catalog/primitives', label: 'Primitives (기본 부품)', icon: 'edit' },
   { dir: 'catalog/composites', label: 'Composites (조합 부품)', icon: 'copy' },
   { dir: 'catalog/layouts', label: 'Layouts (레이아웃)', icon: 'layout-board' },
   { dir: 'catalog/patterns', label: 'Patterns (사용 패턴)', icon: 'grip' },
   { dir: 'catalog/playground', label: 'Playground (플레이그라운드)', icon: 'library' },
-  { dir: 'references', label: '레퍼런스', icon: 'link' },
 ] as const;
 
 const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => {
