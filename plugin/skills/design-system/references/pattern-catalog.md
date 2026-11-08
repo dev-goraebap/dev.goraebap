@@ -11,13 +11,13 @@
 | Composites (조합 부품) | 다이얼로그·곁에 여는 내용·검색·필터·표시·속성·올리기·상태·본문 칸 | [조합 부품](composed-components.md), [다이얼로그](dialog.md), [검색·필터·표시](search-filter.md) | [composites](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites) |
 | Layouts (레이아웃) | 앱 셸·사이드바·모바일 탐색·페이지 머리·툴바·목록·상세·설정·옆 패널 | [앱 셸](app-layout.md), [페이지 배치](layout-patterns.md) | [layouts](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/layouts) |
 | Patterns (사용 패턴) | 여러 화면에 걸리는 동작 계약: 라우트 마스킹, 조건의 주소, 대기·빈 상태·실패, 행 클릭·키보드 | [라우트 마스킹](route-masking.md), [데이터 상태](data-states.md), [입력과 상호작용](interaction-patterns.md) | [patterns](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/patterns) |
-| Playground (플레이그라운드) | 앞의 요소로 만든 화면 템플릿: 목록(행·문서 카드·표), 목록 + 미리보기, 상세, 작성, 문서 편집, 자료 올리기, 설정 | [생성 양식](creation-form.md), [미리보기 패널](peek.md), 이 문서 | [playground](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/samples/playground) |
+| Playground (플레이그라운드) | 앞의 요소로 만든 기능 단위 앱 16개: 인박스, 이슈, 로그인, 문서함, 설정, 일정, 결재 신청, 권한 설정, 댓글·대화, 활동 기록, 가져오기, 오류·권한 페이지, 폴더 탐색, 태그 관리, 사용자 관리, 처음 시작 | [생성 양식](creation-form.md), [미리보기 패널](peek.md), 이 문서 | [playground](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/samples/playground) |
 
-Primitives와 Composites는 재사용 코드의 단위입니다. Layouts와 Patterns는 공간과 행동의 기준이며 더 큰 부품이라는 이유로 분류하지 않습니다. 화면 하나로 완결되어 그대로 옮겨 쓸 수 있으면 Playground 템플릿이고, 여러 템플릿이 함께 지키는 여는 방식·상태·조작이면 Patterns입니다. Patterns의 견본은 따로 화면을 만들지 않고 Playground 템플릿을 그 상태로 띄웁니다. 새 화면 유형이 필요하면 Playground에 템플릿을 더합니다. 같은 구현을 여러 설명에서 참조하되 코드와 규칙의 원본은 한 곳에 둡니다. 파일 배치는 공식 FSD 지침에 맡기고 상태·캐시·URL·초안은 frontend 지침을 따릅니다. 접근성·반응형·키보드·문구는 모든 범주의 공통 검토 기준이며 [문구·본문과 검증](content-and-review.md)을 따릅니다.
+Primitives와 Composites는 재사용 코드의 단위입니다. Layouts와 Patterns는 공간과 행동의 기준이며 더 큰 부품이라는 이유로 분류하지 않습니다. 기능 하나를 작은 앱 하나로 묶어 본뜰 수 있게 한 것은 Playground이고, 여러 앱이 함께 지키는 여는 방식·상태·조작이면 Patterns입니다. Playground는 앱마다 느낌이 확실히 다른 화면만 다루고 같은 모양의 화면은 한 앱에서만 다룹니다. Patterns의 견본은 따로 화면을 만들지 않고 Playground 앱을 그 상태로 띄웁니다. 기존 앱과 느낌이 다른 화면이 필요하면 Playground에 새 앱을 더합니다. 같은 구현을 여러 설명에서 참조하되 코드와 규칙의 원본은 한 곳에 둡니다. 파일 배치는 공식 FSD 지침에 맡기고 상태·캐시·URL·초안은 frontend 지침을 따릅니다. 접근성·반응형·키보드·문구는 모든 범주의 공통 검토 기준이며 [문구·본문과 검증](content-and-review.md)을 따릅니다.
 
 ## 원본과 갱신
 
-SKILL.md는 지침을 찾는 입구입니다. 규칙의 원본은 이 스킬의 Markdown입니다. 저장소의 가이드 사이트(site)는 같은 규칙을 사람이 읽도록 풀어 쓴 해설이며, 규칙이 바뀌면 스킬을 먼저 고치고 가이드를 다시 씁니다. references의 Markdown이 판단 기준과 확인할 동작을 소유합니다. 가이드는 규칙 옆에 실제 키트로 그린 견본을 띄우고 규칙을 다시 정하지 않습니다. 견본에는 실제 부품·시작 상태·가상 데이터만 두며 제품 동작을 견본 안에서 다시 구현하지 않습니다. 조작 검증은 견본과 따로 테스트 파일에 둡니다.
+SKILL.md는 지침을 찾는 입구입니다. 규칙의 원본은 이 스킬의 Markdown입니다. 저장소의 가이드 사이트(`kit/guide`)는 같은 규칙을 사람이 읽도록 풀어 쓴 해설이며, 규칙이 바뀌면 스킬을 먼저 고치고 가이드를 다시 씁니다. references의 Markdown이 판단 기준과 확인할 동작을 소유합니다. 가이드는 규칙 옆에 실제 키트로 그린 견본을 띄우고 규칙을 다시 정하지 않습니다. 견본에는 실제 부품·시작 상태·가상 데이터만 두며 제품 동작을 견본 안에서 다시 구현하지 않습니다. 조작 검증은 견본과 따로 테스트 파일에 둡니다.
 
 규칙을 바꾸면 Markdown, 키트 코드, 견본과 검증을 함께 고칩니다. 색·간격을 견본 전용 CSS로 보정하지 않고 테마와 부품에서 고칩니다. 출처·비교·제작 기록은 Git과 배포에서 제외한 개발 자료에 둡니다.
 
