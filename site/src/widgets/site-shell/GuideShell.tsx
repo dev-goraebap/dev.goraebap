@@ -78,7 +78,7 @@ function useCover() {
 }
 
 /**
- * 사이트의 AppFrame과 Page에 콘텐츠를 넣는다. 머리 줄에는 검색을 두고 화면 설정은 별도 경로에서 관리한다.
+ * 사이트의 AppFrame과 Page에 콘텐츠를 넣는다. 사이드바에 전역 검색과 설정을 두고, 페이지 머리에는 해당 목록의 도구만 둔다.
  */
 export function GuideShell() {
   const router = useRouter();
@@ -103,12 +103,14 @@ export function GuideShell() {
   return <ReferenceTheme mode={mode}>
     <LinkProvider component={RouterLink}>
         <AppFrame space={space} pathname={pathname} tabs={tabs} openGroups="current" layout={layout} brand={isFolded => <Brand isFolded={isFolded} area={area} />}
-          footer={folded => folded ? <IconButton label="설정" tooltip={`설정 · v${siteVersion}`} variant="ghost" size="sm" icon={icon('settings')} onClick={() => void router.navigate({ href: '/settings/appearance/' })} /> : <div className={shell.footer}><Button label="설정" variant="ghost" size="sm" icon={icon('settings')} onClick={() => void router.navigate({ href: '/settings/appearance/' })} /><span className={shell.version}>v{siteVersion}</span></div>}
+          headerTools={<Search />}
+          sidebarBottom={folded => folded ? <IconButton label="설정" variant="ghost" size="sm" icon={icon('settings')} onClick={() => void router.navigate({ href: '/settings/appearance/' })} /> : <div className={shell.settingsEntry}><Button label="설정" width="100%" variant="ghost" size="sm" icon={icon('settings')} onClick={() => void router.navigate({ href: '/settings/appearance/' })} /></div>}
+          footer={folded => folded ? null : <div className={shell.footer}><span className={shell.version}>v{siteVersion}</span></div>}
           pageFooter={!isPhone ? <AgentBar onAgent={() => void router.navigate({ href: '/settings/plugins/' })} /> : undefined}
           phoneAppBar={<div className={shell.phoneBrand}><Brand isFolded={false} area={area} /></div>}
           // 묶음 메뉴는 묶음의 첫 문서로 바로 간다.
           onNavigate={path => void router.navigate({ href: firstOf(path) ?? path })}>
-          <Page crumbs={crumbs} views={isPhone && pathname === '/blog/' ? <></> : undefined} tools={pathname === '/blog/' ? <BlogTools /> : undefined} pageActions={<Search />} hasHeading={pathname === '/blog/'} hasPattern={false} stableGutter>
+          <Page crumbs={crumbs} views={isPhone && pathname === '/blog/' ? <></> : undefined} tools={pathname === '/blog/' ? <BlogTools /> : undefined} hasHeading={pathname === '/blog/'} hasPattern={false} stableGutter>
             <div className={styles.stage} aria-busy={isCovered || undefined}>
               <div inert={isCovered || undefined}><Outlet /></div>
               {isCovered ? <div className={styles.cover} role="status" aria-label="문서를 불러오는 중">

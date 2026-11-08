@@ -28,6 +28,7 @@ export function FilterMenu({ filters, state, onChange, onAdd }: {
   const active = activeKeys(filters, state);
   const openChange = (open: boolean) => { setOpen(open); setKey(undefined); };
   const isOn = isOpen || active.length > 0;
+  // Escape로 초점이 돌아올 때 Tooltip의 native popover가 다시 열리는 충돌을 피한다. 버튼 이름은 label로 제공한다.
   return <Popover isOpen={isOpen} onOpenChange={openChange} placement="below" alignment="end" width="16.25rem"
     label={filter ? `${filter.label} 고르기` : '필터'}
     content={filter
@@ -42,7 +43,7 @@ export function FilterMenu({ filters, state, onChange, onAdd }: {
         options={filters.map(each => ({ value: each.key, label: each.label, icon: icon(each.icon) }))}
         onPick={next => { setKey(next); onAdd?.(next); }} />}>
     {({ ref, onClick }) => <HStack ref={ref} className={styles.trigger}>
-      <Button label={active.length > 0 ? `필터 ${active.length}개 적용 중` : '필터'} tooltip="필터" variant={isOn ? 'view-active' : 'tool'} size={size} isIconOnly
+      <Button label={active.length > 0 ? `필터 ${active.length}개 적용 중` : '필터'} variant={isOn ? 'view-active' : 'tool'} size={size} isIconOnly
         aria-expanded={isOpen} icon={icon('filter', isOn)} onClick={onClick} />
       {active.length > 0 ? <StatusDot className={styles.dot} variant="accent" label="필터 적용 중" /> : null}
     </HStack>}

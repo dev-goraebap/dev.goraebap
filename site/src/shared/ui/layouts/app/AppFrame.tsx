@@ -27,7 +27,7 @@ const rootScale = () => typeof window === 'undefined' || window.innerWidth < 192
  * 나머지 목적지를 담은 더보기 시트를 쓰고, 상세·양식이 열리면 하단 탭을 치운다. 두 배치에서 페이지의 슬롯은 같다.
  * 본문의 부모 요소 종류는 분기점·배치를 바꿔도 같게 유지해 작성 중인 초안이 다시 마운트되지 않게 한다.
  */
-export function AppFrame({ space, pathname, isSelected, brand, headerTools, profile, footer, pageFooter, phoneAppBar, layout = 'inset',
+export function AppFrame({ space, pathname, isSelected, brand, headerTools, profile, footer, sidebarBottom, pageFooter, phoneAppBar, layout = 'inset',
   tabs, onNavigate, openGroups = 'all', sidebarWidth = 340, children }: {
   space: NavSpace;
   sidebarWidth?: number;
@@ -43,6 +43,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   /** 사이드바 바닥(버전·환경 설정). */
   footer?: ReactNode | ((isFolded: boolean) => ReactNode);
   pageFooter?: ReactNode;
+  sidebarBottom?: ReactNode | ((isFolded: boolean) => ReactNode);
   /** 휴대폰 일반 페이지 머리 줄 끝의 앱 도구. */
   phoneAppBar?: ReactNode;
   layout?: ShellLayout;
@@ -81,6 +82,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
       return next;
     }),
   });
+  useEffect(() => setMenuOpen(false), [pathname]);
   const navigate = (path: string) => { onNavigate?.(path); setMenuOpen(false); };
   const go = (path: string) => onNavigate && ((event: MouseEvent) => {
     if (event.metaKey || event.ctrlKey || event.shiftKey) return;
@@ -121,6 +123,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
         {profile}
       </VStack>}
     topContent={backRow}
+    footer={typeof sidebarBottom === 'function' ? sidebarBottom(isFolded) : sidebarBottom}
     footerIcons={isFolded ? <VStack gap={1} hAlign="center">{typeof footer === 'function' ? footer(true) : null}{toggle}</VStack> : typeof footer === 'function' ? footer(false) : footer}>
     {space.sections.map((section, index) => <Fragment key={section.title}>
       {/* 접힌 메뉴는 묶음 이름이 사라지므로 선으로 묶음을 나눈다. */}
@@ -142,7 +145,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
         <VStack className={styles.page}>{page}</VStack>
         {isFull ? null : <MobileTabBar tabs={shownTabs} isSelected={selected} isMoreOpen={isMenuOpen} hasMore={more.length > 0 || !!back}
           onNavigate={onNavigate} onMore={() => setMenuOpen(true)} />}
-        <MobileMenuSheet isOpen={isMenuOpen && !isFull} onOpenChange={setMenuOpen} entries={more} isSelected={selected} onSelect={go}
+        <MobileMenuSheet isOpen={isMenuOpen && !isFull} onOpenChange={setMenuOpen} entries={more} isSelected={selected} onSelect={go} tools={headerTools}
           back={back ? { ...back, title: space.title } : undefined} />
       </VStack>
     </AppShell>;

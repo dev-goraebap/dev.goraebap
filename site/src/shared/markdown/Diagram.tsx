@@ -19,7 +19,13 @@ export function Diagram({ 'data-diagram': source, ...props }: ComponentPropsWith
       await document.fonts.ready;
       if (cancelled) return;
       mermaid.initialize({ startOnLoad: false, securityLevel: 'strict', theme: mode === 'dark' ? 'dark' : 'neutral', fontFamily: getComputedStyle(document.body).fontFamily, suppressErrorRendering: true });
-      const { svg } = await mermaid.render(`diagram-${id}`, source);
+      const measuring = document.createElement('div');
+      measuring.dataset.diagramMeasure = '';
+      Object.assign(measuring.style, { position: 'fixed', inset: '0 0 auto 0', height: '0', overflow: 'hidden', visibility: 'hidden', pointerEvents: 'none' });
+      document.body.append(measuring);
+      let svg: string;
+      try { ({ svg } = await mermaid.render(`diagram-${id}`, source, measuring)); }
+      finally { measuring.remove(); }
       if (!cancelled && node.current) {
         node.current.innerHTML = svg;
         // 글에 지정된 밝은 배경은 다크 테마에서도 남으므로 실제 도형 면을 기준으로 글자 대비를 정한다.

@@ -7,8 +7,8 @@ export function BlogPage() {
   const search = useRouterState({ select: state => state.location.searchStr });
   const query = new URLSearchParams(search);
   const q = query.get('q') ?? '';
-  const tag = query.get('tag') ?? '';
-  const filtered = posts.filter(post => (!tag || post.tags?.includes(tag)) && `${post.title} ${post.description} ${post.tags?.join(' ')}`.toLocaleLowerCase().includes(q.trim().toLocaleLowerCase()));
+  const tags = query.getAll('tag');
+  const filtered = posts.filter(post => (!tags.length || tags.some(tag => post.tags?.includes(tag))) && `${post.title} ${post.description} ${post.tags?.join(' ')}`.toLocaleLowerCase().includes(q.trim().toLocaleLowerCase()));
   return <div className={styles.home}>
     <p className={styles.count} role="status">{filtered.length}개의 글</p>
     <div className={styles.posts}>{filtered.map(post => <RouterLink key={post.path} href={post.path} className={styles.post}>

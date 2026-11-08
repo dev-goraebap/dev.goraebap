@@ -2,7 +2,7 @@ import { BottomSheet } from '@astryxdesign/core/BottomSheet';
 import { HStack } from '@astryxdesign/core/HStack';
 import { IconButton } from '@astryxdesign/core/IconButton';
 import { Text } from '@astryxdesign/core/Text';
-import { createElement, type MouseEventHandler } from 'react';
+import { createElement, type ReactNode, type MouseEventHandler } from 'react';
 import { icon, solarIcon } from '../../foundations/icons/solar-icon';
 import { SheetBody } from '../../composites/popup/SheetBody';
 import type { NavEntry } from './nav';
@@ -36,10 +36,11 @@ export function MobileTabBar({ tabs, isSelected, isMoreOpen, hasMore, onNavigate
  * 더보기 시트: 탭에 없는 목적지. 하위 목적지는 상위 항목 아래 묶음으로 두고 묶음 사이를 선으로 나눈다. 하위 공간이면 그 이름을
  * 제목으로, 돌아가기를 앞에 둔다.
  */
-export function MobileMenuSheet({ isOpen, onOpenChange, entries, isSelected, onSelect, back }: {
+export function MobileMenuSheet({ isOpen, onOpenChange, entries, isSelected, onSelect, back, tools }: {
   isOpen: boolean; onOpenChange: (isOpen: boolean) => void; entries: NavEntry[];
   isSelected: (path: string) => boolean; onSelect: (path: string) => MouseEventHandler | undefined;
   back?: { path: string; label: string; title: string };
+  tools?: ReactNode;
 }) {
   const title = back?.title ?? '더보기';
   // 하위 항목은 상위 아이콘 뒤 글자 시작선에 맞춰 들인다(사이드바와 같은 위계).
@@ -66,6 +67,7 @@ export function MobileMenuSheet({ isOpen, onOpenChange, entries, isSelected, onS
             <li key={child.path}>{row(child, !!entry.icon)}</li>)}</ul> : null}
         </li>;
       })}</ul></nav> : null}
+      {tools ? <HStack gap={2} vAlign="center">{tools}</HStack> : null}
     </SheetBody>
   </BottomSheet>;
 }

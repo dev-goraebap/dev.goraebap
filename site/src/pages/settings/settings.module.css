@@ -2,4 +2,6 @@
 .page h1 { font-size: 1.5rem; font-weight: 600; }
 .page pre { max-inline-size: 100%; overflow-x: auto; white-space: pre-wrap; overflow-wrap: anywhere; font-size: .8125rem; line-height: 1.7; }
 
-.version { font-family: var(--font-family-code); color: var(--color-text-secondary); font-size: .75rem; }
+.instructions { padding: var(--spacing-4); }
+.instructions pre { margin: 0; max-block-size: 20rem; overflow-y: auto; scrollbar-gutter: stable; }
+.instructions p { margin-block: var(--spacing-2) 0; color: var(--color-text-secondary); font-size: .8125rem; }
