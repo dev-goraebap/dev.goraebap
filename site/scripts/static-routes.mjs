@@ -18,10 +18,18 @@ for (const doc of routes) {
 }
 // 직접 연 옛 주소도 같은 라우터로 연결한다. 알 수 없는 주소는 HTTP 404를 유지한다.
 for (const doc of docs) {
-  const legacy = doc.path.startsWith('/blog/') ? doc.path.replace('/blog/', '/posts/') : doc.path.replace('/webcraft/', '/').replace('/webcraft-mode/', '/goraebap-mode/');
+  const legacy = doc.path.startsWith('/blog/') ? doc.path.replace('/blog/', '/posts/') : doc.path.replace('/webcraft/', '/');
   if (legacy === '/') continue;
   const directory = path.resolve(output, `.${legacy}`);
   if (!directory.startsWith(`${path.resolve(output)}${path.sep}`)) throw new Error(`사이트 밖 경로: ${legacy}`);
+  await mkdir(directory, { recursive: true });
+  await writeFile(path.join(directory, 'index.html'), template);
+}
+// 잠시 공개한 입구 이름의 주소도 정식 goraebap-mode로 연결한다.
+for (const doc of docs.filter(doc => doc.path.includes('/rules/goraebap-mode/'))) {
+  const alias = doc.path.replace('/goraebap-mode/', '/webcraft-mode/');
+  const directory = path.resolve(output, `.${alias}`);
+  if (!directory.startsWith(`${path.resolve(output)}${path.sep}`)) throw new Error(`사이트 밖 경로: ${alias}`);
   await mkdir(directory, { recursive: true });
   await writeFile(path.join(directory, 'index.html'), template);
 }

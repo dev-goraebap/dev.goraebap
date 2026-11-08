@@ -28,7 +28,7 @@ description: 사용자가 Webcraft 연결·사본 전환·프로젝트 규칙 �
 ```markdown
 ## 개발 지침
 
-이 프로젝트는 Webcraft 플러그인(0.7.0 이상)의 지침을 따릅니다. 작업을 시작할 때 webcraft-mode를 읽고, 바꾸는 영역의 지침(frontend·design-system·backend·api·database·architecture)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다.
+이 프로젝트는 Webcraft 플러그인(0.7.1 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(frontend·design-system·backend·api·database·architecture)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다.
 
 ## 프로젝트 규칙
 

@@ -7,7 +7,7 @@ const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'
 const description = '웹 플랫폼 개발 지침(프론트·디자인 시스템·백엔드·API·DB·아키텍처)과 프로젝트 연결';
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
 /**
- * 사람이 부르거나 입구(webcraft-mode)가 링크로 읽을 때만 쓰는 영역 지침. 설명이 범용(React·Java 등)이라 자동 호출을 열어 두면
+ * 사람이 부르거나 입구(goraebap-mode)가 링크로 읽을 때만 쓰는 영역 지침. 설명이 범용(React·Java 등)이라 자동 호출을 열어 두면
  * webcraft를 쓰지 않는 프로젝트에서도 끼어든다. 입구와 연결 도구는 설명에 조건(AGENTS.md가 밝힌 프로젝트, 이름으로
  * 한 요청)을 적고 자동 호출을 연다.
  */
@@ -43,7 +43,7 @@ export async function packagePlugins() {
   } catch (e) { if (e.code !== 'ENOENT') throw e; }
   for (const agent of ['claude', 'codex']) {
     const pluginPath = `${agent}/plugins/webcraft`;
-    // 프로젝트는 사본 없이 AGENTS.md로 이 플러그인을 가리키고, 작업을 시작할 때 입구(webcraft-mode)를 읽는다.
+    // 프로젝트는 사본 없이 AGENTS.md로 이 플러그인을 가리키고, 작업을 시작할 때 입구(goraebap-mode)를 읽는다.
     await copyFiles(path.join(root, 'skills'), `${pluginPath}/skills`, ['.md', '.yaml']);
     for (const name of explicitOnly) {
       if (agent === 'claude') {

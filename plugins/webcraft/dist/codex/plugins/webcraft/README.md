@@ -30,6 +30,6 @@ codex plugin add webcraft@dev-goraebap
 
 ## 이전 이름에서 전환
 
-이전 식별자는 `goraebap-workflow@goraebap-workflow`입니다. 새 이름은 `webcraft@dev-goraebap`이며 입구 스킬도 `goraebap-mode`에서 `webcraft-mode`로 바뀝니다. 기존 프로젝트는 새 플러그인 설치를 확인한 뒤 AGENTS.md 연결을 새 이름과 최소 판 `0.7.0`으로 바꿉니다. 기존 사본에서 바꾼 규칙과 제품 전용 스킬은 보존합니다. 옛 설치를 제거하는 작업은 새 설치 확인 후 사용자가 허용한 범위에서 수행합니다.
+이전 식별자는 `goraebap-workflow@goraebap-workflow`입니다. 새 이름은 `webcraft@dev-goraebap`이며 입구 스킬 이름은 `goraebap-mode`를 유지합니다. 기존 프로젝트는 새 플러그인 설치를 확인한 뒤 AGENTS.md 연결을 새 이름과 최소 판 `0.7.1`으로 바꿉니다. 기존 사본에서 바꾼 규칙과 제품 전용 스킬은 보존합니다. 옛 설치를 제거하는 작업은 새 설치 확인 후 사용자가 허용한 범위에서 수행합니다.
 
 역할별 모델 설정 `~/.claude/rules/goraebap-models.md`와 로컬 제안함 `~/.goraebap/proposals/`는 기존 경로를 유지합니다.

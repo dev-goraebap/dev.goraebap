@@ -31,7 +31,7 @@ export type GuideDoc = {
 
 /** 지침 묶음: 메뉴 순서와 이름, 아이콘. */
 export const skillGroups = [
-  { skill: 'webcraft-mode', label: '작업 방식', icon: 'book' },
+  { skill: 'goraebap-mode', label: '작업 방식', icon: 'book' },
   { skill: 'frontend', label: '프론트엔드', icon: 'layout-list' },
   { skill: 'design-system', label: '디자인 시스템', icon: 'sun' },
   { skill: 'backend', label: '백엔드', icon: 'settings' },

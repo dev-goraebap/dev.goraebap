@@ -20,7 +20,7 @@ export const guideSpace: NavSpace = {
   id: 'webcraft', title: 'Webcraft',
   sections: [
     { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: 'home' }] },
-    { title: '공통', entries: entriesOf(rules(['webcraft-mode', 'architecture', 'manage-workflow'])) },
+    { title: '공통', entries: entriesOf(rules(['goraebap-mode', 'architecture', 'manage-workflow'])) },
     { title: '클라이언트', entries: [...entriesOf(rules(['frontend', 'design-system'])), ...entriesOf(content(['common', 'app-shell', 'catalog']))] },
     { title: '서버', entries: entriesOf(rules(['backend', 'api', 'database'])) },
   ],

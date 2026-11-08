@@ -16,10 +16,11 @@ async function load(pathname: string) {
   if (path === '/settings/') throw redirect({ href: '/settings/appearance/', replace: true } as never);
   if (['/settings/appearance/', '/settings/plugins/'].includes(path)) return { doc: null, Content: SettingsPage };
   if (!path.startsWith('/blog/') && !path.startsWith('/webcraft/')) {
-    const next = `/webcraft${path.replace('/goraebap-mode/', '/webcraft-mode/')}`;
+    const next = `/webcraft${path.replace('/webcraft-mode/', '/goraebap-mode/')}`;
     throw redirect({ href: next, replace: true } as never);
   }
   if (path === '/blog/') return { doc: null, Content: BlogPage };
+  if (path.includes('/rules/webcraft-mode/')) throw redirect({ href: path.replace('/webcraft-mode/', '/goraebap-mode/'), replace: true } as never);
   const doc = docAt(path);
   if (!doc) {
     const first = firstOf(path);

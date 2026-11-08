@@ -1,5 +1,5 @@
 ---
-name: webcraft-mode
+name: goraebap-mode
 description: 웹 플랫폼의 기능 구현, 버그 수정, 구조 변경을 작업에 맞는 절차와 프론트·백엔드 지침으로 연결합니다. 프로젝트 AGENTS.md가 Webcraft 지침을 따른다고 밝혔을 때, 또는 사용자가 이 작업 방식을 이름으로 요청했을 때만 씁니다. 그 밖의 프로젝트에서는 쓰지 않습니다.
 ---
 

@@ -93,7 +93,7 @@ export function GuideShell() {
   const space = area === 'settings' ? settingsSpace : area === 'blog' ? blogSpace : guideSpace;
   const groups = space.sections.flatMap(section => section.entries);
   // 휴대폰 하단 탭: 자주 여는 네 묶음. 나머지는 더보기에서 고른다. 탭은 좁으므로 괄호 속 한글명을 뗀다.
-  const tabs = (area === 'settings' ? ['/settings/appearance/', '/settings/plugins/'] : area === 'blog' ? ['/blog/', '/settings/appearance/'] : ['/webcraft/', '/webcraft/rules/webcraft-mode/', '/webcraft/rules/design-system/', '/webcraft/catalog/playground/'])
+  const tabs = (area === 'settings' ? ['/settings/appearance/', '/settings/plugins/'] : area === 'blog' ? ['/blog/', '/settings/appearance/'] : ['/webcraft/', '/webcraft/rules/goraebap-mode/', '/webcraft/rules/design-system/', '/webcraft/catalog/playground/'])
     .map(path => groups.find(entry => entry.path === path) ?? (path === '/settings/appearance/' ? { path, label: '설정', icon: 'settings' as const } : undefined)).filter((entry): entry is NonNullable<typeof entry> => !!entry)
     .map(entry => ({ ...entry, label: entry.label.replace(/ \(.*\)$/, '') }));
   // 묶음 › 문서. 지침의 첫 장(묶음 주소와 같은 문서)과 첫 화면은 이름 하나만 둔다.

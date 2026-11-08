@@ -40,7 +40,7 @@ for (const agent of ['claude', 'codex']) {
       const isExplicit = agent === 'claude' ? /^---\r?\ndisable-model-invocation: true\r?\n/.test(skill) : policy.includes('allow_implicit_invocation: false');
       assert.equal(isExplicit, explicitOnly.includes(name), name);
     }
-    assert(!explicitOnly.includes('webcraft-mode') && !explicitOnly.includes('manage-workflow'));
+    assert(!explicitOnly.includes('goraebap-mode') && !explicitOnly.includes('manage-workflow'));
   });
 
   test(`${agent}: 사본·동기화 도구와 문서 밖의 파일을 담지 않는다`, async () => {
@@ -55,6 +55,9 @@ for (const agent of ['claude', 'codex']) {
     assert.equal(manifest.version, pkg.version);
     assert.equal(manifest.skills, './skills/');
     assert.equal(manifest.name, 'webcraft');
+    const skillNames = await fs.readdir(path.join(plugin, 'skills'));
+    assert(skillNames.includes('goraebap-mode'), '입구 스킬 이름은 플러그인 이름과 별개로 유지합니다.');
+    assert(!skillNames.includes('webcraft-mode'));
     const catalogFile = agent === 'claude' ? '.claude-plugin/marketplace.json' : '.agents/plugins/marketplace.json';
     const catalog = JSON.parse(await fs.readFile(path.join(dist, agent, catalogFile), 'utf8'));
     assert.equal(catalog.name, 'dev-goraebap');
