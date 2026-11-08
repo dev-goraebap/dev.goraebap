@@ -1,4 +1,3 @@
-import type { Meta, SampleOf } from "../catalog/types";
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import type { JSONContent } from "@tiptap/react";
@@ -6,8 +5,8 @@ import { RichDraft } from "@kit/composites/editor/RichDraft";
 import { AppFrame } from "@kit/layouts/app/AppFrame";
 import { Page } from "@kit/layouts/page/Page";
 import { useEffect, useRef, useState } from "react";
-import { DemoBrand, demoSpace } from "../layouts/demo";
-import styles from "./playground.module.css";
+import { DemoBrand, demoSpace } from "../../layouts/demo";
+import styles from "../playground.module.css";
 
 type Saving = "saved" | "dirty" | "saving";
 
@@ -50,7 +49,7 @@ export function DocumentScreen({ title: initialTitle = "", body: initialBody }: 
   </AppFrame>;
 }
 
-const seededBody: JSONContent = { type: "doc", content: [
+export const seededBody: JSONContent = { type: "doc", content: [
   { type: "paragraph", content: [{ type: "text", text: "이번 분기에 정리한 화면 규칙을 팀과 함께 검토하기 위한 메모입니다. 결정이 필요한 것과 이미 정한 것을 나눠 적습니다." }] },
   { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "이미 정한 것" }] },
   { type: "bulletList", content: [
@@ -60,13 +59,3 @@ const seededBody: JSONContent = { type: "doc", content: [
   { type: "heading", attrs: { level: 2 }, content: [{ type: "text", text: "더 이야기할 것" }] },
   { type: "paragraph", content: [{ type: "text", text: "목록 옆 미리보기 패널을 어떤 화면까지 넓힐지 정한다." }] },
 ] };
-
-const meta = {
-  title: "Playground (플레이그라운드)/문서 편집", id: "playground-document",
-  layout: "fullscreen", height: "40rem", device: "desktop",
-} satisfies Meta;
-export default meta;
-type Sample = SampleOf<typeof meta>;
-
-export const Editing: Sample = { name: "쓰던 문서", render: () => <DocumentScreen title="화면 규칙 검토 메모" body={seededBody} /> };
-export const Blank: Sample = { name: "새 문서", render: () => <DocumentScreen /> };

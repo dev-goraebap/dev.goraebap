@@ -5,7 +5,7 @@ import { defineConfig } from "vitest/config";
 // 견본 검사: 실제 Chromium에서 견본을 그리고 조작한다. 기본 창은 데스크톱 1440×960이다.
 export default defineConfig({
   root: fileURLToPath(new URL(".", import.meta.url)),
-  cacheDir: "../node_modules/.cache/kit-tests",
+  cacheDir: `../node_modules/.cache/kit-tests${process.env.KIT_TEST_PORT ? `-${process.env.KIT_TEST_PORT}` : ""}`,
   esbuild: { jsx: "automatic" },
   resolve: {
     alias: { "@kit": fileURLToPath(new URL("./reference", import.meta.url)), "@samples": fileURLToPath(new URL("./samples", import.meta.url)) },

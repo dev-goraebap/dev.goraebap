@@ -14,7 +14,7 @@ import { useOpenPanel, useRoutedPanel } from '@kit/patterns/routing/routed-panel
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation, useNavigate, useParams,
   type ErrorComponentProps } from '@tanstack/react-router';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { collections, ResourceApiContext, type ResourceApi } from '../entities/resource';
 import { createResourceApi } from '../mocks/resource-api';
 import { LibraryPage } from '../pages/library/LibraryPage';
@@ -22,29 +22,24 @@ import { validateLibrarySearch } from '../pages/library/model';
 import { ResourceCompose } from '../pages/resource-compose/ResourceCompose';
 import { ResourceDetailPage } from '../pages/resource-detail/ResourceDetailPage';
 import { DisplaySettingsPage } from '../pages/settings/DisplaySettingsPage';
-import { initiallyRead, RequestReadContext, seedRequests, useRequestRead } from '../entities/request/model';
-import { RequestsPage } from '../pages/requests/RequestsPage';
 import { AppearanceContext, useAppearance } from './appearance';
 import { useShellLayout } from '../../../catalog/shell-layout';
 import styles from './app.module.css';
 
-const spaceOf = (unread: number): NavSpace => ({
+const space: NavSpace = {
   id: 'main', title: '서가', sections: [
     { title: '서가', isHeaderHidden: true, entries: [
       { path: '/resources', label: '모든 자료', icon: 'library' },
       { path: '/resources?starred=true', label: '즐겨찾기', icon: 'star' },
-      { path: '/requests', label: '받은 요청', icon: 'inbox', badge: unread || undefined },
     ] },
     { title: '컬렉션', entries: collections.map(each => ({ path: `/resources?collection=${each.id}`, label: each.name, icon: 'folder' as const })) },
     { title: '설정', entries: [{ path: '/settings', label: '화면 설정', icon: 'settings' }] },
   ],
-});
+};
 
 /** 셸: 주소가 메뉴의 현재 항목을 정한다. 컬렉션·즐겨찾기처럼 검색 조건으로 나뉜 항목은 조건까지 비교한다. */
 function Shell() {
   const { layout } = useAppearance();
-  const { read } = useRequestRead();
-  const space = spaceOf(seedRequests.filter(each => !read.has(each.id)).length);
   const location = useLocation();
   const navigate = useNavigate();
   const search = location.search as Record<string, unknown>;
@@ -117,9 +112,8 @@ export function createLibraryRouter(initialPath: string) {
   const detail = createRoute({ getParentRoute: () => root, path: '/resources/$id', component: DetailRoute });
   const edit = createRoute({ getParentRoute: () => root, path: '/resources/$id/edit', component: ComposeRoute });
   const settings = createRoute({ getParentRoute: () => root, path: '/settings', component: DisplaySettingsPage });
-  const requests = createRoute({ getParentRoute: () => root, path: '/requests', component: RequestsPage });
   return createRouter({
-    routeTree: root.addChildren([home, list, create, detail, edit, settings, requests]),
+    routeTree: root.addChildren([home, list, create, detail, edit, settings]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
     unmaskOnReload: true, defaultPreload: 'intent', scrollRestoration: true,
   });
@@ -139,14 +133,11 @@ export function LibraryApp({ api, initialPath = '/resources', initialLayout }: {
   const layout = chosenLayout ?? guideLayout;
   const [density, setDensity] = useState<Density>('comfortable');
   const [router] = useState(() => createLibraryRouter(initialPath));
-  const [read, setRead] = useState<ReadonlySet<string>>(() => new Set(initiallyRead));
-  const markRead = useCallback((id: string) => setRead(ids => (ids.has(id) ? ids : new Set(ids).add(id))), []);
-  const requestRead = useMemo(() => ({ read, markRead }), [read, markRead]);
   return <QueryClientProvider client={client}>
     <ResourceApiContext value={repository}>
       <AppearanceContext value={{ layout, density, setLayout, setDensity }}>
         <DensityContext value={density}>
-          <RequestReadContext value={requestRead}><DraftProvider><RouterProvider router={router} /></DraftProvider></RequestReadContext>
+          <DraftProvider><RouterProvider router={router} /></DraftProvider>
         </DensityContext>
       </AppearanceContext>
     </ResourceApiContext>

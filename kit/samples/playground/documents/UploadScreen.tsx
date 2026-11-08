@@ -1,4 +1,3 @@
-import type { Meta, SampleOf } from "../catalog/types";
 import { IconButton } from "@astryxdesign/core/IconButton";
 import { HStack } from "@astryxdesign/core/HStack";
 import { ListItem } from "@astryxdesign/core/List";
@@ -12,8 +11,8 @@ import { AppFrame } from "@kit/layouts/app/AppFrame";
 import { Page } from "@kit/layouts/page/Page";
 import { PageList } from "@kit/layouts/page/PageParts";
 import { useEffect, useRef, useState } from "react";
-import { DemoBrand, demoSpace } from "../layouts/demo";
-import styles from "./playground.module.css";
+import { DemoBrand, demoSpace } from "../../layouts/demo";
+import styles from "../playground.module.css";
 
 type Upload = { id: string; name: string; size: number; state: "waiting" | "uploading" | "done" | "failed"; progress: number };
 
@@ -85,19 +84,9 @@ export function UploadScreen({ initial = [] }: { initial?: Upload[] }) {
   </AppFrame>;
 }
 
-const seeded: Upload[] = [
+export const seeded: Upload[] = [
   { id: "a", name: "화면 배치 스케치.png", size: 2_400_000, state: "done", progress: 100 },
   { id: "b", name: "회의 기록.pdf", size: 830_000, state: "uploading", progress: 40 },
   { id: "c", name: "실패하는 표본.docx", size: 120_000, state: "waiting", progress: 0 },
   { id: "d", name: "참고 이미지.jpg", size: 5_600_000, state: "waiting", progress: 0 },
 ];
-
-const meta = {
-  title: "Playground (플레이그라운드)/자료 올리기", id: "playground-upload",
-  layout: "fullscreen", height: "36rem", device: "desktop",
-} satisfies Meta;
-export default meta;
-type Sample = SampleOf<typeof meta>;
-
-export const Empty: Sample = { name: "올리기 전", render: () => <UploadScreen /> };
-export const Uploading: Sample = { name: "올리는 중·완료·실패", render: () => <UploadScreen initial={seeded} /> };
