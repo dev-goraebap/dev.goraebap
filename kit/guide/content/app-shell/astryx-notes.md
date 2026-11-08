@@ -7,7 +7,7 @@ sidebar:
 
 [앱 셸 개요](/app-shell/overview/)부터 정리한 화면 설계 규칙을 현재 기술 스택(Astryx 디자인 시스템, React, TanStack Router·Query)으로 구현할 때 어떤 부품과 훅을 쓰는지 대응합니다. 앞선 문서들은 특정 UI 라이브러리에 묶이지 않도록 셸, 머리 줄, 도구 자리, 본문 열 같은 역할로 규칙을 정의했습니다. Astryx와 TanStack에 맞춘 구현 방법은 이 페이지에만 모아 두며, 기술 스택을 바꾸면 앞선 규칙은 그대로 두고 이 페이지만 다시 씁니다.
 
-공통 UI 구현은 공개 저장소([dev-goraebap/goraebap-workflow](https://github.com/dev-goraebap/goraebap-workflow))의 `frontend/reference` 키트에 있습니다. 각 규칙의 성격 표시(`[관례]`, `[고래밥]`, `[선호]`, [읽는 법](/start/how-to-read/) 참고)를 함께 적어, 바꿀 수 없는 동작 계약과 취향에 따른 모양 선택을 코드 수준에서도 구분합니다.
+공통 UI 구현은 공개 저장소([dev-goraebap/goraebap-workflow](https://github.com/dev-goraebap/goraebap-workflow))의 `kit/reference` 키트에 있습니다. 각 규칙의 성격 표시(`[관례]`, `[고래밥]`, `[선호]`, [읽는 법](/start/how-to-read/) 참고)를 함께 적어, 바꿀 수 없는 동작 계약과 취향에 따른 모양 선택을 코드 수준에서도 구분합니다.
 
 ## 역할과 구현 대응
 
@@ -15,7 +15,7 @@ sidebar:
 | --- | --- | --- | --- |
 | 사이드바와 본문 두 영역으로 나누고 본문만 스크롤하는 [셸과 사이드바](/app-shell/shell-and-sidebar/) | `[관례]` `[고래밥]` | Astryx `AppShell` + `SideNav`(`resizable`) | `layouts`의 앱 셸. 페이지마다 셸을 새로 만들지 않고 유지합니다. 메뉴 이름을 말줄임 없이 보이기 위해 기본 폭 340px(조절 범위 220~380px)을 씁니다 |
 | 바탕 위에 떠 있는 둥근 페이지 카드(Inset)와 선으로만 나눈 면(Split) | `[선호]` | Inset은 `Card variant="page"`, Split은 `AppShell variant="section"` | [선호하는 화면](/app-shell/preferred-screens/)의 기준에 따라 두 배치 중 하나를 고릅니다 |
-| [머리 줄·배너·툴바·적용 줄·FAB](/app-shell/header-and-toolbar/) | `[관례]` `[고래밥]` `[선호]` | `Page` | `frontend/reference/layouts/page/Page.tsx`. 52px 머리 줄, 상태·오류 배너 자리, 44px(휴대폰 52px) 툴바, 필터 적용 칩 줄, 미리보기 자리(`aside`), 휴대폰의 떠 있는 만들기 버튼(FAB, 56px)을 한 틀에서 관리합니다 |
+| [머리 줄·배너·툴바·적용 줄·FAB](/app-shell/header-and-toolbar/) | `[관례]` `[고래밥]` `[선호]` | `Page` | `kit/reference/layouts/page/Page.tsx`. 52px 머리 줄, 상태·오류 배너 자리, 44px(휴대폰 52px) 툴바, 필터 적용 칩 줄, 미리보기 자리(`aside`), 휴대폰의 떠 있는 만들기 버튼(FAB, 56px)을 한 틀에서 관리합니다 |
 | 데스크톱 팝오버를 휴대폰에서 바텀시트로 여는 [그 자리에서 고르기](/app-shell/choosing-presentation/) | `[관례]` | `AdaptivePopover` (Astryx `Popover` + `BottomSheet`), `SheetBody` | `composites/popup`. 분기점을 기준으로 두 부품을 전환합니다. 시트 손잡이(위 24px)를 피하는 내부 여백(좌우 12px, 아래 20px)은 `SheetBody` 한 곳에 둡니다 |
 | [적응형](/app-shell/adaptive/) 단일 분기점 판정 | `[관례]` `[고래밥]` | `useIsPhone` (`(width < 64rem)`) | `foundations`의 분기점 훅. 1024px(`64rem`) 미만을 휴대폰으로 판정하며 사이드바↔하단 탭, 팝오버↔시트, 대화상자↔페이지, 표↔행 목록 전환에 모두 같은 훅을 씁니다 |
 | 목록 위 대화상자와 실제 페이지 주소를 잇는 [라우트 마스킹](/app-shell/route-masking/) | `[고래밥]` | TanStack Router `navigate` `mask` + `unmaskOnReload`, `useOpenPanel` / `useRoutedPanel` | `patterns/routing/routed-panel.ts`. 데스크톱 목록에서 열면 `?panel=대상`을 더하고 주소창에는 대상 주소를 보입니다. 새로고침이나 직접 진입 시에는 페이지로 엽니다 |
@@ -24,7 +24,7 @@ sidebar:
 | 검색어·필터·표시를 URL에 남기는 [목록 조건 주소](/app-shell/filters-and-display/) | `[고래밥]` | `useAddressFilters`, `useAddressWords`(300ms), `useAddressDisplay` | `patterns/list/list-address.ts`. 검색어 입력 중에는 방문 기록을 쌓지 않고(`replace`) 300ms 간격으로 주소만 갱신합니다 |
 | 필수 값이 비어도 제출 버튼을 막지 않는 작성 양식([상태와 피드백](/app-shell/states-and-feedback/)) | `[관례]` | `ComposeForm`, `ComposeSurface`, `ComposeSubmit`, `FormDialog`, `focusFirstInvalid` | `patterns/compose`. `ComposeSubmit`에 `isDisabled`를 두지 않고 `FormDialog`에 `isSubmitDisabled`를 두지 않습니다. 빠진 값은 `titleError`·`pillsError`와 알약의 `isInvalid`(`aria-invalid`)로 알리고 `patterns/compose/validation.ts`의 `focusFirstInvalid`로 첫 빠진 항목에 초점을 옮깁니다 |
 | 먹색 강조와 4단계 면, 휴대폰 크기 조정([시각 위계](/common/visual-hierarchy/)) | `[선호]` `[관례]` | Stone 확장 테마(`theme.ts`), `responsive.css` | `foundations`. Astryx 테마 규칙이 `@media`를 받지 않으므로 휴대폰 크기와 여백 조정은 `responsive.css` 한 파일에 모읍니다 |
-| 의미 이름으로 부르고 선·채움으로 상태를 나타내는 [아이콘](/common/icons/) | `[선호]` | `solarIcon(name, isChosen)` | `frontend/scripts/generate-icons.mjs`로 Solar 아이콘을 의미 이름으로 생성합니다. 기본은 선, 선택·현재 위치는 채운 아이콘(`isChosen`)을 씁니다 |
+| 의미 이름으로 부르고 선·채움으로 상태를 나타내는 [아이콘](/common/icons/) | `[선호]` | `solarIcon(name, isChosen)` | `kit/scripts/generate-icons.mjs`로 Solar 아이콘을 의미 이름으로 생성합니다. 기본은 선, 선택·현재 위치는 채운 아이콘(`isChosen`)을 씁니다 |
 
 ## 주요 상호작용의 구현 세부
 
@@ -58,7 +58,7 @@ Astryx `BottomSheet`는 배경 막이 있을 때 브라우저의 네이티브 `<
 
 ## 키트 폴더 구조와 채택 순서
 
-`frontend/reference`는 Astryx 기본 부품을 다시 구현하지 않고, 업무 앱에서 반복해 쓰는 조합과 라우팅 패턴만 모아 둡니다. 폴더끼리는 상대 경로로 이어져 있으므로 프로젝트에 채택할 때는 필요한 파일과 그 의존 파일만 프로젝트의 공통 UI 위치로 옮기고 경로를 맞춥니다.
+`kit/reference`는 Astryx 기본 부품을 다시 구현하지 않고, 업무 앱에서 반복해 쓰는 조합과 라우팅 패턴만 모아 둡니다. 폴더끼리는 상대 경로로 이어져 있으므로 프로젝트에 채택할 때는 필요한 파일과 그 의존 파일만 프로젝트의 공통 UI 위치로 옮기고 경로를 맞춥니다.
 
 | 폴더 | 담는 구현 |
 | --- | --- |
@@ -72,7 +72,7 @@ Astryx `BottomSheet`는 배경 막이 있을 때 브라우저의 네이티브 `<
 1. 앱 진입점에서 UI 모듈보다 먼저 `foundations/base.css`를 읽습니다. CSS 레이어 순서(`reset` → `astryx-base` → `astryx-theme`)와 `responsive.css`의 휴대폰 크기, 스크롤바, 큰 화면 배율이 함께 적용됩니다.
 2. 앱 루트를 `ReferenceTheme`(라이트·다크 모드는 앱 설정 한 곳에서 제어)으로 감싸고, 라우터 루트에 `LinkProvider component={RouterLink}`를 둡니다.
 3. 작성 양식을 쓰면 라우터보다 위에 `DraftProvider`를 둡니다.
-4. 아이콘 이름을 더할 때는 `frontend/scripts/generate-icons.mjs`의 매핑을 고치고 `npm run frontend:icons`를 실행합니다.
+4. 아이콘 이름을 더할 때는 `kit/scripts/generate-icons.mjs`의 매핑을 고치고 `npm run kit:icons`를 실행합니다.
 
 ## 검증 범위와 미확인 사항
 

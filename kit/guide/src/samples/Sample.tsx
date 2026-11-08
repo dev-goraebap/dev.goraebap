@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { loadSample, type SampleEntry } from '@frontend/catalog/registry';
-import type { Device } from '@frontend/catalog/types';
+import { loadSample, type SampleEntry } from '@samples/catalog/registry';
+import type { Device } from '@samples/catalog/types';
 
 /** 견본을 그리는 기기 폭. 데스크톱은 키트가 데스크톱으로 판정하는 최소 폭, 휴대폰은 390px. */
 const WIDTH: Record<Device, number> = { desktop: 1024, phone: 390 };

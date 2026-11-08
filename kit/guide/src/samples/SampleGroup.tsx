@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { loadGroup, type SampleEntry } from '@frontend/catalog/registry';
+import { loadGroup, type SampleEntry } from '@samples/catalog/registry';
 import { Sample } from './Sample';
 
 /** 견본 묶음 전체를 파일에 쓴 순서대로 띄운다(견본 메뉴의 문서). 견본 이름을 소제목으로 둬 목차에 잡힌다. */

@@ -1,6 +1,6 @@
 # 라우트 마스킹
 
-자기 주소가 있는 작성·수정 양식을 데스크톱 목록 위 대화상자로 엽니다. 목록은 그대로 두고 주소창에는 양식의 실제 주소를 보입니다. 상태·복귀와 직접 링크의 계약은 frontend의 [화면 전환](../../frontend/references/navigation.md)이 소유하고, 키트의 [routed-panel](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/patterns/routing/routed-panel.ts)이 구현합니다.
+자기 주소가 있는 작성·수정 양식을 데스크톱 목록 위 대화상자로 엽니다. 목록은 그대로 두고 주소창에는 양식의 실제 주소를 보입니다. 상태·복귀와 직접 링크의 계약은 frontend의 [화면 전환](../../frontend/references/navigation.md)이 소유하고, 키트의 [routed-panel](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/patterns/routing/routed-panel.ts)이 구현합니다.
 
 | 진입 | 결과 |
 | --- | --- |

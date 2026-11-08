@@ -1,6 +1,6 @@
 # 페이지 배치
 
-페이지([Page](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/layouts/page/Page.tsx))는 머리 줄·배너 자리·툴바·적용 줄·본문의 순서를 고정합니다. 머리와 툴바는 고정하고 본문만 스크롤합니다. 구현 전에 기존 Page와 같은 역할의 화면을 읽고 각 조작을 보기·조건·표시·주 동작으로 나눕니다.
+페이지([Page](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/layouts/page/Page.tsx))는 머리 줄·배너 자리·툴바·적용 줄·본문의 순서를 고정합니다. 머리와 툴바는 고정하고 본문만 스크롤합니다. 구현 전에 기존 Page와 같은 역할의 화면을 읽고 각 조작을 보기·조건·표시·주 동작으로 나눕니다.
 
 ## 머리 줄과 툴바
 
@@ -29,7 +29,7 @@
 
 ## 상세
 
-본문이 있는 대상의 상세([DetailLayout](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/layouts/detail/DetailLayout.tsx))는 최대 45rem 읽기 열에 소속·제목·본문·이어지는 것(하위 항목·활동)을 둡니다. 속성은 넓으면 오른쪽 16rem 열에 묶음 이름과 함께(스크롤해도 보입니다), 좁으면 제목과 본문 사이의 줄바꿈되는 알약으로 옮깁니다. 같은 요소를 옮기므로 속성을 두 벌 렌더링하지 않습니다. 창 폭이 아니라 컨테이너 폭(60rem)으로 판단해 대화상자·패널에서도 맞게 바뀝니다. 긴 제목·주소는 줄을 넘겨 가로로 넘치지 않습니다. 상세와 작성 면은 점 무늬 없이 평평합니다.
+본문이 있는 대상의 상세([DetailLayout](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/layouts/detail/DetailLayout.tsx))는 최대 45rem 읽기 열에 소속·제목·본문·이어지는 것(하위 항목·활동)을 둡니다. 속성은 넓으면 오른쪽 16rem 열에 묶음 이름과 함께(스크롤해도 보입니다), 좁으면 제목과 본문 사이의 줄바꿈되는 알약으로 옮깁니다. 같은 요소를 옮기므로 속성을 두 벌 렌더링하지 않습니다. 창 폭이 아니라 컨테이너 폭(60rem)으로 판단해 대화상자·패널에서도 맞게 바뀝니다. 긴 제목·주소는 줄을 넘겨 가로로 넘치지 않습니다. 상세와 작성 면은 점 무늬 없이 평평합니다.
 
 본문 편집 도구(편집·저장)는 페이지 머리 줄의 공통 자리에 둡니다. 읽기에서 시작하고 명시적인 편집 전환을 둡니다.
 
@@ -39,4 +39,4 @@
 
 ## 옆 패널
 
-주소가 필요 없는 짧은 조회(기록 한 줄의 사실)는 목록 옆 패널([WithPanel](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/layouts/side-panel/WithPanel.tsx))로 엽니다. 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트입니다. 편집이나 긴 내용은 자기 주소를 가진 상세로 엽니다. 목록과 상세를 나란히 두는 받은함은 목록 폭을 조절할 수 있게 하고 휴대폰에서는 목록만 보인 뒤 항목을 페이지로 엽니다.
+주소가 필요 없는 짧은 조회(기록 한 줄의 사실)는 목록 옆 패널([WithPanel](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/layouts/side-panel/WithPanel.tsx))로 엽니다. 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트입니다. 편집이나 긴 내용은 자기 주소를 가진 상세로 엽니다. 목록과 상세를 나란히 두는 받은함은 목록 폭을 조절할 수 있게 하고 휴대폰에서는 목록만 보인 뒤 항목을 페이지로 엽니다.

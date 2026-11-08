@@ -1,5 +1,5 @@
 // 가이드의 문서 목록을 빌드 때 만든다. 지침은 plugin/skills의 Markdown을 원본 그대로 읽고(사본을 두지 않는다),
-// 화면 해설·견본 문서는 site/content의 MDX를 읽는다. 결과는 virtual:guide-docs로 앱에 넘긴다.
+// 화면 해설·견본 문서는 kit/guide/content의 MDX를 읽는다. 결과는 virtual:guide-docs로 앱에 넘긴다.
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -7,7 +7,7 @@ import type { Plugin } from 'vite';
 import { visit } from 'unist-util-visit';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-export const skillsRoot = path.resolve(here, '../plugin/skills');
+export const skillsRoot = path.resolve(here, '../../plugin/skills');
 export const contentRoot = path.resolve(here, 'content');
 
 export type GuideDoc = {
@@ -18,7 +18,7 @@ export type GuideDoc = {
   /** 메뉴 묶음 주소. 예: /rules/frontend/ */
   group: string;
   order: number;
-  /** import.meta.glob 키와 맞추는 원본 위치. 예: plugin/skills/frontend/SKILL.md, site/content/app-shell/peek.mdx */
+  /** import.meta.glob 키와 맞추는 원본 위치. 예: plugin/skills/frontend/SKILL.md, kit/guide/content/app-shell/peek.mdx */
   source: string;
   /** 본문이 스스로 h1을 가지면 true(지침 Markdown). */
   hasTitle: boolean;
@@ -36,7 +36,7 @@ export const skillGroups = [
   { skill: 'manage-workflow', label: '프로젝트 연결', icon: 'attachment' },
 ] as const;
 
-/** 화면 해설·견본·참고 묶음(site/content의 폴더). */
+/** 화면 해설·견본·참고 묶음(kit/guide/content의 폴더). */
 export const contentGroups = [
   { dir: 'start', label: '시작하기', icon: 'home' },
   { dir: 'common', label: '공통', icon: 'layout-grid' },
@@ -56,7 +56,7 @@ const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => {
   return statSync(file).isDirectory() ? walk(file) : [file];
 });
 const posix = (file: string) => file.split(path.sep).join('/');
-const repoPath = (file: string) => posix(path.relative(path.resolve(here, '..'), file));
+const repoPath = (file: string) => posix(path.relative(path.resolve(here, '../..'), file));
 
 /** 지침 Markdown 파일의 사이트 주소. SKILL.md는 지침 첫 장, 나머지는 하위 경로. */
 export function skillRoute(file: string) {

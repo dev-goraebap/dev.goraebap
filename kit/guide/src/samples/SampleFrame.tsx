@@ -1,8 +1,8 @@
 import '@kit/foundations/base.css';
 import { useEffect, useState, useSyncExternalStore } from 'react';
-import { loadSample, type SampleEntry } from '@frontend/catalog/registry';
-import { SampleView } from '@frontend/catalog/SampleView';
-import type { Meta, Sample } from '@frontend/catalog/types';
+import { loadSample, type SampleEntry } from '@samples/catalog/registry';
+import { SampleView } from '@samples/catalog/SampleView';
+import type { Meta, Sample } from '@samples/catalog/types';
 
 type Mode = 'light' | 'dark';
 

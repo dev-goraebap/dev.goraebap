@@ -1,21 +1,25 @@
-# 프론트엔드 키트와 견본
+# 키트와 견본
 
-Astryx 기반 화면의 공통 구현(키트)과 그 견본을 둔다. 견본은 가이드 사이트(`site/`)가 규칙 옆에 띄우고, 같은 견본으로 상호작용을 검사한다. 이 폴더는 플러그인 배포 대상이 아니며, 설치된 스킬은 공개 저장소 링크로 여기의 코드를 가리킨다.
+Astryx 기반 화면의 공통 구현(키트)과 그 견본을 둔다. 견본은 가이드 사이트(`guide/`)가 규칙 옆에 띄우고, 같은 견본으로 상호작용을 검사한다. 이 폴더는 플러그인 배포 대상이 아니며, 설치된 스킬은 공개 저장소 링크로 여기의 코드를 가리킨다.
 
 ## 실행과 검증
 
-저장소 루트에서 `npm ci` 후 `npm run guide`로 가이드(4451)를 연다. 견본은 왼쪽 메뉴의 "견본"과 각 규칙 문서 안에 있다. `npm run frontend:check`는 타입, `npm run frontend:test`는 Chromium에서 모든 견본이 그려지는지와 조작 검증을 확인한다. 테스트용 브라우저가 없으면 `npx playwright install chromium`으로 준비한다.
+저장소 루트에서 `npm ci` 후 `npm run guide`로 가이드(4451)를 연다. 견본은 왼쪽 메뉴의 "견본"과 각 규칙 문서 안에 있다. `npm run kit:check`는 타입, `npm run kit:test`는 Chromium에서 모든 견본이 그려지는지와 조작 검증을 확인한다. 테스트용 브라우저가 없으면 `npx playwright install chromium`으로 준비한다.
 
 ## 구성
 
 | 위치 | 관리하는 내용 |
 | --- | --- |
 | `reference` | 채택할 수 있는 공통 구현(키트). foundations·composites·layouts·patterns |
-| `src/<범주>/*.samples.tsx` | 견본. 기본 내보내기가 묶음(제목·id·틀), 이름 있는 내보내기가 견본 하나다 |
-| `src/<범주>/*.test.tsx` | 조작 검증. 견본 파일의 부품을 그려 누르고 확인한다 |
-| `src/catalog` | 견본 형식, 그리기, 목록, 검사 도구 |
-| `src/playground` | 화면 템플릿(목록, 목록 + 미리보기, 상세, 작성, 문서 편집, 자료 올리기, 설정)과 그 바탕인 서가 앱·모의 저장소(`library`) |
+| `samples/<범주>/*.samples.tsx` | 견본. 기본 내보내기가 묶음(제목·id·틀), 이름 있는 내보내기가 견본 하나다 |
+| `samples/<범주>/*.test.tsx` | 조작 검증. 견본 파일의 부품을 그려 누르고 확인한다 |
+| `samples/catalog` | 견본 형식, 그리기, 목록, 검사 도구 |
+| `samples/playground` | 화면 템플릿(목록, 목록 + 미리보기, 상세, 작성, 문서 편집, 자료 올리기, 설정)과 그 바탕인 서가 앱·모의 저장소(`library`) |
+| `guide` | 가이드 사이트. `src`, `content`(화면 해설·견본·참고 MDX), `content-plugin.ts`, `index.html`, `sample.html` |
 | `scripts` | Solar 아이콘 매핑 생성 |
+| `vite.config.ts` | 가이드 사이트 빌드·개발 서버(4451) |
+| `vitest.config.ts` | 견본 검사(Chromium) |
+| `tsconfig.json` | 키트·견본·가이드 타입 검사 |
 
 범주는 Foundations (디자인 기초) → Primitives (기본 부품) → Composites (조합 부품) → Layouts (레이아웃) → Patterns (사용 패턴) → Playground (플레이그라운드) 순서다. 범주는 영문(한글), 그 안의 항목은 한글로 쓴다. 화면 하나로 완결되어 옮겨 쓸 수 있으면 Playground 템플릿, 여러 템플릿이 지키는 여는 방식·상태·조작이면 Patterns다. 새 화면 유형은 Playground에 템플릿 파일을 더한다. 견본과 예제는 키트를 `@kit/…`로 가져와 채택한 프로젝트와 같은 방식으로 쓴다. 서가 예제의 파일 구조는 공식 FSD 지침에 맡기고 자체 검사기는 두지 않는다.
 

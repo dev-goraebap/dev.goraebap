@@ -9,13 +9,12 @@
     "test": "node --test plugin/tests/*.test.mjs",
     "check": "node plugin/scripts/check.mjs",
     "package:plugins": "node plugin/scripts/package-plugins.mjs",
-    "frontend:check": "tsc -p frontend/tsconfig.json",
-    "frontend:test": "vitest run --config frontend/vitest.config.ts",
-    "frontend:icons": "node frontend/scripts/generate-icons.mjs",
-    "guide": "vite --config site/vite.config.ts",
-    "guide:check": "tsc -p site/tsconfig.json",
-    "guide:build": "vite build --config site/vite.config.ts",
-    "guide:preview": "vite preview --config site/vite.config.ts"
+    "guide": "vite --config kit/vite.config.ts",
+    "guide:build": "vite build --config kit/vite.config.ts",
+    "guide:preview": "vite preview --config kit/vite.config.ts",
+    "kit:check": "tsc -p kit/tsconfig.json",
+    "kit:test": "vitest run --config kit/vitest.config.ts",
+    "kit:icons": "node kit/scripts/generate-icons.mjs"
   },
   "devDependencies": {
     "@astryxdesign/core": "^0.5.2",

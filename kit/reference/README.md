@@ -1,6 +1,6 @@
 # workspace 키트
 
-Astryx를 쓰는 업무 앱이 같은 화면 구성과 상호작용을 재현할 수 있도록 고른 공통 UI 구현이다. 사용 기준은 `plugin/skills/design-system/references`의 Markdown이 원본이고, 실행 견본은 `frontend/src`의 Storybook에 있다. 이 폴더는 플러그인에 포함하지 않는다.
+Astryx를 쓰는 업무 앱이 같은 화면 구성과 상호작용을 재현할 수 있도록 고른 공통 UI 구현이다. 사용 기준은 `plugin/skills/design-system/references`의 Markdown이 원본이고, 실행 견본은 `kit/samples`에 있으며 가이드 사이트(`kit/guide`)에서 본다. 이 폴더는 플러그인에 포함하지 않는다.
 
 | 폴더 | 담는 것 |
 | --- | --- |
@@ -17,7 +17,7 @@ Astryx 기본 부품은 다시 구현하지 않는다. 폴더끼리는 상대 �
 2. 루트를 `ReferenceTheme`(라이트·다크는 앱의 설정 하나)과 라우터 루트의 `LinkProvider component={RouterLink}`로 감싼다.
 3. 작성 양식을 쓰면 라우터보다 위에 `DraftProvider`를 둔다.
 4. 첫 방문 덮개: `vite.config`에 `bootCover({ mark, modeKey })`를 넣고, 앱 루트에 `BootCover`를 두어 첫 경로가 풀리면 `isReady`로 걷는다. 그림은 제품의 표시로 바꾼다.
-5. 아이콘 이름을 더하면 `frontend/scripts/generate-icons.mjs`의 매핑을 고치고 `npm run frontend:icons`를 실행한다.
+5. 아이콘 이름을 더하면 `kit/scripts/generate-icons.mjs`의 매핑을 고치고 `npm run kit:icons`를 실행한다.
 
 ## 검증 범위
 

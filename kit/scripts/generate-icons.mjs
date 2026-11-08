@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 
 // 화면이 부르는 의미 이름과 그 이름이 그리는 Solar 아이콘. 기본은 Linear, 고름·열림·현재 위치는 같은 아이콘의 Bold Duotone이다.
-// 사용하는 이름만 둔다. 이름을 더하면 npm run frontend:icons로 다시 생성한다.
+// 사용하는 이름만 둔다. 이름을 더하면 npm run kit:icons로 다시 생성한다.
 const SOLAR = {
   home: 'home-smile', inbox: 'inbox', bell: 'bell', calendar: 'calendar', document: 'document-text', book: 'book',
   library: 'book-bookmark', folder: 'folder', settings: 'settings', user: 'user-circle', people: 'users-group-rounded',
@@ -25,6 +25,6 @@ const lines = Object.entries(SOLAR).map(([name, key]) => {
   return `  ${JSON.stringify(name)}: [${JSON.stringify(linear)}${chosen ? `, ${JSON.stringify(chosen)}` : ''}],`;
 });
 await fs.writeFile(new URL('../reference/foundations/icons/solar-icons.ts', import.meta.url),
-  `// npm run frontend:icons로 생성한다. 직접 고치지 않는다.\n// Solar icons by 480 Design, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).\n` +
+  `// npm run kit:icons로 생성한다. 직접 고치지 않는다.\n// Solar icons by 480 Design, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).\n` +
   `export const SOLAR_ICONS = {\n${lines.join('\n')}\n} as const satisfies Record<string, readonly [linear: string, boldDuotone?: string]>;\n\n` +
   `export type IconName = keyof typeof SOLAR_ICONS;\n`);

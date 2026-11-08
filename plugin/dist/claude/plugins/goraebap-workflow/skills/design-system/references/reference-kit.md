@@ -1,6 +1,6 @@
 # 기본 레퍼런스의 사용과 갱신
 
-프로젝트 디자인·기존 부품·사용자가 준 참고 화면이 있으면 그것을 우선합니다. 지정이 없을 때 [workspace 키트](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/README.md)를 출발점으로 씁니다. 키트는 선택해서 채택하는 설계와 코드의 스냅샷이며 제품 전체를 자동 생성하는 템플릿이 아닙니다.
+프로젝트 디자인·기존 부품·사용자가 준 참고 화면이 있으면 그것을 우선합니다. 지정이 없을 때 [workspace 키트](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/README.md)를 출발점으로 씁니다. 키트는 선택해서 채택하는 설계와 코드의 스냅샷이며 제품 전체를 자동 생성하는 템플릿이 아닙니다.
 
 ## 선택해서 채택
 

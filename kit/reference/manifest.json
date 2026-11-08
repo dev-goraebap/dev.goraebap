@@ -13,8 +13,8 @@
   },
   "automaticProductInstallation": false,
   "validation": {
-    "typecheck": "passed: strict TypeScript (npm run frontend:check)",
-    "interactionTests": "passed: every sample renders and interaction tests pass in Chromium (npm run frontend:test, vitest browser)",
+    "typecheck": "passed: strict TypeScript (npm run kit:check)",
+    "interactionTests": "passed: every sample renders and interaction tests pass in Chromium (npm run kit:test, vitest browser)",
     "guideBuild": "see npm run guide:build (samples are served as iframes under /samples/)",
     "browserCheck": {
       "date": "2026-11-08",

@@ -1,6 +1,6 @@
 # 아이콘
 
-아이콘은 명령·상태·대상을 구분하는 시각 언어입니다. 화면은 의미 이름(`search`, `back`, `layout-list`)으로 아이콘을 부르고, 의미 이름에서 Solar 아이콘으로 가는 매핑은 [생성 스크립트](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/scripts/generate-icons.mjs) 한 곳에 둡니다. 사용하는 이름만 생성하며, 이름을 더하면 스크립트를 다시 실행합니다.
+아이콘은 명령·상태·대상을 구분하는 시각 언어입니다. 화면은 의미 이름(`search`, `back`, `layout-list`)으로 아이콘을 부르고, 의미 이름에서 Solar 아이콘으로 가는 매핑은 [생성 스크립트](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/scripts/generate-icons.mjs) 한 곳에 둡니다. 사용하는 이름만 생성하며, 이름을 더하면 스크립트를 다시 실행합니다.
 
 ## 기본과 선택
 

@@ -4,15 +4,15 @@
 
 | 조합 | 소유하는 책임 | 코드 |
 | --- | --- | --- |
-| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [dialog](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/dialog), [기준](dialog.md) |
-| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [popup](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/popup) |
+| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [dialog](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/dialog), [기준](dialog.md) |
+| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [popup](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/popup) |
 | 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | 같은 폴더 |
-| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/search), [filter](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/filter), [기준](search-filter.md) |
-| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/property) |
-| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [upload](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/upload) |
-| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [state](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/state), [기준](data-states.md) |
-| 본문 칸 | 종이 위의 리치 본문 | [editor](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/editor) |
-| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group](https://github.com/dev-goraebap/goraebap-workflow/tree/main/frontend/reference/composites/list-group) |
+| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/search), [filter](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/filter), [기준](search-filter.md) |
+| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/property) |
+| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [upload](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/upload) |
+| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [state](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/state), [기준](data-states.md) |
+| 본문 칸 | 종이 위의 리치 본문 | [editor](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/editor) |
+| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/list-group) |
 
 ## 곁에 여는 내용
 

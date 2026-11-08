@@ -8,8 +8,8 @@ export type { GuideDoc };
 export { docs };
 
 // 문서 본문은 열 때 불러온다. 키는 vite가 이 파일 기준 상대 경로로 준다.
-const loaders = import.meta.glob<{ default: ComponentType }>(['../../plugin/skills/**/*.md', '../content/**/*.{md,mdx}']);
-const keyOf = (doc: GuideDoc) => (doc.source.startsWith('site/') ? `../${doc.source.slice('site/'.length)}` : `../../${doc.source}`);
+const loaders = import.meta.glob<{ default: ComponentType }>(['../../../plugin/skills/**/*.md', '../content/**/*.{md,mdx}']);
+const keyOf = (doc: GuideDoc) => (doc.source.startsWith('kit/guide/') ? `../${doc.source.slice('kit/guide/'.length)}` : `../../../${doc.source}`);
 
 export async function loadDoc(doc: GuideDoc) {
   const load = loaders[keyOf(doc)];

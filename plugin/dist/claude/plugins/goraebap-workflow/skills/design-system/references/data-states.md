@@ -16,7 +16,7 @@
 
 ## 상태 화면
 
-[PageState](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/composites/state/PageState.tsx)는 펜 선 그림·제목·필요할 때의 설명·행동입니다. 그림은 테마 색으로 칠해 라이트·다크에서 같은 파일을 씁니다. 페이지에서는 문구를 창 높이의 32%에 고정해 필터 줄·탭이 다른 페이지 사이를 오가도 흔들리지 않습니다. 대화상자·패널·작은 구역은 위쪽에 두는 작은 형태(`isCompact`)를 씁니다. 그림은 장식이라 접근성 트리에서 숨기고, 이미 본 그림은 다시 흐리게 시작하지 않습니다.
+[PageState](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/composites/state/PageState.tsx)는 펜 선 그림·제목·필요할 때의 설명·행동입니다. 그림은 테마 색으로 칠해 라이트·다크에서 같은 파일을 씁니다. 페이지에서는 문구를 창 높이의 32%에 고정해 필터 줄·탭이 다른 페이지 사이를 오가도 흔들리지 않습니다. 대화상자·패널·작은 구역은 위쪽에 두는 작은 형태(`isCompact`)를 씁니다. 그림은 장식이라 접근성 트리에서 숨기고, 이미 본 그림은 다시 흐리게 시작하지 않습니다.
 
 ## 첫 화면
 
@@ -27,7 +27,7 @@
 | 공개 문서·랜딩처럼 검색과 스크립트 없는 읽기가 필요한 화면 | 실제 본문을 미리 그린 HTML(SSG·프리렌더) |
 | 로그인 뒤 업무 앱 | 첫 방문 덮개: 앱 표시의 정지 그림과 "불러오는 중입니다" |
 
-첫 방문 덮개([BootCover](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/patterns/boot/BootCover.tsx), [bootCover 플러그인](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/patterns/boot/boot-cover.ts))은 다음 순서로 동작합니다.
+첫 방문 덮개([BootCover](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/patterns/boot/BootCover.tsx), [bootCover 플러그인](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/patterns/boot/boot-cover.ts))은 다음 순서로 동작합니다.
 
 1. 빌드 플러그인이 `index.html`의 앱 자리에 덮개를 넣습니다. 색은 테마의 바닥·보조 글자 값을 `light-dark()`로 직접 적습니다. 앱 CSS가 오기 전이기 때문입니다.
 2. 앱 스크립트보다 먼저 실행되는 짧은 스크립트가 저장한 라이트·다크를 문서에 적용합니다.

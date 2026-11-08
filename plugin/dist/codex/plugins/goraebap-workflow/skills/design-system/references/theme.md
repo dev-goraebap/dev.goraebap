@@ -1,6 +1,6 @@
 # 테마와 색상
 
-테마는 색·글자·간격·면·경계·모서리와 부품 변형의 기본값을 한 곳에서 정합니다. 프로젝트가 값을 정하지 않았으면 [기본 테마](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/foundations/theme.ts)에서 출발합니다. Stone 테마를 확장하며 Astryx 내부 클래스 덮어쓰기와 `!important`를 쓰지 않습니다.
+테마는 색·글자·간격·면·경계·모서리와 부품 변형의 기본값을 한 곳에서 정합니다. 프로젝트가 값을 정하지 않았으면 [기본 테마](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/foundations/theme.ts)에서 출발합니다. Stone 테마를 확장하며 Astryx 내부 클래스 덮어쓰기와 `!important`를 쓰지 않습니다.
 
 ## 기준 색에서 파생한다
 
@@ -29,10 +29,10 @@
 
 상태와 선택 여부를 색 하나로만 전달하지 않습니다. 모양(채움 아이콘), 이름, 접근 가능한 상태 속성을 함께 둡니다. 모든 상태를 라이트·다크에서 확인합니다.
 
-Astryx `ToggleButton`의 눌림 상태는 테마가 칠할 수 없어 버튼 변형으로 표현합니다. `view`(옅은 알약), `view-active`(고른 것), `tool`(둥근 도구), `subtle`(조용한 동작), `box`(사이드바 머리의 상자), `create`(페이지의 만들기)입니다. 새 변형에는 [TypeScript 선언](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/foundations/variants.ts)도 둡니다.
+Astryx `ToggleButton`의 눌림 상태는 테마가 칠할 수 없어 버튼 변형으로 표현합니다. `view`(옅은 알약), `view-active`(고른 것), `tool`(둥근 도구), `subtle`(조용한 동작), `box`(사이드바 머리의 상자), `create`(페이지의 만들기)입니다. 새 변형에는 [TypeScript 선언](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/foundations/variants.ts)도 둡니다.
 
 ## 테마가 하지 못하는 것
 
-테마의 부품 규칙은 `@media`를 받지 않습니다. 휴대폰 크기는 [responsive.css](https://github.com/dev-goraebap/goraebap-workflow/blob/main/frontend/reference/foundations/responsive.css) 한 파일에서 Astryx의 안정된 부품 클래스와 토큰으로만 정합니다. Astryx 토큰이 아닌 앱 값(그림 강조색, 점 무늬 색)은 모든 화면이 놓이는 `app-shell`에 `--app-*`로 둡니다.
+테마의 부품 규칙은 `@media`를 받지 않습니다. 휴대폰 크기는 [responsive.css](https://github.com/dev-goraebap/goraebap-workflow/blob/main/kit/reference/foundations/responsive.css) 한 파일에서 Astryx의 안정된 부품 클래스와 토큰으로만 정합니다. Astryx 토큰이 아닌 앱 값(그림 강조색, 점 무늬 색)은 모든 화면이 놓이는 `app-shell`에 `--app-*`로 둡니다.
 
 라이트·다크는 앱 루트의 `Theme mode` 하나가 정합니다. 견본과 화면 안에 별도 테마 전환을 두지 않습니다. 아이콘을 고르는 기준은 [아이콘](icons.md), 면의 단계는 [면과 경계](surfaces.md)가 소유합니다.

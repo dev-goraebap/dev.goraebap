@@ -11,7 +11,7 @@
 - 도구 변경 후 `npm test`, 스킬 변경 후 `npm run check`, 패키징 변경 후 두 플러그인 패키지를 확인한다.
 - 커밋·푸시·전역 설치는 사용자가 요청할 때만 한다.
 
-- 키트(`frontend/reference`)로 화면을 만들거나 고치면 끝내기 전에 design-system 스킬의 [문구·본문과 검증](plugin/skills/design-system/references/content-and-review.md) 검증 절차로 대조한다. 데이터 상태·모션·콘텐츠 폭·키보드·데스크톱과 휴대폰·라이트와 다크를 실제 화면에서 확인하고, 확인한 것과 못 한 것을 나눠 보고한다. 가이드(`site/`)도 키트로 그린 화면이므로 같다.
-- 화면 규칙의 원본은 `plugin/skills/design-system`의 Markdown이다. `site/`(키트로 그린 React 가이드)는 플러그인 지침 전체를 보여 주는 사이트이며 플러그인에 포함하지 않는다. 지침 문서는 스킬 Markdown을 그대로 보여 주고, 화면 해설은 `site/content`에 둔다. 규칙을 바꾸면 스킬을 먼저 고치고 가이드는 다시 쓴다.
-- 플러그인 구현·지침·테스트·생성 배포본은 `plugin/`에 둔다. `frontend/`의 코드·견본·테스트·자산과 `site/`는 플러그인에 포함하지 않는다.
+- 키트(`kit/reference`)로 화면을 만들거나 고치면 끝내기 전에 design-system 스킬의 [문구·본문과 검증](plugin/skills/design-system/references/content-and-review.md) 검증 절차로 대조한다. 데이터 상태·모션·콘텐츠 폭·키보드·데스크톱과 휴대폰·라이트와 다크를 실제 화면에서 확인하고, 확인한 것과 못 한 것을 나눠 보고한다. 가이드(`kit/guide/`)도 키트로 그린 화면이므로 같다.
+- 화면 규칙의 원본은 `plugin/skills/design-system`의 Markdown이다. `kit/guide/`(키트로 그린 React 가이드)는 플러그인 지침 전체를 보여 주는 사이트이며 플러그인에 포함하지 않는다. 지침 문서는 스킬 Markdown을 그대로 보여 주고, 화면 해설은 `kit/guide/content`에 둔다. 규칙을 바꾸면 스킬을 먼저 고치고 가이드는 다시 쓴다.
+- 플러그인 구현·지침·테스트·생성 배포본은 `plugin/`에 둔다. `kit/`의 코드·견본·테스트·자산·가이드는 플러그인에 포함하지 않는다.
 - 루트의 `.claude-plugin/marketplace.json`과 `.agents/plugins/marketplace.json`은 설치 도구가 찾는 연결 파일이며 `plugin/dist`를 가리킨다.

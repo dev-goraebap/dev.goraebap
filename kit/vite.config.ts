@@ -8,15 +8,15 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import { defineConfig } from 'vite';
-import { bootCover } from '../frontend/reference/patterns/boot/boot-cover';
-import { guideContent, rehypeSkillLinks } from './content-plugin';
+import { bootCover } from './reference/patterns/boot/boot-cover';
+import { guideContent, rehypeSkillLinks } from './guide/content-plugin';
 
 const local = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
 // 가이드: 키트로 만드는 업무 앱과 같은 스택(Vite + React + TanStack Router)의 SPA. 문서는 MDX로 빌드하고,
 // 견본은 sample.html을 iframe으로 띄운다(키트는 창 폭으로 휴대폰을 판정하므로 실제 기기 폭으로 그리기 위해서다).
 export default defineConfig({
-  root: local('.'),
+  root: local('guide'),
   publicDir: false,
   plugins: [
     guideContent(),
@@ -32,18 +32,18 @@ export default defineConfig({
       }),
     },
     react({ include: /\.(jsx|tsx|md|mdx)$/ }),
-    bootCover({ mark: readFileSync(local('../frontend/reference/patterns/boot/boot-mark.svg'), 'utf8'), modeKey: 'guide-theme',
+    bootCover({ mark: readFileSync(local('reference/patterns/boot/boot-mark.svg'), 'utf8'), modeKey: 'guide-theme',
       include: path => path === '/index.html' }),
   ],
   resolve: {
-    alias: { '@kit': local('../frontend/reference'), '@frontend': local('../frontend/src'), '@guide': local('src') },
+    alias: { '@kit': local('reference'), '@samples': local('samples'), '@guide': local('guide/src') },
     dedupe: ['react', 'react-dom', '@astryxdesign/core', '@astryxdesign/theme-stone'],
   },
   server: { port: 4451, fs: { allow: [local('..')] } },
   preview: { port: 4451 },
   build: {
-    outDir: local('dist'),
+    outDir: local('guide/dist'),
     emptyOutDir: true,
-    rollupOptions: { input: { main: local('index.html'), sample: local('sample.html') } },
+    rollupOptions: { input: { main: local('guide/index.html'), sample: local('guide/sample.html') } },
   },
 });
