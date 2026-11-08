@@ -14,3 +14,10 @@
 .brandTools { flex: none; }
 /* SideNav가 위에 한 단계 여백을 둔다. split에서는 머리 줄이 페이지 머리와 같은 선에 놓이게 당긴다. */
 .splitBrandRow { margin-block-start: calc(-1 * var(--spacing-2)); }
+/*
+ * 펼친 하위 메뉴: Astryx는 최상위 항목 사이에만 2px를 두고 하위 묶음 안은 0이다. 하위 항목도 같은 2px로 띄우고, 묶음 끝에는
+ * 한 단계 넓은 간격을 둬 다음 상위 항목과 경계를 보인다. 접을 때 잘리도록 간격은 overflow가 숨는 안쪽 상자의 여백으로 둔다.
+ */
+:global(.astryx-side-nav-section) [id$='-children'] > div { display: flex; flex-direction: column; gap: 0.125rem; }
+:global(.astryx-side-nav-section) [id$='-children'] > div > div:first-of-type { margin-block-start: 0.125rem; }
+:global(.astryx-side-nav-section) [id$='-children'] > div > :last-child { margin-block-end: var(--spacing-2); }

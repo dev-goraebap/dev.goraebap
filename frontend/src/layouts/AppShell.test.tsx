@@ -62,6 +62,21 @@ const VerifyNestedMore: Sample = {
   },
 };
 
+const VerifyNestedSidebar: Sample = {
+  name: "사이드바 하위 메뉴 간격 검증",
+  render: () => <samples.Shell space={nestedSpace} />,
+  play: async ({ canvasElement }) => {
+    const nav = within(await within(canvasElement.ownerDocument.body).findByRole("navigation", { name: "주 메뉴" }));
+    const top = (name: string) => nav.getByRole("link", { name }).getBoundingClientRect();
+    // 상위 항목 사이와 같은 2px로 하위 항목을 띄우고, 펼친 묶음 끝에는 더 넓은 간격을 둔다.
+    const sibling = top("둘째").top - top("첫째").bottom;
+    await expect(top("다섯째 하위 1").top - top("다섯째").bottom).toBeCloseTo(sibling, 0);
+    await expect(top("다섯째 하위 2").top - top("다섯째 하위 1").bottom).toBeCloseTo(sibling, 0);
+    await expect(top("다섯째").top - top("넷째 하위").bottom).toBeGreaterThan(sibling + 4);
+  },
+};
+
+test(VerifyNestedSidebar.name, () => runSample(meta, VerifyNestedSidebar));
 test(VerifyNestedMore.name, () => runSample(meta, VerifyNestedMore));
 test(VerifySidebar.name, () => runSample(meta, VerifySidebar));
 test(VerifyPhoneTabs.name, () => runSample(meta, VerifyPhoneTabs));
