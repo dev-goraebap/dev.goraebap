@@ -18,7 +18,7 @@
 writer: agy gemini-4-argon-high
 ```
 
-값의 첫 단어가 `agy`면 Antigravity CLI와 그 모델을 쓰고, `claude`면 Claude 하위 에이전트와 그 모델을 씁니다(예: `writer: claude opus`).
+값의 첫 단어가 `agy`면 Antigravity CLI와 그 모델을 쓰고, `claude`면 Claude 하위 에이전트와 그 모델을 씁니다(예: `writer: claude opus`). 같은 파일에 에셋 역할(`asset:`)도 적으며 [에셋 맡기기](assets.md)를 따릅니다.
 
 ## 인계 문서로 맡기고 대조한다
 
