@@ -1,6 +1,6 @@
 {
   "name": "goraebap-workflow",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "웹 플랫폼 개발 지침(프론트·디자인 시스템·백엔드·API·DB·아키텍처)과 프로젝트 연결",
   "author": {
     "name": "goraebap"
