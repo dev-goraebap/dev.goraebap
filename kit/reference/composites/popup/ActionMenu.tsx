@@ -11,7 +11,7 @@ export type MenuAction = { id: string; label: string; icon?: IconName; isChosen?
  */
 export function ActionMenu({ title, actions, onDone }: { title?: string; actions: MenuAction[]; onDone?: () => void }) {
   return <List density="balanced" header={title ? <Text type="supporting" color="secondary" weight="medium">{title}</Text> : undefined}>
-    {actions.map(action => <ListItem key={action.id} label={action.label} className={styles.row} isDisabled={action.isDisabled}
+    {actions.map(action => <ListItem key={action.id} label={<Text>{action.label}</Text>} className={styles.row} isDisabled={action.isDisabled}
       isSelected={action.isChosen}
       startContent={action.icon ? icon(action.icon, action.isChosen) : undefined}
       endContent={action.isChosen ? icon('check') : undefined}

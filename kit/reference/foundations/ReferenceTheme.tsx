@@ -4,6 +4,7 @@ import { Theme } from '@astryxdesign/core/theme';
 import {createContext,useContext,useEffect,useState,type ReactNode} from 'react';
 import koExtra from './i18n/ko-KR-extra.json';
 import { workspaceTheme } from './theme';
+import { themeColors } from './colors';
 import './variants';
 
 /**
@@ -20,6 +21,22 @@ export const useThemePreference=()=>useContext(ThemePreferenceContext);
 export function ReferenceTheme({ mode = 'system', children }: { mode?: 'system' | 'light' | 'dark'; children: ReactNode }) {
   const [preference,setPreference]=useState<'light'|'dark'|'system'>();
   useEffect(()=>setPreference(undefined),[mode]);
+  const activeMode = preference ?? mode;
+  useEffect(() => {
+    const system = matchMedia('(prefers-color-scheme: dark)');
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'theme-color'; document.head.append(meta); }
+    const update = () => {
+      const dark = activeMode === 'dark' || (activeMode === 'system' && system.matches);
+      const color = themeColors.surface[dark ? 1 : 0];
+      meta.content = color;
+      document.documentElement.style.colorScheme = dark ? 'dark' : 'light';
+      document.documentElement.style.backgroundColor = color;
+    };
+    update();
+    system.addEventListener('change', update);
+    return () => system.removeEventListener('change', update);
+  }, [activeMode]);
   return <ThemePreferenceContext value={setPreference}><InternationalizationProvider locale="ko-KR" messages={messages} overrides={overrides}>
     <Theme theme={workspaceTheme} mode={preference??mode}>{children}</Theme>
   </InternationalizationProvider></ThemePreferenceContext>;

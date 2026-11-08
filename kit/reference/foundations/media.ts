@@ -11,7 +11,7 @@ export function useIsPhone() {
   return useMediaQuery(PHONE_QUERY);
 }
 
-/** 툴바 알약과 둥근 도구의 크기: 데스크톱 md(28px), 휴대폰 sm(32px; md는 40px라 줄이 붐빈다). */
+/** 툴바 알약과 둥근 도구의 크기: 데스크톱 md(28px), 휴대폰 sm(44px). */
 export function useToolSize(): 'sm' | 'md' {
   return useIsPhone() ? 'sm' : 'md';
 }

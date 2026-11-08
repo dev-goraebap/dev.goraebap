@@ -14,12 +14,10 @@
 .required { color: var(--color-icon-red); font-size: inherit; }
 
 /*
- * 휴대폰은 앱 전체와 같은 64rem 분기점에서 보이는 높이 32px, 글자는 휴대폰 보조 글자(13px). 누르는 것은 44px 이상이라는
- * 규칙에 맞춰, 보이는 모양은 그대로 두고 누르는 영역만 위아래로 6px씩 넓혀 44px로 만든다(Material 칩과 같은 방식).
+ * 휴대폰은 앱 전체와 같은 64rem 분기점에서 높이 44px, 글자는 본문 15px로 읽고 누를 공간을 함께 확보한다.
  */
 @media (width < 64rem) {
-  .pill { position: relative; block-size: 2rem; font-size: 0.8125rem; padding-inline: 0.625rem 0.75rem; }
-  .pill::after { content: ''; position: absolute; inset-block: -0.375rem; inset-inline: 0; }
+  .pill { block-size: 2.75rem; font-size: var(--text-body-size); padding-inline: 0.625rem 0.75rem; }
 }
 
 /* 넓은 상세의 오른쪽 열(DetailLayout 컨테이너 60rem 이상)에서는 테두리·채움 없는 32px 행. */

@@ -15,7 +15,7 @@ sidebar:
 | --- | --- | --- | --- |
 | 사이드바와 본문 두 영역으로 나누고 본문만 스크롤하는 [셸과 사이드바](/app-shell/shell-and-sidebar/) | `[관례]` `[고래밥]` | Astryx `AppShell` + `SideNav`(`resizable`) | `layouts`의 앱 셸. 페이지마다 셸을 새로 만들지 않고 유지합니다. 메뉴 이름을 말줄임 없이 보이기 위해 기본 폭 340px(조절 범위 220~380px)을 씁니다 |
 | 바탕 위에 떠 있는 둥근 페이지 카드(Inset)와 선으로만 나눈 면(Split) | `[선호]` | Inset은 `Card variant="page"`, Split은 `AppShell variant="section"` | [선호하는 화면](/app-shell/preferred-screens/)의 기준에 따라 두 배치 중 하나를 고릅니다 |
-| [머리 줄·배너·툴바·적용 줄·FAB](/app-shell/header-and-toolbar/) | `[관례]` `[고래밥]` `[선호]` | `Page` | `kit/reference/layouts/page/Page.tsx`. 52px 머리 줄, 상태·오류 배너 자리, 44px(휴대폰 52px) 툴바, 필터 적용 칩 줄, 미리보기 자리(`aside`), 휴대폰의 떠 있는 만들기 버튼(FAB, 56px)을 한 틀에서 관리합니다 |
+| [머리 줄·배너·툴바·적용 줄·FAB](/app-shell/header-and-toolbar/) | `[관례]` `[고래밥]` `[선호]` | `Page` | `kit/reference/layouts/page/Page.tsx`. 데스크톱 52px·휴대폰 최소 60px 머리 줄, 상태·오류 배너 자리, 44px(휴대폰 최소 60px) 툴바, 필터 적용 칩 줄, 미리보기 자리(`aside`), 휴대폰의 떠 있는 만들기 버튼(FAB, 56px)을 한 틀에서 관리합니다 |
 | 데스크톱 팝오버를 휴대폰에서 바텀시트로 여는 [그 자리에서 고르기](/app-shell/choosing-presentation/) | `[관례]` | `AdaptivePopover` (Astryx `Popover` + `BottomSheet`), `SheetBody` | `composites/popup`. 분기점을 기준으로 두 부품을 전환합니다. 시트 손잡이(위 24px)를 피하는 내부 여백(좌우 12px, 아래 20px)은 `SheetBody` 한 곳에 둡니다 |
 | [적응형](/app-shell/adaptive/) 단일 분기점 판정 | `[관례]` `[고래밥]` | `useIsPhone` (`(width < 64rem)`) | `foundations`의 분기점 훅. 1024px(`64rem`) 미만을 휴대폰으로 판정하며 사이드바↔하단 탭, 팝오버↔시트, 대화상자↔페이지, 표↔행 목록 전환에 모두 같은 훅을 씁니다 |
 | 목록 위 대화상자와 실제 페이지 주소를 잇는 [라우트 마스킹](/app-shell/route-masking/) | `[고래밥]` | TanStack Router `navigate` `mask` + `unmaskOnReload`, `useOpenPanel` / `useRoutedPanel` | `patterns/routing/routed-panel.ts`. 데스크톱 목록에서 열면 `?panel=대상`을 더하고 주소창에는 대상 주소를 보입니다. 새로고침이나 직접 진입 시에는 페이지로 엽니다 |

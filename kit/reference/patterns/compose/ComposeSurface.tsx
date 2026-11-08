@@ -59,7 +59,7 @@ export function ComposeSurface({ surface, crumbs, chip, isDirty = false, submit,
   const extra = actions ? <HStack className={styles.actions} gap={1} vAlign="center">{actions}</HStack> : null;
   if (isPhone) return <PhoneCompose crumbs={crumbs} chip={chip} onBack={requestClose} onKeyDown={press}
     foot={<VStack as="footer" className={styles.phoneFoot} gap={2}>
-      <HStack gap={2} hAlign="end" vAlign="center" wrap="wrap">
+      <HStack data-action-row gap={2} hAlign="end" vAlign="center" wrap="wrap">
         {extra}
         <Button label="취소" variant="ghost" onClick={requestClose} />
         {previous ? <Button label={previous.label ?? '이전'} variant="secondary" onClick={previous.onClick} /> : null}
@@ -87,7 +87,7 @@ export function ComposeSurface({ surface, crumbs, chip, isDirty = false, submit,
   return <>
     <AppDialog isOpen title={crumbs.at(-1)?.label ?? '작성'} onOpenChange={isOpen => { if (!isOpen) requestClose(); }}
       purpose="form" width="min(45rem, 100vw - 3rem)" headerLeading={chip} onFrameKeyDown={press} focusTitle={false}
-      footer={<HStack gap={3} hAlign="end" vAlign="center" wrap="wrap">{extra}{back}{submitButton}</HStack>}
+      footer={<HStack data-action-row gap={3} hAlign="end" vAlign="center" wrap="wrap">{extra}{back}{submitButton}</HStack>}
       headerActions={onExpand ? <IconButton label="크게 보기" tooltip="크게 보기" variant="ghost" size="sm" icon={icon('expand-page')} onClick={onExpand} /> : null}>
       {failure}
       {children}
