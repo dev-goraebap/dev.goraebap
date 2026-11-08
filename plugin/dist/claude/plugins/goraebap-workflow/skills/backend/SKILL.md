@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: backend
 description: Java·Spring Boot·jOOQ 기반 모듈형 모놀리스의 도메인, 서비스, 저장소와 조회 경계를 구현합니다. 서버 기능·유스케이스·모듈 구조를 만들거나 고칠 때 사용합니다.
 ---

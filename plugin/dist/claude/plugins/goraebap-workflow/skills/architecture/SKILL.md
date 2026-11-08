@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: architecture
 description: 웹 플랫폼의 모듈 경계, 상태 소유권, 외부 연동과 배포·복구 설계를 검토합니다. 여러 영역의 구조·새 기술·운영 방식을 바꿀 때 사용합니다.
 ---

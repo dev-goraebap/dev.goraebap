@@ -6,6 +6,12 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const description = '웹 플랫폼 개발 지침(프론트·디자인 시스템·백엔드·API·DB·아키텍처)과 프로젝트 연결';
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
+/**
+ * 사람이 부르거나 입구(goraebap-mode)가 링크로 읽을 때만 쓰는 영역 지침. 설명이 범용(React·Java 등)이라 자동 호출을 열어 두면
+ * goraebap-workflow를 쓰지 않는 프로젝트에서도 끼어든다. 입구와 연결 도구는 설명에 조건(AGENTS.md가 밝힌 프로젝트, 이름으로
+ * 한 요청)을 적고 자동 호출을 연다.
+ */
+export const explicitOnly = ['frontend', 'design-system', 'backend', 'api', 'database', 'architecture'];
 
 async function put(relative, content) {
   const destination = path.join(root, 'dist', relative);
@@ -37,8 +43,16 @@ export async function packagePlugins() {
   } catch (e) { if (e.code !== 'ENOENT') throw e; }
   for (const agent of ['claude', 'codex']) {
     const pluginPath = `${agent}/plugins/goraebap-workflow`;
-    // 지침은 에이전트가 설명을 보고 스스로 불러 쓴다. 프로젝트는 사본 없이 AGENTS.md로 이 플러그인을 가리킨다.
+    // 프로젝트는 사본 없이 AGENTS.md로 이 플러그인을 가리키고, 작업을 시작할 때 입구(goraebap-mode)를 읽는다.
     await copyFiles(path.join(root, 'skills'), `${pluginPath}/skills`, ['.md', '.yaml']);
+    for (const name of explicitOnly) {
+      if (agent === 'claude') {
+        const original = await fs.readFile(path.join(root, 'skills', name, 'SKILL.md'), 'utf8');
+        await put(`${pluginPath}/skills/${name}/SKILL.md`, original.replace(/^---\r?\n/, '---\ndisable-model-invocation: true\n'));
+      } else {
+        await put(`${pluginPath}/skills/${name}/agents/openai.yaml`, 'policy:\n  allow_implicit_invocation: false\n');
+      }
+    }
     await put(`${pluginPath}/README.md`, await fs.readFile(path.join(root, 'docs/plugin-usage.md')));
     const manifest = { name: pkg.name, version: pkg.version, description, author: { name: 'goraebap' }, skills: './skills/' };
     if (agent === 'codex') {

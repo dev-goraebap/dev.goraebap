@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: frontend
 description: React·TypeScript 웹 앱의 TanStack Router/Query 데이터 흐름, 폼 초안과 화면 전환을 구현합니다. 페이지·컴포넌트·프론트 상태를 만들거나 고칠 때 사용합니다.
 ---

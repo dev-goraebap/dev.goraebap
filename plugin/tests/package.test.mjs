@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
-import { packagePlugins } from '../scripts/package-plugins.mjs';
+import { explicitOnly, packagePlugins } from '../scripts/package-plugins.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
@@ -28,16 +28,19 @@ for (const agent of ['claude', 'codex']) {
     assert.deepEqual(packaged, source);
     for (const name of source) {
       const original = await fs.readFile(path.join(root, 'skills', name, 'SKILL.md'), 'utf8');
-      assert.equal(await fs.readFile(path.join(plugin, 'skills', name, 'SKILL.md'), 'utf8'), original);
+      const packaged = await fs.readFile(path.join(plugin, 'skills', name, 'SKILL.md'), 'utf8');
+      assert.equal(packaged.replace('disable-model-invocation: true\n', ''), original);
     }
   });
 
-  test(`${agent}: 지침은 에이전트가 스스로 불러 쓸 수 있다`, async () => {
-    for (const file of await files(path.join(plugin, 'skills'))) {
-      const content = await fs.readFile(file, 'utf8');
-      assert(!content.includes('disable-model-invocation'), file);
-      assert(!content.includes('allow_implicit_invocation: false'), file);
+  test(`${agent}: 영역 지침은 명시 호출 전용이고 입구·연결 도구만 스스로 불린다`, async () => {
+    for (const name of await fs.readdir(path.join(plugin, 'skills'))) {
+      const skill = await fs.readFile(path.join(plugin, 'skills', name, 'SKILL.md'), 'utf8');
+      const policy = await fs.readFile(path.join(plugin, 'skills', name, 'agents/openai.yaml'), 'utf8').catch(() => '');
+      const isExplicit = agent === 'claude' ? skill.startsWith('---\ndisable-model-invocation: true\n') : policy.includes('allow_implicit_invocation: false');
+      assert.equal(isExplicit, explicitOnly.includes(name), name);
     }
+    assert(!explicitOnly.includes('goraebap-mode') && !explicitOnly.includes('manage-workflow'));
   });
 
   test(`${agent}: 사본·동기화 도구와 문서 밖의 파일을 담지 않는다`, async () => {
