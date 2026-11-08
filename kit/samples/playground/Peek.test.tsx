@@ -30,4 +30,42 @@ const VerifyPeek: Sample = {
   },
 };
 
+const VerifyInbox: Sample = {
+  name: "받은 요청 고르기·닫기·다시 고르기 검증",
+  args: { initialPath: "/requests" },
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    // 고른 것이 없으면 상세 칸은 고르라는 안내다.
+    await waitFor(() => expect(page.getByText("요청을 선택해 주세요")).toBeVisible());
+    // 행의 글자가 아닌 곳(설명)을 눌러도 상세 칸에 열린다.
+    await userEvent.click(page.getByText("대기 화면 문구를 한 번 봐 주세요."));
+    await expect(await page.findByRole("complementary", { name: "미리보기: 지우 · 검토 요청" })).toBeVisible();
+    // ←로 닫으면 다시 안내가 보이고, 다른 행을 누르면 다시 열린다.
+    await userEvent.click(page.getByRole("button", { name: "고른 항목 닫기" }));
+    await waitFor(() => expect(page.getByText("요청을 선택해 주세요")).toBeVisible());
+    await userEvent.click(page.getByText("주소 규칙을 정리할 때 참고하면 좋겠습니다."));
+    await expect(await page.findByRole("complementary", { name: "미리보기: 도현 · 공유" })).toBeVisible();
+    // 위·아래 키로 옮기면 상세 칸이 따라간다.
+    page.getAllByRole("link", { name: /도현님의 공유/ })[0].focus();
+    await userEvent.keyboard("{ArrowDown}");
+    await expect(await page.findByRole("complementary", { name: "미리보기: 서윤 · 댓글" })).toBeVisible();
+    // Esc로 닫으면 안내로 돌아간다.
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(page.getByText("요청을 선택해 주세요")).toBeVisible());
+  },
+};
+
 test(VerifyPeek.name, () => runSample(meta, VerifyPeek));
+const VerifyInboxPhone: Sample = {
+  name: "휴대폰 받은 요청은 자료 페이지로 검증",
+  args: { initialPath: "/requests" },
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await expect(page.queryByText("요청을 선택해 주세요")).toBeNull();
+    await userEvent.click((await page.findAllByText("대기 화면 문구를 한 번 봐 주세요."))[0]);
+    await expect(await page.findByRole("heading", { level: 1, name: "기다리는 시간을 설계하는 방법" })).toBeVisible();
+  },
+};
+
+test(VerifyInbox.name, () => runSample(meta, VerifyInbox));
+test(VerifyInboxPhone.name, () => runSample(meta, VerifyInboxPhone, "phone"));
