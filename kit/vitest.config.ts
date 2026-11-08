@@ -17,7 +17,7 @@ export default defineConfig({
     setupFiles: ["samples/catalog/test-setup.ts"],
     fileParallelism: false,
     browser: {
-      api: { port: 4433 },
+      api: { port: Number(process.env.KIT_TEST_PORT ?? 4433) },
       enabled: true,
       headless: true,
       provider: playwright(),

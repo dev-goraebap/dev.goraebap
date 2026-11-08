@@ -5,7 +5,9 @@ import { Text } from '@astryxdesign/core/Text';
 import { createStaticSource } from '@astryxdesign/core/Typeahead';
 import { icon } from '@kit/foundations/icons/solar-icon';
 import { ReferenceTheme } from '@kit/foundations/ReferenceTheme';
-import { AppFrame } from '@kit/layouts/app/AppFrame';
+import { useIsPhone } from '@kit/foundations/media';
+import { AppFrame, type ShellLayout } from '@kit/layouts/app/AppFrame';
+import { SHELL_LAYOUT_KEY } from '@samples/catalog/shell-layout';
 import { Page } from '@kit/layouts/page/Page';
 import { BootCover } from '@kit/patterns/boot/BootCover';
 import { RouterLink } from '@kit/patterns/routing/RouterLink';
@@ -38,6 +40,19 @@ function useMode(): [Mode, (mode: Mode) => void] {
     try { localStorage.setItem(KEY, mode); } catch { /* 저장하지 못해도 이번 화면에는 적용된다. */ }
   }, [mode]);
   return [mode, setMode];
+}
+
+/** 셸 배치 선택을 문서에 남긴다(data-shell-layout). 견본 iframe이 같은 값을 따라 배치를 바꾼다. */
+function useShellLayoutChoice(): [ShellLayout, (layout: ShellLayout) => void] {
+  const [layout, setLayout] = useState<ShellLayout>(() => {
+    try { const saved = localStorage.getItem(SHELL_LAYOUT_KEY); if (saved === 'split' || saved === 'inset') return saved; } catch { /* 기본 배치 */ }
+    return 'inset';
+  });
+  useLayoutEffect(() => {
+    document.documentElement.dataset.shellLayout = layout;
+    try { localStorage.setItem(SHELL_LAYOUT_KEY, layout); } catch { /* 저장하지 못해도 이번 화면에는 적용된다. */ }
+  }, [layout]);
+  return [layout, setLayout];
 }
 
 /** 문서 안의 링크: 가이드 주소는 라우터로 옮기고, 다른 사이트는 새 창으로 연다. */
@@ -110,6 +125,8 @@ function useCover() {
 export function GuideShell() {
   const router = useRouter();
   const [mode, setMode] = useMode();
+  const [layout, setLayout] = useShellLayoutChoice();
+  const isPhone = useIsPhone();
   const isReady = useFirstResolved();
   const isCovered = useCover();
   const pathname = useRouterState({ select: state => state.resolvedLocation?.pathname ?? state.location.pathname });
@@ -117,6 +134,10 @@ export function GuideShell() {
   const themeLabel = mode === 'dark' ? '밝은 화면으로' : '어두운 화면으로';
   const themeButton = <IconButton label={themeLabel} tooltip={themeLabel} variant="ghost" size="sm" icon={icon(mode === 'dark' ? 'sun' : 'moon')}
     onClick={() => setMode(mode === 'dark' ? 'light' : 'dark')} />;
+  // 배치 전환: 가이드 자신과 문서 안의 모든 앱 견본이 함께 Inset·Split으로 바뀐다. 휴대폰에는 사이드바가 없어 두지 않는다.
+  const layoutLabel = layout === 'split' ? 'Inset 배치로' : 'Split 배치로';
+  const layoutButton = <IconButton label={layoutLabel} tooltip={layoutLabel} variant="ghost" size="sm" icon={icon('sidebar', layout === 'split')}
+    onClick={() => setLayout(layout === 'split' ? 'inset' : 'split')} />;
   const groups = guideSpace.sections.flatMap(section => section.entries);
   // 휴대폰 하단 탭: 자주 여는 네 묶음. 나머지는 더보기에서 고른다. 탭은 좁으므로 괄호 속 한글명을 뗀다.
   const tabs = ['/', '/rules/goraebap-mode/', '/rules/design-system/', '/catalog/playground/']
@@ -129,11 +150,11 @@ export function GuideShell() {
   return <ReferenceTheme mode={mode}>
     <LinkProvider component={RouterLink}>
       <MDXProvider components={mdxComponents}>
-        <AppFrame space={guideSpace} pathname={pathname} tabs={tabs} openGroups="current" brand={isFolded => <Brand isFolded={isFolded} />}
+        <AppFrame space={guideSpace} pathname={pathname} tabs={tabs} openGroups="current" layout={layout} brand={isFolded => <Brand isFolded={isFolded} />}
           headerTools={<Search />} phoneAppBar={<Search />}
           // 묶음 메뉴는 묶음의 첫 문서로 바로 간다.
           onNavigate={path => void router.navigate({ href: firstOf(path) ?? path })}>
-          <Page crumbs={crumbs} pageActions={themeButton} hasHeading={false} hasPattern={false}>
+          <Page crumbs={crumbs} pageActions={<>{isPhone ? null : layoutButton}{themeButton}</>} hasHeading={false} hasPattern={false}>
             <div className={styles.stage} aria-busy={isCovered || undefined}>
               <div inert={isCovered || undefined}><Outlet /></div>
               {isCovered ? <div className={styles.cover} role="status" aria-label="문서를 불러오는 중">

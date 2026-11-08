@@ -25,6 +25,7 @@ import { DisplaySettingsPage } from '../pages/settings/DisplaySettingsPage';
 import { initiallyRead, RequestReadContext, seedRequests, useRequestRead } from '../entities/request/model';
 import { RequestsPage } from '../pages/requests/RequestsPage';
 import { AppearanceContext, useAppearance } from './appearance';
+import { useShellLayout } from '../../../catalog/shell-layout';
 import styles from './app.module.css';
 
 const spaceOf = (unread: number): NavSpace => ({
@@ -128,10 +129,14 @@ export function createLibraryRouter(initialPath: string) {
  * 서가 예제의 조립: 조회 캐시, 모의 저장소, 라우터보다 위의 초안 경계, 화면 설정(배치·밀도). Story마다 새로 만들며 메모리
  * 히스토리를 쓴다. 테마는 카탈로그 상단 도구가 정한다.
  */
-export function LibraryApp({ api, initialPath = '/resources', initialLayout = 'inset' }: { api?: ResourceApi; initialPath?: string; initialLayout?: ShellLayout }) {
+export function LibraryApp({ api, initialPath = '/resources', initialLayout }: { api?: ResourceApi; initialPath?: string; initialLayout?: ShellLayout }) {
+  // 배치는 가이드 머리 줄의 전환을 따른다. 예제 안의 화면 설정에서 바꾸면 그 값이 이긴다.
+  const guideLayout = useShellLayout();
   const [client] = useState(() => new QueryClient({ defaultOptions: { queries: { retry: false, refetchOnWindowFocus: false } } }));
   const [repository] = useState(() => api ?? createResourceApi());
-  const [layout, setLayout] = useState<ShellLayout>(initialLayout);
+  const [chosenLayout, setLayout] = useState<ShellLayout | undefined>(initialLayout);
+  useEffect(() => setLayout(initialLayout), [guideLayout, initialLayout]);
+  const layout = chosenLayout ?? guideLayout;
   const [density, setDensity] = useState<Density>('comfortable');
   const [router] = useState(() => createLibraryRouter(initialPath));
   const [read, setRead] = useState<ReadonlySet<string>>(() => new Set(initiallyRead));

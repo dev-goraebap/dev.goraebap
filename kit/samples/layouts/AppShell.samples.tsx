@@ -6,15 +6,18 @@ import { TextArea } from "@astryxdesign/core/TextArea";
 import { VStack } from "@astryxdesign/core/VStack";
 import { icon } from "@kit/foundations/icons/solar-icon";
 import { AppFrame, type ShellLayout } from "@kit/layouts/app/AppFrame";
+import { useShellLayout } from "../catalog/shell-layout";
 import type { NavSpace } from "@kit/layouts/app/nav";
 import { Page } from "@kit/layouts/page/Page";
 import { PageList } from "@kit/layouts/page/PageParts";
 import { useState } from "react";
 import { DemoBrand, demoAccount, demoSpace, rows } from "./demo";
 
-export function Shell({ layout = "inset", space = demoSpace, rowCount = 8, openGroups }: {
+export function Shell({ layout: chosen, space = demoSpace, rowCount = 8, openGroups }: {
   layout?: ShellLayout; space?: NavSpace; rowCount?: number; openGroups?: "all" | "current";
 }) {
+  const guideLayout = useShellLayout();
+  const layout = chosen ?? guideLayout;
   const [path, setPath] = useState(space.sections[0].entries[space.id === "main" ? 1 : 0].path);
   const [note, setNote] = useState("");
   return <AppFrame space={space} pathname={path} onNavigate={setPath} layout={layout} openGroups={openGroups} brand={isFolded => <DemoBrand isFolded={isFolded} />}
@@ -38,7 +41,6 @@ export default meta;
 type Sample = SampleOf<typeof meta>;
 
 export const Inset: Sample = { name: "Inset", render: () => <Shell /> };
-export const Split: Sample = { name: "Split", render: () => <Shell layout="split" /> };
 export const SubSpace: Sample = { name: "하위 메뉴 공간", render: () => <Shell space={demoAccount} /> };
 export const LongList: Sample = { name: "긴 목록", render: () => <Shell rowCount={40} /> };
 

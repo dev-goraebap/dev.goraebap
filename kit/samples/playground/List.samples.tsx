@@ -14,4 +14,3 @@ export const Grid: Sample = { name: "문서 카드", args: { initialPath: "/reso
 export const Table: Sample = { name: "표", args: { initialPath: "/resources?layout=table" } };
 export const TableGrouped: Sample = { name: "표와 그룹", args: { initialPath: "/resources?layout=table&group=collection" } };
 export const Collection: Sample = { name: "컬렉션", args: { initialPath: "/resources?collection=design" } };
-export const Split: Sample = { name: "Split 배치", args: { initialPath: "/resources", initialLayout: "split" } };
