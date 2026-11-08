@@ -15,3 +15,6 @@ type Sample = SampleOf<typeof meta>;
 export const SignIn: Sample = { name: "로그인", args: { initialPath: "/login" } };
 export const Rejected: Sample = { name: "자격 오류", args: { initialPath: "/login", initialEmail: "seoyun@example.com", hasInitialFailure: true } };
 export const Forgot: Sample = { name: "비밀번호 찾기", args: { initialPath: "/forgot" } };
+
+export const SignUp: Sample = { name:"회원가입",args:{initialPath:"/signup"} };
+export const Otp: Sample = { name:"이메일 인증",args:{initialPath:"/otp"} };

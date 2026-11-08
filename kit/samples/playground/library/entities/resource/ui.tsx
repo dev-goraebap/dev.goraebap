@@ -1,4 +1,4 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
 import { HStack } from '@astryxdesign/core/HStack';
 import { Icon } from '@astryxdesign/core/Icon';
@@ -21,7 +21,7 @@ export function Person({ name, onPick, isCompact = false }: { name: string; onPi
 /** 줄 끝의 날짜는 아이콘과 이름으로 찾을 수 있게 하고 자리수를 맞춘다. */
 export function RowDate({ value }: { value: string }) {
   return <HStack gap={1} vAlign="center">
-    <Icon icon={solarIcon('clock')} size="sm" color="secondary" label="수정일" />
+    <Icon icon={solarIcon('calendar')} size="sm" color="secondary" label="수정일" />
     <Text type="supporting" color="secondary" hasTabularNumbers textWrap="nowrap">{dateText(value)}</Text>
   </HStack>;
 }

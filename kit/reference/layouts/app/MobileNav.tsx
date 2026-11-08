@@ -19,8 +19,8 @@ export function MobileTabBar({ tabs, isSelected, isMoreOpen, hasMore, onNavigate
   return <nav className={styles.bar} aria-label="주 메뉴">
     {tabs.map(tab => {
       const isCurrent = isSelected(tab.path) || (tab.children ?? []).some(child => isSelected(child.path));
-      return <a key={tab.path} className={styles.tab} href={tab.path} aria-current={isCurrent ? 'page' : undefined}
-        onClick={onNavigate && (event => { event.preventDefault(); onNavigate(tab.path); })}>
+      return <a key={tab.path} className={styles.tab} href={tab.isDisabled ? undefined : tab.path} aria-disabled={tab.isDisabled || undefined} aria-current={isCurrent ? 'page' : undefined}
+        onClick={onNavigate && (event => { event.preventDefault(); if(!tab.isDisabled) onNavigate(tab.path); })}>
         {createElement(solarIcon(tab.icon ?? 'document', isCurrent), { className: styles.icon })}
         <small>{tab.label}</small>
       </a>;
@@ -45,7 +45,7 @@ export function MobileMenuSheet({ isOpen, onOpenChange, entries, isSelected, onS
   // 하위 항목은 상위 아이콘 뒤 글자 시작선에 맞춰 들인다(사이드바와 같은 위계).
   const row = (entry: NavEntry, isIndented = false) => {
     const isCurrent = isSelected(entry.path);
-    return <a href={entry.path} onClick={onSelect(entry.path)} className={styles.link} data-indented={isIndented || undefined}
+    return <a href={entry.isDisabled ? undefined : entry.path} aria-disabled={entry.isDisabled || undefined} onClick={entry.isDisabled ? e=>e.preventDefault() : onSelect(entry.path)} className={styles.link} data-indented={isIndented || undefined}
       aria-current={isCurrent ? 'page' : undefined}>
       {entry.icon ? icon(entry.icon, isCurrent) : null}
       <Text className={styles.label} maxLines={1}>{entry.label}</Text>

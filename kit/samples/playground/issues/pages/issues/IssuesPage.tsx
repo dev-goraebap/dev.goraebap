@@ -1,3 +1,4 @@
+import { PageViews } from '@kit/layouts/page/PageToolbar';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Spinner } from '@astryxdesign/core/Spinner';
@@ -87,7 +88,8 @@ export function IssuesPage({ onCreate }: { onCreate: () => void }) {
       <PageMore shown={Math.min(limit, items.length)} total={items.length} unit="개" hasMore={limit < items.length} isLoading={false} onMore={() => setLimit(limit + PAGE)} />
     </VStack>;
   };
-  return <Page crumbs={[{ label: '이슈', href: '/issues', icon: 'tag' }, { label: place }]}
+  return <Page crumbs={[{ label: '이슈', icon: 'tag' }]}
+    views={<PageViews views={[{id:'all',label:'모든 이슈',icon:'tag'},{id:'mine',label:'내 이슈',icon:'user'}]} value={place === '내 이슈' ? 'mine' : 'all'} onChange={value=>setState({...state,assignee:value === 'mine' ? [me] : []})} />}
     tools={<>
       <SearchTool label="이슈 검색" placeholder="키와 제목에서 찾기" value={words} onChange={setWords} />
       {list.tools}

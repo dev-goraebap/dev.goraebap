@@ -38,12 +38,28 @@ export function createIssueApi({ delay = 180, fail = false, initial = seedIssues
       items = [issue, ...items];
       return structuredClone(issue);
     },
-    async update(id, patch: IssuePatch) { await wait(); return change(id, patch); },
-    async comment(id, text) {
+    async update(id, patch: IssuePatch) {
+      await wait();const current=items.find(each=>each.id===id);if(!current)throw missing();
+      if(patch.parent){let parent:string|undefined=patch.parent;const seen=new Set<string>([id]);while(parent){if(seen.has(parent))throw new Error('하위 이슈를 상위로 정할 수 없습니다.');seen.add(parent);parent=items.find(each=>each.id===parent)?.parent}}
+      const names:Record<string,string>={status:'상태',priority:'우선순위',assignee:'담당자',due:'마감일',start:'시작일',labels:'라벨',parent:'상위 이슈',type:'유형',title:'제목',body:'본문'};
+      const keys=Object.keys(patch).filter(key=>JSON.stringify(current[key as keyof Issue])!==JSON.stringify(patch[key as keyof IssuePatch]));
+      return change(id,{...patch,events:[...(current.events??[]),...keys.map(key=>({id:crypto.randomUUID(),at:new Date().toISOString(),actor:me,text:`${names[key]??key}을(를) 변경했습니다.`}))]});
+    },
+    async remove(id){await wait();if(!items.some(each=>each.id===id))throw missing();items=items.filter(each=>each.id!==id).map(each=>each.parent===id?{...each,parent:undefined}:each);},
+    async comment(id, text, parentId) {
       await wait();
       const current = items.find(each => each.id === id);
       if (!current) throw missing();
-      return change(id, { comments: [...current.comments, { id: crypto.randomUUID(), author: me, text, at: new Date().toISOString() }] });
+      return change(id, { comments: [...current.comments, { id: crypto.randomUUID(), author: me, text, parentId, at: new Date().toISOString() }] });
+    },
+    async editComment(id, commentId, text) {
+      await wait();
+      const current = items.find(each => each.id === id);
+      if (!current) throw missing();
+      const comment = current.comments.find(each => each.id === commentId);
+      if (!comment || comment.author !== me) throw new Error('이 댓글을 바꿀 수 없습니다.');
+      return change(id, { comments: text === undefined ? current.comments.filter(each => each.id !== commentId)
+        : current.comments.map(each => each.id === commentId ? {...each, text, editedAt: new Date().toISOString()} : each) });
     },
   };
 }

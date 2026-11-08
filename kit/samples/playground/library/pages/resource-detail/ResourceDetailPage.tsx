@@ -1,3 +1,4 @@
+import { RichBody } from '@kit/composites/editor/RichBody';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Heading } from '@astryxdesign/core/Heading';
@@ -122,8 +123,5 @@ export function ResourcePeek({ id }: { id: string }) {
 
 /** 읽기 본문: 저장한 문서를 그대로 읽는다. 긴 단어·주소는 줄을 넘긴다. */
 function Body({ node }: { node: JSONContent }): ReactNode {
-  return <article className={styles.body}>{node.content?.map((child, index) => {
-    const text = child.content?.map(part => part.text).join('') ?? '';
-    return child.type === 'heading' ? <h2 key={index}>{text}</h2> : <p key={index}>{text}</p>;
-  })}</article>;
+  return <RichBody value={node} />;
 }

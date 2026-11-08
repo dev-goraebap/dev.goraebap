@@ -1,4 +1,6 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import {useOpenPanel,useRoutedPanel} from '@kit/patterns/routing/routed-panel';
+import {useEffect} from 'react';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { CheckboxInput } from '@astryxdesign/core/CheckboxInput';
@@ -40,6 +42,7 @@ type Pending = { kind: 'role' | 'deactivate'; ids: string[] };
  * 상태 순서: 대기 → 실패 → 조건이 있는 0건 → 0건.
  */
 export function UsersPage() {
+  const openPanel=useOpenPanel();const panel=useRoutedPanel();
   const api = useAdminApi();
   const client = useQueryClient();
   const toast = useToast();
@@ -55,8 +58,9 @@ export function UsersPage() {
   const query = useQuery(adminQueries.users(api));
   const [picked, setPicked] = useState<ReadonlySet<string>>(() => new Set(preset.selectedUsers));
   const [pending, setPending] = useState<Pending | null>(null);
-  const isInviting = search.invite === true;
-  const setInvite = (open: boolean) => void navigate({ to: location.pathname, search: { ...search, invite: open || undefined } as never });
+  const isInviting = search.invite === true || panel.href === '/users/invite';
+  const setInvite = (value:boolean) => value ? openPanel('/users/invite') : search.invite ? void navigate({href:'/users',replace:true}) : panel.close();
+  useEffect(()=>{if(panel.pendingPhoneHref)void navigate({href:panel.pendingPhoneHref,replace:true})},[panel.pendingPhoneHref,navigate]);
   const items = visibleUsers(query.data ?? [], words, state, display);
   const chosen = items.filter(user => picked.has(user.id));
   const hasConditions = !!words.trim() || list.count > 0;
@@ -113,7 +117,7 @@ export function UsersPage() {
         ]} />}
     </>;
   };
-  return <Page crumbs={[{ label: '관리', href: '/tags', icon: 'settings' }, { label: '사용자' }]}
+  return <Page crumbs={[{label:'사용자',icon:'settings'}]}
     tools={<>
       <SearchTool label="사용자 검색" placeholder="이름과 이메일에서 찾기" value={words} onChange={setWords} />
       {list.tools}
@@ -123,7 +127,7 @@ export function UsersPage() {
     create={{ label: '사용자 초대', onClick: () => setInvite(true) }}>
     {change.isError ? <PageBanner status="error" title="사용자를 바꾸지 못했습니다" description="잠시 후 다시 시도해 주세요." /> : null}
     {content()}
-    {isInviting ? <InviteDialog onClose={() => setInvite(false)} /> : null}
+    {isInviting ? <InviteDialog onExpand={panel.expand} onClose={() => setInvite(false)} /> : null}
     {pending?.kind === 'role' ? <RoleDialog ids={pending.ids} subtitle={subject(pending.ids)} onClose={() => setPending(null)}
       initial={pending.ids.length === 1 ? query.data?.find(user => user.id === pending.ids[0])?.role ?? 'viewer' : 'viewer'} /> : null}
     <AlertDialog isOpen={pending?.kind === 'deactivate'} onOpenChange={open => { if (!open) setPending(null); }}

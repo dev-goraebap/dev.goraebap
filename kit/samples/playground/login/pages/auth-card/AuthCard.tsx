@@ -1,3 +1,4 @@
+import { WorkflowBrand } from '@kit/foundations/brand/WorkflowBrand';
 import { Heading } from '@astryxdesign/core/Heading';
 import { HStack } from '@astryxdesign/core/HStack';
 import { Text } from '@astryxdesign/core/Text';
@@ -11,12 +12,10 @@ import styles from '../../app/login.module.css';
  * 테두리 없이 화면 전체를 쓴다.
  */
 export function AuthCard({ title, children }: { title: string; children: ReactNode }) {
-  return <main className={styles.screen}>
+  return <main className={styles.screen} aria-label={title}>
+    <div className={styles.clouds} aria-hidden><i/><i/><i/></div>
     <VStack className={styles.card} gap={6}>
-      <HStack gap={2} vAlign="center">
-        <span className={styles.logo}>{icon('library', true)}</span>
-        <Text weight="semibold">서가</Text>
-      </HStack>
+      <WorkflowBrand />
       <Heading level={1}>{title}</Heading>
       {children}
     </VStack>

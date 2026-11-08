@@ -1,3 +1,5 @@
+import {SignUpPage,OtpPage} from '../pages/login/AccountPages';
+import {useSearch} from '@tanstack/react-router';
 import { LinkProvider } from '@astryxdesign/core/Link';
 import { RouterLink } from '@kit/patterns/routing/RouterLink';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -44,8 +46,10 @@ export function createLoginRouter(initialPath: string, seed: Seed) {
       return <SignedInPage name={name} onSignOut={() => void navigate({ href: '/login', replace: true })} />;
     },
   });
+  const signup=createRoute({getParentRoute:()=>root,path:'/signup',component:function(){const navigate=useNavigate();return <SignUpPage onCreated={email=>void navigate({href:`/otp?email=${encodeURIComponent(email)}&sent=true`})}/>}});
+  const otp=createRoute({getParentRoute:()=>root,path:'/otp',component:function(){const navigate=useNavigate();const search=useSearch({strict:false}) as {email?:string;sent?:boolean};const session=useContext(SessionContext);return <OtpPage initialEmail={search.email} hasCode={search.sent} onSignedIn={name=>{session.setName(name);void navigate({href:'/done',replace:true})}}/>}});
   return createRouter({
-    routeTree: root.addChildren([home, login, forgot, done]),
+    routeTree: root.addChildren([home, login, forgot, done,signup,otp]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
   });
 }

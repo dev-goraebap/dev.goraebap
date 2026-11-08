@@ -30,7 +30,7 @@ export function PageHeader({ crumbs, actions, onBack, head, appBar, hasHeading =
   const up = isPhone && last > 0 ? crumbs[last - 1] : undefined;
   const shown = isPhone ? crumbs.slice(last) : crumbs;
   return <HStack as="header" className={styles.header} height={PAGE_HEADER_HEIGHT} paddingInline={4} gap={appBar ? 2 : 3} hAlign="between" vAlign="center">
-    <HStack className={styles.path} gap={1} vAlign="center">
+    <HStack className={styles.path} data-back={!!(up && (up.href || up.onClick) || onBack) || undefined} gap={1} vAlign="center">
       {up && (up.href || up.onClick)
         ? <Button label={up.label} tooltip={up.label} variant="ghost" size="sm" isIconOnly icon={icon('back')} href={up.href} onClick={up.onClick} />
         : onBack ? <Button label="뒤로" tooltip="뒤로" variant="ghost" size="sm" isIconOnly icon={icon('back')} onClick={onBack} /> : null}

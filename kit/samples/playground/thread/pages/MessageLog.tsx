@@ -1,4 +1,4 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { Button } from '@astryxdesign/core/Button';
 import { Text } from '@astryxdesign/core/Text';
 import { icon } from '@kit/foundations/icons/solar-icon';

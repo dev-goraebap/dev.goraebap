@@ -1,4 +1,10 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import { RichBody } from '@kit/composites/editor/RichBody';
+import {AlertDialog} from '@kit/composites/dialog/AlertDialog';
+import {RichDraft} from '@kit/composites/editor/RichDraft';
+import {TextInput} from '@astryxdesign/core/TextInput';
+import {useNavigate} from '@tanstack/react-router';
+import { ActivityFeed, type ActivityItem } from '@kit/composites/activity/ActivityFeed';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Heading } from '@astryxdesign/core/Heading';
@@ -20,7 +26,7 @@ import { Page } from '@kit/layouts/page/Page';
 import { PageBanner } from '@kit/layouts/page/PageParts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState, type ReactNode } from 'react';
-import { dateText, issueKeys, issueQueries, NONE, timeText, today, useIssueApi, type Issue, type IssuePatch } from '../../entities/issue';
+import { me, dateText, issueKeys, issueQueries, NONE, timeText, today, useIssueApi, type Issue, type IssuePatch } from '../../entities/issue';
 import { assigneeOptions, Person, priorityOptions, StatusMark, statusOptions } from '../../entities/issue/ui';
 import styles from './detail.module.css';
 
@@ -32,6 +38,8 @@ export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: 
   const api = useIssueApi();
   const client = useQueryClient();
   const toast = useToast();
+  const navigate=useNavigate();const [deleting,setDeleting]=useState(false);const [editing,setEditing]=useState(false);
+  const remove=useMutation({mutationFn:()=>api.remove(id),onSuccess:async()=>{await client.invalidateQueries({queryKey:issueKeys.all});void navigate({href:'/issues'})}});
   const query = useQuery(issueQueries.detail(api, id));
   const change = useMutation({
     mutationFn: (patch: IssuePatch) => api.update(id, patch),
@@ -54,12 +62,15 @@ export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: 
   };
   return <Page crumbs={[...crumbs, ...(issue.parent ? [{ label: issue.parent, href: `/issues/${issue.parent}` }] : []), { label: issue.id }]}
     isDetail hasHeading={false}
-    pageActions={<RowMenu label="이슈 메뉴" actions={[
+    pageActions={<><Button label={editing?'편집 취소':'편집'} variant="subtle" size="sm" icon={icon('edit')} onClick={()=>setEditing(!editing)}/><RowMenu label="이슈 메뉴" actions={[
       { id: 'edit', label: '수정', icon: 'edit', onSelect: onEdit },
       { id: 'copy', label: '링크 복사', icon: 'link', onSelect: () => void copy() },
-    ]} />}>
+      ...(issue.author===me?[{id:'delete',label:'삭제',icon:'delete' as const,onSelect:()=>setDeleting(true)}]:[]),
+    ]} /></>}>
     {change.isError ? <PageBanner status="error" title="속성을 바꾸지 못했습니다" description="화면의 값은 저장된 값입니다. 다시 골라 주세요." /> : null}
-    <IssueView issue={issue} onChange={patch => change.mutate(patch)} onAddSub={onAddSub} />
+    <IssueView issue={issue} onChange={patch => change.mutate(patch)} onAddSub={onAddSub} isEditing={editing} onSaveBody={async patch=>{await change.mutateAsync(patch);setEditing(false)}} />
+    <AlertDialog isOpen={deleting} onOpenChange={setDeleting} title="이슈를 삭제할까요?" description="하위 이슈는 남고 상위 연결만 해제됩니다." actionLabel="삭제" isActionLoading={remove.isPending} onAction={()=>remove.mutate()} />
+    {remove.isError?<PageBanner status="error" title="삭제하지 못했습니다"/>:null}
   </Page>;
 }
 
@@ -67,30 +78,36 @@ export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: 
  * 이슈의 본문과 속성, 하위 이슈, 댓글. 상세 페이지와 미리보기 패널이 같은 부품을 쓴다(조회도 같은 queryOptions).
  * 폭은 DetailLayout이 컨테이너로 판단하므로 좁은 패널에서는 속성이 제목 아래 알약 줄로 온다.
  */
-export function IssueView({ issue, onChange, onAddSub, headingLevel = 1 }: {
-  issue: Issue; onChange: (patch: IssuePatch) => void; onAddSub?: () => void; headingLevel?: 1 | 2;
+export function IssueView({ issue, onChange, onAddSub, headingLevel = 1, isEditing=false,onSaveBody }: {
+  issue: Issue; onChange: (patch: IssuePatch) => void; onAddSub?: () => void; headingLevel?: 1 | 2;isEditing?:boolean;onSaveBody?:(patch:IssuePatch)=>Promise<unknown>;
 }) {
+  const api=useIssueApi();const all=useQuery(issueQueries.all(api));
+  const parents=(all.data??[]).filter(other=>{let parent:string|undefined=other.id;const seen=new Set<string>();while(parent&&!seen.has(parent)){if(parent===issue.id)return false;seen.add(parent);parent=all.data?.find(e=>e.id===parent)?.parent}return true});
   const sectionLevel = headingLevel === 1 ? 2 : 3;
   return <DetailLayout label={issue.title}
     head={<HStack gap={2} vAlign="center">
       <Text color="secondary" type="supporting" hasTabularNumbers>{issue.id}</Text>
       {issue.parent ? <Text color="secondary" type="supporting">· <Link href={`/issues/${issue.parent}`}>{issue.parent}</Link>의 하위 이슈</Text> : null}
     </HStack>}
-    title={<Heading level={headingLevel}>{issue.title}</Heading>}
+    title={isEditing ? null : <Heading level={headingLevel}>{issue.title}</Heading>}
     sections={[
       { title: '속성', items: <>
         <OptionPill label="상태" icon="clock" value={issue.status} options={statusOptions} onChange={status => onChange({ status: status as Issue['status'] })} />
         <OptionPill label="우선순위" icon="alert" value={issue.priority} options={priorityOptions} onChange={priority => onChange({ priority: priority as Issue['priority'] })} />
         <OptionPill label="담당자" icon="user" emptyText="담당자 지정" value={issue.assignee} options={assigneeOptions}
           onChange={name => onChange({ assignee: name === NONE ? undefined : name })} />
+        <OptionPill label="유형" icon="document" value={issue.type??'task'} options={[{value:'task',label:'작업'},{value:'bug',label:'버그'},{value:'improvement',label:'개선'}]} onChange={type=>onChange({type:type as Issue['type']})}/>
+        <DatePill label="시작일" value={issue.start} dateStyle="absolute" today={today} onChange={start=>onChange({start})}/>
         <DatePill label="마감일" value={issue.due} today={today} onChange={due => onChange({ due })} />
       </> },
+      {title:'라벨',items:<OptionPill label="라벨" icon="tag" emptyText="라벨 더하기" isMultiple value={issue.labels??[]} options={['성능','디자인','접근성','고객 요청'].map(label=>({value:label,label}))} onChange={labels=>onChange({labels})}/>},
+      {title:'상위 이슈',items:<OptionPill label="상위 이슈" icon="link" value={issue.parent??NONE} options={[{value:NONE,label:'상위 이슈 없음'},...parents.map(other=>({value:other.id,label:`${other.id} ${other.title}`}))]} onChange={parent=>onChange({parent:parent===NONE?undefined:parent})}/>},
       { title: '정보', items: <>
-        <PropertyPill label="만든 사람" icon={null} isEmpty={false} isDisabled text={<Person name={issue.author} />} />
-        <PropertyPill label="수정일" icon={null} isEmpty={false} isDisabled text={dateText(issue.updatedAt)} />
+
+        <PropertyPill label="수정일" icon={icon('calendar')} isEmpty={false} isDisabled text={dateText(issue.updatedAt)} />
       </> },
     ]}>
-    <Body node={issue.body} />
+    {isEditing&&onSaveBody?<BodyEditor key={issue.id} issue={issue} onSave={onSaveBody}/>:<Body node={issue.body} />}
     <SubIssues parent={issue.id} level={sectionLevel} onAdd={onAddSub} />
     <Comments issue={issue} level={sectionLevel} />
   </DetailLayout>;
@@ -99,12 +116,14 @@ export function IssueView({ issue, onChange, onAddSub, headingLevel = 1 }: {
 /** 하위 이슈: 상위 이슈 아래에 이어지는 작업. 없으면 추가 동작만 둔다. */
 function SubIssues({ parent, level, onAdd }: { parent: string; level: 2 | 3; onAdd?: () => void }) {
   const api = useIssueApi();
+  const client=useQueryClient();const [title,setTitle]=useState('');
+  const create=useMutation({mutationFn:()=>api.create({title:title.trim(),body:{type:'doc'},status:'todo',priority:'medium',parent}),onSuccess:async()=>{setTitle('');await client.invalidateQueries({queryKey:issueKeys.all})}});
   const query = useQuery(issueQueries.all(api));
   const children = (query.data ?? []).filter(each => each.parent === parent).sort((a, b) => a.id.localeCompare(b.id, 'en', { numeric: true }));
   const done = children.filter(each => each.status === 'done').length;
   return <VStack as="section" gap={2} aria-label="하위 이슈">
     <HStack gap={2} vAlign="center" hAlign="between">
-      <Heading level={level}>하위 이슈{children.length ? ` ${done}/${children.length}` : ''}</Heading>
+      <Text type="supporting" color="secondary" weight="medium">하위 이슈{children.length ? ` ${done}/${children.length}` : ''}</Text>
       {onAdd ? <Button label="하위 이슈 추가" variant="subtle" size="sm" icon={icon('plus')} onClick={onAdd} /> : null}
     </HStack>
     {query.isPending ? <Spinner label="하위 이슈를 불러오는 중" /> : null}
@@ -113,40 +132,24 @@ function SubIssues({ parent, level, onAdd }: { parent: string; level: 2 | 3; onA
         label={<Text maxLines={1}>{child.title}</Text>}
         startContent={<HStack gap={2} vAlign="center"><StatusMark status={child.status} isCompact /><Text type="supporting" color="secondary" hasTabularNumbers>{child.id}</Text></HStack>}
         endContent={<Person name={child.assignee} isCompact />} />)}
-    </List> : query.isSuccess ? <Text color="secondary">하위 이슈가 없습니다.</Text> : null}
+    </List> : null}
+    {onAdd?<TextInput label="하위 이슈 추가" isLabelHidden placeholder="하위 이슈 제목을 적고 Enter" value={title} onChange={setTitle} onEnter={()=>{if(title.trim()&&!create.isPending)create.mutate()}} isLoading={create.isPending} statusVariant="detached" status={create.isError?{type:'error',message:'추가하지 못했습니다.'}:undefined}/>:null}
   </VStack>;
 }
 
 /** 댓글: 시간순 목록과 입력. 빈 댓글은 누르면 칸 곁에 알리고 초점을 옮긴다(버튼은 막지 않는다). */
-function Comments({ issue, level }: { issue: Issue; level: 2 | 3 }) {
-  const api = useIssueApi();
-  const client = useQueryClient();
-  const [text, setText] = useState('');
-  const [isTried, setTried] = useState(false);
-  const send = useMutation({
-    mutationFn: (value: string) => api.comment(issue.id, value),
-    onSuccess: () => { setText(''); setTried(false); void client.invalidateQueries({ queryKey: issueKeys.all }); },
-  });
-  const submit = () => {
-    if (!text.trim()) { setTried(true); requestAnimationFrame(() => document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()); return; }
-    send.mutate(text.trim());
-  };
-  return <VStack as="section" gap={3} aria-label="댓글">
-    <Heading level={level}>댓글{issue.comments.length ? ` ${issue.comments.length}` : ''}</Heading>
-    {issue.comments.map(comment => <HStack key={comment.id} gap={3} vAlign="start">
-      <Avatar name={comment.author} size="sm" shape="circle" />
-      <VStack gap={0.5} className={styles.comment}>
-        <HStack gap={2} vAlign="center"><Text weight="medium">{comment.author}</Text><Text type="supporting" color="secondary" hasTabularNumbers>{timeText(comment.at)}</Text></HStack>
-        <Text>{comment.text}</Text>
-      </VStack>
-    </HStack>)}
-    <VStack gap={2}>
-      <TextArea label="댓글" isLabelHidden placeholder="댓글을 남겨 보세요" rows={3} value={text} onChange={setText}
-        status={isTried && !text.trim() ? { type: 'error', message: '댓글 내용을 입력해 주세요.' } : undefined} />
-      {send.isError ? <Text role="alert" className={styles.failed}>댓글을 남기지 못했습니다. 입력한 내용은 그대로 있습니다.</Text> : null}
-      <HStack hAlign="end"><Button label="댓글 남기기" variant="secondary" size="sm" isLoading={send.isPending} onClick={submit} /></HStack>
-    </VStack>
-  </VStack>;
+function Comments({ issue }: { issue: Issue; level: 2 | 3 }) {
+ const api = useIssueApi(); const client = useQueryClient(); const [error,setError]=useState<string>();
+ const run = (work: Promise<unknown>) => work.then(async result=>{setError(undefined);await client.invalidateQueries({queryKey:issueKeys.all});return result},failure=>{setError('저장하지 못했습니다. 입력은 그대로 남아 있습니다.');throw failure});
+ const items: ActivityItem[] = [
+  {id:'created',kind:'event' as const,at:issue.createdAt,actorId:issue.author,actorName:issue.author,text:'이슈를 만들었습니다.',icon:'plus'},
+  ...issue.comments.map(each=>({id:each.id,kind:'comment' as const,at:each.at,actorId:each.author,actorName:each.author,body:each.text,quote:each.quote,parentId:each.parentId,editedAt:each.editedAt})),
+  ...(issue.events??[]).map(event=>({id:event.id,kind:'event' as const,at:event.at,actorId:event.actor,actorName:event.actor,text:event.text,icon:'edit'})),
+ ].sort((a,b)=>a.at.localeCompare(b.at));
+ return <ActivityFeed items={items} meId={me} canWrite error={error}
+  onComment={(text,parentId)=>run(api.comment(issue.id,text,parentId))}
+  onEdit={(commentId,text)=>run(api.editComment(issue.id,commentId,text))}
+  onDelete={commentId=>run(api.editComment(issue.id,commentId))} />;
 }
 
 /** 미리보기 패널의 내용: 같은 조회, 같은 본문. 대기·없음·실패는 패널 안의 작은 상태로 보이고 목록은 그대로 둔다. */
@@ -172,8 +175,7 @@ export function IssuePeek({ id }: { id: string }) {
 
 /** 읽기 본문: 저장한 문서를 그대로 읽는다. 긴 단어·주소는 줄을 넘긴다. */
 function Body({ node }: { node: JSONContent }): ReactNode {
-  return <article className={styles.body}>{node.content?.map((child, index) => {
-    const text = child.content?.map(part => part.text).join('') ?? '';
-    return child.type === 'heading' ? <h2 key={index}>{text}</h2> : <p key={index}>{text}</p>;
-  })}</article>;
+  return <RichBody value={node} />;
 }
+
+function BodyEditor({issue,onSave}:{issue:Issue;onSave:(patch:IssuePatch)=>Promise<unknown>}){const [title,setTitle]=useState(issue.title);const [body,setBody]=useState(issue.body);const [busy,setBusy]=useState(false);const [error,setError]=useState<string>();return <VStack gap={3}><TextInput label="이슈 제목" value={title} onChange={setTitle} hasAutoFocus/><RichDraft value={body} onChange={setBody} isPage/><HStack hAlign="end"><Button label="변경 저장" variant="primary" isLoading={busy} onClick={()=>{if(!title.trim()){setError('제목을 입력해 주세요.');return;}setBusy(true);onSave({title:title.trim(),body}).catch(()=>setError('저장하지 못했습니다. 입력은 그대로 남아 있습니다.')).finally(()=>setBusy(false))}}/></HStack>{error?<Text role="alert" color="secondary">{error}</Text>:null}</VStack>;}

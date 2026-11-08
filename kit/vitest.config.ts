@@ -13,7 +13,7 @@ export default defineConfig({
   },
   // 테스트 도중에 처음 만난 의존성을 다시 묶으면 React가 두 벌 생겨 "Invalid hook call"로 실패한다. 견본이 쓰는
   // 의존성을 키트·견본의 import에서 모아 처음에 함께 묶는다.
-  optimizeDeps: { entries: ["reference/**/*.{ts,tsx}", "samples/**/*.{ts,tsx}"] },
+  optimizeDeps: { include: ["@astryxdesign/core/Resizable", "@astryxdesign/core/Chat"], entries: ["reference/**/*.{ts,tsx}", "samples/**/*.{ts,tsx}"] },
   test: {
     name: "kit",
     include: ["samples/**/*.test.tsx"],

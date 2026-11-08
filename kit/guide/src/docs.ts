@@ -43,7 +43,7 @@ const rules = (skills: string[]) => skillGroups.filter(item => skills.includes(i
  * 화면을 만드는 사람이 지침·해설·견본을 한 묶음 안에서 오간다.
  */
 export const guideSpace: NavSpace = {
-  id: 'guide', title: '웹 플랫폼 매뉴얼',
+  id: 'guide', title: '고래밥 워크플로우',
   sections: [
     { title: '소개', isHeaderHidden: true, entries: [{ path: '/', label: '소개', icon: 'home' }] },
     { title: '공통', entries: entriesOf(rules(['goraebap-mode', 'architecture', 'manage-workflow'])) },

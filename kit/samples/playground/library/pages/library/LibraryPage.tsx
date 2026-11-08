@@ -1,3 +1,4 @@
+import styles from './library.module.css';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Grid } from '@astryxdesign/core/Grid';
@@ -14,20 +15,16 @@ import { PageState } from '@kit/composites/state/PageState';
 import { icon } from '@kit/foundations/icons/solar-icon';
 import { useIsPhone } from '@kit/foundations/media';
 import { Page } from '@kit/layouts/page/Page';
-import { PageBanner, PageList, PageMore, PageTable, useOpenRows } from '@kit/layouts/page/PageParts';
+import { PageBanner, PageList, PageTable, useOpenRows } from '@kit/layouts/page/PageParts';
 import { useAddressDisplay, useAddressFilters, useAddressWords } from '@kit/patterns/list/list-address';
-import { PeekPanel } from '@kit/layouts/peek/PeekPanel';
-import { usePeek } from '@kit/patterns/routing/peek';
-import { ResourcePeek } from '../resource-detail/ResourceDetailPage';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useLocation, useNavigate } from '@tanstack/react-router';
-import { useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { collectionName, collections, kindOf, kinds, resourceKeys, resourceQueries, useResourceApi, type Resource } from '../../entities/resource';
 import { Person, ResourceCard, ResourceRow, RowDate } from '../../entities/resource/ui';
 import { filters, groups, initialDisplay, layouts, sorts, validateLibrarySearch, visibleResources } from './model';
 
 const PAGE = 6;
-const pageOf = (id: string) => `/resources/${id}`;
 
 /**
  * 서가 목록. 머리 줄: 경로·도구(검색·필터·표시)·만들기. 실제 필터가 있을 때만 적용 줄. 확정 조건은 모두 주소가 가진다.
@@ -46,7 +43,7 @@ export function LibraryPage({ onCreate }: { onCreate: () => void }) {
   const list = useFilters(filters, { state, onStateChange: setState });
   const [limit, setLimit] = useState(PAGE);
   // 작업 목록: 행 클릭은 페이지, 미리보기는 행 끝 버튼·Space, 열린 동안 위·아래 키로 옮긴다.
-  const peek = usePeek(pageOf);
+
   const query = useQuery(resourceQueries.all(api));
   const star = useMutation({
     mutationFn: (resource: Resource) => api.update(resource.id, { starred: !resource.starred }),
@@ -58,20 +55,6 @@ export function LibraryPage({ onCreate }: { onCreate: () => void }) {
   const clearConditions = () => { setWords(''); list.clear(); };
   const place = search.starred ? '즐겨찾기' : search.collection ? collectionName(search.collection) : '모든 자료';
   const layout = isPhone && display.layout === 'table' ? 'list' : display.layout;
-  const peeked = peek.id ? (query.data ?? []).find(item => item.id === peek.id) : undefined;
-  const keys = (event: KeyboardEvent<HTMLElement>) => {
-    const row = (event.target as HTMLElement).closest<HTMLElement>('[data-peek-row]');
-    if (!row || !(event.target instanceof HTMLAnchorElement)) return;
-    const id = row.dataset.peekRow!;
-    if (event.key === ' ') { event.preventDefault(); if (peek.id === id) peek.close(); else peek.open(id); return; }
-    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
-    const rowsShown = [...document.querySelectorAll<HTMLElement>('[data-peek-row]')];
-    const next = rowsShown[rowsShown.indexOf(row) + (event.key === 'ArrowDown' ? 1 : -1)];
-    if (!next) return;
-    event.preventDefault();
-    (next.matches('a[href]') ? next : next.querySelector<HTMLElement>('a[href]'))?.focus();
-    if (peek.id) peek.move(next.dataset.peekRow!);
-  };
   const content = (): ReactNode => {
     if (query.isPending) return <Center height="100%"><Spinner label="자료를 불러오는 중" /></Center>;
     if (query.isError && !query.data) return <PageState kind="error" title="자료를 불러오지 못했습니다" description="잠시 후 다시 시도해 주세요."
@@ -86,17 +69,17 @@ export function LibraryPage({ onCreate }: { onCreate: () => void }) {
       : [{ id: 'all', label: '', mark: null, rows: items }];
     const shown = sections.filter(section => section.rows.length > 0);
     let left = limit;
-    return <VStack onKeyDown={keys}>
+    return <VStack>
       {shown.map(section => {
         const rows = section.rows.slice(0, Math.max(left, 0));
         left -= rows.length;
         return <Group key={section.id} label={section.label} mark={section.mark} count={section.rows.length} isGrouped={display.group !== 'none'}>
-          {rows.length ? <Rows layout={layout ?? 'list'} rows={rows} isPhone={isPhone} peekId={peek.id} onPeek={resource => peek.id ? peek.move(resource.id) : peek.open(resource.id)}
+          {rows.length ? <Rows layout={layout ?? 'list'} rows={rows} isPhone={isPhone}
             onStar={resource => star.mutate(resource)} onAuthor={name => setState({ ...state, author: [name] })}
             onOpen={resource => void navigate({ href: `/resources/${resource.id}` })} /> : null}
         </Group>;
       })}
-      <PageMore shown={Math.min(limit, items.length)} total={items.length} unit="개" hasMore={limit < items.length} isLoading={false} onMore={() => setLimit(limit + PAGE)} />
+      <div className={styles.more}><Text type="supporting" color="secondary">{Math.min(limit,items.length)} / {items.length}</Text>{limit < items.length ? <Button label="문서 더 보기" variant="secondary" icon={icon('chevron-down')} onClick={()=>setLimit(limit+PAGE)} /> : <Text type="supporting" color="secondary">모두 확인했습니다</Text>}</div>
     </VStack>;
   };
   return <Page crumbs={[{ label: '서가', href: '/resources', icon: 'library' }, { label: place }]}
@@ -107,11 +90,9 @@ export function LibraryPage({ onCreate }: { onCreate: () => void }) {
     </>}
     applied={list.applied}
     create={{ label: '자료 추가', onClick: onCreate }}
-    aside={peek.id ? <PeekPanel id={peek.id} title={peeked?.title ?? '자료'} pageHref={pageOf(peek.id)} onClose={peek.close}>
-      <ResourcePeek id={peek.id} />
-    </PeekPanel> : undefined}>
+    >
     {star.isError ? <PageBanner status="error" title="즐겨찾기를 바꾸지 못했습니다" description="잠시 후 다시 눌러 주세요." /> : null}
-    {content()}
+    <div className={styles.container}>{content()}</div>
   </Page>;
 }
 
@@ -124,8 +105,8 @@ function Group({ label, mark, count, isGrouped, children }: { label: string; mar
   </section>;
 }
 
-function Rows({ layout, rows, isPhone, peekId, onPeek, onStar, onAuthor, onOpen }: {
-  layout: string; rows: Resource[]; isPhone: boolean; peekId?: string; onPeek: (resource: Resource) => void;
+function Rows({ layout, rows, isPhone, onStar, onAuthor, onOpen }: {
+  layout: string; rows: Resource[]; isPhone: boolean;
   onStar: (resource: Resource) => void; onAuthor: (name: string) => void; onOpen: (resource: Resource) => void;
 }) {
   const open = useOpenRows<Resource>(onOpen);
@@ -140,6 +121,6 @@ function Rows({ layout, rows, isPhone, peekId, onPeek, onStar, onAuthor, onOpen 
     { key: 'updatedAt', header: '수정일', width: pixel(120), align: 'end', renderCell: row => <RowDate value={row.updatedAt} /> },
   ]} />;
   return <PageList hasDividers aria-label="자료">
-    {rows.map(resource => <ResourceRow key={resource.id} resource={resource} isCompact={isPhone} isPeeking={peekId === resource.id} onPeek={onPeek} onStar={onStar} onAuthor={onAuthor} />)}
+    {rows.map(resource => <ResourceRow key={resource.id} resource={resource} isCompact={isPhone} onStar={onStar} onAuthor={onAuthor} />)}
   </PageList>;
 }

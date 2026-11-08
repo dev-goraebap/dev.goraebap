@@ -1,10 +1,14 @@
+import { EventCompose } from '../pages/calendar/EventCompose';
+import { EventPage } from '../pages/calendar/EventPage';
+import { DraftProvider } from '@kit/patterns/compose/draft-store';
+import { useParams,useSearch } from '@tanstack/react-router';
 import { Button } from '@astryxdesign/core/Button';
 import { HStack } from '@astryxdesign/core/HStack';
 import { LinkProvider } from '@astryxdesign/core/Link';
 import { Text } from '@astryxdesign/core/Text';
 import { PageState } from '@kit/composites/state/PageState';
 import { icon } from '@kit/foundations/icons/solar-icon';
-import { AppFrame } from '@kit/layouts/app/AppFrame';
+import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
 import type { NavSpace } from '@kit/layouts/app/nav';
 import { Page } from '@kit/layouts/page/Page';
 import { RouterLink } from '@kit/patterns/routing/RouterLink';
@@ -52,7 +56,10 @@ export function createCalendarRouter(initialPath: string) {
   const root = createRootRoute({ component: Shell, errorComponent: RouteError, notFoundComponent: NotFound });
   const calendar = createRoute({ getParentRoute: () => root, path: '/calendar', component: CalendarPage });
   const home = createRoute({ getParentRoute: () => root, path: '/', component: CalendarPage });
-  return createRouter({ routeTree: root.addChildren([home, calendar]), history: createMemoryHistory({ initialEntries: [initialPath] }) });
+  const form=createRoute({getParentRoute:()=>root,path:'/calendar/new',component:FormRoute});
+  const detail=createRoute({getParentRoute:()=>root,path:'/calendar/events/$id',component:EventPage});
+  const edit=createRoute({getParentRoute:()=>root,path:'/calendar/events/$id/edit',component:FormRoute});
+  return createRouter({ unmaskOnReload:true, routeTree: root.addChildren([home, calendar,form,detail,edit]), history: createMemoryHistory({ initialEntries: [initialPath] }) });
 }
 
 /** 일정 예제의 조립: 조회 캐시, 모의 저장소, 메모리 히스토리 라우터. 견본마다 새로 만든다. */
@@ -61,6 +68,8 @@ export function CalendarApp({ api, initialPath = '/calendar' }: { api?: EventApi
   const [repository] = useState(() => api ?? createEventApi());
   const [router] = useState(() => createCalendarRouter(initialPath));
   return <QueryClientProvider client={client}>
-    <EventApiContext value={repository}><RouterProvider router={router} /></EventApiContext>
+    <EventApiContext value={repository}><DraftProvider><RouterProvider router={router} /></DraftProvider></EventApiContext>
   </QueryClientProvider>;
 }
+
+function FormRoute(){const {id}=useParams({strict:false}) as {id?:string};const search=useSearch({strict:false}) as {date?:string};const navigate=useNavigate();return <EventCompose id={id} date={search.date as never} surface="page" onClose={()=>void navigate({href:'/calendar'})} onDone={next=>void navigate({href:`/calendar/events/${next}`,replace:true})}/>;}

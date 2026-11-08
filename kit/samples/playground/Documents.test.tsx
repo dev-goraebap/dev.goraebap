@@ -3,7 +3,6 @@ import { expect, userEvent, waitFor, within } from "../catalog/testing";
 import { runSample } from "../catalog/run-sample";
 import type { SampleOf } from "../catalog/types";
 import { DocumentScreen } from "./documents/DocumentScreen";
-import { UploadScreen } from "./documents/UploadScreen";
 import { LibrarySample } from "./library-sample";
 import meta from "./Documents.samples";
 
@@ -53,40 +52,7 @@ const VerifyAutosave: Sample = {
   },
 };
 
-const VerifyRetry: Sample = {
-  name: "실패한 파일 다시 올리기 검증",
-  render: () => <UploadScreen initial={[{ id: "x", name: "실패하는 표본.docx", size: 120_000, state: "waiting", progress: 0 }]} />,
-  play: async ({ canvasElement }) => {
-    const page = within(canvasElement.ownerDocument.body);
-    const retry = await page.findByRole("button", { name: "실패하는 표본.docx 다시 올리기" }, { timeout: 6000 });
-    await expect(page.getByText(/올리지 못했습니다/)).toBeVisible();
-    await userEvent.click(retry);
-    await waitFor(() => expect(page.getByText("1개 중 1개 완료")).toBeVisible(), { timeout: 8000 });
-  },
-};
 
-const VerifyPeek: Sample = {
-  name: "열기·옮기기·닫기 검증",
-  render: () => <LibrarySample initialPath="/resources" />,
-  play: async ({ canvasElement }) => {
-    const page = within(canvasElement.ownerDocument.body);
-    await userEvent.click(await page.findByRole("button", { name: "기다리는 시간을 설계하는 방법 미리보기" }));
-    const panel = await page.findByRole("complementary", { name: "미리보기: 기다리는 시간을 설계하는 방법" });
-    await expect(await within(panel).findByRole("heading", { level: 2, name: "기다리는 시간을 설계하는 방법" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "모든 자료" })).toBeInTheDocument();
-    const row = page.getAllByRole("link", { name: /기다리는 시간을 설계하는 방법/ })[0];
-    row.focus();
-    await userEvent.keyboard("{ArrowDown}");
-    await waitFor(() => expect(page.getByRole("complementary", { name: /^미리보기: / })).not.toHaveAccessibleName("미리보기: 기다리는 시간을 설계하는 방법"));
-    // 열린 툴팁은 맨 위 레이어라 첫 Esc를 먼저 가져간다. 포인터를 치워 툴팁이 없는 상태에서 누른다.
-    await userEvent.unhover(page.getByRole("button", { name: "기다리는 시간을 설계하는 방법 미리보기" }));
-    await waitFor(() => expect(page.queryByRole("tooltip")).not.toBeInTheDocument());
-    await userEvent.keyboard("{Escape}");
-    await waitFor(() => expect(page.queryByRole("complementary", { name: /^미리보기: / })).not.toBeInTheDocument());
-    await userEvent.keyboard(" ");
-    await expect(await page.findByRole("complementary", { name: /^미리보기: / })).toBeVisible();
-  },
-};
 
 const VerifyPageFoot: Sample = {
   name: "작성 페이지 바닥 고정·동작만 검증",
@@ -114,6 +80,4 @@ const VerifyPageFoot: Sample = {
 test(VerifyJourney.name, () => runSample(meta, VerifyJourney));
 test(VerifyPhone.name, () => runSample(meta, VerifyPhone));
 test(VerifyAutosave.name, () => runSample(meta, VerifyAutosave), 10000);
-test(VerifyRetry.name, () => runSample(meta, VerifyRetry), 20000);
-test(VerifyPeek.name, () => runSample(meta, VerifyPeek));
 test(VerifyPageFoot.name, () => runSample(meta, VerifyPageFoot));

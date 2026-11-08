@@ -1,3 +1,4 @@
+import { Card } from '@astryxdesign/core/Card';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { HStack } from '@astryxdesign/core/HStack';
@@ -64,11 +65,11 @@ export function TagsPage() {
       {tags.map(tag => <TagRow key={tag.id} tag={tag} onEdit={() => setEdit(tag.id)} onRemove={() => ask(tag)} />)}
     </PageList>;
   };
-  return <Page crumbs={[{ label: '관리', href: '/tags', icon: 'settings' }, { label: '태그' }]}
+  return <Page crumbs={[{label:'태그',icon:'settings'}]}
     tools={<SearchTool label="태그 검색" placeholder="이름으로 찾기" value={words} onChange={setWords} />}
     create={{ label: '태그 추가', onClick: () => setEdit('new') }}>
     {remove.isError ? <PageBanner status="error" title="태그를 지우지 못했습니다" description="잠시 후 다시 시도해 주세요." /> : null}
-    {content()}
+    <div className={styles.column}><Card padding={0}>{content()}</Card></div>
     {edit === 'new' || editing ? <TagDialog key={edit} tag={editing} onClose={() => setEdit(undefined)} /> : null}
     <AlertDialog isOpen={!!removing} onOpenChange={open => { if (!open) setRemoving(null); }} title={`'${removing?.name ?? ''}' 태그를 지울까요?`}
       description={`이 태그가 쓰인 ${removing?.count ?? 0}개 항목에서 태그가 빠집니다. 지운 태그는 되돌릴 수 없습니다.`}

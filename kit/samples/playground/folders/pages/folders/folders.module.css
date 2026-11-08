@@ -15,3 +15,7 @@
 .mark { display: inline-grid; place-items: center; flex: none; color: var(--color-icon-secondary); }
 .openRow { cursor: pointer; }
 tr[data-over] { background: var(--color-accent-muted); }
+
+.split { display: flex; }
+.side { flex: none; }
+.main { flex: 1 1 0; }

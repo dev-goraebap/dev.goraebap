@@ -1,5 +1,5 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Avatar } from "@astryxdesign/core/Avatar";
+import { PersonAvatar as Avatar } from "@kit/foundations/avatar/PersonAvatar";
 import { HStack } from "@astryxdesign/core/HStack";
 import { Text } from "@astryxdesign/core/Text";
 import { Comparison } from "../catalog/Comparison";
@@ -11,7 +11,7 @@ const meta = {
 export default meta;
 type Sample = SampleOf<typeof meta>;
 
-export const Basic: Sample = { name: "이름의 첫 글자" };
+export const Basic: Sample = { name: "기본 프로필" };
 export const Named: Sample = {
   name: "사진과 이름",
   render: args => <HStack gap={1.5} vAlign="center"><Avatar {...args} size="xsm" /><Text>{args.name}</Text></HStack>,

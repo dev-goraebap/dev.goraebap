@@ -38,11 +38,11 @@ export function ComposeForm({ title, onTitle, titlePlaceholder = '제목', title
 /**
  * 제목을 따로 쓰지 않는 양식(이름이 정해진 보고 등): 제목 자리에 그 이름, 이름 붙은 부분들, 알약.
  */
-export function PaperForm({ heading, about, parts, pills, isPage = false }: {
-  heading: string; about?: ReactNode; parts: { label: string; content: ReactNode }[]; pills?: ReactNode; isPage?: boolean;
+export function PaperForm({ heading, about, parts, pills, isPage = false, hasHeading = true }: {
+  heading: string; about?: ReactNode; parts: { label: string; content: ReactNode }[]; pills?: ReactNode; isPage?: boolean; hasHeading?: boolean;
 }) {
   return <VStack gap={4} className={styles.form} data-page={isPage || undefined}>
-    <VStack gap={1}><h1 className={styles.heading}>{heading}</h1>{about}</VStack>
+    {hasHeading ? <VStack gap={1}><h1 className={styles.heading}>{heading}</h1>{about}</VStack> : about}
     {parts.map(part => <VStack key={part.label} gap={1} as="section" aria-label={part.label}>
       <span className={styles.partLabel}>{part.label}</span>
       {part.content}

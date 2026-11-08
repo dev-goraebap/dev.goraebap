@@ -1,3 +1,4 @@
+import { WorkflowBrand } from '@kit/foundations/brand/WorkflowBrand';
 import { CommandPalette } from '@astryxdesign/core/CommandPalette';
 import { LinkProvider } from '@astryxdesign/core/Link';
 import { IconButton } from '@astryxdesign/core/IconButton';
@@ -18,7 +19,6 @@ import { docAt, firstOf, groupLabel, guideSpace, searchEntries } from '../docs';
 import { Sample } from '../samples/Sample';
 import { SampleGroup } from '../samples/SampleGroup';
 import { Source } from '../samples/Source';
-import logo from '../brand/logo.svg?raw';
 import { RocketMark } from '../loading/RocketMark';
 import styles from './guide.module.css';
 
@@ -68,9 +68,8 @@ function Table(props: ComponentPropsWithRef<'table'>) {
 const mdxComponents = { a: DocLink, table: Table, Sample, SampleGroup, Source };
 
 function Brand({ isFolded }: { isFolded: boolean }) {
-  return <RouterLink href="/" className={styles.brand} aria-label="웹 플랫폼 매뉴얼 처음으로">
-    <span className={styles.mark} dangerouslySetInnerHTML={{ __html: logo }} />
-    {isFolded ? null : <Text weight="semibold" maxLines={1}>웹 플랫폼 매뉴얼</Text>}
+  return <RouterLink href="/" className={styles.brand} aria-label="고래밥 워크플로우 처음으로">
+    <WorkflowBrand isFolded={isFolded} />
   </RouterLink>;
 }
 

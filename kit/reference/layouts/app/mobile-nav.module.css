@@ -21,3 +21,5 @@
 .link[data-indented] { padding-inline-start: calc(var(--spacing-3) * 2 + 1.125rem); }
 /* 하위 목적지가 있는 묶음은 앞뒤를 가는 선과 같은 간격으로 나눈다. 접힌 사이드바가 묶음을 선으로 나누는 것과 같다. */
 .group + li, li + .group { margin-block-start: var(--spacing-2); padding-block-start: var(--spacing-2); border-block-start: 1px solid var(--color-border); }
+
+.tab[aria-disabled="true"], .link[aria-disabled="true"] { color:var(--color-text-disabled); cursor:default; }

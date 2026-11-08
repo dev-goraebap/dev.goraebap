@@ -1,4 +1,8 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import { InboxLayout } from '@kit/layouts/peek/InboxLayout';
+import { useFilters } from '@kit/composites/filter/use-filters';
+import { useAddressFilters } from '@kit/patterns/list/list-address';
+import type { ListFilter } from '@kit/composites/filter/types';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { HStack } from '@astryxdesign/core/HStack';
@@ -20,6 +24,7 @@ import { useArchiveToggle } from './archive';
 import { NotificationView } from './NotificationView';
 import styles from './inbox.module.css';
 
+const filters:ListFilter[]=[{key:'kind',label:'종류',icon:'bell',isMultiple:true,options:Object.entries(kinds).map(([value,item])=>({value,label:item.label}))},{key:'read',label:'읽음',icon:'check',options:[{value:'unread',label:'안 읽음'},{value:'read',label:'읽음'}]}];
 export const pageOf = (id: string) => `/inbox/${id}`;
 
 /**
@@ -29,12 +34,13 @@ export const pageOf = (id: string) => `/inbox/${id}`;
  */
 export function InboxPage({ scope }: { scope: 'inbox' | 'archive' }) {
   const isPhone = useIsPhone();
+  const [state,setState]=useAddressFilters(filters);const list=useFilters(filters,{state,onStateChange:setState});
   const api = useNotificationApi();
   const { read, markRead } = useNotificationRead();
   const query = useQuery(notificationQueries.all(api));
   const peek = usePeek(pageOf);
   const isArchive = scope === 'archive';
-  const items = (query.data ?? []).filter(each => each.archived === isArchive);
+  const items = (query.data ?? []).filter(each => each.archived === isArchive && (!state.kind?.length || state.kind.includes(each.kind)) && (!state.read?.length || (state.read[0]==='read')===read.has(each.id)));
   const chosen = peek.id ? items.find(each => each.id === peek.id) : undefined;
   useEffect(() => { if (chosen) markRead(chosen.id); }, [chosen, markRead]);
   const toggle = useArchiveToggle(peek.close);
@@ -75,17 +81,16 @@ export function InboxPage({ scope }: { scope: 'inbox' | 'archive' }) {
       </PageList>
     </div>;
   };
-  return <Page crumbs={[{ label }]}
-    aside={hasPane ? <InboxPane id={peek.id} title={chosen ? `${chosen.from} · ${kinds[chosen.kind].label}` : '알림'}
+  return <InboxLayout list={<Page crumbs={[{label}]} tools={list.tools} applied={list.applied}>
+    {toggle.isError ? <PageBanner status="error" title="알림을 옮기지 못했습니다" /> : null}
+    {items.length===0 && list.count>0 ? <PageState kind="search" title="조건에 맞는 알림이 없습니다" action={<Button label="조건 지우기" onClick={list.clear}/>} /> : content()}
+  </Page>} detail={<InboxPane id={peek.id} title={chosen ? `${chosen.from} · ${kinds[chosen.kind].label}` : '알림'}
       pageHref={peek.id ? pageOf(peek.id) : undefined} onClose={peek.close}
       empty={{ title: '알림을 선택해 주세요', description: '멘션, 배정, 승인 요청의 내용을 여기서 확인합니다.' }}>
       {chosen
         ? <NotificationView item={chosen} headingLevel={2} isBusy={toggle.isPending} onToggleArchive={() => toggle.mutate(chosen)} />
         : <PageState kind="not-found" isCompact title="알림을 찾을 수 없습니다" description="목록에서 다시 골라 주세요." />}
-    </InboxPane> : undefined}>
-    {toggle.isError ? <PageBanner status="error" title="알림을 옮기지 못했습니다" description="잠시 후 다시 눌러 주세요." /> : null}
-    {content()}
-  </Page>;
+    </InboxPane>} />;
 }
 
 function Row({ item, isUnread, isSelected, href }: { item: Notification; isUnread: boolean; isSelected: boolean; href: string }) {

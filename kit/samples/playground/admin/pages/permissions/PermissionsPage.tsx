@@ -1,7 +1,6 @@
 import { Button } from '@astryxdesign/core/Button';
 import { Card } from '@astryxdesign/core/Card';
 import { Center } from '@astryxdesign/core/Center';
-import { CheckboxInput } from '@astryxdesign/core/CheckboxInput';
 import { HStack } from '@astryxdesign/core/HStack';
 import { List, ListItem } from '@astryxdesign/core/List';
 import { Selector } from '@astryxdesign/core/Selector';
@@ -9,12 +8,9 @@ import { Spinner } from '@astryxdesign/core/Spinner';
 import { Switch } from '@astryxdesign/core/Switch';
 import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
-import { Token } from '@astryxdesign/core/Token';
-import { VisuallyHidden } from '@astryxdesign/core/VisuallyHidden';
 import { AlertDialog } from '@kit/composites/dialog/AlertDialog';
 import { PageState } from '@kit/composites/state/PageState';
 import { icon } from '@kit/foundations/icons/solar-icon';
-import { useIsPhone } from '@kit/foundations/media';
 import { Page } from '@kit/layouts/page/Page';
 import { PageBanner, PageFootBar } from '@kit/layouts/page/PageParts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -34,11 +30,10 @@ const lockedReason = '관리자는 모든 기능을 가지며 바꿀 수 없습�
 export function PermissionsPage() {
   const api = useAdminApi();
   const client = useQueryClient();
-  const isPhone = useIsPhone();
   const preset = usePreset();
   const query = useQuery(adminQueries.permissions(api));
   const [changed, setChanged] = useState<ReadonlySet<string>>(() => new Set(preset.changedCells));
-  const [role, setRole] = useState<Role>((preset.permissionRole as Role | undefined) ?? 'editor');
+  const [role, setRole] = useState<Role>((preset.permissionRole as Role | undefined) ?? 'writer');
   const blocker = useBlocker({ shouldBlockFn: () => changed.size > 0, withResolver: true, enableBeforeUnload: false });
   const save = useMutation({
     mutationFn: (matrix: Matrix) => api.permissions.save(matrix),
@@ -60,12 +55,10 @@ export function PermissionsPage() {
     if (query.isPending) return <Center height="100%"><Spinner label="권한을 불러오는 중" /></Center>;
     if (query.isError && !query.data) return <PageState kind="error" title="권한을 불러오지 못했습니다" description="잠시 후 다시 시도해 주세요."
       action={<Button label="다시 시도" variant="secondary" onClick={() => void query.refetch()} />} />;
-    return isPhone
-      ? <RoleList role={role} onRole={setRole} valueOf={valueOf} isChanged={(target, feature) => changed.has(cellKey(target, feature))} onToggle={toggle} />
-      : <Grid valueOf={valueOf} isChanged={(target, feature) => changed.has(cellKey(target, feature))} onToggle={toggle} />;
+    return <RoleList role={role} onRole={setRole} valueOf={valueOf} onToggle={toggle} />;
   };
-  return <Page crumbs={[{ label: '관리', href: '/tags', icon: 'settings' }, { label: '권한' }]}
-    footer={changed.size > 0 ? <PageFootBar label="변경 사항 저장" isFullWidth>
+  return <Page crumbs={[{label:'권한',icon:'settings'}]}
+    footer={changed.size > 0 ? <PageFootBar label="변경 사항 저장">
       <Button label="되돌리기" variant="ghost" isDisabled={save.isPending} onClick={() => setChanged(new Set())} />
       <Button label={`변경 ${changed.size}개 저장`} variant="primary" isLoading={save.isPending} onClick={submit} />
     </PageFootBar> : undefined}>
@@ -77,38 +70,10 @@ export function PermissionsPage() {
   </Page>;
 }
 
-type CellProps = { valueOf: (role: Role, feature: string) => boolean; isChanged: (role: Role, feature: string) => boolean; onToggle: (role: Role, feature: string) => void };
+type CellProps = { valueOf: (role: Role, feature: string) => boolean; onToggle: (role: Role, feature: string) => void };
 
-/** 데스크톱 격자: 기능 묶음마다 머리 행, 역할마다 열. 바뀐 칸은 바탕과 모서리 점으로 보이고 이름에도 적힌다. */
-function Grid({ valueOf, isChanged, onToggle }: CellProps) {
-  return <div className={styles.sheet}>
-    <table className={styles.grid}>
-      <VisuallyHidden as="caption">역할별 기능 권한</VisuallyHidden>
-      <thead><tr>
-        <th scope="col">기능</th>
-        {roles.map(each => <th key={each.id} scope="col"><span className={styles.roleHead}>{each.label}{each.id === 'admin' ? icon('lock') : null}</span></th>)}
-      </tr></thead>
-      {featureGroups.map(group => <tbody key={group.id}>
-        <tr className={styles.group}><th scope="rowgroup" colSpan={roles.length + 1}>{group.label}</th></tr>
-        {group.features.map(feature => <tr key={feature.id}>
-          <th scope="row"><Text>{feature.label}</Text></th>
-          {roles.map(each => {
-            const isLocked = each.id === 'admin';
-            const marked = isChanged(each.id, feature.id);
-            return <td key={each.id} className={styles.cell} data-changed={marked || undefined}>
-              <span className={styles.center}><CheckboxInput label={`${each.label} ${feature.label}${marked ? ', 바뀜' : ''}`} isLabelHidden value={valueOf(each.id, feature.id)}
-                isDisabled={isLocked} disabledMessage={isLocked ? lockedReason : undefined} onChange={() => onToggle(each.id, feature.id)} /></span>
-              {marked ? <span className={styles.mark} aria-hidden="true" /> : null}
-            </td>;
-          })}
-        </tr>)}
-      </tbody>)}
-    </table>
-  </div>;
-}
-
-/** 휴대폰: 역할 하나를 고르고 그 역할의 기능을 묶음별 스위치 목록으로 바꾼다. */
-function RoleList({ role, onRole, valueOf, isChanged, onToggle }: CellProps & { role: Role; onRole: (role: Role) => void }) {
+/** 역할 하나를 고르고 그 역할의 기능을 묶음별 스위치 목록으로 바꿉니다. */
+function RoleList({ role, onRole, valueOf, onToggle }: CellProps & { role: Role; onRole: (role: Role) => void }) {
   const isLocked = role === 'admin';
   return <div className={styles.column}>
     <Selector label="역할" options={roles.map(each => ({ value: each.id, label: each.label }))} value={role} onChange={value => onRole(value as Role)} />
@@ -117,7 +82,7 @@ function RoleList({ role, onRole, valueOf, isChanged, onToggle }: CellProps & { 
       <Text type="supporting" weight="medium" color="secondary">{group.label}</Text>
       <Card padding={0}><List hasDividers density="spacious">
         {group.features.map(feature => <ListItem key={feature.id}
-          label={<HStack gap={2} vAlign="center"><Text>{feature.label}</Text>{isChanged(role, feature.id) ? <Token label="바뀜" size="sm" /> : null}</HStack>}
+          label={<HStack gap={2} vAlign="center"><Text>{feature.label}</Text></HStack>}
           endContent={<Switch label={feature.label} isLabelHidden value={valueOf(role, feature.id)} isDisabled={isLocked}
             disabledMessage={isLocked ? lockedReason : undefined} onChange={() => onToggle(role, feature.id)} />} />)}
       </List></Card>

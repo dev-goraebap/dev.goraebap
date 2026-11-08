@@ -1,10 +1,12 @@
+import { DraftProvider } from '@kit/patterns/compose/draft-store';
+import {InviteDialog} from '../pages/users/UserDialogs';
 import { Button } from '@astryxdesign/core/Button';
 import { HStack } from '@astryxdesign/core/HStack';
 import { LinkProvider } from '@astryxdesign/core/Link';
 import { Text } from '@astryxdesign/core/Text';
 import { PageState } from '@kit/composites/state/PageState';
 import { icon } from '@kit/foundations/icons/solar-icon';
-import { AppFrame } from '@kit/layouts/app/AppFrame';
+import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
 import type { NavSpace } from '@kit/layouts/app/nav';
 import { Page } from '@kit/layouts/page/Page';
 import { RouterLink } from '@kit/patterns/routing/RouterLink';
@@ -70,8 +72,9 @@ export function createAdminRouter(initialPath: string) {
   const home = createRoute({ getParentRoute: () => root, path: '/', component: TagsPage, validateSearch: validateTagsSearch });
   const users = createRoute({ getParentRoute: () => root, path: '/users', component: UsersPage, validateSearch: validateUsersSearch });
   const permissions = createRoute({ getParentRoute: () => root, path: '/permissions', component: PermissionsPage });
-  return createRouter({
-    routeTree: root.addChildren([home, tags, users, permissions]),
+  const invite=createRoute({getParentRoute:()=>root,path:'/users/invite',component:function(){const navigate=useNavigate();return <InviteDialog surface="page" onClose={()=>void navigate({href:'/users'})}/>}});
+  return createRouter({unmaskOnReload:true,
+    routeTree: root.addChildren([home, tags, users, permissions,invite]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
     defaultPreload: 'intent', scrollRestoration: true,
   });
@@ -87,7 +90,7 @@ export function AdminApp({ api, initialPath = '/tags', preset = {} }: { api?: Ad
   const [router] = useState(() => createAdminRouter(initialPath));
   return <QueryClientProvider client={client}>
     <AdminApiContext value={repository}>
-      <PresetContext value={preset}><RouterProvider router={router} /></PresetContext>
+      <PresetContext value={preset}><DraftProvider><RouterProvider router={router} /></DraftProvider></PresetContext>
     </AdminApiContext>
   </QueryClientProvider>;
 }

@@ -29,8 +29,8 @@ const VerifyRequest: Sample = {
     await userEvent.click(page.getByRole("button", { name: "결재자 추가" }));
     await userEvent.type(await page.findByRole("textbox", { name: "결재자 고르기" }), "하은");
     await userEvent.click(await page.findByRole("menuitem", { name: /하은/ }));
-    await expect(await within(line).findByText("하은")).toBeVisible();
-    await userEvent.click(page.getByRole("button", { name: "하은 위로" }));
+    await expect(within(line).getAllByText("하은")[0]).toBeVisible();
+    const grip=page.getByRole("button",{name:"하은 결재자 순서 바꾸기"});grip.focus();await userEvent.keyboard("{Alt>}{ArrowUp}{/Alt}");
     await userEvent.click(page.getByRole("button", { name: "다음" }));
     // 확인 단계에서 제출하면 신청 상세로 간다.
     await expect(await page.findByText("가족 행사로 쉽니다.")).toBeVisible();
@@ -80,7 +80,7 @@ const VerifyPhone: Sample = {
     await expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(document.documentElement.clientWidth);
     await userEvent.click(page.getByRole("button", { name: "결재자 추가" }));
     await userEvent.click(await page.findByRole("menuitem", { name: /민준/ }));
-    await expect(await within(page.getByRole("list", { name: "결재선" })).findByText("민준")).toBeVisible();
+    await expect(within(page.getByRole("list", { name: "결재선" })).getAllByText("민준")[0]).toBeVisible();
   },
 };
 

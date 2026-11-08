@@ -3,3 +3,5 @@
 @media (width < 64rem) { .search .input { block-size: var(--size-element-sm); } }
 .trigger { position: relative; }
 .dot { position: absolute; inset-block-start: 0; inset-inline-end: 0; pointer-events: none; }
+
+.search .input { --app-field-height: var(--app-tool-height); }

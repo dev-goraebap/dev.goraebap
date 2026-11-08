@@ -26,6 +26,7 @@ function EventDetail({ event, close }: { event: CalendarEvent; close: () => void
       {event.place ? <Text color="secondary">{event.place}</Text> : null}
     </VStack>
     <HStack gap={2} hAlign="end">
+      <Button label="페이지로 열기" variant="ghost" size="sm" href={`/calendar/events/${event.id}`} icon={icon('expand-page')} />
       <Button label="삭제" variant="ghost" size="sm" icon={icon('delete')} onClick={() => { close(); actions?.onDelete(event); }} />
       <Button label="수정" variant="secondary" size="sm" icon={icon('edit')} onClick={() => { close(); actions?.onEdit(event); }} />
     </HStack>

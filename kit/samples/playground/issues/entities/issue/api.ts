@@ -7,7 +7,9 @@ export interface IssueApi {
   get(id: string, signal?: AbortSignal): Promise<Issue>;
   create(input: NewIssue): Promise<Issue>;
   update(id: string, patch: IssuePatch): Promise<Issue>;
-  comment(id: string, text: string): Promise<Issue>;
+  comment(id: string, text: string, parentId?: string): Promise<Issue>;
+  remove(id:string):Promise<void>;
+  editComment(id: string, commentId: string, text?: string): Promise<Issue>;
 }
 
 export const IssueApiContext = createContext<IssueApi | null>(null);

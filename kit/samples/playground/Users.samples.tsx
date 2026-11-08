@@ -14,4 +14,6 @@ type Sample = SampleOf<typeof meta>;
 
 export const Table: Sample = { name: "사용자 표", args: { initialPath: "/users" } };
 export const Selected: Sample = { name: "고른 행과 일괄 동작", args: { initialPath: "/users", preset: { selectedUsers: ["u-jiwoo", "u-dohyun", "u-minjun"] } } };
-export const Invite: Sample = { name: "초대 대화상자", args: { initialPath: "/users?invite=true" } };
+export const Invite: Sample = { name: "초대 대화상자", args: { initialPath: "/users?panel=%2Fusers%2Finvite" } };
+
+export const InvitePage: Sample={name:"초대 페이지",args:{initialPath:"/users/invite"}};

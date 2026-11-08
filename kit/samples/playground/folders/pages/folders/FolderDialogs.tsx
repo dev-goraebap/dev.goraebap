@@ -22,7 +22,7 @@ export function NameDialog({ nodes, parentId, node, isPending, error, onSubmit, 
   return <FormDialog title={node ? `“${node.name}” 이름 바꾸기` : '새 폴더'} submitLabel={node ? '바꾸기' : '만들기'} isPending={isPending} error={error}
     onSubmit={submit} onClose={onClose}>
     <TextInput label={node?.kind === 'file' ? '파일 이름' : '폴더 이름'} value={name} onChange={setName} hasAutoFocus
-      status={isTried && problem ? { type: 'error', message: problem } : undefined} />
+      statusVariant="detached" status={isTried && problem ? { type: 'error', message: problem } : undefined} />
   </FormDialog>;
 }
 

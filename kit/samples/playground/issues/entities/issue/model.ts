@@ -2,8 +2,11 @@ import type { JSONContent } from '@tiptap/react';
 
 export type IssueStatus = 'todo' | 'doing' | 'review' | 'done';
 export type IssuePriority = 'urgent' | 'high' | 'medium' | 'low';
-export type IssueComment = { id: string; author: string; text: string; at: string };
+export type IssueComment = { id: string; author: string; text: string; at: string; parentId?: string; quote?:string; editedAt?: string };
+export type IssueEvent={id:string;at:string;actor:string;text:string};
 export type Issue = {
+  type?: 'task'|'bug'|'improvement';
+  start?:string; labels?:string[]; events?:IssueEvent[];
   /** 사람이 부르는 키(ISS-12). 주소에도 쓴다. */
   id: string;
   title: string;
@@ -20,8 +23,8 @@ export type Issue = {
   updatedAt: string;
   comments: IssueComment[];
 };
-export type NewIssue = Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due' | 'parent'>;
-export type IssuePatch = Partial<Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due'>>;
+export type NewIssue = Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due' | 'parent' | 'type' | 'labels' | 'start'>;
+export type IssuePatch = Partial<Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due' | 'parent' | 'type' | 'labels' | 'start'>>;
 
 /** 보드의 칸이자 목록의 그룹 순서. dot은 StatusDot의 색 의미. */
 export const statuses: { id: IssueStatus; label: string; dot: 'neutral' | 'accent' | 'warning' | 'success' }[] = [

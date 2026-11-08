@@ -1,3 +1,4 @@
+import { InboxIllustration } from './InboxIllustration';
 import { HStack } from '@astryxdesign/core/HStack';
 import { IconButton } from '@astryxdesign/core/IconButton';
 import { LayoutPanel } from '@astryxdesign/core/Layout';
@@ -45,7 +46,7 @@ export function InboxPane({ id, title, pageHref, onClose, empty, children }: {
       });
     };
   }, [id]);
-  return <LayoutPanel hasDivider width="55%" padding={0} role="complementary" label={id ? `미리보기: ${title ?? ''}` : '고른 항목'}>
+  return <section className={styles.panel} role="complementary" aria-label={id ? `미리보기: ${title ?? ''}` : '고른 항목'}>
     <VStack className={styles.panel}>
       {id ? <>
         <HStack className={styles.head} gap={2} vAlign="center" hAlign="between">
@@ -56,7 +57,7 @@ export function InboxPane({ id, title, pageHref, onClose, empty, children }: {
           {pageHref ? <IconButton label="페이지로 열기" tooltip="페이지로 열기" variant="ghost" size="sm" icon={icon('expand-page')} href={pageHref} /> : null}
         </HStack>
         <VStack className={styles.body}>{children}</VStack>
-      </> : <VStack className={styles.body}><PageState kind="empty" isCompact title={empty.title} description={empty.description} /></VStack>}
+      </> : <VStack className={styles.body}><PageState kind="empty" isCompact illustration={<InboxIllustration />} title={empty.title} description={empty.description} /></VStack>}
     </VStack>
-  </LayoutPanel>;
+  </section>;
 }

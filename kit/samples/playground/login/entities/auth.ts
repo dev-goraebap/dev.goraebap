@@ -6,6 +6,9 @@ export type AuthApi = {
   signIn: (email: string, password: string) => Promise<{ name: string }>;
   /** 가입 여부와 관계없이 같게 끝난다(계정 존재를 알리지 않는다). */
   requestReset: (email: string) => Promise<void>;
+  signUp: (name:string,email:string,password:string) => Promise<void>;
+  requestCode: (email:string) => Promise<void>;
+  verifyCode: (email:string,code:string) => Promise<{name:string}>;
 };
 
 /** 이메일 또는 비밀번호가 맞지 않음. 어느 쪽이 틀렸는지는 담지 않는다. */

@@ -28,8 +28,9 @@ const rootScale = () => typeof window === 'undefined' || window.innerWidth < 192
  * 본문의 부모 요소 종류는 분기점·배치를 바꿔도 같게 유지해 작성 중인 초안이 다시 마운트되지 않게 한다.
  */
 export function AppFrame({ space, pathname, isSelected, brand, headerTools, profile, footer, phoneAppBar, layout = 'inset',
-  tabs, onNavigate, openGroups = 'all', children }: {
+  tabs, onNavigate, openGroups = 'all', sidebarWidth = 340, children }: {
   space: NavSpace;
+  sidebarWidth?: number;
   pathname: string;
   /** 메뉴 항목이 현재인지. 기본은 주소의 가장 긴 접두사. 검색 조건으로 나뉜 메뉴는 직접 판단한다. */
   isSelected?: (path: string) => boolean;
@@ -86,7 +87,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
     navigate(path);
   });
   const isFolded = isCollapsed && !isPhone;
-  const item = (entry: NavEntry): ReactNode => <SideNavItem key={entry.path} label={entry.label} href={entry.path} isSelected={selected(entry.path)}
+  const item = (entry: NavEntry): ReactNode => <SideNavItem isDisabled={entry.isDisabled} key={entry.path} label={entry.label} href={entry.path} isSelected={selected(entry.path)}
     onClick={go(entry.path)} icon={entry.icon && solarIcon(entry.icon)} selectedIcon={entry.icon && solarIcon(entry.icon, true)}
     collapsible={entry.children?.length ? groupCollapse(entry.path) : undefined}
     endContent={entry.badge ? <Token label={entry.badge > 99 ? '99+' : String(entry.badge)} size="sm" /> : undefined}>
@@ -108,7 +109,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   </HStack> : undefined;
   const scale = rootScale();
   const sideNav = <SideNav key={isFolded ? 'folded' : 'open'} aria-label="주 메뉴" collapsible={{ hasButton: false }}
-    resizable={{ defaultWidth: Math.round(340 * scale), minWidth: Math.round(220 * scale), maxWidth: Math.round(380 * scale), isCollapsed, onCollapseChange: setCollapsed }}
+    resizable={{ defaultWidth: Math.round(sidebarWidth * scale), minWidth: Math.round(220 * scale), maxWidth: Math.round(380 * scale), isCollapsed, onCollapseChange: setCollapsed }}
     header={isFolded
       ? <VStack width="100%" gap={2} hAlign="center" paddingBlock={2}>{brand(true)}{headerTools}</VStack>
       : <VStack width="100%" gap={2} paddingInline={2}>

@@ -7,3 +7,6 @@
 @media (width < 64rem) { .column { padding: var(--spacing-5) var(--spacing-4) var(--spacing-10); } }
 /* 세션 만료 대화상자 안의 칸은 한 열. */
 .relogin { inline-size: 100%; }
+
+.relogin { display:flex; flex-direction:column; gap:var(--spacing-6); --app-field-height:2.75rem; }
+.relogin :global(.astryx-button) { min-block-size:2.75rem; }

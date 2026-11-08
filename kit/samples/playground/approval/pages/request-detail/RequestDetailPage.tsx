@@ -1,3 +1,4 @@
+import { celebrate } from '@kit/foundations/motion/celebrate';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Heading } from '@astryxdesign/core/Heading';
@@ -33,7 +34,7 @@ export function RequestDetailPage({ id }: { id: string }) {
   const [isTried, setTried] = useState(false);
   const decide = useMutation({
     mutationFn: (input: { result: DecisionResult; opinion?: string }) => api.decide(id, me, input.result, input.opinion),
-    onSuccess: () => { setAsking(undefined); setReason(''); setTried(false); return client.invalidateQueries({ queryKey: approvalKeys.all }); },
+    onSuccess: (_, input) => { if(input.result === 'approved') celebrate(document.activeElement); setAsking(undefined); setReason(''); setTried(false); return client.invalidateQueries({ queryKey: approvalKeys.all }); },
   });
   const crumbs = (title: string, isMine = true) => [isMine ? { label: '내 신청', href: '/requests', icon: 'document' as const } : { label: '결재할 문서', href: '/inbox', icon: 'inbox' as const }, { label: title }];
   if (query.isPending) return <Page crumbs={crumbs(id)} isDetail><Center height="100%"><Spinner label="신청을 불러오는 중" /></Center></Page>;
@@ -89,7 +90,7 @@ export function RequestDetailPage({ id }: { id: string }) {
       error={decide.isError ? '반려하지 못했습니다. 입력한 이유는 그대로 있습니다.' : undefined}
       onSubmit={submitReject} onClose={() => { setAsking(undefined); setReason(''); setTried(false); decide.reset(); }}>
       <TextArea label="이유" rows={4} hasAutoFocus value={reason} onChange={setReason} placeholder="신청자가 고쳐서 다시 낼 수 있게 이유를 적어 주세요."
-        status={isTried && !reason.trim() ? { type: 'error', message: '반려 이유를 입력해 주세요.' } : undefined} />
+        statusVariant="detached" status={isTried && !reason.trim() ? { type: 'error', message: '반려 이유를 입력해 주세요.' } : undefined} />
     </FormDialog> : null}
   </Page>;
 }

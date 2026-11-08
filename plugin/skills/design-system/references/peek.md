@@ -1,6 +1,6 @@
 # 미리보기 패널
 
-목록을 그대로 둔 채 항목을 차례로 훑을 때 목록 옆에 여는 비모달 패널입니다. Linear는 Space 키로, Plane은 행 클릭으로 엽니다. 우리는 Plane과 달리 미리보기 대상을 주소에 남겨 뒤로가기·새로고침·공유가 같은 화면을 엽니다. 구현은 키트의 [peek](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/patterns/routing)와 [PeekLayout](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/layouts/peek)·[InboxPane](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/layouts/peek)이 맡습니다.
+목록을 그대로 둔 채 항목을 차례로 훑을 때 목록 옆에 여는 비모달 패널입니다. Linear는 Space 키로, Plane은 행 클릭으로 엽니다. 우리는 Plane과 달리 미리보기 대상을 주소에 남겨 뒤로가기·새로고침·공유가 같은 화면을 엽니다. 구현은 키트의 [peek](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/patterns/routing)와 [PeekLayout](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/layouts/peek)·[InboxLayout](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/layouts/peek)·[InboxPane](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/layouts/peek)이 맡습니다.
 
 ## 언제 쓰나
 
@@ -31,7 +31,7 @@
 | 처리 목록: 여러 항목을 연달아 확인하고 판단합니다 | 받은 항목, 알림, 승인 대기, 검토 요청 | 미리보기 | 목록 주소 + `?peek=ID` | 위·아래 키로 이동 |
 | 작업 목록: 하나를 골라 들어가 일합니다 | 업무, 문서, 자료 | 페이지 | 대상의 자기 주소 | Space 키, 행 끝의 미리보기 버튼 |
 
-작업 목록은 열 때만 생기는 미리보기 패널(`PeekPanel`, 본문의 약 45%)을 쓰고, 처리 목록은 데스크톱에서 목록과 상세 칸(`InboxPane`, 본문의 약 55%)을 늘 함께 둡니다. 고른 항목이 없으면 상세 칸에 고르라는 빈 상태(예: "요청을 선택해 주세요")를 보입니다. 행 어디를 눌러도(글자가 아닌 곳도) 상세 칸에 그 항목이 열리며, 안 읽은 항목은 바탕색을 쓰지 않고 굵은 제목과 행 끝의 "안 읽음" 표시로 구분하고 열면 읽음이 되어 메뉴의 안 읽은 수도 줄어듭니다. 상세 칸 머리 왼쪽에는 ← 닫기와 항목 이름, 오른쪽에는 페이지로 열기를 둡니다. ←나 Esc로 닫으면 빈 상태로 돌아가고 초점은 그 행으로 갑니다. 주소 계약(`?peek=`, 처음은 push·옮길 때 replace, 새로고침·공유, 없는 대상은 상세 칸에만 "찾을 수 없음", 위·아래 키로 옮김)은 기존 계약 그대로이며, 휴대폰은 상세 칸 없이 목록만 보이고 행은 그 항목의 페이지로 갑니다.
+작업 목록은 열 때만 생기는 미리보기 패널(`PeekPanel`, 본문의 약 45%)을 쓰고, 처리 목록은 데스크톱에서 `InboxLayout`으로 목록과 상세 칸(`InboxPane`)을 늘 함께 둡니다. 목록과 상세 칸은 각각 자기 머리 줄과 세로 스크롤을 가지며, 목록 폭은 가운데 구분선 손잡이(`ResizeHandle`, 키보드 조작 지원)로 조절합니다. 고른 항목이 없으면 상세 칸에 전용 일러스트(`InboxIllustration`)와 함께 고르라는 빈 상태(예: "알림을 선택해 주세요")를 보입니다. 행 어디를 눌러도(글자가 아닌 곳도) 상세 칸에 그 항목이 열리며, 안 읽은 항목은 바탕색을 쓰지 않고 굵은 제목과 행 끝의 "안 읽음" 표시로 구분하고 열면 읽음이 되어 메뉴의 안 읽은 수도 줄어듭니다. 상세 칸 머리 왼쪽에는 ← 닫기와 항목 이름, 오른쪽에는 페이지로 열기를 둡니다. ←나 Esc로 닫으면 빈 상태로 돌아가고 초점은 그 행으로 갑니다. 주소 계약(`?peek=`, 처음은 push·옮길 때 replace, 새로고침·공유, 없는 대상은 상세 칸에만 "찾을 수 없음", 위·아래 키로 옮김)은 기존 계약 그대로이며, 휴대폰은 상세 칸 없이 목록만 보이고 행은 그 항목의 페이지로 갑니다.
 
 어느 쪽이든 행은 실제 링크라서 새 탭·주소 복사가 그 주소를 따릅니다. 휴대폰은 미리보기가 없어 둘 다 페이지로 갑니다. 성격이 애매하면 작업 목록으로 봅니다.
 

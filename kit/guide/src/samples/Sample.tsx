@@ -3,7 +3,7 @@ import { loadSample, type SampleEntry } from '@samples/catalog/registry';
 import type { Device } from '@samples/catalog/types';
 
 /** 견본을 그리는 기기 폭. 데스크톱은 키트가 데스크톱으로 판정하는 최소 폭, 휴대폰은 390px. */
-const WIDTH: Record<Device, number> = { desktop: 1024, phone: 390 };
+const WIDTH: Record<Device, number> = { desktop: 1280, phone: 390 };
 const rem = (value?: string) => (value?.endsWith('rem') ? Math.round(parseFloat(value) * 16) : undefined);
 
 /** 부품 견본이 알려 온 크기. 같은 견본을 다시 열 때 처음부터 그 크기로 자리를 잡아 글이 밀리지 않게 한다. */

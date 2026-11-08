@@ -1,3 +1,4 @@
+import { ResizeHandle, useResizable } from '@astryxdesign/core/Resizable';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Spinner } from '@astryxdesign/core/Spinner';
@@ -25,6 +26,7 @@ type Dialog = { kind: 'create' } | { kind: 'rename' | 'move'; node: FolderNode }
  * 상태 순서: 대기 → 실패(다시 시도) → 없는 폴더 → 빈 폴더(새 폴더 권유).
  */
 export function FoldersPage() {
+  const treeWidth = useResizable({defaultSize:224,minSizePx:160,maxSizePx:360});
   const api = useFolderApi();
   const client = useQueryClient();
   const navigate = useNavigate();
@@ -66,7 +68,8 @@ export function FoldersPage() {
       onMove={node => { reset(); setDialog({ kind: 'move', node }); }} onRename={node => { reset(); setDialog({ kind: 'rename', node }); }} />;
     if (isPhone) return contents;
     return <div className={styles.split}>
-      <aside className={styles.side}><FolderTree nodes={nodes} currentId={folder.id} dnd={dnd} onOpen={open} /></aside>
+      <aside className={styles.side} style={{width:treeWidth.size}}><FolderTree nodes={nodes} currentId={folder.id} dnd={dnd} onOpen={open} /></aside>
+      <ResizeHandle label="폴더 목록 너비" resizable={treeWidth.props} hasDivider />
       <div className={styles.main}>{contents}</div>
     </div>;
   };

@@ -1,3 +1,4 @@
+import { Text } from '@astryxdesign/core/Text';
 import { Banner } from '@astryxdesign/core/Banner';
 import { Button } from '@astryxdesign/core/Button';
 import { CheckboxInput } from '@astryxdesign/core/CheckboxInput';
@@ -41,19 +42,19 @@ export function LoginPage({ initialEmail = '', hasInitialFailure = false, onSign
   return <AuthCard title="로그인">
     <form className={styles.form} noValidate onSubmit={submit}>
       <VStack gap={4}>
-        {failure ? <Banner status="error" container="section" collapsible={false}
-          title={failure === 'credentials' ? '이메일 또는 비밀번호가 맞지 않습니다.' : '로그인하지 못했습니다. 잠시 후 다시 시도해 주세요.'} /> : null}
         <TextInput label="이메일" type="email" placeholder="name@example.com" value={email} onChange={setEmail} hasAutoFocus={!hasInitialFailure}
-          status={isTried && lacks.email ? { type: 'error', message: '이메일을 입력해 주세요.' } : undefined} />
+          statusVariant="detached" status={isTried && lacks.email ? { type: 'error', message: '이메일을 입력해 주세요.' } : undefined} />
         <VStack gap={2}>
           <TextInput label="비밀번호" type={isShown ? 'text' : 'password'} value={password} onChange={setPassword}
-            status={isTried && lacks.password ? { type: 'error', message: '비밀번호를 입력해 주세요.' } : undefined} />
+            statusVariant="detached" status={isTried && lacks.password ? { type: 'error', message: '비밀번호를 입력해 주세요.' } : undefined} />
           <HStack hAlign="between" vAlign="center" wrap="wrap" gap={2}>
             <CheckboxInput label="비밀번호 보기" value={isShown} onChange={setShown} />
             <Link href="/forgot">비밀번호 찾기</Link>
           </HStack>
         </VStack>
+        {failure ? <Text className={styles.error} role="alert">{failure === 'credentials' ? '이메일 또는 비밀번호가 맞지 않습니다.' : '로그인하지 못했습니다. 잠시 후 다시 시도해 주세요.'}</Text> : null}
         <Button label="로그인" variant="primary" type="submit" isLoading={signIn.isPending} width="100%" />
+        <div className={styles.links}><Link href="/signup">회원가입</Link><Link href="/otp">인증 코드로 로그인</Link></div>
       </VStack>
     </form>
   </AuthCard>;

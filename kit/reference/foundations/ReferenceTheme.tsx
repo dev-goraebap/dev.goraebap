@@ -1,7 +1,7 @@
 import { InternationalizationProvider } from '@astryxdesign/core/i18n';
 import ko from '@astryxdesign/core/locales/ko-KR.json';
 import { Theme } from '@astryxdesign/core/theme';
-import type { ReactNode } from 'react';
+import {createContext,useContext,useEffect,useState,type ReactNode} from 'react';
 import koExtra from './i18n/ko-KR-extra.json';
 import { workspaceTheme } from './theme';
 import './variants';
@@ -13,9 +13,14 @@ import './variants';
 const messages = { 'ko-KR': ko };
 const overrides = { 'ko-KR': koExtra as Record<string, string> };
 
+export const ThemePreferenceContext=createContext<(mode:'light'|'dark'|'system')=>void>(()=>{});
+export const useThemePreference=()=>useContext(ThemePreferenceContext);
+
 /** 앱 루트에서 한 번 감싼다. 전역 CSS(base.css)는 앱 진입점에서 먼저 읽는다. */
 export function ReferenceTheme({ mode = 'system', children }: { mode?: 'system' | 'light' | 'dark'; children: ReactNode }) {
-  return <InternationalizationProvider locale="ko-KR" messages={messages} overrides={overrides}>
-    <Theme theme={workspaceTheme} mode={mode}>{children}</Theme>
-  </InternationalizationProvider>;
+  const [preference,setPreference]=useState<'light'|'dark'|'system'>();
+  useEffect(()=>setPreference(undefined),[mode]);
+  return <ThemePreferenceContext value={setPreference}><InternationalizationProvider locale="ko-KR" messages={messages} overrides={overrides}>
+    <Theme theme={workspaceTheme} mode={preference??mode}>{children}</Theme>
+  </InternationalizationProvider></ThemePreferenceContext>;
 }

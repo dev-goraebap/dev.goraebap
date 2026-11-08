@@ -1,4 +1,4 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { ClickableCard } from '@astryxdesign/core/ClickableCard';
 import { HStack } from '@astryxdesign/core/HStack';
 import { Icon } from '@astryxdesign/core/Icon';

@@ -67,3 +67,5 @@
   pointer-events: auto; }
 /* 줄 처음의 다른 동작(임시 저장 등)은 데스크톱에서 왼쪽으로 민다. */
 @media (width >= 64rem) { .footStart { margin-inline-end: auto; } }
+
+.path[data-back] { margin-inline-start: -.5rem; }

@@ -3,7 +3,7 @@ import { ErrorsApp } from "./errors/app/ErrorsApp";
 
 /**
  * 막힌 상태를 만들 때 본뜬다. 없는 페이지와 권한 없음은 셸을 두고 본문만 상태 화면으로 바꾸고, 점검 중은 셸 없이 전체 화면에
- * 둔다. 세션 만료는 화면을 떠나지 않고 위에 다시 로그인 대화상자를 열어, 로그인하면 쓰던 내용 그대로 이어 간다.
+ * 둔다. 세션 만료는 기존 페이지를 숨기고 독립 인증 화면을 보이며, 로그인하면 쓰던 내용을 이어 갑니다.
  */
 const meta = {
   title: "Playground (플레이그라운드)/오류·권한 페이지", id: "playground-errors", component: ErrorsApp,

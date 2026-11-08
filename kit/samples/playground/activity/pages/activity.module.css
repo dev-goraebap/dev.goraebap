@@ -13,3 +13,10 @@
 .when { flex: none; white-space: nowrap; border-radius: var(--radius-element); }
 .when:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: var(--focus-outline-offset); }
 @media (width < 64rem) { .row { align-items: flex-start; } }
+
+.timeline { max-inline-size: 45rem; margin-inline: auto; padding: var(--spacing-8) var(--spacing-4); box-sizing: border-box; }
+
+.row { padding:.375rem 0; border:0; }
+.dayLabel { border:0; padding:var(--spacing-4) 0 var(--spacing-3); }
+
+.more { max-inline-size:45rem; margin-inline:auto; }

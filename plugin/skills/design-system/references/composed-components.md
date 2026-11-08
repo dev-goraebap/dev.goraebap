@@ -9,6 +9,8 @@
 | 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | 같은 폴더 |
 | 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/search), [filter](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/filter), [기준](search-filter.md) |
 | 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/property) |
+| 활동·댓글 피드 | 이벤트 한 줄 기록, 댓글 카드·한 단계 답글·수정·삭제·인용, 입력 칸 | [activity](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/activity) |
+| 행 순서 바꾸기 | 드래그 손잡이·`Alt`+방향키 이동·`Esc` 취소·위치 음성 안내 | [reorder](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/reorder) |
 | 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [upload](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/upload) |
 | 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [state](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/state), [기준](data-states.md) |
 | 본문 칸 | 종이 위의 리치 본문 | [editor](https://github.com/dev-goraebap/goraebap-workflow/tree/main/kit/reference/composites/editor) |
@@ -26,7 +28,15 @@
 
 ## 속성 알약
 
-작성·상세의 속성(종류·분류·날짜·담당·첨부)은 24px(휴대폰 32px) 알약입니다. 비었으면 속성의 아이콘과 이름을 보이고 정하면 값을 보입니다. 필수 속성은 빈 값에 `*`와 접근 가능한 이름 "(필수)"로 표시되며(`isRequired`), `isInvalid`에는 제출 검사 결과를 전달해 오류를 표시합니다. `DatePill`도 `isRequired`와 `isInvalid`를 지원하며, `dateStyle`은 기본 `relative`이고 날짜 자체가 중요한 신청·예약에서는 월·일·요일을 표시하는 `absolute`를 씁니다. 긴 값은 최대 폭에서 말줄임하고 전체 값을 title로 남깁니다. 넓은 상세의 오른쪽 열에서는 같은 요소가 테두리 없는 행으로 바뀝니다. 읽기 전용이면 값만 보입니다.
+작성·상세의 속성(종류·분류·날짜·담당·첨부)은 24px(휴대폰 32px) 알약입니다. 비었으면 속성의 아이콘과 이름을 보이고 정하면 값을 보입니다. 필수 속성은 빈 값에 `*`와 접근 가능한 이름 "(필수)"로 표시되며(`isRequired`), `isInvalid`에는 제출 검사 결과를 전달해 오류를 표시합니다. `DatePill`은 Astryx `Calendar`로 날짜를 고르고 `isRequired`와 `isInvalid`를 지원하며, `dateStyle`은 기본 `relative`이고 날짜 자체가 중요한 일정·신청·예약에서는 월·일·요일을 표시하는 `absolute`를 씁니다. 시작일과 종료일을 함께 받는 기간에서는 한쪽이 비어 있을 때 고른 날짜로 다른 쪽도 같이 채워 하루 기간부터 시작합니다. 긴 값은 최대 폭에서 말줄임하고 전체 값을 title로 남깁니다. 넓은 상세의 오른쪽 열에서는 같은 요소가 테두리 없는 행으로 바뀝니다. 읽기 전용이면 값만 보입니다.
+
+## 활동·댓글 피드
+
+상세 화면 아래의 이력과 의견은 `ActivityFeed`로 함께 둡니다. 생성·수정 같은 상태 이력은 세로 선 위의 조용한 한 줄 이벤트로 보이고, 댓글은 카드로 구분합니다. 키트 견본에서는 사람 아바타로 `PersonAvatar`(18가지 SVG 얼굴)를 쓰며, 제품은 자체 아바타를 쓸 수 있습니다. 댓글 카드 안에는 한 단계 답글과 답글 열기·입력 칸을 두며, 본인이 쓴 댓글·답글은 카드 메뉴에서 고치거나 확인 창을 거쳐 지울 수 있습니다. 본문 구절 인용(`Quote`)과 하단 `ChatComposer` 입력을 지원합니다.
+
+## 행 순서 바꾸기
+
+결재선이나 목록에서 행의 순서를 바꿀 때는 `useRowReorder`의 드래그 손잡이(`grip`)를 씁니다. 행마다 위·아래 이동 버튼을 따로 두지 않습니다. 손잡이를 포인터로 끌어 옮기거나 손잡이에 초점을 두고 `Alt` + 위·아래 방향키로 한 칸씩 옮기며, 드래그 중 `Esc`를 누르면 원래 순서로 되돌립니다. 옮긴 결과는 라이브 영역으로 알립니다.
 
 ## 파일 올리기 칸
 

@@ -15,8 +15,8 @@ const ANCHOR = 0.32;
  * 방이 짧으면 가능한 만큼 내린다. isCompact(패널·대화상자·작은 구역)는 방 위쪽에 둔다.
  * 로딩이나 기존 내용이 있는 재조회 실패에는 쓰지 않는다.
  */
-export function PageState({ kind, title, description, action, isCompact = false }: {
-  kind: StateKind; title: string; description?: string; action?: ReactNode; isCompact?: boolean;
+export function PageState({ kind, title, description, action, illustration, isCompact = false }: {
+  kind: StateKind; title: string; description?: string; action?: ReactNode; illustration?: ReactNode; isCompact?: boolean;
 }) {
   const room = useRef<HTMLDivElement>(null);
   const group = useRef<HTMLDivElement>(null);
@@ -38,7 +38,7 @@ export function PageState({ kind, title, description, action, isCompact = false 
   }, [isCompact]);
   return <VStack ref={room} width="100%" height={isCompact ? undefined : '100%'} hAlign="center" paddingInline={4}>
     <VStack ref={group} width="100%" hAlign="center">
-      <EmptyState className={styles.state} icon={<StateLandscape kind={kind} />} title={title} description={description} actions={action} />
+      <EmptyState className={styles.state} icon={illustration ?? <StateLandscape kind={kind} />} title={title} description={description} actions={action} />
     </VStack>
   </VStack>;
 }

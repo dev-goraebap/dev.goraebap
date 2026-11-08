@@ -18,3 +18,5 @@
 .prose:has(> p:only-child:empty)::before, .prose:has(> p:only-child > br:global(.ProseMirror-trailingBreak):only-child)::before {
   content: attr(data-placeholder); position: absolute; color: var(--color-text-disabled); pointer-events: none; }
 .prose { position: relative; }
+
+.reading { min-block-size:0; }

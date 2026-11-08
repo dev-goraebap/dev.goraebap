@@ -1,4 +1,5 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import { celebrate } from '@kit/foundations/motion/celebrate';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { Button } from '@astryxdesign/core/Button';
 import { HStack } from '@astryxdesign/core/HStack';
 import { Step, Stepper } from '@astryxdesign/core/Stepper';
@@ -56,7 +57,7 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
   const checked = checkDraft(draft);
   const save = useMutation({
     mutationFn: () => api.create({ kind: draft.kind, start: draft.start!, end: draft.end!, reason: draft.reason.trim(), line: draft.line }),
-    onSuccess: saved => { void client.invalidateQueries({ queryKey: approvalKeys.all }); clearDraft(); onDone(saved.id); },
+    onSuccess: saved => { celebrate(document.querySelector('button[type="submit"]') ?? document.activeElement); void client.invalidateQueries({ queryKey: approvalKeys.all }); clearDraft(); onDone(saved.id); },
   });
   const go = (next: ComposeStep) => { setTried(false); onStep(next); };
   const stop = (to?: ComposeStep) => { setTried(true); if (to && to !== step) onStep(to); focusInvalid(); };
@@ -80,9 +81,9 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
       <HStack gap={1.5} wrap="wrap" vAlign="center" role="group" aria-label="종류와 기간" data-invalid-field={showDatesError ? '' : undefined}>
         <OptionPill label="종류" icon="document" value={draft.kind} options={leaveKinds.map(each => ({ value: each.id, label: each.label }))}
           onChange={kind => set({ kind: kind as LeaveKind })} />
-        <DatePill label="시작일" value={draft.start} today={today} onChange={start => set({ start })} dateStyle="absolute" isRequired
+        <DatePill label="시작일" value={draft.start} today={today} onChange={start => set({ start, end: draft.end ?? start })} dateStyle="absolute" isRequired
           isInvalid={showDatesError && !draft.start} />
-        <DatePill label="종료일" value={draft.end} today={today} onChange={end => set({ end })} dateStyle="absolute" isRequired
+        <DatePill label="종료일" value={draft.end} today={today} onChange={end => set({ end, start: draft.start ?? end })} dateStyle="absolute" isRequired
           isInvalid={showDatesError && !!draft.start} />
       </HStack>
       {showDatesError ? <Text className={styles.error} type="supporting" role="alert">{checked.dates}</Text>

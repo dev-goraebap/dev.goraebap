@@ -1,5 +1,5 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Avatar } from "@astryxdesign/core/Avatar";
+import { PersonAvatar as Avatar } from "@kit/foundations/avatar/PersonAvatar";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
 import { StatusDot } from "@astryxdesign/core/StatusDot";

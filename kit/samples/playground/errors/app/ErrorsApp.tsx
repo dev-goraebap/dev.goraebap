@@ -4,7 +4,7 @@ import { LinkProvider } from '@astryxdesign/core/Link';
 import { Text } from '@astryxdesign/core/Text';
 import { PageState } from '@kit/composites/state/PageState';
 import { icon } from '@kit/foundations/icons/solar-icon';
-import { AppFrame } from '@kit/layouts/app/AppFrame';
+import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
 import type { NavSpace } from '@kit/layouts/app/nav';
 import { Page } from '@kit/layouts/page/Page';
 import { RouterLink } from '@kit/patterns/routing/RouterLink';
@@ -87,6 +87,6 @@ export function ErrorsApp({ api, initialPath = '/notes/new', isExpired = false }
   const [repository] = useState(() => api ?? createSessionApi({ delay: 500, isExpired }));
   const [router] = useState(() => createErrorsRouter(initialPath));
   return <QueryClientProvider client={client}>
-    <SessionApiContext value={repository}><SessionGate><RouterProvider router={router} /></SessionGate></SessionApiContext>
+    <SessionApiContext value={repository}><SessionGate initialExpired={isExpired}><RouterProvider router={router} /></SessionGate></SessionApiContext>
   </QueryClientProvider>;
 }

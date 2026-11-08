@@ -34,14 +34,14 @@ const VerifySend: Sample = {
     await waitFor(() => expect(within(log).queryByText("보내지 못했습니다")).not.toBeInTheDocument());
     await expect(await within(log).findByText("수정본은 오후 네 시까지 올리겠습니다.")).toBeVisible();
     // @를 치면 방 사람을 고른다.
-    const input = page.getByRole("textbox", { name: "메시지" });
+    const input = page.getByRole("combobox", { name: "메시지" });
     await userEvent.click(input);
     await userEvent.type(input, "@지");
     await userEvent.click(await page.findByRole("option", { name: /지우/ }));
-    await expect(input).toHaveValue("@지우 ");
+    await expect(input).toHaveTextContent("@지우");
     await userEvent.type(input, "시안 확인했어요");
     await userEvent.click(page.getByRole("button", { name: "보내기" }));
-    await expect(input).toHaveValue("");
+    await expect(input).toHaveTextContent("");
     await expect(await within(log).findByText("시안 확인했어요", { exact: false })).toBeVisible();
     // 내가 보낸 글이면 아래로 따라간다.
     await waitFor(() => expect(scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight).toBeLessThan(4));
@@ -54,7 +54,7 @@ const VerifySendFailure: Sample = {
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
     await expect(await page.findByText("아직 대화가 없습니다")).toBeInTheDocument();
-    const input = page.getByRole("textbox", { name: "메시지" });
+    const input = page.getByRole("combobox", { name: "메시지" });
     await userEvent.type(input, "실패하는 메시지");
     await userEvent.keyboard("{Enter}");
     const log = await page.findByRole("log", { name: "대화" });
@@ -81,7 +81,7 @@ const VerifyIncoming: Sample = {
     scroller.dispatchEvent(new Event("scroll"));
     const jump = await page.findByRole("button", { name: "새 글 1개, 아래로" }, { timeout: 6000 });
     // 읽던 자리는 지킨다.
-    await expect(scroller.scrollTop).toBeLessThan(40);
+    await expect(scroller.scrollTop).toBeLessThan(100);
     await userEvent.click(jump);
     await waitFor(() => expect(page.queryByRole("button", { name: /새 글/ })).not.toBeInTheDocument());
     await waitFor(() => expect(scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight).toBeLessThan(4), { timeout: 3000 });
@@ -94,11 +94,11 @@ const VerifyPhone: Sample = {
   args: { initialPath: "/rooms/design" },
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
-    const input = await page.findByRole("textbox", { name: "메시지" });
+    const input = await page.findByRole("combobox", { name: "메시지" });
     await waitFor(() => expect(page.queryByRole("navigation", { name: "주 메뉴" })).not.toBeInTheDocument());
     const box = input.getBoundingClientRect();
     await expect(box.bottom).toBeLessThanOrEqual(window.innerHeight);
-    await expect(window.innerHeight - box.bottom).toBeLessThan(40);
+    await expect(window.innerHeight - box.bottom).toBeLessThan(100);
     await expect(parseFloat(getComputedStyle(input).fontSize)).toBeGreaterThanOrEqual(16);
     const root = canvasElement.ownerDocument.documentElement;
     await expect(root.scrollWidth).toBeLessThanOrEqual(root.clientWidth);

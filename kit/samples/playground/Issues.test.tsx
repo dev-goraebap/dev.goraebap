@@ -22,7 +22,7 @@ const VerifyCreate: Sample = {
     await userEvent.click(await page.findByRole("option", { name: "높음" }));
     await userEvent.click(within(dialog).getByRole("button", { name: "추가하기" }));
     await expect(await page.findByRole("heading", { level: 1, name: "알림 설정 문구 점검" })).toBeVisible();
-    await userEvent.click(page.getByRole("link", { name: "이슈" }));
+    await userEvent.click(page.getAllByRole("link", { name: "이슈" })[0]);
     await expect(await page.findByRole("link", { name: /알림 설정 문구 점검/ })).toBeVisible();
   },
 };

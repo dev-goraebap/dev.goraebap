@@ -15,3 +15,7 @@ type Sample = SampleOf<typeof meta>;
 export const Month: Sample = { name: "월 보기", args: { initialPath: "/calendar" } };
 export const Week: Sample = { name: "주 보기", args: { initialPath: "/calendar?view=week" } };
 export const EventOpen: Sample = { name: "일정을 연 상태", args: { initialPath: "/calendar?view=week&date=2026-11-09&event=e05" } };
+
+export const Create: Sample={name:"일정 만들기",args:{initialPath:"/calendar?panel=%2Fcalendar%2Fnew"}};
+export const CreatePage: Sample={name:"일정 작성 페이지",args:{initialPath:"/calendar/new"}};
+export const DetailPage: Sample={name:"일정 상세 페이지",args:{initialPath:"/calendar/events/e05"}};

@@ -1,0 +1,8 @@
+.inbox { display:flex; block-size:100%; min-block-size:0; overflow:hidden; }
+.list { flex:none; max-inline-size:58%; min-block-size:0; }
+.detail { flex:1 1 0; min-inline-size:0; min-block-size:0; }
+.drawing { inline-size: min(20rem,100%); display:block; margin-inline:auto; }
+.paper { fill:var(--color-background-surface); }
+.ink { stroke:var(--color-icon-secondary); }
+.accent { stroke:var(--app-illustration-accent,var(--color-icon-blue)); }
+.accentDot { fill:var(--app-illustration-accent,var(--color-icon-blue)); }

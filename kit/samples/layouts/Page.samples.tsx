@@ -1,5 +1,5 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Avatar } from "@astryxdesign/core/Avatar";
+import { PersonAvatar as Avatar } from "@kit/foundations/avatar/PersonAvatar";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
 import { ListItem } from "@astryxdesign/core/List";

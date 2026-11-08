@@ -90,3 +90,10 @@
   color: var(--color-text-primary); font: inherit; text-align: start; cursor: pointer; }
 .dayRow:hover { background: var(--color-overlay-hover); }
 .dayRowTime { flex: none; min-inline-size: 2.75rem; color: var(--color-text-secondary); font-variant-numeric: tabular-nums; }
+
+@media (width >= 64rem) {
+ .body[data-month] { block-size:100%; min-block-size:0; overflow:hidden; }
+ .body[data-month] .month { min-block-size:0; }
+ .body[data-month] .week { flex:1 1 0; min-block-size:0; grid-template-rows:1.75rem repeat(3,minmax(0,1fr)) 1.25rem; }
+}
+.card { padding:var(--spacing-2); border:1px solid color-mix(in srgb,var(--event-dot) 20%,transparent); box-shadow:0 1px 2px var(--color-shadow); }

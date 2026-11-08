@@ -1,4 +1,7 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import {Timeline,TimelineItem} from '@kit/composites/activity/ActivityFeed';
+import {HStack} from '@astryxdesign/core/HStack';
+import {icon} from '@kit/foundations/icons/solar-icon';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Spinner } from '@astryxdesign/core/Spinner';
@@ -38,10 +41,10 @@ export function ActivityPage() {
       <div className={styles.timeline} aria-busy={query.isPlaceholderData || undefined}>
         {groupByDay(items).map(day => <section key={day.key} className={styles.day}>
           <h2 className={styles.dayLabel}>{day.label}</h2>
-          <ol className={styles.rows} aria-label={day.label}>{day.items.map(item => <Row key={item.id} item={item} />)}</ol>
+          <Timeline label={day.label}>{day.items.map(item => <Row key={item.id} item={item} />)}</Timeline>
         </section>)}
       </div>
-      <PageMore shown={items.length} total={total} unit="건" hasMore={!!query.hasNextPage} isLoading={query.isFetchingNextPage} onMore={() => void query.fetchNextPage()} />
+      <div className={styles.more}><PageMore shown={items.length} total={total} unit="건" hasMore={!!query.hasNextPage} isLoading={query.isFetchingNextPage} onMore={() => void query.fetchNextPage()} /></div>
     </>;
   };
   return <Page crumbs={[{ label: '활동 기록' }]} tools={list.tools} applied={list.applied}>
@@ -52,13 +55,13 @@ export function ActivityPage() {
 
 /** 한 줄: 사람 · 무엇을 했는지 · 상대 시각(툴팁은 정확한 시각). */
 function Row({ item }: { item: Activity }) {
-  return <li className={styles.row}>
-    <Avatar name={item.actor} size="sm" shape="circle" />
+  return <TimelineItem mark={icon(({create:'plus',edit:'edit',comment:'comment',approve:'check',delete:'delete'} as const)[item.kind])}><HStack className={styles.row} gap={2} vAlign="start">
+    <Avatar name={item.actor} size="xsm" shape="circle" />
     <Text className={styles.sentence}>
       <Text weight="semibold">{item.actor}</Text>님이 <span className={styles.target}>"{item.target}"</span> {kinds[item.kind].verb}
     </Text>
     <Tooltip content={exactText(item.at)}>
       <time className={styles.when} dateTime={item.at} tabIndex={0}><Text type="supporting" color="secondary" hasTabularNumbers textWrap="nowrap">{relativeText(item.at)}</Text></time>
     </Tooltip>
-  </li>;
+  </HStack></TimelineItem>;
 }

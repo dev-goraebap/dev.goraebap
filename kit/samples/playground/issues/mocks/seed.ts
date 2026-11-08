@@ -43,6 +43,7 @@ export const seedIssues: Issue[] = entries.map(([number, title, summary, status,
   comments: number === 12
     ? [
       { id: 'c1', author: '지우', text: '측정은 끝났습니다. 가장 느린 조회는 주문 상태별 집계였습니다.', at: at(6, 15) },
+      {id:'c3',parentId:'c1',author:'서윤',text:'집계 조회부터 나누어 확인하겠습니다.',at:at(7,8)},
       { id: 'c2', author: '도현', text: '인덱스를 추가하면 쓰기가 느려질 수 있으니 같이 확인해 주세요.', at: at(7, 10) },
     ]
     : [],

@@ -1,3 +1,8 @@
+import {Text} from '@astryxdesign/core/Text';
+import { useOpenPanel,useRoutedPanel } from '@kit/patterns/routing/routed-panel';
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect } from 'react';
+import { EventCompose } from './EventCompose';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { HStack } from '@astryxdesign/core/HStack';
@@ -16,7 +21,6 @@ import { addDays, addMonths, eventKeys, eventQueries, monthText, TODAY, useEvent
   type CalendarEvent, type DateKey, type NewEvent } from '../../entities/event';
 import { useCalendarAddress, type CalendarView } from './address';
 import { EventActionsContext } from './EventParts';
-import { EventFormDialog } from './EventFormDialog';
 import { DayAgenda, MonthCompact, MonthGrid, WeekAgenda, WeekColumns } from './Views';
 import styles from './calendar.module.css';
 
@@ -28,6 +32,8 @@ const views = [{ id: 'month', label: '월', icon: 'layout-grid' as const }, { id
  * 상태 순서: 대기 → 실패(다시 시도). 일정이 하나도 없어도 격자는 그대로 보인다.
  */
 export function CalendarPage() {
+  const open=useOpenPanel();const panel=useRoutedPanel();const navigate=useNavigate();
+  useEffect(()=>{if(panel.pendingPhoneHref)void navigate({href:panel.pendingPhoneHref,replace:true})},[panel.pendingPhoneHref,navigate]);
   const api = useEventApi();
   const client = useQueryClient();
   const isPhone = useIsPhone();
@@ -36,13 +42,8 @@ export function CalendarPage() {
   const { view, date } = address;
   const query = useQuery(eventQueries.all(api));
   const events = useMemo(() => query.data ?? [], [query.data]);
-  const [form, setForm] = useState<{ event?: CalendarEvent; date: DateKey } | null>(null);
   const [removing, setRemoving] = useState<CalendarEvent | null>(null);
   const refresh = () => client.invalidateQueries({ queryKey: eventKeys.all });
-  const save = useMutation({
-    mutationFn: ({ id, input }: { id?: string; input: NewEvent }) => (id ? api.update(id, input) : api.create(input)),
-    onSuccess: async () => { await refresh(); setForm(null); },
-  });
   const remove = useMutation({
     mutationFn: (id: string) => api.remove(id),
     onSuccess: async () => { await refresh(); },
@@ -50,8 +51,8 @@ export function CalendarPage() {
   });
   const step = (direction: 1 | -1) => address.go({ date: view === 'month' ? addMonths(date, direction) : addDays(date, 7 * direction) });
   const unit = view === 'month' ? '달' : '주';
-  const create = (day: DateKey) => { save.reset(); setForm({ date: day }); };
-  const actions = useMemo(() => ({ onEdit: (event: CalendarEvent) => { save.reset(); setForm({ event, date: event.start }); }, onDelete: setRemoving }), [save]);
+  const create = (day: DateKey) => open(`/calendar/new?date=${day}`);
+  const actions = useMemo(() => ({ onEdit: (event: CalendarEvent) => open(`/calendar/events/${event.id}/edit`), onDelete: setRemoving }), [open]);
 
   const body = () => {
     if (query.isPending) return <Center height="100%"><Spinner label="일정을 불러오는 중" /></Center>;
@@ -69,17 +70,16 @@ export function CalendarPage() {
     <Page crumbs={[...(isPhone ? [] : [{ label: '일정', icon: 'calendar' as const, href: '/calendar' }]), { label: view === 'month' ? monthText(date) : weekText(date) }]}
       views={<PageViews views={views} value={view} onChange={id => address.go({ view: id as CalendarView })} />}
       tools={<HStack gap={1} vAlign="center">
+        <Text type="supporting" color="secondary" hasTabularNumbers>{date.replaceAll('-','.')}</Text>
         <Button label="오늘" variant="secondary" size={toolSize} onClick={() => address.go({ date: TODAY })} />
-        <Button label={`이전 ${unit}`} tooltip={`이전 ${unit}`} variant="ghost" size={toolSize} isIconOnly icon={icon('back')} onClick={() => step(-1)} />
-        <Button label={`다음 ${unit}`} tooltip={`다음 ${unit}`} variant="ghost" size={toolSize} isIconOnly icon={icon('forward')} onClick={() => step(1)} />
+        <Button label={`이전 ${unit}`} tooltip={`이전 ${unit}`} variant="ghost" size={toolSize} isIconOnly icon={icon('previous')} onClick={() => step(-1)} />
+        <Button label={`다음 ${unit}`} tooltip={`다음 ${unit}`} variant="ghost" size={toolSize} isIconOnly icon={icon('next')} onClick={() => step(1)} />
       </HStack>}
       create={{ label: '일정 만들기', onClick: () => create(date) }}>
       {remove.isError ? <PageBanner status="error" title="일정을 지우지 못했습니다" description="잠시 후 다시 시도해 주세요." /> : null}
-      <div className={styles.body}>{body()}</div>
+      <div className={styles.body} data-month={!isPhone && view==='month' || undefined}>{body()}</div>
     </Page>
-    {form ? <EventFormDialog key={form.event?.id ?? form.date} event={form.event} date={form.date} isPending={save.isPending}
-      error={save.isError ? '저장하지 못했습니다. 입력은 그대로 두었으니 다시 시도해 주세요.' : undefined}
-      onSubmit={input => save.mutate({ id: form.event?.id, input })} onClose={() => setForm(null)} /> : null}
+    {panel.href ? <EventCompose surface="dialog" id={panel.href.match(/events\/([^/]+)\/edit/)?.[1]} date={new URL(panel.href,'https://sample.invalid').searchParams.get('date') as DateKey || date} onClose={panel.close} onExpand={panel.expand} onDone={()=>panel.close()} /> : null}
     <AlertDialog isOpen={!!removing} onOpenChange={isOpen => { if (!isOpen) setRemoving(null); }} title="일정을 지울까요?"
       description={removing ? `“${removing.title}”을 지우면 되돌릴 수 없습니다.` : ''} actionLabel="지우기" isActionLoading={remove.isPending}
       onAction={() => removing && remove.mutate(removing.id)} />

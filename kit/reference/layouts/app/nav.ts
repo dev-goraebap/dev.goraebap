@@ -1,7 +1,7 @@
 import type { IconName } from '../../foundations/icons/solar-icon';
 
 /** 메뉴의 목적지: 주소, 이름, 아이콘 의미 이름. children은 펼칠 수 있는 하위 목적지이며 상위의 아이콘을 이어받아 아이콘을 생략할 수 있다. */
-export type NavEntry = { path: string; label: string; icon?: IconName; children?: NavEntry[]; badge?: number };
+export type NavEntry = { path: string; label: string; icon?: IconName; children?: NavEntry[]; badge?: number; isDisabled?: boolean };
 /** 이름 있는 묶음. 첫 묶음처럼 이름이 필요 없으면 isHeaderHidden. */
 export type NavSection = { title: string; isHeaderHidden?: boolean; entries: NavEntry[] };
 /**

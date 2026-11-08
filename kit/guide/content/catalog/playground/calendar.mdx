@@ -5,11 +5,13 @@ sidebar:
 ---
 
 import source0 from '@samples/playground/calendar/pages/calendar/CalendarPage.tsx?raw';
+import source1 from '@samples/playground/calendar/pages/calendar/EventCompose.tsx?raw';
 
-일정·예약·근무표처럼 날짜 격자가 주인공인 화면을 만들 때 본뜹니다. 월·주 보기, 날짜 칸을 눌러 일정 만들기, 넘치는 일정의 "+N" 표시, 일정 팝오버(휴대폰은 시트)와 휴대폰 월 격자 아래의 고른 날 목록을 다룹니다.
+일정·예약·근무표처럼 날짜 격자가 주인공인 화면을 만들 때 본뜹니다. 데스크톱 가용 높이를 채우고 내부 세로 스크롤을 두지 않는 월 격자와 시간순 카드 열 주 보기(시간선 없음), 이전·다음 꺾쇠(`previous`·`next`)와 뒤로 화살표(`back`) 구분, 넘치는 일정의 "+N" 표시, 팝오버(휴대폰은 시트)에서 상세 페이지(`/calendar/events/$id`)로 열기, 휴대폰 월 격자 아래의 고른 날 목록을 다룹니다. 일정 만들기(`/calendar/new`)와 수정(`/calendar/events/$id/edit`)은 제목·장소와 Astryx `Calendar` 기반 `DatePill`·`OptionPill` 속성으로 구성하며, 목록 위 마스킹 대화상자·크게 보기·직접 링크 페이지를 오가도 초안을 유지합니다.
 
 <SampleGroup group="playground-calendar" />
 
 ## 구현 코드
 
 <Source name="CalendarPage.tsx" code={source0} lang="tsx" />
+<Source name="EventCompose.tsx" code={source1} lang="tsx" />

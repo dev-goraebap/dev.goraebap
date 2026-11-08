@@ -26,7 +26,7 @@ const VerifyMissingAndMaintenance: Sample = {
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
     await waitFor(() => expect(page.getByText("페이지를 찾을 수 없습니다")).toBeVisible());
-    await expect(page.getAllByRole("link", { name: "설계 문서" }).length).toBeGreaterThan(0);
+    await expect(page.getAllByText("설계 문서").length).toBeGreaterThan(0);
     await userEvent.click(page.getByRole("link", { name: "메모 쓰기로" }));
     await waitFor(() => expect(page.getByLabelText("제목")).toBeVisible());
   },
@@ -52,8 +52,9 @@ const VerifyExpiredStart: Sample = {
   render: () => <ErrorsApp api={createSessionApi({ delay: 50, isExpired: true })} initialPath="/notes/new" />,
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
-    const dialog = await page.findByRole("alertdialog", { name: "다시 로그인해 주세요" });
+    const dialog = await page.findByRole("main",{name:"다시 로그인해 주세요"});
     await waitFor(() => expect(dialog).toBeVisible());
+    await expect(page.queryByRole("textbox",{name:"제목"})).toBeNull();
     // 틀린 비밀번호는 대화상자 안에서 알린다.
     await userEvent.type(within(dialog).getByLabelText("비밀번호"), "wrong-value");
     await userEvent.click(within(dialog).getByRole("button", { name: "로그인" }));
@@ -61,7 +62,7 @@ const VerifyExpiredStart: Sample = {
     await userEvent.clear(within(dialog).getByLabelText("비밀번호"));
     await userEvent.type(within(dialog).getByLabelText("비밀번호"), account.secret);
     await userEvent.click(within(dialog).getByRole("button", { name: "로그인" }));
-    await waitFor(() => expect(page.queryByRole("alertdialog")).toBeNull());
+    await waitFor(() => expect(page.queryByRole("heading",{name:"다시 로그인해 주세요"})).toBeNull());
     await expect(page.getByLabelText("제목")).toHaveValue("분기 회고");
   },
 };
@@ -75,10 +76,10 @@ const VerifyExpireOnSave: Sample = {
     await userEvent.type(await page.findByLabelText("본문"), " 마지막 문장");
     expiring.expire();
     await userEvent.click(page.getByRole("button", { name: "저장" }));
-    const dialog = await page.findByRole("alertdialog", { name: "다시 로그인해 주세요" });
+    const dialog = await page.findByRole("main",{name:"다시 로그인해 주세요"});
     await userEvent.type(within(dialog).getByLabelText("비밀번호"), account.secret);
     await userEvent.click(within(dialog).getByRole("button", { name: "로그인" }));
-    await waitFor(() => expect(page.queryByRole("alertdialog")).toBeNull());
+    await waitFor(() => expect(page.queryByRole("heading",{name:"다시 로그인해 주세요"})).toBeNull());
     // 대화상자 뒤의 입력은 그대로이고, 끊겼던 저장이 이어져 끝난다.
     expect((page.getByLabelText("본문") as HTMLTextAreaElement).value).toContain("마지막 문장");
     await waitFor(() => expect(page.getByText("저장됨")).toBeVisible());

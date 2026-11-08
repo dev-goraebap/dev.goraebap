@@ -14,7 +14,7 @@ const VerifyPane: Sample = {
     // 고른 것이 없으면 상세 칸은 고르라는 안내다.
     await waitFor(() => expect(page.getByText("알림을 선택해 주세요")).toBeVisible());
     // 행의 글자가 아닌 곳(미리 보는 글)을 눌러도 상세 칸에 열리고, 열면 읽음이 된다.
-    await expect(page.getAllByText("안 읽음")).toHaveLength(4);
+    await waitFor(()=>expect(page.getAllByText("안 읽음")).toHaveLength(4));
     await userEvent.click(page.getAllByText("11월 셋째 주부터 예고 글을 내보내고, 둘째 주에 마감합니다.")[0]);
     const pane = await page.findByRole("complementary", { name: "미리보기: 지우 · 승인 요청" });
     await expect(within(pane).getByRole("button", { name: "보관하기" })).toBeVisible();

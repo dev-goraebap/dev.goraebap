@@ -75,3 +75,6 @@ const VerifyPhone: Sample = {
 test(VerifyRejectThenSignIn.name, () => runSample(meta, VerifyRejectThenSignIn));
 test(VerifyToggleAndForgot.name, () => runSample(meta, VerifyToggleAndForgot));
 test(VerifyPhone.name, () => runSample(meta, VerifyPhone, "phone"));
+
+const VerifySignup:Sample={name:'가입 후 코드 검증과 재시도',render:()=> <LoginApp api={createAuthApi({delay:20})} initialPath="/signup"/>,play:async({canvasElement})=>{const p=within(canvasElement.ownerDocument.body);await userEvent.type(await p.findByRole('textbox',{name:'이름'}),'하은');await userEvent.type(p.getByRole('textbox',{name:'이메일'}),'haneul@example.com');await userEvent.type(p.getByLabelText('비밀번호'),'sample-secret-2');await userEvent.click(p.getByRole('button',{name:'계정 만들기'}));const code=await p.findByRole('textbox',{name:'인증 코드'});await userEvent.type(code,'000000');await userEvent.click(p.getByRole('button',{name:'인증하고 로그인'}));await expect(await p.findByText('인증 코드가 맞지 않거나 만료되었습니다.')).toBeVisible();await userEvent.clear(code);await userEvent.type(code,'123456');await userEvent.click(p.getByRole('button',{name:'인증하고 로그인'}));await expect(await p.findByRole('heading',{name:'하은님, 안녕하세요'})).toBeVisible()}};
+test(VerifySignup.name,()=>runSample(meta,VerifySignup));

@@ -4,7 +4,7 @@ import { LinkProvider } from '@astryxdesign/core/Link';
 import { Text } from '@astryxdesign/core/Text';
 import { PageState } from '@kit/composites/state/PageState';
 import { icon } from '@kit/foundations/icons/solar-icon';
-import { AppFrame } from '@kit/layouts/app/AppFrame';
+import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
 import type { NavSpace } from '@kit/layouts/app/nav';
 import { Page } from '@kit/layouts/page/Page';
 import { DraftProvider } from '@kit/patterns/compose/draft-store';
@@ -25,8 +25,7 @@ import styles from './app.module.css';
 
 const space: NavSpace = {
   id: 'main', title: '이슈', sections: [{ title: '이슈', isHeaderHidden: true, entries: [
-    { path: '/issues', label: '모든 이슈', icon: 'tag' },
-    { path: `/issues?assignee=${me}`, label: '내 이슈', icon: 'user' },
+    { path: '/issues', label: '이슈', icon: 'tag' },
   ] }],
 };
 

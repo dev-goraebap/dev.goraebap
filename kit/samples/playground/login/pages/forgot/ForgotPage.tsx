@@ -45,7 +45,7 @@ export function ForgotPage({ onBack }: { onBack: () => void }) {
       <VStack gap={4}>
         <Text color="secondary">가입한 이메일을 입력하면 비밀번호를 다시 정하는 안내를 보냅니다.</Text>
         <TextInput label="이메일" type="email" placeholder="name@example.com" value={email} onChange={setEmail} hasAutoFocus
-          status={isTried && !email.trim() ? { type: 'error', message: '이메일을 입력해 주세요.' } : undefined} />
+          statusVariant="detached" status={isTried && !email.trim() ? { type: 'error', message: '이메일을 입력해 주세요.' } : undefined} />
         <VStack gap={2}>
           <Button label="안내 메일 보내기" variant="primary" type="submit" isLoading={send.isPending} width="100%" />
           <Button label="로그인으로 돌아가기" variant="ghost" width="100%" onClick={onBack} />

@@ -1,4 +1,4 @@
-import { Avatar } from '@astryxdesign/core/Avatar';
+import { PersonAvatar as Avatar } from '@kit/foundations/avatar/PersonAvatar';
 import { HStack } from '@astryxdesign/core/HStack';
 import { StatusDot } from '@astryxdesign/core/StatusDot';
 import { Step, Stepper } from '@astryxdesign/core/Stepper';
