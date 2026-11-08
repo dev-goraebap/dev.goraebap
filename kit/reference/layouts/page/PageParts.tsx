@@ -19,12 +19,15 @@ export function PageBanner(props: Omit<BannerProps, 'container' | 'collapsible'>
 }
 
 /**
- * 양식의 동작(취소·이전·제출): 데스크톱은 양식 끝, 휴대폰 상세는 바닥 고정 줄에 두고 마지막(양식 자체의 동작)이 남은
- * 폭을 차지한다. start는 데스크톱 줄의 왼쪽, 휴대폰 줄의 처음.
+ * 양식의 마무리 동작(취소·이전·다음·제출)만 둔다. 상세·작성 페이지는 데스크톱·휴대폰 모두 바닥 고정 줄에 들어가고,
+ * 휴대폰은 마지막(양식 자체의 동작)이 남은 폭을 차지한다. start는 줄의 처음(데스크톱은 왼쪽으로 민다).
+ * 안내("날짜를 고르세요")와 저장 실패는 넣지 않는다: 안내는 칸 곁, 실패는 양식 위 PageBanner.
  */
 export function PageActions({ start, children }: { start?: ReactNode; children: ReactNode }) {
   const foot = useContext(PageFootContext);
-  if (foot) return createPortal(<HStack className={styles.footActions} gap={2} vAlign="center">{start}{children}</HStack>, foot);
+  if (foot) return createPortal(<HStack className={styles.footActions} gap={2} vAlign="center">
+    {start ? <HStack gap={2} vAlign="center" className={styles.footStart}>{start}</HStack> : null}{children}
+  </HStack>, foot);
   return <HStack gap={2} hAlign={start ? 'between' : 'end'} vAlign="center" wrap="wrap">
     {start}
     <HStack gap={2} vAlign="center" wrap="wrap">{children}</HStack>

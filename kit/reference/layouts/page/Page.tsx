@@ -89,7 +89,8 @@ export function Page({ children, aboveFooter, footer, aside, ...top }: PageTopPr
   }, [isFull, chrome]);
   const [banner, setBanner] = useState<HTMLElement | null>(null);
   const [foot, setFoot] = useState<HTMLElement | null>(null);
-  const footBar = footer ?? (isFull ? <HStack ref={setFoot} className={styles.foot} /> : undefined);
+  // 상세·작성 페이지는 데스크톱에서도 바닥 고정 동작 줄 자리를 둔다(PageActions가 채운다). 동작이 없으면 줄도 없다.
+  const footBar = footer ?? (top.isDetail ? <HStack ref={setFoot} className={styles.foot} /> : undefined);
   const hasFab = isPhone && !!top.create && !top.isDetail;
   const content = <LayoutContent padding={0} className={(top.hasPattern ?? !top.isDetail) ? styles.pattern : undefined}
     data-fab-space={hasFab || undefined}><PageBannerContext value={banner}>{children}</PageBannerContext></LayoutContent>;

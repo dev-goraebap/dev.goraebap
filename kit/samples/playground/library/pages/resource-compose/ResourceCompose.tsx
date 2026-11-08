@@ -47,13 +47,11 @@ function ComposeBody({ id, initial, crumbs, surface, onClose, onExpand, onDone }
   const api = useResourceApi();
   const client = useQueryClient();
   const [draft, setDraft, clearDraft] = useDraft<Draft>(`resource:${id ?? 'new'}`, initial);
-  const [isContinuing, setContinuing] = useState(false);
   const set = (patch: Partial<Draft>) => setDraft({ ...draft, ...patch });
   const save = useMutation({
     mutationFn: (input: NewResource) => id ? api.update(id, input) : api.create(input),
     onSuccess: saved => {
       void client.invalidateQueries({ queryKey: resourceKeys.all });
-      if (isContinuing && !id) { setDraft({ ...empty, kind: draft.kind, collection: draft.collection }); return; }
       clearDraft();
       onDone(saved.id);
     },
@@ -69,7 +67,6 @@ function ComposeBody({ id, initial, crumbs, surface, onClose, onExpand, onDone }
       collection: draft.collection, url: draft.kind === 'link' ? draft.url.trim() : undefined, files: draft.files });
   };
   return <ComposeSurface surface={surface} crumbs={crumbs} isDirty={isDirty}
-    isContinuing={id ? undefined : isContinuing} onContinuing={id ? undefined : setContinuing}
     onClose={() => { clearDraft(); onClose(); }} onExpand={onExpand}
     error={save.isError ? '저장하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
     submit={{ label: id ? '저장' : '추가하기', isPending: save.isPending, onSubmit: submit }}>

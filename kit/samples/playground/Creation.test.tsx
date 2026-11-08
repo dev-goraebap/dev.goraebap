@@ -29,4 +29,29 @@ const VerifyDiscard: Sample = {
   },
 };
 
+const VerifyPageFoot: Sample = {
+  name: "작성 페이지 바닥 고정·동작만 검증",
+  render: () => <samples.Composer startOpen />,
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(await page.findByRole("button", { name: "크게 보기" }));
+    const submit = await page.findByRole("button", { name: "만들기" });
+    // 동작은 본문 아래가 아니라 화면 바닥에 붙은 줄에 있고, 줄에는 버튼만 있다.
+    const bar = submit.closest("[class*='foot']") as HTMLElement;
+    await expect(bar).not.toBeNull();
+    await expect(within(bar).getByRole("button", { name: "취소" })).toBeVisible();
+    // 줄은 스크롤되는 본문 밖(페이지 바닥)에 있어 본문을 내려도 늘 보인다.
+    let scroller = page.getByRole("textbox", { name: "제목" }).parentElement;
+    while (scroller && !/(auto|scroll)/.test(getComputedStyle(scroller).overflowY)) scroller = scroller.parentElement;
+    await expect(scroller).not.toBeNull();
+    await expect(scroller!.contains(bar)).toBe(false);
+    await expect([...bar.querySelectorAll("button")].map(each => each.textContent?.trim())).toEqual(["취소", "만들기"]);
+    // 빠진 값 안내는 칸 곁에 보이고 바닥 줄에는 들어가지 않는다.
+    await userEvent.click(submit);
+    const hint = await page.findByText("모음을 정해 주세요.");
+    await expect(bar.contains(hint)).toBe(false);
+  },
+};
+
 test(VerifyDiscard.name, () => runSample(meta, VerifyDiscard));
+test(VerifyPageFoot.name, () => runSample(meta, VerifyPageFoot));

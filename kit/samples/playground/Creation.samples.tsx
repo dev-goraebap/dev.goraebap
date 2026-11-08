@@ -48,7 +48,7 @@ function Steps() {
   const [parts, setParts] = useState<Record<string, JSONContent | undefined>>({});
   const body = (key: string) => <RichDraft key={key} value={parts[key]} onChange={value => setParts({ ...parts, [key]: value })} placeholder={`${key}을 적어 주세요`} />;
   return <ComposeSurface surface="page" crumbs={[{ label: "보고" }, { label: "주간 보고" }]} onClose={() => setStep(0)}
-    actions={step > 0 ? <Button label="이전" variant="ghost" size="sm" onClick={() => setStep(step - 1)} /> : undefined}
+    previous={step > 0 ? { onClick: () => setStep(step - 1) } : undefined}
     submit={{ label: step === steps.length - 1 ? "제출" : "다음", onSubmit: () => setStep(Math.min(step + 1, steps.length - 1)) }}>
     <PaperForm heading="11월 첫째 주 보고" isPage
       about={<Stepper activeStep={step} label="작성 단계" density="compact" onStepClick={setStep}>{steps.map((label, index) => <Step key={label} step={index} label={label} />)}</Stepper>}

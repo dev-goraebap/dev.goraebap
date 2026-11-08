@@ -38,12 +38,19 @@
 .docked { min-block-size: 0; }
 .docked > :first-child { flex: 1 1 0; min-block-size: 0; }
 
-/* 휴대폰 상세의 바닥 동작 줄: 홈 표시줄을 피하고 마지막 동작이 남은 폭을 쓴다. 동작이 없으면 없다. */
-.foot { padding: var(--spacing-2) var(--spacing-4) calc(var(--spacing-3) + env(safe-area-inset-bottom, 0px));
+/*
+ * 상세·작성의 바닥 동작 줄: 마무리 동작(취소·이전·다음·제출)만 둔다. 안내·오류 문구는 칸 곁이나 양식 위 배너에 둔다.
+ * 데스크톱은 본문의 45rem 가운데 열과 같은 좌우 선에 동작을 맞추고 끝으로 모은다. 휴대폰은 홈 표시줄을 피하고 마지막
+ * 동작이 남은 폭을 쓴다. 동작이 없으면 줄도 없다.
+ */
+.foot { padding: var(--spacing-3) max(var(--spacing-4), calc((100% - 45rem) / 2));
   border-block-start: 1px solid var(--color-border); background: var(--color-background-surface); }
 .foot:empty { display: none; }
-.footActions { inline-size: 100%; }
-.footActions > :last-child { flex: 1 1 auto; }
+.footActions { inline-size: 100%; justify-content: flex-end; }
+@media (width < 64rem) {
+  .foot { padding: var(--spacing-2) var(--spacing-4) calc(var(--spacing-3) + env(safe-area-inset-bottom, 0px)); }
+  .footActions > :last-child { flex: 1 1 auto; }
+}
 
 /* 페이지 목록·표: 불투명한 면, 행이 있으면 마지막 줄 아래 구분선. */
 .data { background: var(--color-background-surface); }
@@ -57,3 +64,5 @@
   position: relative; z-index: 1; pointer-events: none; }
 .rowLinks > li:has(> a[href]:not([aria-disabled="true"])) > span :is(a[href], button, input, select, textarea, [role="button"], [role="link"]) {
   pointer-events: auto; }
+/* 줄 처음의 다른 동작(임시 저장 등)은 데스크톱에서 왼쪽으로 민다. */
+@media (width >= 64rem) { .footStart { margin-inline-end: auto; } }
