@@ -1,13 +1,11 @@
 import { useRouterState } from '@tanstack/react-router';
-import { posts } from '@/entities/post';
+import { posts, readPostSearch } from '@/entities/post';
 import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import styles from './blog.module.css';
 
 export function BlogPage() {
   const search = useRouterState({ select: state => state.location.searchStr });
-  const query = new URLSearchParams(search);
-  const q = query.get('q') ?? '';
-  const tags = query.getAll('tag');
+  const { q, tags } = readPostSearch(search);
   const filtered = posts.filter(post => (!tags.length || tags.some(tag => post.tags?.includes(tag))) && `${post.title} ${post.description} ${post.tags?.join(' ')}`.toLocaleLowerCase().includes(q.trim().toLocaleLowerCase()));
   return <div className={styles.home}>
     <p className={styles.count} role="status">{filtered.length}개의 글</p>

@@ -29,7 +29,7 @@ export function useFilters(filters: ListFilter[], { state, onStateChange }: {
       <FilterSheet filters={filters} state={state} isOpen={sheet.isOpen} step={sheet.step}
         onStepChange={step => setSheet({ isOpen: true, step })} onOpenChange={isOpen => setSheet({ isOpen })} onChange={change} onClear={clear} />
     </>
-    : <FilterMenu filters={filters} state={state} onChange={change} onAdd={show} />;
+    : <FilterMenu filters={filters} state={state} onChange={change} onAdd={show} onClear={clear} />;
   const visible = [...new Set([...shown, ...activeKeys(filters, state)])];
   const applied = isPhone
     ? count > 0 ? <FilterChips filters={filters} state={state} onOpen={step => setSheet({ isOpen: true, step })} onRemove={remove} /> : undefined
