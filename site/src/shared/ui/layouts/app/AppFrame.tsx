@@ -27,7 +27,7 @@ const rootScale = () => typeof window === 'undefined' || window.innerWidth < 192
  * 나머지 목적지를 담은 더보기 시트를 쓰고, 상세·양식이 열리면 하단 탭을 치운다. 두 배치에서 페이지의 슬롯은 같다.
  * 본문의 부모 요소 종류는 분기점·배치를 바꿔도 같게 유지해 작성 중인 초안이 다시 마운트되지 않게 한다.
  */
-export function AppFrame({ space, pathname, isSelected, brand, headerTools, profile, footer, phoneAppBar, layout = 'inset',
+export function AppFrame({ space, pathname, isSelected, brand, headerTools, profile, footer, pageFooter, phoneAppBar, layout = 'inset',
   tabs, onNavigate, openGroups = 'all', sidebarWidth = 340, children }: {
   space: NavSpace;
   sidebarWidth?: number;
@@ -41,7 +41,8 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   /** 머리 아래 내 정보. */
   profile?: ReactNode;
   /** 사이드바 바닥(버전·환경 설정). */
-  footer?: ReactNode;
+  footer?: ReactNode | ((isFolded: boolean) => ReactNode);
+  pageFooter?: ReactNode;
   /** 휴대폰 일반 페이지 머리 줄 끝의 앱 도구. */
   phoneAppBar?: ReactNode;
   layout?: ShellLayout;
@@ -120,7 +121,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
         {profile}
       </VStack>}
     topContent={backRow}
-    footerIcons={isFolded ? toggle : footer}>
+    footerIcons={isFolded ? <VStack gap={1} hAlign="center">{typeof footer === 'function' ? footer(true) : null}{toggle}</VStack> : typeof footer === 'function' ? footer(false) : footer}>
     {space.sections.map((section, index) => <Fragment key={section.title}>
       {/* 접힌 메뉴는 묶음 이름이 사라지므로 선으로 묶음을 나눈다. */}
       {isFolded && index > 0 ? <hr className={styles.navRule} /> : null}
@@ -147,12 +148,12 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
     </AppShell>;
   }
   if (layout === 'split') return <AppShell variant="section" sideNav={sideNav}>
-    <VStack height="100%"><VStack className={styles.page}>{page}</VStack></VStack>
+    <VStack height="100%"><VStack className={styles.page}>{page}</VStack>{pageFooter}</VStack>
   </AppShell>;
   // inset의 페이지 면은 페이지 바탕색이라 그 위의 카드가 한 단계 밝게 선다. AppShell의 elevated는 상단 막대가 있을 때만 둥글어 Card로 둔다.
   return <AppShell variant="wash" sideNav={sideNav}>
-    <VStack height="100%" paddingBlock={2} paddingInlineEnd={2}>
-      <Card className={styles.page} variant="page" padding={0} elevation="low">{page}</Card>
+    <VStack height="100%" paddingBlockStart={2} paddingBlockEnd={pageFooter ? 0 : 2} paddingInlineEnd={2}>
+      <Card className={styles.page} variant="page" padding={0} elevation="low">{page}</Card>{pageFooter}
     </VStack>
   </AppShell>;
 }

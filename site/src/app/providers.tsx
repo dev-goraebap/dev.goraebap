@@ -1,3 +1,4 @@
+import { PreferencesProvider } from '@/entities/preferences';
 import { MDXProvider } from '@mdx-js/react';
 import type { ComponentPropsWithRef } from 'react';
 import { GuideShell } from '@/widgets/site-shell';
@@ -17,4 +18,4 @@ function Table(props: ComponentPropsWithRef<'table'>) {
 
 const mdxComponents = { a: DocLink, table: Table, div: Diagram, Sample, SampleGroup, Source };
 
-export function SiteApp() { return <MDXProvider components={mdxComponents}><GuideShell /></MDXProvider>; }
+export function SiteApp() { return <PreferencesProvider><MDXProvider components={mdxComponents}><GuideShell /></MDXProvider></PreferencesProvider>; }

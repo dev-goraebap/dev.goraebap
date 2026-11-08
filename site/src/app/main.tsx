@@ -4,6 +4,7 @@ import { createRootRoute, createRoute, createRouter, redirect, RouterProvider } 
 import { createRoot } from 'react-dom/client';
 import { docAt, firstOf, loadDoc } from '../entities/document';
 import { DocPage } from '../pages/document';
+import { SettingsPage } from '../pages/settings';
 import { BlogPage } from '../pages/blog';
 import { SiteApp } from './providers';
 
@@ -12,6 +13,8 @@ async function load(pathname: string) {
   const path = pathname.endsWith('/') ? pathname : `${pathname}/`;
   if (path === '/') throw redirect({ href: '/blog/', replace: true } as never);
   if (path.startsWith('/posts/')) throw redirect({ href: path.replace('/posts/', '/blog/'), replace: true } as never);
+  if (path === '/settings/') throw redirect({ href: '/settings/appearance/', replace: true } as never);
+  if (['/settings/appearance/', '/settings/plugins/'].includes(path)) return { doc: null, Content: SettingsPage };
   if (!path.startsWith('/blog/') && !path.startsWith('/webcraft/')) {
     const next = `/webcraft${path.replace('/goraebap-mode/', '/webcraft-mode/')}`;
     throw redirect({ href: next, replace: true } as never);
@@ -28,7 +31,7 @@ async function load(pathname: string) {
 }
 
 const loader = ({ location }: { location: { pathname: string } }) => load(location.pathname);
-const view = (data: Awaited<ReturnType<typeof load>>) => data.Content === BlogPage ? <BlogPage /> : <DocPage key={data.doc?.path ?? 'missing'} doc={data.doc} Content={data.Content} />;
+const view = (data: Awaited<ReturnType<typeof load>>) => data.Content === SettingsPage ? <SettingsPage /> : data.Content === BlogPage ? <BlogPage /> : <DocPage key={data.doc?.path ?? 'missing'} doc={data.doc} Content={data.Content} />;
 
 const rootRoute = createRootRoute({ component: SiteApp });
 // 라우트마다 자기 데이터를 읽는다(다른 라우트의 useLoaderData를 쓰면 라우터가 멈춘다).

@@ -7,7 +7,7 @@ const output = fileURLToPath(new URL('../dist/', import.meta.url));
 const template = await readFile(path.join(output, 'index.html'), 'utf8');
 const escape = text => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;');
 const docs = siteDocuments();
-const routes = [{ path: '/blog/', title: 'Blog', description: '설계와 구현 과정에서 배운 것을 기록합니다.' }, ...docs];
+const routes = [{ path: '/blog/', title: '모든 글' }, { path: '/settings/appearance/', title: '화면 설정' }, { path: '/settings/plugins/', title: '플러그인 설정' }, ...docs];
 for (const doc of routes) {
   const destination = path.resolve(output, `.${doc.path}`);
   if (!destination.startsWith(`${path.resolve(output)}${path.sep}`)) throw new Error(`사이트 밖 경로: ${doc.path}`);

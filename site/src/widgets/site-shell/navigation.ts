@@ -27,3 +27,5 @@ export const guideSpace: NavSpace = {
 };
 
 export const blogSpace: NavSpace = { id: 'blog', title: 'Blog', sections: [{ title: '개발 기록', isHeaderHidden: true, entries: [{ path: '/blog/', label: '모든 글', icon: 'book' }, ...docs.filter(doc => doc.kind === 'post').map(doc => ({ path: doc.path, label: doc.title, icon: 'document' as const }))] }] };
+
+export const settingsSpace: NavSpace = { id: 'settings', title: '설정', back: { path: '/blog/', label: '사이트로' }, sections: [{ title: '설정', isHeaderHidden: true, entries: [{ path: '/settings/appearance/', label: '화면', icon: 'sun' }, { path: '/settings/plugins/', label: '플러그인', icon: 'settings' }] }] };

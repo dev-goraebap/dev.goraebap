@@ -21,7 +21,7 @@ const label = (group: string) => group === '/blog/' ? 'Blog' : [...skillGroups.m
 export const groupLabel = label;
 
 /** 묶음 주소(예: /app-shell/)의 첫 문서. 지침은 묶음 주소가 곧 그 지침의 첫 장이다. */
-export const firstOf = (group: string) => docs.find(doc => doc.group === group)?.path;
+export const firstOf = (group: string) => group === '/blog/' ? undefined : docs.find(doc => doc.group === group)?.path;
 
 /** 문서 찾기 목록. */
 export const searchEntries = docs.map(doc => ({ id: doc.path, label: doc.title, group: label(doc.group), description: doc.description }));

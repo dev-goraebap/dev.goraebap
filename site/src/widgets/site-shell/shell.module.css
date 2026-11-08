@@ -1,0 +1,7 @@
+.brand { display: flex; align-items: center; gap: .625rem; min-inline-size: 0; }
+.logo { display: block; inline-size: 1.75rem; block-size: 1.75rem; color: var(--color-text-primary); flex: none; }
+.logo svg { display: block; inline-size: 100%; block-size: 100%; }
+.agentBar { display: flex; align-items: center; justify-content: flex-end; gap: .25rem; block-size: 2.5rem; padding-inline: .5rem; color: var(--color-text-secondary); flex: none; }
+.footer { display: flex; align-items: center; justify-content: space-between; inline-size: 100%; gap: .5rem; padding-inline: .5rem; }
+.version { font-family: var(--font-family-code); font-size: .6875rem; color: var(--color-text-secondary); }
+.phoneBrand { display: flex; align-items: center; }

@@ -3,7 +3,7 @@ import fs from 'node:fs/promises';
 // 화면이 부르는 의미 이름과 그 이름이 그리는 Solar 아이콘. 기본은 Linear, 고름·열림·현재 위치는 같은 아이콘의 Bold Duotone이다.
 // 사용하는 이름만 둔다. 이름을 더하면 npm run site:icons로 다시 생성한다.
 const SOLAR = {
-  home: 'home-smile', inbox: 'inbox', bell: 'bell', calendar: 'calendar', document: 'document-text', book: 'book',
+  agent: 'code-square', home: 'home-smile', inbox: 'inbox', bell: 'bell', calendar: 'calendar', document: 'document-text', book: 'book',
   library: 'book-bookmark', folder: 'folder', settings: 'settings', user: 'user-circle', people: 'users-group-rounded',
   shield: 'shield-check', plus: 'add', more: 'menu-dots', menu: 'hamburger-menu', sidebar: 'panel-left',
   edit: 'pen-new-square', delete: 'trash-bin-minimalistic', tag: 'tag', pin: 'pin', star: 'star', view: 'eye',

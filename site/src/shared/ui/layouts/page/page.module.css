@@ -73,3 +73,5 @@
   .path[data-back] { margin-inline-start: -.75rem; }
   .header svg:not(dialog *), .toolbar svg:not(dialog *) { flex: none; inline-size: 1.5rem; block-size: 1.5rem; }
 }
+
+.stableScroll { scrollbar-gutter: stable; }

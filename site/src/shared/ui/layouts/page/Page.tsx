@@ -70,8 +70,9 @@ function PageTop({ crumbs, pageActions, views, tools, applied, create, isDetail 
  * 페이지: 위(PageTop)와 본문. 머리와 툴바는 고정하고 본문만 스크롤한다. 휴대폰 상세는 셸에 전체 화면을 요청하고 바닥
  * 동작 줄(PageActions 자리)을 둔다. 휴대폰 목록의 만들기는 하단 탭 위 FAB이며 본문 끝에 FAB 높이만큼 여유를 둔다.
  */
-export function Page({ children, aboveFooter, footer, aside, ...top }: PageTopProps & {
+export function Page({ children, aboveFooter, footer, aside, stableGutter = false, ...top }: PageTopProps & {
   children: ReactNode;
+  stableGutter?: boolean;
   /** 본문 옆 패널(미리보기 패널 등). 본문과 따로 스크롤하고 목록을 가리지 않는다. */
   aside?: ReactNode;
   /** 스크롤 본문 아래, 바닥 줄 위에 고정할 것(휴대폰 작성 속성 줄 등). */
@@ -92,7 +93,7 @@ export function Page({ children, aboveFooter, footer, aside, ...top }: PageTopPr
   // 상세·작성 페이지는 데스크톱에서도 바닥 고정 동작 줄 자리를 둔다(PageActions가 채운다). 동작이 없으면 줄도 없다.
   const footBar = footer ?? (top.isDetail ? <HStack ref={setFoot} className={styles.foot} /> : undefined);
   const hasFab = isPhone && !!top.create && !top.isDetail;
-  const content = <LayoutContent padding={0} className={(top.hasPattern ?? !top.isDetail) ? styles.pattern : undefined}
+  const content = <LayoutContent padding={0} className={[stableGutter ? styles.stableScroll : '', (top.hasPattern ?? !top.isDetail) ? styles.pattern : ''].filter(Boolean).join(' ')}
     data-fab-space={hasFab || undefined}><PageBannerContext value={banner}>{children}</PageBannerContext></LayoutContent>;
   return <PageFootContext value={footer ? null : foot}>
     <Layout height="fill" header={<PageTop {...top} bannerSlot={setBanner} />}

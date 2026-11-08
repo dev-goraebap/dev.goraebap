@@ -43,9 +43,9 @@ export function DocPage({ doc, Content }: { doc: GuideDoc | null; Content: Compo
         </ul>
       </>}
     </article>
-    {!isPhone && headings.length > 1 ? <aside className={styles.outline}>
-      <Text type="supporting" color="secondary" weight="semibold">이 문서</Text>
-      <Outline items={headings} label="이 문서의 목차" density="compact" />
+    {!isPhone ? <aside className={styles.outline}>
+      {headings.length > 1 ? <Text type="supporting" color="secondary" weight="semibold">이 문서</Text> : null}
+      {headings.length > 1 ? <Outline items={headings} label="이 문서의 목차" density="compact" /> : null}
     </aside> : null}
   </div>;
 }
