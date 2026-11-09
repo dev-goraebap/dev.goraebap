@@ -4,6 +4,7 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { explicitOnly, packagePlugins } from '../scripts/package-plugins.mjs';
+import { compareVersions, notice } from '../hooks/update-check.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
@@ -45,7 +46,8 @@ for (const agent of ['claude', 'codex']) {
 
   test(`${agent}: 사본·동기화 도구와 문서 밖의 파일을 담지 않는다`, async () => {
     for (const file of await files(plugin)) {
-      assert(['.md', '.json', '.yaml'].includes(path.extname(file)), file);
+      const isHook = agent === 'claude' && path.relative(plugin, file).startsWith(`hooks${path.sep}`);
+      assert(['.md', '.json', '.yaml'].includes(path.extname(file)) || (isHook && path.extname(file) === '.mjs'), file);
       assert(!/manager|project-source|sync-skills/.test(path.relative(plugin, file)), file);
     }
   });
@@ -71,3 +73,25 @@ for (const agent of ['claude', 'codex']) {
     assert(!(await files(plugin)).some(file => /(^|[/\\])(site|posts|samples)([/\\]|$)/.test(path.relative(plugin, file))));
   });
 }
+
+test('claude: 새 판 알림 훅은 시작할 때만 돌고 담긴 스크립트를 가리킨다', async () => {
+  const plugin = path.join(dist, 'claude/plugins/webcraft');
+  const config = JSON.parse(await fs.readFile(path.join(plugin, 'hooks/hooks.json'), 'utf8'));
+  const [entry] = config.hooks.SessionStart;
+  assert.equal(entry.matcher, 'startup');
+  const script = entry.hooks[0].command.match(/\$\{CLAUDE_PLUGIN_ROOT\}\/([^"]+)/)[1];
+  await fs.access(path.join(plugin, script));
+  await assert.rejects(fs.access(path.join(dist, 'codex/plugins/webcraft/hooks')));
+});
+
+test('새 판 알림은 최신 판이 더 높을 때만 낸다', () => {
+  assert(compareVersions('0.10.0', '0.9.9') > 0);
+  assert.equal(compareVersions('0.8.0', '0.8.0-rc.1'), 0);
+  assert.equal(notice('0.8.0', '0.8.0'), null);
+  assert.equal(notice('0.8.1', '0.8.0'), null);
+  assert.equal(notice('0.8.0', null), null);
+  const output = notice('0.8.0', '0.8.1');
+  assert.match(output.systemMessage, /0\.8\.1/);
+  assert.equal(output.hookSpecificOutput.hookEventName, 'SessionStart');
+  assert.match(output.hookSpecificOutput.additionalContext, /claude plugin update webcraft@dev-goraebap/);
+});

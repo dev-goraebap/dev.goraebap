@@ -15,7 +15,7 @@ description: 사용자가 Webcraft 연결·사본 전환·프로젝트 규칙 �
 | 프로젝트만 다르게 하는 규칙 추가·정리 | [프로젝트 규칙](references/project-rules.md) |
 | 예전 사본 방식(`.agents/skills`의 지침 사본·동기화 훅)에서 바꾸기 | [사본에서 전환](references/migrate-from-copies.md) |
 | 프로젝트 규칙 중 공통으로 올릴 것 찾기 | [회수](#회수) |
-| 지침 제안 처리 | [지침 제안](references/proposals.md) |
+| 지침 제안 올리기·검토 | [지침 제안](references/proposals.md) |
 
 ## 연결
 
@@ -23,12 +23,13 @@ description: 사용자가 Webcraft 연결·사본 전환·프로젝트 규칙 �
 2. 예전 사본(접두사가 붙은 `*-mode`·`*-frontend` 같은 지침 폴더, `scripts/sync-skills.mjs`, 동기화 시작 훅)이 있으면 연결 대신 [사본에서 전환](references/migrate-from-copies.md)을 따릅니다.
 3. AGENTS.md에 아래 "개발 지침" 블록을 넣습니다. 파일이 없으면 만들고, 있으면 기존 프로젝트 설명과 팀 규칙을 보존한 채 블록만 더합니다. 최소 판은 설치된 플러그인의 판(`plugin.json`의 `version`)으로 적습니다.
 4. 기존 AGENTS.md에 지침과 다른 결정이 이미 있으면 [프로젝트 규칙](references/project-rules.md) 표로 옮깁니다. 확인할 수 없는 의도는 추정하지 말고 사용자에게 묻습니다.
-5. 바꾼 파일과 남은 확인 사항을 보고합니다.
+5. Claude Code 사용자에게는 이 마켓플레이스의 자동 갱신을 켤지 한 번 묻고 켜는 방법(`/plugin` → Marketplaces → `dev-goraebap` → Enable auto-update, 또는 조직 관리 설정의 `extraKnownMarketplaces` 항목에 `"autoUpdate": true` 추가)을 안내합니다. 사용자 설정 파일은 에이전트가 임의로 고치지 않습니다.
+6. 바꾼 파일과 남은 확인 사항을 보고합니다.
 
 ```markdown
 ## 개발 지침
 
-이 프로젝트는 Webcraft 플러그인(0.7.1 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(frontend·design-system·backend·api·database·architecture)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다.
+이 프로젝트는 Webcraft 플러그인(0.8.0 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(frontend·design-system·backend·api·database·architecture)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webcraft 지침을 읽을 수 없거나 설치된 판이 위 판보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
 
 ## 프로젝트 규칙
 
@@ -36,8 +37,8 @@ description: 사용자가 Webcraft 연결·사본 전환·프로젝트 규칙 �
 | --- | --- | --- | --- |
 ```
 
-표가 비어 있으면 표 대신 "지침과 다르게 하는 것은 없습니다."라고 적습니다. 개인 설치 경로나 플러그인 내부 파일 경로는 AGENTS.md에 넣지 않습니다.
+플러그인이 설치되지 않았거나 꺼져 있으면 플러그인의 어떤 지침도 읽히지 않고 AGENTS.md만 읽히므로, 지침을 읽을 수 없을 때의 행동 문장까지 블록에 넣습니다. 표가 비어 있으면 표 대신 "지침과 다르게 하는 것은 없습니다."라고 적습니다. 개인 설치 경로나 플러그인 내부 파일 경로는 AGENTS.md에 넣지 않습니다.
 
 ## 회수
 
-프로젝트 규칙 중 다른 프로젝트에도 맞는 것을 찾습니다. 제품 고유의 업무 규칙, 회사 정보, 실험 중인 결정은 제외합니다. 후보를 사용자와 확인한 뒤 [지침 제안](references/proposals.md)에 따라 로컬 제안함(`~/.goraebap/proposals/`)에 제안서를 만들고, 프로젝트 규칙 표의 이유 칸 끝에 `제안 중: <제안 파일 이름>`을 붙입니다.
+프로젝트 규칙 중 다른 프로젝트에도 맞는 것을 찾습니다. 제품 고유의 업무 규칙, 회사 정보, 실험 중인 결정은 제외합니다. 후보를 사용자와 확인한 뒤 [지침 제안](references/proposals.md)에 따라 일반화한 이슈 본문 초안을 사용자에게 보이고 승인을 받아 Webcraft 원본 저장소(`dev-goraebap/dev.goraebap`)의 이슈로 올립니다. 프로젝트 규칙 표에는 이슈 번호나 제안 표시를 붙이지 않고, 플러그인이 갱신되면 닫힌 이슈를 보고 같은 줄을 지우거나 예외로 남깁니다.
