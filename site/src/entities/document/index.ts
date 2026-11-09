@@ -18,7 +18,7 @@ export async function loadDoc(doc: GuideDoc) {
 export const docAt = (path: string) => docs.find(doc => doc.path === path);
 const label = (group: string) => group === '/blog/' ? 'Blog' : [...skillGroups.map(item => ({ path: `/webcraft/rules/${item.skill}/`, label: item.label })),
   ...contentGroups.map(item => ({ path: `/webcraft/${item.dir}/`, label: item.label })),
-  ...architectureSections.map(item => ({ path: `/webcraft/architecture/${item.id.replace('.', '-')}/`, label: `${item.id}. ${item.label}` }))].find(item => item.path === group)?.label ?? '';
+  ...architectureSections.map(item => ({ path: `/webcraft/architecture/${item.id.replace('.', '-')}/`, label: `${item.id}${item.id.includes('.') ? '' : '.'} ${item.label}` }))].find(item => item.path === group)?.label ?? '';
 export const groupLabel = label;
 
 /** 묶음 주소(예: /app-shell/)의 첫 문서. 지침은 묶음 주소가 곧 그 지침의 첫 장이다. */

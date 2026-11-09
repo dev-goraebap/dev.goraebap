@@ -5,6 +5,7 @@ import { GuideShell } from '@/widgets/site-shell';
 import { Sample, SampleGroup, Source } from '@/widgets/samples';
 import { SectionDocs } from '@/widgets/architecture';
 import { Diagram } from '@/shared/markdown/Diagram';
+import { ZoomImage } from '@/shared/markdown/ZoomImage';
 import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import styles from '@/shared/styles/prose.module.css';
 /** 문서 안의 링크: 가이드 주소는 라우터로 옮기고, 다른 사이트는 새 창으로 연다. */
@@ -17,6 +18,6 @@ function Table(props: ComponentPropsWithRef<'table'>) {
   return <div className={styles.table}><table {...props} /></div>;
 }
 
-const mdxComponents = { a: DocLink, table: Table, div: Diagram, Sample, SampleGroup, Source, SectionDocs };
+const mdxComponents = { a: DocLink, table: Table, div: Diagram, img: ZoomImage, Sample, SampleGroup, Source, SectionDocs };
 
 export function SiteApp() { return <PreferencesProvider><MDXProvider components={mdxComponents}><GuideShell /></MDXProvider></PreferencesProvider>; }

@@ -5,6 +5,7 @@ import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import { useLayoutEffect, useRef, useState, type ComponentType } from 'react';
 import type { GuideDoc } from '../../entities/document';
 import styles from '../../shared/styles/prose.module.css';
+import { useTocSpy } from './use-toc-spy';
 
 type Heading = { id: string; label: string; level: number };
 
@@ -13,6 +14,7 @@ export function DocPage({ doc, Content }: { doc: GuideDoc | null; Content: Compo
   const isPhone = useIsPhone();
   const article = useRef<HTMLElement>(null);
   const [headings, setHeadings] = useState<Heading[]>([]);
+  const [activeId, pin] = useTocSpy(headings.map(heading => heading.id), article);
   // 새 문서는 그리기 전에 맨 위(주소에 #이 있으면 그 제목)로 놓는다. 이전 스크롤 위치에서 잠깐 보이지 않게 한다.
   useLayoutEffect(() => {
     const target = location.hash ? document.getElementById(decodeURIComponent(location.hash.slice(1))) : null;
@@ -45,7 +47,7 @@ export function DocPage({ doc, Content }: { doc: GuideDoc | null; Content: Compo
     </article>
     {!isPhone ? <aside className={styles.outline}>
       {headings.length > 1 ? <Text type="supporting" color="secondary" weight="semibold">이 문서</Text> : null}
-      {headings.length > 1 ? <Outline items={headings} label="이 문서의 목차" density="compact" /> : null}
+      {headings.length > 1 ? <Outline items={headings} activeId={activeId} onActiveIdChange={pin} label="이 문서의 목차" density="compact" /> : null}
     </aside> : null}
   </div>;
 }

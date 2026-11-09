@@ -24,7 +24,7 @@ export function SectionDocs({ section }: { section: string }) {
   if (!subsections.length) return <DocList id={section} />;
   return <>
     {subsections.map(item => <section key={item.id} aria-labelledby={`section-${item.id}`}>
-      <h3 id={`section-${item.id}`}><RouterLink href={`/webcraft/architecture/${item.id.replace('.', '-')}/`}>{item.id}. {item.label}</RouterLink></h3>
+      <h3 id={`section-${item.id}`}><RouterLink href={`/webcraft/architecture/${item.id.replace('.', '-')}/`}>{item.id} {item.label}</RouterLink></h3>
       <DocList id={item.id} />
     </section>)}
   </>;

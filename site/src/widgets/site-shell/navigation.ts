@@ -18,10 +18,11 @@ const isRule = (source: string) => source.startsWith('plugins/');
 /** 절에 놓이는 문서: 프론트매터 arc42의 첫 값이 그 절인 것. */
 const docsIn = (id: string): NavEntry[] => docs.filter(doc => doc.arc42?.[0] === id)
   .sort((a, b) => Number(isRule(b.source)) - Number(isRule(a.source)))
-  .map(doc => ({ path: doc.path, label: doc.title }));
+  // 절 번호를 이어 붙인다: 4절의 문서는 4.1, 4.2…, 8.1절의 문서는 8.1.1, 8.1.2…
+  .map((doc, index) => ({ path: doc.path, label: `${id}.${index + 1} ${doc.title}` }));
 const sectionEntry = (section: (typeof architectureSections)[number]): NavEntry => {
   const subsections = architectureSections.filter(item => item.id.startsWith(`${section.id}.`));
-  return { path: sectionPath(section.id), label: `${section.id}. ${section.label}`, icon: section.icon as IconName | undefined,
+  return { path: sectionPath(section.id), label: `${section.id}${section.id.includes('.') ? '' : '.'} ${section.label}`, icon: section.icon as IconName | undefined,
     children: subsections.length ? subsections.map(sectionEntry) : docsIn(section.id) };
 };
 
@@ -33,7 +34,7 @@ export const guideSpace: NavSpace = {
   id: 'webcraft', title: 'Webcraft',
   sections: [
     { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: 'home' }, ...entriesOf(rules(['goraebap-mode', 'manage-workflow']))] },
-    { title: '아키텍처', entries: architectureSections.filter(section => !section.id.includes('.')).map(sectionEntry) },
+    { title: '아키텍처', entries: [{ path: '/webcraft/architecture/', label: '아키텍처 정의서', icon: 'view' }, ...architectureSections.filter(section => !section.id.includes('.')).map(sectionEntry)] },
     { title: 'UI 키트', entries: entriesOf(content(['catalog'])) },
   ],
 };
