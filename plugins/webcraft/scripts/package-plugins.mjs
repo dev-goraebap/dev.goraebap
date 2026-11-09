@@ -53,6 +53,8 @@ export async function packagePlugins() {
         await put(`${pluginPath}/skills/${name}/agents/openai.yaml`, 'policy:\n  allow_implicit_invocation: false\n');
       }
     }
+    // 새 판 알림 훅은 Claude Code만 담는다(Codex의 플러그인 훅은 확인하지 못했다). Codex는 입구의 판 확인을 따른다.
+    if (agent === 'claude') await copyFiles(path.join(root, 'hooks'), `${pluginPath}/hooks`, ['.json', '.mjs']);
     await put(`${pluginPath}/README.md`, await fs.readFile(path.join(root, 'docs/plugin-usage.md')));
     const manifest = { name: pkg.name, version: pkg.version, description, author: { name: 'dev-goraebap' }, skills: './skills/' };
     if (agent === 'codex') {
