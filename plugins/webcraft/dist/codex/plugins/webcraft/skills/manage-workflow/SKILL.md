@@ -1,6 +1,7 @@
 ---
 name: manage-workflow
 description: 사용자가 Webcraft 연결·사본 전환·프로젝트 규칙 정리·지침 제안 처리를 요청했을 때만 씁니다. 일반 제품 구현에는 쓰지 않습니다.
+arc42: "none"
 ---
 
 # 프로젝트와 지침 연결

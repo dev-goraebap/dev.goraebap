@@ -2,6 +2,7 @@
 disable-model-invocation: true
 name: design-system
 description: Astryx 기반 웹 앱에서 테마·아이콘·부품 조합·앱 셸·페이지 배치·반응형과 화면 상호작용을 일관되게 구현합니다. 부품·스타일·테마·레이아웃·화면 패턴을 만들거나 바꿀 때 사용합니다.
+arc42: "8.5, 2"
 ---
 
 # 디자인 시스템

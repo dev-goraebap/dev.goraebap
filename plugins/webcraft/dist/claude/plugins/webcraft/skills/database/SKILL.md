@@ -2,6 +2,7 @@
 disable-model-invocation: true
 name: database
 description: Flyway와 jOOQ를 사용하는 프로젝트의 스키마 변경, 기존 데이터 이관, 생성 코드 동기화를 수행합니다. 테이블·열·마이그레이션·DB 이관을 다룰 때 사용합니다.
+arc42: "8.3, 2, 7"
 ---
 
 # DB와 마이그레이션

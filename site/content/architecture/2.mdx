@@ -1,0 +1,14 @@
+---
+title: "2. 제약"
+description: "웹 플랫폼의 기본 기술 스택과 설계·구현 전제를 다룹니다."
+sidebar:
+  order: 2
+---
+
+arc42의 2절은 설계와 구현의 자유도를 제한하는 기술적·조직적 제약을 다룹니다. Webcraft는 프론트엔드에 React·TypeScript·Vite와 TanStack Router/Query, Feature-Sliced Design(FSD) 파일 구조를 기본으로 삼고, 화면 표현은 Astryx 디자인 시스템과 Solar 아이콘 위에서 조립합니다. 백엔드는 Java·Spring Boot·jOOQ 기반의 모듈형 모놀리스를, 데이터베이스는 관계형 DB와 Flyway 마이그레이션·jOOQ 코드 생성을 전제합니다.
+
+각 영역의 구체적인 버전, 패키지 루트, 실제 DB 엔진, 실행 환경과 배포 정책은 프로젝트가 정합니다. 기존 프로젝트가 다른 기술이나 디자인을 이미 채택했다면 그 선택과 `AGENTS.md`의 프로젝트 규칙을 우선하며, 기능 작업 중에 임의로 스택 전환을 끼워 넣지 않습니다.
+
+## 이 절의 지침
+
+<SectionDocs section="2" />

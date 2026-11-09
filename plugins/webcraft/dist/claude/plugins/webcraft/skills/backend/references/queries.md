@@ -1,3 +1,7 @@
+---
+arc42: "8.2"
+---
+
 # 조회 포트
 
 화면 조회 포트 `XxxQuery`는 그 조회를 소유한 서비스와 같은 피처의 application에 둡니다. 서비스와 조회 포트는 1:1로 구성합니다. 구현은 infrastructure의 package-private `JooqXxxQuery`에 둡니다. 도메인 저장소 구현과 합치지 않습니다.

@@ -1,3 +1,7 @@
+---
+arc42: "8.5"
+---
+
 # 테마와 색상
 
 테마는 색·글자·간격·면·경계·모서리와 부품 변형의 기본값을 한 곳에서 정합니다. 프로젝트가 값을 정하지 않았으면 [기본 테마](https://github.com/dev-goraebap/dev.goraebap/blob/main/site/src/shared/ui/foundations/theme.ts)에서 출발합니다. Stone 테마를 확장하며 Astryx 내부 클래스 덮어쓰기와 `!important`를 쓰지 않습니다.
