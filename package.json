@@ -14,7 +14,8 @@
     "site:preview": "vite preview --config site/vite.config.ts",
     "site:check": "tsc -p site/tsconfig.json",
     "site:test": "vitest run --config site/vitest.config.ts",
-    "site:icons": "node site/scripts/generate-icons.mjs"
+    "site:icons": "node site/scripts/generate-icons.mjs",
+    "site:sizes": "node site/scripts/measure-samples.mjs"
   },
   "devDependencies": {
     "@astryxdesign/core": "^0.5.2",

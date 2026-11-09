@@ -7,7 +7,11 @@
   border-radius: var(--radius-container, 0.75rem);
   background: var(--color-background-body);
 }
-.sample iframe { display: block; border: 0; transform-origin: top left; background: transparent; }
+.sample iframe { display: block; border: 0; transform-origin: top left; background: transparent; opacity: 0; transition: opacity 200ms ease; }
+/* 견본은 다 그려지고 크기가 정해진 뒤에 나타난다. 크기를 몰라 늘어나는 동안은 높이를 부드럽게 바꾼다. */
+.sample iframe[data-ready] { opacity: 1; }
+.sample-stage { transition: block-size 200ms ease; }
+@media (prefers-reduced-motion: reduce) { .sample iframe, .sample-stage { transition: none; } }
 
 /* 틀 위 한 줄: 왼쪽 견본 이름, 오른쪽 기기 전환과 새 창. 기기 전환은 키트의 보기 알약과 같은 모양(고른 쪽만 옅게 채움)이다. */
 .sample-bar { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-3, 0.75rem); margin-block-end: var(--spacing-2, 0.5rem);

@@ -28,3 +28,16 @@ html, body, #root { block-size: 100%; margin: 0; }
 ::-webkit-scrollbar-thumb { border: 2px solid transparent; border-radius: 999px; background-clip: padding-box;
   background-color: color-mix(in srgb, var(--color-text-primary) 16%, transparent); }
 ::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--color-text-primary) 30%, transparent); }
+
+/* 화면 전환(View Transition): 문서 전체 대신 이름 붙인 콘텐츠 영역(guide-content)만 200ms 교차 페이드한다(업무 앱과 같은 값). */
+:root { view-transition-name: none; }
+::view-transition { pointer-events: none; }
+::view-transition-group(guide-content) { animation-duration: 200ms; animation-timing-function: ease-in-out; }
+::view-transition-image-pair(guide-content) { isolation: isolate; }
+::view-transition-old(guide-content) { animation: guide-content-out 200ms ease-in-out both; mix-blend-mode: plus-lighter; }
+::view-transition-new(guide-content) { animation: guide-content-in 200ms ease-in-out both; mix-blend-mode: plus-lighter; }
+@keyframes guide-content-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes guide-content-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(guide-content), ::view-transition-old(guide-content), ::view-transition-new(guide-content) { animation: none; }
+}

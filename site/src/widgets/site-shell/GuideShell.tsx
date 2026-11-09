@@ -20,7 +20,7 @@ import { Page } from '@/shared/ui/layouts/page/Page';
 import { BootCover } from '@/shared/ui/patterns/boot/BootCover';
 import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import { Outlet, useRouter, useRouterState } from '@tanstack/react-router';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { docAt, firstOf, groupLabel, searchEntries } from '../../entities/document';
 import { RocketMark } from '../../shared/loading/RocketMark';
 import styles from '../../shared/styles/prose.module.css';
@@ -62,19 +62,29 @@ function useFirstResolved() {
   return isReady;
 }
 
+/** 이 시간 안에 끝나는 이동에는 진행 표시를 띄우지 않는다. */
+const SHOW_AFTER_MS = 150;
+/** 한 번 띄운 진행 표시는 이만큼은 두어 깜빡이지 않게 한다. */
+const KEEP_AT_LEAST_MS = 300;
+
 /**
- * 데이터 상태 규칙의 전환: 다음 문서가 준비될 때까지 지금 문서를 보이고, 180ms가 넘을 때만 본문 자리에 덮개를 씌운다.
- * 새 문서는 160ms에 걸쳐 나타난다(DocPage).
+ * 화면 이동의 진행 표시(업무 앱의 RouteStage와 같은 규칙). 가리는 덮개를 두지 않는다: 다음 문서를 준비하는 동안 지금
+ * 문서를 그대로 두고, 150ms가 지나면 콘텐츠 카드 위쪽 테두리가 테마 강조색으로 흐른다. 띄웠으면 최소 300ms 둔 뒤 내린다.
+ * 준비된 문서끼리는 콘텐츠 영역만 View Transition으로 200ms 교차 페이드한다(main.tsx, base.css).
  */
-function useCover() {
-  const isPending = useRouterState({ select: state => state.status === 'pending' && !!state.resolvedLocation && state.location.pathname !== state.resolvedLocation.pathname });
-  const [isCovered, setCovered] = useState(false);
+function useProgress() {
+  const moving = useRouterState({ select: state => state.status === 'pending' && !!state.resolvedLocation && state.location.pathname !== state.resolvedLocation.pathname });
+  const [shown, setShown] = useState(false);
+  const shownAt = useRef(0);
   useEffect(() => {
-    if (!isPending) { setCovered(false); return undefined; }
-    const timer = window.setTimeout(() => setCovered(true), 180);
+    if (moving) {
+      const timer = window.setTimeout(() => { shownAt.current = Date.now(); setShown(true); }, SHOW_AFTER_MS);
+      return () => window.clearTimeout(timer);
+    }
+    const timer = window.setTimeout(() => setShown(false), Math.max(0, KEEP_AT_LEAST_MS - (Date.now() - shownAt.current)));
     return () => window.clearTimeout(timer);
-  }, [isPending]);
-  return isCovered;
+  }, [moving]);
+  return { moving, shown };
 }
 
 /**
@@ -85,7 +95,7 @@ export function GuideShell() {
   const { mode, layout } = usePreferences();
   const isPhone = useIsPhone();
   const isReady = useFirstResolved();
-  const isCovered = useCover();
+  const progress = useProgress();
   const pathname = useRouterState({ select: state => state.resolvedLocation?.pathname ?? state.location.pathname });
   const doc = docAt(pathname);
   useEffect(() => { document.title = `${doc?.title ?? (pathname === '/blog/' ? '모든 글' : '설정')} · dev-goraebap`; }, [doc]);
@@ -108,15 +118,14 @@ export function GuideShell() {
           footer={folded => folded ? null : <div className={shell.footer}><span className={shell.version}>v{siteVersion}</span></div>}
           pageFooter={!isPhone ? <AgentBar onAgent={() => void router.navigate({ href: '/settings/plugins/' })} /> : undefined}
           phoneAppBar={<div className={shell.phoneBrand}><Brand isFolded={false} area={area} /></div>}
-          // 묶음 메뉴는 묶음의 첫 문서로 바로 간다.
-          onNavigate={path => void router.navigate({ href: firstOf(path) ?? path })}>
+          // 자기 페이지가 없는 묶음 메뉴(UI 키트의 묶음 등)만 묶음의 첫 문서로 간다. 아키텍처 절처럼 개요 페이지가 있으면 그 페이지로.
+          onNavigate={path => void router.navigate({ href: docAt(path) ? path : firstOf(path) ?? path })}>
           <Page crumbs={crumbs} views={isPhone && pathname === '/blog/' ? <></> : undefined} tools={pathname === '/blog/' ? <BlogTools /> : undefined} hasHeading={pathname === '/blog/'} hasPattern={false} stableGutter>
-            <div className={styles.stage} aria-busy={isCovered || undefined}>
-              <div inert={isCovered || undefined}><Outlet /></div>
-              {isCovered ? <div className={styles.cover} role="status" aria-label="문서를 불러오는 중">
-                <span className={styles.coverMark} aria-hidden="true"><RocketMark /></span>
-                <Text type="supporting" color="secondary">불러오는 중입니다</Text>
-              </div> : null}
+            <div className={styles.stage} aria-busy={progress.moving || undefined}>
+              {/* 늘 그려 두고 보이기만 바꾼다. 화면 읽기 프로그램에는 상태 문구로 알린다. */}
+              <div className={styles.glow} data-visible={progress.shown || undefined} data-route-progress={progress.shown ? '' : undefined} aria-hidden="true" />
+              <span className={styles.spoken} role="status" aria-live="polite">{progress.shown ? '다음 문서를 불러오는 중' : ''}</span>
+              <div className={styles.content}><Outlet /></div>
             </div>
           </Page>
         </AppFrame>
