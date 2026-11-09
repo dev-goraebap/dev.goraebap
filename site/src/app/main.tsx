@@ -6,6 +6,8 @@ import { docAt, firstOf, loadDoc } from '../entities/document';
 import { DocPage } from '../pages/document';
 import { SettingsPage } from '../pages/settings';
 import { BlogPage } from '../pages/blog';
+import { prepareDiagrams } from '../shared/markdown/Diagram';
+import { prepareSamples } from '../widgets/samples';
 import { SiteApp } from './providers';
 
 /** 주소의 문서를 찾아 본문을 불러온다. 묶음 주소(/app-shell/ 등)는 그 묶음의 첫 문서로 보낸다. */
@@ -28,7 +30,9 @@ async function load(pathname: string) {
     if (first) throw redirect({ href: first, replace: true } as never);
     return { doc: null, Content: null };
   }
-  return { doc, Content: await loadDoc(doc) };
+  // 본문 코드와 함께 견본 정보와 도표 그림을 준비한다. 새 문서는 처음부터 제 높이로 그려지고 뒤늦게 밀리지 않는다.
+  const [Content] = await Promise.all([loadDoc(doc), prepareSamples(doc.samples ?? []), prepareDiagrams(doc.diagrams ?? [])]);
+  return { doc, Content };
 }
 
 const loader = ({ location }: { location: { pathname: string } }) => load(location.pathname);
@@ -43,8 +47,17 @@ const router = createRouter({
   routeTree: rootRoute.addChildren([indexRoute, docRoute]),
   trailingSlash: 'always',
   defaultPreload: 'intent',
-  // 다음 문서가 준비될 때까지 지금 문서를 그대로 둔다. 덮개는 셸이 180ms 뒤에 씌운다.
+  // 다음 문서가 준비될 때까지 지금 문서를 그대로 둔다. 진행 표시는 셸이 150ms 뒤에 띄운다.
   defaultPendingMs: Infinity,
+  // 준비된 문서끼리는 콘텐츠 영역만 교차 페이드한다(업무 앱과 같은 규칙). 라우터는 loader가 끝난 뒤 전환을 시작하므로
+  // 준비하는 동안 진행 표시가 멈추지 않는다. 동작 줄이기 설정, 진행 중인 전환, 크게 보기 등 열린 창 위에서는 하지 않는다.
+  defaultViewTransition: typeof CSS !== 'undefined' && CSS.supports('selector(:active-view-transition-type(guide-content))') && {
+    types: ({ fromLocation, pathChanged }) => {
+      if (!fromLocation || !pathChanged || matchMedia('(prefers-reduced-motion: reduce)').matches
+        || document.documentElement.matches(':active-view-transition') || document.querySelector('dialog[open], .yarl__portal_open')) return false;
+      return ['guide-content'];
+    },
+  },
 });
 
 declare module '@tanstack/react-router' { interface Register { router: typeof router } }

@@ -24,6 +24,9 @@ export type GuideDoc = {
   hasTitle: boolean;
   /** 아키텍처 정의서(arc42)에서 이 문서가 맡는 절. 첫 값이 메뉴에서 놓일 절이다. 해당 없으면 비운다. */
   arc42?: string[];
+  /** 본문이 띄우는 견본 id와 도표(Mermaid) 원문. 문서로 옮기기 전에 미리 준비해 빈 자리로 그렸다가 채우지 않게 한다. */
+  samples?: string[];
+  diagrams?: string[];
   kind?: 'post';
   date?: string;
   updated?: string;
@@ -78,6 +81,13 @@ const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => {
 const posix = (file: string) => file.split(path.sep).join('/');
 const repoPath = (file: string) => posix(path.relative(path.resolve(here, '..'), file));
 
+/** 본문에서 미리 준비할 것: <Sample id="…">의 id와 ```mermaid 코드 블록의 원문. */
+const assetsOf = (text: string) => {
+  const samples = [...new Set([...text.matchAll(/<Sample\s+id="([^"]+)"/g)].map(match => match[1]))];
+  const diagrams = [...text.matchAll(/^```mermaid\r?\n([\s\S]*?)\r?\n```/gm)].map(match => match[1].replace(/\r\n/g, '\n'));
+  return { ...(samples.length ? { samples } : {}), ...(diagrams.length ? { diagrams } : {}) };
+};
+
 /** 지침 Markdown 파일의 사이트 주소. SKILL.md는 지침 첫 장, 나머지는 하위 경로. */
 export function skillRoute(file: string) {
   const relative = posix(path.relative(skillsRoot, file)).replace(/\.md$/, '');
@@ -106,7 +116,7 @@ function skillDocs(): GuideDoc[] {
       const meta = frontmatter(text);
       return {
         path: skillRoute(file), title: /^# (.+)$/m.exec(text)?.[1].trim() ?? relative,
-        description: isEntry ? meta.description : undefined, arc42: meta.arc42,
+        description: isEntry ? meta.description : undefined, arc42: meta.arc42, ...assetsOf(text),
         group: meta.arc42 ? sectionPath(meta.arc42[0]) : `/webcraft/rules/${skill}/`,
         order: isEntry ? 0 : index >= 0 ? index + 1 : 500, source: repoPath(file), hasTitle: true,
       };
@@ -117,9 +127,10 @@ function skillDocs(): GuideDoc[] {
 function contentDocs(): GuideDoc[] {
   return walk(contentRoot).filter(file => /\.mdx?$/.test(file) && !posix(path.relative(contentRoot, file)).startsWith('blog/')).map(file => {
     const relative = posix(path.relative(contentRoot, file)).replace(/\.mdx?$/, '').replace(/(^|\/)index$/, '');
-    const meta = frontmatter(readFileSync(file, 'utf8'));
+    const text = readFileSync(file, 'utf8');
+    const meta = frontmatter(text);
     const group = contentGroups.find(item => relative === item.dir || relative.startsWith(`${item.dir}/`));
-    return { path: relative ? `/webcraft/${relative}/` : '/webcraft/', title: meta.title ?? relative, description: meta.description, arc42: meta.arc42,
+    return { path: relative ? `/webcraft/${relative}/` : '/webcraft/', title: meta.title ?? relative, description: meta.description, arc42: meta.arc42, ...assetsOf(text),
       group: meta.arc42 ? sectionPath(meta.arc42[0]) : group ? `/webcraft/${group.dir}/` : '/webcraft/', order: meta.order, source: repoPath(file), hasTitle: false };
   }).sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 }

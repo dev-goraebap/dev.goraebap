@@ -66,16 +66,30 @@
  * 본문 자리: 다음 문서가 180ms 넘게 걸릴 때만 덮개를 씌운다. 새 문서는 160ms에 걸쳐 나타난다(교차 페이드의 들어오는 쪽).
  * 화면 전환 API(view transition)는 쓰지 않는다. 전환 중인 본문을 맨 위층에 따로 그려 휴대폰 하단 탭·머리 줄 위로 겹치기 때문이다.
  */
-.stage { position: relative; min-block-size: 100%; }
-.cover { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: var(--spacing-3);
-  padding-block-start: 25vh; background: var(--color-background-surface); }
-/* 전환 덮개의 로켓: 첫 방문 덮개(10rem)의 절반. 선은 보조 글자색, 면은 덮개 면 색으로 칠한다. */
-.coverMark { inline-size: 5rem; block-size: 5rem; }
-.coverMark :global(svg) [stroke="rgb(0,0,0)"] { stroke: var(--color-text-secondary); }
-.coverMark :global(svg) [fill="rgb(254,254,255)"] { fill: var(--color-background-surface); }
-.body[data-arrive] { animation: arrive 160ms ease-out; }
-@keyframes arrive { from { opacity: 0; } to { opacity: 1; } }
-@media (prefers-reduced-motion: reduce) { .body[data-arrive] { animation: none; } }
+.stage { position: relative; isolation: isolate; min-block-size: 100%; }
+/* 화면이 바뀔 때 교차 페이드하는 단위(View Transition): 콘텐츠 영역 하나. 진행 표시 줄은 이 밖에 있어 그대로 움직인다. */
+.content { view-transition-name: guide-content; min-block-size: 100%; }
+/*
+ * 다음 문서를 준비하는 동안 콘텐츠 카드의 위쪽 테두리가 빛난다(업무 앱의 진행 표시와 같다). 카드 맨 위에 2px 줄을 겹쳐
+ * 배치를 밀지 않는다. 밝은 덩어리가 왼쪽에서 오른쪽으로 흐르고(1.6s), 줄 전체가 숨 쉬듯 밝아졌다 어두워진다(2.4s).
+ */
+.glow {
+  position: absolute; inset-block-start: 0; inset-inline: 0; z-index: 4; block-size: 2px; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--color-accent) 85%, transparent), transparent) 0 0 / 40% 100% no-repeat,
+    color-mix(in srgb, var(--color-accent) 22%, transparent);
+  box-shadow: 0 0 10px 0 color-mix(in srgb, var(--color-accent) 35%, transparent);
+  opacity: 0; transition: opacity 240ms ease;
+}
+.glow[data-visible] { opacity: 1; animation: glow-flow 1.6s ease-in-out infinite, glow-breathe 2.4s ease-in-out infinite; }
+@keyframes glow-flow { from { background-position: -40% 0, 0 0; } to { background-position: 140% 0, 0 0; } }
+@keyframes glow-breathe { 0%, 100% { filter: brightness(0.85); } 50% { filter: brightness(1.15); } }
+@media (prefers-reduced-motion: reduce) {
+  .glow { transition: none; }
+  .glow[data-visible] { animation: none; background: color-mix(in srgb, var(--color-accent) 55%, transparent); }
+}
+/* 화면에는 보이지 않고 화면 읽기 프로그램만 읽는 상태 문구. */
+.spoken { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 .identity { display: flex; flex-direction: column; gap: .125rem; min-inline-size: 0; }
 .identity > span { padding-inline-start: .5rem; color: var(--color-text-secondary); font-size: .6875rem; line-height: 1.2; }

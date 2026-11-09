@@ -34,7 +34,7 @@ export function DocPage({ doc, Content }: { doc: GuideDoc | null; Content: Compo
     observer.observe(node, { childList: true, subtree: true });
     return () => observer.disconnect();
   }, [doc?.path]);
-  return <div className={styles.body} data-arrive>
+  return <div className={styles.body}>
     <article ref={article} className={styles.prose}>
       {doc ? <>{doc.hasTitle ? null : <h1>{doc.title}</h1>}{doc.kind === 'post' ? <div className={styles.postMeta}><time dateTime={doc.date}>{doc.date}</time>{doc.updated && doc.updated !== doc.date ? <span>수정 {doc.updated}</span> : null}{doc.tags?.map(tag => <RouterLink key={tag} href={`/blog/?tag=${encodeURIComponent(tag)}`}>{tag}</RouterLink>)}</div> : null}{Content ? <Content /> : null}</> : <>
         <h1>없는 문서</h1>
