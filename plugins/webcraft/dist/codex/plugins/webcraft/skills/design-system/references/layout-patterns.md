@@ -1,3 +1,7 @@
+---
+arc42: "8.6"
+---
+
 # 페이지 배치
 
 페이지([Page](https://github.com/dev-goraebap/dev.goraebap/blob/main/site/src/shared/ui/layouts/page/Page.tsx))는 머리 줄·배너 자리·툴바·적용 줄·본문의 순서를 고정합니다. 머리와 툴바는 고정하고 본문만 스크롤합니다. 구현 전에 기존 Page와 같은 역할의 화면을 읽고 각 조작을 보기·조건·표시·주 동작으로 나눕니다.

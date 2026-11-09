@@ -3,6 +3,7 @@ title: "구현 메모: Astryx"
 description: "규칙을 Astryx와 TanStack으로 구현하는 방법"
 sidebar:
   order: 13
+arc42: "8.8"
 ---
 
 [앱 셸 개요](/app-shell/overview/)부터 정리한 화면 설계 규칙을 현재 기술 스택(Astryx 디자인 시스템, React, TanStack Router·Query)으로 구현할 때 어떤 부품과 훅을 쓰는지 대응합니다. 앞선 문서들은 특정 UI 라이브러리에 묶이지 않도록 셸, 머리 줄, 도구 자리, 본문 열 같은 역할로 규칙을 정의했습니다. Astryx와 TanStack에 맞춘 구현 방법은 이 페이지에만 모아 두며, 기술 스택을 바꾸면 앞선 규칙은 그대로 두고 이 페이지만 다시 씁니다.

@@ -2,6 +2,7 @@
 disable-model-invocation: true
 name: api
 description: 웹 플랫폼의 HTTP 계약, 오류 응답, 인증·권한, 첨부와 OpenAPI 생성 타입을 맞춥니다. 엔드포인트·DTO·권한·업로드 계약을 만들거나 고칠 때 사용합니다.
+arc42: "8.1"
 ---
 
 # API 계약

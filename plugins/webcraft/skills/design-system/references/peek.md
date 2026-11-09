@@ -1,3 +1,7 @@
+---
+arc42: "8.6"
+---
+
 # 미리보기 패널
 
 목록을 그대로 둔 채 항목을 차례로 훑을 때 목록 옆에 여는 비모달 패널입니다. Linear는 Space 키로, Plane은 행 클릭으로 엽니다. 우리는 Plane과 달리 미리보기 대상을 주소에 남겨 뒤로가기·새로고침·공유가 같은 화면을 엽니다. 구현은 키트의 [peek](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/patterns/routing)와 [PeekLayout](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/layouts/peek)·[InboxLayout](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/layouts/peek)·[InboxPane](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/layouts/peek)이 맡습니다.

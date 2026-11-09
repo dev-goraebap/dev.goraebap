@@ -1,3 +1,7 @@
+---
+arc42: "8.2, 5, 6"
+---
+
 # 계층과 명령
 
 모듈은 단수 이름으로 두고 내부를 application·domain·infrastructure로 나눕니다. 모듈 루트의 Facade·Spi·Event가 공개 계약입니다. 다른 모듈의 내부 패키지를 직접 참조하거나 순환 호출하지 않습니다.

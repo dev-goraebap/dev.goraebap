@@ -22,6 +22,8 @@ export type GuideDoc = {
   source: string;
   /** 본문이 스스로 h1을 가지면 true(지침 Markdown). */
   hasTitle: boolean;
+  /** 아키텍처 정의서(arc42)에서 이 문서가 맡는 절. 첫 값이 메뉴에서 놓일 절이다. 해당 없으면 비운다. */
+  arc42?: string[];
   kind?: 'post';
   date?: string;
   updated?: string;
@@ -41,8 +43,24 @@ export const skillGroups = [
   { skill: 'manage-workflow', label: '프로젝트 연결', icon: 'attachment' },
 ] as const;
 
+/**
+ * 아키텍처 메뉴의 절(arc42). 지침 Markdown과 화면 해설은 프론트매터 arc42로 자기 절을 밝히고, 메뉴는 첫 값의 절 아래에
+ * 둔다. 8절은 하위 절로 나눈다. 절마다 site/content/architecture/<id>.mdx(점은 하이픈) 개요 페이지가 있다.
+ */
+export const architectureSections = [
+  { id: '1', label: '소개와 목표', icon: 'home' }, { id: '2', label: '제약', icon: 'lock' }, { id: '3', label: '맥락과 범위', icon: 'link' },
+  { id: '4', label: '해결 전략', icon: 'layout-board' }, { id: '5', label: '구성 요소', icon: 'layout-grid' }, { id: '6', label: '실행', icon: 'clock' },
+  { id: '7', label: '배치와 운영', icon: 'archive' }, { id: '8', label: '횡단 관심사', icon: 'layout-list' },
+  { id: '8.1', label: 'API와 모듈 계약' }, { id: '8.2', label: '백엔드 코드' }, { id: '8.3', label: '데이터와 마이그레이션' },
+  { id: '8.4', label: '프론트 코드와 상태' }, { id: '8.5', label: '화면 기초' }, { id: '8.6', label: '화면 배치와 탐색' },
+  { id: '8.7', label: '데이터 상태와 입력' }, { id: '8.8', label: 'UI 부품 사용' }, { id: '8.9', label: '검증' },
+  { id: '9', label: '아키텍처 결정', icon: 'book' },
+] as const;
+export const sectionPath = (id: string) => `/webcraft/architecture/${id.replace('.', '-')}/`;
+
 /** 화면 해설·견본 묶음(site/content의 폴더). */
 export const contentGroups = [
+  { dir: 'architecture', label: '아키텍처', icon: 'layout-board' },
   { dir: 'common', label: '화면 공통', icon: 'layout-grid' },
   { dir: 'app-shell', label: '앱 셸', icon: 'sidebar' },
   { dir: 'catalog/foundations', label: 'Foundations (디자인 기초)', icon: 'sun' },
@@ -70,7 +88,8 @@ export function skillRoute(file: string) {
 const frontmatter = (text: string) => {
   const block = /^---\r?\n([\s\S]*?)\r?\n---/.exec(text)?.[1] ?? '';
   const field = (name: string) => /^\s*(?:"|')?(.*?)(?:"|')?\s*$/.exec(new RegExp(`^${name}:\\s*(.+)$`, 'm').exec(block)?.[1] ?? '')?.[1];
-  return { title: field('title'), description: field('description'), order: Number(/order:\s*(\d+)/.exec(block)?.[1] ?? 99) };
+  const arc42 = field('arc42')?.split(',').map(value => value.trim()).filter(value => value && value !== 'none');
+  return { title: field('title'), description: field('description'), order: Number(/order:\s*(\d+)/.exec(block)?.[1] ?? 99), arc42: arc42?.length ? arc42 : undefined };
 };
 
 function skillDocs(): GuideDoc[] {
@@ -84,9 +103,11 @@ function skillDocs(): GuideDoc[] {
       const relative = posix(path.relative(dir, file));
       const isEntry = relative === 'SKILL.md';
       const index = linked.indexOf(relative);
+      const meta = frontmatter(text);
       return {
         path: skillRoute(file), title: /^# (.+)$/m.exec(text)?.[1].trim() ?? relative,
-        description: isEntry ? frontmatter(text).description : undefined, group: `/webcraft/rules/${skill}/`,
+        description: isEntry ? meta.description : undefined, arc42: meta.arc42,
+        group: meta.arc42 ? sectionPath(meta.arc42[0]) : `/webcraft/rules/${skill}/`,
         order: isEntry ? 0 : index >= 0 ? index + 1 : 500, source: repoPath(file), hasTitle: true,
       };
     }).sort((a, b) => a.order - b.order || a.path.localeCompare(b.path));
@@ -98,8 +119,8 @@ function contentDocs(): GuideDoc[] {
     const relative = posix(path.relative(contentRoot, file)).replace(/\.mdx?$/, '').replace(/(^|\/)index$/, '');
     const meta = frontmatter(readFileSync(file, 'utf8'));
     const group = contentGroups.find(item => relative === item.dir || relative.startsWith(`${item.dir}/`));
-    return { path: relative ? `/webcraft/${relative}/` : '/webcraft/', title: meta.title ?? relative, description: meta.description,
-      group: group ? `/webcraft/${group.dir}/` : '/webcraft/', order: meta.order, source: repoPath(file), hasTitle: false };
+    return { path: relative ? `/webcraft/${relative}/` : '/webcraft/', title: meta.title ?? relative, description: meta.description, arc42: meta.arc42,
+      group: meta.arc42 ? sectionPath(meta.arc42[0]) : group ? `/webcraft/${group.dir}/` : '/webcraft/', order: meta.order, source: repoPath(file), hasTitle: false };
   }).sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 }
 
@@ -164,7 +185,8 @@ export function guideContent(): Plugin {
     load(source) {
       if (source !== `\0${id}`) return undefined;
       const docs = siteDocuments();
-      return `export const docs = ${JSON.stringify(docs)};\nexport const skillGroups = ${JSON.stringify(skillGroups)};\nexport const contentGroups = ${JSON.stringify(contentGroups)};`;
+      return `export const docs = ${JSON.stringify(docs)};\nexport const skillGroups = ${JSON.stringify(skillGroups)};\nexport const contentGroups = ${JSON.stringify(contentGroups)};
+export const architectureSections = ${JSON.stringify(architectureSections)};`;
     },
     generateBundle() {
       const root = path.join(contentRoot, 'blog/posts');

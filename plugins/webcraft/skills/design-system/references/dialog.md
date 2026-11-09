@@ -1,3 +1,7 @@
+---
+arc42: "8.6"
+---
+
 # 공통 다이얼로그
 
 모든 대화상자는 한 틀([AppDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/site/src/shared/ui/composites/dialog/AppDialog.tsx))을 씁니다. 머리·스크롤 본문·선택적 바닥이며 긴 본문에서도 본문만 스크롤하고 제목·닫기·마지막 동작은 보입니다. 제품 화면은 Astryx Dialog를 직접 쓰지 않습니다.

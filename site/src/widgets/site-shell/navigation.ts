@@ -1,4 +1,4 @@
-import { contentGroups, skillGroups } from 'virtual:guide-docs';
+import { architectureSections, contentGroups, skillGroups } from 'virtual:guide-docs';
 import { docs } from '@/entities/document';
 import type { IconName } from '@/shared/ui/foundations/icons/solar-icon';
 import type { NavEntry, NavSpace } from '@/shared/ui/layouts/app/nav';
@@ -12,17 +12,29 @@ const content = (dirs: string[]) => contentGroups.filter(item => dirs.some(dir =
 const rules = (skills: string[]) => skillGroups.filter(item => skills.includes(item.skill))
   .map(item => ({ path: `/webcraft/rules/${item.skill}/`, label: item.label, icon: item.icon }));
 
+const sectionPath = (id: string) => `/webcraft/architecture/${id.replace('.', '-')}/`;
+/** 지침이 먼저, 화면 해설이 뒤에. 같은 종류 안에서는 문서 목록의 순서를 지킨다. */
+const isRule = (source: string) => source.startsWith('plugins/');
+/** 절에 놓이는 문서: 프론트매터 arc42의 첫 값이 그 절인 것. */
+const docsIn = (id: string): NavEntry[] => docs.filter(doc => doc.arc42?.[0] === id)
+  .sort((a, b) => Number(isRule(b.source)) - Number(isRule(a.source)))
+  .map(doc => ({ path: doc.path, label: doc.title }));
+const sectionEntry = (section: (typeof architectureSections)[number]): NavEntry => {
+  const subsections = architectureSections.filter(item => item.id.startsWith(`${section.id}.`));
+  return { path: sectionPath(section.id), label: `${section.id}. ${section.label}`, icon: section.icon as IconName | undefined,
+    children: subsections.length ? subsections.map(sectionEntry) : docsIn(section.id) };
+};
+
 /**
- * 메뉴: 소개 → 공통(작업 방식·구조·연결) → 클라이언트(지침·화면 해설·견본) → 서버(지침). 문서 종류가 아니라 영역으로 묶어
- * 화면을 만드는 사람이 지침·해설·견본을 한 묶음 안에서 오간다.
+ * 메뉴: 소개(작업 방식·프로젝트 연결) → 아키텍처(arc42 절, 지침과 해설을 절마다) → UI 키트(부품과 견본). 규칙은 아키텍처의
+ * 절에서 찾고, 규칙대로 만든 부품과 견본은 UI 키트에서 본다. 백엔드·프론트를 따로 나누지 않고 8절의 하위 절로 가른다.
  */
 export const guideSpace: NavSpace = {
   id: 'webcraft', title: 'Webcraft',
   sections: [
-    { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: 'home' }] },
-    { title: '공통', entries: entriesOf(rules(['goraebap-mode', 'architecture', 'manage-workflow'])) },
-    { title: '클라이언트', entries: [...entriesOf(rules(['frontend', 'design-system'])), ...entriesOf(content(['common', 'app-shell', 'catalog']))] },
-    { title: '서버', entries: entriesOf(rules(['backend', 'api', 'database'])) },
+    { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: 'home' }, ...entriesOf(rules(['goraebap-mode', 'manage-workflow']))] },
+    { title: '아키텍처', entries: architectureSections.filter(section => !section.id.includes('.')).map(sectionEntry) },
+    { title: 'UI 키트', entries: entriesOf(content(['catalog'])) },
   ],
 };
 

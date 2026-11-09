@@ -1,3 +1,7 @@
+---
+arc42: "8.7"
+---
+
 # 생성 양식
 
 제목과 본문이 있는 것을 만들고 고칠 때는 한 양식([ComposeForm·ComposeSurface](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/patterns/compose))을 대화상자·페이지·휴대폰에서 같이 씁니다. 몇 칸으로 끝나는 변경은 [짧은 양식](dialog.md)을 씁니다.
