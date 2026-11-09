@@ -12,7 +12,8 @@ export type NavSpace = { id: string; title: string; back?: { label: string; path
 
 /** 주소에 해당하는 메뉴 항목: 가장 긴 접두사. */
 export function entryOf(space: NavSpace, pathname: string): NavEntry | undefined {
-  const entries = space.sections.flatMap(section => section.entries).flatMap(entry => [entry, ...(entry.children ?? [])]);
+  const flatten = (list: NavEntry[]): NavEntry[] => list.flatMap(entry => [entry, ...flatten(entry.children ?? [])]);
+  const entries = flatten(space.sections.flatMap(section => section.entries));
   return entries
     .filter(entry => { const base = entry.path.split('?')[0]; return pathname === base || pathname.startsWith(`${base}/`); })
     .sort((a, b) => b.path.length - a.path.length)[0];

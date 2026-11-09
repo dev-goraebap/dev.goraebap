@@ -48,9 +48,9 @@ export const skillGroups = [
  * 둔다. 8절은 하위 절로 나눈다. 절마다 site/content/architecture/<id>.mdx(점은 하이픈) 개요 페이지가 있다.
  */
 export const architectureSections = [
-  { id: '1', label: '소개와 목표', icon: 'home' }, { id: '2', label: '제약', icon: 'lock' }, { id: '3', label: '맥락과 범위', icon: 'link' },
-  { id: '4', label: '해결 전략', icon: 'layout-board' }, { id: '5', label: '구성 요소', icon: 'layout-grid' }, { id: '6', label: '실행', icon: 'clock' },
-  { id: '7', label: '배치와 운영', icon: 'archive' }, { id: '8', label: '횡단 관심사', icon: 'layout-list' },
+  { id: '1', label: '소개와 목표', icon: 'home' }, { id: '2', label: '아키텍처 제약', icon: 'lock' }, { id: '3', label: '맥락과 범위', icon: 'link' },
+  { id: '4', label: '해결 전략', icon: 'layout-board' }, { id: '5', label: '구성 요소 뷰', icon: 'layout-grid' }, { id: '6', label: '실행 뷰', icon: 'clock' },
+  { id: '7', label: '배치 뷰', icon: 'archive' }, { id: '8', label: '횡단 관심사', icon: 'layout-list' },
   { id: '8.1', label: 'API와 모듈 계약' }, { id: '8.2', label: '백엔드 코드' }, { id: '8.3', label: '데이터와 마이그레이션' },
   { id: '8.4', label: '프론트 코드와 상태' }, { id: '8.5', label: '화면 기초' }, { id: '8.6', label: '화면 배치와 탐색' },
   { id: '8.7', label: '데이터 상태와 입력' }, { id: '8.8', label: 'UI 부품 사용' }, { id: '8.9', label: '검증' },

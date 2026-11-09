@@ -65,15 +65,28 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   const chrome = useMemo(() => ({ setFull }), []);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const entries = space.sections.flatMap(section => section.entries);
-  const current = [...entries, ...entries.flatMap(entry => entry.children ?? [])]
+  // 메뉴는 여러 단계일 수 있다(묶음 → 하위 묶음 → 문서). 지금 문서는 모든 단계에서 가장 긴 접두사로 찾는다.
+  const flatten = (list: NavEntry[]): NavEntry[] => list.flatMap(entry => [entry, ...flatten(entry.children ?? [])]);
+  const current = flatten(entries)
     .filter(entry => pathname === entry.path.split('?')[0] || pathname.startsWith(`${entry.path.split('?')[0]}/`))
     .sort((a, b) => b.path.length - a.path.length)[0]?.path;
   const selected = isSelected ?? ((path: string) => path === current);
-  const currentGroup = entries.find(entry => entry.children?.length && (selected(entry.path) || entry.children.some(child => selected(child.path))))?.path;
-  const [openPaths, setOpenPaths] = useState(() => new Set(currentGroup ? [currentGroup] : []));
+  /** 고른 항목까지 내려가는 묶음들(위에서부터). 모두 열어 고른 항목이 보이게 한다. */
+  const trailTo = (list: NavEntry[]): string[] | undefined => {
+    for (const entry of list) {
+      if (selected(entry.path)) return entry.children?.length ? [entry.path] : [];
+      const below = entry.children?.length ? trailTo(entry.children) : undefined;
+      if (below) return [entry.path, ...below];
+    }
+    return undefined;
+  };
+  const currentGroups = trailTo(entries) ?? [];
+  const currentKey = currentGroups.join('\n');
+  const [openPaths, setOpenPaths] = useState(() => new Set(currentGroups));
   useEffect(() => {
-    if (currentGroup) setOpenPaths(paths => (paths.has(currentGroup) ? paths : new Set(paths).add(currentGroup)));
-  }, [currentGroup]);
+    if (!currentKey) return;
+    setOpenPaths(paths => currentKey.split('\n').every(path => paths.has(path)) ? paths : new Set([...paths, ...currentKey.split('\n')]));
+  }, [currentKey]);
   const groupCollapse = (path: string) => (openGroups === 'all' ? { defaultIsCollapsed: false } : {
     isCollapsed: !openPaths.has(path),
     onCollapsedChange: (isClosed: boolean) => setOpenPaths(paths => {

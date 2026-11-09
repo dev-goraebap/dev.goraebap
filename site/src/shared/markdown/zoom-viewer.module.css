@@ -1,0 +1,7 @@
+/* 크게 보기 창: 어두운 막 위에 한 장. 도표는 제 색표의 바탕을 깐 카드로 두어 막 위에서도 글자 대비를 지킨다. */
+.viewer { --yarl__color_backdrop: rgb(0 0 0 / .88); }
+.diagram { border-radius: var(--radius-element); padding: 1.5rem; box-sizing: content-box; }
+.diagram :global(svg) { display: block; width: 100% !important; height: 100% !important; max-width: none !important; }
+/* 본문 이미지를 감싸는 단추: 모양은 이미지 그대로, 누르면 크게 보기. */
+.imageButton { display: block; inline-size: fit-content; max-inline-size: 100%; margin-inline: auto; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.imageButton:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: 2px; }
