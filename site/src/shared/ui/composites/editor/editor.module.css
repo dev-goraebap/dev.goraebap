@@ -129,11 +129,15 @@
   box-shadow: 0 2px 8px var(--color-shadow); }
 .submenu { z-index: 61; }
 .tableMenu { inline-size: 13rem; }
-.menuBody { display: flex; flex-direction: column; }
+/* 항목 사이에 2px를 두어 가리킨 항목과 열린 항목의 바탕이 맞붙지 않게 한다. */
+.menuBody { display: flex; flex-direction: column; gap: 0.125rem; }
+.menu { row-gap: 0.125rem; }
 .menuTitle { padding: 0.5rem 0.625rem 0.25rem; }
 .menuItem.menuItem { justify-content: flex-start; inline-size: 100%; min-block-size: 2rem; block-size: auto; padding: 0.3125rem 0.625rem; border-radius: var(--radius-element);
   font-size: 0.8125rem; font-weight: var(--font-weight-normal); text-align: start; }
 .menuItem.menuItem > span:first-child { flex: 1; justify-content: flex-start; gap: 0.625rem; min-inline-size: 0; }
+/* Astryx 버튼의 안쪽 상자는 display: contents라 그 gap이 듣지 않는다: 아이콘·글·끝 표시 사이 간격은 버튼 자신에 준다. */
+.menuItem.menuItem, .paletteOption.paletteOption { gap: 0.625rem; }
 .menuItem.menuItem svg { color: var(--color-icon-secondary); }
 .menuItem.menuItem:is(:hover, :focus-visible, [data-open]) { background: var(--color-overlay-hover); outline: none; }
 .menuItem.menuItem[data-danger] { color: var(--color-text-red); }
@@ -183,6 +187,8 @@
 .paletteOption.paletteOption[data-active] { background: var(--color-overlay-hover); }
 .paletteIcon { flex: none; inline-size: 1.875rem; block-size: 1.875rem; border: 1px solid var(--color-border); border-radius: var(--radius-inner); color: var(--color-icon-secondary); }
 .paletteIcon svg { inline-size: 1.125rem; block-size: 1.125rem; }
+/* Astryx 버튼의 아이콘 자리는 16px로 고정돼 있다: 상자로 그린 아이콘(명령 목록의 아이콘 칸, 색 버튼의 동그라미)은 제 크기를 쓰게 푼다. */
+.paletteOption.paletteOption span:has(> .paletteIcon), .tool.tool span:has(> .ink) { inline-size: auto; block-size: auto; min-inline-size: 0; }
 .paletteText { min-inline-size: 0; line-height: 1.35; }
 .paletteEmpty { padding: var(--spacing-3); }
 .paletteFooter { flex: none; margin-block-start: 0.3125rem; padding: 0.25rem 0.625rem 0; border-block-start: 1px solid var(--color-border); color: var(--color-text-secondary); }
@@ -345,3 +351,18 @@
   .blockControls, .dropLine, .tableControls { display: none; }
   .prose :is(pre, figure, tr, table) { break-inside: avoid; }
 }
+
+
+/* 상단 서식 막대: 본문 위에 늘 붙은 도구 줄. 펼친 메뉴는 막대 아래로 뜬다. */
+.toolbar { flex-wrap: nowrap; box-sizing: border-box; inline-size: 100%; min-block-size: 2.75rem; padding: 0.375rem var(--spacing-3);
+  border-block-end: 1px solid var(--color-border); background: var(--color-background-surface); }
+/* 좁으면 줄을 바꾼다: 가로 스크롤은 메뉴를 펼칠 때 스크롤바가 생겼다 사라지며 막대가 흔들린다. */
+.toolbarTools { flex: 1 1 auto; flex-wrap: wrap; row-gap: 0.25rem; min-inline-size: 0; }
+.toolAnchor { position: relative; flex: none; }
+.toolType.toolType { min-inline-size: 5.5rem; justify-content: space-between; }
+.toolPopRow { inline-size: max-content; }
+/* 도구 줄과 오른쪽 끝을 같은 높이(2rem) 줄로 맞춘다. 줄을 바꿔도 오른쪽 끝은 첫 줄에 있다. 사이 구분은 짧은 세로선이다. */
+.toolbar { align-items: flex-start; }
+.toolbarTools { min-block-size: 2rem; align-items: center; }
+.toolbarEnd { flex: none; min-block-size: 2rem; align-items: center; }
+.toolbarEnd::before { content: ""; flex: none; inline-size: 1px; block-size: 1.125rem; margin-inline: var(--spacing-1) var(--spacing-2); background: var(--color-border); }

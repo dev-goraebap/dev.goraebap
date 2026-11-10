@@ -1,0 +1,19 @@
+---
+title: "문서 편집기"
+sidebar:
+  order: 17
+---
+
+import source0 from '@/shared/ui/composites/document/DocumentEditor.tsx?raw';
+import source1 from '@/shared/ui/composites/document/pagination.ts?raw';
+import source2 from '@/shared/ui/composites/editor/EditorToolbar.tsx?raw';
+
+정의서·보고서·계약서처럼 종이(A4)로 나가는 문서를 쓰고 읽는 화면을 만들 때 본뜹니다. 편집 화면은 본문 위에 늘 붙은 상단 서식 막대, 오른쪽의 문서 설정 칸(용지 · 방향 · 여백 · 머리말 · 바닥글), 포인터를 올리면 경계 점선과 연필 단추가 보이는 머리말 · 바닥글을 다룹니다. 읽기 화면은 다른 상세와 같은 배치에 오른쪽 정보 칸의 페이지 항목과 내보내기 메뉴(PDF로 저장 · 인쇄 · 링크 복사)를 둡니다. 페이지 모양은 연한 바탕과 구분선 중에서 고르고, 휴대폰은 늘 페이지 없음으로 봅니다.
+
+<SampleGroup group="playground-document-editor" />
+
+## 구현 코드
+
+<Source name="DocumentEditor.tsx" code={source0} lang="tsx" />
+<Source name="pagination.ts" code={source1} lang="ts" />
+<Source name="EditorToolbar.tsx" code={source2} lang="tsx" />

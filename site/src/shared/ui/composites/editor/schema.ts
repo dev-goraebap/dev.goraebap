@@ -9,6 +9,7 @@ import { TextStyleKit } from '@tiptap/extension-text-style';
 import { Plugin } from '@tiptap/pm/state';
 import { columnResizing } from '@tiptap/pm/tables';
 import StarterKit from '@tiptap/starter-kit';
+import type { IconName } from '../../foundations/icons/solar-icon';
 import { UploadZone } from './upload-zone';
 
 /** 본문 제목은 2단계부터다. 화면에는 늘 시스템 제목(1단계) 하나가 있다. */
@@ -151,6 +152,11 @@ export type CommandId = 'paragraph' | `heading${HeadingLevel}` | 'bulletList' | 
   | 'codeBlock' | 'mermaidBlock' | 'html' | 'webEmbed' | 'file';
 export type BlockCommand = { id: CommandId; label: string; group: string; hint: string };
 const HEADING_HINTS: Record<HeadingLevel, string> = { 2: '큰 구획 제목', 3: '중간 제목', 4: '작은 제목' };
+
+/** 블록 명령의 아이콘. `/` 목록과 상단 서식 막대의 넣기 메뉴가 같이 쓴다. */
+export const COMMAND_ICONS: Record<CommandId, IconName> = { paragraph: 'paragraph', heading2: 'heading', heading3: 'heading', heading4: 'heading', bulletList: 'list-bullet',
+  orderedList: 'list-ordered', taskList: 'list-task', blockquote: 'quote', table: 'table', horizontalRule: 'minus', codeBlock: 'code-block', mermaidBlock: 'diagram',
+  html: 'code-block', webEmbed: 'globe', file: 'attachment' };
 
 /** `/` 목록. 묶음 순서대로 보인다. */
 export const COMMANDS: BlockCommand[] = [

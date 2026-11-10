@@ -13,19 +13,19 @@ import styles from './editor.module.css';
 type Panel = 'type' | 'color' | 'more' | 'link';
 
 /** 줄 정렬 그림: 길이가 다른 가로줄 넷을 정렬 방향에 맞춰 놓는다(Solar에 글 정렬 아이콘이 없다). */
-function AlignGlyph({ kind }: { kind: 'left' | 'center' | 'right' | 'justify' }) {
+export function AlignGlyph({ kind }: { kind: 'left' | 'center' | 'right' | 'justify' }) {
   const widths = kind === 'justify' ? [14, 14, 14, 14] : [14, 9, 12, 7];
   return <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
     {widths.map((width, row) => { const start = kind === 'center' ? (16 - width) / 2 : kind === 'right' ? 15 - width : 1; return <path key={row} d={`M${start} ${3 + row * 3.3}h${width}`} />; })}
   </svg>;
 }
 /** 들여쓰기·내어쓰기 그림: 줄 셋과 방향 화살표. */
-function IndentGlyph({ isOut = false }: { isOut?: boolean }) {
+export function IndentGlyph({ isOut = false }: { isOut?: boolean }) {
   return <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M7 3h8M7 8h8M7 13h8" /><path d={isOut ? 'M4 5.5 1.5 8 4 10.5' : 'M1.5 5.5 4 8 1.5 10.5'} />
   </svg>;
 }
-const Script = ({ isUp }: { isUp: boolean }) => <Text className={styles.script} weight="semibold">x{isUp ? <sup>2</sup> : <sub>2</sub>}</Text>;
+export const Script = ({ isUp }: { isUp: boolean }) => <Text className={styles.script} weight="semibold">x{isUp ? <sup>2</sup> : <sub>2</sub>}</Text>;
 
 /** 주소로 쓸 수 있게 다듬는다: 앱 안의 주소(/…)와 https · http · mailto는 그대로, 점이 든 낱말(example.com)은 https://를 붙인다. 그 밖은 빈 글. */
 export function hrefOf(text: string): string {
@@ -38,7 +38,7 @@ export function hrefOf(text: string): string {
  * 링크 입력 칸: 주소를 붙여 넣거나, 문서 이름을 쳐서 호스트가 넘긴 문서(links)를 골라 건다. Enter는 주소면 그 주소로,
  * 아니면 맨 위 문서로 건다. 이미 링크가 걸린 글이면 열기와 지우기가 함께 보인다.
  */
-function LinkPanel({ editor, links, onDone }: { editor: Editor; links?: LinkChoice[]; onDone: () => void }) {
+export function LinkPanel({ editor, links, onDone }: { editor: Editor; links?: LinkChoice[]; onDone: () => void }) {
   const current = String(editor.getAttributes('link').href ?? '');
   const [text, setText] = useState(current);
   const href = hrefOf(text), word = text.trim().toLowerCase();
