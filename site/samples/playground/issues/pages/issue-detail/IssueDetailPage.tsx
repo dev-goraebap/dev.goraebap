@@ -1,6 +1,6 @@
 import { RichBody } from '@/shared/ui/composites/editor/RichBody';
+import { fakePreview } from '@samples/composites/editor-fixtures';
 import {AlertDialog} from '@/shared/ui/composites/dialog/AlertDialog';
-import {RichDraft} from '@/shared/ui/composites/editor/RichDraft';
 import {TextInput} from '@astryxdesign/core/TextInput';
 import {useNavigate} from '@tanstack/react-router';
 import { ActivityFeed, type ActivityItem } from '@/shared/ui/composites/activity/ActivityFeed';
@@ -16,7 +16,6 @@ import { Text } from '@astryxdesign/core/Text';
 import { TextArea } from '@astryxdesign/core/TextArea';
 import { useToast } from '@astryxdesign/core/Toast';
 import { VStack } from '@astryxdesign/core/VStack';
-import type { JSONContent } from '@tiptap/react';
 import { RowMenu } from '@/shared/ui/composites/popup/RowMenu';
 import { DatePill, OptionPill, PropertyPill } from '@/shared/ui/composites/property/PropertyPill';
 import { PageState } from '@/shared/ui/composites/state/PageState';
@@ -25,20 +24,20 @@ import { DetailLayout } from '@/shared/ui/layouts/detail/DetailLayout';
 import { Page } from '@/shared/ui/layouts/page/Page';
 import { PageBanner } from '@/shared/ui/layouts/page/PageParts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { me, dateText, issueKeys, issueQueries, NONE, timeText, today, useIssueApi, type Issue, type IssuePatch } from '../../entities/issue';
 import { assigneeOptions, Person, priorityOptions, StatusMark, statusOptions } from '../../entities/issue/ui';
 import styles from './detail.module.css';
 
 /**
  * 이슈 상세: 직접 진입할 수 있는 자기 주소의 페이지. 속성은 알약 하나씩 바로 바꾸고(저장 뒤 다시 읽는다) 실패는 머리 아래 줄에
- * 알린다. 본문 수정은 같은 작성 양식을 페이지로 연다. 하위 이슈를 더하면 상위 이슈를 채운 같은 양식으로 간다.
+ * 알린다. 편집은 늘 수정 화면(…/edit)을 연다(제목과 본문만). 하위 이슈를 더하면 상위 이슈를 채운 같은 양식으로 간다.
  */
 export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: () => void; onAddSub: () => void }) {
   const api = useIssueApi();
   const client = useQueryClient();
   const toast = useToast();
-  const navigate=useNavigate();const [deleting,setDeleting]=useState(false);const [editing,setEditing]=useState(false);
+  const navigate=useNavigate();const [deleting,setDeleting]=useState(false);
   const remove=useMutation({mutationFn:()=>api.remove(id),onSuccess:async()=>{await client.invalidateQueries({queryKey:issueKeys.all});void navigate({href:'/issues'})}});
   const query = useQuery(issueQueries.detail(api, id));
   const change = useMutation({
@@ -62,13 +61,13 @@ export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: 
   };
   return <Page crumbs={[...crumbs, ...(issue.parent ? [{ label: issue.parent, href: `/issues/${issue.parent}` }] : []), { label: issue.id }]}
     isDetail hasHeading={false}
-    pageActions={<><Button label={editing?'편집 취소':'편집'} variant="subtle" size="sm" icon={icon('edit')} onClick={()=>setEditing(!editing)}/><RowMenu label="이슈 메뉴" actions={[
+    pageActions={<><Button label="편집" variant="subtle" size="sm" icon={icon('edit')} onClick={onEdit}/><RowMenu label="이슈 메뉴" actions={[
       { id: 'edit', label: '수정', icon: 'edit', onSelect: onEdit },
       { id: 'copy', label: '링크 복사', icon: 'link', onSelect: () => void copy() },
       ...(issue.author===me?[{id:'delete',label:'삭제',icon:'delete' as const,onSelect:()=>setDeleting(true)}]:[]),
     ]} /></>}>
     {change.isError ? <PageBanner status="error" title="속성을 바꾸지 못했습니다" description="화면의 값은 저장된 값입니다. 다시 골라 주세요." /> : null}
-    <IssueView issue={issue} onChange={patch => change.mutate(patch)} onAddSub={onAddSub} isEditing={editing} onSaveBody={async patch=>{await change.mutateAsync(patch);setEditing(false)}} />
+    <IssueView issue={issue} onChange={patch => change.mutate(patch)} onAddSub={onAddSub} onNavigate={href => void navigate({ href })} />
     <AlertDialog isOpen={deleting} onOpenChange={setDeleting} title="이슈를 삭제할까요?" description="하위 이슈는 남고 상위 연결만 해제됩니다." actionLabel="삭제" isActionLoading={remove.isPending} onAction={()=>remove.mutate()} />
     {remove.isError?<PageBanner status="error" title="삭제하지 못했습니다"/>:null}
   </Page>;
@@ -78,8 +77,10 @@ export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: 
  * 이슈의 본문과 속성, 하위 이슈, 댓글. 상세 페이지와 미리보기 패널이 같은 부품을 쓴다(조회도 같은 queryOptions).
  * 폭은 DetailLayout이 컨테이너로 판단하므로 좁은 패널에서는 속성이 제목 아래 알약 줄로 온다.
  */
-export function IssueView({ issue, onChange, onAddSub, headingLevel = 1, isEditing=false,onSaveBody }: {
-  issue: Issue; onChange: (patch: IssuePatch) => void; onAddSub?: () => void; headingLevel?: 1 | 2;isEditing?:boolean;onSaveBody?:(patch:IssuePatch)=>Promise<unknown>;
+export function IssueView({ issue, onChange, onAddSub, headingLevel = 1, onNavigate }: {
+  issue: Issue; onChange: (patch: IssuePatch) => void; onAddSub?: () => void; headingLevel?: 1 | 2;
+  /** 본문의 앱 안 링크(다른 이슈)를 누르면 새 탭 대신 그 화면으로 간다. */
+  onNavigate?: (href: string) => void;
 }) {
   const api=useIssueApi();const all=useQuery(issueQueries.all(api));
   const parents=(all.data??[]).filter(other=>{let parent:string|undefined=other.id;const seen=new Set<string>();while(parent&&!seen.has(parent)){if(parent===issue.id)return false;seen.add(parent);parent=all.data?.find(e=>e.id===parent)?.parent}return true});
@@ -89,7 +90,7 @@ export function IssueView({ issue, onChange, onAddSub, headingLevel = 1, isEditi
       <Text color="secondary" type="supporting" hasTabularNumbers>{issue.id}</Text>
       {issue.parent ? <Text color="secondary" type="supporting">· <Link href={`/issues/${issue.parent}`}>{issue.parent}</Link>의 하위 이슈</Text> : null}
     </HStack>}
-    title={isEditing ? null : <Heading level={headingLevel}>{issue.title}</Heading>}
+    title={<Heading level={headingLevel}>{issue.title}</Heading>}
     sections={[
       { title: '속성', items: <>
         <OptionPill label="상태" icon="clock" value={issue.status} options={statusOptions} onChange={status => onChange({ status: status as Issue['status'] })} />
@@ -107,7 +108,7 @@ export function IssueView({ issue, onChange, onAddSub, headingLevel = 1, isEditi
         <PropertyPill label="수정일" icon={icon('calendar')} isEmpty={false} isDisabled text={dateText(issue.updatedAt)} />
       </> },
     ]}>
-    {isEditing&&onSaveBody?<BodyEditor key={issue.id} issue={issue} onSave={onSaveBody}/>:<Body node={issue.body} />}
+    <RichBody value={issue.body} readPreview={fakePreview} onNavigate={onNavigate} />
     <SubIssues parent={issue.id} level={sectionLevel} onAdd={onAddSub} />
     <Comments issue={issue} level={sectionLevel} />
   </DetailLayout>;
@@ -172,10 +173,3 @@ export function IssuePeek({ id }: { id: string }) {
     <IssueView issue={query.data} onChange={patch => change.mutate(patch)} headingLevel={2} />
   </>;
 }
-
-/** 읽기 본문: 저장한 문서를 그대로 읽는다. 긴 단어·주소는 줄을 넘긴다. */
-function Body({ node }: { node: JSONContent }): ReactNode {
-  return <RichBody value={node} />;
-}
-
-function BodyEditor({issue,onSave}:{issue:Issue;onSave:(patch:IssuePatch)=>Promise<unknown>}){const [title,setTitle]=useState(issue.title);const [body,setBody]=useState(issue.body);const [busy,setBusy]=useState(false);const [error,setError]=useState<string>();return <VStack gap={3}><TextInput label="이슈 제목" value={title} onChange={setTitle} hasAutoFocus/><RichDraft value={body} onChange={setBody} isPage/><HStack hAlign="end"><Button label="변경 저장" variant="primary" isLoading={busy} onClick={()=>{if(!title.trim()){setError('제목을 입력해 주세요.');return;}setBusy(true);onSave({title:title.trim(),body}).catch(()=>setError('저장하지 못했습니다. 입력은 그대로 남아 있습니다.')).finally(()=>setBusy(false))}}/></HStack>{error?<Text role="alert" color="secondary">{error}</Text>:null}</VStack>;}

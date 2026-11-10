@@ -17,18 +17,21 @@ import styles from './app-frame.module.css';
 
 export type ShellLayout = 'inset' | 'split';
 
+/** 사이드바를 끌어 조절하는 범위(px). 조절할 수 있는 옆 목록은 가장 넓게(최대값으로) 연다. */
+const SIDEBAR = { min: 220, max: 380 } as const;
+
 /** 큰 화면의 루트 배율(base.css와 같은 식). 사이드바 px 범위를 같은 비율로 키운다. */
 const rootScale = () => typeof window === 'undefined' || window.innerWidth < 1920 ? 1
   : Math.min(19, Math.max(16, 7 + window.innerWidth * 0.0046875)) / 16;
 
 /**
- * Astryx AppShell 위의 앱 틀. 데스크톱은 SideNav(340px로 열리고 220~380px로 끌어 조절, 접으면 아이콘만), inset은 바탕
+ * Astryx AppShell 위의 앱 틀. 데스크톱은 SideNav(최대 너비 380px로 열리고 220~380px로 끌어 조절, 접으면 아이콘만), inset은 바탕
  * 위에 떨어진 페이지 카드, split은 가는 선으로 나눈 면이다. 휴대폰은 사이드바 대신 하단 탭(현재 메뉴의 앞 네 곳 + 더보기)과
  * 나머지 목적지를 담은 더보기 시트를 쓰고, 상세·양식이 열리면 하단 탭을 치운다. 두 배치에서 페이지의 슬롯은 같다.
  * 본문의 부모 요소 종류는 분기점·배치를 바꿔도 같게 유지해 작성 중인 초안이 다시 마운트되지 않게 한다.
  */
 export function AppFrame({ space, pathname, isSelected, brand, headerTools, profile, footer, sidebarBottom, pageFooter, phoneAppBar, layout = 'inset',
-  tabs, onNavigate, openGroups = 'all', sidebarWidth = 340, children }: {
+  tabs, onNavigate, openGroups = 'all', sidebarWidth = SIDEBAR.max, children }: {
   space: NavSpace;
   sidebarWidth?: number;
   pathname: string;
@@ -125,7 +128,7 @@ export function AppFrame({ space, pathname, isSelected, brand, headerTools, prof
   </HStack> : undefined;
   const scale = rootScale();
   const sideNav = <SideNav key={isFolded ? 'folded' : 'open'} aria-label="주 메뉴" collapsible={{ hasButton: false }}
-    resizable={{ defaultWidth: Math.round(sidebarWidth * scale), minWidth: Math.round(220 * scale), maxWidth: Math.round(380 * scale), isCollapsed, onCollapseChange: setCollapsed }}
+    resizable={{ defaultWidth: Math.round(sidebarWidth * scale), minWidth: Math.round(SIDEBAR.min * scale), maxWidth: Math.round(SIDEBAR.max * scale), isCollapsed, onCollapseChange: setCollapsed }}
     header={isFolded
       ? <VStack width="100%" gap={2} hAlign="center" paddingBlock={2}>{brand(true)}{headerTools}</VStack>
       : <VStack width="100%" gap={2} paddingInline={2}>

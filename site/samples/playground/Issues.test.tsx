@@ -64,6 +64,27 @@ const VerifyPhone: Sample = {
   },
 };
 
+const VerifyEdit: Sample = {
+  name: "편집 단추가 수정 화면을 열고 본문 링크는 제자리에서 가는지 검증",
+  args: { initialPath: "/issues/ISS-12" },
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    const edit = await page.findByRole("button", { name: "편집" });
+    const title = page.getByRole("heading", { level: 1 }).textContent ?? "";
+    await userEvent.click(edit);
+    // 수정 화면은 제목과 본문만 둔다(속성·하위 이슈·활동 없음).
+    await expect(await page.findByRole("textbox", { name: "제목" })).toHaveValue(title);
+    await expect(page.getByRole("textbox", { name: "본문" })).toBeVisible();
+    await expect(page.queryByRole("region", { name: "하위 이슈" })).not.toBeInTheDocument();
+    await expect(page.queryByRole("button", { name: "상태" })).not.toBeInTheDocument();
+    // 고친 것이 없으면 취소는 묻지 않고 상세로 돌아간다.
+    await userEvent.click(page.getByRole("button", { name: "취소" }));
+    await expect(await page.findByRole("heading", { level: 1, name: title })).toBeVisible();
+    await expect(page.queryByRole("alertdialog")).not.toBeInTheDocument();
+  },
+};
+
 test(VerifyCreate.name, () => runSample(meta, VerifyCreate));
+test(VerifyEdit.name, () => runSample(meta, VerifyEdit), 15000);
 test(VerifyBoard.name, () => runSample(meta, VerifyBoard));
 test(VerifyPhone.name, () => runSample(meta, VerifyPhone));

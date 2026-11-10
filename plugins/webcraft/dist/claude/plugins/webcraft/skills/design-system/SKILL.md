@@ -32,6 +32,7 @@ arc42: "8.5, 2"
 | 대기·빈 상태·실패·전환 | [데이터 상태](references/data-states.md) |
 | 표면 고르기·누르는 대상·키보드 | [입력과 상호작용](references/interaction-patterns.md) |
 | UI 문구·본문 편집·검증 | [문구·본문과 검증](references/content-and-review.md) |
+| 본문 인쇄·PDF 저장 | [인쇄와 PDF](references/print.md) |
 | 지침·코드·가이드 견본의 연결 | [패턴 카탈로그](references/pattern-catalog.md) |
 | 프로젝트 지정이 없는 기본 화면 | [레퍼런스 사용과 갱신](references/reference-kit.md) |
 

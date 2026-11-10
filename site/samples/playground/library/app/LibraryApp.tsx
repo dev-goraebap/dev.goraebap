@@ -22,6 +22,7 @@ import { LibraryPage } from '../pages/library/LibraryPage';
 import { validateLibrarySearch } from '../pages/library/model';
 import { ResourceCompose } from '../pages/resource-compose/ResourceCompose';
 import { ResourceDetailPage } from '../pages/resource-detail/ResourceDetailPage';
+import { ResourceEditPage } from '../pages/resource-edit/ResourceEditPage';
 import { DisplaySettingsPage } from '../pages/settings/DisplaySettingsPage';
 import { AppearanceContext, useAppearance } from './appearance';
 import { useShellLayout } from '../../../catalog/shell-layout';
@@ -70,11 +71,10 @@ function ListRoute() {
   const panel = useRoutedPanel();
   const navigate = useNavigate();
   useEffect(() => { if (panel.pendingPhoneHref) void navigate({ href: panel.pendingPhoneHref, replace: true }); }, [panel.pendingPhoneHref, navigate]);
-  const edit = panel.href?.match(/^\/resources\/([^/]+)\/edit$/)?.[1];
   return <>
     <LibraryPage onCreate={() => open('/resources/new')} />
-    {panel.href === '/resources/new' || edit
-      ? <ResourceCompose key={panel.href} id={edit} surface="dialog" onClose={panel.close} onExpand={panel.expand} onDone={id => panel.done(`/resources/${id}`)} />
+    {panel.href === '/resources/new'
+      ? <ResourceCompose key={panel.href} surface="dialog" onClose={panel.close} onExpand={panel.expand} onDone={id => panel.done(`/resources/${id}`)} />
       : null}
   </>;
 }
@@ -83,6 +83,13 @@ function DetailRoute() {
   const { id } = useParams({ strict: false }) as { id: string };
   const navigate = useNavigate();
   return <ResourceDetailPage id={id} onEdit={() => void navigate({ href: `/resources/${id}/edit` })} onDeleted={() => void navigate({ href: '/resources', replace: true })} />;
+}
+
+/** 수정 화면: 상세의 편집 단추가 늘 이곳을 연다. 끝나면(완료·취소) 상세로 돌아간다. */
+function EditRoute() {
+  const { id } = useParams({ strict: false }) as { id: string };
+  const navigate = useNavigate();
+  return <ResourceEditPage id={id} onLeave={() => void navigate({ href: `/resources/${id}` })} />;
 }
 
 function ComposeRoute() {
@@ -111,7 +118,7 @@ export function createLibraryRouter(initialPath: string) {
   const home = createRoute({ getParentRoute: () => root, path: '/', component: ListRoute, validateSearch: validateLibrarySearch });
   const create = createRoute({ getParentRoute: () => root, path: '/resources/new', component: ComposeRoute });
   const detail = createRoute({ getParentRoute: () => root, path: '/resources/$id', component: DetailRoute });
-  const edit = createRoute({ getParentRoute: () => root, path: '/resources/$id/edit', component: ComposeRoute });
+  const edit = createRoute({ getParentRoute: () => root, path: '/resources/$id/edit', component: EditRoute });
   const settings = createRoute({ getParentRoute: () => root, path: '/settings', component: DisplaySettingsPage });
   return createRouter({
     routeTree: root.addChildren([home, list, create, detail, edit, settings]),

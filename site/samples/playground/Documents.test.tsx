@@ -2,7 +2,6 @@ import { test } from "vitest";
 import { expect, userEvent, waitFor, within } from "../catalog/testing";
 import { runSample } from "../catalog/run-sample";
 import type { SampleOf } from "../catalog/types";
-import { DocumentScreen } from "./documents/DocumentScreen";
 import { LibrarySample } from "./library-sample";
 import meta from "./Documents.samples";
 
@@ -39,20 +38,38 @@ const VerifyPhone: Sample = {
   },
 };
 
-const VerifyAutosave: Sample = {
-  name: "고친 뒤 자동 저장 검증",
-  render: () => <DocumentScreen title="메모" />,
+const VerifyEdit: Sample = {
+  name: "편집 단추·수정 화면·취소 확인·완료 검증",
+  render: () => <LibrarySample initialPath="/resources/design-tokens" />,
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
-    const title = page.getByRole("textbox", { name: "문서 제목" });
-    await userEvent.type(title, " 수정");
-    await expect(page.getByText("고친 내용 있음")).toBeVisible();
-    await waitFor(() => expect(page.getByText("저장됨")).toBeVisible(), { timeout: 4000 });
-    await expect(page.getByRole("textbox", { name: "문서 제목" })).toHaveValue("메모 수정");
+    // 상세의 편집 단추는 수정 화면(제목과 본문만)을 연다.
+    await userEvent.click(await page.findByRole("button", { name: "편집" }));
+    const title = await page.findByRole("textbox", { name: "제목" });
+    await expect(page.queryByRole("button", { name: "종류" })).not.toBeInTheDocument();
+    await expect(page.getByRole("button", { name: "저장" })).toHaveAttribute("aria-disabled", "true");
+    // 고친 뒤 취소하면 먼저 묻고, 계속 작성하면 그대로 남는다.
+    await userEvent.type(title, " 다시 읽기");
+    await expect(page.getByText("저장 안 됨")).toBeVisible();
+    await userEvent.click(page.getByRole("button", { name: "취소" }));
+    const ask = await page.findByRole("alertdialog", { name: "저장하지 않은 내용이 있습니다" });
+    await userEvent.click(within(ask).getByRole("button", { name: "계속 작성" }));
+    await expect(title).toHaveValue("좋은 인터페이스를 만드는 작은 기준들 다시 읽기");
+    // Ctrl+S는 제자리에서 저장한다.
+    title.focus();
+    await userEvent.keyboard("{Control>}s{/Control}");
+    await waitFor(() => expect(page.getByText("저장됨")).toBeVisible());
+    // 완료는 저장하고 상세로 돌아간다.
+    await userEvent.type(title, "!");
+    await userEvent.click(page.getByRole("button", { name: "완료" }));
+    await expect(await page.findByRole("heading", { level: 1, name: "좋은 인터페이스를 만드는 작은 기준들 다시 읽기!" })).toBeVisible();
+    // 고친 것이 없으면 취소는 묻지 않고 돌아간다.
+    await userEvent.click(page.getByRole("button", { name: "편집" }));
+    await userEvent.click(await page.findByRole("button", { name: "취소" }));
+    await expect(await page.findByRole("heading", { level: 1, name: /다시 읽기!/ })).toBeVisible();
+    await expect(page.queryByRole("alertdialog")).not.toBeInTheDocument();
   },
 };
-
-
 
 const VerifyPageFoot: Sample = {
   name: "작성 페이지 바닥 고정·동작만 검증",
@@ -79,5 +96,5 @@ const VerifyPageFoot: Sample = {
 
 test(VerifyJourney.name, () => runSample(meta, VerifyJourney));
 test(VerifyPhone.name, () => runSample(meta, VerifyPhone));
-test(VerifyAutosave.name, () => runSample(meta, VerifyAutosave), 10000);
+test(VerifyEdit.name, () => runSample(meta, VerifyEdit), 15000);
 test(VerifyPageFoot.name, () => runSample(meta, VerifyPageFoot));

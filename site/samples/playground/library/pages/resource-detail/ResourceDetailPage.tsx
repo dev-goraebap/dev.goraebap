@@ -1,4 +1,6 @@
 import { RichBody } from '@/shared/ui/composites/editor/RichBody';
+import { fakePreview } from '@samples/composites/editor-fixtures';
+import { useNavigate } from '@tanstack/react-router';
 import { Button } from '@astryxdesign/core/Button';
 import { Center } from '@astryxdesign/core/Center';
 import { Heading } from '@astryxdesign/core/Heading';
@@ -24,7 +26,7 @@ import styles from './detail.module.css';
 
 /**
  * 자료 상세: 직접 진입할 수 있는 자기 주소의 페이지. 속성은 알약 하나씩 바로 바꾸고(낙관적 갱신 없이 저장 뒤 다시 읽는다),
- * 실패는 머리 아래 줄에 알린다. 본문 수정은 같은 작성 양식을 목록 위 대화상자 또는 페이지로 연다.
+ * 실패는 머리 아래 줄에 알린다. 편집은 늘 수정 화면(…/edit)을 연다(제목과 본문만).
  */
 export function ResourceDetailPage({ id, onEdit, onDeleted }: { id: string; onEdit: () => void; onDeleted: () => void }) {
   const api = useResourceApi();
@@ -57,6 +59,7 @@ export function ResourceDetailPage({ id, onEdit, onDeleted }: { id: string; onEd
     pageActions={<HStack gap={1}>
       <Button label={resource.starred ? '즐겨찾기 해제' : '즐겨찾기'} tooltip={resource.starred ? '즐겨찾기 해제' : '즐겨찾기'} variant="ghost" size="sm" isIconOnly
         aria-pressed={resource.starred} icon={icon('star', resource.starred)} onClick={() => change.mutate({ starred: !resource.starred })} />
+      <Button label="편집" variant="subtle" size="sm" icon={icon('edit')} onClick={onEdit} />
       <RowMenu label="자료 메뉴" actions={[
         { id: 'edit', label: '수정', icon: 'edit', onSelect: onEdit },
         { id: 'copy', label: '링크 복사', icon: 'link', onSelect: () => void copy() },
@@ -121,7 +124,8 @@ export function ResourcePeek({ id }: { id: string }) {
   </>;
 }
 
-/** 읽기 본문: 저장한 문서를 그대로 읽는다. 긴 단어·주소는 줄을 넘긴다. */
+/** 읽기 본문: 저장한 문서를 그대로 읽는다. 본문의 앱 안 링크(다른 자료)는 새 탭 대신 그 화면으로 간다. */
 function Body({ node }: { node: JSONContent }): ReactNode {
-  return <RichBody value={node} />;
+  const navigate = useNavigate();
+  return <RichBody value={node} readPreview={fakePreview} onNavigate={href => void navigate({ href })} />;
 }

@@ -1,7 +1,7 @@
 {
   "id": "workspace-kit",
-  "revision": 7,
-  "updated": "2026-11-08",
+  "revision": 8,
+  "updated": "2026-11-10",
   "kind": "opt-in-reference",
   "compatibility": {
     "react": "19",
@@ -9,7 +9,19 @@
     "@astryxdesign/theme-stone": "0.5.2",
     "@tanstack/react-router": "1",
     "@tanstack/react-query": "5",
-    "@tiptap/react": "3"
+    "@tiptap/react": "3",
+    "@tiptap/core": "3",
+    "@tiptap/pm": "3",
+    "@tiptap/starter-kit": "3",
+    "@tiptap/extension-table": "3",
+    "@tiptap/extension-list": "3",
+    "@tiptap/extension-text-style": "3",
+    "@tiptap/extension-highlight": "3",
+    "@tiptap/extension-text-align": "3",
+    "@tiptap/extension-subscript": "3",
+    "@tiptap/extension-superscript": "3",
+    "mermaid": "11",
+    "yet-another-react-lightbox": "3"
   },
   "automaticProductInstallation": false,
   "validation": {
@@ -17,7 +29,7 @@
     "interactionTests": "passed: every sample renders and interaction tests pass in Chromium (npm run kit:test, vitest browser)",
     "guideBuild": "see npm run guide:build (samples are served as iframes under /samples/)",
     "browserCheck": {
-      "date": "2026-11-08",
+      "date": "2026-11-10",
       "viewports": [
         "1440x900",
         "390x844",
@@ -27,8 +39,8 @@
         "light",
         "dark"
       ],
-      "scope": "Guide pages with embedded samples (desktop 1024px / phone 390px toggle), theme following the guide selector, page transitions (keep current page, 180ms cover, 160ms fade), first-visit boot cover with and without JavaScript, large-screen root scaling.",
-      "notVerified": "physical device keyboard occlusion, screen readers, browser refresh/share of masked routes (samples use memory history), pixel parity with any product"
+      "scope": "Guide pages with embedded samples (desktop 1024px / phone 390px toggle), theme following the guide selector, page transitions (keep current page, 180ms cover, 160ms fade), first-visit boot cover with and without JavaScript, large-screen root scaling. 2026-11-10: rich editor samples (block menu, selection toolbar and colours, table, media/file cards, Mermaid, HTML embed, link cards) in light and dark at 1440x900 and 390x844, dialog desktop padding, body edit page (desktop header actions, phone foot bar).",
+      "notVerified": "physical device keyboard occlusion, screen readers, browser refresh/share of masked routes (samples use memory history), pixel parity with any product, real uploads and link-preview servers (samples use blob URLs and canned previews), image/diagram lightbox and column-width dragging by hand, touch devices"
     }
   }
 }

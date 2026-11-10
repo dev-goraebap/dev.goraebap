@@ -15,6 +15,7 @@ arc42: "8.2, 5, 2"
 - [조회 포트](references/queries.md): 화면 조회의 소유권·결과 타입·조립 경로를 정할 때 읽습니다.
 - [모듈 간 조회](references/cross-module-read.md): 다른 모듈의 표시값·검색·정렬이 필요할 때 읽습니다.
 - [도메인 오류와 서비스 오류](references/errors.md): 규칙 위반·부재·권한·충돌을 처리할 때 읽습니다.
+- [사용자가 올린 파일과 고른 주소](references/untrusted-content.md): 올린 HTML을 화면 안에 보이거나, 사용자가 준 주소를 서버가 읽을 때 읽습니다.
 - [코드 규칙](references/code-style.md): Java 파일·DTO·의존성을 작성할 때 읽습니다.
 
 완료 시 프로젝트의 정적 검사·테스트와 변경한 유스케이스의 성공·실패·권한을 검증합니다. HTTP 계약이 바뀌면 명세·생성 타입·호출자도 함께 맞춥니다.
