@@ -1,0 +1,40 @@
+---
+title: "리치 에디터"
+sidebar:
+  order: 5
+---
+
+import source0 from '@/shared/ui/composites/editor/RichEditor.tsx?raw';
+import source1 from '@/shared/ui/composites/editor/BlockMenu.tsx?raw';
+import source2 from '@/shared/ui/composites/editor/SelectionMenu.tsx?raw';
+import source3 from '@/shared/ui/composites/editor/TableControls.tsx?raw';
+import source4 from '@/shared/ui/composites/editor/MediaView.tsx?raw';
+import source5 from '@/shared/ui/composites/editor/LinkCard.tsx?raw';
+import source6 from '@/shared/ui/composites/editor/schema.ts?raw';
+
+규칙 원본: [composed-components](https://github.com/dev-goraebap/dev.goraebap/blob/main/plugins/webcraft/skills/design-system/references/composed-components.md)
+
+본문 칸을 넓힌 리치 에디터(Tiptap 3)입니다. 읽기와 편집이 같은 에디터이고, 편집할 때 블록 손잡이·블록 메뉴·`/` 명령·선택 서식 도구·표 도구·올리는 칸이 붙습니다. 제목은 화면의 시스템 제목 하나이고 본문 제목은 2단계부터입니다. 올리기와 링크 미리보기는 호스트가 비동기 함수로 넘기며, 견본은 blob 주소와 정해 둔 답을 쓰는 가짜 호스트입니다.
+
+<SampleGroup group="composites-editor" />
+
+## 단축키
+
+| 동작 | 키 |
+| --- | --- |
+| 고른 블록 복제 · 복사 | Ctrl/⌘ + D · Ctrl/⌘ + C |
+| 고른 블록 위·아래로 옮기기 | Alt + ↑ · Alt + ↓ |
+| 고른 블록 지우기 | Delete |
+| 블록 넣기 | `/` 다음 이름, ↑·↓, Enter, Esc |
+| 올리는 칸 닫기 | ✕ 또는 Esc |
+| 수정 화면 저장 | Ctrl/⌘ + S |
+
+## 구현 코드
+
+<Source name="RichEditor.tsx" code={source0} lang="tsx" />
+<Source name="BlockMenu.tsx" code={source1} lang="tsx" />
+<Source name="SelectionMenu.tsx" code={source2} lang="tsx" />
+<Source name="TableControls.tsx" code={source3} lang="tsx" />
+<Source name="MediaView.tsx" code={source4} lang="tsx" />
+<Source name="LinkCard.tsx" code={source5} lang="tsx" />
+<Source name="schema.ts" code={source6} lang="ts" />

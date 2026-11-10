@@ -15,3 +15,12 @@ dialog.positioned {
 .footer[data-divider] { border-block-start: 1px solid var(--color-border); }
 .frame[data-fullscreen] .header { padding-block-start: max(var(--spacing-4), env(safe-area-inset-top)); }
 .frame[data-fullscreen] > :last-child { padding-block-end: max(var(--spacing-4), env(safe-area-inset-bottom)); }
+/*
+ * 데스크톱(64rem 이상)은 모든 대화상자의 안쪽 여백을 넉넉히 둔다: 좌우 40px, 위아래 24px, 머리 아래·본문 위 12px. 휴대폰은
+ * 그대로다. 본문을 리치 에디터로 쓸 때 블록 손잡이(글줄 왼쪽)도 이 여백 안에 들어와 대화상자 밖으로 나가지 않는다.
+ */
+@media (width >= 64rem) {
+  .header, .body, .footer { padding: var(--spacing-6) var(--spacing-10); }
+  .header { padding-block-end: var(--spacing-3); }
+  .body { padding-block-start: var(--spacing-3); }
+}

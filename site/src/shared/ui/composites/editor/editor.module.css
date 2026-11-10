@@ -1,22 +1,347 @@
 /*
- * 종이 위의 본문: 최소 높이(대화상자 3.5rem, 페이지 12rem)만 두고 테두리·도구 막대는 없다. 긴 URL은 줄을 넘긴다.
- * 긴 글을 쓰고 읽는 칸이라 화면 글자(13px)보다 한 단계 큰 본문(15px)으로 쓴다. 큰 화면 배율에서도 함께 커진다.
+ * 리치 본문 칸(RichEditor). 종이 같은 본문에 테두리·고정 도구 막대 없이, 편집할 때만 블록 손잡이·떠 있는 메뉴·표 도구가 붙는다.
+ * 원본은 `@scope (...) { }`로 범위를 묶었는데, @scope 안의 규칙은 같은 우선순위의 바깥 규칙을 이긴다(가까운 범위가 이긴다).
+ * 그래서 바깥에서 덮어쓰려던 규칙이 듣지 않았다. 여기서는 CSS 모듈 클래스로 범위를 묶어 @scope를 쓰지 않는다. @scope로 옮길 때는
+ * 덮어쓰는 규칙을 같은 scope 안에 두거나 우선순위를 올린다.
+ * Astryx 부품(Button·Text…)은 레이어 안의 스타일이라 이 모듈의 규칙이 이긴다. Tiptap·ProseMirror가 붙이는 클래스는 :global로 잡는다.
  */
-.prose { min-block-size: 3.5rem; padding: 0; outline: none; font-size: var(--text-large-size); line-height: 1.65; overflow-wrap: anywhere; color: var(--color-text-primary); }
+
+/*
+ * 본문의 글자색·배경색. 테마의 색 이름에서 색상(hue)만 받아, 글자색은 바탕 위에서 읽히는 밝기·채도로(라이트는 진하게, 다크는 밝게)
+ * 다시 칠한다(테마의 글자색은 본문 글자와 거의 구분되지 않게 낮춰져 있다). 배경색은 테마의 옅은 바탕을 그대로 쓴다. 갈색은 테마에
+ * 없어 주황의 색상을 낮은 채도로 쓴다. 변수는 테마 안(색 이름이 정의된 곳)에서 계산해야 하므로 테마 요소에 둔다.
+ */
+:global([data-astryx-theme]) {
+  --editor-ink-gray: light-dark(oklch(from var(--color-text-gray) 0.55 0.01 h), oklch(from var(--color-text-gray) 0.75 0.01 h));
+  --editor-ink-brown: light-dark(oklch(from var(--color-text-orange) 0.5 0.06 h), oklch(from var(--color-text-orange) 0.74 0.05 h));
+  --editor-ink-orange: light-dark(oklch(from var(--color-text-orange) 0.58 0.14 h), oklch(from var(--color-text-orange) 0.78 0.11 h));
+  --editor-ink-yellow: light-dark(oklch(from var(--color-text-yellow) 0.58 0.12 h), oklch(from var(--color-text-yellow) 0.82 0.11 h));
+  --editor-ink-green: light-dark(oklch(from var(--color-text-green) 0.52 0.12 h), oklch(from var(--color-text-green) 0.76 0.1 h));
+  --editor-ink-blue: light-dark(oklch(from var(--color-text-blue) 0.5 0.13 h), oklch(from var(--color-text-blue) 0.76 0.09 h));
+  --editor-ink-purple: light-dark(oklch(from var(--color-text-purple) 0.5 0.13 h), oklch(from var(--color-text-purple) 0.76 0.09 h));
+  --editor-ink-pink: light-dark(oklch(from var(--color-text-pink) 0.55 0.13 h), oklch(from var(--color-text-pink) 0.78 0.09 h));
+  --editor-ink-red: light-dark(oklch(from var(--color-text-red) 0.55 0.15 h), oklch(from var(--color-text-red) 0.76 0.11 h));
+  --editor-fill-gray: var(--color-background-gray);
+  --editor-fill-brown: color-mix(in srgb, var(--color-background-orange) 55%, var(--color-background-gray));
+  --editor-fill-orange: var(--color-background-orange);
+  --editor-fill-yellow: var(--color-background-yellow);
+  --editor-fill-green: var(--color-background-green);
+  --editor-fill-blue: var(--color-background-blue);
+  --editor-fill-purple: var(--color-background-purple);
+  --editor-fill-pink: var(--color-background-pink);
+  --editor-fill-red: var(--color-background-red);
+}
+
+/* ── 본문 ───────────────────────────────────────────────────────────── */
+/*
+ * 긴 글을 쓰고 읽는 칸이라 화면 글자(13px)보다 한 단계 큰 본문(15px)으로 쓴다. 최소 높이(대화상자 3.5rem, 페이지 12rem)만 두고
+ * 긴 URL은 줄을 넘긴다. 큰 화면 배율에서도 함께 커진다.
+ */
+.prose { --media-max-block: 32rem; --block-gap: var(--spacing-5); position: relative; min-block-size: 3.5rem; padding: 0; outline: none;
+  font-size: var(--text-large-size); line-height: 1.65; overflow-wrap: anywhere; color: var(--color-text-primary); }
 .prose[data-page] { min-block-size: 12rem; }
+.reading { min-block-size: 0; }
 .prose > :first-child { margin-block-start: 0; }
 .prose > :last-child { margin-block-end: 0; }
 .prose p { margin-block: 0 var(--spacing-2); }
 /* Astryx 테마의 본문 스타일이 문단에 화면 글자 크기를 직접 주므로 칸의 크기를 따르게 한다. */
-.prose :is(p, li, blockquote) { font-size: inherit; line-height: inherit; }
-.prose h2 { margin-block: var(--spacing-4) var(--spacing-2); font-size: var(--text-heading-2-size); }
-.prose ul, .prose ol { padding-inline-start: var(--spacing-5); }
+.prose :is(p, li, blockquote, td, th) { font-size: inherit; line-height: inherit; }
+/* 본문 제목은 2단계부터다(화면의 시스템 제목이 1단계). */
+.prose h2 { margin-block: var(--spacing-6) var(--spacing-2); font-size: var(--text-heading-2-size); font-weight: 600; line-height: 1.4; }
+.prose h3 { margin-block: var(--spacing-5) var(--spacing-1-5); font-size: 1.0625rem; font-weight: 600; line-height: 1.45; }
+.prose h4 { margin-block: var(--spacing-4) var(--spacing-1); font-size: var(--text-large-size); font-weight: 600; }
+.prose :is(ul, ol) { margin-block: 0 var(--spacing-2); padding-inline-start: var(--spacing-5); }
 /* 전역 reset이 목록 기호를 지우므로 본문 칸에서는 되살린다. */
 .prose ul { list-style: disc; }
 .prose ol { list-style: decimal; }
+.prose li > p { margin-block-end: var(--spacing-1); }
+.prose ul[data-type="taskList"] { list-style: none; padding-inline-start: var(--spacing-1); }
+.prose ul[data-type="taskList"] li { display: flex; align-items: flex-start; gap: var(--spacing-2); }
+.prose ul[data-type="taskList"] li > label { flex: none; margin-block-start: 0.3rem; }
+.prose ul[data-type="taskList"] li > div { flex: 1; min-inline-size: 0; }
+.prose ul[data-type="taskList"] li[data-checked="true"] > div { color: var(--color-text-secondary); text-decoration: line-through; }
+.prose blockquote { margin: var(--spacing-3) 0; padding-inline-start: var(--spacing-4); border-inline-start: 3px solid var(--color-border-emphasized); color: var(--color-text-secondary); }
+.prose hr { margin: var(--spacing-6) 0; border: 0; border-block-start: 1px solid var(--color-border); }
+.prose hr:global(.ProseMirror-selectednode) { border-block-start-color: var(--focus-outline-color); }
+.prose pre { margin: var(--spacing-3) 0; padding: var(--spacing-3) var(--spacing-4); overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-element);
+  background: var(--color-background-muted); font-family: var(--font-family-code, monospace); font-size: 0.8125rem; line-height: 1.6; }
+.prose pre code { background: none; padding: 0; font: inherit; text-decoration: none; color: inherit; }
+/* 글 속 코드(인라인): 상자 대신 옅은 밑줄로 표시하고, 글자는 고정폭에 본문보다 조금 옅게. 상자는 글줄 사이에서 튀고 인쇄에서 흐려 보였다. */
+.prose :not(pre) > code { padding: 0; border-radius: 0; background: none; color: color-mix(in srgb, currentColor 78%, transparent); font-family: var(--font-family-code, monospace);
+  font-size: 0.9em; text-decoration: underline; text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-underline-offset: 0.32em; text-decoration-skip-ink: none; }
+.prose a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); text-underline-offset: 0.2em; }
+/* 앱 안의 문서로 가는 링크(문서 언급): 밑줄 대신 옅은 바탕의 이름표로 보인다. 읽는 화면에서 누르면 새 탭이 아니라 그 화면으로 간다. */
+.prose a[href^="/"]:not([href^="//"]) { padding: 1px 0.375rem; border-radius: 0.375rem; background: var(--color-overlay-hover); color: inherit; font-weight: 500; text-decoration: none; }
+.prose a[href^="/"]:not([href^="//"]):hover { background: color-mix(in srgb, var(--color-accent) 14%, transparent); }
+.prose mark { border-radius: 2px; color: inherit; }
+.prose sup, .prose sub { font-size: 0.75em; }
 /* 문서가 비면 첫 줄에 안내를 보인다. */
 .prose:has(> p:only-child:empty)::before, .prose:has(> p:only-child > br:global(.ProseMirror-trailingBreak):only-child)::before {
   content: attr(data-placeholder); position: absolute; color: var(--color-text-disabled); pointer-events: none; }
-.prose { position: relative; }
+.prose :global(.ProseMirror-gapcursor) { position: relative; }
 
-.reading { min-block-size:0; }
+/* 표: 문서 표 모양. 모서리를 둥글리지 않고 바깥 양옆 세로선을 두지 않으며(위·아래 줄과 칸 사이 줄만), 머리글 칸은 옅은 바탕으로 구분한다. */
+.prose :global(.tableWrapper) { margin: var(--spacing-6) 0; overflow-x: auto; scrollbar-width: thin; }
+/* 열 너비 손잡이가 칸 밖으로 나가 있으면 표 틀이 넘친다고 보고 스크롤 막대를 띄웠다 지워, 포인터를 올리기만 해도 행이 흔들렸다.
+   손잡이는 칸 안쪽에 두고, 감싸는 칸은 세로로 넘치지 않게 한다. */
+.prose :global(.tableWrapper) { overflow-y: hidden; }
+.prose table { inline-size: 100%; min-inline-size: 26.25rem; border-collapse: collapse; border-spacing: 0; table-layout: fixed; font-size: 0.8125rem; line-height: 1.65; }
+.prose :is(td, th) { position: relative; min-inline-size: 3rem; padding: 0.625rem 0.8125rem; vertical-align: top; text-align: start;
+  border-block-end: 1px solid var(--color-border-emphasized); border-inline-end: 1px solid var(--color-border); }
+.prose tr > :is(td, th):last-child { border-inline-end: 0; }
+.prose tr:first-child > :is(td, th) { border-block-start: 1px solid var(--color-border-emphasized); }
+.prose th { background: var(--color-overlay-pressed); font-weight: 600; }
+.prose :is(td, th) p { margin: 0; min-block-size: 1.65em; }
+.prose :global(.selectedCell)::after { content: ''; position: absolute; inset: 0; background: var(--color-accent-muted); pointer-events: none; }
+.prose :global(.column-resize-handle) { position: absolute; inset-block: 0; inset-inline-end: 0; inline-size: 3px; background: var(--focus-outline-color); pointer-events: none; }
+.prose:global(.resize-cursor) { cursor: col-resize; }
+
+/* ── 에디터 틀과 블록 손잡이 ─────────────────────────────────────────── */
+.editor { position: relative; min-inline-size: 0; }
+.contents { display: contents; }
+.error { margin-block-end: var(--spacing-3); padding: var(--spacing-2) var(--spacing-3); border: 1px solid color-mix(in srgb, var(--color-error) 40%, transparent);
+  border-radius: var(--radius-element); background: var(--color-error-muted); }
+/* 손잡이는 글줄 왼쪽 바깥(1.625rem)에 둔다. 대화상자의 데스크톱 좌우 여백(40px)이 이 자리를 품는다. */
+.blockControls { position: absolute; inset: 0 auto auto -1.625rem; inline-size: 1.625rem; pointer-events: none; }
+.blockControl { position: absolute; z-index: 11; display: flex; align-items: center; block-size: 1.8125rem; pointer-events: auto; opacity: 0;
+  transition: opacity var(--duration-fast); }
+.blockControl:is(:hover, :focus-within, [data-selected], [data-hovered], [data-open]) { opacity: 1; }
+.blockControl[data-open] { z-index: 30; }
+/* 손잡이를 글줄 가운데에 맞춘다(높이의 절반만큼 올린다). transform으로 옮기면 손잡이가 그 안의 고정 위치 메뉴(블록 메뉴)의 기준이
+   되어(조상에 transform이 있으면 position: fixed의 기준이 그 조상이 된다) 메뉴가 엉뚱한 곳에 뜬다. 그래서 margin으로 옮긴다. */
+.blockControl[data-align-line] { margin-block-start: -0.90625rem; }
+.grip.grip { inline-size: 1.5rem; min-inline-size: 1.5rem; block-size: 1.6875rem; padding: 0; border-radius: var(--radius-inner); color: var(--color-icon-secondary); cursor: grab;
+  touch-action: none; user-select: none; }
+.grip.grip:hover { background: var(--color-overlay-hover); color: var(--color-text-primary); }
+.blockSelected { border-radius: 3px; background: var(--color-accent-muted); }
+.dropLine { position: absolute; z-index: 17; block-size: 3px; background: var(--focus-outline-color); pointer-events: none; }
+.dropLine[data-invalid] { background: var(--color-error); }
+.dropLabel { position: absolute; inset-block-start: 0.25rem; inset-inline-start: 0.25rem; padding: 0.1875rem 0.4375rem; border-radius: var(--radius-inner);
+  background: var(--color-background-inverted); color: var(--color-on-dark); font-size: 0.625rem; white-space: nowrap; }
+.editorEnd { min-block-size: 1.5rem; cursor: grabbing; }
+@media (prefers-reduced-motion: reduce) { .blockControl { transition: none; } }
+
+/* ── 떠 있는 메뉴(블록·표 메뉴, 하위 메뉴, 서식 도구, 명령 목록) ─────────── */
+/* 짙고 넓은 그림자 대신 옅은 그림자와 1px 테두리로 경계를 낸다. */
+.menu { position: fixed; z-index: 60; box-sizing: border-box; inline-size: 15rem; max-block-size: calc(100vh - 1rem); padding: 0.375rem; overflow-y: auto; scrollbar-width: thin;
+  border: 1px solid var(--color-border-emphasized); border-radius: var(--radius-container); background: var(--color-background-popover); color: var(--color-text-primary);
+  box-shadow: 0 2px 8px var(--color-shadow); }
+.submenu { z-index: 61; }
+.tableMenu { inline-size: 13rem; }
+.menuBody { display: flex; flex-direction: column; }
+.menuTitle { padding: 0.5rem 0.625rem 0.25rem; }
+.menuItem.menuItem { justify-content: flex-start; inline-size: 100%; min-block-size: 2rem; block-size: auto; padding: 0.3125rem 0.625rem; border-radius: var(--radius-element);
+  font-size: 0.8125rem; font-weight: var(--font-weight-normal); text-align: start; }
+.menuItem.menuItem > span:first-child { flex: 1; justify-content: flex-start; gap: 0.625rem; min-inline-size: 0; }
+.menuItem.menuItem svg { color: var(--color-icon-secondary); }
+.menuItem.menuItem:is(:hover, :focus-visible, [data-open]) { background: var(--color-overlay-hover); outline: none; }
+.menuItem.menuItem[data-danger] { color: var(--color-text-red); }
+.menuItem.menuItem[data-danger] svg { color: inherit; }
+.menuItem span:has(> .menuEnd) { margin-inline-start: auto; }
+.menuEnd { display: inline-flex; align-items: center; color: var(--color-text-secondary); }
+.menuHint { font-size: 0.6875rem; }
+.menuDivider { margin: 0.375rem 0.25rem; }
+.ink { display: inline-grid; place-items: center; inline-size: 1.125rem; block-size: 1.125rem; font-size: 0.875rem; line-height: 1; }
+.fill { display: inline-block; inline-size: 1rem; block-size: 1rem; border: 1px solid var(--color-border-emphasized); border-radius: 50%; }
+.glyph { display: inline-grid; place-items: center; inline-size: 1.125rem; font-size: 0.6875rem; letter-spacing: -0.02em; }
+
+/* 글을 고르면 뜨는 서식 도구: 둥근 띠 하나에 도구를 나란히, 묶음 사이는 가는 세로줄. 펼친 목록은 띠 아래, 더 보기 줄은 띠 위. */
+.selectionMenu { position: relative; flex-wrap: nowrap; padding: 0.3125rem; border: 1px solid var(--color-border-emphasized); border-radius: var(--radius-container);
+  background: var(--color-background-popover); color: var(--color-text-primary); box-shadow: 0 2px 8px var(--color-shadow); }
+.tool.tool { min-inline-size: 1.875rem; block-size: 1.875rem; padding: 0 0.375rem; border-radius: var(--radius-element); color: var(--color-icon-secondary); font-size: 0.8125rem; }
+.tool.tool:is(:hover, [aria-expanded="true"]) { background: var(--color-overlay-hover); color: var(--color-text-primary); }
+.tool.tool[aria-pressed="true"] { background: var(--color-overlay-pressed); color: var(--color-text-primary); }
+.toolWide.toolWide { padding: 0 0.5rem; color: var(--color-text-primary); white-space: nowrap; }
+.toolWide .ink { inline-size: 1.375rem; block-size: 1.375rem; border: 1px solid var(--color-border-emphasized); border-radius: 50%; font-size: 0.75rem; }
+/* 더 보기 단추의 점 셋은 세로로 세운다. */
+.moreTool svg { rotate: 90deg; }
+.toolDivider { display: inline-block; flex: none; inline-size: 1px; block-size: 1.125rem; margin-inline: 0.25rem; background: var(--color-border); }
+.script { font-size: 0.8125rem; line-height: 1; }
+.script :is(sup, sub) { font-size: 0.5625rem; }
+.pop { position: absolute; inset-block-start: calc(100% + 0.375rem); z-index: 2; max-block-size: min(26rem, 60vh); }
+.popStart { inset-inline-start: 0; }
+.popEnd { inset-inline-end: 0; }
+.popRow { position: absolute; inset-block-end: calc(100% + 0.375rem); inset-inline-end: 0; z-index: 2; inline-size: max-content; }
+/* 링크 입력 칸: 한 줄 입력과 그 아래의 고를 것들. */
+.linkPop { inline-size: 22rem; max-inline-size: calc(100vw - 1.5rem); }
+.linkRow { padding: 0.25rem 0.375rem 0.25rem 0.625rem; color: var(--color-icon-secondary); }
+.linkInput { flex: 1; min-inline-size: 0; }
+.linkEmpty { padding: 0.5rem 0.625rem; }
+.linkPop .menuHint { max-inline-size: 8rem; overflow: hidden; border: 0; background: none; text-overflow: ellipsis; white-space: nowrap; }
+@media (width < 64rem) { .selectionMenu { max-inline-size: calc(100vw - 1.25rem); overflow-x: auto; } }
+
+/* `/` 명령 목록: 커서 아래에 뜨는 목록. 묶음 이름, 아이콘 칸과 이름·설명, 아래에 조작 안내. */
+.palette { position: fixed; z-index: 55; box-sizing: border-box; inline-size: 20rem; max-inline-size: calc(100vw - 1.5rem); padding: 0.3125rem 0; overflow: hidden;
+  border: 1px solid var(--color-border-emphasized); border-radius: var(--radius-element); background: var(--color-background-popover); color: var(--color-text-primary);
+  box-shadow: 0 2px 8px var(--color-shadow); }
+.paletteScroll { flex: 1; min-block-size: 0; padding: 0 0.3125rem; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.paletteGroup { padding: 0.625rem 0.5625rem 0.375rem; font-size: 0.625rem; letter-spacing: 0.02em; }
+.paletteOption.paletteOption { justify-content: flex-start; inline-size: 100%; min-block-size: 2.8125rem; block-size: auto; padding: 0.3125rem 0.4375rem; border-radius: var(--radius-inner);
+  text-align: start; }
+.paletteOption.paletteOption > span:first-child { flex: 1; justify-content: flex-start; gap: 0.625rem; }
+.paletteOption.paletteOption[data-active] { background: var(--color-overlay-hover); }
+.paletteIcon { flex: none; inline-size: 1.875rem; block-size: 1.875rem; border: 1px solid var(--color-border); border-radius: var(--radius-inner); color: var(--color-icon-secondary); }
+.paletteIcon svg { inline-size: 1.125rem; block-size: 1.125rem; }
+.paletteText { min-inline-size: 0; line-height: 1.35; }
+.paletteEmpty { padding: var(--spacing-3); }
+.paletteFooter { flex: none; margin-block-start: 0.3125rem; padding: 0.25rem 0.625rem 0; border-block-start: 1px solid var(--color-border); color: var(--color-text-secondary); }
+.paletteFooter svg { inline-size: 0.75rem; block-size: 0.75rem; }
+
+/* ── 표 둘레의 편집 도구(TableControls) ───────────────────────────────── */
+/* 행·열 손잡이, 표 메뉴 단추, 끝에 더하는 + 막대. 에디터 틀 위에 겹쳐 놓고 도구만 누를 수 있다. */
+.tableControls { position: absolute; inset: 0; z-index: 12; pointer-events: none; }
+.tableControls > * { pointer-events: auto; }
+.tableHandle.tableHandle { position: absolute; display: grid; place-items: center; min-inline-size: 0; padding: 0; border: 1px solid var(--color-border-emphasized);
+  border-radius: 0.3125rem; background: var(--color-background-surface); color: var(--color-icon-secondary); box-shadow: 0 1px 3px var(--color-shadow); }
+.tableHandle.tableHandle svg { inline-size: 0.75rem; block-size: 0.75rem; }
+.tableHandle.tableHandle:is(:hover, [aria-expanded="true"]) { border-color: transparent; background: var(--color-text-primary); color: var(--color-background-surface); }
+.tableHandle-row.tableHandle-row { inline-size: 1rem; block-size: 1.375rem; }
+.tableHandle-col.tableHandle-col { inline-size: 1.375rem; block-size: 1rem; }
+.tableHandle-col svg { rotate: 0deg; }
+.tableHandle-table.tableHandle-table { inline-size: 1.125rem; block-size: 1.125rem; border-radius: 50%; }
+.tableAdd.tableAdd { position: absolute; display: grid; place-items: center; min-inline-size: 0; padding: 0; border-radius: var(--radius-inner); background: var(--color-overlay-hover);
+  color: var(--color-icon-secondary); }
+.tableAdd.tableAdd svg { inline-size: 0.75rem; block-size: 0.75rem; }
+.tableAdd.tableAdd:hover { background: var(--color-overlay-pressed); color: var(--color-text-primary); }
+.tableAddCol.tableAddCol { inline-size: 0.875rem; }
+.tableAddRow.tableAddRow { block-size: 0.875rem; }
+
+/* ── 올리는 칸(upload-zone.ts)과 링크 카드의 주소 칸 ───────────────────── */
+/* 점선 칸. 누르면 파일 고르기, 파일을 끌어 오면 강조. */
+.uploadZone { position: relative; margin: var(--block-gap, 1.25rem) 0; border: 1.5px dashed var(--color-border-emphasized); border-radius: var(--radius-container);
+  background: var(--color-overlay-hover); transition: border-color var(--duration-fast), background var(--duration-fast); }
+.uploadZone:hover, .uploadZone[data-over] { border-color: var(--color-accent); background: var(--color-accent-muted); }
+.uploadPick { display: flex; flex-direction: column; align-items: center; gap: var(--spacing-2); inline-size: 100%; padding: 2.25rem var(--spacing-4); border: 0; border-radius: inherit;
+  background: none; color: var(--color-text-primary); font: inherit; font-size: 0.875rem; cursor: pointer; }
+.uploadPick:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: -3px; }
+.uploadArt { display: grid; place-items: center; flex: none; inline-size: 2.75rem; block-size: 2.75rem; border-radius: 50%; background: var(--color-accent); color: var(--color-on-accent); }
+.uploadArt svg { inline-size: 1.375rem; block-size: 1.375rem; }
+.uploadHint { font-size: 0.75rem; color: var(--color-text-secondary); }
+.uploadClose { position: absolute; inset-block-start: 0.5rem; inset-inline-end: 0.5rem; display: grid; place-items: center; inline-size: 1.625rem; block-size: 1.625rem; border: 0;
+  border-radius: var(--radius-element); background: none; color: var(--color-icon-secondary); font-size: 0.75rem; cursor: pointer; }
+.uploadClose:hover { background: var(--color-overlay-hover); color: var(--color-text-primary); }
+.embedZone { padding: 1.75rem var(--spacing-4); color: var(--color-text-primary); font-size: 0.875rem; text-align: center; }
+.embedInput { inline-size: min(30rem, 100%); }
+.embedInput input { text-align: center; }
+.uploadQueue { margin-block-end: var(--spacing-5); overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-element); background: var(--color-background-muted); }
+.uploadJob { padding: var(--spacing-3) 0.875rem; }
+.uploadJob + .uploadJob { border-block-start: 1px solid var(--color-border); }
+.uploadJobBody { flex: 1; min-inline-size: 0; }
+@media print { .uploadZone, .mediaTools, .htmlFrame { display: none; } }
+
+/* ── 도표 · 사진 · 동영상 · 파일 블록 ─────────────────────────────────── */
+/* 위아래에 붙던 머리 띠와 상자 틀이 없다. 블록은 내용만 보이고, 도구는 포인터를 올리거나 초점이 들어올 때 오른쪽 위에 뜬다. */
+.mediaTools { position: absolute; inset-block-start: 0.5rem; inset-inline-end: 0.5rem; z-index: 2; padding: 0.1875rem; border: 1px solid var(--color-border-emphasized);
+  border-radius: 0.5625rem; background: var(--color-background-popover); box-shadow: 0 2px 8px var(--color-shadow); opacity: 0; transition: opacity var(--duration-fast); }
+:is(.media, .sourceNode, .fileCard, .linkCardBox):is(:hover, :focus-within) .mediaTools { opacity: 1; }
+@media (hover: none) { .mediaTools { opacity: 1; } }
+.media { position: relative; margin: var(--block-gap) auto; padding: 0; border: 0; }
+.media[data-selected] { outline: 2px solid var(--focus-outline-color); outline-offset: 4px; border-radius: 0.625rem; }
+.mediaStage { position: relative; margin-inline: auto; overflow: hidden; border-radius: 0.625rem; }
+.media[data-kind="image"] .mediaStage { inline-size: fit-content; max-inline-size: 100%; }
+.media[data-kind="image"] img { display: block; inline-size: 100%; block-size: 100%; max-block-size: var(--media-max-block); object-fit: contain; border-radius: 0.625rem; }
+.media[data-kind="image"] .mediaStage:not([data-ratio]) img { inline-size: auto; max-inline-size: 100%; }
+.media img[data-zoomable] { cursor: zoom-in; }
+.media img[data-fade] { animation: media-fade var(--duration-medium) ease-out; }
+@keyframes media-fade { from { opacity: 0; } }
+.media[data-kind="video"] video { display: block; inline-size: 100%; max-block-size: var(--media-max-block); border-radius: 0.625rem; background: black; }
+.media[data-kind="audio"] .mediaStage { overflow: visible; }
+.media[data-kind="audio"] audio { display: block; inline-size: 100%; }
+.media[data-kind="audio"] .mediaTools { position: static; inline-size: fit-content; margin: 0.375rem 0 0 auto; opacity: 1; }
+.mediaState { min-block-size: 6rem; padding: 1.5rem; text-align: center; color: var(--color-text-secondary); }
+.mediaStage > .mediaState { position: absolute; inset: 0; }
+.mediaState[data-state="loading"] { pointer-events: none; background: var(--color-background-muted); }
+.mediaState[data-state="loading"] svg { animation: media-spin 1s linear infinite; }
+.mediaState[data-state="error"] svg { color: var(--color-error); }
+@keyframes media-spin { to { rotate: 360deg; } }
+@media (prefers-reduced-motion: reduce) { .mediaState svg, .media img[data-fade] { animation: none; } }
+/* 이어 놓인 사진은 너비를 줄이면(50% 이하) 한 줄에 나란히 놓인다. 여러 장을 격자처럼 모아 볼 때 쓴다. 노드 뷰는 바깥 감싸개
+   (.react-renderer)가 실제 블록이라 그 겹을 나란히 놓아야 한다: 배치 규칙은 감싸개에 :has()로 걸고, 안의 사진은 그 칸을 채운다. */
+.prose :global(.react-renderer):has(> .media[data-kind="image"]:is([data-width="25"], [data-width="50"])) { display: inline-block; box-sizing: border-box; padding: 0.375rem; vertical-align: top; }
+.prose :global(.react-renderer):has(> .media[data-kind="image"][data-width="25"]) { inline-size: 25%; }
+.prose :global(.react-renderer):has(> .media[data-kind="image"][data-width="50"]) { inline-size: 50%; }
+.prose :global(.react-renderer) > .media[data-kind="image"]:is([data-width="25"], [data-width="50"]) { inline-size: 100% !important; margin: 0; }
+
+/* 파일: 종류의 색을 띤 카드 한 줄. */
+.media[data-kind="file"] { max-inline-size: 28rem; margin-inline: 0; }
+.media[data-html] { max-inline-size: none; }
+/* 종류 색은 테마의 색 이름에서 색상(hue)만 받아 또렷한 밝기·채도로 칠한다(테마의 아이콘 색은 글자와 어울리게 낮춰져 있어 종류가 구분되지 않는다). */
+.fileCard { --file-ink: oklch(from var(--color-icon-gray) 0.58 0.01 h); position: relative; padding: 0.625rem var(--spacing-3); border: 1px solid var(--color-border); border-radius: var(--radius-container);
+  background: var(--color-background-surface); transition: border-color var(--duration-fast), background var(--duration-fast); }
+.fileCard:hover { border-color: var(--file-ink); background: color-mix(in srgb, var(--file-ink) 4%, var(--color-background-surface)); }
+.fileCard[data-tone="red"] { --file-ink: oklch(from var(--color-icon-red) 0.58 0.17 h); }
+.fileCard[data-tone="blue"] { --file-ink: oklch(from var(--color-icon-blue) 0.55 0.15 h); }
+.fileCard[data-tone="green"] { --file-ink: oklch(from var(--color-icon-green) 0.6 0.14 h); }
+.fileCard[data-tone="orange"] { --file-ink: oklch(from var(--color-icon-orange) 0.68 0.16 h); }
+.fileCard[data-tone="amber"] { --file-ink: oklch(from var(--color-icon-yellow) 0.7 0.14 h); }
+.fileCard[data-tone="sky"] { --file-ink: oklch(from var(--color-icon-cyan) 0.62 0.12 h); }
+.fileCard[data-tone="purple"] { --file-ink: oklch(from var(--color-icon-purple) 0.56 0.16 h); }
+.fileTile { flex: none; gap: 1px; inline-size: 2.75rem; block-size: 3rem; border-radius: 0.5625rem; background: color-mix(in srgb, var(--file-ink) 14%, transparent); color: var(--file-ink); }
+.fileTile svg { inline-size: 1.125rem; block-size: 1.125rem; }
+.fileTileLabel.fileTileLabel { color: inherit; font-size: 0.5625rem; letter-spacing: 0.04em; line-height: 1; }
+.fileText { flex: 1; min-inline-size: 0; }
+.fileCard .mediaTools { position: static; padding: 0; border: 0; background: none; box-shadow: none; opacity: 1; }
+/* HTML 파일: 카드 아래에 격리된 틀로 미리보기를 둔다. 틀은 흰 바탕(웹 문서의 기본)이고 세로로 늘릴 수 있다. */
+.media[data-html] .fileCard { border-end-start-radius: 0; border-end-end-radius: 0; }
+.htmlFrame { display: block; box-sizing: border-box; inline-size: 100%; block-size: 26rem; min-block-size: 10rem; border: 1px solid var(--color-border); border-block-start: 0;
+  border-radius: 0 0 var(--radius-container) var(--radius-container); background: white; resize: vertical; color-scheme: light; }
+
+/* 도표: 틀 없이 가운데에, 칸 폭을 채우되 높이 한도 안에서(넘으면 비율을 지킨 채 줄어 가운데에 놓인다). */
+.sourceNode { position: relative; margin: var(--block-gap) 0; }
+.source-mermaidBlock .sourcePreview { display: flex; justify-content: center; padding: 0.5rem 0; }
+.source-mermaidBlock[data-selected] .sourcePreview { outline: 2px solid var(--focus-outline-color); outline-offset: 4px; border-radius: 0.625rem; }
+.mermaidRender { display: block; inline-size: 100%; text-align: center; }
+.mermaidRender svg { display: block; margin-inline: auto; max-block-size: 36rem; }
+.zoomable { cursor: zoom-in; }
+.renderError.renderError { padding: var(--spacing-2) var(--spacing-3); border: 1px solid color-mix(in srgb, var(--color-error) 30%, transparent); border-radius: var(--radius-element);
+  background: color-mix(in srgb, var(--color-error) 8%, transparent); color: var(--color-error); }
+.embedZone .renderError.renderError { padding: 0; border: 0; background: none; }
+/* 원문 편집 칸: 테마 색을 따른다(어두운 색으로 고정하지 않는다). */
+.sourceEditor { margin-block-start: var(--spacing-2); padding: var(--spacing-3) 0.875rem; border: 1px solid var(--color-border); border-radius: var(--radius-container);
+  background: var(--color-background-muted); color: var(--color-text-primary); }
+.sourceArea textarea { font-family: var(--font-family-code, monospace); font-size: 0.8125rem; line-height: 1.6; }
+
+/* 링크 카드: 웹 주소 하나를 제목·설명·대표 사진으로. 글은 왼쪽, 사진은 오른쪽에 높이를 채워 놓는다. */
+.source-webEmbed { margin: 0.875rem 0; }
+.linkCardBox { position: relative; }
+.linkCard { display: flex; align-items: stretch; min-block-size: 6.5rem; overflow: hidden; border: 1px solid var(--color-border); border-radius: 0.625rem;
+  background: var(--color-background-surface); color: var(--color-text-primary); text-decoration: none; transition: background-color var(--duration-fast), border-color var(--duration-fast); }
+.prose .linkCard { text-decoration: none; }
+.linkCard:hover { border-color: var(--color-border-emphasized); background: var(--color-overlay-hover); }
+.linkCard:focus-visible { outline: 2px solid var(--focus-outline-color); outline-offset: 2px; }
+.source-webEmbed[data-selected] .linkCard { border-color: var(--focus-outline-color); }
+.linkCardText { flex: 1; min-inline-size: 0; padding: var(--spacing-3) 0.875rem; }
+.linkCardTitle.linkCardTitle { font-size: 0.875rem; line-height: 1.4; }
+.linkCard[data-loading] .linkCardTitle { color: var(--color-text-secondary); }
+.linkCardDescription.linkCardDescription { font-size: 0.78125rem; line-height: 1.5; }
+.linkCardSite { min-inline-size: 0; margin-block-start: 2px; color: var(--color-text-secondary); }
+.linkCardSite svg { flex: none; inline-size: 0.8125rem; block-size: 0.8125rem; }
+.linkCardHost { opacity: 0.7; }
+.linkCardPicture { flex: none; inline-size: min(34%, 14rem); border-inline-start: 1px solid var(--color-border); background: var(--color-background-muted); }
+.linkCardPicture img { display: block; inline-size: 100%; block-size: 100%; max-inline-size: none; margin: 0; border-radius: 0; object-fit: cover; }
+/* 링크 카드의 빈 사진 칸: 사진 칸과 같은 자리·테두리에, 테마의 강조색을 옅게(12%) 깔고 그림 아이콘과 한 줄. */
+.linkCardNoPicture { padding: 0.625rem; background: color-mix(in srgb, var(--color-accent) 12%, var(--color-background-surface));
+  color: color-mix(in srgb, var(--color-accent) 70%, var(--color-text-secondary)); text-align: center; }
+.linkCardNoPicture svg { inline-size: 1.25rem; block-size: 1.25rem; opacity: 0.85; }
+.linkCardNoPicture > * { color: inherit; }
+@media (width < 34.375rem) { .linkCardPicture { inline-size: 5.5rem; } }
+
+/* ── 크게 보기 ─────────────────────────────────────────────────────── */
+/* 어두운 막 위에 한 장. 도표는 제 색표의 바탕을 깐 카드로 두어 막 위에서도 글자 대비를 지킨다. */
+.zoomViewer { --yarl__color_backdrop: color-mix(in srgb, black 88%, transparent); }
+.zoomDiagram { display: block; box-sizing: content-box; padding: 1.5rem; border-radius: var(--radius-container); }
+.zoomDiagram svg { display: block; inline-size: 100%; block-size: 100%; max-inline-size: none; }
+/* HTML 크게 보기: 창을 거의 가득 채우는 카드. 머리 줄에 이름과 닫기, 아래는 격리된 틀. 틀의 바탕은 흰색으로 둔다(올린 HTML은
+   대개 밝은 바탕을 전제로 하고, 바탕을 정하지 않은 문서가 어두운 화면에서 검은 글씨로 묻히지 않게). */
+.htmlDialog { inline-size: min(96vw, 100rem); block-size: 94vh; max-inline-size: none; max-block-size: none; padding: 0; overflow: hidden;
+  border: 1px solid var(--color-border-emphasized); border-radius: var(--radius-container); background: var(--color-background-surface); color: var(--color-text-primary); }
+.htmlDialog[open] { display: flex; flex-direction: column; }
+.htmlDialog::backdrop { background: var(--color-overlay); }
+.htmlHead { flex: none; padding: var(--spacing-2) var(--spacing-3); border-block-end: 1px solid var(--color-border); }
+.htmlDialog .htmlFrame { flex: 1; min-block-size: 0; block-size: auto; border: 0; border-radius: 0; resize: none; }
+
+@media print {
+  .blockControls, .dropLine, .tableControls { display: none; }
+  .prose :is(pre, figure, tr, table) { break-inside: avoid; }
+}

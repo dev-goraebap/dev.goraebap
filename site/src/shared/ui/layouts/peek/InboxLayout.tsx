@@ -10,8 +10,9 @@ export function InboxLayout({
   detail: ReactNode;
 }) {
   const phone = useIsPhone();
+  // 조절할 수 있는 옆 목록은 가장 넓게(최대값으로) 연다. 끌어 줄인 너비는 이 화면에 있는 동안 유지된다.
   const width = useResizable({
-    defaultSize: 400,
+    defaultSize: 560,
     minSizePx: 288,
     maxSizePx: 560
   });

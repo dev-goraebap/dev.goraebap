@@ -18,6 +18,7 @@ import { IssueApiContext, me, type IssueApi } from '../entities/issue';
 import { createIssueApi } from '../mocks/issue-api';
 import { IssueCompose } from '../pages/issue-compose/IssueCompose';
 import { IssueDetailPage } from '../pages/issue-detail/IssueDetailPage';
+import { IssueEditPage } from '../pages/issue-edit/IssueEditPage';
 import { IssuesPage } from '../pages/issues/IssuesPage';
 import { validateIssuesSearch } from '../pages/issues/model';
 import { useShellLayout } from '../../../catalog/shell-layout';
@@ -58,11 +59,10 @@ function ListRoute() {
   const panel = useRoutedPanel();
   const navigate = useNavigate();
   useEffect(() => { if (panel.pendingPhoneHref) void navigate({ href: panel.pendingPhoneHref, replace: true }); }, [panel.pendingPhoneHref, navigate]);
-  const edit = panel.href?.match(/^\/issues\/([^/]+)\/edit$/)?.[1];
   return <>
     <IssuesPage onCreate={() => open('/issues/new')} />
-    {panel.href === '/issues/new' || edit
-      ? <IssueCompose key={panel.href} id={edit} surface="dialog" onClose={panel.close} onExpand={panel.expand} onDone={id => panel.done(`/issues/${id}`)} />
+    {panel.href === '/issues/new'
+      ? <IssueCompose key={panel.href} surface="dialog" onClose={panel.close} onExpand={panel.expand} onDone={id => panel.done(`/issues/${id}`)} />
       : null}
   </>;
 }
@@ -71,6 +71,13 @@ function DetailRoute() {
   const { id } = useParams({ strict: false }) as { id: string };
   const navigate = useNavigate();
   return <IssueDetailPage id={id} onEdit={() => void navigate({ href: `/issues/${id}/edit` })} onAddSub={() => void navigate({ href: `/issues/new?parent=${id}` })} />;
+}
+
+/** 수정 화면: 상세의 편집 단추가 늘 이곳을 연다. 끝나면(완료·취소) 상세로 돌아간다. */
+function EditRoute() {
+  const { id } = useParams({ strict: false }) as { id: string };
+  const navigate = useNavigate();
+  return <IssueEditPage id={id} onLeave={() => void navigate({ href: `/issues/${id}` })} />;
 }
 
 function ComposeRoute() {
@@ -101,7 +108,7 @@ export function createIssuesRouter(initialPath: string) {
   const create = createRoute({ getParentRoute: () => root, path: '/issues/new', component: ComposeRoute,
     validateSearch: (raw: Record<string, unknown>) => ({ parent: typeof raw.parent === 'string' && /^ISS-\d+$/.test(raw.parent) ? raw.parent : undefined }) });
   const detail = createRoute({ getParentRoute: () => root, path: '/issues/$id', component: DetailRoute });
-  const edit = createRoute({ getParentRoute: () => root, path: '/issues/$id/edit', component: ComposeRoute });
+  const edit = createRoute({ getParentRoute: () => root, path: '/issues/$id/edit', component: EditRoute });
   return createRouter({
     routeTree: root.addChildren([home, list, create, detail, edit]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),

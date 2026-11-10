@@ -14,6 +14,13 @@ const SOLAR = {
   sort: 'sort-vertical', 'layout-list': 'list', 'layout-grid': 'widget-2', 'layout-table': 'table', 'layout-board': 'kanban',
   'expand-page': 'full-screen', archive: 'archive-down', restore: 'restart', lock: 'lock-keyhole-minimalistic',
   comment: 'chat-round-dots', grip: 'grip-vertical', move: 'move-to-folder', previous: 'alt-arrow-left', next: 'alt-arrow-right', fold: 'double-alt-arrow-left', unfold: 'double-alt-arrow-right',
+  // 리치 에디터(composites/editor): 서식·블록 종류·블록 메뉴·미디어 도구.
+  bold: 'text-bold', italic: 'text-italic', underline: 'text-underline', strike: 'text-cross', code: 'code', heading: 'text-format',
+  paragraph: 'text-square', 'list-bullet': 'list', 'list-ordered': 'list-ordered', 'list-task': 'checklist', quote: 'quote', table: 'table',
+  minus: 'minus', 'code-block': 'code-square', diagram: 'structure', globe: 'global', 'arrows-vertical': 'transfer-vertical', enter: 'reply',
+  palette: 'palette-round', 'turn-into': 'square-transfer-horizontal', eraser: 'eraser', clipboard: 'clipboard', 'link-block': 'link-minimalistic-2',
+  'arrow-up': 'arrow-up', 'arrow-down': 'arrow-down', 'arrow-left': 'arrow-left', 'arrow-right': 'arrow-right', external: 'arrow-right-up',
+  video: 'video-frame-play-horizontal', audio: 'music-note', 'alert-circle': 'danger-circle',
 };
 
 const solar = JSON.parse(await fs.readFile(new URL('../../node_modules/@iconify-json/solar/icons.json', import.meta.url), 'utf8'));

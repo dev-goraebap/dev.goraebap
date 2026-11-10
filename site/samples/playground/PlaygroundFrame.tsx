@@ -34,7 +34,7 @@ export function PlaygroundFrame(props: ComponentProps<typeof AppFrame>) {
     icon: 'user' as const,
     isDisabled: true
   }];
-  return <AppFrame {...props} sidebarWidth={224} space={{
+  return <AppFrame {...props} space={{
     ...props.space,
     sections: [...sections, {
       title: '작업 공간',
