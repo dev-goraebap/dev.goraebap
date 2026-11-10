@@ -3,19 +3,20 @@ import { HStack } from '@astryxdesign/core/HStack';
 import { Kbd } from '@astryxdesign/core/Kbd';
 import { Text } from '@astryxdesign/core/Text';
 import { VStack } from '@astryxdesign/core/VStack';
+import type { AnyExtension } from '@tiptap/core';
 import { closeHistory, isHistoryTransaction } from '@tiptap/pm/history';
 import { Plugin, PluginKey, Selection, TextSelection } from '@tiptap/pm/state';
 import { CellSelection } from '@tiptap/pm/tables';
 import { Decoration, DecorationSet } from '@tiptap/pm/view';
 import { EditorContent, useEditor, type Editor, type JSONContent } from '@tiptap/react';
 import { BubbleMenu } from '@tiptap/react/menus';
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent, type ReactNode } from 'react';
 import { icon, type IconName } from '../../foundations/icons/solar-icon';
 import { BlockMenu, copyBlocks } from './BlockMenu';
 import { blockMove, blockTree, selectionRoots, siblingStep, type Destination, type TreeBlock } from './block-tree';
 import { MediaNodeView } from './MediaView';
 import { keepSelection } from './menus';
-import { COMMANDS, editorExtensions, insertBlock, prepareDocument, type CommandId } from './schema';
+import { COMMAND_ICONS, COMMANDS, editorExtensions, insertBlock, prepareDocument, type CommandId } from './schema';
 import { SelectionMenu } from './SelectionMenu';
 import { sourceNodeViews } from './SourceView';
 import { TableControls } from './TableControls';
@@ -30,9 +31,6 @@ type BlockInfo = TreeBlock & { size: number; top: number; left: number; width: n
 type DropInfo = { destination: Destination; top: number; left: number; width: number; label: string; error?: string };
 type Slash = { from: number; to: number; query: string };
 
-const COMMAND_ICONS: Record<CommandId, IconName> = { paragraph: 'paragraph', heading2: 'heading', heading3: 'heading', heading4: 'heading', bulletList: 'list-bullet',
-  orderedList: 'list-ordered', taskList: 'list-task', blockquote: 'quote', table: 'table', horizontalRule: 'minus', codeBlock: 'code-block', mermaidBlock: 'diagram',
-  html: 'code-block', webEmbed: 'globe', file: 'attachment' };
 const GROUPS = [...new Set(COMMANDS.map(command => command.group))];
 const matching = (query: string) => {
   const filtered = COMMANDS.filter(command => `${command.label} ${command.id}`.toLowerCase().includes(query.toLowerCase()));
@@ -65,18 +63,28 @@ export type RichEditorProps = {
   links?: LinkChoice[];
   /** 읽는 화면에서 앱 안의 주소(/…)로 가는 링크를 누르면 새 탭 대신 이 함수로 그 화면에 간다. */
   onNavigate?: (href: string) => void;
+  /** 덧붙일 Tiptap 확장(문서 편집기의 페이지 나누기 등). 에디터를 만들 때 한 번 읽는다: 바꾸려면 key를 바꾼다. */
+  extensions?: AnyExtension[];
+  /** 본문(EditorContent)을 감쌀 틀(종이 등). 손잡이·메뉴는 틀 밖에서 본문을 재어 자리를 잡는다. */
+  frame?: (content: ReactNode) => ReactNode;
+  /** 에디터가 준비되거나 바뀌면 핸들을 넘긴다. 상단 서식 막대처럼 본문 밖에 두는 도구가 쓴다. */
+  onReady?: (handle: EditorHandle | null) => void;
 };
+
+/** 본문 밖 도구가 쓰는 핸들: Tiptap 에디터와, `/` 명령과 같은 방식의 블록 넣기(파일·HTML은 올리는 칸을 띄운다). */
+export type EditorHandle = { editor: Editor; insert: (id: CommandId) => void };
 
 /**
  * 리치 본문 칸. 읽기와 편집이 같은 에디터이고(isEditable로 오가며 실행 취소 기록을 지킨다), 편집할 때 블록 손잡이·블록 메뉴·`/`
  * 명령·선택 서식 도구·표 도구·올리는 칸이 붙는다. value는 처음 값이다: 입력 중의 onChange를 다시 value로 넘겨도 에디터를 다시
  * 만들지 않는다. 다른 문서로 바꿀 때는 key를 바꾼다. 블록 손잡이·메뉴·표 도구의 자리는 본문을 재서 정하므로 인라인 위치를 쓴다.
  */
-export function RichEditor({ value, isEditable, onChange, label = '본문', placeholder, isPage = false, upload = noUpload, readPreview, links, onNavigate }: RichEditorProps) {
+export function RichEditor({ value, isEditable, onChange, label = '본문', placeholder, isPage = false, upload = noUpload, readPreview, links, onNavigate, extensions, frame, onReady }: RichEditorProps) {
   const initial = useRef<JSONContent | null>(null);
   if (!initial.current) initial.current = prepareDocument(value);
   const host = useRef<HTMLDivElement>(null), fileInput = useRef<HTMLInputElement>(null), change = useRef(onChange);
   change.current = onChange;
+  const extra = useRef(extensions ?? []);
   const [blocks, setBlocks] = useState<BlockInfo[]>([]), [selected, setSelected] = useState<string[]>([]), [context, setContext] = useState<string | null>(null);
   const [slash, setSlash] = useState<Slash | null>(null), [active, setActive] = useState(0), [refresh, setRefresh] = useState(0), [error, setError] = useState('');
   const [drop, setDrop] = useState<DropInfo | null>(null), [hovered, setHovered] = useState<string | null>(null), [isDragging, setDragging] = useState(false);
@@ -105,7 +113,7 @@ export function RichEditor({ value, isEditable, onChange, label = '본문', plac
   }, []);
 
   const editor: Editor | null = useEditor({
-    extensions: editorExtensions([MediaNodeView, ...sourceNodeViews]), content: initial.current, editable: isEditable, immediatelyRender: false,
+    extensions: [...editorExtensions([MediaNodeView, ...sourceNodeViews]), ...extra.current], content: initial.current, editable: isEditable, immediatelyRender: false,
     editorProps: {
       attributes: { class: `${styles.prose}${isEditable ? '' : ` ${styles.reading}`}`, ...roleOf(isEditable), 'aria-label': label,
         ...(placeholder ? { 'data-placeholder': placeholder } : {}), ...(isPage ? { 'data-page': '' } : {}) },
@@ -171,6 +179,15 @@ export function RichEditor({ value, isEditable, onChange, label = '본문', plac
     if (id === 'file' || id === 'html') { if (range) editor.commands.deleteRange({ from: range.from, to: range.to }); openUploadZone(editor.view, id); return; }
     atomic(() => insertBlock(editor, id, range ? { from: range.from, to: range.to } : undefined));
   }
+  const runRef = useRef(run);
+  runRef.current = run;
+  const readyRef = useRef(onReady);
+  readyRef.current = onReady;
+  useEffect(() => {
+    if (!editor) return undefined;
+    readyRef.current?.({ editor, insert: id => runRef.current(id) });
+    return () => readyRef.current?.(null);
+  }, [editor]);
   const uploads = useUploads(editor, upload);
   function pickFiles(files: File[]) {
     if (!files.length) return;
@@ -407,7 +424,7 @@ export function RichEditor({ value, isEditable, onChange, label = '본문', plac
       {isEditable ? <TableControls editor={editor} host={host} atomic={atomic} /> : null}
       {error ? <Text className={styles.error} role="alert">{error}</Text> : null}
       {uploads.panel}
-      <EditorContent editor={editor} />
+      {frame ? frame(<EditorContent editor={editor} />) : <EditorContent editor={editor} />}
       {isEditable ? <VStack className={styles.blockControls} aria-label="본문 블록 조작">
         {blocks.map((block, index) => <HStack key={block.id} className={styles.blockControl} data-control-block={block.id} data-selected={selected.includes(block.id) || undefined}
           data-hovered={hovered === block.id || undefined} data-open={context === block.id || undefined} data-align-line={block.gripTop !== undefined || undefined}
