@@ -1,20 +1,17 @@
 import type { ReactNode } from "react"
+import type { FilterDef, FilterState } from "@/shared/ui/filter"
 import {
   LABELS, ME, PEOPLE, PRIORITIES, STATUSES, TYPES, PersonAvatar, WorkItemLabelDot, WorkItemPriorityIcon, WorkItemStatusIcon,
   type WorkItem, type WorkItemPriority,
 } from "@/entities/work-item"
-import { ChartNoAxesColumnIcon, ListChecksIcon, SquareCheckIcon, TagIcon, UserIcon, type Icon } from "@/shared/ui/icon"
+import { ChartNoAxesColumnIcon, ListChecksIcon, SquareCheckIcon, TagIcon, UserIcon } from "@/shared/ui/icon"
 
-export type FilterOption = { value: string; label: string; icon?: ReactNode }
-export type ListFilter = { key: FilterKey; label: string; icon: Icon; options: FilterOption[]; isSearchable?: boolean }
 export type FilterKey = "status" | "assignee" | "label" | "type" | "priority"
-/** 필터마다 고른 값. 비었으면 걸리지 않은 것이다. */
-export type FilterState = Partial<Record<FilterKey, string[]>>
 
 const typeIcon = <ListChecksIcon className="text-icon-muted" />
 
 /** 이 프로젝트의 필터(호호코워크 projectFilters): 상태 · 담당자 · 라벨 · 유형 · 우선순위. */
-export const FILTERS: ListFilter[] = [
+export const FILTERS: FilterDef<FilterKey>[] = [
   { key: "status", label: "상태", icon: SquareCheckIcon,
     options: STATUSES.map(status => ({ value: status.value, label: status.label, icon: <WorkItemStatusIcon status={status.value} /> })) },
   { key: "assignee", label: "담당자", icon: UserIcon, isSearchable: true, options: [
@@ -29,17 +26,8 @@ export const FILTERS: ListFilter[] = [
     options: PRIORITIES.map(priority => ({ value: priority.value, label: priority.label, icon: <WorkItemPriorityIcon priority={priority.value} /> })) },
 ]
 
-export const filterOf = (key: FilterKey) => FILTERS.find(filter => filter.key === key)!
-export const activeKeys = (state: FilterState) => FILTERS.filter(filter => (state[filter.key]?.length ?? 0) > 0).map(filter => filter.key)
-
-/** 고른 값 이름: 둘까지 보이고 나머지는 +N. */
-export function chosenNames(key: FilterKey, values: string[] = []) {
-  const names = values.map(value => filterOf(key).options.find(option => option.value === value)?.label ?? value)
-  return { shown: names.slice(0, 2).join(", "), more: Math.max(0, names.length - 2) }
-}
-
 /** 필터가 통과시키는 업무(서버가 하듯). 담당자의 "나"는 ME다. */
-export function applyFilters(items: WorkItem[], state: FilterState) {
+export function applyFilters(items: WorkItem[], state: FilterState<FilterKey>) {
   const any = (key: FilterKey, value: string) => !state[key]?.length || state[key].includes(value)
   const person = (item: WorkItem) => !state.assignee?.length || state.assignee.some(value =>
     value === "none" ? !item.assignee : value === "me" ? item.assignee?.id === ME.id : value === item.assignee?.id)

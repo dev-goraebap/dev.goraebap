@@ -1,5 +1,6 @@
-import { cn } from "cn"
+import { cn } from "@/shared/lib/utils"
 import { Avatar, AvatarFallback } from "@/shared/ui/avatar"
+import { Badge } from "@/shared/ui/badge"
 import { CalendarIcon } from "@/shared/ui/icon"
 import { formatWorkItemDate } from "../model/format"
 import { priorityMark, statusMark, typeMark, type MarkTone } from "../model/marks"
@@ -54,10 +55,10 @@ export function WorkItemLabelDot({ color }: { color: string }) {
 /** 라벨 알약(radius-full): 색 점 + 이름. */
 export function WorkItemLabelPill({ label }: { label: WorkItemLabel }) {
   return (
-    <span data-slot="label-pill" className="inline-flex h-5.5 shrink-0 items-center gap-1 rounded-full bg-pressed px-2 text-xs font-medium whitespace-nowrap">
+    <Badge variant="label">
       <WorkItemLabelDot color={label.color} />
       {label.name}
-    </span>
+    </Badge>
   )
 }
 

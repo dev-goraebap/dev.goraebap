@@ -1,22 +1,18 @@
 import { useMemo, useState } from "react"
 import { ME, useWorkItems, type WorkItemStatus } from "@/entities/work-item"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
 import { Button } from "@/shared/ui/button"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty"
 import {
-  KanbanSquareIcon, LinkIcon, ListIcon, MoreHorizontalIcon, ProjectsIcon, SearchXIcon, TableIcon, UserIcon,
+  KanbanSquareIcon, ListIcon, ProjectsIcon, SearchXIcon, TableIcon, UserIcon,
 } from "@/shared/ui/icon"
 import { Page, PageViews, type PageView } from "@/shared/ui/page"
 import { Skeleton } from "@/shared/ui/skeleton"
-import { toast } from "@/shared/ui/toast"
-import { activeKeys, applyFilters, groupItems, sortItems } from "../model/filters"
-import { useWorkItemFilters } from "../model/use-work-item-filters"
-import { DisplayMenu } from "./DisplayMenu"
-import { FilterBar, FilterChips } from "./FilterBar"
-import { FilterMenu } from "./FilterMenu"
+import { FilterBar, FilterChips, FilterMenu, useFilters } from "@/shared/ui/filter"
+import { applyFilters, FILTERS, groupItems, INITIAL_DISPLAY, sortItems, type Display } from "../model/filters"
 import { NewWorkItemDialog } from "./NewWorkItemDialog"
-import { OptionList } from "./OptionList"
+import { WorkItemDisplayMenu } from "./WorkItemDisplayMenu"
+import { WorkItemsPageMenu } from "./WorkItemMenu"
 import { WorkItemBoard } from "./WorkItemBoard"
 import { Rows, WorkItemListView } from "./WorkItemListView"
 import { WorkItemTable } from "./WorkItemTable"
@@ -29,21 +25,6 @@ const VIEWS: PageView<View>[] = [
   { value: "table", label: "표", icon: TableIcon },
   { value: "mine", label: "내 업무", icon: UserIcon },
 ]
-
-/** 머리 줄의 페이지 메뉴(…). */
-function PageMenu() {
-  const [isOpen, setOpen] = useState(false)
-  return (
-    <AdaptivePopover title="업무 메뉴" align="end" className="w-48 p-1.5" open={isOpen} onOpenChange={setOpen}
-      trigger={<Button variant="ghost" size="icon-xs" aria-label="업무 메뉴" className="max-md:size-9"><MoreHorizontalIcon /></Button>}>
-      <OptionList label="업무 메뉴" options={[{ value: "link", label: "링크 복사", icon: <LinkIcon /> }]}
-        onPick={() => {
-          setOpen(false)
-          navigator.clipboard.writeText(location.href).then(() => toast.add({ type: "success", title: "링크를 복사했습니다" }), () => {})
-        }} />
-    </AdaptivePopover>
-  )
-}
 
 function ListSkeleton() {
   return (
@@ -67,21 +48,20 @@ function ListSkeleton() {
 export function WorkItemsPage() {
   const isMobile = useIsMobile()
   const { data, isPending } = useWorkItems()
-  const filters = useWorkItemFilters()
+  const filters = useFilters(FILTERS)
+  const [display, setDisplay] = useState<Display>(INITIAL_DISPLAY)
   const [view, setView] = useState<View>("all")
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [create, setCreate] = useState<{ isOpen: boolean; status: WorkItemStatus }>({ isOpen: false, status: "todo" })
   const openCreate = (status: WorkItemStatus = "todo") => setCreate({ isOpen: true, status })
 
   const items = useMemo(() => {
-    const shown = sortItems(applyFilters(data ?? [], filters.state), filters.display)
+    const shown = sortItems(applyFilters(data ?? [], filters.state), display)
     return view === "mine" ? shown.filter(item => item.assignee?.id === ME.id) : shown
-  }, [data, filters.state, filters.display, view])
-  const isNarrowed = activeKeys(filters.state).length > 0
+  }, [data, filters.state, display, view])
+  const isNarrowed = filters.active.length > 0
 
-  const below = isMobile
-    ? <FilterChips filters={filters} />
-    : filters.shown.length > 0 ? <FilterBar filters={filters} /> : undefined
+  const below = isMobile ? <FilterChips filters={filters} /> : <FilterBar filters={filters} />
 
   const body = () => {
     if (isPending) return <ListSkeleton />
@@ -112,18 +92,18 @@ export function WorkItemsPage() {
       )
     }
     return (
-      <WorkItemListView groups={groupItems(items, filters.display.group)} isCompact={isMobile}
-        onCreateIn={filters.display.group === "status" ? id => openCreate(id as WorkItemStatus) : undefined} />
+      <WorkItemListView groups={groupItems(items, display.group)} isCompact={isMobile}
+        onCreateIn={display.group === "status" ? id => openCreate(id as WorkItemStatus) : undefined} />
     )
   }
 
   return (
     <Page
       crumbs={[{ label: "프로젝트" }, { label: "cowork", icon: ProjectsIcon }, { label: "업무", icon: KanbanSquareIcon }]}
-      actions={<PageMenu />}
+      actions={<WorkItemsPageMenu />}
       create={{ label: "새 업무", onClick: () => openCreate() }}
       views={<PageViews label="업무 뷰" views={VIEWS} value={view} onChange={setView} />}
-      tools={<><FilterMenu filters={filters} /><DisplayMenu value={filters.display} onChange={filters.setDisplay} /></>}
+      tools={<><FilterMenu filters={filters} /><WorkItemDisplayMenu value={display} onChange={setDisplay} /></>}
       below={below}>
       {body()}
       <NewWorkItemDialog key={create.status} open={create.isOpen} status={create.status}

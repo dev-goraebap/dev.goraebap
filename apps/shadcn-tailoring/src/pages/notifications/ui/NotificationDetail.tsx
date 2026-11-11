@@ -5,7 +5,6 @@ import {
   type ApprovalDecision, type ApprovalNotification, type EventNotification, type MentionNotification, type NoticeNotification,
   type Notification,
 } from "@/entities/notification"
-import { cn } from "@/shared/lib/utils"
 import { Badge } from "@/shared/ui/badge"
 import { Button } from "@/shared/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card"
@@ -17,8 +16,7 @@ import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip"
 import { pageHrefOf } from "../model/views"
-import { ActionMenu, type MenuAction } from "./ActionMenu"
-import { supportingText } from "./text"
+import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 
 /** 상세 머리 줄 왼쪽의 "무엇인지": 결재 · 공지 · 일정, 업무 멘션은 업무 키. */
 const labelOf = (item: Notification) => (item.kind === "mention" ? item.key : kindLabel[item.kind])
@@ -36,7 +34,7 @@ export function NotificationPane({ item }: { item: Notification }) {
           <Button variant="ghost" size="icon-sm" aria-label="고른 항목 닫기" nativeButton={false} render={<Link to="/notifications" search={true} />}>
             <ChevronLeftIcon />
           </Button>
-          <span className={cn("truncate", supportingText)}>{labelOf(item)}</span>
+          <span className="truncate text-xs text-muted-foreground">{labelOf(item)}</span>
         </div>
         <ItemTools item={item} />
       </header>

@@ -16,8 +16,8 @@ import {
 import { Input } from "@/shared/ui/input"
 import { Switch } from "@/shared/ui/switch"
 import { toast } from "@/shared/ui/toast"
-import { toggled } from "./FilterMenu"
-import { OptionList, type Option } from "./OptionList"
+import { toggleValue } from "@/shared/lib/toggle"
+import { OptionList, type Option } from "@/shared/ui/option-list"
 
 const FORM_ID = "new-work-item"
 
@@ -84,7 +84,7 @@ function NewWorkItemForm({ draft, onDraft, onSubmit }: { draft: Draft; onDraft: 
         <PropertyPill label="라벨" icon={TagIcon}
           value={labels.length === 0 ? undefined : <>{labels.slice(0, 2).map(label => <WorkItemLabelDot key={label.id} color={label.color} />)}{labels.map(label => label.name).join(", ")}</>}>
           {() => (
-            <OptionList label="라벨" isSearchable chosen={draft.labelIds} onPick={id => set({ labelIds: toggled(draft.labelIds, id) })}
+            <OptionList label="라벨" isSearchable chosen={draft.labelIds} onPick={id => set({ labelIds: toggleValue(draft.labelIds, id) })}
               options={LABELS.map(label => ({ value: label.id, label: label.name, icon: <WorkItemLabelDot color={label.color} /> }))} />
           )}
         </PropertyPill>

@@ -3,16 +3,16 @@ import type { ReactNode } from "react"
 import { useNotifications, useReadAllNotifications, type Notification } from "@/entities/notification"
 import { paths } from "@/shared/config"
 import { useIsMobile } from "@/shared/lib/use-mobile"
+import { useStoredWidth } from "@/shared/lib/use-stored-width"
 import { cn } from "@/shared/lib/utils"
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty"
 import { CircleCheckIcon, InboxIcon, SearchXIcon, SettingsIcon } from "@/shared/ui/icon"
+import { ActionMenu } from "@/shared/ui/action-menu"
 import { Page, PageViews } from "@/shared/ui/page"
-import { LIST_MAX_WIDTH, LIST_MIN_WIDTH, usePaneWidth } from "../model/use-pane-width"
+import { PaneResizeHandle } from "@/shared/ui/pane-resize-handle"
 import { inboxViews, listHref, useInboxView } from "../model/views"
-import { ActionMenu } from "./ActionMenu"
 import { NotificationList } from "./NotificationList"
 import { NotificationColumnSkeleton, NotificationPane, NotificationScreen } from "./NotificationDetail"
-import { PaneResizeHandle } from "./PaneResizeHandle"
 
 /**
  * 알림함(/notifications, /notifications/$notificationId). 고른 알림은 주소에, 뷰는 ?view=에 실린다.
@@ -63,8 +63,12 @@ function NotificationsList({ items, selectedId }: { items: Notification[] | unde
 }
 
 /** 데스크톱의 두 칸: 너비를 조절하는 목록 칸과, 그 머리 줄과 나란한 고른 알림 칸. 두 칸은 따로 스크롤한다. 고른 것이 없으면 오른쪽도 점 무늬 바탕이다. */
+/** 목록 칸 너비: 기본이자 최대 560px(호호코워크 LIST_MAX_WIDTH), 최소 288px. */
+const LIST_MIN_WIDTH = 288
+const LIST_MAX_WIDTH = 560
+
 function InboxPanes({ list, isDotted, children }: { list: ReactNode; isDotted: boolean; children: ReactNode }) {
-  const [width, resize] = usePaneWidth()
+  const [width, resize] = useStoredWidth({ key: "notifications-list-width", min: LIST_MIN_WIDTH, max: LIST_MAX_WIDTH })
   return (
     <div className="flex min-h-0 flex-1">
       {/* check-ui: allow-style 사용자가 끌어 정한 목록 너비(px)는 데이터 값이다. */}

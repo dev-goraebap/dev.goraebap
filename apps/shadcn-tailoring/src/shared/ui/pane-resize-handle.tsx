@@ -4,7 +4,7 @@ const STEP = 16
 
 /**
  * 두 칸 사이의 구분선이자 너비 손잡이. 끌거나, 초점을 두고 ← → (Shift는 4배) · Home · End로 앞 칸의 너비를 바꾼다.
- * 평소에는 가는 선이고, 가리키거나 끄는 동안 · 키보드 초점에서 진해진다.
+ * 평소에는 가는 선이고, 가리키거나 끄는 동안 · 키보드 초점에서 진해진다. 너비는 useStoredWidth와 함께 쓴다.
  */
 export function PaneResizeHandle({ label, value, min, max, onChange }: {
   label: string; value: number; min: number; max: number; onChange: (width: number) => void

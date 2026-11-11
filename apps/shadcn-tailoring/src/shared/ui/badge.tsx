@@ -18,6 +18,8 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
+        /** 라벨 알약(호호코워크 token): 색 점 + 이름, radius-full. 네모나면 버튼으로 읽힌다. */
+        label: "h-5.5 rounded-full bg-pressed px-2 text-foreground",
       },
     },
     defaultVariants: {

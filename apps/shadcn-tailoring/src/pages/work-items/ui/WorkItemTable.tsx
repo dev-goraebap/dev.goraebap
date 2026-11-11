@@ -3,7 +3,7 @@ import {
 } from "@/entities/work-item"
 import { Checkbox } from "@/shared/ui/checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table"
-import { RowMenu } from "./RowMenu"
+import { WorkItemMenu } from "./WorkItemMenu"
 import { ROW_SURFACE } from "./WorkItemRow"
 
 /**
@@ -63,7 +63,7 @@ export function WorkItemTable({ items, selected, onSelectedChange }: {
             <TableCell><WorkItemLabels labels={item.labels} /></TableCell>
             <TableCell className="text-right text-xs text-muted-foreground tabular-nums">{item.dueDate ? formatWorkItemDate(item.dueDate) : "-"}</TableCell>
             <TableCell className="text-right text-xs text-muted-foreground tabular-nums">{formatWorkItemDate(item.updatedAt)}</TableCell>
-            <TableCell className="pr-4"><RowMenu item={item} /></TableCell>
+            <TableCell className="pr-4"><WorkItemMenu item={item} /></TableCell>
           </TableRow>
         ))}
       </TableBody>

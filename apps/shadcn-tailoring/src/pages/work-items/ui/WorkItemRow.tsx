@@ -1,9 +1,9 @@
-import { cn } from "cn"
+import { cn } from "@/shared/lib/utils"
 import { WorkItemAssignee, WorkItemDate, WorkItemLabels, WorkItemPriorityIcon, WorkItemStatusIcon, WorkItemTypeLabel, type WorkItem } from "@/entities/work-item"
-import { RowMenu } from "./RowMenu"
+import { WorkItemMenu } from "./WorkItemMenu"
 
 /** 줄은 자기 바탕을 칠해 페이지의 점 무늬를 가리고, 가리키면 옅게 덮는다. */
-export const ROW_SURFACE = "bg-background hover:bg-[color-mix(in_srgb,var(--foreground)_4%,var(--background))]"
+export const ROW_SURFACE = "bg-background hover:bg-row-hover"
 
 /** 제목 앞 묶음: 우선순위 · 키 · 상태. */
 function Lead({ item }: { item: WorkItem }) {
@@ -31,7 +31,7 @@ export function WorkItemRow({ item, isCompact }: { item: WorkItem; isCompact: bo
           <WorkItemTypeLabel type={item.type} />
           <span className="flex min-w-0 items-center gap-1">
             <WorkItemAssignee person={item.assignee} />
-            <RowMenu item={item} className="size-11" />
+            <WorkItemMenu item={item} />
           </span>
         </span>
       </li>
@@ -46,7 +46,7 @@ export function WorkItemRow({ item, isCompact }: { item: WorkItem; isCompact: bo
         <WorkItemLabels labels={item.labels} />
         <WorkItemAssignee person={item.assignee} />
         {item.dueDate && <WorkItemDate date={item.dueDate} />}
-        <RowMenu item={item} />
+        <WorkItemMenu item={item} />
       </span>
     </li>
   )

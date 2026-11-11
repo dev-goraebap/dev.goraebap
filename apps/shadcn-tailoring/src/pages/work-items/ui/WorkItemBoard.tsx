@@ -1,11 +1,9 @@
-import { cn } from "cn"
 import {
   STATUSES, typeMark, WorkItemAssignee, WorkItemLabels, WorkItemPriorityIcon, WorkItemStatusIcon, type WorkItem, type WorkItemStatus,
 } from "@/entities/work-item"
 import { Button } from "@/shared/ui/button"
 import { PlusIcon } from "@/shared/ui/icon"
-import { GROUP_BAND } from "./WorkItemListView"
-import { RowMenu } from "./RowMenu"
+import { WorkItemMenu } from "./WorkItemMenu"
 
 /** 보드 카드(호호코워크 KanbanCard): 키 · 유형 · 메뉴, 제목, 라벨, 아래에 우선순위와 담당자. */
 function BoardCard({ item }: { item: WorkItem }) {
@@ -15,7 +13,7 @@ function BoardCard({ item }: { item: WorkItem }) {
       <div className="flex items-center gap-2">
         <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground tabular-nums">{item.key}</span>
         <type.icon role="img" aria-hidden={false} aria-label={type.label} className="shrink-0 text-icon-muted" />
-        <RowMenu item={item} className="max-md:size-9" />
+        <WorkItemMenu item={item} />
       </div>
       <p className="line-clamp-3">{item.title}</p>
       <WorkItemLabels labels={item.labels} className="flex-wrap" />
@@ -38,7 +36,7 @@ export function WorkItemBoard({ items, onCreateIn }: { items: WorkItem[]; onCrea
         const cards = items.filter(item => item.status === status.value)
         return (
           <section key={status.value} aria-label={status.label}
-            className={cn("flex w-76 shrink-0 snap-start flex-col rounded-xl md:w-72", GROUP_BAND)}>
+            className="flex w-76 shrink-0 snap-start flex-col rounded-xl bg-band md:w-72">
             <header className="flex h-11 shrink-0 items-center gap-2 pr-1.5 pl-3 text-sm font-medium md:h-10">
               <WorkItemStatusIcon status={status.value} />
               {status.label}

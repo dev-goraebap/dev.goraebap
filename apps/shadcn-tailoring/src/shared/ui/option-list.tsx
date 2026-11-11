@@ -6,10 +6,10 @@ export type Option = { value: string; label: string; icon?: ReactNode; end?: Rea
 
 /**
  * 메뉴 안의 고를 것 목록(호호코워크 OptionList): 아이콘 · 이름 · 고른 표시. 데스크톱 32px, 휴대폰 48px 줄.
- * 필터 메뉴 · 칩 · 새 업무의 속성 알약이 같이 쓴다.
+ * 필터 메뉴 · 필터 칩 · 양식의 속성 알약이 같이 쓴다. isSearchable이면 맨 위에 찾기 칸.
  */
 export function OptionList({ label, options, chosen = [], isSearchable, onPick }: {
-  label: string; options: Option[]; chosen?: string[]; isSearchable?: boolean; onPick: (value: string) => void
+  label: string; options: Option[]; chosen?: readonly string[]; isSearchable?: boolean; onPick: (value: string) => void
 }) {
   const isMobile = useIsMobile()
   return (

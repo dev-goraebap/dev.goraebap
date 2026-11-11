@@ -1,9 +1,7 @@
 import { Link } from "@tanstack/react-router"
-import { cn } from "@/shared/lib/utils"
 import { groupOf, kindIcon, notificationGroups, type Notification } from "@/entities/notification"
 import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty"
 import { Skeleton } from "@/shared/ui/skeleton"
-import { supportingText } from "./text"
 import { emptyTitle, isInView, viewOf, type InboxView } from "../model/views"
 
 /**
@@ -28,7 +26,7 @@ export function NotificationList({ items, view, selectedId }: {
   if (groups.length === 1) return rows(groups[0].items, groups[0].label)
   return groups.map(group => (
     <section key={group.value} aria-label={group.label}>
-      <h2 className={cn("px-4 py-2 font-semibold", supportingText)}>{group.label}</h2>
+      <h2 className="px-4 py-2 font-semibold text-xs text-muted-foreground">{group.label}</h2>
       {rows(group.items, group.label)}
     </section>
   ))
@@ -45,13 +43,13 @@ function NotificationRow({ item, isSelected }: { item: Notification; isSelected:
       <Link to="/notifications/$notificationId" params={{ notificationId: item.id }} search={true}
         aria-current={isSelected ? "true" : undefined} data-unread={item.isUnread || undefined}
         aria-label={item.isUnread ? `${item.title}, 읽지 않음` : undefined}
-        className="flex items-center gap-2 bg-background px-4 py-3 outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset aria-[current=true]:bg-muted data-unread:bg-[color-mix(in_srgb,var(--foreground)_9%,var(--background))] data-unread:hover:bg-[color-mix(in_srgb,var(--foreground)_14%,var(--background))] data-unread:aria-[current=true]:bg-[color-mix(in_srgb,var(--foreground)_14%,var(--background))] compact:py-1.5">
+        className="flex items-center gap-2 bg-background px-4 py-3 outline-none hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset aria-[current=true]:bg-muted data-unread:bg-unread data-unread:hover:bg-unread-strong data-unread:aria-[current=true]:bg-unread-strong compact:py-1.5">
         <KindIcon className="shrink-0" />
         <span className="flex min-w-0 flex-1 flex-col">
           <span className="truncate">{item.title}</span>
-          <span className={cn("truncate", supportingText)}>{item.meta}</span>
+          <span className="truncate text-xs text-muted-foreground">{item.meta}</span>
         </span>
-        <span className={cn("shrink-0 tabular-nums", supportingText)}>{item.receivedAt}</span>
+        <span className="shrink-0 tabular-nums text-xs text-muted-foreground">{item.receivedAt}</span>
       </Link>
     </li>
   )

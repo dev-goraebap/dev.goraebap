@@ -144,6 +144,12 @@
     --text-base--line-height: 1.6;
     --color-icon-muted: var(--icon-muted);
     --color-pressed: var(--pressed);
+    /* 목록 줄을 가리킬 때 · 그룹 머리 띠. 둘 다 불투명해 점 무늬와 지나가는 줄이 비치지 않는다. */
+    --color-row-hover: color-mix(in srgb, var(--foreground) 4%, var(--background));
+    --color-band: color-mix(in srgb, var(--muted) 55%, var(--background));
+    /* 읽지 않은 줄의 바탕과 그 줄을 가리키거나 고를 때. */
+    --color-unread: color-mix(in srgb, var(--foreground) 9%, var(--background));
+    --color-unread-strong: color-mix(in srgb, var(--foreground) 14%, var(--background));
     --color-mark-backlog: var(--mark-backlog);
     --color-mark-progress: var(--mark-progress);
     --color-mark-done: var(--mark-done);
