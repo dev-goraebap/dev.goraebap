@@ -103,6 +103,8 @@
     --mark-high: #b8550b;
     --mark-medium: #8b6900;
     --mark-low: #2865c3;
+    /* 빈 상태 그림의 파란 표시. */
+    --illustration-accent: #4a7fd4;
 }
 
 .dark {
@@ -130,6 +132,7 @@
     --mark-high: #efa15f;
     --mark-medium: #e6c45b;
     --mark-low: #79a7ee;
+    --illustration-accent: #6ea2ef;
 }
 
 /*
@@ -157,11 +160,20 @@
     --color-mark-high: var(--mark-high);
     --color-mark-medium: var(--mark-medium);
     --color-mark-low: var(--mark-low);
+    --color-illustration-accent: var(--illustration-accent);
+    /* 빈 상태 설명: 보조 아이콘 색보다 한 단계 연하게. */
+    --color-state-description: color-mix(in srgb, var(--icon-muted) 75%, var(--background));
     --radius-surface: 1rem;
     --shadow-surface: 0 1px 2px var(--shadow-color), 0 0 0 1px var(--border);
 }
 @media (width < 64rem) {
     :root { --text-xs: 0.8125rem; --text-sm: 0.9375rem; --text-base: 1.0625rem; }
+}
+
+/* 빈 상태 메시지가 살짝 떠오른다(PageState). */
+@keyframes page-state-enter {
+    from { opacity: 0; transform: translateY(0.375rem); }
+    to { opacity: 1; transform: none; }
 }
 
 /* 페이지 바탕의 점 무늬(호호코워크 페이지 면). 줄 · 카드는 자기 바탕을 칠해 점을 가린다. */

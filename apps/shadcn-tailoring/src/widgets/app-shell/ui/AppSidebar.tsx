@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router"
-import { Avatar, AvatarFallback } from "@/shared/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
 import { Button } from "@/shared/ui/button"
 import { ArrowLeftIcon, ChevronsLeftIcon, ChevronsRightIcon, MoreVerticalIcon, SearchIcon } from "@/shared/ui/icon"
 import {
@@ -94,6 +94,7 @@ export function AppSidebar() {
 function MeAvatar() {
   return (
     <Avatar className="size-8 squircle rounded-[0.625rem] after:rounded-[0.625rem]">
+      <AvatarImage src={me.picture} alt="" className="squircle rounded-[0.625rem]" />
       <AvatarFallback className="squircle rounded-[0.625rem] bg-secondary text-xs font-semibold">{me.initials}</AvatarFallback>
     </Avatar>
   )

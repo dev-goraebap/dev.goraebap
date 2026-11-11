@@ -1,7 +1,7 @@
 import { Link, Outlet } from "@tanstack/react-router"
 import { paths } from "@/shared/config"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { Avatar, AvatarFallback } from "@/shared/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
 import { Button } from "@/shared/ui/button"
 import { InboxIcon, SearchIcon } from "@/shared/ui/icon"
 import { PageChromeProvider } from "@/shared/ui/page"
@@ -48,7 +48,7 @@ function MobileChrome() {
       <Button variant="ghost" size="icon" aria-label="알림함" nativeButton={false} render={<Link to={paths.notifications} />}><InboxIcon /></Button>
       <MeMenu trigger={
         <button type="button" aria-label="내 메뉴" className="mx-1">
-          <Avatar className="size-8"><AvatarFallback className="text-xs font-semibold">{me.initials}</AvatarFallback></Avatar>
+          <Avatar className="size-8"><AvatarImage src={me.picture} alt="" /><AvatarFallback className="text-xs font-semibold">{me.initials}</AvatarFallback></Avatar>
         </button>
       } />
     </>

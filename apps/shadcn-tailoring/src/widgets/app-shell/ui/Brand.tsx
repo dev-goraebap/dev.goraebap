@@ -1,13 +1,6 @@
-import { SparklesIcon } from "@/shared/ui/icon"
+import { BrandMark, BrandWordmark } from "@/shared/ui/brand"
 
-/** 제품 로고 자리. 호호코워크 로고 대신 중립적인 표시를 쓴다(공개 저장소라 회사 자산을 넣지 않는다). */
+/** 제품 로고: 펼친 사이드바는 워드마크(10rem), 접힌 사이드바는 정사각형 심벌. 글자색을 따른다. */
 export function Brand({ isFolded }: { isFolded?: boolean }) {
-  return (
-    <span className="flex items-center gap-2">
-      <span className="flex size-6 shrink-0 items-center justify-center squircle rounded-md bg-primary text-primary-foreground">
-        <SparklesIcon chosen className="size-4" />
-      </span>
-      {!isFolded && <span className="text-[1.125rem] font-bold tracking-tight">cowork</span>}
-    </span>
-  )
+  return isFolded ? <BrandMark /> : <BrandWordmark width="10rem" />
 }
