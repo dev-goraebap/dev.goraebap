@@ -4,10 +4,9 @@ import { paths } from "@/shared/config"
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger,
 } from "@/shared/ui/dropdown-menu"
-import { SettingsIcon, UserIcon, XIcon } from "@/shared/ui/icon"
-import { toast } from "@/shared/ui/toast"
+import { LogoutIcon, SettingsIcon, UserIcon } from "@/shared/ui/icon"
 
-/** 내 메뉴: 내 정보 · 화면 설정 · 로그아웃. trigger는 내 박스(데스크톱)나 아바타(휴대폰 · 접은 사이드바). */
+/** 내 메뉴: 내 정보 · 화면 설정 · 로그아웃(로그인 화면으로). trigger는 내 박스(데스크톱)나 아바타(휴대폰 · 접은 사이드바). */
 export function MeMenu({ trigger }: { trigger: ReactElement }) {
   return (
     <DropdownMenu>
@@ -19,7 +18,7 @@ export function MeMenu({ trigger }: { trigger: ReactElement }) {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => toast.add({ title: "예제 앱이라 로그아웃하지 않습니다." })}><XIcon />로그아웃</DropdownMenuItem>
+          <DropdownMenuItem render={<Link to={paths.login} />}><LogoutIcon />로그아웃</DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -47,6 +47,11 @@ export function spaceOf(pathname: string): NavSpace {
 
 export const entriesOf = (space: NavSpace) => space.sections.flatMap(section => section.entries)
 
+/** 메뉴의 목적지와 그 자리(묶음 이름, 내 계정은 "나"). 전역 검색이 페이지로 찾는다. */
+export type NavPlace = NavEntry & { where: string }
+export const NAV_PLACES: readonly NavPlace[] = [MAIN, ACCOUNT].flatMap(space => space.sections.flatMap(section =>
+  section.entries.map(entry => ({ ...entry, where: space === ACCOUNT ? "나" : section.title }))))
+
 /** 주소에 맞는 항목: 항목 주소이거나 그 아래인 것 중 가장 긴 것. */
 export function currentEntry(space: NavSpace, pathname: string) {
   return entriesOf(space)

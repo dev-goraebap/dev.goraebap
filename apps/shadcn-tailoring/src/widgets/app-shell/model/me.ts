@@ -1,5 +1,15 @@
-import { derivedAvatar, drawnAvatarSource } from "@/shared/lib/avatar"
+import { departmentOf, ME_ID, memberPicture, useMember } from "@/entities/member"
+import { useNotifications } from "@/entities/notification"
 
-/** 로그인한 사람(모의). 실제 세션이 생기면 entities로 옮긴다. 그림은 고르기 전까지 아이디로 정해지는 기본 그림이다. */
-const id = "emp-goh"
-export const me = { id, name: "고재범", team: "개발팀", initials: "재범", picture: drawnAvatarSource(derivedAvatar(id)), unread: 3 }
+/** 셸이 보이는 나(내 박스 · 아바타). 구성원 목록의 내 줄을 읽으므로 내 정보에서 바꾼 그림이 바로 따라온다. 읽는 동안 undefined. */
+export function useMe() {
+  const { data: member } = useMember(ME_ID)
+  if (!member) return undefined
+  return { name: member.name, team: departmentOf(member.departmentId)?.name ?? "", initials: member.name.slice(-2), picture: memberPicture(member) }
+}
+
+/** 읽지 않은 알림 수(알림함 옆 숫자). */
+export function useUnreadCount() {
+  const { data } = useNotifications()
+  return data?.filter(notification => notification.isUnread).length ?? 0
+}

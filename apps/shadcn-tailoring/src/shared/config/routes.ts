@@ -11,4 +11,6 @@ export const paths = {
   announcements: "/announcements",
   profile: "/profile",
   display: "/profile/display",
+  search: "/search",
+  login: "/login",
 } as const
