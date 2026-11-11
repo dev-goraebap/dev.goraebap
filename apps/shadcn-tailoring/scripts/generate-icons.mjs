@@ -25,6 +25,8 @@ const SOLAR = {
   // 알림함
   InboxInIcon: "inbox-in", MaximizeIcon: "full-screen", ListChecksIcon: "checklist", MapPinIcon: "map-point",
   CircleXIcon: "close-circle", MailIcon: "letter-unread",
+  // 일정
+  RowsIcon: "rows-3",
 }
 
 const solar = JSON.parse(await fs.readFile(new URL("../node_modules/@iconify-json/solar/icons.json", import.meta.url), "utf8"))
