@@ -55,7 +55,7 @@ const VerifyPhone: Sample = {
     await userEvent.click(page.getByRole("button", { name: "태그 추가" }));
     const dialog = await page.findByRole("dialog", { name: "새 태그" });
     await userEvent.click(within(dialog).getByRole("button", { name: "추가하기" }));
-    await expect(await within(dialog).findByText("태그 이름을 입력해 주세요.")).toBeInTheDocument();
+    await expect(await within(dialog).findByText("태그 이름을 입력해 주세요.", { ignore: "script, style, [data-astryx-modal-live-region]" })).toBeInTheDocument();
   },
 };
 

@@ -8,6 +8,7 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import { defineConfig } from 'vite';
+import { stylexForOwnSource } from './stylex-plugin';
 import { bootCover } from './src/shared/ui/patterns/boot/boot-cover';
 import { guideContent, rehypeSkillLinks, rehypeDiagrams } from './content-plugin';
 
@@ -19,6 +20,7 @@ export default defineConfig({
   root: local('.'),
   publicDir: local('public'),
   plugins: [
+    stylexForOwnSource(),
     guideContent(),
     {
       enforce: 'pre',

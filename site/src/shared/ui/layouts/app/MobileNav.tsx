@@ -52,22 +52,29 @@ export function MobileMenuSheet({ isOpen, onOpenChange, entries, isSelected, onS
       <Text className={styles.label} maxLines={1}>{entry.label}</Text>
     </a>;
   };
-  return <BottomSheet isOpen={isOpen} onOpenChange={onOpenChange} label={title} height="hug">
-    <SheetBody>
-      <HStack className={styles.header} gap={2} vAlign="center">
-        {back ? <IconButton label={back.label} href={back.path} onClick={onSelect(back.path)} variant="ghost" size="sm" icon={icon('back')} /> : null}
-        <Text className={styles.label} weight="semibold" maxLines={1}>{title}</Text>
-        <IconButton label="메뉴 닫기" variant="ghost" size="sm" icon={icon('close')} onClick={() => onOpenChange(false)} />
-      </HStack>
-      {entries.length ? <nav aria-label={title}><ul className={styles.menu}>{entries.map(entry => {
-        const children = entry.children ?? [];
-        return <li key={entry.path} className={children.length ? styles.group : undefined}>
-          {row(entry)}
-          {children.length ? <ul className={styles.menu}>{children.map(child =>
-            <li key={child.path}>{row(child, !!entry.icon)}</li>)}</ul> : null}
-        </li>;
-      })}</ul></nav> : null}
-      {tools ? <HStack gap={2} vAlign="center">{tools}</HStack> : null}
-    </SheetBody>
-  </BottomSheet>;
+  return (
+    <BottomSheet
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      label={title}
+      height="hug"
+      padding={0}>
+      <SheetBody>
+        <HStack className={styles.header} gap={2} vAlign="center">
+          {back ? <IconButton label={back.label} href={back.path} onClick={onSelect(back.path)} variant="ghost" size="sm" icon={icon('back')} /> : null}
+          <Text className={styles.label} weight="semibold" maxLines={1}>{title}</Text>
+          <IconButton label="메뉴 닫기" variant="ghost" size="sm" icon={icon('close')} onClick={() => onOpenChange(false)} />
+        </HStack>
+        {entries.length ? <nav aria-label={title}><ul className={styles.menu}>{entries.map(entry => {
+          const children = entry.children ?? [];
+          return <li key={entry.path} className={children.length ? styles.group : undefined}>
+            {row(entry)}
+            {children.length ? <ul className={styles.menu}>{children.map(child =>
+              <li key={child.path}>{row(child, !!entry.icon)}</li>)}</ul> : null}
+          </li>;
+        })}</ul></nav> : null}
+        {tools ? <HStack gap={2} vAlign="center">{tools}</HStack> : null}
+      </SheetBody>
+    </BottomSheet>
+  );
 }

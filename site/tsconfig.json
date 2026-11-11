@@ -32,7 +32,8 @@
     "samples",
     "content-plugin.ts",
     "vite.config.ts",
-    "vitest.config.ts"
+    "vitest.config.ts",
+    "stylex-plugin.ts"
   ],
   "exclude": [
     "dist"

@@ -22,32 +22,39 @@ export function FilterSheet({ filters, state, isOpen, step, onStepChange, onOpen
 }) {
   const filter = filters.find(each => each.key === step);
   const hasActive = activeKeys(filters, state).length > 0;
-  return <BottomSheet isOpen={isOpen} onOpenChange={onOpenChange} label={filter ? `${filter.label} 고르기` : '필터'} height="hug">
-    <SheetBody gap={2}>
-      {filter
-        ? <>
-          <HStack gap={1.5} vAlign="center">
-            <IconButton label="필터 목록으로" variant="ghost" size="sm" icon={icon('back')} onClick={() => onStepChange(undefined)} />
-            {icon(filter.icon)}<Text weight="semibold">{filter.label}</Text>
-          </HStack>
-          <FilterValues filter={filter} chosen={state[filter.key]} size="lg" onChange={values => onChange(filter.key, values)} onDone={() => onStepChange(undefined)} />
-        </>
-        : <ul className={styles.list} aria-label="필터">
-          {filters.map(each => <li key={each.key}>
-            <button type="button" className={styles.option} data-size="lg" onClick={() => onStepChange(each.key)}>
-              {icon(each.icon, (state[each.key] ?? []).length > 0)}
-              <Text className={styles.optionLabel}>{each.label}</Text>
-              <Text color="secondary">{valueText(each, state[each.key])}</Text>
-              {icon('forward')}
-            </button>
-          </li>)}
-        </ul>}
-      <HStack data-action-row gap={2} hAlign="end" paddingBlockStart={2}>
-        {hasActive ? <Button label="모두 지우기" variant="subtle" onClick={onClear} /> : null}
-        <Button label="완료" variant="view-active" onClick={() => onOpenChange(false)} />
-      </HStack>
-    </SheetBody>
-  </BottomSheet>;
+  return (
+    <BottomSheet
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      label={filter ? `${filter.label} 고르기` : '필터'}
+      height="hug"
+      padding={0}>
+      <SheetBody gap={2}>
+        {filter
+          ? <>
+            <HStack gap={1.5} vAlign="center">
+              <IconButton label="필터 목록으로" variant="ghost" size="sm" icon={icon('back')} onClick={() => onStepChange(undefined)} />
+              {icon(filter.icon)}<Text weight="semibold">{filter.label}</Text>
+            </HStack>
+            <FilterValues filter={filter} chosen={state[filter.key]} size="lg" onChange={values => onChange(filter.key, values)} onDone={() => onStepChange(undefined)} />
+          </>
+          : <ul className={styles.list} aria-label="필터">
+            {filters.map(each => <li key={each.key}>
+              <button type="button" className={styles.option} data-size="lg" onClick={() => onStepChange(each.key)}>
+                {icon(each.icon, (state[each.key] ?? []).length > 0)}
+                <Text className={styles.optionLabel}>{each.label}</Text>
+                <Text color="secondary">{valueText(each, state[each.key])}</Text>
+                {icon('forward')}
+              </button>
+            </li>)}
+          </ul>}
+        <HStack data-action-row gap={2} hAlign="end" paddingBlockStart={2}>
+          {hasActive ? <Button label="모두 지우기" variant="subtle" onClick={onClear} /> : null}
+          <Button label="완료" variant="view-active" onClick={() => onOpenChange(false)} />
+        </HStack>
+      </SheetBody>
+    </BottomSheet>
+  );
 }
 
 /** 휴대폰 필터 버튼: 데스크톱 도구와 같은 모양, 적용 중이면 점, 개수는 이름에. */

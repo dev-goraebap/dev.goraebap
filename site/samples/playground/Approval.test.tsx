@@ -48,7 +48,7 @@ const VerifyDecide: Sample = {
     await userEvent.click(await page.findByRole("button", { name: "반려" }));
     const dialog = await page.findByRole("dialog", { name: "반려 이유" });
     await userEvent.click(within(dialog).getByRole("button", { name: "반려하기" }));
-    await within(dialog).findByText("반려 이유를 입력해 주세요.");
+    await within(dialog).findByText("반려 이유를 입력해 주세요.", { ignore: "script, style, [data-astryx-modal-live-region]" });
     await userEvent.type(within(dialog).getByRole("textbox", { name: /이유/ }), "배포 일정과 겹칩니다.");
     await userEvent.click(within(dialog).getByRole("button", { name: "반려하기" }));
     // 대화상자 안 입력 칸의 글자가 아니라, 닫힌 뒤 상세에 남은 반려 의견을 찾는다.

@@ -193,7 +193,7 @@ export const workspaceTheme = defineTheme({
     token: { base: { borderRadius: 'var(--radius-full)', paddingInline: 'var(--spacing-2)', paddingBlock: 'var(--spacing-0-5)',
       gap: 'var(--spacing-1)', minBlockSize: '1.375rem', lineHeight: '1.25' } },
     // 뜬 면: 팝오버는 12px 모서리와 옅은 그림자, 다이얼로그는 더 둥글고 깊다.
-    'popover-surface': {
+    'popover': {
       base: { padding: 'var(--spacing-1-5)', border: '1px solid var(--color-border-emphasized)', borderRadius: 'var(--radius-container)',
         background: 'var(--color-background-popover)', boxShadow: 'var(--shadow-med)' },
     },

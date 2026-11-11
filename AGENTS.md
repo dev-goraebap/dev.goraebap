@@ -24,3 +24,35 @@
 - 사이트 코드·경로·콘텐츠 변경 후 `npm run site:check`, `npm run site:test`, `npm run site:build`를 실행합니다.
 - UI를 바꾸면 [문구·본문과 검증](plugins/webcraft/skills/design-system/references/content-and-review.md)을 따라 실제 화면에서 데이터 상태·모션·콘텐츠 폭·키보드·데스크톱과 휴대폰·라이트와 다크를 확인합니다. 확인한 것과 못 한 것을 나누어 보고합니다.
 - 커밋·푸시·전역 설치·배포는 사용자가 요청한 범위에서만 합니다. 사이트는 GitHub Pages로 `goraebap.xyz`에 배포합니다. `main` 푸시는 사이트 배포 워크플로를 실행합니다.
+
+<!-- ASTRYX:START -->
+Astryx v0.7.13 · 174 components
+CLI: run every command as `npx astryx <cmd>` (shown below as `astryx ...`).
+
+SETUP (once, in app entry e.g. main.tsx) — without these, components render unstyled:
+  import "@astryxdesign/core/reset.css";
+  import "@astryxdesign/core/astryx.css";
+
+WORKFLOW — start every page from a template, never from scratch:
+1. `astryx build "<idea>"` — names the template to scaffold from and the parts it lacks.
+2. `astryx template <name> <path>` — scaffold it; keep its frame, gap and padding; replace the content.
+3. `astryx template <Block>` for parts it lacks; `astryx component <Name>` to read props before using one.
+Changing an existing page? Keep it: skip step 2 and add blocks/components inside its sections.
+Before you deliver a build, run `astryx doctor --built <dir>`; don't deliver it if it fails.
+
+RULES:
+- No <div> — components handle all layout and spacing.
+- Read `astryx docs layout` before changing a template's frame.
+- Dense data = rows (Table, List/Item), not Card-wrapped lists. Badge = counts only.
+- Style with component props first, then tokens (var(--color-*|--spacing-*|--radius-*)). No raw hex/px. No StyleX/Tailwind compiler here — don't use xstyle/utility classes directly. Some templates use StyleX and need a compiler plugin; see `astryx docs styling-overview`.
+- Palettes and custom colors go through the theme, never :root overrides. Run `astryx theme add <slug>` to import; `theme eject <slug>` only forks source. See `astryx docs theme`.
+- SELF-CHECK: re-read the file; replace any raw <div>/<span>, imported .css/@apply, or hardcoded #hex/px with the component or a token.
+
+`astryx help` lists every command. Key ones beyond the workflow:
+  search "<query>"   find any component / hook / doc / template
+  discover <words>   integrations you could add
+  docs <topic>       getting-started, principles, tokens, theme … (`astryx docs` lists all)
+  docs cli           commands and API reference
+  docs authoring     build an integration package, and every field it holds
+  upgrade --from <old version> --apply   run after a dependency bump
+<!-- ASTRYX:END -->

@@ -45,24 +45,26 @@ export function LinkPanel({ editor, links, onDone }: { editor: Editor; links?: L
   const found = !href && word && links ? links.filter(link => link.title.toLowerCase().includes(word)).slice(0, 7) : !text.trim() && links ? links.slice(0, 5) : [];
   const apply = (target: string) => { editor.chain().focus().extendMarkRange('link').setLink({ href: target }).run(); onDone(); };
   const submit = () => { if (href) apply(href); else if (found[0]) apply(found[0].href); };
-  return <VStack className={`${styles.menu} ${styles.pop} ${styles.popStart} ${styles.linkPop}`} data-menu-scope="" role="dialog" aria-label="링크">
-    <HStack className={styles.linkRow} gap={1.5} vAlign="center">
-      {icon('link-block')}
-      <TextInput label="링크 주소 또는 문서 이름" isLabelHidden hasAutoFocus value={text} className={styles.linkInput}
-        placeholder={links ? '주소를 붙여 넣거나 문서 이름으로 찾기' : '주소를 붙여 넣기 (https://…)'}
-        onChange={setText} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent.isComposing) { event.preventDefault(); event.stopPropagation(); submit(); } }} />
-      {current ? <>
-        <Button label="링크 열기" tooltip="링크 열기" variant="ghost" size="sm" isIconOnly icon={icon('external')} href={current} target="_blank" rel="noopener noreferrer" />
-        <Button label="링크 지우기" tooltip="링크 지우기" variant="ghost" size="sm" isIconOnly icon={icon('delete')} onMouseDown={keepSelection}
-          onClick={() => { editor.chain().focus().extendMarkRange('link').unsetLink().run(); onDone(); }} />
-      </> : null}
-    </HStack>
-    {href && href !== current ? <MenuItem icon={icon('link-block')} label={`${href} 로 연결`} hint="Enter" onSelect={() => apply(href)} /> : null}
-    {found.length > 0 ? <><MenuTitle>문서</MenuTitle>{found.map(link => <MenuItem key={link.href} icon={icon('document')} label={link.title} hint={link.hint} onSelect={() => apply(link.href)} />)}</> : null}
-    {!href && word && !found.length
-      ? <Text type="supporting" color="secondary" className={styles.linkEmpty}>{links ? '찾은 문서가 없습니다. 주소는 https://로 시작해 주세요.' : 'https:// 또는 mailto:로 시작하는 주소를 넣어 주세요.'}</Text>
-      : null}
-  </VStack>;
+  return (
+    <VStack className={`${styles.menu} ${styles.pop} ${styles.popStart} ${styles.linkPop}`} data-menu-scope="" role="dialog" aria-label="링크">
+      <HStack className={styles.linkRow} gap={1.5} vAlign="center">
+        {icon('link-block')}
+        <TextInput label="링크 주소 또는 문서 이름" isLabelHidden hasAutoFocus value={text} controlClassName={styles.linkInput}
+          placeholder={links ? '주소를 붙여 넣거나 문서 이름으로 찾기' : '주소를 붙여 넣기 (https://…)'}
+          onChange={setText} onKeyDown={event => { if (event.key === 'Enter' && !event.nativeEvent.isComposing) { event.preventDefault(); event.stopPropagation(); submit(); } }} />
+        {current ? <>
+          <Button label="링크 열기" tooltip="링크 열기" variant="ghost" size="sm" isIconOnly icon={icon('external')} href={current} target="_blank" rel="noopener noreferrer" />
+          <Button label="링크 지우기" tooltip="링크 지우기" variant="ghost" size="sm" isIconOnly icon={icon('delete')} onMouseDown={keepSelection}
+            onClick={() => { editor.chain().focus().extendMarkRange('link').unsetLink().run(); onDone(); }} />
+        </> : null}
+      </HStack>
+      {href && href !== current ? <MenuItem icon={icon('link-block')} label={`${href} 로 연결`} hint="Enter" onSelect={() => apply(href)} /> : null}
+      {found.length > 0 ? <><MenuTitle>문서</MenuTitle>{found.map(link => <MenuItem key={link.href} icon={icon('document')} label={link.title} hint={link.hint} onSelect={() => apply(link.href)} />)}</> : null}
+      {!href && word && !found.length
+        ? <Text type="supporting" color="secondary" className={styles.linkEmpty}>{links ? '찾은 문서가 없습니다. 주소는 https://로 시작해 주세요.' : 'https:// 또는 mailto:로 시작하는 주소를 넣어 주세요.'}</Text>
+        : null}
+    </VStack>
+  );
 }
 
 /**

@@ -32,7 +32,7 @@ const VerifyInvite: Sample = {
     const field = within(dialog).getByRole("textbox", { name: /이메일/ });
     await userEvent.type(field, "hajun@example.com, wrong");
     await userEvent.click(within(dialog).getByRole("button", { name: "초대 보내기" }));
-    await expect(await within(dialog).findByText("올바르지 않은 이메일입니다: wrong")).toBeInTheDocument();
+    await expect(await within(dialog).findByText("올바르지 않은 이메일입니다: wrong", { ignore: "script, style, [data-astryx-modal-live-region]" })).toBeInTheDocument();
     await userEvent.clear(field);
     await userEvent.type(field, "hajun@example.com");
     await userEvent.click(within(dialog).getByRole("button", { name: "초대 보내기" }));

@@ -25,12 +25,19 @@ export function AdaptivePopover({ label, trigger, content, width = '15rem', plac
   const isOpen = openProp ?? ownOpen;
   const setOpen = (next: boolean) => { setOwnOpen(next); onOpenChange?.(next); };
   const close = () => setOpen(false);
-  if (isPhone) return <>
-    {cloneElement(trigger, { onClick: () => setOpen(true) })}
-    <BottomSheet isOpen={isOpen} onOpenChange={setOpen} label={label} height={sheetHeight}>
-      <SheetBody>{content(close)}</SheetBody>
-    </BottomSheet>
-  </>;
+  if (isPhone) return (
+    <>
+      {cloneElement(trigger, { onClick: () => setOpen(true) })}
+      <BottomSheet
+        isOpen={isOpen}
+        onOpenChange={setOpen}
+        label={label}
+        height={sheetHeight}
+        padding={0}>
+        <SheetBody>{content(close)}</SheetBody>
+      </BottomSheet>
+    </>
+  );
   return <Popover isOpen={isOpen} onOpenChange={setOpen} label={label} width={width} placement={placement} alignment={alignment}
     content={content(close)}>
     {trigger}

@@ -8,6 +8,7 @@
   "scripts": {
     "test": "node --test plugins/webcraft/tests/*.test.mjs",
     "check": "node plugins/webcraft/scripts/check.mjs",
+    "astryx": "node node_modules/@astryxdesign/cli/clients/cli/bin/astryx.mjs",
     "package:plugins": "node plugins/webcraft/scripts/package-plugins.mjs",
     "site": "vite --config site/vite.config.ts",
     "site:build": "vite build --config site/vite.config.ts && node site/scripts/static-routes.mjs",
@@ -18,14 +19,17 @@
     "site:sizes": "node site/scripts/measure-samples.mjs"
   },
   "devDependencies": {
-    "@astryxdesign/core": "^0.5.2",
-    "@astryxdesign/theme-stone": "^0.5.2",
+    "@astryxdesign/cli": "0.7.13",
+    "@astryxdesign/core": "0.7.13",
+    "@astryxdesign/theme-stone": "0.7.13",
     "@babel/parser": "^8.1.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@iconify-json/solar": "^1.2.13",
     "@mdx-js/react": "^3.1.1",
     "@mdx-js/rollup": "^3.1.1",
     "@shikijs/rehype": "^4.6.0",
+    "@stylexjs/stylex": "0.19.1",
+    "@stylexjs/unplugin": "0.19.1",
     "@tanstack/react-query": "^5.107.1",
     "@tanstack/react-router": "^1.170.46",
     "@testing-library/dom": "^10.4.2",

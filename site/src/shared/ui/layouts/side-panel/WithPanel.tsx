@@ -26,12 +26,19 @@ export function WithPanel({ title, subtitle, panel, width = '26rem', footer, onC
     {panel}
     {footer}
   </VStack> : null;
-  if (isPhone) return <>
-    {children}
-    <BottomSheet isOpen={!!panel} onOpenChange={isOpen => { if (!isOpen) onClose(); }} label={title ?? '자세히'} height="capped">
-      <SheetBody>{body}</SheetBody>
-    </BottomSheet>
-  </>;
+  if (isPhone) return (
+    <>
+      {children}
+      <BottomSheet
+        isOpen={!!panel}
+        onOpenChange={isOpen => { if (!isOpen) onClose(); }}
+        label={title ?? '자세히'}
+        height="capped"
+        padding={0}>
+        <SheetBody>{body}</SheetBody>
+      </BottomSheet>
+    </>
+  );
   return <Layout height="fill" content={<LayoutContent padding={0}>{children}</LayoutContent>}
     end={body ? <LayoutPanel hasDivider width={width} padding={4} label={title ?? '자세히'}>{body}</LayoutPanel> : undefined} />;
 }

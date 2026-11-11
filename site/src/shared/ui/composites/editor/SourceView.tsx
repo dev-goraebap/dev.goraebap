@@ -77,37 +77,39 @@ function SourceView({ node, editor, updateAttributes, getPos, selected }: NodeVi
     : preview.error ? <Text type="supporting" className={styles.renderError} role="alert">{label}를 표시할 수 없습니다. {preview.error}</Text>
       : kind === 'webEmbed' && 'host' in embed && embed.host ? <LinkCard url={embed.original} host={embed.host} isEditable={isEditable} onEdit={start} />
         : <MermaidSvg html={diagram.html} />;
-  return <NodeViewWrapper as="div" className={`${styles.sourceNode} ${styles[`source-${kind}`]}`} data-selected={selected && isEditable ? '' : undefined}
-    data-rich-type={kind} data-block-id={node.attrs.blockId ?? undefined} contentEditable={false}>
-    {kind === 'mermaidBlock' ? <HStack className={styles.mediaTools} gap={0.5} vAlign="center">
-      {!isEditing && !preview.pending && !preview.error ? <Button label="다이어그램 크게 보기" tooltip="크게 보기" variant="ghost" size="sm" isIconOnly icon={icon('search')} onClick={zoom} /> : null}
-      <CopyButton text={source} label="Mermaid 원문 복사" />
-      {isEditable && !isEditing ? <Button label={`${label} 편집`} tooltip="편집" variant="ghost" size="sm" isIconOnly icon={icon('edit')} onClick={start} /> : null}
-    </HStack> : null}
-    {kind === 'webEmbed' && isEditing ? null
-      : <VStack ref={previewBox} className={`${styles.sourcePreview}${kind === 'mermaidBlock' && !isEditable ? ` ${styles.zoomable}` : ''}`}
-        onDoubleClick={kind === 'mermaidBlock' ? (isEditable ? start : zoom) : undefined}>{render()}</VStack>}
-    {isEditable && isEditing && kind === 'webEmbed' ? <VStack className={`${styles.uploadZone} ${styles.embedZone}`} gap={2} hAlign="center" role="group" aria-label="링크 카드 주소 넣기">
-      <VStack className={styles.uploadArt} hAlign="center" vAlign="center">{icon('globe')}</VStack>
-      <Text>카드로 보여 줄 웹 페이지 주소를 붙여 넣으세요</Text>
-      <TextInput ref={address} label="웹 주소" isLabelHidden value={draft} placeholder="https://" className={styles.embedInput} onChange={setDraft} onKeyDown={keys(false)} />
-      <Text type="supporting" color="secondary" className={draft.trim() && preview.error ? styles.renderError : undefined} role={draft.trim() && preview.error ? 'alert' : undefined}>
-        {draft.trim() && preview.error ? preview.error : '그 페이지의 제목·설명·대표 사진을 카드로 보여 줍니다 · HTTPS 주소만 · Enter 넣기 · Esc 취소'}
-      </Text>
-      <HStack gap={1.5}><Button label="취소" variant="ghost" size="sm" onClick={cancel} /><Button label="넣기" variant="primary" size="sm" isDisabled={!draft.trim() || !!preview.error} onClick={apply} /></HStack>
-    </VStack> : null}
-    {isEditable && isEditing && kind === 'mermaidBlock' ? <VStack className={styles.sourceEditor} gap={2} role="group" aria-label={`${label} 원문 편집`}>
-      <Text type="supporting" color="secondary">Mermaid 원문</Text>
-      <TextArea ref={textarea} label={`${label} 원문`} isLabelHidden value={draft} rows={6} placeholder={SOURCE_EXAMPLES.mermaidBlock} className={styles.sourceArea}
-        onChange={setDraft} onKeyDown={keys(true)} />
-      <HStack gap={2} vAlign="center" hAlign="end">
-        <Text type="supporting" color="secondary">Ctrl+Enter 적용 · Esc 취소</Text>
-        <Button label="취소" variant="ghost" size="sm" onClick={cancel} />
-        <Button label="적용" variant="primary" size="sm" isDisabled={preview.pending || !!preview.error} onClick={apply} />
-      </HStack>
-    </VStack> : null}
-    {!isEditing && preview.error && kind === 'mermaidBlock' ? <Text type="supporting" color="secondary">{source || `${label}를 편집해 주세요.`}</Text> : null}
-  </NodeViewWrapper>;
+  return (
+    <NodeViewWrapper as="div" className={`${styles.sourceNode} ${styles[`source-${kind}`]}`} data-selected={selected && isEditable ? '' : undefined}
+      data-rich-type={kind} data-block-id={node.attrs.blockId ?? undefined} contentEditable={false}>
+      {kind === 'mermaidBlock' ? <HStack className={styles.mediaTools} gap={0.5} vAlign="center">
+        {!isEditing && !preview.pending && !preview.error ? <Button label="다이어그램 크게 보기" tooltip="크게 보기" variant="ghost" size="sm" isIconOnly icon={icon('search')} onClick={zoom} /> : null}
+        <CopyButton text={source} label="Mermaid 원문 복사" />
+        {isEditable && !isEditing ? <Button label={`${label} 편집`} tooltip="편집" variant="ghost" size="sm" isIconOnly icon={icon('edit')} onClick={start} /> : null}
+      </HStack> : null}
+      {kind === 'webEmbed' && isEditing ? null
+        : <VStack ref={previewBox} className={`${styles.sourcePreview}${kind === 'mermaidBlock' && !isEditable ? ` ${styles.zoomable}` : ''}`}
+          onDoubleClick={kind === 'mermaidBlock' ? (isEditable ? start : zoom) : undefined}>{render()}</VStack>}
+      {isEditable && isEditing && kind === 'webEmbed' ? <VStack className={`${styles.uploadZone} ${styles.embedZone}`} gap={2} hAlign="center" role="group" aria-label="링크 카드 주소 넣기">
+        <VStack className={styles.uploadArt} hAlign="center" vAlign="center">{icon('globe')}</VStack>
+        <Text>카드로 보여 줄 웹 페이지 주소를 붙여 넣으세요</Text>
+        <TextInput ref={address} label="웹 주소" isLabelHidden value={draft} placeholder="https://" controlClassName={styles.embedInput} onChange={setDraft} onKeyDown={keys(false)} />
+        <Text type="supporting" color="secondary" className={draft.trim() && preview.error ? styles.renderError : undefined} role={draft.trim() && preview.error ? 'alert' : undefined}>
+          {draft.trim() && preview.error ? preview.error : '그 페이지의 제목·설명·대표 사진을 카드로 보여 줍니다 · HTTPS 주소만 · Enter 넣기 · Esc 취소'}
+        </Text>
+        <HStack gap={1.5}><Button label="취소" variant="ghost" size="sm" onClick={cancel} /><Button label="넣기" variant="primary" size="sm" isDisabled={!draft.trim() || !!preview.error} onClick={apply} /></HStack>
+      </VStack> : null}
+      {isEditable && isEditing && kind === 'mermaidBlock' ? <VStack className={styles.sourceEditor} gap={2} role="group" aria-label={`${label} 원문 편집`}>
+        <Text type="supporting" color="secondary">Mermaid 원문</Text>
+        <TextArea ref={textarea} label={`${label} 원문`} isLabelHidden value={draft} rows={6} placeholder={SOURCE_EXAMPLES.mermaidBlock} controlClassName={styles.sourceArea}
+          onChange={setDraft} onKeyDown={keys(true)} />
+        <HStack gap={2} vAlign="center" hAlign="end">
+          <Text type="supporting" color="secondary">Ctrl+Enter 적용 · Esc 취소</Text>
+          <Button label="취소" variant="ghost" size="sm" onClick={cancel} />
+          <Button label="적용" variant="primary" size="sm" isDisabled={preview.pending || !!preview.error} onClick={apply} />
+        </HStack>
+      </VStack> : null}
+      {!isEditing && preview.error && kind === 'mermaidBlock' ? <Text type="supporting" color="secondary">{source || `${label}를 편집해 주세요.`}</Text> : null}
+    </NodeViewWrapper>
+  );
 }
 
 export const sourceNodeViews = (['mermaidBlock', 'webEmbed'] as SourceKind[]).map(kind => sourceNode(kind).extend({ addNodeView() { return ReactNodeViewRenderer(SourceView); } }));

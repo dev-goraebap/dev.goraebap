@@ -21,13 +21,15 @@ export function SearchTool({ label, placeholder, value, onChange }: {
   const trigger = useRef<HTMLButtonElement>(null);
   const close = () => { setOpen(false); requestAnimationFrame(() => trigger.current?.focus()); };
   if (isOpen) {
-    return <HStack gap={1} vAlign="center" className={styles.search}>
-      <TextInput label={label} isLabelHidden size={size} width={isPhone ? 'min(14rem, 40vw)' : '14rem'}
-        className={styles.input} startIcon={icon('search')} hasClear hasAutoFocus={!value}
-        placeholder={placeholder} value={value} onChange={onChange}
-        onKeyDown={event => { if (event.key === 'Escape') { event.preventDefault(); close(); } }} />
-      <Button label={`${label} 닫기`} tooltip="검색 닫기" variant="subtle" size={size} isIconOnly icon={icon('close')} onClick={close} />
-    </HStack>;
+    return (
+      <HStack gap={1} vAlign="center" className={styles.search}>
+        <TextInput label={label} isLabelHidden size={size} width={isPhone ? 'min(14rem, 40vw)' : '14rem'}
+          controlClassName={styles.input} startIcon={icon('search')} hasClear hasAutoFocus={!value}
+          placeholder={placeholder} value={value} onChange={onChange}
+          onKeyDown={event => { if (event.key === 'Escape') { event.preventDefault(); close(); } }} />
+        <Button label={`${label} 닫기`} tooltip="검색 닫기" variant="subtle" size={size} isIconOnly icon={icon('close')} onClick={close} />
+      </HStack>
+    );
   }
   return <HStack className={styles.trigger}>
     <Button ref={trigger} label={value ? `${label}, 검색 중` : label} tooltip={label} variant={value ? 'view-active' : 'tool'} size={size} isIconOnly

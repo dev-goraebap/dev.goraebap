@@ -26,7 +26,7 @@ type Dialog = { kind: 'create' } | { kind: 'rename' | 'move'; node: FolderNode }
  * 상태 순서: 대기 → 실패(다시 시도) → 없는 폴더 → 빈 폴더(새 폴더 권유).
  */
 export function FoldersPage() {
-  const treeWidth = useResizable({defaultSize:224,minSizePx:160,maxSizePx:360});
+  const treeWidth = useResizable({defaultSize:224,minSize:160,maxSize:360});
   const api = useFolderApi();
   const client = useQueryClient();
   const navigate = useNavigate();

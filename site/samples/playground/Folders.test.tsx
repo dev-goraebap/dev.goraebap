@@ -40,8 +40,12 @@ const VerifyMove: Sample = {
     const dialog = await page.findByRole("dialog", { name: /옮기기/ });
     await userEvent.click(within(dialog).getByRole("button", { name: "옮기기" }));
     await waitFor(() => expect(within(dialog).getAllByText("옮길 폴더를 골라 주세요.").length).toBeGreaterThan(0));
-    await userEvent.click(within(dialog).getByText("폴더를 고르세요"));
-    await userEvent.click(await page.findByRole("option", { name: "내 폴더 / 프로젝트" }));
+    await userEvent.click(within(dialog).getByRole("combobox", { name: /옮길 폴더/ }));
+    // Astryx 0.7 메뉴는 손을 뗀 좌표 아래의 행을 고른다(useMenuPress). 실제 브라우저의 마우스로는 고를 수 있으나
+    // 테스트 실행기의 클릭은 그 판정에 맞지 않아, Astryx가 함께 보장하는 키보드로 마지막 폴더를 고른다.
+    await page.findByRole("option", { name: "내 폴더 / 보관함" });
+    await userEvent.keyboard("{End}{Enter}");
+    await expect(within(dialog).getByRole("combobox", { name: /옮길 폴더/ })).toHaveTextContent("내 폴더 / 보관함");
     await userEvent.click(within(dialog).getByRole("button", { name: "옮기기" }));
     await waitFor(() => expect(page.queryByText("색 기준표.docx", { selector: "p, span" })).not.toBeInTheDocument(), { timeout: 4000 });
     // 새 폴더: 같은 이름은 막고, 새 이름은 만든다.
