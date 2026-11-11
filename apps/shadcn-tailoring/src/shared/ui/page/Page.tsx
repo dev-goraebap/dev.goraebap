@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { Button } from "@/shared/ui/button"
 import { ArrowLeftIcon, ChevronRightIcon, PlusIcon, type Icon } from "@/shared/ui/icon"
-import { usePageChrome } from "./chrome"
+import { useFullScreen, usePageChrome } from "./chrome"
 
 /** 경로의 한 단계. 마지막 단계가 이 페이지다. */
 export type Crumb = { label: string; href?: string; icon?: Icon }
@@ -21,6 +21,8 @@ type PageProps = {
   tools?: ReactNode
   /** 툴바 아래, 본문 위: 걸린 필터 줄 같은 것. */
   below?: ReactNode
+  /** 상세 · 양식 페이지: 휴대폰에서 전체 화면(하단 탭 없이, 앱 바는 ← · 제목 · 페이지 메뉴만). */
+  isFullScreen?: boolean
   children: ReactNode
 }
 
@@ -28,12 +30,13 @@ type PageProps = {
  * 목록 같은 상위 페이지의 틀(호호코워크 Page). 데스크톱: 52px 머리 줄(경로 · 동작 · 만들기) + 44px 툴바(뷰 · 도구).
  * 휴대폰: 52px 앱 바(뒤로 · 제목 · 공통 도구) + 52px 도구 줄, 만들기는 FAB. 본문은 남은 높이를 채우고 스스로 스크롤한다.
  */
-export function Page({ crumbs, actions, create, views, tools, below, children }: PageProps) {
+export function Page({ crumbs, actions, create, views, tools, below, isFullScreen = false, children }: PageProps) {
   const isMobile = useIsMobile()
+  useFullScreen(isMobile && isFullScreen)
   const hasToolbar = Boolean(views || tools)
   return (
     <div data-slot="page" className="flex min-h-0 flex-1 flex-col">
-      {isMobile ? <PageAppBar crumbs={crumbs} actions={actions} /> : <PageHeader crumbs={crumbs} actions={actions} create={create} />}
+      {isMobile ? <PageAppBar crumbs={crumbs} actions={actions} isFullScreen={isFullScreen} /> : <PageHeader crumbs={crumbs} actions={actions} create={create} />}
       {hasToolbar && (
         <div data-slot="page-toolbar" className="flex h-13 shrink-0 items-center gap-2 border-b px-4 md:h-11">
           <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto [scrollbar-width:none]">{views}</div>
@@ -87,9 +90,9 @@ function PageHeader({ crumbs, actions, create }: Pick<PageProps, "crumbs" | "act
   )
 }
 
-/** 휴대폰 앱 바: 위 단계가 있으면 ←, 이 페이지 이름, 페이지 메뉴, 오른쪽에 공통 도구. */
-function PageAppBar({ crumbs, actions }: Pick<PageProps, "crumbs" | "actions">) {
-  const chrome = usePageChrome()
+/** 휴대폰 앱 바: 위 단계가 있으면 ←, 이 페이지 이름, 페이지 메뉴, 오른쪽에 공통 도구(전체 화면이면 없음). */
+function PageAppBar({ crumbs, actions, isFullScreen }: Pick<PageProps, "crumbs" | "actions" | "isFullScreen">) {
+  const { tools: chrome } = usePageChrome()
   const current = crumbs[crumbs.length - 1]
   const parent = [...crumbs].slice(0, -1).reverse().find(crumb => crumb.href)
   return (
@@ -103,7 +106,7 @@ function PageAppBar({ crumbs, actions }: Pick<PageProps, "crumbs" | "actions">) 
       )}
       <h1 className="min-w-0 truncate text-base font-semibold">{current.label}</h1>
       {actions}
-      <div className="ml-auto flex shrink-0 items-center gap-0.5">{chrome}</div>
+      {!isFullScreen && <div className="ml-auto flex shrink-0 items-center gap-0.5">{chrome}</div>}
     </header>
   )
 }

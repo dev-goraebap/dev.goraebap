@@ -93,7 +93,7 @@ export function WorkItemDetailPage() {
     { label: workItemKey, icon: item ? typeMark(item.type).icon : KanbanSquareIcon },
   ]
   return (
-    <Page crumbs={crumbs} actions={item && <WorkItemPageMenu item={item} />}>
+    <Page crumbs={crumbs} actions={item && <WorkItemPageMenu item={item} />} isFullScreen>
       {item === undefined ? <DetailSkeleton /> : item === null ? <NotFound /> : <WorkItemDetail item={item} />}
     </Page>
   )

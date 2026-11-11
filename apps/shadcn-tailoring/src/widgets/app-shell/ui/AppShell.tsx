@@ -1,4 +1,5 @@
 import { Link, Outlet } from "@tanstack/react-router"
+import { useMemo, useState } from "react"
 import { paths } from "@/shared/config"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
@@ -18,12 +19,14 @@ import { MobileTabBar } from "./MobileTabBar"
  */
 export function AppShell() {
   const isMobile = useIsMobile()
+  const [isFullScreen, setFullScreen] = useState(false)
+  const chrome = useMemo(() => ({ tools: <MobileChrome />, setFullScreen }), [])
   return (
-    <PageChromeProvider value={<MobileChrome />}>
+    <PageChromeProvider value={chrome}>
       {isMobile ? (
         <div className="flex h-svh flex-col bg-background">
           <main className="flex min-h-0 flex-1 flex-col"><Outlet /></main>
-          <MobileTabBar />
+          {!isFullScreen && <MobileTabBar />}
         </div>
       ) : (
         <SidebarProvider className="h-svh min-h-0 bg-sidebar">

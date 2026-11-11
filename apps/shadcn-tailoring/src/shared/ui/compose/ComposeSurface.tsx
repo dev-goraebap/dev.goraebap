@@ -124,7 +124,7 @@ function PageCompose({ crumbs, chip, pills, submit, isContinuing, onContinuing, 
 
 function PhoneCompose({ crumbs, chip, pills, submit, isContinuing, onContinuing, onClose, onKeyDown, children }: SurfaceProps) {
   return (
-    <Page crumbs={crumbs}>
+    <Page crumbs={crumbs} isFullScreen>
       <div className="flex min-h-0 flex-1 flex-col bg-background" onKeyDown={onKeyDown}>
         <div className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto overscroll-contain px-4 py-5">
           {chip && <div className="flex">{chip}</div>}
