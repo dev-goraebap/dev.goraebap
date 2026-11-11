@@ -13,7 +13,6 @@ arc42: "8.5, 2"
 
 | 작업 | 읽을 자료 |
 | --- | --- |
-| 부품 선택·props·테마 작성·버전 확인 | [Astryx 작업 절차](references/astryx-workflow.md) |
 | 색·상태 표현·라이트·다크 | [테마와 색상](references/theme.md) |
 | 글자 크기·숫자·넘침 | [글자](references/typography.md) |
 | 치수·분기점·정렬선·확대 | [간격과 크기](references/spacing.md) |
