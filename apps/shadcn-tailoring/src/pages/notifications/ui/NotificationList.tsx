@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { groupOf, kindIcon, notificationGroups, type Notification } from "@/entities/notification"
-import { Empty, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty"
+import { PageState } from "@/shared/ui/page-state"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { emptyTitle, isInView, viewOf, type InboxView } from "../model/views"
 
@@ -72,13 +72,5 @@ function ListSkeleton() {
 }
 
 function ViewEmpty({ view }: { view: InboxView }) {
-  const ViewIcon = viewOf(view).icon
-  return (
-    <Empty>
-      <EmptyHeader>
-        <EmptyMedia variant="icon"><ViewIcon /></EmptyMedia>
-        <EmptyTitle>{emptyTitle[view]}</EmptyTitle>
-      </EmptyHeader>
-    </Empty>
-  )
+  return <PageState kind="empty" title={emptyTitle[view]} />
 }

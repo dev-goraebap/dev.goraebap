@@ -1,6 +1,6 @@
 import { useId, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react"
 import { cn } from "@/shared/lib/utils"
-import { Avatar, AvatarFallback } from "@/shared/ui/avatar"
+import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { ArrowUpIcon, type Icon } from "@/shared/ui/icon"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/shared/ui/input-group"
 
@@ -17,13 +17,9 @@ function Time({ at }: { at: string }) {
   return <time dateTime={at} title={date.toLocaleString("ko-KR")} className="text-xs whitespace-nowrap text-muted-foreground">{when.format(date)}</time>
 }
 
-/** 행위자 그림(20px). 그림이 없으므로 이름 첫 글자. */
+/** 행위자 그림(20px): 호호코워크 기본 그림(이름으로 정한다). */
 function ActorAvatar({ name }: { name: string }) {
-  return (
-    <Avatar size="sm" className="size-5">
-      <AvatarFallback className="text-[0.625rem] font-semibold">{name.slice(0, 1)}</AvatarFallback>
-    </Avatar>
-  )
+  return <PersonAvatar id={name} name={name} />
 }
 
 /*

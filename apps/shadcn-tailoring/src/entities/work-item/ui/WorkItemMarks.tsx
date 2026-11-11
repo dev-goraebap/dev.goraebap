@@ -1,6 +1,6 @@
 import { cn } from "@/shared/lib/utils"
-import { Avatar, AvatarFallback } from "@/shared/ui/avatar"
 import { Badge } from "@/shared/ui/badge"
+import { PersonAvatar as SharedPersonAvatar } from "@/shared/ui/person-avatar"
 import { CalendarIcon } from "@/shared/ui/icon"
 import { formatWorkItemDate } from "../model/format"
 import { priorityMark, statusMark, typeMark, type MarkTone } from "../model/marks"
@@ -67,13 +67,9 @@ export function WorkItemLabels({ labels, className }: { labels: readonly WorkIte
   return <span className={cn("flex items-center gap-1", className)}>{labels.map(label => <WorkItemLabelPill key={label.id} label={label} />)}</span>
 }
 
-/** 사람 아바타(20px). 그림이 없으므로 이름 첫 글자를 둔다. */
+/** 사람 아바타(20px): 호호코워크 기본 그림. */
 export function PersonAvatar({ person, className }: { person: Person; className?: string }) {
-  return (
-    <Avatar size="sm" className={cn("size-5", className)}>
-      <AvatarFallback className="text-[0.625rem] font-semibold">{person.name.slice(0, 1)}</AvatarFallback>
-    </Avatar>
-  )
+  return <SharedPersonAvatar id={person.id} name={person.name} className={className} />
 }
 
 /** 담당자 없음: 점선 원 안의 사람 윤곽. 아바타와 같은 20px 자리. */

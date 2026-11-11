@@ -5,8 +5,8 @@ import {
 import { paths } from "@/shared/config"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty"
-import { CopyIcon, KanbanSquareIcon, LinkIcon, SearchXIcon, Trash2Icon } from "@/shared/ui/icon"
+import { PageState } from "@/shared/ui/page-state"
+import { CopyIcon, KanbanSquareIcon, LinkIcon, Trash2Icon } from "@/shared/ui/icon"
 import { Page, type Crumb } from "@/shared/ui/page"
 import { DetailLayout, MarkdownBody } from "@/shared/ui/reading"
 import { Skeleton } from "@/shared/ui/skeleton"
@@ -73,16 +73,8 @@ function DetailSkeleton() {
 function NotFound() {
   return (
     <div className={PLAIN}>
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon"><SearchXIcon /></EmptyMedia>
-          <EmptyTitle>업무를 찾을 수 없습니다</EmptyTitle>
-          <EmptyDescription>지워졌거나 주소가 바뀌었을 수 있습니다.</EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Button variant="outline" nativeButton={false} render={<Link to={paths.workItems} />}>업무 목록으로</Button>
-        </EmptyContent>
-      </Empty>
+      <PageState kind="not-found" title="업무를 찾을 수 없습니다" description="지워졌거나 주소가 바뀌었을 수 있습니다."
+        action={<Button variant="outline" nativeButton={false} render={<Link to={paths.workItems} />}>업무 목록으로</Button>} />
     </div>
   )
 }

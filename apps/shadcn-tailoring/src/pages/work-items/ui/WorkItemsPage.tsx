@@ -2,9 +2,9 @@ import { useMemo, useState } from "react"
 import { ME, useWorkItems, type WorkItemStatus } from "@/entities/work-item"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { Button } from "@/shared/ui/button"
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty"
+import { PageState } from "@/shared/ui/page-state"
 import {
-  KanbanSquareIcon, ListIcon, ProjectsIcon, SearchXIcon, TableIcon, UserIcon,
+  KanbanSquareIcon, ListIcon, ProjectsIcon, TableIcon, UserIcon,
 } from "@/shared/ui/icon"
 import { Page, PageViews, type PageView } from "@/shared/ui/page"
 import { Skeleton } from "@/shared/ui/skeleton"
@@ -67,18 +67,12 @@ export function WorkItemsPage() {
     if (isPending) return <ListSkeleton />
     if (items.length === 0) {
       return (
-        <Empty>
-          <EmptyHeader>
-            <EmptyMedia variant="icon"><SearchXIcon /></EmptyMedia>
-            <EmptyTitle>{isNarrowed ? "조건에 맞는 업무가 없습니다" : "아직 업무가 없습니다"}</EmptyTitle>
-            <EmptyDescription>{isNarrowed ? "필터를 바꾸거나 지워 보세요." : "새 업무로 이 프로젝트의 할 일이나 버그를 남겨 보세요."}</EmptyDescription>
-          </EmptyHeader>
-          <EmptyContent>
-            {isNarrowed
-              ? <Button variant="secondary" onClick={filters.clear}>필터 지우기</Button>
-              : <Button variant="create" onClick={() => openCreate()}>새 업무</Button>}
-          </EmptyContent>
-        </Empty>
+        <PageState kind={isNarrowed ? "search" : "empty"}
+          title={isNarrowed ? "조건에 맞는 업무가 없습니다" : "아직 업무가 없습니다"}
+          description={isNarrowed ? "필터를 바꾸거나 지워 보세요." : "새 업무로 이 프로젝트의 할 일이나 버그를 남겨 보세요."}
+          action={isNarrowed
+            ? <Button variant="secondary" onClick={filters.clear}>필터 지우기</Button>
+            : <Button variant="create" onClick={() => openCreate()}>새 업무</Button>} />
       )
     }
     if (view === "board") return <WorkItemBoard items={items} onCreateIn={openCreate} />

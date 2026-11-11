@@ -5,8 +5,8 @@ import { paths } from "@/shared/config"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { useStoredWidth } from "@/shared/lib/use-stored-width"
 import { cn } from "@/shared/lib/utils"
-import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/shared/ui/empty"
-import { CircleCheckIcon, InboxIcon, SearchXIcon, SettingsIcon } from "@/shared/ui/icon"
+import { InboxIllustration, PageState } from "@/shared/ui/page-state"
+import { CircleCheckIcon, InboxIcon, SettingsIcon } from "@/shared/ui/icon"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Page, PageViews } from "@/shared/ui/page"
 import { PaneResizeHandle } from "@/shared/ui/pane-resize-handle"
@@ -81,25 +81,9 @@ function InboxPanes({ list, isDotted, children }: { list: ReactNode; isDotted: b
 
 /** 아무것도 고르지 않았을 때 오른쪽 칸(호호코워크는 편지가 담긴 알림함 그림). */
 function ChooseEmpty() {
-  return (
-    <Empty>
-      <EmptyHeader>
-        <EmptyMedia variant="icon"><InboxIcon chosen /></EmptyMedia>
-        <EmptyTitle>알림을 선택해 주세요</EmptyTitle>
-        <EmptyDescription>결재 요청, 공지, 일정의 상세 내용을 여기서 확인할 수 있습니다.</EmptyDescription>
-      </EmptyHeader>
-    </Empty>
-  )
+  return <PageState kind="empty" illustration={<InboxIllustration />} title="알림을 선택해 주세요" description="결재 요청, 공지, 일정의 상세 내용을 여기서 확인할 수 있습니다." />
 }
 
 function MissingEmpty() {
-  return (
-    <Empty>
-      <EmptyHeader>
-        <EmptyMedia variant="icon"><SearchXIcon /></EmptyMedia>
-        <EmptyTitle>알림을 찾을 수 없습니다</EmptyTitle>
-        <EmptyDescription>목록에서 알림을 다시 골라 주세요.</EmptyDescription>
-      </EmptyHeader>
-    </Empty>
-  )
+  return <PageState kind="not-found" title="알림을 찾을 수 없습니다" description="목록에서 알림을 다시 골라 주세요." />
 }
