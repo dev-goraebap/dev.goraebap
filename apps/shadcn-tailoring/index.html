@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>shadcn tailoring</title>
+    <script>
+      // 첫 화면부터 화면 설정(모드 · 목록 높이)을 따른다. shared/lib/appearance와 같은 키다.
+      (() => {
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem('cowork-appearance') || '{}'); } catch {}
+        const mode = saved.mode || 'system';
+        const isDark = mode === 'dark' || (mode === 'system' && matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', isDark);
+        document.documentElement.dataset.density = saved.density || 'spacious';
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/app/main.tsx"></script>
+  </body>
+</html>

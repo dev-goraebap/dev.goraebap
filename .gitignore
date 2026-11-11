@@ -4,3 +4,4 @@ node_modules/
 __screenshots__/
 .vitest-attachments/
 apps/*/dist/
+apps/*/node_modules/
