@@ -1,55 +1,19 @@
-import { useState, type FormEvent, type ReactNode } from "react"
+import { useState, type FormEvent } from "react"
 import {
   LABELS, PEOPLE, PRIORITIES, STATUSES, TYPES, PersonAvatar, WorkItemLabelDot, WorkItemPriorityIcon, WorkItemStatusIcon,
   formatWorkItemDate, statusMark, typeMark, useCreateWorkItem,
   type WorkItemPriority, type WorkItemStatus, type WorkItemType,
 } from "@/entities/work-item"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
 import { Button } from "@/shared/ui/button"
 import { Dialog, DialogContent, DialogTitle } from "@/shared/ui/dialog"
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from "@/shared/ui/drawer"
-import { Field, FieldLabel } from "@/shared/ui/field"
-import {
-  CalendarIcon, ChartNoAxesColumnIcon, ListChecksIcon, ProjectsIcon, SquareCheckIcon, TagIcon, UserIcon, XIcon, type Icon,
-} from "@/shared/ui/icon"
-import { Input } from "@/shared/ui/input"
+import { ChartNoAxesColumnIcon, ListChecksIcon, ProjectsIcon, SquareCheckIcon, TagIcon, UserIcon, XIcon } from "@/shared/ui/icon"
+import { DatePill, OptionPill } from "@/shared/ui/property-pill"
 import { Switch } from "@/shared/ui/switch"
 import { toast } from "@/shared/ui/toast"
-import { toggleValue } from "@/shared/lib/toggle"
-import { OptionList, type Option } from "@/shared/ui/option-list"
 
 const FORM_ID = "new-work-item"
-
-/**
- * 속성 알약(호호코워크 OptionPill): 가는 테두리의 둥근 알약에 아이콘과 이름(고르면 고른 값). 누르면 고를 것 목록이 뜬다
- * (데스크톱 팝오버, 휴대폰 바텀시트).
- */
-function PropertyPill({ label, icon: PillIcon, value, children }: { label: string; icon: Icon; value?: ReactNode; children: (close: () => void) => ReactNode }) {
-  const [isOpen, setOpen] = useState(false)
-  return (
-    <AdaptivePopover title={label} open={isOpen} onOpenChange={setOpen} className="w-60 p-1.5"
-      trigger={
-        <Button type="button" variant="outline" size="xs" aria-label={label} className="rounded-full max-md:h-9 max-md:px-3 max-md:text-sm">
-          {value ?? <><PillIcon data-icon="inline-start" />{label}</>}
-        </Button>
-      }>
-      {children(() => setOpen(false))}
-    </AdaptivePopover>
-  )
-}
-
-/** 한 값을 고르는 알약: 고르면 닫힌다. */
-function SinglePill<T extends string>({ label, icon, options, value, onChange }: {
-  label: string; icon: Icon; options: (Option & { value: T })[]; value?: T; onChange: (value: T) => void
-}) {
-  const current = options.find(option => option.value === value)
-  return (
-    <PropertyPill label={label} icon={icon} value={current && <>{current.icon}{current.label}</>}>
-      {close => <OptionList label={label} options={options} chosen={value ? [value] : []} onPick={picked => { onChange(picked as T); close() }} />}
-    </PropertyPill>
-  )
-}
 
 type Draft = {
   title: string; body: string; type: WorkItemType; status: WorkItemStatus; priority: WorkItemPriority
@@ -64,7 +28,6 @@ function NewWorkItemForm({ draft, onDraft, onSubmit }: { draft: Draft; onDraft: 
     event.preventDefault()
     if (draft.title.trim()) onSubmit()
   }
-  const labels = LABELS.filter(label => draft.labelIds.includes(label.id))
   return (
     <form id={FORM_ID} onSubmit={submit} className="flex flex-col gap-3">
       <input aria-label="업무 제목" placeholder="업무 제목" autoFocus autoComplete="off" value={draft.title} onChange={event => set({ title: event.target.value })}
@@ -72,31 +35,18 @@ function NewWorkItemForm({ draft, onDraft, onSubmit }: { draft: Draft; onDraft: 
       <textarea aria-label="설명" placeholder="설명을 덧붙이세요…" rows={3} value={draft.body} onChange={event => set({ body: event.target.value })}
         className="field-sizing-content min-h-16 w-full resize-none bg-transparent text-sm outline-none placeholder:text-muted-foreground/70" />
       <div role="group" aria-label="속성" className="flex flex-wrap gap-1.5 pt-2">
-        <SinglePill label="유형" icon={ListChecksIcon} value={draft.type} onChange={type => set({ type })}
-          options={TYPES.map(type => ({ value: type.value, label: type.label, icon: <type.icon data-icon="inline-start" /> }))} />
-        <SinglePill label="상태" icon={SquareCheckIcon} value={draft.status} onChange={status => set({ status })}
+        <OptionPill label="유형" icon={ListChecksIcon} value={draft.type} onChange={type => set({ type: type })}
+          options={TYPES.map(type => ({ value: type.value, label: type.label, icon: <type.icon /> }))} />
+        <OptionPill label="상태" icon={SquareCheckIcon} value={draft.status} onChange={status => set({ status: status })}
           options={STATUSES.map(status => ({ value: status.value, label: status.label, icon: <WorkItemStatusIcon status={status.value} /> }))} />
-        <SinglePill label="우선순위" icon={ChartNoAxesColumnIcon} value={draft.priority === "none" ? undefined : draft.priority}
-          onChange={priority => set({ priority })}
+        <OptionPill label="우선순위" icon={ChartNoAxesColumnIcon} value={draft.priority === "none" ? undefined : draft.priority}
+          onChange={priority => set({ priority: priority })}
           options={PRIORITIES.map(priority => ({ value: priority.value, label: priority.label, icon: <WorkItemPriorityIcon priority={priority.value} /> }))} />
-        <SinglePill label="담당자" icon={UserIcon} value={draft.assigneeId} onChange={assigneeId => set({ assigneeId })}
+        <OptionPill label="담당자" icon={UserIcon} value={draft.assigneeId} onChange={assigneeId => set({ assigneeId })}
           options={PEOPLE.map(person => ({ value: person.id, label: person.name, icon: <PersonAvatar person={person} className="size-4" /> }))} />
-        <PropertyPill label="라벨" icon={TagIcon}
-          value={labels.length === 0 ? undefined : <>{labels.slice(0, 2).map(label => <WorkItemLabelDot key={label.id} color={label.color} />)}{labels.map(label => label.name).join(", ")}</>}>
-          {() => (
-            <OptionList label="라벨" isSearchable chosen={draft.labelIds} onPick={id => set({ labelIds: toggleValue(draft.labelIds, id) })}
-              options={LABELS.map(label => ({ value: label.id, label: label.name, icon: <WorkItemLabelDot color={label.color} /> }))} />
-          )}
-        </PropertyPill>
-        <PropertyPill label="기한" icon={CalendarIcon}
-          value={draft.dueDate && <><CalendarIcon data-icon="inline-start" />{formatWorkItemDate(draft.dueDate)}</>}>
-          {() => (
-            <Field className="p-1.5">
-              <FieldLabel htmlFor="new-work-item-due">마감일</FieldLabel>
-              <Input id="new-work-item-due" type="date" value={draft.dueDate ?? ""} onChange={event => set({ dueDate: event.target.value || undefined })} />
-            </Field>
-          )}
-        </PropertyPill>
+        <OptionPill label="라벨" icon={TagIcon} isMultiple value={draft.labelIds} onChange={labelIds => set({ labelIds })}
+          options={LABELS.map(label => ({ value: label.id, label: label.name, icon: <WorkItemLabelDot color={label.color} /> }))} />
+        <DatePill label="기한" value={draft.dueDate} format={formatWorkItemDate} onChange={dueDate => set({ dueDate })} />
       </div>
     </form>
   )

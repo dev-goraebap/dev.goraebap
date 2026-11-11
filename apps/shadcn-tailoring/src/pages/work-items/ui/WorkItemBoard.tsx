@@ -3,19 +3,20 @@ import {
 } from "@/entities/work-item"
 import { Button } from "@/shared/ui/button"
 import { PlusIcon } from "@/shared/ui/icon"
+import { WorkItemLink } from "./WorkItemLink"
 import { WorkItemMenu } from "./WorkItemMenu"
 
-/** 보드 카드(호호코워크 KanbanCard): 키 · 유형 · 메뉴, 제목, 라벨, 아래에 우선순위와 담당자. */
+/** 보드 카드(호호코워크 KanbanCard): 키 · 유형 · 메뉴, 제목, 라벨, 아래에 우선순위와 담당자. 누르면 상세로 간다. */
 function BoardCard({ item }: { item: WorkItem }) {
   const type = typeMark(item.type)
   return (
-    <li className="flex flex-col gap-2 rounded-lg border bg-card p-3 text-sm shadow-xs">
+    <li className="relative flex flex-col gap-2 rounded-lg border bg-card p-3 text-sm shadow-xs">
       <div className="flex items-center gap-2">
         <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground tabular-nums">{item.key}</span>
         <type.icon role="img" aria-hidden={false} aria-label={type.label} className="shrink-0 text-icon-muted" />
         <WorkItemMenu item={item} />
       </div>
-      <p className="line-clamp-3">{item.title}</p>
+      <WorkItemLink itemKey={item.key} className="line-clamp-3">{item.title}</WorkItemLink>
       <WorkItemLabels labels={item.labels} className="flex-wrap" />
       <div className="flex items-center justify-between gap-2 pt-1">
         <WorkItemPriorityIcon priority={item.priority} />

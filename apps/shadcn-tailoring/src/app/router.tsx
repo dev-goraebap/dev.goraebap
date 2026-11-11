@@ -2,6 +2,7 @@ import { createRootRoute, createRoute, createRouter, redirect } from "@tanstack/
 import { ComingSoonPage } from "@/pages/coming-soon"
 import { NotificationsPage } from "@/pages/notifications"
 import { SettingsPage } from "@/pages/settings"
+import { WorkItemDetailPage } from "@/pages/work-item-detail"
 import { WorkItemsPage } from "@/pages/work-items"
 import { paths } from "@/shared/config"
 import {
@@ -30,6 +31,7 @@ export const router = createRouter({
     route(paths.notifications, NotificationsPage),
     route(`${paths.notifications}/$notificationId`, NotificationsPage),
     route(paths.workItems, WorkItemsPage),
+    route(`${paths.workItems}/$workItemKey`, WorkItemDetailPage),
     route(paths.display, SettingsPage),
     ...comingSoon.map(item => route(item.path, () => <ComingSoonPage title={item.title} icon={item.icon} />)),
   ]),

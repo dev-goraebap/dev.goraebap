@@ -3,6 +3,7 @@ import {
 } from "@/entities/work-item"
 import { Checkbox } from "@/shared/ui/checkbox"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table"
+import { WorkItemLink } from "./WorkItemLink"
 import { WorkItemMenu } from "./WorkItemMenu"
 import { ROW_SURFACE } from "./WorkItemRow"
 
@@ -43,13 +44,13 @@ export function WorkItemTable({ items, selected, onSelectedChange }: {
         {items.map(item => (
           <TableRow key={item.id} data-state={selected.has(item.id) ? "selected" : undefined} className={ROW_SURFACE}>
             <TableCell className="h-12.25 pl-4 compact:h-10.25">
-              <Checkbox aria-label={`${item.key} 고르기`} checked={selected.has(item.id)} onCheckedChange={isOn => pick(item.id, isOn)} />
+              <Checkbox className="relative z-1" aria-label={`${item.key} 고르기`} checked={selected.has(item.id)} onCheckedChange={isOn => pick(item.id, isOn)} />
             </TableCell>
             <TableCell className="max-w-26 truncate text-muted-foreground tabular-nums">{item.key}</TableCell>
             <TableCell className="max-w-64">
               <span className="flex min-w-0 items-center gap-2">
                 <WorkItemStatusIcon status={item.status} />
-                <span className="truncate">{item.title}</span>
+                <WorkItemLink itemKey={item.key} className="truncate">{item.title}</WorkItemLink>
               </span>
             </TableCell>
             <TableCell><WorkItemTypeLabel type={item.type} /></TableCell>

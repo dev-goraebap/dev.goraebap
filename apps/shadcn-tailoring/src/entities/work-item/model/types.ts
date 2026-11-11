@@ -14,6 +14,7 @@ export type WorkItem = {
   key: string
   number: number
   title: string
+  /** 본문(Markdown). */
   body?: string
   status: WorkItemStatus
   priority: WorkItemPriority
@@ -27,3 +28,14 @@ export type WorkItem = {
 }
 
 export type NewWorkItem = Pick<WorkItem, "title" | "body" | "status" | "priority" | "type" | "labels" | "assignee" | "dueDate">
+
+/** 상세에서 바꾸는 속성. */
+export type WorkItemPatch = Partial<Pick<WorkItem, "status" | "priority" | "type" | "assignee" | "labels" | "dueDate">>
+export type WorkItemField = keyof WorkItemPatch
+
+/** 업무 활동의 한 칸: 만듦 · 속성 바꿈(바꾸기 전후를 읽는 글자로) · 댓글. */
+export type WorkItemActivity = { id: string; at: string; actor: Person } & (
+  | { kind: "created" }
+  | { kind: "changed"; field: WorkItemField; before?: string; after?: string }
+  | { kind: "comment"; body: string }
+)
