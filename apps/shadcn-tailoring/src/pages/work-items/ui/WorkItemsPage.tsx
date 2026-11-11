@@ -1,5 +1,6 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { ME, useWorkItems, type WorkItemStatus } from "@/entities/work-item"
+import { useNewWorkItemPanel, useOpenNewWorkItem, WorkItemCompose } from "@/features/work-item-create"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { Button } from "@/shared/ui/button"
 import { PageState } from "@/shared/ui/page-state"
@@ -10,7 +11,6 @@ import { Page, PageViews, type PageView } from "@/shared/ui/page"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { FilterBar, FilterChips, FilterMenu, useFilters } from "@/shared/ui/filter"
 import { applyFilters, FILTERS, groupItems, INITIAL_DISPLAY, sortItems, type Display } from "../model/filters"
-import { NewWorkItemDialog } from "./NewWorkItemDialog"
 import { WorkItemDisplayMenu } from "./WorkItemDisplayMenu"
 import { WorkItemsPageMenu } from "./WorkItemMenu"
 import { WorkItemBoard } from "./WorkItemBoard"
@@ -52,8 +52,12 @@ export function WorkItemsPage() {
   const [display, setDisplay] = useState<Display>(INITIAL_DISPLAY)
   const [view, setView] = useState<View>("all")
   const [selected, setSelected] = useState<Set<string>>(new Set())
-  const [create, setCreate] = useState<{ isOpen: boolean; status: WorkItemStatus }>({ isOpen: false, status: "todo" })
-  const openCreate = (status: WorkItemStatus = "todo") => setCreate({ isOpen: true, status })
+  const openCreate = useOpenNewWorkItem()
+  const panel = useNewWorkItemPanel()
+  // 휴대폰에는 대화상자가 없다: 열린 채 좁아지면 같은 양식을 페이지로 바꾼다.
+  const shouldExpand = panel.isOpen && isMobile
+  const expandPanel = panel.expand
+  useEffect(() => { if (shouldExpand) expandPanel() }, [shouldExpand])
 
   const items = useMemo(() => {
     const shown = sortItems(applyFilters(data ?? [], filters.state), display)
@@ -100,8 +104,10 @@ export function WorkItemsPage() {
       tools={<><FilterMenu filters={filters} /><WorkItemDisplayMenu value={display} onChange={setDisplay} /></>}
       below={below}>
       {body()}
-      <NewWorkItemDialog key={create.status} open={create.isOpen} status={create.status}
-        onOpenChange={isOpen => setCreate(current => ({ ...current, isOpen }))} />
+      {panel.isOpen && !isMobile && (
+        <WorkItemCompose key={panel.status} surface="dialog" status={panel.status}
+          onClose={panel.close} onExpand={panel.expand} onCreated={item => panel.done(item.key)} />
+      )}
     </Page>
   )
 }

@@ -39,12 +39,12 @@ export function useWorkItemActivity(key: string) {
 const appendActivity = (client: QueryClient, key: string, entries: WorkItemActivity[]) =>
   client.setQueryData<WorkItemActivity[]>(activityKey(key), old => (old ? [...old, ...entries] : old))
 
-/** 새 업무를 다음 번호로 만들어 캐시 맨 앞에 넣는다. */
+/** 새 업무를 다음 번호로 만들어 캐시 맨 앞에 넣는다. 목록을 아직 읽지 않았으면(새 업무 페이지로 바로 온 경우) 먼저 읽는다. */
 export function useCreateWorkItem() {
   const client = useQueryClient()
   return useMutation({
     mutationFn: async (input: NewWorkItem): Promise<WorkItem> => {
-      const items = client.getQueryData<WorkItem[]>(listKey) ?? []
+      const items = await client.ensureQueryData(listOptions)
       const number = Math.max(0, ...items.map(item => item.number)) + 1
       return { ...input, id: `work-item-${number}`, key: `${PROJECT_KEY}-${number}`, number, updatedAt: new Date().toISOString() }
     },
