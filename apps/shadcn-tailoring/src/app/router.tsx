@@ -1,29 +1,23 @@
 import { createRootRoute, createRoute, createRouter, redirect } from "@tanstack/react-router"
-import { ComingSoonPage } from "@/pages/coming-soon"
+import { AnnouncementPage, AnnouncementsPage } from "@/pages/announcements"
+import { LeaveNewPage, LeavesPage } from "@/pages/leaves"
+import { MeetingPage, MeetingsPage } from "@/pages/meetings"
+import { MemberProfilePage, MembersPage } from "@/pages/members"
+import { NotFoundPage } from "@/pages/not-found"
 import { NotificationsPage } from "@/pages/notifications"
+import { ProfilePage } from "@/pages/profile"
+import { ProjectsPage } from "@/pages/projects"
 import { SchedulePage } from "@/pages/schedule"
 import { SettingsPage } from "@/pages/settings"
 import { WorkItemDetailPage } from "@/pages/work-item-detail"
+import { WorkItemNewPage } from "@/pages/work-item-new"
+import { WeeklyReportsPage } from "@/pages/weekly-reports"
 import { WorkItemsPage } from "@/pages/work-items"
 import { paths } from "@/shared/config"
-import {
-  ClockIcon, FileTextIcon, MeetingIcon, MegaphoneIcon, ProjectsIcon, UserIcon, UsersIcon,
-} from "@/shared/ui/icon"
 import { AppShell } from "@/widgets/app-shell"
 
 const root = createRootRoute({ component: AppShell })
 const route = (path: string, component: () => React.ReactNode) => createRoute({ getParentRoute: () => root, path, component })
-
-/** 아직 옮기지 않은 메뉴. 주소는 살려 두고 "옮기는 중"을 보인다. */
-const comingSoon = [
-  { path: paths.weeklyReports, title: "주간보고", icon: FileTextIcon },
-  { path: paths.members, title: "구성원", icon: UsersIcon },
-  { path: paths.projects, title: "프로젝트", icon: ProjectsIcon },
-  { path: paths.leaves, title: "근태 · 휴가", icon: ClockIcon },
-  { path: paths.meetings, title: "회의록", icon: MeetingIcon },
-  { path: paths.announcements, title: "공지사항", icon: MegaphoneIcon },
-  { path: paths.profile, title: "내 정보", icon: UserIcon },
-]
 
 export const router = createRouter({
   routeTree: root.addChildren([
@@ -31,11 +25,23 @@ export const router = createRouter({
     route(paths.notifications, NotificationsPage),
     route(`${paths.notifications}/$notificationId`, NotificationsPage),
     route(paths.workItems, WorkItemsPage),
+    route(`${paths.workItems}/new`, WorkItemNewPage),
     route(`${paths.workItems}/$workItemKey`, WorkItemDetailPage),
     route(paths.schedule, SchedulePage),
     route(paths.display, SettingsPage),
-    ...comingSoon.map(item => route(item.path, () => <ComingSoonPage title={item.title} icon={item.icon} />)),
+    route(paths.profile, ProfilePage),
+    route(paths.members, MembersPage),
+    route(`${paths.members}/$memberId`, MemberProfilePage),
+    route(paths.announcements, AnnouncementsPage),
+    route(`${paths.announcements}/$announcementId`, AnnouncementPage),
+    route(paths.meetings, MeetingsPage),
+    route(`${paths.meetings}/$meetingId`, MeetingPage),
+    route(paths.weeklyReports, WeeklyReportsPage),
+    route(paths.leaves, LeavesPage),
+    route(`${paths.leaves}/new`, LeaveNewPage),
+    route(paths.projects, ProjectsPage),
   ]),
+  defaultNotFoundComponent: NotFoundPage,
 })
 
 declare module "@tanstack/react-router" {
