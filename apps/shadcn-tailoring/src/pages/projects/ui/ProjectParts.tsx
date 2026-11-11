@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router"
 import type { ReactNode } from "react"
 import { useUpdateProject, type Project } from "@/entities/project"
 import { paths } from "@/shared/config"
@@ -8,19 +7,19 @@ import { Button } from "@/shared/ui/button"
 import { ArchiveIcon, ArchiveUpIcon, CopyIcon, StarIcon, UsersIcon } from "@/shared/ui/icon"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { Progress } from "@/shared/ui/progress"
+import { RowLink } from "@/shared/ui/row-link"
 import { toast } from "@/shared/ui/toast"
 
 /**
- * 프로젝트 이름을 업무로 잇는 링크. 프로젝트 안 주소(/projects/$key/work-items)가 아직 없어 모든 프로젝트가 업무 목록을 연다.
- * ::after가 가장 가까운 relative 조상(줄 · 카드)을 덮어 어디를 눌러도 가고, relative z-1로 띄운 별표 · 메뉴만 따로 눌린다.
+ * 프로젝트 이름을 업무로 잇는 줄 링크(줄 · 카드 전체가 눌리고, 별표 · 메뉴만 따로 눌린다).
+ * 프로젝트 안 주소(/projects/$key/work-items)가 아직 없어 모든 프로젝트가 업무 목록을 연다.
  */
 export function ProjectLink({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <Link to={paths.workItems}
-      className={cn("outline-none after:absolute after:inset-0 after:rounded-[inherit] focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-ring", className)}>
+    <RowLink to={paths.workItems} className={className}>
       {children}
       <span className="sr-only"> 업무 열기</span>
-    </Link>
+    </RowLink>
   )
 }
 

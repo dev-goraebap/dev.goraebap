@@ -1,27 +1,9 @@
-import type { ReactNode } from "react"
 import { ReportStateBadge, isSubmitted, momentText, weekText, type WeeklyReport } from "@/entities/weekly-report"
 import { Button } from "@/shared/ui/button"
 import { CalendarIcon, CheckIcon, ClockIcon, UsersIcon } from "@/shared/ui/icon"
+import { InfoPill } from "@/shared/ui/info-pill"
 import { PageState } from "@/shared/ui/page-state"
 import { DetailLayout, MarkdownBody } from "@/shared/ui/reading"
-
-/**
- * 읽기만 하는 속성 알약(호호코워크 PropertyPill isDisabled). 열리지 않으므로 버튼이 아니다.
- * 모양은 shared/ui/property-pill의 알약과 같게 두었다. 공통 부품에 읽기 전용 변형이 생기면 그것으로 바꾼다.
- */
-function FactPill({ label, icon, children }: { label: string; icon: ReactNode; children: ReactNode }) {
-  return (
-    <span aria-label={label} className={[
-      "inline-flex h-6 max-w-64 min-w-0 items-center gap-1.5 rounded-full bg-muted pr-2.5 pl-2 text-xs font-medium ring-1 ring-input ring-inset",
-      "[&_svg]:size-3.5 [&_svg]:shrink-0 max-md:h-11 max-md:pr-3 max-md:pl-2.5 max-md:text-sm",
-      "@min-[60rem]/detail:h-8 @min-[60rem]/detail:max-w-full @min-[60rem]/detail:rounded-lg @min-[60rem]/detail:bg-transparent @min-[60rem]/detail:px-2",
-      "@min-[60rem]/detail:text-[0.875rem] @min-[60rem]/detail:ring-0",
-    ].join(" ")}>
-      {icon}
-      <span className="min-w-0 truncate">{children}</span>
-    </span>
-  )
-}
 
 /** 보고의 한 단계(호호코워크 ReadingPart): 소제목과 Markdown, 비었으면 "없음". */
 function ReportPart({ title, source }: { title: string; source: string }) {
@@ -58,12 +40,12 @@ export function ReportDetail({ report, onWrite }: { report: WeeklyReport; onWrit
         items: (
           <>
             <ReportStateBadge state={report.state} />
-            <FactPill label="주" icon={<CalendarIcon />}>{weekText(report.weekStart)}</FactPill>
-            <FactPill label="부서" icon={<UsersIcon />}>{author.department}</FactPill>
-            {report.submittedAt && <FactPill label="제출" icon={<ClockIcon />}>{momentText(report.submittedAt)} 제출</FactPill>}
-            <FactPill label="확인" icon={<CheckIcon />}>
+            <InfoPill label="주" icon={<CalendarIcon />}>{weekText(report.weekStart)}</InfoPill>
+            <InfoPill label="부서" icon={<UsersIcon />}>{author.department}</InfoPill>
+            {report.submittedAt && <InfoPill label="제출" icon={<ClockIcon />}>{momentText(report.submittedAt)} 제출</InfoPill>}
+            <InfoPill label="확인" icon={<CheckIcon />}>
               {report.confirmedAt ? `${report.confirmedBy ?? "부서장"} · ${momentText(report.confirmedAt)} 확인` : "아직 확인 전"}
-            </FactPill>
+            </InfoPill>
           </>
         ),
       }]}>

@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import {
   categoryLabel, copyAnnouncementLink, momentText, useAnnouncement, useDeleteAnnouncement, useMarkAnnouncementRead, type Announcement,
 } from "@/entities/announcement"
@@ -8,6 +8,7 @@ import { useComposeParam } from "@/shared/lib/use-compose-param"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
+import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import { ClockIcon, EyeIcon, LinkIcon, MegaphoneIcon, PencilIcon, PinIcon, Trash2Icon } from "@/shared/ui/icon"
 import { InfoPill } from "@/shared/ui/info-pill"
 import { Page } from "@/shared/ui/page"
@@ -19,23 +20,28 @@ import { toast } from "@/shared/ui/toast"
 import { AnnouncementCompose } from "./AnnouncementCompose"
 import { AnnouncementFiles } from "./AnnouncementFiles"
 
-/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 지우면 목록으로 돌아간다. */
+/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 삭제는 확인을 받고, 지우면 목록으로 돌아간다. */
 function AnnouncementMenu({ notice, onEdit }: { notice: Announcement; onEdit: () => void }) {
   const navigate = useNavigate()
   const remove = useDeleteAnnouncement()
+  const [isConfirming, setConfirming] = useState(false)
+  const confirm = () => remove.mutate(notice.id, {
+    onSuccess: () => {
+      toast.add({ type: "success", title: "공지를 지웠습니다", description: notice.title })
+      void navigate({ to: paths.announcements, replace: true })
+    },
+  })
   return (
-    <ActionMenu label="공지 메뉴" title={notice.title} actions={[
-      { label: "링크 복사", icon: LinkIcon, onSelect: () => void copyAnnouncementLink(notice.id) },
-      { label: "수정", icon: PencilIcon, onSelect: onEdit },
-      {
-        label: "삭제", icon: Trash2Icon, onSelect: () => remove.mutate(notice.id, {
-          onSuccess: () => {
-            toast.add({ type: "success", title: "공지를 지웠습니다", description: notice.title })
-            void navigate({ to: paths.announcements, replace: true })
-          },
-        }),
-      },
-    ]} />
+    <>
+      <ActionMenu label="공지 메뉴" title={notice.title} actions={[
+        { label: "링크 복사", icon: LinkIcon, onSelect: () => void copyAnnouncementLink(notice.id) },
+        { label: "수정", icon: PencilIcon, onSelect: onEdit },
+        { label: "삭제", icon: Trash2Icon, onSelect: () => setConfirming(true) },
+      ]} />
+      <ConfirmDialog open={isConfirming} onOpenChange={setConfirming} title="공지를 지울까요?"
+        description={`'${notice.title}' 공지가 모든 구성원의 목록에서 사라집니다.`}
+        action={{ label: "삭제", onAction: confirm, isPending: remove.isPending }} />
+    </>
   )
 }
 

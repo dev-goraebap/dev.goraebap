@@ -12,6 +12,7 @@ import {
   ArrowLeftIcon, CalendarIcon, CheckIcon, ChevronLeftIcon, CircleCheckIcon, CircleXIcon, ClockIcon, CopyIcon, FileTextIcon,
   ListChecksIcon, MailIcon, MapPinIcon, MaximizeIcon, UserIcon, XIcon, type Icon,
 } from "@/shared/ui/icon"
+import { useFullScreen } from "@/shared/ui/page"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip"
@@ -43,9 +44,10 @@ export function NotificationPane({ item }: { item: Notification }) {
   )
 }
 
-/** 휴대폰에서 고른 알림의 전체 화면: ← (목록으로) · 제목 · 메뉴 · "페이지로 열기"의 앱 바와 그 아래 내용. */
+/** 휴대폰에서 고른 알림의 전체 화면(하단 탭 없음): ← (목록으로) · 제목 · 메뉴 · "페이지로 열기"의 앱 바와 그 아래 내용. */
 export function NotificationScreen({ item }: { item: Notification }) {
   useMarkReadOnOpen(item)
+  useFullScreen(true)
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="flex h-13 shrink-0 items-center gap-1 border-b px-2">

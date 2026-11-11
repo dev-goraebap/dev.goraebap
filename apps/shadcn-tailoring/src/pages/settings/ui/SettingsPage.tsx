@@ -2,10 +2,10 @@ import { useState } from "react"
 import { paths } from "@/shared/config"
 import { setAppearance, useAppearance, type Density, type Mode } from "@/shared/lib/appearance"
 import { SettingsIcon } from "@/shared/ui/icon"
+import { SegmentedControl } from "@/shared/ui/segmented-control"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select"
 import { SettingsPage as SettingsLayout, SettingsRow, SettingsSection } from "@/shared/ui/settings"
 import { Switch } from "@/shared/ui/switch"
-import { ToggleGroup, ToggleGroupItem } from "@/shared/ui/toggle-group"
 
 type Option<T extends string = string> = { value: T; label: string }
 
@@ -18,7 +18,7 @@ const densities: Option<Density>[] = [
   { value: "spacious", label: "넉넉하게" },
   { value: "compact", label: "촘촘하게" },
 ]
-const weekStarts: Option[] = [
+const weekStarts: Option<"sun" | "mon">[] = [
   { value: "sun", label: "일" },
   { value: "mon", label: "월" },
 ]
@@ -34,29 +34,6 @@ const notifications = [
   { key: "push", label: "모바일 푸시", description: "휴대폰에 바로 알려 줍니다." },
   { key: "weekly", label: "주간 요약", description: "한 주의 활동을 월요일 아침에 모아 보냅니다." },
 ]
-
-/** 하나만 고르는 ToggleGroup. 고른 것을 다시 눌러도 선택은 풀리지 않는다. */
-function OptionGroup<T extends string>({ label, options, value, onChange }: {
-  label: string
-  options: Option<T>[]
-  value: T
-  onChange: (value: T) => void
-}) {
-  return (
-    <ToggleGroup
-      variant="outline"
-      aria-label={label}
-      value={[value]}
-      onValueChange={([next]) => next && onChange(next as T)}
-    >
-      {options.map(option => (
-        <ToggleGroupItem key={option.value} value={option.value} className="flex-1">
-          {option.label}
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
-  )
-}
 
 function OptionSelect({ label, options, value, onChange }: {
   label: string
@@ -86,7 +63,7 @@ export function SettingsPage() {
   const [enabled, setEnabled] = useState<Record<string, boolean>>({ email: true, push: true, weekly: false })
   const [language, setLanguage] = useState("ko")
   const [timezone, setTimezone] = useState("Asia/Seoul")
-  const [weekStart, setWeekStart] = useState("mon")
+  const [weekStart, setWeekStart] = useState<"sun" | "mon">("mon")
 
   return (
     <SettingsLayout
@@ -96,10 +73,10 @@ export function SettingsPage() {
     >
       <SettingsSection title="표시" note="모드와 목록 높이는 이 브라우저에만 저장됩니다.">
         <SettingsRow wide label="모드" description="화면 색을 라이트와 다크 중에서 고릅니다.">
-          <OptionGroup label="모드" options={modes} value={mode} onChange={next => setAppearance({ mode: next })} />
+          <SegmentedControl label="모드" options={modes} value={mode} onChange={next => setAppearance({ mode: next })} />
         </SettingsRow>
         <SettingsRow wide label="목록 높이" description="목록과 표의 줄 높이입니다.">
-          <OptionGroup label="목록 높이" options={densities} value={density} onChange={next => setAppearance({ density: next })} />
+          <SegmentedControl label="목록 높이" options={densities} value={density} onChange={next => setAppearance({ density: next })} />
         </SettingsRow>
       </SettingsSection>
 
@@ -123,7 +100,7 @@ export function SettingsPage() {
           <OptionSelect label="시간대" options={timezones} value={timezone} onChange={setTimezone} />
         </SettingsRow>
         <SettingsRow wide label="주 시작 요일">
-          <OptionGroup label="주 시작 요일" options={weekStarts} value={weekStart} onChange={setWeekStart} />
+          <SegmentedControl label="주 시작 요일" options={weekStarts} value={weekStart} onChange={setWeekStart} />
         </SettingsRow>
       </SettingsSection>
     </SettingsLayout>

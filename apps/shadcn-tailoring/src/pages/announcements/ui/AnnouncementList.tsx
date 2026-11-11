@@ -95,7 +95,7 @@ export function AnnouncementRows({ items }: { items: Announcement[] }) {
         <li key={item.id} className={cn("flex items-center gap-3 border-b px-4 py-3", ROW_SURFACE)}>
           {item.isPinned
             ? <span className="grid size-8 shrink-0 place-items-center rounded-full bg-muted"><PinIcon role="img" aria-hidden={false} aria-label="고정" /></span>
-            : <PersonAvatar id={item.author.id} name={item.author.name} className="data-[size=sm]:size-8" />}
+            : <PersonAvatar id={item.author.id} name={item.author.name} className="size-8" />}
           <span className="flex min-w-0 flex-1 flex-col gap-1">
             <TitleLink item={item} />
             <span className="flex min-w-0 items-center gap-1.5 text-sm text-muted-foreground">

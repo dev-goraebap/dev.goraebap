@@ -1,27 +1,39 @@
 import { cva } from "class-variance-authority"
-import { useId, useState, type ComponentProps, type ReactNode } from "react"
+import { useState, type ComponentProps, type ReactNode } from "react"
 import { toggleValue } from "@/shared/lib/toggle"
 import { cn } from "@/shared/lib/utils"
 import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
-import { Field, FieldLabel } from "@/shared/ui/field"
-import { CalendarIcon, type Icon } from "@/shared/ui/icon"
-import { Input } from "@/shared/ui/input"
+import { Button } from "@/shared/ui/button"
+import { DateCalendar } from "@/shared/ui/date-picker"
+import { CalendarIcon, XIcon, type Icon } from "@/shared/ui/icon"
 import { OptionList, type Option } from "@/shared/ui/option-list"
 
 /**
  * 속성 알약의 모양(호호코워크 compose.module.css의 .pill). 24px 둥근 알약: 옅은 바탕, 가는 안쪽 테두리, 12px 글자, 14px 표식.
  * 휴대폰은 44px · 15px. 비어 있으면 보조 글자색.
  * 상세의 넓은 옆 칸(DetailLayout의 @container/detail이 60rem 이상)에서는 같은 알약이 테두리와 바탕 없는 32px 줄이 된다.
+ * 누르는 알약(PropertyPill)은 가리킴 · 초점 · 열림을 보이고, 읽기만 하는 알약(InfoPill)은 interactive: false다.
  */
-const pillVariants = cva([
+export const pillVariants = cva([
   "inline-flex h-6 max-w-64 min-w-0 shrink items-center gap-1.5 rounded-full bg-muted pr-2.5 pl-2 text-xs font-medium text-foreground",
-  "ring-1 ring-input ring-inset outline-none select-none hover:bg-[color-mix(in_srgb,var(--foreground)_8%,var(--muted))]",
-  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring data-empty:text-muted-foreground",
+  "ring-1 ring-input ring-inset data-empty:text-muted-foreground",
   "[&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-3.5",
   "max-md:h-11 max-md:pr-3 max-md:pl-2.5 max-md:text-sm",
   "@min-[60rem]/detail:h-8 @min-[60rem]/detail:max-w-full @min-[60rem]/detail:rounded-lg @min-[60rem]/detail:bg-transparent @min-[60rem]/detail:px-2",
-  "@min-[60rem]/detail:text-[0.875rem] @min-[60rem]/detail:ring-0 @min-[60rem]/detail:hover:bg-muted @min-[60rem]/detail:aria-expanded:bg-muted",
-])
+  "@min-[60rem]/detail:text-[0.875rem] @min-[60rem]/detail:ring-0",
+], {
+  variants: {
+    interactive: {
+      true: [
+        "outline-none select-none hover:bg-[color-mix(in_srgb,var(--foreground)_8%,var(--muted))]",
+        "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
+        "@min-[60rem]/detail:hover:bg-muted @min-[60rem]/detail:aria-expanded:bg-muted",
+      ],
+      false: "",
+    },
+  },
+  defaultVariants: { interactive: true },
+})
 
 function PillButton({ isEmpty, className, ...props }: ComponentProps<"button"> & { isEmpty: boolean }) {
   return <button type="button" data-slot="property-pill" data-empty={isEmpty || undefined} className={cn(pillVariants(), className)} {...props} />
@@ -101,7 +113,7 @@ export function OptionPill<T extends string>(props: OptionPillProps<T>) {
   )
 }
 
-/** 날짜 알약(호호코워크 DuePill): 비면 달력 아이콘과 이름, 정하면 포맷한 날짜. 지우면 비운다. */
+/** 날짜 알약(호호코워크 DuePill): 비면 달력 아이콘과 이름, 정하면 포맷한 날짜. 누르면 달력이 뜨고, 날을 고르면 닫힌다. 지우면 비운다. */
 export function DatePill({ label, value, format, onChange }: {
   label: string
   /** YYYY-MM-DD */
@@ -109,14 +121,18 @@ export function DatePill({ label, value, format, onChange }: {
   format: (date: string) => string
   onChange: (value: string | undefined) => void
 }) {
-  const id = useId()
   return (
-    <PropertyPill label={label} icon={<CalendarIcon />} text={value && format(value)} width="w-64">
-      {() => (
-        <Field className="p-1.5">
-          <FieldLabel htmlFor={id}>{label}</FieldLabel>
-          <Input id={id} type="date" value={value ?? ""} onChange={event => onChange(event.target.value || undefined)} />
-        </Field>
+    <PropertyPill label={label} icon={<CalendarIcon />} text={value && format(value)} width="w-auto">
+      {close => (
+        <div className="flex flex-col gap-1.5 p-1.5">
+          <DateCalendar value={value} onChange={day => { onChange(day); close() }} />
+          {value && (
+            <Button variant="ghost" className="justify-start max-md:h-12" onClick={() => { onChange(undefined); close() }}>
+              <XIcon data-icon="inline-start" />
+              {label} 지우기
+            </Button>
+          )}
+        </div>
       )}
     </PropertyPill>
   )

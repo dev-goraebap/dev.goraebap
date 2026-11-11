@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { ReportStateBadge, isSubmitted, momentText, summaryOf, type WeeklyReport } from "@/entities/weekly-report"
 import { paths } from "@/shared/config"
@@ -6,20 +5,20 @@ import { toggleValue } from "@/shared/lib/toggle"
 import { cn } from "@/shared/lib/utils"
 import { ListGroupHeader } from "@/shared/ui/list-group-header"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
+import { RowLink } from "@/shared/ui/row-link"
 
 /** 줄은 자기 바탕을 칠해 페이지의 점 무늬를 가리고, 가리키면 옅게 덮는다(업무 줄과 같다). */
 const ROW = "relative border-b bg-background px-4 text-sm hover:bg-row-hover"
 
 /**
- * 이름을 그 보고의 상세로 잇는 링크. ::after가 줄 전체를 덮어 어디를 눌러도 열리고, 키보드 초점은 줄 전체에 테를 두른다.
+ * 이름을 그 보고의 상세로 잇는 줄 링크(줄 어디를 눌러도 열린다).
  * 주소는 /weekly-reports?week=…&member=…(라우터를 고치지 않으려 검색 값에 둔다).
  */
 function ReportLink({ report, className }: { report: WeeklyReport; className?: string }) {
   return (
-    <Link to={paths.weeklyReports} search={{ week: report.weekStart, member: report.author.id }}
-      className={cn("outline-none after:absolute after:inset-0 focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-ring", className)}>
+    <RowLink to={paths.weeklyReports} search={{ week: report.weekStart, member: report.author.id }} className={className}>
       {report.author.name}
-    </Link>
+    </RowLink>
   )
 }
 

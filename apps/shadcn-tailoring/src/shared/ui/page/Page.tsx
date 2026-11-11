@@ -55,7 +55,10 @@ export function Page({ crumbs, actions, create, views, tools, below, isFullScree
   )
 }
 
-/** 데스크톱 머리 줄: 왼쪽 경로, 오른쪽 동작과 만들기. */
+/** 경로의 위 단계: 보조 글자색 · 500, 아이콘이 있으면 이름 앞에(프로젝트처럼). */
+const MIDDLE_CRUMB = "flex shrink-0 items-center gap-1.5 font-medium text-muted-foreground hover:text-foreground [&_svg]:shrink-0"
+
+/** 데스크톱 머리 줄: 왼쪽 경로(마지막은 아이콘과 이름, 위 단계도 아이콘이 있으면 함께), 오른쪽 동작과 만들기. */
 function PageHeader({ crumbs, actions, create }: Pick<PageProps, "crumbs" | "actions" | "create">) {
   return (
     <header data-slot="page-header" className="flex h-13 shrink-0 items-center gap-2 border-b px-4">
@@ -71,9 +74,9 @@ function PageHeader({ crumbs, actions, create }: Pick<PageProps, "crumbs" | "act
                   <span className="truncate">{crumb.label}</span>
                 </span>
               ) : crumb.href ? (
-                <Link to={crumb.href} className="shrink-0 font-medium text-muted-foreground hover:text-foreground">{crumb.label}</Link>
+                <Link to={crumb.href} className={MIDDLE_CRUMB}>{crumb.icon && <crumb.icon className="text-icon-muted" />}{crumb.label}</Link>
               ) : (
-                <span className="shrink-0 font-medium text-muted-foreground">{crumb.label}</span>
+                <span className={MIDDLE_CRUMB}>{crumb.icon && <crumb.icon className="text-icon-muted" />}{crumb.label}</span>
               )}
             </span>
           )

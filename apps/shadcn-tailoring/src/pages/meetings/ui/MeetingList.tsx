@@ -69,7 +69,7 @@ export function MeetingRows({ items }: { items: Meeting[] }) {
     <ul aria-label="회의록 목록" className="flex flex-col">
       {items.map(meeting => (
         <li key={meeting.id} className={cn("flex items-center gap-3 border-b px-4 py-3", ROW_SURFACE)}>
-          <PersonAvatar id={meeting.author.id} name={meeting.author.name} className="data-[size=sm]:size-8" />
+          <PersonAvatar id={meeting.author.id} name={meeting.author.name} className="size-8" />
           <span className="flex min-w-0 flex-1 flex-col gap-1">
             <TitleLink meeting={meeting} />
             <span className="truncate text-sm text-muted-foreground tabular-nums">{meeting.author.name} · {rowHeldText(meeting)}</span>

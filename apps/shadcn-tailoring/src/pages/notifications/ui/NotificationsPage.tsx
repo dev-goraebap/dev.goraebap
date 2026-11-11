@@ -27,7 +27,7 @@ export function NotificationsPage() {
 
   if (isMobile && notificationId) {
     if (selected) return <NotificationScreen key={selected.id} item={selected} />
-    return <Page crumbs={[{ label: "알림함", href: paths.notifications }, { label: "알림" }]}>
+    return <Page crumbs={[{ label: "알림함", href: paths.notifications }, { label: "알림" }]} isFullScreen>
       {items ? <MissingEmpty /> : <NotificationColumnSkeleton />}
     </Page>
   }

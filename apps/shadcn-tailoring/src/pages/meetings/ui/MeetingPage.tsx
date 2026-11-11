@@ -10,6 +10,7 @@ import { useIsMobile } from "@/shared/lib/use-mobile"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Alert, AlertDescription, AlertTitle } from "@/shared/ui/alert"
 import { Button } from "@/shared/ui/button"
+import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import {
   CalendarIcon, ClockIcon, FileTextIcon, InfoIcon, LinkIcon, MeetingIcon, NotesIcon, PencilIcon, ProjectsIcon, Trash2Icon,
   TriangleAlertIcon, UsersIcon,
@@ -31,23 +32,28 @@ const PROGRESS_TEXT = { waiting: "차례를 기다리고 있습니다.", transcr
 
 const created = new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" })
 
-/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 지우면 목록으로 돌아간다. */
+/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 삭제는 확인을 받고, 지우면 목록으로 돌아간다. */
 function MeetingMenu({ meeting, onEdit }: { meeting: Meeting; onEdit: () => void }) {
   const navigate = useNavigate()
   const remove = useDeleteMeeting()
+  const [isConfirming, setConfirming] = useState(false)
+  const confirm = () => remove.mutate(meeting.id, {
+    onSuccess: () => {
+      toast.add({ type: "success", title: "회의록을 지웠습니다", description: meeting.title })
+      void navigate({ to: paths.meetings, replace: true })
+    },
+  })
   return (
-    <ActionMenu label="회의록 메뉴" title={meeting.title} actions={[
-      { label: "링크 복사", icon: LinkIcon, onSelect: () => void copyMeetingLink(meeting.id) },
-      { label: "수정", icon: PencilIcon, onSelect: onEdit },
-      {
-        label: "삭제", icon: Trash2Icon, onSelect: () => remove.mutate(meeting.id, {
-          onSuccess: () => {
-            toast.add({ type: "success", title: "회의록을 지웠습니다", description: meeting.title })
-            void navigate({ to: paths.meetings, replace: true })
-          },
-        }),
-      },
-    ]} />
+    <>
+      <ActionMenu label="회의록 메뉴" title={meeting.title} actions={[
+        { label: "링크 복사", icon: LinkIcon, onSelect: () => void copyMeetingLink(meeting.id) },
+        { label: "수정", icon: PencilIcon, onSelect: onEdit },
+        { label: "삭제", icon: Trash2Icon, onSelect: () => setConfirming(true) },
+      ]} />
+      <ConfirmDialog open={isConfirming} onOpenChange={setConfirming} title="회의록을 지울까요?"
+        description={`'${meeting.title}' 회의록과 전사원문이 목록에서 사라집니다.`}
+        action={{ label: "삭제", onAction: confirm, isPending: remove.isPending }} />
+    </>
   )
 }
 

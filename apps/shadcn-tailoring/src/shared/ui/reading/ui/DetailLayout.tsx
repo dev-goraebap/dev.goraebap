@@ -1,5 +1,4 @@
 import type { ReactNode } from "react"
-import { useIsMobile } from "@/shared/lib/use-mobile"
 import { cn } from "@/shared/lib/utils"
 
 /** 상세 속성의 한 묶음(속성 · 라벨 · 프로젝트 …): 넓은 옆 칸에서 이 이름 아래에 알약이 줄로 선다. */
@@ -43,9 +42,9 @@ function DetailTitle({ children }: { children: string }) {
 }
 
 /** 속성 묶음. 좁으면 묶음 이름 없이 알약이 한 줄로 이어지고(contents), 넓은 옆 칸에서는 이름 아래 세로 줄이 된다. */
-function DetailProperties({ sections, className }: { sections: DetailSection[]; className: string }) {
+function DetailProperties({ sections }: { sections: DetailSection[] }) {
   return (
-    <aside aria-label="속성" className={className}>
+    <aside aria-label="속성" className={SIDE}>
       {sections.map(section => (
         <section key={section.title} aria-label={section.title} className={GROUP}>
           <h2 className={GROUP_TITLE}>{section.title}</h2>
@@ -58,39 +57,23 @@ function DetailProperties({ sections, className }: { sections: DetailSection[]; 
 
 /**
  * 본문이 있는 것의 상세(호호코워크 DetailLayout, Linear 이슈 모양): 업무 · 일정 · 회의록 · 공지사항이 같이 쓴다.
- * 위에서 아래로 소속 줄, 제목, 본문과 그 뒤(하위 항목 · 활동)를 45rem 읽기 단에 둔다.
- * - 데스크톱: 자기 폭이 60rem 이상이면 속성은 오른쪽 16rem 칸에 묶음 이름 아래 줄로 붙어 따라오고, 좁으면 제목과 본문 사이 한 줄 알약.
- * - 휴대폰: 본문만 스크롤하고, 속성 알약은 화면 아래에 고정한 칸에 놓여 좁으면 다음 줄로 넘긴다.
+ * 위에서 아래로 소속 줄, 제목, 본문과 그 뒤(하위 항목 · 활동)를 45rem 읽기 단에 둔다. 너비는 창이 아니라 자기 폭(컨테이너 쿼리)이다.
+ * - 자기 폭이 60rem 이상이면 속성은 오른쪽 16rem 칸에 묶음 이름 아래 줄로 붙어 따라온다.
+ * - 좁으면(휴대폰 포함) 제목과 본문 사이에 한 줄 알약으로 놓이고, 넘치면 다음 줄로 넘긴다. 스크롤은 페이지 본문이 맡는다.
  * 페이지의 점 무늬를 자기 바탕으로 가린다(상세 면에는 무늬가 없다).
  */
 export function DetailLayout({ label, head, title, sections, children, after }: DetailLayoutProps) {
-  const isMobile = useIsMobile()
-  const column = (
-    <>
-      {head && <header className={MAIN}>{head}</header>}
-      <header className={MAIN}><DetailTitle>{title}</DetailTitle></header>
-      {!isMobile && sections.length > 0 && <DetailProperties sections={sections} className={SIDE} />}
-      <div className={cn(MAIN, "flex flex-col gap-5")}>
-        <section aria-label="본문" className="flex min-w-0 flex-col gap-5">{children}</section>
-        {after}
-      </div>
-    </>
-  )
-  if (isMobile) {
-    return (
-      <section aria-label={label} className="flex min-h-0 flex-1 flex-col bg-background">
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
-          <article className={GRID}>{column}</article>
-        </div>
-        {sections.length > 0 && (
-          <DetailProperties sections={sections} className="flex shrink-0 flex-wrap gap-1.5 border-t bg-background px-4 py-2" />
-        )}
-      </section>
-    )
-  }
   return (
     <section aria-label={label} className="@container/detail min-w-0 flex-1 bg-background">
-      <article className={GRID}>{column}</article>
+      <article className={GRID}>
+        {head && <header className={MAIN}>{head}</header>}
+        <header className={MAIN}><DetailTitle>{title}</DetailTitle></header>
+        {sections.length > 0 && <DetailProperties sections={sections} />}
+        <div className={cn(MAIN, "flex flex-col gap-5")}>
+          <section aria-label="본문" className="flex min-w-0 flex-col gap-5">{children}</section>
+          {after}
+        </div>
+      </article>
     </section>
   )
 }

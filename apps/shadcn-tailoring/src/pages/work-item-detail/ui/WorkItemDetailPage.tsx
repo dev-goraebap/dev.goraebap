@@ -1,12 +1,14 @@
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
+import { useState } from "react"
 import {
   copyWorkItemKey, copyWorkItemLink, typeMark, useDeleteWorkItem, useUpdateWorkItem, useWorkItem, type WorkItem,
 } from "@/entities/work-item"
 import { paths } from "@/shared/config"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
+import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import { PageState } from "@/shared/ui/page-state"
-import { CopyIcon, KanbanSquareIcon, LinkIcon, Trash2Icon } from "@/shared/ui/icon"
+import { CopyIcon, KanbanSquareIcon, LinkIcon, ProjectsIcon, Trash2Icon } from "@/shared/ui/icon"
 import { Page, type Crumb } from "@/shared/ui/page"
 import { DetailLayout, MarkdownBody } from "@/shared/ui/reading"
 import { Skeleton } from "@/shared/ui/skeleton"
@@ -14,23 +16,28 @@ import { toast } from "@/shared/ui/toast"
 import { WorkItemActivity } from "./WorkItemActivity"
 import { workItemSections } from "./WorkItemProperties"
 
-/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 키 복사 · 삭제. 지우면 목록으로 돌아간다. */
+/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 키 복사 · 삭제. 삭제는 확인을 받고, 지우면 목록으로 돌아간다. */
 function WorkItemPageMenu({ item }: { item: WorkItem }) {
   const navigate = useNavigate()
   const remove = useDeleteWorkItem()
+  const [isConfirming, setConfirming] = useState(false)
+  const confirm = () => remove.mutate(item.key, {
+    onSuccess: () => {
+      toast.add({ type: "success", title: `${item.key}를 지웠습니다` })
+      void navigate({ to: paths.workItems })
+    },
+  })
   return (
-    <ActionMenu label="업무 메뉴" title={item.key} actions={[
-      { label: "링크 복사", icon: LinkIcon, onSelect: () => void copyWorkItemLink(item) },
-      { label: "키 복사", icon: CopyIcon, onSelect: () => void copyWorkItemKey(item) },
-      {
-        label: "삭제", icon: Trash2Icon, onSelect: () => remove.mutate(item.key, {
-          onSuccess: () => {
-            toast.add({ type: "success", title: `${item.key}를 지웠습니다` })
-            void navigate({ to: paths.workItems })
-          },
-        }),
-      },
-    ]} />
+    <>
+      <ActionMenu label="업무 메뉴" title={item.key} actions={[
+        { label: "링크 복사", icon: LinkIcon, onSelect: () => void copyWorkItemLink(item) },
+        { label: "키 복사", icon: CopyIcon, onSelect: () => void copyWorkItemKey(item) },
+        { label: "삭제", icon: Trash2Icon, onSelect: () => setConfirming(true) },
+      ]} />
+      <ConfirmDialog open={isConfirming} onOpenChange={setConfirming} title={`${item.key} 업무를 지울까요?`}
+        description="업무가 목록과 보드에서 사라집니다. 번호는 다시 쓰지 않습니다."
+        action={{ label: "삭제", onAction: confirm, isPending: remove.isPending }} />
+    </>
   )
 }
 
@@ -88,7 +95,7 @@ export function WorkItemDetailPage() {
   const { data: item } = useWorkItem(workItemKey)
   const crumbs: Crumb[] = [
     { label: "프로젝트", href: paths.projects },
-    { label: "cowork", href: paths.workItems },
+    { label: "cowork", href: paths.workItems, icon: ProjectsIcon },
     { label: "업무", href: paths.workItems },
     { label: workItemKey, icon: item ? typeMark(item.type).icon : KanbanSquareIcon },
   ]

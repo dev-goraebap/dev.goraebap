@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react"
 import { EVENT_CATEGORIES, EventDot, eventWhen, useCreateEvent, type EventCategory, type NewCalendarEvent } from "@/entities/event"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { Button } from "@/shared/ui/button"
+import { DatePicker } from "@/shared/ui/date-picker"
 import { Dialog, DialogContent, DialogTitle } from "@/shared/ui/dialog"
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle } from "@/shared/ui/drawer"
 import { Field, FieldError, FieldLabel } from "@/shared/ui/field"
@@ -38,7 +39,7 @@ function NewEventForm({ draft, onDraft, onSubmit }: { draft: Draft; onDraft: (dr
       <div className="grid gap-4 md:grid-cols-2">
         <Field>
           <FieldLabel htmlFor="new-event-date">날짜</FieldLabel>
-          <Input id="new-event-date" type="date" required value={draft.date} onChange={event => set({ date: event.target.value })} />
+          <DatePicker id="new-event-date" label="날짜" value={draft.date} onChange={date => set({ date })} />
         </Field>
         <Field>
           <FieldLabel id="new-event-category">분류</FieldLabel>

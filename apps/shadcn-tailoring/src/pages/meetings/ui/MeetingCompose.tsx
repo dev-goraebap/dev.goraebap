@@ -4,7 +4,8 @@ import {
 } from "@/entities/meeting"
 import { paths } from "@/shared/config"
 import { ComposeFields, ComposeSurface, PlaceChip } from "@/shared/ui/compose"
-import { Field, FieldGroup, FieldLabel } from "@/shared/ui/field"
+import { DateCalendar } from "@/shared/ui/date-picker"
+import { Field, FieldGroup, FieldLabel, FieldTitle } from "@/shared/ui/field"
 import { ClockIcon, MeetingIcon, ProjectsIcon, UsersIcon } from "@/shared/ui/icon"
 import { Input } from "@/shared/ui/input"
 import { type Crumb } from "@/shared/ui/page"
@@ -39,13 +40,13 @@ const toMeetingDraft = (draft: Draft): MeetingDraft => ({
 
 const dayText = (day: string) => `${Number(day.slice(5, 7))}월 ${Number(day.slice(8, 10))}일`
 
-/** 회의 일시: 날짜와 시작 · 끝 시각. */
+/** 회의 일시: 날짜(달력)와 시작 · 끝 시각. */
 function HeldFields({ draft, onChange }: { draft: Draft; onChange: (patch: Partial<Draft>) => void }) {
   return (
     <FieldGroup className="gap-3 p-1.5">
       <Field>
-        <FieldLabel htmlFor="meeting-day">날짜</FieldLabel>
-        <Input id="meeting-day" type="date" required value={draft.day} onChange={event => event.target.value && onChange({ day: event.target.value })} />
+        <FieldTitle id="meeting-day">날짜</FieldTitle>
+        <DateCalendar labelledBy="meeting-day" value={draft.day} onChange={day => onChange({ day })} />
       </Field>
       <div className="grid grid-cols-2 gap-2">
         <Field>
