@@ -4,7 +4,7 @@ import { DRAWN_AVATARS, derivedAvatar, drawnAvatarSource } from "@/shared/lib/av
 import { cn } from "@/shared/lib/utils"
 import { CheckIcon } from "@/shared/ui/icon"
 import { toast } from "@/shared/ui/toast"
-import { EditDialog } from "./EditDialog"
+import { FormDialog } from "@/shared/ui/form-dialog"
 
 const NUMBERS = Array.from({ length: DRAWN_AVATARS }, (_, number) => number)
 
@@ -23,7 +23,7 @@ export function PictureDialog({ me, open, onOpenChange }: { me: Member; open: bo
     },
   })
   return (
-    <EditDialog open={open} onOpenChange={onOpenChange} title="프로필 이미지 변경" description="다른 구성원에게 보일 그림을 고르세요."
+    <FormDialog open={open} onOpenChange={onOpenChange} title="프로필 이미지 변경" description="다른 구성원에게 보일 그림을 고르세요."
       isSubmitDisabled={chosen === (me.picture ?? fallback)} onSubmit={save}>
       <div role="radiogroup" aria-label="프로필 그림" className="grid grid-cols-6 gap-2 max-md:gap-3">
         {NUMBERS.map(number => {
@@ -46,6 +46,6 @@ export function PictureDialog({ me, open, onOpenChange }: { me: Member; open: bo
           )
         })}
       </div>
-    </EditDialog>
+    </FormDialog>
   )
 }

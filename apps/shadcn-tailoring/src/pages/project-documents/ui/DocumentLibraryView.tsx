@@ -6,7 +6,7 @@ import { useIsMobile } from "@/shared/lib/use-mobile"
 import { Button } from "@/shared/ui/button"
 import { DisplayChoice, DisplayMenu } from "@/shared/ui/display-menu"
 import { FilterBar, FilterChips, FilterMenu, useFilters } from "@/shared/ui/filter"
-import { FileTextIcon, FolderWithFilesIcon, ListFilterIcon, ProjectsIcon } from "@/shared/ui/icon"
+import { FolderWithFilesIcon, LayoutGridIcon, ListFilterIcon, ProjectsIcon } from "@/shared/ui/icon"
 import { Page, PageViews, type Crumb, type PageView } from "@/shared/ui/page"
 import { PageState } from "@/shared/ui/page-state"
 import { SearchTool } from "@/shared/ui/search-tool"
@@ -84,7 +84,7 @@ export function DocumentLibraryView({ projectKey, projectName, library }: { proj
   if (compose.isOpen && isMobile && composer) return composer
 
   const views: PageView<string>[] = [
-    { value: ALL, label: "전체 문서", icon: FileTextIcon },
+    { value: ALL, label: "전체 문서", icon: LayoutGridIcon },
     ...(library?.views ?? []).map(each => ({ value: each.id, label: each.name, icon: ListFilterIcon })),
   ]
   const crumbs: Crumb[] = [

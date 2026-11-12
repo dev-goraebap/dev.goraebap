@@ -4,7 +4,7 @@ import { Field, FieldDescription, FieldError, FieldLabel } from "@/shared/ui/fie
 import { Input } from "@/shared/ui/input"
 import { toast } from "@/shared/ui/toast"
 import { formatPhone, isPhone } from "../model/phone"
-import { EditDialog } from "./EditDialog"
+import { FormDialog } from "@/shared/ui/form-dialog"
 
 /**
  * 휴대전화 수정(호호코워크 ContactDialog): 숫자만 받고 하이픈은 정해진 자리에 넣는다. 0으로 시작하는 9~11자리가
@@ -26,13 +26,13 @@ export function PhoneDialog({ phone, open, onOpenChange }: { phone: string; open
     })
   }
   return (
-    <EditDialog open={open} onOpenChange={onOpenChange} title="휴대전화 수정" onSubmit={save} isSubmitDisabled={value === phone}>
+    <FormDialog open={open} onOpenChange={onOpenChange} title="휴대전화 수정" onSubmit={save} isSubmitDisabled={value === phone}>
       <Field data-invalid={isTried && Boolean(error)}>
         <FieldLabel htmlFor="my-phone">휴대전화</FieldLabel>
         <Input id="my-phone" type="tel" inputMode="tel" autoComplete="tel" maxLength={13} autoFocus placeholder="010-1234-5678"
           aria-invalid={isTried && Boolean(error)} value={value} onChange={event => setValue(formatPhone(event.target.value))} />
         {isTried && error ? <FieldError>{error}</FieldError> : <FieldDescription>비워서 저장하면 등록된 번호를 지웁니다.</FieldDescription>}
       </Field>
-    </EditDialog>
+    </FormDialog>
   )
 }

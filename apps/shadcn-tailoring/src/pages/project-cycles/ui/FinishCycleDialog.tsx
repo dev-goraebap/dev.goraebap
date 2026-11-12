@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { cycleDays, useCompleteCycle, type Cycle } from "@/entities/cycle"
 import { toast } from "@/shared/ui/toast"
-import { CycleDialogFrame } from "./CycleDialogFrame"
+import { FormDialog } from "@/shared/ui/form-dialog"
 
 const NONE = "none"
 
@@ -43,7 +43,7 @@ export function FinishCycleDialog({ projectKey, cycle, cycles, unfinished, open,
     })
   }
   return (
-    <CycleDialogFrame open={open} onOpenChange={onOpenChange} title={`'${cycle.name}' 마치기`} submitLabel="마치기"
+    <FormDialog open={open} onOpenChange={onOpenChange} title={`'${cycle.name}' 마치기`} submitLabel="마치기"
       description={left > 0 ? `끝내지 못한 업무 ${left}건을 어디로 옮길까요?` : "끝내지 못한 업무가 없습니다."}
       isSubmitDisabled={finish.isPending} onSubmit={submit}>
       {left > 0 && (
@@ -54,6 +54,6 @@ export function FinishCycleDialog({ projectKey, cycle, cycles, unfinished, open,
           <Choice value={NONE} chosen={target} label="사이클 없음" description="백로그처럼 어느 사이클에도 넣지 않습니다." onChoose={setTarget} />
         </div>
       )}
-    </CycleDialogFrame>
+    </FormDialog>
   )
 }

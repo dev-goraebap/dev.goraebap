@@ -5,7 +5,7 @@ import { Field, FieldError, FieldLabel } from "@/shared/ui/field"
 import { Input } from "@/shared/ui/input"
 import { Textarea } from "@/shared/ui/textarea"
 import { toast } from "@/shared/ui/toast"
-import { CycleDialogFrame } from "./CycleDialogFrame"
+import { FormDialog } from "@/shared/ui/form-dialog"
 
 /**
  * 새 사이클 · 사이클 편집: 이름 · 시작일 · 종료일 · 목표. 새 사이클은 마지막 사이클 다음 날부터 2주,
@@ -34,7 +34,7 @@ export function CycleFormDialog({ projectKey, cycle, cycles, open, onOpenChange 
     },
   )
   return (
-    <CycleDialogFrame open={open} onOpenChange={onOpenChange} title={cycle ? "사이클 편집" : "새 사이클"} submitLabel="저장"
+    <FormDialog open={open} onOpenChange={onOpenChange} title={cycle ? "사이클 편집" : "새 사이클"} submitLabel="저장"
       isSubmitDisabled={!name.trim() || isRangeWrong || save.isPending} onSubmit={submit}>
       <Field>
         <FieldLabel htmlFor="cycle-name">이름</FieldLabel>
@@ -55,6 +55,6 @@ export function CycleFormDialog({ projectKey, cycle, cycles, open, onOpenChange 
         <FieldLabel htmlFor="cycle-goal">목표</FieldLabel>
         <Textarea id="cycle-goal" rows={3} maxLength={500} placeholder="이 사이클에서 끝낼 것 (선택)" value={goal} onChange={event => setGoal(event.target.value)} />
       </Field>
-    </CycleDialogFrame>
+    </FormDialog>
   )
 }

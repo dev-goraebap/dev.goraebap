@@ -9,12 +9,12 @@ import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import { Field, FieldLabel } from "@/shared/ui/field"
-import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon, CheckIcon, PencilIcon, PlusIcon, Trash2Icon, WorkflowIcon } from "@/shared/ui/icon"
+import { ArrowDownIcon, ArrowUpIcon, CheckIcon, GripIcon, PencilIcon, PlusIcon, Trash2Icon, WorkflowIcon } from "@/shared/ui/icon"
 import { Input } from "@/shared/ui/input"
 import { PageState } from "@/shared/ui/page-state"
-import { SettingsSection } from "@/shared/ui/settings"
+import { FormDialog } from "@/shared/ui/form-dialog"
+import { SettingsBody, SettingsSection } from "@/shared/ui/settings"
 import { toast } from "@/shared/ui/toast"
-import { FormDialog, SettingsBody } from "./GeneralParts"
 import { ProjectSettingsFrame } from "./ProjectSettingsFrame"
 
 /**
@@ -136,7 +136,7 @@ function Statuses({ projectKey, columns, canChange }: { projectKey: string; colu
                 <button type="button" draggable aria-label={`${column.name} 옮기기`} aria-describedby={hintId}
                   onDragStart={event => dragStart(event, column.id)} onDragEnd={dragEnd} onKeyDown={event => gripKey(event, column.id)}
                   className="grid h-7 cursor-grab place-items-center rounded-md text-icon-muted outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50 active:cursor-grabbing max-md:size-11">
-                  <ArrowUpDownIcon className="size-4" />
+                  <GripIcon className="size-4" />
                 </button>
               )}
               <WorkflowCategoryIcon category={column.category} className="size-4" />

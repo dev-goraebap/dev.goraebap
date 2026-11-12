@@ -17,7 +17,7 @@ shadcn/ui(Base UI)와 Tailwind CSS v4로 호호코워크 웹과 같은 화면을
 | `app/` | 진입점(`main.tsx`), 라우터, 공급자, 전역 스타일(`styles/index.css`) |
 | `pages/<이름>/` | 라우트 하나의 화면 |
 | `widgets/app-shell/` | 사이드바 · inset 본문 · 휴대폰 하단 탭 |
-| `shared/ui/` | shadcn이 생성한 부품(우리가 고침)과 앱 공통 부품: `page`(머리 줄 · 툴바 · 앱 바 · ToolDot), `settings`, `icon`(Solar), `adaptive-popover`(팝오버 ↔ 바텀시트), `action-menu`(… 메뉴), `option-list`, `filter`(useFilters · FilterMenu · FilterBar · FilterChips), `display-menu`, `list-group-header`, `pane-resize-handle`, `property-pill`(속성 알약 · `pillVariants`) · `info-pill`(읽기 알약), `date-picker`(DateCalendar · DatePicker), `confirm-dialog`(삭제 확인: 확인 창 ↔ 바텀시트), `segmented-control`, `row-link`(줄 전체 링크), `person-avatar` |
+| `shared/ui/` | shadcn이 생성한 부품(우리가 고침)과 앱 공통 부품: `page`(머리 줄 · 툴바 · 앱 바 · ToolDot), `settings`(SettingsPage · 페이지 틀 없는 SettingsBody · SettingsSection · SettingsRow), `icon`(Solar), `adaptive-popover`(팝오버 ↔ 바텀시트), `action-menu`(… 메뉴), `option-list`, `filter`(useFilters · FilterMenu · FilterBar · FilterChips), `display-menu`, `list-group-header`, `pane-resize-handle`, `property-pill`(속성 알약 · `pillVariants`) · `info-pill`(읽기 알약), `date-picker`(DateCalendar · DatePicker), `confirm-dialog`(삭제 확인: 확인 창 ↔ 바텀시트), `form-dialog`(짧은 양식: 대화상자 ↔ 바텀시트), `segmented-control`, `row-link`(줄 전체 링크), `person-avatar` |
 | `shared/lib/` | `cn()`, `useIsMobile`, `appearance`(모드 · 목록 높이), `useStoredWidth`, `toggleValue`, `profile-route`(프로필 대화상자 ↔ 페이지) |
 | `shared/config/` | 주소(`paths`) 등 설정 |
 

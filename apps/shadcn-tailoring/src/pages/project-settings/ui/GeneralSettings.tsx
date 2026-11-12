@@ -11,12 +11,12 @@ import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@
 import { InfoIcon, SettingsIcon } from "@/shared/ui/icon"
 import { Input } from "@/shared/ui/input"
 import { PageState } from "@/shared/ui/page-state"
-import { SettingsRow, SettingsSection } from "@/shared/ui/settings"
+import { FormDialog } from "@/shared/ui/form-dialog"
+import { SettingsBody, SettingsRow, SettingsSection } from "@/shared/ui/settings"
 import { Spinner } from "@/shared/ui/spinner"
 import { Textarea } from "@/shared/ui/textarea"
 import { toast } from "@/shared/ui/toast"
 import { DESCRIPTION_MAX, NAME_MAX, draftOf, type GeneralDraft } from "../model/general"
-import { FormDialog, SettingsBody } from "./GeneralParts"
 import { ProjectSettingsFrame } from "./ProjectSettingsFrame"
 
 /** 프로젝트 설정의 일반(호호코워크 ProjectGeneralPage): 표식 · 이름 · 키 · 설명을 함께 저장하고, 그 아래 위험 구역. */

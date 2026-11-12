@@ -4,19 +4,19 @@ import { useWorkflow, type WorkflowColumn } from "@/entities/work-item"
 import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
-import { Field, FieldContent, FieldDescription, FieldLabel, FieldTitle } from "@/shared/ui/field"
-import { BranchIcon, ChevronDownIcon, CopyIcon, EyeIcon, SquareArrowOutUpRightIcon } from "@/shared/ui/icon"
+import { Field, FieldDescription, FieldLabel } from "@/shared/ui/field"
+import { BranchIcon, ChevronDownIcon, CopyIcon, EyeClosedIcon, EyeIcon, SquareArrowOutUpRightIcon } from "@/shared/ui/icon"
 import { Input } from "@/shared/ui/input"
 import { OptionList } from "@/shared/ui/option-list"
 import { PageState } from "@/shared/ui/page-state"
-import { SettingsRow, SettingsSection } from "@/shared/ui/settings"
+import { FormDialog } from "@/shared/ui/form-dialog"
+import { SettingsBody, SettingsRow, SettingsSection } from "@/shared/ui/settings"
 import { toast } from "@/shared/ui/toast"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip"
 import {
   CODE_PROVIDERS, RULE_EVENTS, providerOf, useConnectRepository, useDisconnectRepository, useIntegrations, useReviseToken, useRules, useSetRule,
   type CodeIntegration, type CodeProvider, type RuleChoice, type RuleEvent,
 } from "../model/integration"
-import { FormDialog, SettingsBody } from "./GeneralParts"
 import { ProjectSettingsFrame } from "./ProjectSettingsFrame"
 
 const when = new Intl.DateTimeFormat("ko-KR", { month: "numeric", day: "numeric", hour: "numeric", minute: "2-digit" })
@@ -62,18 +62,6 @@ function IconAction({ label, tooltip, onClick, children }: { label: string; tool
   )
 }
 
-/** 값 없이 읽기만 하는 줄(SettingsRow는 값이 없으면 "-"를 보인다). */
-function InfoRow({ label, description }: { label: string; description: string }) {
-  return (
-    <Field orientation="horizontal" className="min-h-11 p-3">
-      <FieldContent>
-        <FieldTitle>{label}</FieldTitle>
-        <FieldDescription>{description}</FieldDescription>
-      </FieldContent>
-    </Field>
-  )
-}
-
 /** 웹훅 주소 · 비밀값: 줄에 맞춰 자른 고정폭 글자. */
 function Code({ children }: { children: ReactNode }) {
   return <code className="min-w-0 truncate font-mono text-xs text-muted-foreground md:max-w-64 max-md:flex-1 max-md:text-sm">{children}</code>
@@ -96,24 +84,19 @@ function Connected({ projectKey, integration }: { projectKey: string; integratio
   const heard = integration.lastEventAt ? `마지막으로 받은 웹훅 ${when.format(new Date(integration.lastEventAt))}` : "아직 받은 웹훅이 없습니다"
   return (
     <SettingsSection title={`${name} · ${integration.repository}`}>
-      {/* 이름 자리가 링크라 SettingsRow(글자 이름) 대신 같은 모양의 Field로 둔다. */}
-      <Field orientation="responsive" className="min-h-11 p-3 @md/field-group:has-[>[data-slot=field-content]]:items-center">
-        <FieldContent>
-          <FieldTitle>
-            <a href={integration.webUrl} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1 underline-offset-4 hover:underline">
-              {integration.repository}<SquareArrowOutUpRightIcon className="size-3.5 text-icon-muted" />
-            </a>
-          </FieldTitle>
-          <FieldDescription>
-            {integration.hasToken
-              ? integration.accountLogin ? `${integration.accountLogin} 계정의 토큰으로 연결했습니다.` : "토큰으로 연결했습니다."
-              : "토큰 없이 연결했습니다. 웹훅은 저장소에 직접 등록합니다."}
-          </FieldDescription>
-        </FieldContent>
+      <SettingsRow wide
+        label={
+          <a href={integration.webUrl} target="_blank" rel="noreferrer noopener" className="inline-flex items-center gap-1 underline-offset-4 hover:underline">
+            {integration.repository}<SquareArrowOutUpRightIcon className="size-3.5 text-icon-muted" />
+          </a>
+        }
+        description={integration.hasToken
+          ? integration.accountLogin ? `${integration.accountLogin} 계정의 토큰으로 연결했습니다.` : "토큰으로 연결했습니다."
+          : "토큰 없이 연결했습니다. 웹훅은 저장소에 직접 등록합니다."}>
         <Button variant="secondary" size="sm" className="max-md:h-11" onClick={() => setToken(true)}>{integration.hasToken ? "토큰 바꾸기" : "토큰 넣기"}</Button>
-      </Field>
+      </SettingsRow>
       {integration.webhookRegistered ? (
-        <InfoRow label="웹훅" description={`서버가 저장소에 직접 등록했습니다. ${heard}.`} />
+        <SettingsRow hasValue={false} label="웹훅" description={`서버가 저장소에 직접 등록했습니다. ${heard}.`} />
       ) : (
         <>
           <SettingsRow wide label="웹훅 주소"
@@ -127,14 +110,14 @@ function Connected({ projectKey, integration }: { projectKey: string; integratio
             <div className="flex min-w-0 items-center gap-1">
               <Code>{isShown ? integration.webhookSecret : "••••••••••••"}</Code>
               <IconAction label={isShown ? "비밀값 숨기기" : "비밀값 보기"} tooltip={isShown ? "숨기기" : "보기"} onClick={() => setShown(!isShown)}>
-                <EyeIcon chosen={isShown} />
+                {isShown ? <EyeClosedIcon /> : <EyeIcon />}
               </IconAction>
               <IconAction label="비밀값 복사" tooltip="복사" onClick={() => copy(integration.webhookSecret, "비밀값")}><CopyIcon /></IconAction>
             </div>
           </SettingsRow>
         </>
       )}
-      {integration.lastError && <InfoRow label="최근 오류" description={integration.lastError} />}
+      {integration.lastError && <SettingsRow hasValue={false} label="최근 오류" description={integration.lastError} />}
       <SettingsRow label="연결 끊기" description="연결과 업무에 이어진 브랜치 · PR · 커밋 기록을 지웁니다. 업무는 그대로 남습니다.">
         <Button variant="destructive" size="sm" className="max-md:h-11" onClick={() => setAsking(true)}>연결 끊기</Button>
       </SettingsRow>

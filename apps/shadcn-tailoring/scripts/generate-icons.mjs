@@ -38,6 +38,8 @@ const SOLAR = {
   HistoryIcon: "history", LogoutIcon: "logout-2",
   // 프로젝트 공간: 사이클 · 문서 · 워크플로 · 저장소 연동
   RepeatIcon: "repeat", FolderWithFilesIcon: "folder-with-files", WorkflowIcon: "routing-2", BranchIcon: "branching-paths-up",
+  // 끌어 옮기기 손잡이 · 비밀값 숨기기 · 격자 보기
+  GripIcon: "hamburger-menu", EyeClosedIcon: "eye-closed", LayoutGridIcon: "widget-4",
 }
 
 const solar = JSON.parse(await fs.readFile(new URL("../node_modules/@iconify-json/solar/icons.json", import.meta.url), "utf8"))

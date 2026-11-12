@@ -3,7 +3,7 @@ import { cycleState, dayWithWeekday, today, useCycles, useSaveCycleSettings, typ
 import { RepeatIcon } from "@/shared/ui/icon"
 import { PageState } from "@/shared/ui/page-state"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select"
-import { SettingsRow, SettingsSection } from "@/shared/ui/settings"
+import { SettingsBody, SettingsRow, SettingsSection } from "@/shared/ui/settings"
 import { Switch } from "@/shared/ui/switch"
 import { toast } from "@/shared/ui/toast"
 import { ProjectSettingsFrame } from "./ProjectSettingsFrame"
@@ -89,16 +89,7 @@ export function CycleSettings() {
 
   return (
     <ProjectSettingsFrame label="사이클" icon={RepeatIcon}>
-      {/* 화면 설정(SettingsPage)과 같은 가운데 한 열. 페이지 틀은 ProjectSettingsFrame이 그리므로 안쪽만 둔다. */}
-      <main className="flex justify-center px-4 py-10">
-        <div className="flex w-full max-w-180 min-w-0 flex-col gap-8">
-          <header className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold tracking-tight">사이클</h1>
-            <p className="text-muted-foreground">{DESCRIPTION}</p>
-          </header>
-          {body()}
-        </div>
-      </main>
+      <SettingsBody title="사이클" description={DESCRIPTION}>{body()}</SettingsBody>
     </ProjectSettingsFrame>
   )
 }
