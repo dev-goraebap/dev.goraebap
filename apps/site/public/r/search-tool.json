@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "search-tool",
+  "title": "툴바 찾기",
+  "description": "툴바의 동그란 돋보기. 펼치면 찾기 칸이 되고, 찾는 말이 있으면 귀퉁이에 점.",
+  "registryDependencies": [
+    "@webcraft/button",
+    "@webcraft/icon",
+    "@webcraft/input-group",
+    "@webcraft/page",
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/search-tool.tsx",
+      "content": "import { useRef, useState } from \"react\"\nimport { Button } from \"@/shared/ui/button\"\nimport { SearchIcon, XIcon } from \"@/shared/ui/icon\"\nimport { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from \"@/shared/ui/input-group\"\nimport { ToolDot } from \"@/shared/ui/page\"\n\n/**\n * 툴바의 찾기(호호코워크 SearchTool): 필터 · 표시처럼 동그란 돋보기이고, 찾는 말이 걸려 있으면 귀퉁이에 점.\n * 누르면 그 자리가 찾기 칸이 된다. 닫기 버튼과 Esc로 접고(찾는 말은 남는다), 바깥을 눌러도 열어 둔다.\n */\nexport function SearchTool({ label, placeholder, value, onChange }: {\n  label: string; placeholder?: string; value: string; onChange: (value: string) => void\n}) {\n  const [isOpen, setOpen] = useState(false)\n  const trigger = useRef<HTMLButtonElement>(null)\n  const close = () => {\n    setOpen(false)\n    requestAnimationFrame(() => trigger.current?.focus())\n  }\n  if (isOpen) {\n    return (\n      <div className=\"flex items-center gap-1\">\n        <InputGroup className=\"h-7 w-56 rounded-full max-md:h-11 max-md:w-[min(14rem,40vw)]\">\n          <InputGroupAddon><SearchIcon /></InputGroupAddon>\n          <InputGroupInput type=\"search\" aria-label={label} placeholder={placeholder} autoFocus value={value}\n            onChange={event => onChange(event.target.value)}\n            onKeyDown={event => {\n              if (event.key !== \"Escape\") return\n              event.preventDefault()\n              close()\n            }} />\n          {value && (\n            <InputGroupAddon align=\"inline-end\">\n              <InputGroupButton size=\"icon-xs\" aria-label=\"찾는 말 지우기\" onClick={() => onChange(\"\")}><XIcon /></InputGroupButton>\n            </InputGroupAddon>\n          )}\n        </InputGroup>\n        <Button variant=\"ghost\" size=\"icon\" aria-label={`${label} 닫기`} title=\"찾기 칸 닫기\" className=\"max-md:size-11\" onClick={close}>\n          <XIcon />\n        </Button>\n      </div>\n    )\n  }\n  return (\n    <Button ref={trigger} variant={value ? \"view-active\" : \"tool\"} size=\"icon\" aria-label={value ? `${label}, 찾는 중` : label} title={label}\n      className=\"relative max-md:size-11\" onClick={() => setOpen(true)}>\n      <SearchIcon chosen={Boolean(value)} />\n      {value && <ToolDot label=\"찾는 중\" />}\n    </Button>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/search-tool.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

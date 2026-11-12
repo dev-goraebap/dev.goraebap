@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "pane-resize-handle",
+  "title": "칸 너비 손잡이",
+  "description": "옆 칸의 너비를 끌어 바꾸는 손잡이(키보드 화살표 포함). useStoredWidth와 함께 쓴다.",
+  "registryDependencies": [
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/pane-resize-handle.tsx",
+      "content": "import { useRef, useState, type KeyboardEvent, type PointerEvent } from \"react\"\n\nconst STEP = 16\n\n/**\n * 두 칸 사이의 구분선이자 너비 손잡이. 끌거나, 초점을 두고 ← → (Shift는 4배) · Home · End로 앞 칸의 너비를 바꾼다.\n * 평소에는 가는 선이고, 가리키거나 끄는 동안 · 키보드 초점에서 진해진다. 너비는 useStoredWidth와 함께 쓴다.\n */\nexport function PaneResizeHandle({ label, value, min, max, onChange }: {\n  label: string; value: number; min: number; max: number; onChange: (width: number) => void\n}) {\n  const start = useRef<{ x: number; width: number } | null>(null)\n  const [isDragging, setIsDragging] = useState(false)\n\n  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {\n    if (event.button !== 0) return\n    event.preventDefault()\n    event.currentTarget.setPointerCapture(event.pointerId)\n    start.current = { x: event.clientX, width: value }\n    setIsDragging(true)\n  }\n  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {\n    if (start.current) onChange(start.current.width + event.clientX - start.current.x)\n  }\n  const onPointerEnd = () => {\n    start.current = null\n    setIsDragging(false)\n  }\n  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {\n    const step = event.shiftKey ? STEP * 4 : STEP\n    const next = { ArrowLeft: value - step, ArrowRight: value + step, Home: min, End: max }[event.key]\n    if (next === undefined) return\n    event.preventDefault()\n    onChange(next)\n  }\n\n  return (\n    <div role=\"separator\" aria-orientation=\"vertical\" aria-label={label} aria-valuenow={value} aria-valuemin={min} aria-valuemax={max}\n      tabIndex={0} data-dragging={isDragging || undefined}\n      onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerEnd} onPointerCancel={onPointerEnd} onKeyDown={onKeyDown}\n      className=\"group/handle relative z-10 -mx-1 flex w-2 shrink-0 cursor-col-resize touch-none justify-center outline-none\">\n      <span className=\"w-px bg-border transition-[width,background-color] group-hover/handle:w-0.5 group-hover/handle:bg-ring group-focus-visible/handle:w-0.5 group-focus-visible/handle:bg-ring group-data-dragging/handle:w-0.5 group-data-dragging/handle:bg-ring\" />\n    </div>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/pane-resize-handle.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

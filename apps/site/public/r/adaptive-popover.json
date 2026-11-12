@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "adaptive-popover",
+  "title": "팝오버 ↔ 바텀시트",
+  "description": "데스크톱은 팝오버, 휴대폰은 바텀시트로 같은 내용을 띄운다.",
+  "registryDependencies": [
+    "@webcraft/drawer",
+    "@webcraft/popover",
+    "@webcraft/theme",
+    "@webcraft/use-mobile"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/adaptive-popover.tsx",
+      "content": "import type { ReactElement, ReactNode } from \"react\"\nimport { useIsMobile } from \"@/shared/lib/use-mobile\"\nimport { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from \"@/shared/ui/drawer\"\nimport { Popover, PopoverContent, PopoverTrigger } from \"@/shared/ui/popover\"\n\n/**\n * 무엇을 누르면 옆에 뜨는 것(호호코워크 AdaptivePopover). 데스크톱은 팝오버, 휴대폰은 반드시 바텀시트.\n * 내용은 같은 것을 쓰고, 휴대폰 시트에는 제목을 보인다(데스크톱 팝오버는 제목을 읽기용으로만 둔다).\n */\nexport function AdaptivePopover({ title, trigger, children, open, onOpenChange, align = \"start\", className }: {\n  title: string\n  trigger: ReactElement\n  children: ReactNode\n  open?: boolean\n  onOpenChange?: (open: boolean) => void\n  align?: \"start\" | \"center\" | \"end\"\n  className?: string\n}) {\n  const isMobile = useIsMobile()\n  if (isMobile) {\n    return (\n      <Drawer open={open} onOpenChange={onOpenChange}>\n        <DrawerTrigger render={trigger} />\n        <DrawerContent>\n          <DrawerHeader><DrawerTitle>{title}</DrawerTitle></DrawerHeader>\n          <div className=\"px-3 pb-5\">{children}</div>\n        </DrawerContent>\n      </Drawer>\n    )\n  }\n  return (\n    <Popover open={open} onOpenChange={onOpenChange}>\n      <PopoverTrigger render={trigger} />\n      <PopoverContent align={align} aria-label={title} className={className ?? \"w-64 p-1.5\"}>{children}</PopoverContent>\n    </Popover>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/adaptive-popover.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

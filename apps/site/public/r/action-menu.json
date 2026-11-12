@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "action-menu",
+  "title": "동작 메뉴",
+  "description": "… 단추로 여는 동작 메뉴. 휴대폰에서는 바텀시트.",
+  "registryDependencies": [
+    "@webcraft/adaptive-popover",
+    "@webcraft/button",
+    "@webcraft/icon",
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/action-menu.tsx",
+      "content": "import { useState } from \"react\"\nimport { AdaptivePopover } from \"@/shared/ui/adaptive-popover\"\nimport { Button } from \"@/shared/ui/button\"\nimport { MoreHorizontalIcon, type Icon } from \"@/shared/ui/icon\"\n\nexport type MenuAction = { label: string; icon: Icon; onSelect: () => void }\n\n/**\n * … 버튼과 그 메뉴(호호코워크 ActionMenu · RowMenu). 데스크톱은 팝오버, 휴대폰은 바텀시트. 모든 항목에 아이콘을 둔다.\n * 페이지 · 상세의 메뉴는 기본 크기, 목록 줄 · 카드 끝은 size=\"row\"(데스크톱 24px, 휴대폰 44px).\n */\nexport function ActionMenu({ label, title = label, actions, size = \"page\" }: {\n  /** 버튼의 읽기용 이름. */\n  label: string\n  /** 휴대폰 시트의 제목. */\n  title?: string\n  actions: MenuAction[]\n  size?: \"page\" | \"row\"\n}) {\n  const [isOpen, setIsOpen] = useState(false)\n  return (\n    <AdaptivePopover title={title} open={isOpen} onOpenChange={setIsOpen} align=\"end\" className=\"w-52 p-1.5\"\n      trigger={\n        <Button variant=\"ghost\" size={size === \"row\" ? \"icon-xs\" : \"icon\"} aria-label={label} className={size === \"row\" ? \"max-md:size-11\" : undefined}>\n          <MoreHorizontalIcon chosen={isOpen} />\n        </Button>\n      }>\n      <div className=\"flex flex-col\">\n        {actions.map(action => (\n          <Button key={action.label} variant=\"ghost\" className=\"h-9 justify-start max-md:h-12\"\n            onClick={() => { setIsOpen(false); action.onSelect() }}>\n            <action.icon data-icon=\"inline-start\" />\n            {action.label}\n          </Button>\n        ))}\n      </div>\n    </AdaptivePopover>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/action-menu.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

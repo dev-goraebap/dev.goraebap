@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-value",
+  "title": "toggleValue",
+  "description": "여럿 고르는 값에서 하나를 넣거나 뺀다.",
+  "files": [
+    {
+      "path": "src/shared/lib/toggle.ts",
+      "content": "/** 여럿 고르는 값에서 하나를 넣거나 뺀다. */\nexport const toggleValue = <T,>(values: readonly T[] = [], value: T): T[] =>\n  values.includes(value) ? values.filter(each => each !== value) : [...values, value]\n",
+      "type": "registry:lib",
+      "target": "src/shared/lib/toggle.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

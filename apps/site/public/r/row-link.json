@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "row-link",
+  "title": "줄 링크",
+  "description": "줄 어디를 눌러도 열리는 TanStack Router 링크.",
+  "dependencies": [
+    "@tanstack/react-router@^1.170.0"
+  ],
+  "registryDependencies": [
+    "utils",
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/row-link.tsx",
+      "content": "import { createLink } from \"@tanstack/react-router\"\nimport type { ComponentProps } from \"react\"\nimport { cn } from \"@/shared/lib/utils\"\n\nfunction RowAnchor({ className, ...props }: ComponentProps<\"a\">) {\n  return (\n    <a data-slot=\"row-link\" {...props}\n      className={cn(\"outline-none after:absolute after:inset-0 after:rounded-[inherit] focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-ring\", className)} />\n  )\n}\n\n/**\n * 줄 전체를 여는 링크(줄의 이름 · 제목에 둔다). ::after가 가장 가까운 relative 조상(줄 · 카드 · 표 줄)을 덮어 어디를 눌러도\n * 열리고, 그 위에 relative z-1로 띄운 것(… 메뉴 · 별표 · 고르기 상자)만 따로 눌린다. 키보드 초점은 덮은 면 전체에 테를 두른다.\n * TanStack Link와 같은 주소 props(to · params · search)를 받는다.\n */\nexport const RowLink = createLink(RowAnchor)\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/row-link.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

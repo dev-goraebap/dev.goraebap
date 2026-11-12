@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "confirm-dialog",
+  "title": "확인 창",
+  "description": "지우기 같은 되돌리기 어려운 동작의 확인. 데스크톱은 확인 창, 휴대폰은 바텀시트.",
+  "registryDependencies": [
+    "@webcraft/alert-dialog",
+    "@webcraft/button",
+    "@webcraft/drawer",
+    "@webcraft/spinner",
+    "@webcraft/theme",
+    "@webcraft/use-mobile"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/confirm-dialog.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { useIsMobile } from \"@/shared/lib/use-mobile\"\nimport {\n  AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,\n} from \"@/shared/ui/alert-dialog\"\nimport { Button } from \"@/shared/ui/button\"\nimport { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from \"@/shared/ui/drawer\"\nimport { Spinner } from \"@/shared/ui/spinner\"\n\nexport type ConfirmAction = { label: string; onAction: () => void; isPending?: boolean }\n\ntype ConfirmDialogProps = {\n  open: boolean\n  onOpenChange: (open: boolean) => void\n  /** 묻는 말: \"WEB-14 업무를 지울까요?\" */\n  title: string\n  /** 하면 벌어지는 일, 막을 때는 그 까닭. */\n  description: ReactNode\n  /** 되돌릴 수 없는 동작(삭제). 없으면 막는 확인이다: 까닭과 '확인'만 둔다. */\n  action?: ConfirmAction\n}\n\nfunction ActionButton({ action, className }: { action: ConfirmAction; className?: string }) {\n  return (\n    <Button variant=\"destructive\" className={className} disabled={action.isPending} onClick={action.onAction}>\n      {action.isPending && <Spinner data-icon=\"inline-start\" />}\n      {action.label}\n    </Button>\n  )\n}\n\n/**\n * 되돌릴 수 없는 일의 확인(호호코워크 AlertDialog). 데스크톱은 가운데 확인 창(취소 · 동작), 휴대폰은 바텀시트(동작이 위, 취소가 아래).\n * 삭제는 묻는 말 · 벌어지는 일 · 취소와 '삭제'를, 삭제를 막을 때는 까닭과 '확인'만 둔다. 동작하는 동안에는 닫히지 않는다.\n * 동작이 끝난 뒤 닫기(또는 떠나기)는 부르는 쪽이 정한다.\n */\nexport function ConfirmDialog({ open, onOpenChange, title, description, action }: ConfirmDialogProps) {\n  const isMobile = useIsMobile()\n  const change = (next: boolean) => { if (!action?.isPending) onOpenChange(next) }\n  if (isMobile) {\n    return (\n      <Drawer open={open} onOpenChange={change}>\n        <DrawerContent role=\"alertdialog\">\n          <DrawerHeader className=\"gap-1.5 pb-2\">\n            <DrawerTitle className=\"text-lg font-semibold\">{title}</DrawerTitle>\n            <DrawerDescription className=\"text-base\">{description}</DrawerDescription>\n          </DrawerHeader>\n          <DrawerFooter className=\"pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))]\">\n            {action && <ActionButton action={action} className=\"h-11\" />}\n            <DrawerClose render={<Button variant={action ? \"ghost\" : \"default\"} className=\"h-11\" />}>{action ? \"취소\" : \"확인\"}</DrawerClose>\n          </DrawerFooter>\n        </DrawerContent>\n      </Drawer>\n    )\n  }\n  return (\n    <AlertDialog open={open} onOpenChange={change}>\n      <AlertDialogContent>\n        <AlertDialogHeader>\n          <AlertDialogTitle>{title}</AlertDialogTitle>\n          <AlertDialogDescription>{description}</AlertDialogDescription>\n        </AlertDialogHeader>\n        <AlertDialogFooter>\n          <AlertDialogCancel variant={action ? \"ghost\" : \"default\"}>{action ? \"취소\" : \"확인\"}</AlertDialogCancel>\n          {action && <ActionButton action={action} />}\n        </AlertDialogFooter>\n      </AlertDialogContent>\n    </AlertDialog>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/confirm-dialog.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

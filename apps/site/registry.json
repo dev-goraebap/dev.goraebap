@@ -1,0 +1,1623 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "webcraft",
+  "homepage": "https://goraebap.xyz",
+  "items": [
+    {
+      "name": "theme",
+      "type": "registry:theme",
+      "title": "Webcraft 토큰",
+      "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티. 다크 모드는 html[data-theme=dark](dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → @/shared/lib/utils)을 쓴다.",
+      "docs": "다크 모드는 html[data-theme=dark]입니다. shadcn init이 남긴 .dark { … } 블록과 @custom-variant dark (&:is(.dark *)) 줄은 지웁니다(뒤에 더한 data-theme 변형과 겹칩니다). 모드는 @webcraft/appearance가 data-theme에 반영합니다.",
+      "dependencies": [
+        "pretendard",
+        "@fontsource-variable/jetbrains-mono",
+        "tw-animate-css"
+      ],
+      "cssVars": {
+        "theme": {
+          "font-sans": "'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif",
+          "font-mono": "'JetBrains Mono Variable', 'SF Mono', Consolas, monospace",
+          "breakpoint-md": "64rem",
+          "color-row-hover": "color-mix(in srgb, var(--foreground) 4%, var(--background))",
+          "color-band": "color-mix(in srgb, var(--muted) 55%, var(--background))",
+          "color-unread": "color-mix(in srgb, var(--foreground) 9%, var(--background))",
+          "color-unread-strong": "color-mix(in srgb, var(--foreground) 14%, var(--background))",
+          "color-state-description": "color-mix(in srgb, var(--icon-muted) 75%, var(--background))",
+          "radius-surface": "1rem",
+          "shadow-surface": "0 1px 2px var(--shadow-color), 0 0 0 1px var(--border)"
+        },
+        "light": {
+          "background": "#f9f9fa",
+          "foreground": "#1b1b1b",
+          "sidebar": "#efeff0",
+          "card": "color-mix(in srgb, var(--background) 25%, #ffffff)",
+          "card-foreground": "var(--foreground)",
+          "popover": "color-mix(in srgb, var(--background) 15%, #ffffff)",
+          "popover-foreground": "var(--foreground)",
+          "primary": "var(--foreground)",
+          "primary-foreground": "#ffffff",
+          "secondary": "color-mix(in srgb, var(--foreground) 10%, var(--background))",
+          "secondary-foreground": "var(--foreground)",
+          "muted": "#ececed",
+          "muted-foreground": "#5c5c5e",
+          "accent": "color-mix(in srgb, var(--foreground) 4%, transparent)",
+          "accent-foreground": "var(--foreground)",
+          "destructive": "oklch(0.577 0.245 27.325)",
+          "border": "color-mix(in srgb, var(--foreground) 13%, var(--background))",
+          "input": "color-mix(in srgb, var(--foreground) 18%, var(--background))",
+          "ring": "color-mix(in srgb, var(--foreground) 72%, var(--background))",
+          "icon-muted": "#6b6b6f",
+          "pressed": "color-mix(in srgb, var(--foreground) 7%, transparent)",
+          "shadow-color": "rgb(0 0 0 / 0.04)",
+          "chart-1": "oklch(0.87 0 0)",
+          "chart-2": "oklch(0.556 0 0)",
+          "chart-3": "oklch(0.439 0 0)",
+          "chart-4": "oklch(0.371 0 0)",
+          "chart-5": "oklch(0.269 0 0)",
+          "radius": "0.5rem",
+          "sidebar-foreground": "var(--foreground)",
+          "sidebar-primary": "var(--foreground)",
+          "sidebar-primary-foreground": "#ffffff",
+          "sidebar-accent": "var(--pressed)",
+          "sidebar-accent-foreground": "var(--foreground)",
+          "sidebar-border": "var(--border)",
+          "sidebar-ring": "var(--ring)",
+          "mark-backlog": "#d7d7da",
+          "mark-progress": "#524622",
+          "mark-done": "#374c36",
+          "mark-urgent": "#c62f39",
+          "mark-high": "#b8550b",
+          "mark-medium": "#8b6900",
+          "mark-low": "#2865c3",
+          "illustration-accent": "#4a7fd4",
+          "event-blue": "#d7e4f5",
+          "event-blue-foreground": "#3c4856",
+          "event-green": "#d0e9ce",
+          "event-green-foreground": "#374c36",
+          "event-orange": "#ffdcbb",
+          "event-orange-foreground": "#5b4227",
+          "event-purple": "#e8dff3",
+          "event-purple-foreground": "#4b4454",
+          "event-red": "#f9dcd7",
+          "event-red-foreground": "#58413e",
+          "event-teal": "#d4e7dc",
+          "event-teal-foreground": "#3b4a41",
+          "event-pink": "#f0dde8",
+          "event-pink-foreground": "#52424c",
+          "event-yellow": "#f4e1b7",
+          "event-yellow-foreground": "#524622",
+          "event-gray": "#e3e3e4",
+          "event-gray-foreground": "#46464b",
+          "day-off": "#d1242f",
+          "saturday": "#0969da"
+        }
+      },
+      "css": {
+        "@import \"pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css\"": {},
+        "@import \"@fontsource-variable/jetbrains-mono\"": {},
+        "@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *))": {},
+        "@custom-variant compact (&:where([data-density=compact] *))": {},
+        ":root": {
+          "--text-sm": "0.8125rem",
+          "--text-sm--line-height": "1.5",
+          "--text-base": "0.9375rem",
+          "--text-base--line-height": "1.6"
+        },
+        "[data-theme=dark]": {
+          "--background": "#121213",
+          "--foreground": "#f7f8f8",
+          "--sidebar": "#09090a",
+          "--card": "color-mix(in srgb, var(--foreground) 3%, var(--background))",
+          "--popover": "color-mix(in srgb, var(--foreground) 6%, var(--background))",
+          "--primary-foreground": "color-mix(in srgb, var(--background) 85%, #000000)",
+          "--secondary": "color-mix(in srgb, var(--foreground) 13%, var(--background))",
+          "--muted": "#232326",
+          "--muted-foreground": "#8a8f98",
+          "--accent": "color-mix(in srgb, var(--foreground) 5%, transparent)",
+          "--destructive": "oklch(0.704 0.191 22.216)",
+          "--border": "color-mix(in srgb, var(--foreground) 11%, var(--background))",
+          "--input": "color-mix(in srgb, var(--foreground) 16%, var(--background))",
+          "--icon-muted": "#8a8f98",
+          "--pressed": "color-mix(in srgb, var(--foreground) 8%, transparent)",
+          "--shadow-color": "rgb(0 0 0 / 0.3)",
+          "--sidebar-primary-foreground": "var(--primary-foreground)",
+          "--mark-backlog": "#5e5e61",
+          "--mark-progress": "#d7c59c",
+          "--mark-done": "#b4cdb2",
+          "--mark-urgent": "#f17880",
+          "--mark-high": "#efa15f",
+          "--mark-medium": "#e6c45b",
+          "--mark-low": "#79a7ee",
+          "--illustration-accent": "#6ea2ef",
+          "--event-blue": "#485362",
+          "--event-blue-foreground": "#d7e4f5",
+          "--event-green": "#425841",
+          "--event-green-foreground": "#d0e9ce",
+          "--event-orange": "#684d32",
+          "--event-orange-foreground": "#ffdcbb",
+          "--event-purple": "#564f60",
+          "--event-purple-foreground": "#e8dff3",
+          "--event-red": "#644d49",
+          "--event-red-foreground": "#f9dcd7",
+          "--event-teal": "#46564d",
+          "--event-teal-foreground": "#d4e7dc",
+          "--event-pink": "#5e4e57",
+          "--event-pink-foreground": "#f0dde8",
+          "--event-yellow": "#5e512d",
+          "--event-yellow-foreground": "#f4e1b7",
+          "--event-gray": "#303032",
+          "--event-gray-foreground": "#e2e2e8",
+          "--day-off": "#ff7b72",
+          "--saturday": "#6cb6ff"
+        },
+        "@media not all and (min-width: 64rem)": {
+          ":root": {
+            "--text-xs": "0.8125rem",
+            "--text-sm": "0.9375rem",
+            "--text-base": "1.0625rem"
+          }
+        },
+        "@utility bg-dots": {
+          "background-image": "radial-gradient(color-mix(in srgb, var(--foreground) 12%, transparent) 1px, transparent 1px)",
+          "background-size": "1rem 1rem"
+        },
+        "@utility squircle": {
+          "corner-shape": "squircle"
+        },
+        "@layer base": {
+          "@keyframes page-state-enter": {
+            "from": {
+              "opacity": "0",
+              "transform": "translateY(0.375rem)"
+            },
+            "to": {
+              "opacity": "1",
+              "transform": "none"
+            }
+          },
+          "body": {
+            "font-weight": "450"
+          },
+          "html": {
+            "@apply font-sans": {}
+          },
+          "@media (min-width: 1920px)": {
+            "html": {
+              "font-size": "max(100%, min(118.75%, 19px, calc(100% + 0.46875vw - 9px)))"
+            }
+          },
+          "*": {
+            "scrollbar-width": "thin",
+            "scrollbar-color": "color-mix(in srgb, var(--foreground) 16%, transparent) transparent"
+          },
+          "*:hover": {
+            "scrollbar-color": "color-mix(in srgb, var(--foreground) 28%, transparent) transparent"
+          }
+        }
+      }
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "useIsMobile",
+      "description": "휴대폰과 데스크톱을 가르는 64rem 분기점(Tailwind md:와 같은 값)과 그 훅.",
+      "files": [
+        {
+          "path": "src/shared/lib/use-mobile.ts",
+          "type": "registry:hook",
+          "target": "src/shared/lib/use-mobile.ts"
+        }
+      ]
+    },
+    {
+      "name": "appearance",
+      "type": "registry:lib",
+      "title": "화면 설정",
+      "description": "모드(시스템 · 라이트 · 다크)와 목록 높이를 이 브라우저에 남기고 html의 data-theme · data-density로 반영한다.",
+      "files": [
+        {
+          "path": "src/shared/lib/appearance.ts",
+          "type": "registry:lib",
+          "target": "src/shared/lib/appearance.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-stored-width",
+      "type": "registry:hook",
+      "title": "useStoredWidth",
+      "description": "사용자가 끌어 정하는 칸 너비를 min~max로 자르고 이 브라우저에 남긴다.",
+      "files": [
+        {
+          "path": "src/shared/lib/use-stored-width.ts",
+          "type": "registry:hook",
+          "target": "src/shared/lib/use-stored-width.ts"
+        }
+      ]
+    },
+    {
+      "name": "toggle-value",
+      "type": "registry:lib",
+      "title": "toggleValue",
+      "description": "여럿 고르는 값에서 하나를 넣거나 뺀다.",
+      "files": [
+        {
+          "path": "src/shared/lib/toggle.ts",
+          "type": "registry:lib",
+          "target": "src/shared/lib/toggle.ts"
+        }
+      ]
+    },
+    {
+      "name": "panel",
+      "type": "registry:lib",
+      "title": "목록 위 대화상자",
+      "description": "데스크톱은 지금 페이지 위 대화상자(?panel=, 주소창에는 TanStack Router mask로 그 페이지 주소), 휴대폰은 그 페이지로 연다. 크게 보기로 쓰던 내용을 넘기는 carryDraft 포함.",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "registryDependencies": [
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/lib/panel.ts",
+          "type": "registry:lib",
+          "target": "src/shared/lib/panel.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-compose-param",
+      "type": "registry:hook",
+      "title": "useComposeParam",
+      "description": "따로 라우트가 없는 만들기 양식을 ?compose=1로 주소에 남겨 새로고침 · 뒤로 가기를 따르게 한다(TanStack Router).",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "files": [
+        {
+          "path": "src/shared/lib/use-compose-param.ts",
+          "type": "registry:hook",
+          "target": "src/shared/lib/use-compose-param.ts"
+        }
+      ]
+    },
+    {
+      "name": "icon",
+      "type": "registry:ui",
+      "title": "Solar 아이콘",
+      "description": "lucide와 같은 이름(XIcon …)으로 부르는 Solar 아이콘. 기본은 Linear, chosen이면 Bold Duotone. shadcn add로 받은 부품의 lucide-react import를 이것으로 바꾼다.",
+      "files": [
+        {
+          "path": "src/shared/ui/icon/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/icon/index.ts"
+        },
+        {
+          "path": "src/shared/ui/icon/solar.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/icon/solar.ts"
+        },
+        {
+          "path": "src/shared/ui/icon/icons.generated.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/icon/icons.generated.ts"
+        }
+      ]
+    },
+    {
+      "name": "action-menu",
+      "type": "registry:ui",
+      "title": "동작 메뉴",
+      "description": "… 단추로 여는 동작 메뉴. 휴대폰에서는 바텀시트.",
+      "registryDependencies": [
+        "@webcraft/adaptive-popover",
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/action-menu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/action-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "adaptive-popover",
+      "type": "registry:ui",
+      "title": "팝오버 ↔ 바텀시트",
+      "description": "데스크톱은 팝오버, 휴대폰은 바텀시트로 같은 내용을 띄운다.",
+      "registryDependencies": [
+        "@webcraft/drawer",
+        "@webcraft/popover",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/adaptive-popover.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/adaptive-popover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "confirm-dialog",
+      "type": "registry:ui",
+      "title": "확인 창",
+      "description": "지우기 같은 되돌리기 어려운 동작의 확인. 데스크톱은 확인 창, 휴대폰은 바텀시트.",
+      "registryDependencies": [
+        "@webcraft/alert-dialog",
+        "@webcraft/button",
+        "@webcraft/drawer",
+        "@webcraft/spinner",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/confirm-dialog.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/confirm-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "날짜 고르기",
+      "description": "DateCalendar와 팝오버 ↔ 바텀시트로 여는 DatePicker(한국어 달력).",
+      "dependencies": [
+        "react-day-picker@^10.0.2"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/adaptive-popover",
+        "@webcraft/button",
+        "@webcraft/calendar",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/date-picker.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/date-picker.tsx"
+        }
+      ]
+    },
+    {
+      "name": "detail-surface",
+      "type": "registry:ui",
+      "title": "상세 면",
+      "description": "상세를 자기 페이지 또는 목록 위 60rem 대화상자로 보인다. DetailLink는 그 대화상자를 여는 줄 링크.",
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/dialog",
+        "@webcraft/icon",
+        "@webcraft/page",
+        "@webcraft/panel",
+        "@webcraft/row-link",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/detail-surface.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/detail-surface.tsx"
+        }
+      ]
+    },
+    {
+      "name": "display-menu",
+      "type": "registry:ui",
+      "title": "표시 메뉴",
+      "description": "툴바의 표시(정렬 · 묶기 · 보일 속성) 메뉴.",
+      "registryDependencies": [
+        "@webcraft/adaptive-popover",
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/page",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/display-menu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/display-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "form-dialog",
+      "type": "registry:ui",
+      "title": "짧은 양식",
+      "description": "이름 바꾸기 같은 짧은 양식. 데스크톱은 대화상자, 휴대폰은 바텀시트.",
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/dialog",
+        "@webcraft/drawer",
+        "@webcraft/spinner",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/form-dialog.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/form-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "info-pill",
+      "type": "registry:ui",
+      "title": "읽기 알약",
+      "description": "고를 수 없는 속성 값을 알약 모양으로 보인다.",
+      "registryDependencies": [
+        "@webcraft/property-pill",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/info-pill.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/info-pill.tsx"
+        }
+      ]
+    },
+    {
+      "name": "list-group-header",
+      "type": "registry:ui",
+      "title": "그룹 머리",
+      "description": "목록을 묶었을 때 그룹마다 붙는 띠(이름 · 개수 · 접기).",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/list-group-header.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/list-group-header.tsx"
+        }
+      ]
+    },
+    {
+      "name": "option-list",
+      "type": "registry:ui",
+      "title": "고르기 목록",
+      "description": "팝오버 · 바텀시트 안에서 쓰는 찾기 칸과 고르기 목록.",
+      "registryDependencies": [
+        "@webcraft/command",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/option-list.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/option-list.tsx"
+        }
+      ]
+    },
+    {
+      "name": "pane-resize-handle",
+      "type": "registry:ui",
+      "title": "칸 너비 손잡이",
+      "description": "옆 칸의 너비를 끌어 바꾸는 손잡이(키보드 화살표 포함). useStoredWidth와 함께 쓴다.",
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/pane-resize-handle.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/pane-resize-handle.tsx"
+        }
+      ]
+    },
+    {
+      "name": "person-avatar",
+      "type": "registry:ui",
+      "title": "사람 아바타",
+      "description": "원형 아바타. 그림이 없으면 이름 첫 글자. 기본 그림은 제품이 picture로 정한다.",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/avatar",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/person-avatar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/person-avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "property-pill",
+      "type": "registry:ui",
+      "title": "속성 알약",
+      "description": "눌러 값을 고르는 속성 알약과 pillVariants.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/adaptive-popover",
+        "@webcraft/button",
+        "@webcraft/date-picker",
+        "@webcraft/icon",
+        "@webcraft/option-list",
+        "@webcraft/theme",
+        "@webcraft/toggle-value"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/property-pill.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/property-pill.tsx"
+        }
+      ]
+    },
+    {
+      "name": "row-link",
+      "type": "registry:ui",
+      "title": "줄 링크",
+      "description": "줄 어디를 눌러도 열리는 TanStack Router 링크.",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/row-link.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/row-link.tsx"
+        }
+      ]
+    },
+    {
+      "name": "search-tool",
+      "type": "registry:ui",
+      "title": "툴바 찾기",
+      "description": "툴바의 동그란 돋보기. 펼치면 찾기 칸이 되고, 찾는 말이 있으면 귀퉁이에 점.",
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/input-group",
+        "@webcraft/page",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/search-tool.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/search-tool.tsx"
+        }
+      ]
+    },
+    {
+      "name": "segmented-control",
+      "type": "registry:ui",
+      "title": "구간 고르기",
+      "description": "둘~넷 중 하나를 고르는 칸. 고른 칸의 면이 미끄러진다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/segmented-control.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/segmented-control.tsx"
+        }
+      ]
+    },
+    {
+      "name": "page",
+      "type": "registry:ui",
+      "title": "페이지 틀",
+      "description": "상위 페이지의 틀: 데스크톱은 머리 줄(경로 · 동작 · 만들기)과 툴바, 휴대폰은 52px 앱 바와 FAB. 보기 탭(PageViews) · 도구 점(ToolDot) · 전체 화면 알림(chrome) 포함.",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/page/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page/index.ts"
+        },
+        {
+          "path": "src/shared/ui/page/Page.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page/Page.tsx"
+        },
+        {
+          "path": "src/shared/ui/page/PageViews.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page/PageViews.tsx"
+        },
+        {
+          "path": "src/shared/ui/page/ToolDot.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page/ToolDot.tsx"
+        },
+        {
+          "path": "src/shared/ui/page/chrome.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page/chrome.tsx"
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "type": "registry:ui",
+      "title": "설정 화면",
+      "description": "SettingsPage(페이지 틀) · SettingsBody(틀 없는 본문) · SettingsSection · SettingsRow.",
+      "registryDependencies": [
+        "@webcraft/card",
+        "@webcraft/field",
+        "@webcraft/page",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/settings/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/settings/index.ts"
+        },
+        {
+          "path": "src/shared/ui/settings/SettingsPage.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/settings/SettingsPage.tsx"
+        },
+        {
+          "path": "src/shared/ui/settings/SettingsSection.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/settings/SettingsSection.tsx"
+        },
+        {
+          "path": "src/shared/ui/settings/SettingsRow.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/settings/SettingsRow.tsx"
+        }
+      ]
+    },
+    {
+      "name": "compose",
+      "type": "registry:ui",
+      "title": "만들기 양식",
+      "description": "ComposeSurface(데스크톱 대화상자 ↔ 페이지, 바닥 줄의 actions · error) · ComposeFields(제목 · 본문) · FileDropzone · FileList.",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/button",
+        "@webcraft/dialog",
+        "@webcraft/icon",
+        "@webcraft/page",
+        "@webcraft/spinner",
+        "@webcraft/switch",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/compose/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/compose/index.ts"
+        },
+        {
+          "path": "src/shared/ui/compose/ComposeSurface.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/compose/ComposeSurface.tsx"
+        },
+        {
+          "path": "src/shared/ui/compose/ComposeFields.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/compose/ComposeFields.tsx"
+        },
+        {
+          "path": "src/shared/ui/compose/FileDropzone.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/compose/FileDropzone.tsx"
+        },
+        {
+          "path": "src/shared/ui/compose/FileList.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/compose/FileList.tsx"
+        },
+        {
+          "path": "src/shared/ui/compose/files.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/compose/files.ts"
+        }
+      ]
+    },
+    {
+      "name": "filter",
+      "type": "registry:ui",
+      "title": "필터",
+      "description": "useFilters(조건 상태) · FilterMenu(툴바 메뉴) · FilterBar · FilterChips(걸린 조건 줄).",
+      "registryDependencies": [
+        "@webcraft/adaptive-popover",
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/option-list",
+        "@webcraft/page",
+        "@webcraft/popover",
+        "@webcraft/theme",
+        "@webcraft/toggle-value",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/filter/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/filter/index.ts"
+        },
+        {
+          "path": "src/shared/ui/filter/use-filters.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/filter/use-filters.ts"
+        },
+        {
+          "path": "src/shared/ui/filter/FilterMenu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/filter/FilterMenu.tsx"
+        },
+        {
+          "path": "src/shared/ui/filter/FilterBar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/filter/FilterBar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "page-state",
+      "type": "registry:ui",
+      "title": "상태 화면",
+      "description": "보일 것이 없을 때(없음 · 찾은 것 없음 · 404 · 실패)의 풍경 그림과 제목 · 설명 · 동작. 그림(webp 12장)은 레지스트리 JSON으로 옮길 수 없어 따로 받는다(README 참고).",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/theme"
+      ],
+      "docs": "풍경 그림 12장(webp)은 레지스트리 JSON에 담기지 않습니다(글자 파일만 옮겨짐). 프로젝트 루트에서 받아 src/shared/ui/page-state/landscapes/에 둡니다: for n in empty search error-404 error-500; do for i in 01 02 03; do curl -fsSLo src/shared/ui/page-state/landscapes/$n-$i.webp --create-dirs https://goraebap.xyz/r/assets/page-state/landscapes/$n-$i.webp; done; done",
+      "files": [
+        {
+          "path": "src/shared/ui/page-state/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page-state/index.ts"
+        },
+        {
+          "path": "src/shared/ui/page-state/PageState.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page-state/PageState.tsx"
+        },
+        {
+          "path": "src/shared/ui/page-state/StateLandscape.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page-state/StateLandscape.tsx"
+        },
+        {
+          "path": "src/shared/ui/page-state/InboxIllustration.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/page-state/InboxIllustration.tsx"
+        }
+      ]
+    },
+    {
+      "name": "reading",
+      "type": "registry:ui",
+      "title": "읽기 상세",
+      "description": "본문이 있는 것의 상세: DetailLayout(본문 + 속성 칸) · MarkdownBody(가벼운 Markdown 읽기) · ActivityFeed · CommentComposer.",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/icon",
+        "@webcraft/input-group",
+        "@webcraft/person-avatar",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/reading/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reading/index.ts"
+        },
+        {
+          "path": "src/shared/ui/reading/model/markdown.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reading/model/markdown.ts"
+        },
+        {
+          "path": "src/shared/ui/reading/ui/MarkdownBody.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reading/ui/MarkdownBody.tsx"
+        },
+        {
+          "path": "src/shared/ui/reading/ui/DetailLayout.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reading/ui/DetailLayout.tsx"
+        },
+        {
+          "path": "src/shared/ui/reading/ui/ActivityFeed.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reading/ui/ActivityFeed.tsx"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "alert-dialog",
+      "description": "shadcn alert-dialog(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/alert-dialog.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/alert-dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "alert",
+      "description": "shadcn alert(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/alert.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/alert.tsx"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "avatar",
+      "description": "shadcn avatar(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/avatar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/avatar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "badge",
+      "description": "shadcn badge(base-nova)의 Webcraft 판: variant에 label(라벨 알약)을 더했다. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/badge.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/badge.tsx"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "breadcrumb",
+      "description": "shadcn breadcrumb(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/breadcrumb.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/breadcrumb.tsx"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "button",
+      "description": "shadcn button(base-nova)의 Webcraft 판: variant에 view · view-active(뷰 알약) · tool(동그란 도구) · create(만들기)를 더했고, 높이는 휴대폰 36px · 데스크톱 28px. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/button.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/button.tsx"
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "calendar",
+      "description": "shadcn calendar(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cn@^0.5.2",
+        "react-day-picker@^10.0.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/calendar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/calendar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "card",
+      "description": "shadcn card(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/card.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/card.tsx"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "checkbox",
+      "description": "shadcn checkbox(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/checkbox.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/checkbox.tsx"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "command",
+      "description": "shadcn command(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cmdk",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/dialog",
+        "@webcraft/icon",
+        "@webcraft/input-group",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/command.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/command.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "dialog",
+      "description": "shadcn dialog(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/dialog.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/dialog.tsx"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "drawer",
+      "description": "shadcn drawer(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/drawer.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/drawer.tsx"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "dropdown-menu",
+      "description": "shadcn dropdown-menu(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/dropdown-menu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/dropdown-menu.tsx"
+        }
+      ]
+    },
+    {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "empty",
+      "description": "shadcn empty(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/empty.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/empty.tsx"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "field",
+      "description": "shadcn field(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/label",
+        "@webcraft/separator",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/field.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/field.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "input-group",
+      "description": "shadcn input-group(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/input",
+        "@webcraft/textarea",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/input-group.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/input-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "input",
+      "description": "shadcn input(base-nova)의 Webcraft 판: 높이 휴대폰 48px · 데스크톱 36px, 글자 16px(휴대폰 브라우저가 확대하지 않게). 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/input.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/input.tsx"
+        }
+      ]
+    },
+    {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "item",
+      "description": "shadcn item(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/separator",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/item.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/item.tsx"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "label",
+      "description": "shadcn label(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/label.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/label.tsx"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "popover",
+      "description": "shadcn popover(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/popover.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/popover.tsx"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "progress",
+      "description": "shadcn progress(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/progress.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/progress.tsx"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "scroll-area",
+      "description": "shadcn scroll-area(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/scroll-area.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/scroll-area.tsx"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "select",
+      "description": "shadcn select(base-nova)의 Webcraft 판: 안쪽 여백을 넓히고 ▼ 아이콘을 자식으로 둔다(render로 넘기면 Base UI의 기본 ▼가 함께 와 Solar 그림과 부딪힌다). 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/select.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/select.tsx"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "separator",
+      "description": "shadcn separator(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/separator.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/separator.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "sheet",
+      "description": "shadcn sheet(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/sheet.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/sheet.tsx"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "sidebar",
+      "description": "shadcn sidebar(base-nova)의 Webcraft 판: 너비 21.25rem(아이콘만 3.25rem), 메뉴 단추는 초타원 10px · 높이 28px. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/input",
+        "@webcraft/separator",
+        "@webcraft/sheet",
+        "@webcraft/skeleton",
+        "@webcraft/theme",
+        "@webcraft/tooltip",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/sidebar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/sidebar.tsx"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "skeleton",
+      "description": "shadcn skeleton(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/skeleton.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/skeleton.tsx"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "spinner",
+      "description": "shadcn spinner(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/spinner.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/spinner.tsx"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "switch",
+      "description": "shadcn switch(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/switch.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/switch.tsx"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "table",
+      "description": "shadcn table(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/table.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/table.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "tabs",
+      "description": "shadcn tabs(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/tabs.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/tabs.tsx"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "textarea",
+      "description": "shadcn textarea(base-nova)의 Webcraft 판: 글자 16px(휴대폰 브라우저가 확대하지 않게), 안쪽 여백 12px. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/textarea.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/textarea.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "toast",
+      "description": "shadcn toast(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/toast.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/toast.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "toggle-group",
+      "description": "shadcn toggle-group(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme",
+        "@webcraft/toggle"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/toggle-group.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/toggle-group.tsx"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "toggle",
+      "description": "shadcn toggle(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "class-variance-authority",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/toggle.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/toggle.tsx"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "tooltip",
+      "description": "shadcn tooltip(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/tooltip.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/tooltip.tsx"
+        }
+      ]
+    }
+  ]
+}

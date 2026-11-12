@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "list-group-header",
+  "title": "그룹 머리",
+  "description": "목록을 묶었을 때 그룹마다 붙는 띠(이름 · 개수 · 접기).",
+  "registryDependencies": [
+    "utils",
+    "@webcraft/button",
+    "@webcraft/icon",
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/list-group-header.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { cn } from \"@/shared/lib/utils\"\nimport { Button } from \"@/shared/ui/button\"\nimport { ChevronDownIcon, PlusIcon } from \"@/shared/ui/icon\"\n\n/**\n * 목록의 그룹 머리(호호코워크 ListGroupHeader): 접기 꺾쇠 · 표식 · 이름 · 개수, 오른쪽 +. 스크롤해도 위에 붙는다.\n * 데스크톱 36px, 휴대폰 52px. 띠 색(bg-band)은 불투명해 지나가는 줄이 비치지 않는다.\n */\nexport function ListGroupHeader({ label, icon, count, isOpen, onToggle, createLabel, onCreate }: {\n  label: string; icon?: ReactNode; count: number; isOpen: boolean; onToggle: () => void\n  /** +의 읽기용 이름(예: \"백로그에 업무 만들기\"). onCreate가 있을 때만 + 를 둔다. */\n  createLabel?: string; onCreate?: () => void\n}) {\n  return (\n    <header className=\"sticky top-0 z-10 flex h-13 shrink-0 items-center justify-between gap-2 border-b bg-band px-2 md:h-9\">\n      <button type=\"button\" aria-expanded={isOpen} aria-label={`${label} ${count}개`} onClick={onToggle}\n        className=\"flex h-6 items-center gap-2 rounded-full px-2 text-sm font-medium outline-none hover:bg-accent focus-visible:ring-3 focus-visible:ring-ring/50 max-md:h-11\">\n        <ChevronDownIcon className={cn(\"shrink-0 transition-transform\", !isOpen && \"-rotate-90\")} />\n        {icon}\n        <span>{label}</span>\n        <span className=\"font-normal text-muted-foreground tabular-nums\">{count}</span>\n      </button>\n      {onCreate && (\n        <Button variant=\"ghost\" size=\"icon-xs\" aria-label={createLabel ?? `${label}에 만들기`} onClick={onCreate} className=\"max-md:size-11\">\n          <PlusIcon />\n        </Button>\n      )}\n    </header>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/list-group-header.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

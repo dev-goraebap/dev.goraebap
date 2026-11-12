@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spinner",
+  "title": "spinner",
+  "description": "shadcn spinner(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+  "dependencies": [
+    "cn@^0.5.2"
+  ],
+  "registryDependencies": [
+    "@webcraft/icon",
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/spinner.tsx",
+      "content": "import { cn } from \"cn\"\nimport { Loader2Icon } from \"@/shared/ui/icon\"\n\nfunction Spinner({ className, ...props }: React.ComponentProps<\"svg\">) {\n  return (\n    <Loader2Icon data-slot=\"spinner\" role=\"status\" aria-label=\"Loading\" className={cn(\"size-4 animate-spin\", className)} {...props} />\n  )\n}\n\nexport { Spinner }\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/spinner.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

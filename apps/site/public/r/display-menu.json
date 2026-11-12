@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "display-menu",
+  "title": "표시 메뉴",
+  "description": "툴바의 표시(정렬 · 묶기 · 보일 속성) 메뉴.",
+  "registryDependencies": [
+    "@webcraft/adaptive-popover",
+    "@webcraft/button",
+    "@webcraft/icon",
+    "@webcraft/page",
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/display-menu.tsx",
+      "content": "import { useState, type ReactNode } from \"react\"\nimport { AdaptivePopover } from \"@/shared/ui/adaptive-popover\"\nimport { Button } from \"@/shared/ui/button\"\nimport { SortIcon } from \"@/shared/ui/icon\"\nimport { ToolDot } from \"@/shared/ui/page\"\n\n/**\n * 표시 도구(호호코워크 DisplayMenu): 정렬 · 방향 · 그룹 같은 묶음(DisplayChoice)을 알약 줄로 고르고, 처음과 다르면 초기화.\n * 처음과 다르면 버튼 귀퉁이에 점. 데스크톱은 팝오버, 휴대폰은 바텀시트. 무엇을 고르는지는 페이지가 넘긴다.\n */\nexport function DisplayMenu({ isTweaked, onReset, children }: { isTweaked: boolean; onReset: () => void; children: ReactNode }) {\n  const [isOpen, setOpen] = useState(false)\n  const isOn = isOpen || isTweaked\n  return (\n    <AdaptivePopover title=\"표시\" align=\"end\" className=\"w-80 p-2\" open={isOpen} onOpenChange={setOpen}\n      trigger={\n        <Button variant={isOn ? \"view-active\" : \"tool\"} size=\"icon\" aria-label={isTweaked ? \"표시, 바뀜\" : \"표시\"} className=\"relative max-md:size-11\">\n          <SortIcon chosen={isOn} />\n          {isTweaked && <ToolDot label=\"표시 바뀜\" />}\n        </Button>\n      }>\n      <div className=\"flex flex-col gap-4 p-2\">\n        {children}\n        {isTweaked && (\n          <div className=\"flex justify-end\">\n            <Button variant=\"secondary\" size=\"sm\" className=\"rounded-full\" onClick={onReset}>초기화</Button>\n          </div>\n        )}\n      </div>\n    </AdaptivePopover>\n  )\n}\n\n/** 표시 묶음 하나: 제목과 알약 줄. 지금 것은 view-active. */\nexport function DisplayChoice<T extends string>({ title, items, value, onChange }: {\n  title: string; items: readonly { value: T; label: string }[]; value: T; onChange: (value: T) => void\n}) {\n  return (\n    <section className=\"flex flex-col gap-1.5\">\n      <h3 className=\"text-xs font-medium text-muted-foreground\">{title}</h3>\n      <div role=\"group\" aria-label={title} className=\"flex flex-wrap gap-1\">\n        {items.map(item => (\n          <Button key={item.value} variant={item.value === value ? \"view-active\" : \"view\"} aria-pressed={item.value === value} className=\"px-3\"\n            onClick={() => onChange(item.value)}>\n            {item.label}\n          </Button>\n        ))}\n      </div>\n    </section>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/display-menu.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

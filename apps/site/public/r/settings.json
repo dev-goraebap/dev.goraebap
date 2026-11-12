@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "settings",
+  "title": "설정 화면",
+  "description": "SettingsPage(페이지 틀) · SettingsBody(틀 없는 본문) · SettingsSection · SettingsRow.",
+  "registryDependencies": [
+    "@webcraft/card",
+    "@webcraft/field",
+    "@webcraft/page",
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/settings/index.ts",
+      "content": "export { SettingsBody, SettingsPage } from \"./SettingsPage\"\nexport { SettingsRow } from \"./SettingsRow\"\nexport { SettingsSection } from \"./SettingsSection\"\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/settings/index.ts"
+    },
+    {
+      "path": "src/shared/ui/settings/SettingsPage.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { Page, type Crumb } from \"@/shared/ui/page\"\n\ntype SettingsBodyProps = {\n  title: string\n  /** 이 페이지가 정하는 것을 한 줄로. */\n  description?: ReactNode\n  children: ReactNode\n}\n\n/**\n * 설정 페이지의 안쪽(호호코워크 SettingsPage 본문): 가운데 한 열(최대 720px), 맨 위에 제목과 한 줄 설명,\n * 그 아래에 SettingsSection이 이어진다. 페이지 틀(Page)을 따로 그리는 곳(프로젝트 설정)은 이것만 쓴다.\n */\nexport function SettingsBody({ title, description, children }: SettingsBodyProps) {\n  return (\n    <main className=\"flex justify-center px-4 py-10 max-md:py-6\">\n      <div className=\"flex w-full max-w-180 min-w-0 flex-col gap-8\">\n        <header className=\"flex flex-col gap-1\">\n          <h1 className=\"text-2xl font-semibold tracking-tight\">{title}</h1>\n          {description && <p className=\"text-muted-foreground\">{description}</p>}\n        </header>\n        {children}\n      </div>\n    </main>\n  )\n}\n\n/** 값을 보고 정하는 페이지(호호코워크 SettingsPage): 머리 줄(경로)과 SettingsBody. */\nexport function SettingsPage({ crumbs, ...body }: SettingsBodyProps & { crumbs: Crumb[] }) {\n  return (\n    <Page crumbs={crumbs}>\n      <SettingsBody {...body} />\n    </Page>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/settings/SettingsPage.tsx"
+    },
+    {
+      "path": "src/shared/ui/settings/SettingsSection.tsx",
+      "content": "import { useId, type ReactNode } from \"react\"\nimport { Card } from \"@/shared/ui/card\"\nimport { FieldGroup } from \"@/shared/ui/field\"\n\ntype SettingsSectionProps = {\n  title: string\n  /** 이름 줄 끝의 동작(저장, 새 토큰). */\n  action?: ReactNode\n  /** 카드 아래 한 줄 메모. */\n  note?: ReactNode\n  /** SettingsRow들. */\n  children: ReactNode\n}\n\n/** 설정 한 묶음: 작은 이름, 줄을 선으로 나눈 안쪽 여백 없는 Card, 선택적인 메모. */\nexport function SettingsSection({ title, action, note, children }: SettingsSectionProps) {\n  const titleId = useId()\n  return (\n    <section aria-labelledby={titleId} className=\"flex flex-col gap-2\">\n      <div className=\"flex min-h-7 items-center justify-between gap-2\">\n        <h2 id={titleId} className=\"text-sm font-medium text-muted-foreground\">{title}</h2>\n        {action}\n      </div>\n      <Card className=\"py-0\">\n        {/* divide-y는 줄 사이에만 선을 그어 마지막 줄 아래가 카드 테두리와 겹치지 않는다. */}\n        <FieldGroup className=\"gap-0 divide-y divide-border\">{children}</FieldGroup>\n      </Card>\n      {note && <p className=\"text-sm text-muted-foreground\">{note}</p>}\n    </section>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/settings/SettingsSection.tsx"
+    },
+    {
+      "path": "src/shared/ui/settings/SettingsRow.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { Field, FieldContent, FieldDescription, FieldTitle } from \"@/shared/ui/field\"\n\ntype SettingsRowProps = {\n  /** 이름. 링크처럼 글자가 아닌 것도 된다(저장소 연동의 저장소 주소). */\n  label: ReactNode\n  description?: ReactNode\n  /** 값이나 조작. 없으면 보조색 \"-\". */\n  children?: ReactNode\n  /** 값 없이 이름과 설명만 읽는 줄이면 false(\"-\"도 두지 않는다). */\n  hasValue?: boolean\n  /**\n   * 넓은 조작(고르기 묶음, 선택 상자)은 줄이 좁으면 이름 아래로 내려 전체 폭을 쓴다.\n   * 스위치 같은 작은 조작은 좁아도 이름 옆에 둔다.\n   */\n  wide?: boolean\n}\n\n/** 설정 한 줄: 왼쪽에 이름과 설명, 오른쪽에 값이나 조작. 줄 높이 44px 이상, 안쪽 12px. */\nexport function SettingsRow({ label, description, children, hasValue = true, wide = false }: SettingsRowProps) {\n  return (\n    <Field\n      orientation={wide ? \"responsive\" : \"horizontal\"}\n      className=\"min-h-11 p-3 has-[>[data-slot=field-content]]:items-center @md/field-group:has-[>[data-slot=field-content]]:items-center\"\n    >\n      <FieldContent>\n        <FieldTitle>{label}</FieldTitle>\n        {description && <FieldDescription>{description}</FieldDescription>}\n      </FieldContent>\n      {hasValue && (children ?? <span className=\"text-muted-foreground\">-</span>)}\n    </Field>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/settings/SettingsRow.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

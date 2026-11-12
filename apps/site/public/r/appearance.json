@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "appearance",
+  "title": "화면 설정",
+  "description": "모드(시스템 · 라이트 · 다크)와 목록 높이를 이 브라우저에 남기고 html의 data-theme · data-density로 반영한다.",
+  "files": [
+    {
+      "path": "src/shared/lib/appearance.ts",
+      "content": "import { useSyncExternalStore } from \"react\"\r\n\r\n/**\r\n * 화면 설정(호호코워크 shared/lib/appearance): 모드와 목록 높이. 고르면 바로 바뀌고 이 브라우저에만 남는다.\r\n * 모드는 html의 data-theme(light · dark), 목록 높이는 html의 data-density로 CSS가 읽는다.\r\n * 토큰(tailwind.css)의 dark 변형이 [data-theme=dark]를 보므로 .dark 클래스는 쓰지 않는다.\r\n */\r\nexport type Mode = \"system\" | \"light\" | \"dark\"\r\nexport type Density = \"spacious\" | \"compact\"\r\nexport type Appearance = { mode: Mode; density: Density }\r\n\r\nconst KEY = \"appearance\"\r\nconst DEFAULT: Appearance = { mode: \"system\", density: \"spacious\" }\r\nconst listeners = new Set<() => void>()\r\nconst darkQuery = () => window.matchMedia(\"(prefers-color-scheme: dark)\")\r\n\r\nfunction read(): Appearance {\r\n  try {\r\n    return { ...DEFAULT, ...JSON.parse(localStorage.getItem(KEY) ?? \"{}\") }\r\n  } catch {\r\n    return DEFAULT\r\n  }\r\n}\r\n\r\nlet current = typeof window === \"undefined\" ? DEFAULT : read()\r\n\r\n/** html에 지금 설정을 반영한다. 앱이 시작할 때 한 번, 바꿀 때마다 부른다. */\r\nexport function applyAppearance() {\r\n  const isDark = current.mode === \"dark\" || (current.mode === \"system\" && darkQuery().matches)\r\n  document.documentElement.dataset.theme = isDark ? \"dark\" : \"light\"\r\n  document.documentElement.dataset.density = current.density\r\n}\r\n\r\nexport function setAppearance(change: Partial<Appearance>) {\r\n  current = { ...current, ...change }\r\n  try {\r\n    localStorage.setItem(KEY, JSON.stringify(current))\r\n  } catch {\r\n    // 저장할 수 없어도 이번 화면에는 반영한다.\r\n  }\r\n  applyAppearance()\r\n  listeners.forEach(listener => listener())\r\n}\r\n\r\nconst subscribe = (listener: () => void) => {\r\n  listeners.add(listener)\r\n  const query = darkQuery()\r\n  const onSystem = () => { if (current.mode === \"system\") applyAppearance() }\r\n  query.addEventListener(\"change\", onSystem)\r\n  return () => { listeners.delete(listener); query.removeEventListener(\"change\", onSystem) }\r\n}\r\n\r\nexport function useAppearance(): Appearance {\r\n  return useSyncExternalStore(subscribe, () => current, () => DEFAULT)\r\n}\r\n",
+      "type": "registry:lib",
+      "target": "src/shared/lib/appearance.ts"
+    }
+  ],
+  "type": "registry:lib"
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label",
+  "title": "label",
+  "description": "shadcn label(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+  "dependencies": [
+    "cn@^0.5.2"
+  ],
+  "registryDependencies": [
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/label.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { cn } from \"cn\"\n\nfunction Label({ className, ...props }: React.ComponentProps<\"label\">) {\n  return (\n    <label\n      data-slot=\"label\"\n      className={cn(\n        \"flex items-center gap-2 text-sm leading-none font-medium select-none group-data-[disabled=true]:pointer-events-none group-data-[disabled=true]:opacity-50 peer-disabled:cursor-not-allowed peer-disabled:opacity-50\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Label }\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/label.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}

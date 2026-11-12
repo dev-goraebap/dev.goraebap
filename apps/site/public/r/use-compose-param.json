@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-compose-param",
+  "title": "useComposeParam",
+  "description": "따로 라우트가 없는 만들기 양식을 ?compose=1로 주소에 남겨 새로고침 · 뒤로 가기를 따르게 한다(TanStack Router).",
+  "dependencies": [
+    "@tanstack/react-router@^1.170.0"
+  ],
+  "files": [
+    {
+      "path": "src/shared/lib/use-compose-param.ts",
+      "content": "import { useLocation, useNavigate, useRouter } from \"@tanstack/react-router\"\n\ndeclare module \"@tanstack/react-router\" {\n  interface HistoryState {\n    /** 이 페이지에서 ?compose를 달아 양식을 연 기록의 표시. 있으면 닫기가 한 걸음 뒤로 가서 기록에 양식이 남지 않는다. */\n    composeOpenedHere?: boolean\n  }\n}\n\nconst KEY = \"compose\"\n\n/**\n * 지금 페이지 위에 연 만들기 · 고치기 양식(?compose=1). 따로 라우트가 없는 양식이 주소에 남아 새로고침 · 뒤로 가기를 따른다:\n * 데스크톱은 페이지 위 대화상자, 휴대폰은 페이지 자리를 대신하는 양식이 이 표시를 읽는다.\n * close는 연 기록이면 한 걸음 뒤로, 아니면 표시를 뗀 주소로 바꾼다. done은 양식 자리를 다른 주소(만든 것의 상세)로 바꾼다.\n */\nexport function useComposeParam() {\n  const router = useRouter()\n  const navigate = useNavigate()\n  const location = useLocation()\n  const { [KEY]: flag, ...rest } = location.search as Record<string, unknown>\n  return {\n    isOpen: flag !== undefined,\n    open: () => void navigate({\n      to: location.pathname,\n      search: (current: Record<string, unknown>) => ({ ...current, [KEY]: 1 }),\n      state: current => ({ ...current, composeOpenedHere: true }),\n    }),\n    close: () => {\n      if (location.state.composeOpenedHere) return router.history.back()\n      void navigate({ to: location.pathname, search: rest, replace: true })\n    },\n    done: (href: string) => void navigate({ to: href, replace: true }),\n  }\n}\n",
+      "type": "registry:hook",
+      "target": "src/shared/lib/use-compose-param.ts"
+    }
+  ],
+  "type": "registry:hook"
+}

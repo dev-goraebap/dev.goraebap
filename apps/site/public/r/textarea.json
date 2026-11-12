@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "title": "textarea",
+  "description": "shadcn textarea(base-nova)의 Webcraft 판: 글자 16px(휴대폰 브라우저가 확대하지 않게), 안쪽 여백 12px. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+  "dependencies": [
+    "cn@^0.5.2"
+  ],
+  "registryDependencies": [
+    "@webcraft/theme"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/textarea.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"cn\"\n\nfunction Textarea({ className, ...props }: React.ComponentProps<\"textarea\">) {\n  return (\n    <textarea\n      data-slot=\"textarea\"\n      className={cn(\n        \"flex field-sizing-content min-h-16 w-full rounded-lg border border-input bg-transparent px-3 py-2 text-[1rem] transition-colors outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:bg-input/50 disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 md:text-sm dark:disabled:bg-input/80 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Textarea }\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/textarea.tsx"
+    }
+  ],
+  "type": "registry:ui"
+}
