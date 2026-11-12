@@ -1,4 +1,5 @@
 import '@/shared/ui/foundations/base.css';
+import '@/shared/styles/tailwind.css';
 import '../shared/styles/samples.css';
 import { createRootRoute, createRoute, createRouter, redirect, RouterProvider } from '@tanstack/react-router';
 import { createRoot } from 'react-dom/client';

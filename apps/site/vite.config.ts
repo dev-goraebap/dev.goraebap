@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import mdx from '@mdx-js/rollup';
 import rehypeShiki from '@shikijs/rehype';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import rehypeSlug from 'rehype-slug';
 import remarkFrontmatter from 'remark-frontmatter';
@@ -34,6 +35,7 @@ export default defineConfig({
       }),
     },
     react({ include: /\.(jsx|tsx|md|mdx)$/ }),
+    tailwindcss(),
     bootCover({ mark: readFileSync(local('src/shared/loading/rocket-still.svg'), 'utf8'), modeKey: 'guide-theme',
       include: path => path === '/index.html' }),
   ],

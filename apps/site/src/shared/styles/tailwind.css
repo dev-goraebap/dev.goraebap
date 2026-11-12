@@ -1,0 +1,280 @@
+/*
+ * shadcn/ui(Base UI) + Tailwind CSS v4의 토큰과 유틸리티. 값은 apps/demo의 테마와 같다.
+ * Astryx를 걷어 내기 전까지 함께 돈다: 레이어 순서(index.html · sample.html 맨 앞)가 Tailwind의 theme · base를 Astryx보다
+ * 앞에, components · utilities를 뒤에 두어 preflight가 Astryx를 덮지 않고 유틸리티는 모든 것을 이긴다.
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* 사이트의 라이트 · 다크는 html[data-theme]가 정한다(entities/preferences). */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+/* 화면 설정의 목록 높이가 촘촘하게일 때(html[data-density=compact]). 페이지 목록 · 표의 줄 높이에만 쓴다. */
+@custom-variant compact (&:where([data-density=compact] *));
+
+@theme inline {
+    --font-heading: var(--font-sans);
+    --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+    --font-mono: 'JetBrains Mono Variable', 'SF Mono', Consolas, monospace;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/*
+ * 호호코워크(web/src/app/theme/linear.ts · boot.ts)의 값을 shadcn 토큰에 옮긴다. 면은 네 단계다.
+ *   바닥 --sidebar(사이드바 · 하단 줄) < 페이지 --background < 올린 면 --card(+ 가는 테두리) < 뜬 면 --popover(+ 그림자)
+ * 강조색은 글자색(검정 · 흰색)이고, 나머지 회색은 글자색을 면에 섞어 만든다.
+ */
+:root {
+    --background: #f9f9fa;
+    --foreground: #1b1b1b;
+    --sidebar: #efeff0;
+    --card: color-mix(in srgb, var(--background) 25%, #ffffff);
+    --card-foreground: var(--foreground);
+    --popover: color-mix(in srgb, var(--background) 15%, #ffffff);
+    --popover-foreground: var(--foreground);
+    --primary: var(--foreground);
+    --primary-foreground: #ffffff;
+    --secondary: color-mix(in srgb, var(--foreground) 10%, var(--background));
+    --secondary-foreground: var(--foreground);
+    --muted: #ececed;
+    --muted-foreground: #5c5c5e;
+    --accent: color-mix(in srgb, var(--foreground) 4%, transparent);
+    --accent-foreground: var(--foreground);
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: color-mix(in srgb, var(--foreground) 13%, var(--background));
+    --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
+    --ring: color-mix(in srgb, var(--foreground) 72%, var(--background));
+    --icon-muted: #6b6b6f;
+    --pressed: color-mix(in srgb, var(--foreground) 7%, transparent);
+    --shadow-color: rgb(0 0 0 / 0.04);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    /* 요소 8px. 묶음(카드)은 xl(약 12px), 앱 본문 면은 2xl(16px에 가깝게 아래 --radius-surface). */
+    --radius: 0.5rem;
+    --radius-surface: 1rem;
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--foreground);
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: var(--pressed);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
+    /* 업무 표식 색(상태 · 우선순위). 모양과 함께 색으로도 구분한다. */
+    --mark-backlog: #d7d7da;
+    --mark-progress: #524622;
+    --mark-done: #374c36;
+    --mark-urgent: #c62f39;
+    --mark-high: #b8550b;
+    --mark-medium: #8b6900;
+    --mark-low: #2865c3;
+    /* 빈 상태 그림의 파란 표시. */
+    --illustration-accent: #4a7fd4;
+    /* 일정 분류 색(호호코워크 Linear 테마의 범주 색): 막대 · 블록 바탕(--event-*)과 그 위 글자 · 점(--event-*-foreground). 휴일 · 일요일과 토요일 글자. */
+    --event-blue: #d7e4f5;
+    --event-blue-foreground: #3c4856;
+    --event-green: #d0e9ce;
+    --event-green-foreground: #374c36;
+    --event-orange: #ffdcbb;
+    --event-orange-foreground: #5b4227;
+    --event-purple: #e8dff3;
+    --event-purple-foreground: #4b4454;
+    --event-red: #f9dcd7;
+    --event-red-foreground: #58413e;
+    --event-teal: #d4e7dc;
+    --event-teal-foreground: #3b4a41;
+    --event-pink: #f0dde8;
+    --event-pink-foreground: #52424c;
+    --event-yellow: #f4e1b7;
+    --event-yellow-foreground: #524622;
+    --event-gray: #e3e3e4;
+    --event-gray-foreground: #46464b;
+    --day-off: #d1242f;
+    --saturday: #0969da;
+}
+
+[data-theme=dark] {
+    --background: #121213;
+    --foreground: #f7f8f8;
+    --sidebar: #09090a;
+    --card: color-mix(in srgb, var(--foreground) 3%, var(--background));
+    --popover: color-mix(in srgb, var(--foreground) 6%, var(--background));
+    --primary-foreground: color-mix(in srgb, var(--background) 85%, #000000);
+    --secondary: color-mix(in srgb, var(--foreground) 13%, var(--background));
+    --muted: #232326;
+    --muted-foreground: #8a8f98;
+    --accent: color-mix(in srgb, var(--foreground) 5%, transparent);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: color-mix(in srgb, var(--foreground) 11%, var(--background));
+    --input: color-mix(in srgb, var(--foreground) 16%, var(--background));
+    --icon-muted: #8a8f98;
+    --pressed: color-mix(in srgb, var(--foreground) 8%, transparent);
+    --shadow-color: rgb(0 0 0 / 0.3);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --mark-backlog: #5e5e61;
+    --mark-progress: #d7c59c;
+    --mark-done: #b4cdb2;
+    --mark-urgent: #f17880;
+    --mark-high: #efa15f;
+    --mark-medium: #e6c45b;
+    --mark-low: #79a7ee;
+    --illustration-accent: #6ea2ef;
+    --event-blue: #485362;
+    --event-blue-foreground: #d7e4f5;
+    --event-green: #425841;
+    --event-green-foreground: #d0e9ce;
+    --event-orange: #684d32;
+    --event-orange-foreground: #ffdcbb;
+    --event-purple: #564f60;
+    --event-purple-foreground: #e8dff3;
+    --event-red: #644d49;
+    --event-red-foreground: #f9dcd7;
+    --event-teal: #46564d;
+    --event-teal-foreground: #d4e7dc;
+    --event-pink: #5e4e57;
+    --event-pink-foreground: #f0dde8;
+    --event-yellow: #5e512d;
+    --event-yellow-foreground: #f4e1b7;
+    --event-gray: #303032;
+    --event-gray-foreground: #e2e2e8;
+    --day-off: #ff7b72;
+    --saturday: #6cb6ff;
+}
+
+/*
+ * 글자와 분기점. 데스크톱 본문 13px(text-sm) · 큰 본문 15px(text-base), 휴대폰은 15px · 17px.
+ * 휴대폰과 데스크톱은 64rem(1024px)에서 갈린다(호호코워크 MOBILE_QUERY). md: 는 이 분기점이다.
+ */
+@theme {
+    --breakpoint-md: 64rem;
+    --text-sm: 0.8125rem;
+    --text-sm--line-height: 1.5;
+    --text-base: 0.9375rem;
+    --text-base--line-height: 1.6;
+    --color-icon-muted: var(--icon-muted);
+    --color-pressed: var(--pressed);
+    /* 목록 줄을 가리킬 때 · 그룹 머리 띠. 둘 다 불투명해 점 무늬와 지나가는 줄이 비치지 않는다. */
+    --color-row-hover: color-mix(in srgb, var(--foreground) 4%, var(--background));
+    --color-band: color-mix(in srgb, var(--muted) 55%, var(--background));
+    /* 읽지 않은 줄의 바탕과 그 줄을 가리키거나 고를 때. */
+    --color-unread: color-mix(in srgb, var(--foreground) 9%, var(--background));
+    --color-unread-strong: color-mix(in srgb, var(--foreground) 14%, var(--background));
+    --color-mark-backlog: var(--mark-backlog);
+    --color-mark-progress: var(--mark-progress);
+    --color-mark-done: var(--mark-done);
+    --color-mark-urgent: var(--mark-urgent);
+    --color-mark-high: var(--mark-high);
+    --color-mark-medium: var(--mark-medium);
+    --color-mark-low: var(--mark-low);
+    --color-illustration-accent: var(--illustration-accent);
+    /* 빈 상태 설명: 보조 아이콘 색보다 한 단계 연하게. */
+    --color-state-description: color-mix(in srgb, var(--icon-muted) 75%, var(--background));
+    --radius-surface: 1rem;
+    --shadow-surface: 0 1px 2px var(--shadow-color), 0 0 0 1px var(--border);
+    /* 일정 분류 색과 요일 색(bg-event-blue · text-event-blue-foreground · text-day-off …). */
+    --color-event-blue: var(--event-blue);
+    --color-event-blue-foreground: var(--event-blue-foreground);
+    --color-event-green: var(--event-green);
+    --color-event-green-foreground: var(--event-green-foreground);
+    --color-event-orange: var(--event-orange);
+    --color-event-orange-foreground: var(--event-orange-foreground);
+    --color-event-purple: var(--event-purple);
+    --color-event-purple-foreground: var(--event-purple-foreground);
+    --color-event-red: var(--event-red);
+    --color-event-red-foreground: var(--event-red-foreground);
+    --color-event-teal: var(--event-teal);
+    --color-event-teal-foreground: var(--event-teal-foreground);
+    --color-event-pink: var(--event-pink);
+    --color-event-pink-foreground: var(--event-pink-foreground);
+    --color-event-yellow: var(--event-yellow);
+    --color-event-yellow-foreground: var(--event-yellow-foreground);
+    --color-event-gray: var(--event-gray);
+    --color-event-gray-foreground: var(--event-gray-foreground);
+    --color-day-off: var(--day-off);
+    --color-saturday: var(--saturday);
+}
+@media (width < 64rem) {
+    :root { --text-xs: 0.8125rem; --text-sm: 0.9375rem; --text-base: 1.0625rem; }
+}
+
+/* 빈 상태 메시지가 살짝 떠오른다(PageState). */
+@keyframes page-state-enter {
+    from { opacity: 0; transform: translateY(0.375rem); }
+    to { opacity: 1; transform: none; }
+}
+
+/* 페이지 바탕의 점 무늬(호호코워크 페이지 면). 줄 · 카드는 자기 바탕을 칠해 점을 가린다. */
+@utility bg-dots {
+    background-image: radial-gradient(color-mix(in srgb, var(--foreground) 12%, transparent) 1px, transparent 1px);
+    background-size: 1rem 1rem;
+}
+
+/* 모서리를 초타원으로(지원하는 브라우저만). 메뉴 항목 · 만들기 버튼 · 앱 본문 면에 쓴다. */
+@utility squircle {
+    corner-shape: squircle;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* Pretendard 450: 호호코워크 본문 굵기. */
+    font-weight: 450;
+  }
+  html {
+    @apply font-sans;
+    /* 27인치 QHD 이상: 1920px부터 루트 글자를 키워 2560px에서 19px. 크기가 모두 rem이라 화면 전체가 함께 커진다. */
+    @media (min-width: 1920px) {
+      font-size: max(100%, min(118.75%, 19px, calc(100% + 0.46875vw - 9px)));
+    }
+  }
+  /* 스크롤바: 얇고 트랙 없이, 평소 옅고 가리키면 진하게. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--foreground) 16%, transparent) transparent;
+  }
+  *:hover {
+    scrollbar-color: color-mix(in srgb, var(--foreground) 28%, transparent) transparent;
+  }
+}

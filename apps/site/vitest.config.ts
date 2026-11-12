@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/vite";
 import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vitest/config";
 import { stylexForOwnSource } from "./stylex-plugin";
@@ -7,7 +8,7 @@ import { stylexForOwnSource } from "./stylex-plugin";
 export default defineConfig({
   root: fileURLToPath(new URL(".", import.meta.url)),
   cacheDir: `node_modules/.cache/kit-tests${process.env.KIT_TEST_PORT ? `-${process.env.KIT_TEST_PORT}` : ""}`,
-  plugins: [stylexForOwnSource()],
+  plugins: [stylexForOwnSource(), tailwindcss()],
   esbuild: { jsx: "automatic" },
   resolve: {
     alias: { "@": fileURLToPath(new URL("./src", import.meta.url)), "@samples": fileURLToPath(new URL("./samples", import.meta.url)) },

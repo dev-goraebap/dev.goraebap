@@ -1,5 +1,5 @@
 /* 앱 진입점에서 한 번 읽는다. 레이어 순서를 UI 모듈보다 먼저 고정해 런타임 테마 삽입이 reset을 이기지 않게 한다. */
-@layer reset, astryx-base, astryx-theme, app;
+@layer theme, base, reset, astryx-base, astryx-theme, app, components, utilities;
 @import '@astryxdesign/core/reset.css';
 @import '@astryxdesign/core/astryx.css';
 /*

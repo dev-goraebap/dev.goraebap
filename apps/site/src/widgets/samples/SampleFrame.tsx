@@ -1,4 +1,5 @@
 import '@/shared/ui/foundations/base.css';
+import '@/shared/styles/tailwind.css';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { loadSample, type SampleEntry } from '@samples/catalog/registry';
 import { SampleView } from '@samples/catalog/SampleView';
