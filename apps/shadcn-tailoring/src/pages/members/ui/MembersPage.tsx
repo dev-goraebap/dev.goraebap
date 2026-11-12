@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from "react"
-import { useMembers } from "@/entities/member"
+import { Suspense, useEffect, useMemo, useState } from "react"
+import { DEPARTMENTS, useMembers } from "@/entities/member"
 import { useDialogMember, useProfileRoute } from "@/shared/lib/profile-route"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { Button } from "@/shared/ui/button"
@@ -9,11 +9,11 @@ import { Page, PageViews, type PageView } from "@/shared/ui/page"
 import { SearchTool } from "@/shared/ui/search-tool"
 import { PageState } from "@/shared/ui/page-state"
 import { Skeleton } from "@/shared/ui/skeleton"
+import { LazyPyramidFlow } from "@/widgets/department-pyramid"
 import { ProfileDialog } from "@/widgets/person-profile"
 import { memberFilters, visibleMembers } from "../model/filters"
 import { MemberList } from "./MemberList"
 import { MembersTable } from "./MembersTable"
-import { OrgChart } from "./OrgChart"
 
 type View = "list" | "chart"
 
@@ -39,7 +39,7 @@ function ListSkeleton() {
 
 /**
  * 구성원(호호코워크 MembersPage): 목록 · 조직도 두 뷰. 목록은 찾기 · 부서 · 상태로 좁히고, 데스크톱은 표, 휴대폰은
- * 부서별 줄. 조직도는 부서 피라미드. 사람을 누르면 데스크톱은 목록 위 프로필 대화상자(주소는 /members/{id}),
+ * 부서별 줄. 조직도는 끌고 확대하는 캔버스 위의 부서 피라미드. 사람을 누르면 데스크톱은 목록 위 프로필 대화상자(주소는 /members/{id}),
  * 휴대폰은 프로필 페이지.
  */
 export function MembersPage() {
@@ -66,7 +66,16 @@ export function MembersPage() {
 
   const body = () => {
     if (isPending) return <ListSkeleton />
-    if (!isList) return <OrgChart members={members} onOpen={id => void profile.open(id)} />
+    if (!isList) {
+      // 캔버스 라이브러리는 이 뷰와 함께 불러온다. 다 올 때까지 면은 비워 둔다(호호코워크와 같음).
+      const current = dialogMember && !isMobile ? members.find(member => member.id === dialogMember)?.departmentId ?? null : null
+      return (
+        <Suspense fallback={null}>
+          <LazyPyramidFlow departments={DEPARTMENTS} members={members} current={current}
+            onOpen={id => void profile.open(id)} />
+        </Suspense>
+      )
+    }
     if (shown.length === 0) {
       return (
         <PageState kind="search" title="조건에 맞는 구성원이 없습니다" description="찾는 말이나 필터를 바꾸거나 지워 보세요."
