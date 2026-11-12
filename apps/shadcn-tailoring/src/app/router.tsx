@@ -13,7 +13,7 @@ import { ProjectMembersPage } from "@/pages/project-members"
 import { ProjectSettingsPage } from "@/pages/project-settings"
 import { ProfilePage } from "@/pages/profile"
 import { ProjectsPage } from "@/pages/projects"
-import { SchedulePage } from "@/pages/schedule"
+import { ScheduleDayPage, ScheduleEventPage, SchedulePage } from "@/pages/schedule"
 import { SearchDialog, SearchPage } from "@/pages/search"
 import { SettingsPage } from "@/pages/settings"
 import { WorkItemDetailPage } from "@/pages/work-item-detail"
@@ -75,6 +75,8 @@ export const router = createRouter({
     route(paths.notifications, NotificationsPage),
     route(`${paths.notifications}/$notificationId`, NotificationsPage),
     route(paths.schedule, SchedulePage),
+    route(`${paths.schedule}/days/$day`, ScheduleDayPage),
+    route(`${paths.schedule}/events/$eventId`, ScheduleEventPage),
     route(paths.display, SettingsPage),
     route(paths.profile, ProfilePage),
     route(paths.members, MembersPage),
