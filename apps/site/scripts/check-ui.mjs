@@ -10,14 +10,10 @@ import { fileURLToPath } from "node:url"
 // shadcn add로 만든 부품(SHADCN)은 FSD와 아이콘 규칙만 본다(스타일은 생성물의 관례를 따른다). demo는 shared/ui 바로 아래의
 // 파일을 모두 생성물로 보지만, 여기서는 이름으로 골라 우리가 쓴 부품(action-menu · segmented-control …)도 스타일을 검사한다.
 //
-// 사이트는 Astryx 키트에서 옮겨 가는 중이라 src 전체가 아니라 아래 TARGETS만 검사한다. 화면을 shadcn으로 옮기면
-// 그 폴더를 TARGETS에 더하고, Astryx를 걷어 내면 src 전체로 넓힌다. EXCLUDE는 옛 Astryx 키트 폴더다.
-// 사이트 화면(app · pages · widgets · entities와 shared의 markdown · loading · config · styles)은 옮겼다. 견본(samples/)은 src 밖이라
-// 여기서 보지 않는다.
+// 사이트 전체(src와 견본 samples)를 검사한다. 견본은 FSD 계층 밖(앱처럼 어느 계층이든 가져온다)이라 스타일 · 아이콘 규칙만 본다.
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../src")
-const TARGETS = ["shared/ui", "shared/lib", "shared/markdown", "shared/loading", "shared/config", "shared/styles", "entities", "widgets", "pages", "app"]
-const EXCLUDE = ["shared/ui/foundations", "shared/ui/composites", "shared/ui/layouts", "shared/ui/patterns"]
+const site = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
+const TARGETS = ["src", "samples"]
 const LAYERS = ["app", "pages", "widgets", "features", "entities", "shared"]
 const PALETTE = /\b(?:bg|text|border|ring|fill|stroke|from|to|via|outline|decoration|shadow)-(?:red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|neutral|stone)-\d{2,3}\b/
 const SPACE = /\bspace-[xy]-/
@@ -28,23 +24,24 @@ const SHADCN = new Set(["alert-dialog", "alert", "avatar", "badge", "breadcrumb"
   "select", "separator", "sheet", "sidebar", "skeleton", "spinner", "switch", "table", "tabs", "textarea", "toast", "toggle-group",
   "toggle", "tooltip"])
 
-const relative = file => path.relative(root, file).split(path.sep).join("/")
+const relative = file => path.relative(site, file).split(path.sep).join("/")
+/** src 안의 경로(계층/슬라이스/…). src 밖이면 undefined. */
+const inSrc = file => /^src\/(.*)$/.exec(relative(file))?.[1]
 const files = []
 function walk(dir) {
   if (!fs.existsSync(dir)) return
   for (const name of fs.readdirSync(dir)) {
     const file = path.join(dir, name)
-    if (EXCLUDE.includes(relative(file))) continue
     if (fs.statSync(file).isDirectory()) walk(file)
     else if (/\.(tsx?|css)$/.test(name) && !name.endsWith(".generated.ts")) files.push(file)
   }
 }
-TARGETS.forEach(target => walk(path.join(root, target)))
+TARGETS.forEach(target => walk(path.join(site, target)))
 
 const problems = []
 const report = (file, line, message) => problems.push(`${relative(file)}:${line} ${message}`)
 const where = file => {
-  const [layer, slice] = relative(file).split("/")
+  const [layer, slice] = (inSrc(file) ?? "").split("/")
   return { layer, slice: layer === "app" || layer === "shared" ? layer : slice }
 }
 
@@ -52,7 +49,7 @@ for (const file of files) {
   const source = fs.readFileSync(file, "utf8")
   const lines = source.split("\n")
   const from = where(file)
-  const isGenerated = SHADCN.has(/^shared\/ui\/([^/]+)\.tsx$/.exec(relative(file))?.[1] ?? "")
+  const isGenerated = SHADCN.has(/^shared\/ui\/([^/]+)\.tsx$/.exec(inSrc(file) ?? "")?.[1] ?? "")
   lines.forEach((text, index) => {
     const line = index + 1
     const imported = /from\s+["']([^"']+)["']/.exec(text)?.[1]

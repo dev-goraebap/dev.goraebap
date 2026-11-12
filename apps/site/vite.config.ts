@@ -9,7 +9,6 @@ import remarkFrontmatter from 'remark-frontmatter';
 import remarkGfm from 'remark-gfm';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import { defineConfig } from 'vite';
-import { stylexForOwnSource } from './stylex-plugin';
 import { THEME_KEY } from './src/shared/config/preferences';
 import { bootCover } from './src/shared/ui/boot-cover/plugin';
 import { guideContent, rehypeSkillLinks, rehypeDiagrams } from './content-plugin';
@@ -22,7 +21,6 @@ export default defineConfig({
   root: local('.'),
   publicDir: local('public'),
   plugins: [
-    stylexForOwnSource(),
     guideContent(),
     {
       enforce: 'pre',
@@ -44,7 +42,7 @@ export default defineConfig({
   ],
   resolve: {
     alias: { '@samples': local('samples'), '@': local('src') },
-    dedupe: ['react', 'react-dom', '@mdx-js/react', '@astryxdesign/core', '@astryxdesign/theme-stone'],
+    dedupe: ['react', 'react-dom', '@mdx-js/react'],
   },
   server: { port: 4451, fs: { allow: [local('../..')] } },
   preview: { port: 4451 },

@@ -75,7 +75,7 @@ function ShortForm() {
 
 const meta = {
   title: "Composites (조합 부품)/공통 다이얼로그", id: "composites-dialog",
-  layout: "centered", height: "28rem", kit: "shadcn",
+  layout: "centered", height: "28rem",
 } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;

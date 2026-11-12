@@ -4,7 +4,7 @@ import { Comparison } from "../catalog/Comparison";
 
 /** 키트 아바타는 원형 하나이고 크기는 className의 size-*로 정한다(기본 20px: 목록 줄 · 활동). 그림이 없으면 이름 첫 글자. */
 const meta = {
-  title: "Primitives (기본 부품)/아바타", id: "primitives-avatar", component: Avatar, layout: "centered", kit: "shadcn",
+  title: "Primitives (기본 부품)/아바타", id: "primitives-avatar", component: Avatar, layout: "centered",
   args: { name: "서윤", className: "size-6" },
 } satisfies Meta<typeof Avatar>;
 export default meta;

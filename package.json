@@ -14,7 +14,7 @@
     "site:preview": "npm --prefix apps/site run preview --",
     "site:check": "npm --prefix apps/site run check",
     "site:test": "npm --prefix apps/site run test",
-    "site:icons": "npm --prefix apps/site run icons",
+    "site:icons": "npm --prefix apps/site run icons:ui",
     "site:sizes": "npm --prefix apps/site run sizes"
   }
 }

@@ -4,7 +4,7 @@ import { FileTextIcon, FolderIcon, UserIcon } from "@/shared/ui/icon"
 
 /**
  * Playground 견본의 앱 셸(shadcn 키트). 견본 하나는 앱의 한 구역만 보이므로, 처음 연 구역 밖의 메뉴는 누를 수 없게 하고
- * 실제 앱처럼 보이도록 누를 수 없는 "작업 공간" 묶음을 덧붙인다. 옛 PlaygroundFrame(Astryx)을 대신한다.
+ * 실제 앱처럼 보이도록 누를 수 없는 "작업 공간" 묶음을 덧붙인다.
  * 링크는 키트 셸이 라우터 Link로 그리므로 견본 앱의 라우터 안에 둔다.
  */
 export function PlaygroundShell({ space, pathname, ...props }: AppShellProps) {

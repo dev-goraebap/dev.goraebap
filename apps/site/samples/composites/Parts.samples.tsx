@@ -56,7 +56,7 @@ const states: [StateKind, string, string][] = [
   ["error", "자료를 불러오지 못했습니다", "잠시 후 다시 시도해 주세요."],
 ];
 
-const meta = { title: "Composites (조합 부품)/속성·올리기·본문·상태", id: "composites-parts", layout: "centered", height: "22rem", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Composites (조합 부품)/속성·올리기·본문·상태", id: "composites-parts", layout: "centered", height: "22rem" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

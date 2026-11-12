@@ -15,7 +15,7 @@ function Primitive() {
     </DialogContent>
   </Dialog>;
 }
-const meta = { title: "Primitives (기본 부품)/Dialog", id: "primitives-dialog", layout: "centered", height: "22rem", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Primitives (기본 부품)/Dialog", id: "primitives-dialog", layout: "centered", height: "22rem" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 export const Basic: Sample = { name: "shadcn 기본 모달", render: () => <Primitive /> };

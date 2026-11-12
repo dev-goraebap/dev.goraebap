@@ -21,7 +21,7 @@ function FirstVisit() {
 const meta = {
   title: "Patterns (사용 패턴)/데이터 상태", id: "patterns-data-states", component: LibraryApp,
   layout: "fullscreen", height: "34rem",
-  device: "desktop", kit: "shadcn",
+  device: "desktop",
 } satisfies Meta<typeof LibraryApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

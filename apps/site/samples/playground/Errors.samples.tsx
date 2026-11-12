@@ -7,7 +7,7 @@ import { ErrorsApp } from "./errors/app/ErrorsApp";
  */
 const meta = {
   title: "Playground (플레이그라운드)/오류·권한 페이지", id: "playground-errors", component: ErrorsApp,
-  layout: "fullscreen", height: "40rem", device: "desktop", kit: "shadcn",
+  layout: "fullscreen", height: "40rem", device: "desktop",
 } satisfies Meta<typeof ErrorsApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

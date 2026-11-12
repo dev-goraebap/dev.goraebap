@@ -3,7 +3,7 @@ import { Badge } from "@/shared/ui/badge";
 import { FileTextIcon } from "@/shared/ui/icon";
 import { Comparison } from "../catalog/Comparison";
 
-const meta = { title: "Primitives (기본 부품)/라벨·상태·개수", id: "primitives-labels", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Primitives (기본 부품)/라벨·상태·개수", id: "primitives-labels", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

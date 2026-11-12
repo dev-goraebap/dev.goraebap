@@ -4,7 +4,7 @@ import { SearchIcon } from "@/shared/ui/icon";
 import { Input } from "@/shared/ui/input";
 import { Comparison } from "../catalog/Comparison";
 
-const meta = { title: "Foundations (디자인 기초)/간격과 크기", id: "foundations-spacing", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Foundations (디자인 기초)/간격과 크기", id: "foundations-spacing", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

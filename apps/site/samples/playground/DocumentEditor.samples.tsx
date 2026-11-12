@@ -8,7 +8,7 @@ import { DocumentEditorApp } from "./document-editor/app/DocumentEditorApp";
  */
 const meta = {
   title: "Playground (플레이그라운드)/문서 편집기", id: "playground-document-editor", component: DocumentEditorApp,
-  layout: "fullscreen", height: "46rem", device: "desktop", kit: "shadcn",
+  layout: "fullscreen", height: "46rem", device: "desktop",
 } satisfies Meta<typeof DocumentEditorApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

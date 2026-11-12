@@ -3,7 +3,7 @@ import { Button } from "@/shared/ui/button";
 import { PageState } from "@/shared/ui/page-state";
 import { useState } from "react";
 
-const meta = { title: "Foundations (디자인 기초)/모션", id: "foundations-motion", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Foundations (디자인 기초)/모션", id: "foundations-motion", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

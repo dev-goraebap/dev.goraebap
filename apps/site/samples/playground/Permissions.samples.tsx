@@ -7,7 +7,7 @@ import { AdminSample } from "./admin-sample";
  */
 const meta = {
   title: "Playground (플레이그라운드)/권한 설정", id: "playground-permissions", component: AdminSample,
-  layout: "fullscreen", height: "44rem", device: "desktop", kit: "shadcn",
+  layout: "fullscreen", height: "44rem", device: "desktop",
 } satisfies Meta<typeof AdminSample>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

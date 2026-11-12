@@ -8,7 +8,7 @@ import { InboxApp } from "./inbox/app/InboxApp";
 const meta = {
   title: "Playground (플레이그라운드)/인박스", id: "playground-inbox", component: InboxApp,
   layout: "fullscreen", height: "38rem",
-  device: "desktop", kit: "shadcn",
+  device: "desktop",
 } satisfies Meta<typeof InboxApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

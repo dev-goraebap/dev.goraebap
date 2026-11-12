@@ -17,7 +17,7 @@
 demo에서 가져오지 않은 것: 제품 표시(`brand`), 목업 로그인(`session`), 구성원 프로필 주소(`profile-route`), 주소 설정(`shared/config`), 호호코워크 기본 아바타 그림(`lib/avatar`). 그래서 `PersonAvatar`는 그림을 넘기지 않으면 이름 첫 글자를 보인다.
 
 - `components.json`의 별칭이 `@/shared/ui` · `@/shared/lib`이므로 `npx shadcn@latest add <부품>`은 이 폴더에 만든다. 받은 뒤 `lucide-react` import를 `@/shared/ui/icon`으로 바꾸고, 없는 이름은 `generate-ui-icons.mjs`에 더한다.
-- `npm run check:ui`가 새 키트에 demo와 같은 화면 규칙(FSD, 의미 토큰, 팔레트 색 · `dark:` 색 · `space-*` 금지, `style={{}}`은 `// check-ui: allow-style <사유>`가 있을 때만, lucide 금지)을 건다. 화면을 옮기면 `scripts/check-ui.mjs`의 `TARGETS`에 더한다.
+- `npm run check:ui`가 사이트 전체(`src` · `samples`)에 demo와 같은 화면 규칙(FSD, 의미 토큰, 팔레트 색 · `dark:` 색 · `space-*` 금지, `style={{}}`은 `// check-ui: allow-style <사유>`가 있을 때만, lucide 금지)을 건다. 견본은 FSD 계층 밖이라 FSD 규칙은 보지 않는다.
 
 ## 레지스트리
 

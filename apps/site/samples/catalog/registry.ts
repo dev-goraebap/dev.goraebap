@@ -1,4 +1,4 @@
-import type { Device, Kit, Layout, Meta, Sample, SampleModule } from "./types";
+import type { Device, Layout, Meta, Sample, SampleModule } from "./types";
 
 /** 모든 견본 파일. 필요한 파일만 불러온다. */
 const loaders = import.meta.glob<SampleModule>("../**/*.samples.tsx");
@@ -12,12 +12,7 @@ export type SampleEntry = {
   layout: Layout;
   height?: string;
   device: Device;
-  /** 견본 틀이 깔 키트(types.ts의 Kit). 묶음의 meta.kit, 없으면 astryx. */
-  kit: Kit;
 };
-
-/** 옮기는 동안의 기본은 astryx다. 견본 틀(SampleView)과 견본 iframe(SampleFrame)이 같은 판단을 쓰도록 여기 하나만 둔다. */
-export const kitOf = (meta: Meta): Kit => meta.kit ?? "astryx";
 
 const kebab = (key: string) => key.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
 
@@ -30,7 +25,7 @@ export function samplesOf(module: SampleModule): (SampleEntry & { sample: Sample
       return {
         id: `${meta.id}/${kebab(key)}`, group: meta.id, key, name: sample.name,
         layout: sample.layout ?? meta.layout ?? "centered", height: sample.height ?? meta.height,
-        device: sample.device ?? meta.device ?? "desktop", kit: kitOf(meta), sample, meta,
+        device: sample.device ?? meta.device ?? "desktop", sample, meta,
       };
     });
 }

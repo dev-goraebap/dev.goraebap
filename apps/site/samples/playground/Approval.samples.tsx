@@ -7,7 +7,7 @@ import { ApprovalApp } from "./approval/app/ApprovalApp";
  */
 const meta = {
   title: "Playground (플레이그라운드)/결재 신청", id: "playground-approval", component: ApprovalApp,
-  layout: "fullscreen", height: "40rem", device: "desktop", kit: "shadcn",
+  layout: "fullscreen", height: "40rem", device: "desktop",
 } satisfies Meta<typeof ApprovalApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

@@ -14,7 +14,7 @@ test('도표를 계산하는 동안 문서 전체 높이가 늘어나지 않는�
   let frame = 0;
   const tick = () => { sample(); frame = requestAnimationFrame(tick); };
   frame = requestAnimationFrame(tick);
-  const view = render(<div style={{ height: '100%', overflow: 'auto' }}>
+  const view = render(<div className="h-full overflow-auto">
     <Diagram data-diagram={'flowchart TD\n A[첫 단계] --> B[다음 단계]'} />
     <Diagram data-diagram={'flowchart LR\n C[요청] --> D[응답]'} />
   </div>, { container: host });

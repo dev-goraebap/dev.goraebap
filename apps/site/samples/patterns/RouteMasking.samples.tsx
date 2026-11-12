@@ -6,7 +6,7 @@ import { createResourceApi } from "../playground/library/mocks/resource-api";
 const meta = {
   title: "Patterns (사용 패턴)/라우트 마스킹", id: "patterns-route-masking", component: LibraryApp,
   layout: "fullscreen", height: "38rem",
-  device: "desktop", kit: "shadcn",
+  device: "desktop",
   render: args => <LibraryApp {...args} api={createResourceApi({ delay: 30 })} />,
 } satisfies Meta<typeof LibraryApp>;
 export default meta;

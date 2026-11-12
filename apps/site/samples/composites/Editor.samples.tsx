@@ -47,7 +47,7 @@ function InDialog() {
 
 const empty: JSONContent = { type: "doc", content: [{ type: "paragraph" }] };
 
-const meta = { title: "Composites (조합 부품)/리치 에디터", id: "composites-editor", layout: "padded", height: "44rem", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Composites (조합 부품)/리치 에디터", id: "composites-editor", layout: "padded", height: "44rem" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

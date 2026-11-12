@@ -44,7 +44,7 @@ export function Tools({ query = "", state: start = {} }: { query?: string; state
   </div>;
 }
 
-const meta = { title: "Composites (조합 부품)/검색·필터·표시", id: "composites-list-tools", layout: "centered", height: "24rem", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Composites (조합 부품)/검색·필터·표시", id: "composites-list-tools", layout: "centered", height: "24rem" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

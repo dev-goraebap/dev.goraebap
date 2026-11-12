@@ -1,7 +1,6 @@
 /*
  * shadcn/ui(Base UI) + Tailwind CSS v4의 토큰과 유틸리티. 값은 apps/demo의 테마와 같다.
- * Astryx를 걷어 내기 전까지 함께 돈다: 레이어 순서(index.html · sample.html 맨 앞)가 Tailwind의 theme · base를 Astryx보다
- * 앞에, components · utilities를 뒤에 두어 preflight가 Astryx를 덮지 않고 유틸리티는 모든 것을 이긴다.
+ * 레이어 순서(theme · base · components · utilities)는 Tailwind가 정한다. 사이트와 견본 모두 이 파일을 가장 먼저 읽는다.
  */
 @import "tailwindcss";
 @import "tw-animate-css";

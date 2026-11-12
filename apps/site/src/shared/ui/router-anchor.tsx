@@ -4,8 +4,7 @@ import type { ComponentProps, MouseEvent } from "react"
 /**
  * 주소(href)만 아는 곳의 링크: Markdown · MDX 본문, 서버가 준 HTML의 a처럼 TanStack Link의 to로 바꿀 수 없는 것.
  * 앱 주소를 그냥 누르면 페이지를 다시 읽지 않고 라우터로 옮기고, 보조 키 · 새 창 · 다른 사이트 · 이미 막은 누름은 브라우저에 맡긴다.
- * 키트 부품의 링크는 Base UI의 render(<Link to />)나 RowLink(createLink)로 라우터에 바로 이어지므로 이것으로 감쌀 일이 없다
- * (Astryx의 LinkProvider 같은 전역 연결은 두지 않는다).
+ * 키트 부품의 링크는 Base UI의 render(<Link to />)나 RowLink(createLink)로 라우터에 바로 이어지므로 이것으로 감쌀 일이 없다.
  */
 export function RouterAnchor({ href, target, onClick, ...props }: ComponentProps<"a">) {
   const router = useRouter()

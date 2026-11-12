@@ -16,7 +16,7 @@ const tokens: [token: string, label: string, chip: string][] = [
   ["--ring", "키보드 초점", "bg-ring"],
 ];
 
-const meta = { title: "Foundations (디자인 기초)/테마와 색상", id: "foundations-theme", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Foundations (디자인 기초)/테마와 색상", id: "foundations-theme", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

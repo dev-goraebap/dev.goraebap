@@ -195,7 +195,7 @@ function Frame({ children }: { children: ReactNode }) {
 const meta = {
   title: "Layouts (레이아웃)/페이지", id: "layouts-page",
   layout: "fullscreen", height: "34rem",
-  device: "desktop", kit: "shadcn", path: "/items",
+  device: "desktop", path: "/items",
 } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;

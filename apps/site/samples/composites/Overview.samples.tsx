@@ -18,7 +18,7 @@ function ChoiceMenu() {
   </AdaptivePopover>;
 }
 
-const meta = { title: "Composites (조합 부품)/사용 기준", id: "composites-overview", layout: "centered", height: "16rem", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Composites (조합 부품)/사용 기준", id: "composites-overview", layout: "centered", height: "16rem" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

@@ -61,7 +61,7 @@ export function Shell({ layout: chosen, space = demoSpace, rowCount = 8, openGro
 const meta = {
   title: "Layouts (레이아웃)/앱 셸", id: "layouts-app-shell",
   layout: "fullscreen", height: "38rem",
-  device: "desktop", kit: "shadcn", path: "/items",
+  device: "desktop", path: "/items",
 } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;

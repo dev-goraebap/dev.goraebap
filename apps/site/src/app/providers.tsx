@@ -24,7 +24,7 @@ const mdxComponents = { a: DocLink, table: Table, div: Diagram, img: ZoomImage, 
 
 /**
  * 사이트 루트(라우터의 루트 라우트 부품): 화면 설정, 알림(Toaster), MDX 본문 부품. 툴팁 제공자는 키트 AppShell이 둔다.
- * Astryx 시절의 ReferenceTheme · LinkProvider는 두지 않는다: 키트 부품은 TanStack Link를 직접 쓰고 다크는 html의 data-theme이 정한다.
+ * 키트 부품은 TanStack Link를 직접 쓰고 다크는 html의 data-theme이 정한다.
  */
 export function SiteApp() {
   return <PreferencesProvider>

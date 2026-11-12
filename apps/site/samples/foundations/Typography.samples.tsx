@@ -1,6 +1,6 @@
 import type { Meta, SampleOf } from "../catalog/types";
 
-const meta = { title: "Foundations (디자인 기초)/글자", id: "foundations-typography", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Foundations (디자인 기초)/글자", id: "foundations-typography", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

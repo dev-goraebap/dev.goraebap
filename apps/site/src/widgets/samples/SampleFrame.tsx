@@ -34,7 +34,7 @@ function useReportSize(isInline: boolean) {
     if (!isInline) return undefined;
     const frame = document.querySelector<HTMLElement>('[data-sample-frame]');
     if (!frame) return undefined;
-    // 틀 바로 아래의 요소들이 견본이다(shadcn 견본의 라우터는 DOM을 더하지 않는다).
+    // 틀 바로 아래의 요소들이 견본이다(견본의 라우터는 DOM을 더하지 않는다).
     const parts = () => [...frame.children];
     const report = () => {
       const width = Math.max(0, ...parts().map(child => child.getBoundingClientRect().width));
@@ -50,21 +50,11 @@ function useReportSize(isInline: boolean) {
 
 type Entry = SampleEntry & { sample: Sample; meta: Meta };
 
-/**
- * 견본 하나를 키트의 CSS와 함께 불러온다. 견본 iframe 하나에는 견본 하나만 있으므로 키트 CSS를 견본마다 고를 수 있다:
- * shadcn 견본은 Tailwind 토큰과 글꼴만, Astryx 견본은 그 위에 Astryx CSS(foundations/base.css)를 더 읽는다.
- * CSS가 붙은 뒤에 그려 Astryx 견본이 맨 모양으로 한 번 비치지 않게 한다.
- */
-async function loadWithStyles(id: string): Promise<Entry | null> {
-  const found = await loadSample(id);
-  if (found?.kit === 'astryx') await import('@/shared/ui/foundations/base.css');
-  return found ?? null;
-}
 
 export function SampleFrame({ id }: { id: string }) {
   const mode = useSyncExternalStore(subscribe, readMode, () => 'light' as Mode);
   const [entry, setEntry] = useState<Entry | null>();
-  useEffect(() => { void loadWithStyles(id).then(setEntry); }, [id]);
+  useEffect(() => { void loadSample(id).then(found => setEntry(found ?? null)); }, [id]);
   const isEmbedded = window.parent !== window;
   // 큰 화면에서 가이드는 루트 글자를 키운다(tailwind.css). 견본 iframe은 폭이 1280px라 그 규칙을 받지 못하므로
   // 데스크톱으로 보는 부품 견본은 가이드의 루트 글자 크기를 쓴다. 앱 화면 견본은 셸이 창 폭으로 크기를 정하므로 두지 않는다.

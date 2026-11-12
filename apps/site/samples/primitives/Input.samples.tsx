@@ -6,7 +6,7 @@ import { Textarea } from "@/shared/ui/textarea";
 import { useId, useState, type ReactNode } from "react";
 import { Comparison } from "../catalog/Comparison";
 
-const meta = { title: "Primitives (기본 부품)/입력", id: "primitives-input", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Primitives (기본 부품)/입력", id: "primitives-input", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

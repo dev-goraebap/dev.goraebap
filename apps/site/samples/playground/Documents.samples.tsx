@@ -4,7 +4,7 @@ import { LibrarySample } from "./library-sample";
 /** 가운데 컨테이너의 문서 카드·행 목록, 컬렉션과 작성 페이지, 상세의 편집 단추가 여는 수정 화면(제목과 본문만)을 다룹니다. */
 const meta = {
   title: "Playground (플레이그라운드)/문서함", id: "playground-documents",
-  layout: "fullscreen", height: "40rem", device: "desktop", kit: "shadcn",
+  layout: "fullscreen", height: "40rem", device: "desktop",
 } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;

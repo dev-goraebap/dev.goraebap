@@ -3,7 +3,7 @@ import * as icons from "@/shared/ui/icon";
 import { FolderIcon, LibraryIcon, ListFilterIcon, ListIcon, MoreHorizontalIcon, StarIcon, type Icon } from "@/shared/ui/icon";
 import { Comparison } from "../catalog/Comparison";
 
-const meta = { title: "Foundations (디자인 기초)/아이콘", id: "foundations-icons", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Foundations (디자인 기초)/아이콘", id: "foundations-icons", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

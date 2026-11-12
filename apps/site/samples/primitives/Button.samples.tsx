@@ -6,7 +6,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
 import { Comparison } from "../catalog/Comparison";
 
 const meta = {
-  title: "Primitives (기본 부품)/버튼", id: "primitives-button", component: Button, layout: "centered", kit: "shadcn",
+  title: "Primitives (기본 부품)/버튼", id: "primitives-button", component: Button, layout: "centered",
   args: { children: "저장", variant: "default" },
 } satisfies Meta<typeof Button>;
 export default meta;

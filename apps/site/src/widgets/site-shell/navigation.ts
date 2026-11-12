@@ -7,8 +7,7 @@ import {
 } from '@/shared/ui/icon';
 
 /**
- * 문서 목록(content-plugin)이 이름으로 적은 아이콘을 키트 아이콘 부품으로 바꾼다. 이름과 그림은 Astryx 이름표(generate-icons.mjs)와
- * 같은 Solar라 옮긴 뒤에도 메뉴 그림이 같다. 목록에 새 이름을 쓰면 여기에 더한다(없으면 문서 아이콘).
+ * 문서 목록(content-plugin)이 이름으로 적은 아이콘을 키트 아이콘 부품으로 바꾼다. 목록에 새 이름을 쓰면 여기에 더한다(없으면 문서 아이콘).
  */
 const ICONS: Record<string, Icon> = {
   archive: ArchiveIcon, attachment: PaperclipIcon, book: BookIcon, clock: ClockIcon, copy: CopyIcon, edit: PenSquareIcon, grip: GripIcon,

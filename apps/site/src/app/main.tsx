@@ -1,4 +1,3 @@
-// 사이트 화면은 shadcn 키트만 쓴다(Astryx의 base.css를 읽지 않는다). Astryx 견본은 sample.html의 iframe에서 따로 그린다.
 import '@/shared/styles/tailwind.css';
 import '@/shared/styles/site.css';
 import { createRootRoute, createRoute, createRouter, redirect, RouterProvider } from '@tanstack/react-router';

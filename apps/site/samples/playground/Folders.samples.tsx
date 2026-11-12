@@ -7,7 +7,7 @@ import { FoldersApp } from "./folders/app/FoldersApp";
  */
 const meta = {
   title: "Playground (플레이그라운드)/폴더 탐색", id: "playground-folders", component: FoldersApp,
-  layout: "fullscreen", height: "40rem", device: "desktop", kit: "shadcn",
+  layout: "fullscreen", height: "40rem", device: "desktop",
 } satisfies Meta<typeof FoldersApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

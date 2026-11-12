@@ -6,7 +6,7 @@ import { Input } from "@/shared/ui/input";
 import { PersonAvatar as Avatar } from "@/shared/ui/person-avatar";
 import { Comparison } from "../catalog/Comparison";
 
-const meta = { title: "Primitives (기본 부품)/사용 기준", id: "primitives-overview", layout: "centered", kit: "shadcn" } satisfies Meta;
+const meta = { title: "Primitives (기본 부품)/사용 기준", id: "primitives-overview", layout: "centered" } satisfies Meta;
 export default meta;
 type Sample = SampleOf<typeof meta>;
 

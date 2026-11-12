@@ -8,7 +8,7 @@ import { ThreadApp } from "./thread/app/ThreadApp";
 const meta = {
   title: "Playground (플레이그라운드)/댓글·대화", id: "playground-thread", component: ThreadApp,
   layout: "fullscreen", height: "38rem",
-  device: "desktop", kit: "shadcn",
+  device: "desktop",
 } satisfies Meta<typeof ThreadApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

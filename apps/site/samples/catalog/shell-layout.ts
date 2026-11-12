@@ -27,7 +27,7 @@ function subscribe(listener: () => void) {
 
 /**
  * 견본 앱의 셸 배치(Inset·Split). 배치마다 견본을 따로 두지 않고 가이드 화면 설정의 전환 하나로 모든 견본이 같은 배치로
- * 바뀐다. 견본 앱은 셸의 layout에 이 값을 넘긴다(Astryx AppFrame과 키트 AppShell의 값이 같다: 'inset' · 'split').
+ * 바뀐다. 견본 앱은 키트 AppShell의 layout에 이 값('inset' · 'split')을 넘긴다.
  */
 export function useShellLayout(): ShellLayout {
   return useSyncExternalStore(subscribe, read, () => 'inset');
