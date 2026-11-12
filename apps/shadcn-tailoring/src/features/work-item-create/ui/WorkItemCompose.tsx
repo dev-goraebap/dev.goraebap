@@ -5,11 +5,15 @@ import {
 } from "@/entities/work-item"
 import { useProject } from "@/entities/project"
 import { paths, projectPath } from "@/shared/config"
+import { carryDraft, useCarriedDraft } from "@/shared/lib/panel"
 import { ComposeFields, ComposeSurface, PlaceChip } from "@/shared/ui/compose"
 import { ChartNoAxesColumnIcon, ListChecksIcon, ProjectsIcon, SquareCheckIcon, TagIcon, UserIcon } from "@/shared/ui/icon"
 import { DatePill, OptionPill } from "@/shared/ui/property-pill"
 import { toast } from "@/shared/ui/toast"
 import { blankDraft, draftColumn, isReady, toNewWorkItem, type WorkItemDraft } from "../model/draft"
+
+/** 크게 보기로 넘기는 쓰던 내용의 이름. */
+const CARRY_KEY = "work-item-new"
 
 /**
  * 새 업무(호호코워크 NewWorkItem): 제목과 본문을 종이 위에 쓰고, 유형 · 상태 · 우선순위 · 담당자 · 라벨 · 기한을 알약으로 고른다.
@@ -29,7 +33,9 @@ export function WorkItemCompose({ projectKey, surface, status, onClose, onExpand
   const columns = useStatusColumns(projectKey)
   const projectName = useProject(projectKey).data?.name ?? projectKey
   const crumbs = [{ label: "프로젝트", href: paths.projects }, { label: projectName, icon: ProjectsIcon, href: projectPath(projectKey) }, { label: "새 업무" }]
-  const [draft, setDraft] = useState(() => blankDraft(status))
+  // 크게 보기로 넘어온 쓰던 내용이 있으면 그것으로 시작한다(대화상자 → 페이지).
+  const carried = useCarriedDraft<WorkItemDraft>(CARRY_KEY)
+  const [draft, setDraft] = useState(() => carried ?? blankDraft(status))
   const [isContinuing, setContinuing] = useState(false)
   const set = (patch: Partial<WorkItemDraft>) => setDraft(current => ({ ...current, ...patch }))
   const submit = () => create.mutate(toNewWorkItem(draft, columns), {
@@ -41,7 +47,7 @@ export function WorkItemCompose({ projectKey, surface, status, onClose, onExpand
   })
   return (
     <ComposeSurface surface={surface} crumbs={crumbs} chip={<PlaceChip icon={<ProjectsIcon />} label={projectName} />}
-      isContinuing={isContinuing} onContinuing={setContinuing} onClose={onClose} onExpand={onExpand}
+      isContinuing={isContinuing} onContinuing={setContinuing} onClose={onClose} onExpand={onExpand && (() => { carryDraft(CARRY_KEY, draft); onExpand() })}
       submit={{ label: "만들기", onSubmit: submit, isDisabled: !isReady(draft), isPending: create.isPending }}
       pills={<>
         <OptionPill label="유형" icon={ListChecksIcon} value={draft.type} onChange={type => set({ type })}

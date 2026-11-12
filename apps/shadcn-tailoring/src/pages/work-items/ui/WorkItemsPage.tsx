@@ -1,5 +1,5 @@
 import { useNavigate, useSearch } from "@tanstack/react-router"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useCurrentProject } from "@/entities/project"
 import { ME, useStatusColumns, useWorkItems } from "@/entities/work-item"
 import { useNewWorkItemPanel, useOpenNewWorkItem, WorkItemCompose } from "@/features/work-item-create"
@@ -54,10 +54,6 @@ export function WorkItemsPage() {
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const openCreate = useOpenNewWorkItem()
   const panel = useNewWorkItemPanel()
-  // 휴대폰에는 대화상자가 없다: 열린 채 좁아지면 같은 양식을 페이지로 바꾼다.
-  const shouldExpand = panel.isOpen && isMobile
-  const expandPanel = panel.expand
-  useEffect(() => { if (shouldExpand) expandPanel() }, [shouldExpand])
 
   const items = useMemo(() => {
     const shown = sortItems(applyFilters(data ?? [], filters.state, columns), display)
