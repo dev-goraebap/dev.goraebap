@@ -4,8 +4,6 @@ import {
   categoryLabel, copyAnnouncementLink, momentText, useAnnouncement, useDeleteAnnouncement, useMarkAnnouncementRead, type Announcement,
 } from "@/entities/announcement"
 import { paths } from "@/shared/config"
-import { useComposeParam } from "@/shared/lib/use-compose-param"
-import { useIsMobile } from "@/shared/lib/use-mobile"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
@@ -17,6 +15,8 @@ import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { DetailLayout, MarkdownBody, type DetailSection } from "@/shared/ui/reading"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
+import { composeTarget, editHref } from "../model/address"
+import { useOpenPanel, usePanel } from "../model/panel"
 import { AnnouncementCompose } from "./AnnouncementCompose"
 import { AnnouncementFiles } from "./AnnouncementFiles"
 
@@ -118,23 +118,23 @@ function NotFound() {
 }
 
 /**
- * 공지 상세(호호코워크 AnnouncementPage): 경로 공지사항 › 제목, 머리 줄 끝에 페이지 메뉴. 수정은 데스크톱에서 이 공지 위
- * 대화상자, 휴대폰에서는 이 자리를 대신하는 양식 페이지다(?compose). 휴대폰은 앱 바의 ← 가 공지사항으로 간다.
+ * 공지 상세(호호코워크 AnnouncementPage): 경로 공지사항 › 제목, 머리 줄 끝에 페이지 메뉴. 수정(/announcements/{id}/edit)은
+ * 데스크톱에서 이 공지 위 대화상자(주소창에는 그 페이지 주소), 휴대폰은 그 페이지로 간다. 저장하면 대화상자를 닫는다.
+ * 휴대폰은 앱 바의 ← 가 공지사항으로 간다.
  */
 export function AnnouncementPage() {
   const { announcementId = "" } = useParams({ strict: false })
   const { data: notice } = useAnnouncement(announcementId)
-  const isMobile = useIsMobile()
-  const compose = useComposeParam()
-  const editor = notice && compose.isOpen && (
-    <AnnouncementCompose key={notice.id} notice={notice} surface={isMobile ? "page" : "dialog"} onClose={compose.close} onSaved={compose.close} />
-  )
-  if (editor && isMobile) return editor
+  const openPanel = useOpenPanel()
+  const panel = usePanel()
+  const isEditing = composeTarget(panel.pathname)?.id === announcementId
   return (
     <Page crumbs={[{ label: "공지사항", href: paths.announcements }, { label: notice?.title ?? "공지", icon: MegaphoneIcon }]} isFullScreen
-      actions={notice && <AnnouncementMenu notice={notice} onEdit={compose.open} />}>
+      actions={notice && <AnnouncementMenu notice={notice} onEdit={() => openPanel(editHref(notice.id))} />}>
       {notice === undefined ? <DetailSkeleton /> : notice === null ? <NotFound /> : <AnnouncementDetail notice={notice} />}
-      {editor}
+      {notice && isEditing && (
+        <AnnouncementCompose key={notice.id} notice={notice} surface="dialog" onClose={panel.close} onExpand={panel.expand} onSaved={panel.close} />
+      )}
     </Page>
   )
 }

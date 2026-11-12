@@ -10,6 +10,7 @@ import { MegaphoneIcon, PinIcon, TagIcon } from "@/shared/ui/icon"
 import { type Crumb } from "@/shared/ui/page"
 import { OptionPill, PropertyPill } from "@/shared/ui/property-pill"
 import { toast } from "@/shared/ui/toast"
+import { carryDraft, useCarriedDraft } from "../model/panel"
 
 const TITLE_MAX = 200
 
@@ -37,19 +38,25 @@ function FeatureFields({ draft, onChange }: { draft: AnnouncementDraft; onChange
 }
 
 /**
- * 새 공지 · 공지 수정(호호코워크 AnnouncementCompose): 제목과 본문(Markdown)을 쓰고 분류와 고정 · 중요를 알약으로 고른다.
- * 게시하면 바로 모든 구성원에게 보인다(임시 저장 없음). 데스크톱은 목록 · 공지 위 대화상자, 휴대폰은 자기 페이지(ComposeSurface).
+ * 새 공지(/announcements/new) · 공지 수정(/announcements/{id}/edit)(호호코워크 AnnouncementCompose): 제목과 본문(Markdown)을 쓰고
+ * 분류와 고정 · 중요를 알약으로 고른다. 게시하면 바로 모든 구성원에게 보인다(임시 저장 없음).
+ * 데스크톱에서 목록 · 공지의 버튼으로 열면 그 위 대화상자, 링크 · 새로고침 · 크게 보기와 휴대폰은 자기 페이지(ComposeSurface).
+ * 크게 보기는 쓰던 내용을 페이지로 넘긴다.
  */
-export function AnnouncementCompose({ notice, surface, onClose, onSaved }: {
+export function AnnouncementCompose({ notice, surface, onClose, onExpand, onSaved }: {
   /** 고칠 공지. 없으면 새 공지다. */
   notice?: Announcement
   surface: "dialog" | "page"
   onClose: () => void
+  /** 크게 보기: 같은 양식을 자기 페이지로. 대화상자에만 있다. */
+  onExpand?: () => void
   onSaved: (id: string) => void
 }) {
   const create = useCreateAnnouncement()
   const update = useUpdateAnnouncement()
-  const [draft, setDraft] = useState(() => draftOf(notice))
+  const carryKey = `announcement:${notice?.id ?? "new"}`
+  const carried = useCarriedDraft<AnnouncementDraft>(carryKey)
+  const [draft, setDraft] = useState(() => carried ?? draftOf(notice))
   const set = (patch: Partial<AnnouncementDraft>) => setDraft(current => ({ ...current, ...patch }))
   const clean = { ...draft, title: draft.title.trim(), body: draft.body.trim() }
   const submit = () => {
@@ -74,6 +81,7 @@ export function AnnouncementCompose({ notice, surface, onClose, onSaved }: {
     : [{ label: "공지사항", href: paths.announcements }, { label: "새 공지" }]
   return (
     <ComposeSurface surface={surface} crumbs={crumbs} chip={<PlaceChip icon={<MegaphoneIcon />} label="모든 구성원" />} onClose={onClose}
+      onExpand={onExpand && (() => { carryDraft(carryKey, draft); onExpand() })}
       submit={{
         label: notice ? "저장" : "게시", onSubmit: submit,
         isDisabled: !clean.title || !clean.body, isPending: create.isPending || update.isPending,

@@ -109,5 +109,8 @@ export function mockMeetings(): Meeting[] {
     note: seed.note,
     transcript: seed.transcript ?? [],
     failure: seed.failure,
+    // 예시 회의록의 녹음은 받아쓴 뒤 지운 것으로 둔다(이름과 크기만).
+    audio: { id: `audio-${201 + index}`, name: `${seed.day} ${seed.title}.m4a`, size: (18 + index * 7) * 1024 * 1024, type: "audio/mp4" },
+    photos: [],
   }))
 }

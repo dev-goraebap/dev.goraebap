@@ -2,7 +2,9 @@ export { useCreateMeeting, useDeleteMeeting, useMeeting, useMeetings, useUpdateM
 export { ME, PEOPLE, PROJECTS } from "./api/mock"
 export { copyMeetingLink, meetingHref } from "./lib/copy"
 export {
-  MEETING_STATUSES, PROGRESS, clockText, heldText, isInProgress, minutesMarkdown, progressOf, rowHeldText, statusMark, type MeetingProgress,
+  MEETING_STATUSES, PROGRESS, clockText, sizeText, heldText, isInProgress, minutesMarkdown, progressOf, rowHeldText, statusMark, type MeetingProgress,
 } from "./model/format"
-export type { Meeting, MeetingActionItem, MeetingDraft, MeetingStatus, Person, TranscriptLine } from "./model/types"
+export type {
+  Meeting, MeetingActionItem, MeetingDraft, MeetingEvent, MeetingFile, MeetingStatus, NewMeeting, Person, TranscriptLine,
+} from "./model/types"
 export { MeetingStatusBadge } from "./ui/MeetingStatusBadge"

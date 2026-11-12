@@ -1,11 +1,11 @@
-import { Page } from "@/shared/ui/page"
-import { PageState } from "@/shared/ui/page-state"
+import { useParams } from "@tanstack/react-router"
+import { ReportSurface } from "./ReportSurface"
 
-/** 주간보고(자리만 잡은 페이지). */
+/**
+ * 보고 하나의 자기 페이지(/weekly-reports/{id}): 링크 · 새로고침 · 크게 보기, 그리고 휴대폰은 늘 여기로 온다
+ * (데스크톱에서 목록의 줄을 누르면 목록 위 대화상자다).
+ */
 export function WeeklyReportPage() {
-  return (
-    <Page crumbs={[{ label: "주간보고" }]} isFullScreen>
-      <PageState kind="empty" title="주간보고을 준비하고 있습니다" />
-    </Page>
-  )
+  const { reportId = "" } = useParams({ strict: false }) as { reportId?: string }
+  return <ReportSurface key={reportId} id={reportId} surface="page" />
 }

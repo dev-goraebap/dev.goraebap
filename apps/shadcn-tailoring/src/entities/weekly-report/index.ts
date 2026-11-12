@@ -1,6 +1,7 @@
 export { ME, TEAM, WEEKS } from "./api/mock"
-export { useMyWeeklyReport, useSaveWeeklyReport, useWeekReports, useWeeklyReport, type MyWeeklyReport } from "./api/use-weekly-reports"
+export { useMyWeeklyReport, useSaveWeeklyReport, useWeekReports, useWeeklyReport, useWeeklyReportById, type MyWeeklyReport } from "./api/use-weekly-reports"
 export { REPORT_STATES, isSubmitted, reportState, summaryOf } from "./model/states"
 export type { ReportMember, ReportParts, ReportState, SaveWeeklyReport, WeeklyReport } from "./model/types"
 export { dueText, isDay, mondayOf, momentText, shiftWeek, thisMonday, weekName, weekShortText, weekText } from "./model/weeks"
 export { ReportStateBadge } from "./ui/ReportStateBadge"
+export { reportIdOf, weeklyReportHref, weeklyReportWriteHref } from "./model/address"

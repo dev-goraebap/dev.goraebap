@@ -24,6 +24,7 @@ import { DetailLayout, MarkdownBody, type DetailSection } from "@/shared/ui/read
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
 import { MeetingCompose } from "./MeetingCompose"
+import { MeetingFiles } from "./MeetingFiles"
 
 type Tab = "minutes" | "transcript"
 const TABS: PageView<Tab>[] = [{ value: "minutes", label: "회의록", icon: MeetingIcon }, { value: "transcript", label: "전사원문", icon: FileTextIcon }]
@@ -84,6 +85,7 @@ function sectionsOf(meeting: Meeting): DetailSection[] {
         <>
           <MeetingStatusBadge status={meeting.status} />
           <InfoPill label="회의 일시" icon={<ClockIcon />}>{heldText(meeting)}</InfoPill>
+          {meeting.event && <InfoPill label="일정" icon={<CalendarIcon />}>{meeting.event.title}</InfoPill>}
           <AttendeesPill people={meeting.attendees} />
         </>
       ),
@@ -137,7 +139,7 @@ function StatusNotice({ meeting }: { meeting: Meeting }) {
   )
 }
 
-/** 읽어 온 회의록: 소속 줄 · 제목 · 상태 안내 · 참고 메모 · 회의록(요약 · 안건 · 결정 사항 · 할 일) 또는 전사원문. */
+/** 읽어 온 회의록: 소속 줄 · 제목 · 상태 안내 · 참고 메모 · 회의록(요약 · 안건 · 결정 사항 · 할 일)과 붙인 파일, 또는 전사원문. */
 function MeetingNotes({ meeting, tab }: { meeting: Meeting; tab: Tab }) {
   const minutes = minutesMarkdown(meeting)
   return (
@@ -161,6 +163,7 @@ function MeetingNotes({ meeting, tab }: { meeting: Meeting; tab: Tab }) {
         : minutes
           ? <MarkdownBody source={minutes} />
           : meeting.status === "completed" && <p className="text-muted-foreground">회의록이 아직 없습니다.</p>}
+      {tab === "minutes" && <MeetingFiles meeting={meeting} />}
     </DetailLayout>
   )
 }
@@ -193,7 +196,8 @@ function NotFound() {
 
 /**
  * 회의록 상세(호호코워크 MeetingPage): 경로 회의록 › 제목, 머리 줄 끝에 페이지 메뉴. 받아쓴 원문이 있으면 툴바에 회의록 · 전사원문 탭.
- * 수정은 데스크톱에서 이 회의록 위 대화상자, 휴대폰에서는 이 자리를 대신하는 양식 페이지다(?compose).
+ * 수정은 데스크톱에서 이 회의록 위 대화상자, 휴대폰에서는 이 자리를 대신하는 양식 페이지다(?compose). 호호코워크에는 회의록
+ * 수정이 없어 자기 주소(/meetings/{id}/edit)도 없으므로 ?compose로 둔다.
  */
 export function MeetingPage() {
   const { meetingId = "" } = useParams({ strict: false })

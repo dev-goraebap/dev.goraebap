@@ -58,3 +58,9 @@ export function clockText(ms: number) {
   const seconds = Math.floor(ms / 1000)
   return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`
 }
+
+/** 파일 크기: 1.2 MB, 340 KB. */
+export function sizeText(bytes: number) {
+  if (bytes >= 1024 * 1024) return `${(bytes / 1024 / 1024).toFixed(1)} MB`
+  return `${Math.max(1, Math.round(bytes / 1024))} KB`
+}

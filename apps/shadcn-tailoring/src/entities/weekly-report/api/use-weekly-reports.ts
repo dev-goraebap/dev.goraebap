@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { isSubmitted } from "../model/states"
 import type { SaveWeeklyReport, WeeklyReport } from "../model/types"
+import { reportIdOf } from "../model/address"
 import { shiftWeek } from "../model/weeks"
 import { ME, mockWeeklyReports } from "./mock"
 
@@ -30,6 +31,11 @@ export function useWeeklyReport(weekStart: string, memberId: string) {
   })
 }
 
+/** 보고 하나(주소의 id). 읽는 동안 undefined, 없으면 null. */
+export function useWeeklyReportById(id: string) {
+  return useQuery({ ...listOptions, select: (reports: WeeklyReport[]) => reports.find(report => report.id === id) ?? null })
+}
+
 /** 한 주의 내 보고(없으면 작성 전 빈 보고)와, 새로 쓸 때 금주 실적의 처음 값이 될 지난주의 차주 계획. */
 export type MyWeeklyReport = { report: WeeklyReport; prefill?: string }
 
@@ -39,7 +45,7 @@ export function useMyWeeklyReport(weekStart: string) {
     select: (reports: WeeklyReport[]): MyWeeklyReport => {
       const mine = (week: string) => reports.find(report => report.isMine && report.weekStart === week)
       const report = mine(weekStart) ?? {
-        id: `${weekStart}:${ME.id}`, weekStart, author: ME, isMine: true, state: "none", thisWeek: "", nextWeek: "", note: "",
+        id: reportIdOf(weekStart, ME.id), weekStart, author: ME, isMine: true, state: "none", thisWeek: "", nextWeek: "", note: "",
       }
       const plan = mine(shiftWeek(weekStart, -1))?.nextWeek
       return { report, prefill: report.state === "none" && plan ? plan : undefined }
@@ -55,7 +61,7 @@ export function useSaveWeeklyReport() {
       const current = client.getQueryData<WeeklyReport[]>(key)?.find(report => report.isMine && report.weekStart === weekStart)
       const wasSubmitted = current ? isSubmitted(current.state) : false
       return {
-        id: `${weekStart}:${ME.id}`, weekStart, author: ME, isMine: true, ...parts,
+        id: reportIdOf(weekStart, ME.id), weekStart, author: ME, isMine: true, ...parts,
         state: submit || wasSubmitted ? "submitted" : "draft",
         submittedAt: submit || wasSubmitted ? new Date().toISOString() : undefined,
       }

@@ -1,3 +1,4 @@
+import { reportIdOf } from "../model/address"
 import { isSubmitted } from "../model/states"
 import type { ReportMember, ReportState, WeeklyReport } from "../model/types"
 import { shiftDay, shiftWeek, thisMonday } from "../model/weeks"
@@ -118,7 +119,7 @@ function reportOf(member: ReportMember, index: number, back: number, monday: str
   const weekStart = shiftWeek(monday, -back)
   const order = WEEKS - 1 - back
   const state: ReportState = back === 0 ? THIS_WEEK[member.id] : MISSED.has(`${member.id}:${back}`) ? "none" : back === 1 && index % 3 === 1 ? "submitted" : "confirmed"
-  const base = { id: `${weekStart}:${member.id}`, weekStart, author: member, isMine: member.id === ME.id, state }
+  const base = { id: reportIdOf(weekStart, member.id), weekStart, author: member, isMine: member.id === ME.id, state }
   if (state === "none") return { ...base, thisWeek: "", nextWeek: "", note: "" }
   return {
     ...base,

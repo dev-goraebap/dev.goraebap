@@ -9,7 +9,7 @@ export type ReportParts = { thisWeek: string; nextWeek: string; note: string }
 
 /** 한 사람의 한 주 보고. 아직 쓰지 않은 주도 state "none"인 보고로 둔다. */
 export type WeeklyReport = ReportParts & {
-  /** `${weekStart}:${author.id}` */
+  /** `${weekStart}-${author.id}`(reportIdOf). 주소 /weekly-reports/{id}에 그대로 쓴다. */
   id: string
   /** 그 주의 월요일(YYYY-MM-DD). */
   weekStart: string

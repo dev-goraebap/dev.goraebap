@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type KeyboardEvent } from "react"
+import { useEffect, useState, type FormEvent, type KeyboardEvent, type RefObject } from "react"
 import {
   ME, WEEKS, dueText, isSubmitted, shiftWeek, useMyWeeklyReport, useSaveWeeklyReport, weekName, weekText,
   type ReportParts, type WeeklyReport,
@@ -9,6 +9,7 @@ import { CalendarIcon } from "@/shared/ui/icon"
 import { OptionPill } from "@/shared/ui/property-pill"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
+import { carryDraft, useCarriedDraft } from "../model/panel"
 
 /** 회사 양식의 세 단계(호호코워크 WeeklyReportCompose). 비고만 비워도 된다. */
 const STEPS: readonly { part: keyof ReportParts; label: string; placeholder: string; required?: string }[] = [
@@ -52,18 +53,30 @@ type FormProps = {
   thisWeek: string
   onWeek: (week: string) => void
   onSaved: (report: WeeklyReport) => void
-  /** 휴대폰의 자기 화면이면 true(바닥 줄을 화면 아래에 붙인다), 데스크톱 대화상자면 false. */
+  /** 자기 페이지면 true(바닥 줄을 화면 아래에 붙인다), 데스크톱 대화상자면 false. */
   isPage: boolean
+  /** 크게 보기 직전에 부르는 맡기기. 양식이 채워 두고, 대화상자의 크게 보기가 부른 뒤 페이지로 간다. */
+  keepRef?: RefObject<(() => void) | undefined>
+  /** 자기 페이지의 취소(대화상자는 머리의 닫기가 맡는다). */
+  onCancel?: () => void
 }
+
+type Carried = { parts: ReportParts; step: number }
+const carryKey = (weekStart: string) => `weekly:${weekStart}`
 
 /**
  * 한 주의 내 보고 양식(호호코워크 PaperForm): 주가 이름이 되는 제목, 마감과 작성자, 단계 표시, 지금 단계의 Markdown 칸, 주 알약.
  * 바닥 줄은 이전 · 임시 저장(제출 전만) · 다음 또는 제출(제출한 보고는 저장). Ctrl/⌘+Enter가 바닥 줄의 주 동작이다.
  */
-function ReportForm({ report, prefill, thisWeek, onWeek, onSaved, isPage }: FormProps) {
+function ReportForm({ report, prefill, thisWeek, onWeek, onSaved, isPage, keepRef, onCancel }: FormProps) {
   const save = useSaveWeeklyReport()
-  const [parts, setParts] = useState<ReportParts>({ thisWeek: report.thisWeek || prefill || "", nextWeek: report.nextWeek, note: report.note })
-  const [step, setStep] = useState(0)
+  const carried = useCarriedDraft<Carried>(carryKey(report.weekStart))
+  const [parts, setParts] = useState<ReportParts>(() => carried?.parts ?? { thisWeek: report.thisWeek || prefill || "", nextWeek: report.nextWeek, note: report.note })
+  const [step, setStep] = useState(() => carried?.step ?? 0)
+  useEffect(() => {
+    if (!keepRef) return
+    keepRef.current = () => carryDraft(carryKey(report.weekStart), { parts, step } satisfies Carried)
+  }, [keepRef, report.weekStart, parts, step])
   const [problem, setProblem] = useState<string>()
   const wasSubmitted = isSubmitted(report.state)
   const isLast = step === STEPS.length - 1
@@ -105,7 +118,7 @@ function ReportForm({ report, prefill, thisWeek, onWeek, onSaved, isPage }: Form
 
   return (
     <form id={WRITE_FORM_ID} onSubmit={submit} onKeyDown={keyDown} className={cn("flex min-h-0 flex-1 flex-col", isPage && "bg-background")}>
-      <div className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto", isPage ? "mx-auto w-full max-w-180 px-4 pt-5 pb-6" : "px-10 pt-8 pb-2")}>
+      <div className={cn("flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto", isPage ? "mx-auto w-full max-w-180 px-4 pt-5 pb-6" : "px-10 pt-1 pb-2")}>
         <div className="flex flex-col gap-1">
           <h1 className="text-xl font-semibold tabular-nums">{weekText(report.weekStart)} 주간보고</h1>
           <p className="text-xs text-muted-foreground tabular-nums">마감 {dueText(report.weekStart)} · {ME.name}</p>
@@ -136,6 +149,7 @@ function ReportForm({ report, prefill, thisWeek, onWeek, onSaved, isPage }: Form
             <Button type="button" variant="ghost" disabled={save.isPending} onClick={() => store(false)} className="max-md:h-11">임시 저장</Button>
           )}
         </span>
+        {onCancel && <Button type="button" variant="ghost" onClick={onCancel} className="max-md:h-11">취소</Button>}
         <Button type="submit" disabled={save.isPending} className="rounded-full px-4 max-md:h-11">
           {isLast ? (wasSubmitted ? "저장" : "제출") : "다음"}
         </Button>
