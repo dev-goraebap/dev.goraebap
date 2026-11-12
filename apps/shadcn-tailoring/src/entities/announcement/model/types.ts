@@ -2,8 +2,11 @@ export type Person = { id: string; name: string }
 
 export type AnnouncementCategory = "general" | "hr" | "welfare" | "system" | "event"
 
-/** 공지에 붙은 파일. 사진이면 isImage. size는 바이트. */
-export type AnnouncementFile = { id: string; name: string; size: number; isImage: boolean }
+/**
+ * 공지에 붙은 파일. 사진이면 isImage. size는 바이트. 서버가 없으므로 이 브라우저에서 붙인 파일은 object URL(url)로 들고 있고
+ * (새로고침하면 사라진다), 예시 공지의 파일은 이름과 크기만 있다.
+ */
+export type AnnouncementFile = { id: string; name: string; size: number; isImage: boolean; url?: string }
 
 /**
  * 모든 구성원에게 내는 공지(호호코워크 AnnouncementDetail). 쓰면 바로 게시된다(임시 저장 없음).
@@ -29,3 +32,9 @@ export type Announcement = {
 
 /** 새 공지 · 공지 수정 양식이 정하는 것. */
 export type AnnouncementDraft = Pick<Announcement, "title" | "body" | "category" | "isPinned" | "isImportant">
+
+/** 새 공지: 양식의 값과 붙일 파일. */
+export type NewAnnouncement = AnnouncementDraft & { files: File[] }
+
+/** 공지 수정: 양식의 값, 새로 붙일 파일, 뺄 첨부의 아이디. */
+export type AnnouncementEdit = { id: string; draft: AnnouncementDraft; add: File[]; remove: string[] }

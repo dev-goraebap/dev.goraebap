@@ -9,7 +9,7 @@ import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import { ClockIcon, EyeIcon, LinkIcon, MegaphoneIcon, PencilIcon, PinIcon, Trash2Icon } from "@/shared/ui/icon"
 import { InfoPill } from "@/shared/ui/info-pill"
-import { Page } from "@/shared/ui/page"
+import { DetailSurface } from "@/shared/ui/detail-surface"
 import { PageState } from "@/shared/ui/page-state"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { DetailLayout, MarkdownBody, type DetailSection } from "@/shared/ui/reading"
@@ -20,15 +20,14 @@ import { useOpenPanel, usePanel } from "@/shared/lib/panel"
 import { AnnouncementCompose } from "./AnnouncementCompose"
 import { AnnouncementFiles } from "./AnnouncementFiles"
 
-/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 삭제는 확인을 받고, 지우면 목록으로 돌아간다. */
-function AnnouncementMenu({ notice, onEdit }: { notice: Announcement; onEdit: () => void }) {
-  const navigate = useNavigate()
+/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 삭제는 확인을 받고, 지우면 onDeleted(페이지는 목록으로, 대화상자는 닫기). */
+function AnnouncementMenu({ notice, onEdit, onDeleted }: { notice: Announcement; onEdit: () => void; onDeleted: () => void }) {
   const remove = useDeleteAnnouncement()
   const [isConfirming, setConfirming] = useState(false)
   const confirm = () => remove.mutate(notice.id, {
     onSuccess: () => {
       toast.add({ type: "success", title: "공지를 지웠습니다", description: notice.title })
-      void navigate({ to: paths.announcements, replace: true })
+      onDeleted()
     },
   })
   return (
@@ -118,23 +117,45 @@ function NotFound() {
 }
 
 /**
- * 공지 상세(호호코워크 AnnouncementPage): 경로 공지사항 › 제목, 머리 줄 끝에 페이지 메뉴. 수정(/announcements/{id}/edit)은
- * 데스크톱에서 이 공지 위 대화상자(주소창에는 그 페이지 주소), 휴대폰은 그 페이지로 간다. 저장하면 대화상자를 닫는다.
- * 휴대폰은 앱 바의 ← 가 공지사항으로 간다.
+ * 공지 하나가 놓이는 곳(호호코워크 AnnouncementPage + DetailSurface). page: 자기 페이지, 경로 공지사항 › 제목과 머리 줄 끝의 메뉴.
+ * dialog: 데스크톱에서 목록의 줄이 연 대화상자(최대 60rem), 머리에 메뉴 · 크게 보기 · 닫기.
+ * 수정(/announcements/{id}/edit)은 데스크톱에서 대화상자로 연다: 페이지면 이 공지 위에, 대화상자면 그 자리를 바꾼다.
+ */
+export function AnnouncementSurface({ id, surface, onClose, onExpand }: {
+  id: string
+  surface: "dialog" | "page"
+  onClose?: () => void
+  onExpand?: () => void
+}) {
+  const navigate = useNavigate()
+  const { data: notice } = useAnnouncement(id)
+  const openPanel = useOpenPanel()
+  const leave = () => (surface === "dialog" && onClose ? onClose() : void navigate({ to: paths.announcements, replace: true }))
+  return (
+    <DetailSurface surface={surface} title="공지사항" onClose={onClose} onExpand={onExpand}
+      crumbs={[{ label: "공지사항", href: paths.announcements }, { label: notice?.title ?? "공지", icon: MegaphoneIcon }]}
+      actions={notice && <AnnouncementMenu notice={notice} onEdit={() => openPanel(editHref(notice.id))} onDeleted={leave} />}>
+      {notice === undefined ? <DetailSkeleton /> : notice === null ? <NotFound /> : <AnnouncementDetail notice={notice} />}
+    </DetailSurface>
+  )
+}
+
+/**
+ * 공지 상세의 자기 페이지(/announcements/{id}): 링크 · 새로고침 · 크게 보기, 그리고 휴대폰은 늘 여기로 온다(데스크톱에서 목록의
+ * 줄을 누르면 목록 위 대화상자다). 이 페이지에서 연 수정은 데스크톱에서 이 공지 위 대화상자(주소창에는 그 페이지 주소),
+ * 휴대폰은 그 페이지로 간다. 저장하면 대화상자를 닫는다. 휴대폰은 앱 바의 ← 가 공지사항으로 간다.
  */
 export function AnnouncementPage() {
   const { announcementId = "" } = useParams({ strict: false })
   const { data: notice } = useAnnouncement(announcementId)
-  const openPanel = useOpenPanel()
   const panel = usePanel()
   const isEditing = composeTarget(panel.pathname)?.id === announcementId
   return (
-    <Page crumbs={[{ label: "공지사항", href: paths.announcements }, { label: notice?.title ?? "공지", icon: MegaphoneIcon }]} isFullScreen
-      actions={notice && <AnnouncementMenu notice={notice} onEdit={() => openPanel(editHref(notice.id))} />}>
-      {notice === undefined ? <DetailSkeleton /> : notice === null ? <NotFound /> : <AnnouncementDetail notice={notice} />}
+    <>
+      <AnnouncementSurface key={announcementId} id={announcementId} surface="page" />
       {notice && isEditing && (
         <AnnouncementCompose key={notice.id} notice={notice} surface="dialog" onClose={panel.close} onExpand={panel.expand} onSaved={panel.close} />
       )}
-    </Page>
+    </>
   )
 }

@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router"
-import { categoryLabel, listDateText, type Announcement } from "@/entities/announcement"
+import { announcementHref, categoryLabel, listDateText, type Announcement } from "@/entities/announcement"
 import { cn } from "@/shared/lib/utils"
 import { Badge } from "@/shared/ui/badge"
+import { DetailLink } from "@/shared/ui/detail-surface"
 import { EyeIcon, PaperclipIcon, PinIcon } from "@/shared/ui/icon"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table"
@@ -10,19 +10,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 const ROW_SURFACE = "relative bg-background hover:bg-row-hover"
 
 /**
- * 공지 제목을 상세로 잇는 링크. ::after가 가장 가까운 relative 조상(줄)을 덮어 줄 어디를 눌러도 상세로 간다.
+ * 공지 제목을 상세로 잇는 줄 링크(DetailLink): 줄 어디를 눌러도 열리고, 데스크톱은 목록 위 대화상자, 휴대폰은 페이지, 보조 키는 새 탭.
  * 읽지 않은 공지는 굵게 쓴다.
  */
 function TitleLink({ item, className }: { item: Announcement; className?: string }) {
   return (
-    <Link to="/announcements/$announcementId" params={{ announcementId: item.id }} title={item.isRead ? undefined : "읽지 않음"}
-      className={cn(
-        "truncate outline-none after:absolute after:inset-0 focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-ring",
-        !item.isRead && "font-semibold",
-        className,
-      )}>
+    <DetailLink href={announcementHref(item.id)} title={item.isRead ? undefined : "읽지 않음"} className={cn("truncate", !item.isRead && "font-semibold", className)}>
       {item.title}
-    </Link>
+    </DetailLink>
   )
 }
 

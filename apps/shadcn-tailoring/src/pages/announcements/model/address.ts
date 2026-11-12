@@ -13,3 +13,11 @@ export function composeTarget(pathname: string | undefined): { id?: string } | u
   const edit = /^\/announcements\/([^/]+)\/edit$/.exec(pathname ?? "")
   return edit ? { id: decodeURIComponent(edit[1]) } : undefined
 }
+
+/** 목록 위 대화상자의 주소: 새 공지 · 공지 수정 · 공지 하나(호호코워크 PanelHost의 공지 몫). */
+export function panelTarget(pathname: string | undefined): { kind: "new" } | { kind: "edit" | "detail"; id: string } | undefined {
+  const compose = composeTarget(pathname)
+  if (compose) return compose.id ? { kind: "edit", id: compose.id } : { kind: "new" }
+  const detail = /^\/announcements\/([^/]+)$/.exec(pathname ?? "")
+  return detail ? { kind: "detail", id: decodeURIComponent(detail[1]) } : undefined
+}

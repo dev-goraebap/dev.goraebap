@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router"
-import { MeetingStatusBadge, rowHeldText, type Meeting } from "@/entities/meeting"
+import { MeetingStatusBadge, meetingHref, rowHeldText, type Meeting } from "@/entities/meeting"
 import { cn } from "@/shared/lib/utils"
 import { Badge } from "@/shared/ui/badge"
+import { DetailLink } from "@/shared/ui/detail-surface"
 import { ProjectsIcon } from "@/shared/ui/icon"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table"
@@ -9,14 +9,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 /** 줄은 자기 바탕을 칠해 페이지의 점 무늬를 가리고, 가리키면 옅게 덮는다. */
 const ROW_SURFACE = "relative bg-background hover:bg-row-hover"
 
-/** 회의록 제목을 상세로 잇는 링크. ::after가 가장 가까운 relative 조상(줄)을 덮어 줄 어디를 눌러도 상세로 간다. */
+/** 회의록 제목을 상세로 잇는 줄 링크(DetailLink): 줄 어디를 눌러도 열리고, 데스크톱은 목록 위 대화상자, 휴대폰은 페이지, 보조 키는 새 탭. */
 function TitleLink({ meeting, className }: { meeting: Meeting; className?: string }) {
-  return (
-    <Link to="/meetings/$meetingId" params={{ meetingId: meeting.id }}
-      className={cn("truncate outline-none after:absolute after:inset-0 focus-visible:after:outline-2 focus-visible:after:-outline-offset-2 focus-visible:after:outline-ring", className)}>
-      {meeting.title}
-    </Link>
-  )
+  return <DetailLink href={meetingHref(meeting.id)} className={cn("truncate", className)}>{meeting.title}</DetailLink>
 }
 
 /** 프로젝트 이름 알약(호호코워크 RowLabel). */

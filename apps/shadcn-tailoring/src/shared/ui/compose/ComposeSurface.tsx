@@ -20,6 +20,10 @@ type ComposeSurfaceProps = {
   /** 속성 알약. 데스크톱은 양식 아래, 휴대폰은 바닥 줄 바로 위에 고정한다. */
   pills?: ReactNode
   submit: ComposeSubmit
+  /** 바닥 줄 앞쪽의 다른 동작(이전 · 임시 저장). 휴대폰은 취소 앞에 둔다. */
+  actions?: ReactNode
+  /** 만들 수 없는 까닭이나 실패. 바닥 줄에서 만들기 옆(휴대폰은 바닥 줄 위)에 두어 어느 자리에서든 같은 곳에서 읽힌다. */
+  error?: string
   /** 계속 만들기: 만든 뒤 제목과 본문만 비우고 속성은 남겨 다음 것을 쓴다. */
   isContinuing?: boolean
   onContinuing?: (isContinuing: boolean) => void
@@ -34,7 +38,7 @@ type ComposeSurfaceProps = {
  * 만들기 양식이 놓이는 곳(호호코워크 ComposeSurface). 데스크톱 대화상자는 화면 위 12%에서 가운데로 뜨고(최대 45rem)
  * 머리에 놓일 곳 칩 · 이름 · 크게 보기 · 닫기, 바닥에 계속 만들기 · 만들기. 데스크톱 페이지는 45rem 단에 같은 양식과
  * 취소. 휴대폰은 늘 전체 화면 페이지: 앱 바 ←, 스크롤하는 양식, 고정한 알약 줄, 취소 · 만들기 바닥 줄(만들기가 남은 폭을 채운다).
- * Ctrl/⌘+Enter가 만들기를 누른다.
+ * 바닥 줄의 앞쪽에는 다른 동작(actions), 그 뒤에 까닭(error)을 둔다. Ctrl/⌘+Enter가 만들기를 누른다.
  */
 export function ComposeSurface(props: ComposeSurfaceProps) {
   const isMobile = useIsMobile()
@@ -72,6 +76,31 @@ function Continuing({ value = false, onChange }: { value?: boolean; onChange: (v
   )
 }
 
+/** 바닥 줄의 다른 동작. 앞쪽에 붙고 나머지를 끝으로 민다. */
+function Actions({ children }: { children: ReactNode }) {
+  return <div data-slot="compose-actions" className="mr-auto flex items-center gap-1">{children}</div>
+}
+
+/** 까닭 한두 줄. 다른 동작이 없으면 이것이 앞쪽에 붙는다. */
+function ErrorText({ children, className }: { children: string; className?: string }) {
+  return <p data-slot="compose-error" role="alert" className={cn("line-clamp-2 min-w-0 text-sm text-destructive", className)}>{children}</p>
+}
+
+/** 데스크톱 바닥 줄: 다른 동작 · 까닭 · 계속 만들기 · (페이지면) 취소 · 만들기. */
+function Foot({ actions, error, submit, isContinuing, onContinuing, onCancel, className }: Pick<SurfaceProps, "actions" | "error" | "submit" | "isContinuing" | "onContinuing"> & {
+  onCancel?: () => void; className?: string
+}) {
+  return (
+    <div className={cn("flex flex-wrap items-center justify-end gap-3", className)}>
+      {actions && <Actions>{actions}</Actions>}
+      {error && <ErrorText className={cn("flex-1 text-right", !actions && "text-left")}>{error}</ErrorText>}
+      {onContinuing && <Continuing value={isContinuing} onChange={onContinuing} />}
+      {onCancel && <Button variant="ghost" onClick={onCancel}>취소</Button>}
+      <SubmitButton submit={submit} />
+    </div>
+  )
+}
+
 /** 제목 · 본문의 크기를 정하는 묶음. 페이지(data-page)에서는 제목이 크고 본문 자리가 높다. */
 function Paper({ isPage, children }: { isPage?: boolean; children: ReactNode }) {
   return <div data-slot="compose-paper" data-page={isPage || undefined} className="group/compose flex min-w-0 flex-col gap-3">{children}</div>
@@ -81,7 +110,7 @@ function Pills({ children, className }: { children: ReactNode; className?: strin
   return <div role="group" aria-label="속성" className={cn("flex flex-wrap items-center gap-1.5", className)}>{children}</div>
 }
 
-function DialogCompose({ crumbs, chip, pills, submit, isContinuing, onContinuing, onClose, onExpand, onKeyDown, children }: SurfaceProps) {
+function DialogCompose({ crumbs, chip, pills, submit, actions, error, isContinuing, onContinuing, onClose, onExpand, onKeyDown, children }: SurfaceProps) {
   return (
     <Dialog open onOpenChange={isOpen => { if (!isOpen) onClose() }}>
       <DialogContent showCloseButton={false} onKeyDown={onKeyDown}
@@ -95,34 +124,27 @@ function DialogCompose({ crumbs, chip, pills, submit, isContinuing, onContinuing
           </div>
         </div>
         <Paper>{children}{pills && <Pills className="pt-1">{pills}</Pills>}</Paper>
-        <div className="flex flex-wrap items-center justify-end gap-3 pt-5">
-          {onContinuing && <Continuing value={isContinuing} onChange={onContinuing} />}
-          <SubmitButton submit={submit} />
-        </div>
+        <Foot actions={actions} error={error} submit={submit} isContinuing={isContinuing} onContinuing={onContinuing} className="pt-5" />
       </DialogContent>
     </Dialog>
   )
 }
 
-function PageCompose({ crumbs, chip, pills, submit, isContinuing, onContinuing, onClose, onKeyDown, children }: SurfaceProps) {
+function PageCompose({ crumbs, chip, pills, submit, actions, error, isContinuing, onContinuing, onClose, onKeyDown, children }: SurfaceProps) {
   return (
     <Page crumbs={crumbs}>
       <div className="flex flex-1 justify-center bg-background px-4 py-8" onKeyDown={onKeyDown}>
         <div className="flex w-full max-w-180 flex-col gap-6">
           {chip && <div className="flex">{chip}</div>}
           <Paper isPage>{children}{pills && <Pills className="pt-1">{pills}</Pills>}</Paper>
-          <div className="flex flex-wrap items-center justify-end gap-3">
-            {onContinuing && <Continuing value={isContinuing} onChange={onContinuing} />}
-            <Button variant="ghost" onClick={onClose}>취소</Button>
-            <SubmitButton submit={submit} />
-          </div>
+          <Foot actions={actions} error={error} submit={submit} isContinuing={isContinuing} onContinuing={onContinuing} onCancel={onClose} />
         </div>
       </div>
     </Page>
   )
 }
 
-function PhoneCompose({ crumbs, chip, pills, submit, isContinuing, onContinuing, onClose, onKeyDown, children }: SurfaceProps) {
+function PhoneCompose({ crumbs, chip, pills, submit, actions, error, isContinuing, onContinuing, onClose, onKeyDown, children }: SurfaceProps) {
   return (
     <Page crumbs={crumbs} isFullScreen>
       <div className="flex min-h-0 flex-1 flex-col bg-background" onKeyDown={onKeyDown}>
@@ -132,8 +154,10 @@ function PhoneCompose({ crumbs, chip, pills, submit, isContinuing, onContinuing,
         </div>
         {pills && <Pills className="shrink-0 px-4 py-2">{pills}</Pills>}
         <footer className="flex shrink-0 flex-col gap-2 border-t px-4 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+          {error && <ErrorText>{error}</ErrorText>}
           {onContinuing && <Continuing value={isContinuing} onChange={onContinuing} />}
           <div className="flex items-center gap-2">
+            {actions && <div data-slot="compose-actions" className="flex shrink-0 items-center gap-1 [&_button]:h-11">{actions}</div>}
             <Button variant="ghost" className="h-11 px-4" onClick={onClose}>취소</Button>
             <SubmitButton submit={submit} className="h-11 flex-1" />
           </div>

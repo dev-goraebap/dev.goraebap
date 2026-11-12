@@ -16,7 +16,8 @@ import {
   TriangleAlertIcon, UsersIcon,
 } from "@/shared/ui/icon"
 import { InfoPill } from "@/shared/ui/info-pill"
-import { Page, PageViews, type PageView } from "@/shared/ui/page"
+import { DetailSurface } from "@/shared/ui/detail-surface"
+import { PageViews, type PageView } from "@/shared/ui/page"
 import { PageState } from "@/shared/ui/page-state"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { PropertyPill } from "@/shared/ui/property-pill"
@@ -33,15 +34,14 @@ const PROGRESS_TEXT = { waiting: "차례를 기다리고 있습니다.", transcr
 
 const created = new Intl.DateTimeFormat("ko-KR", { timeZone: "Asia/Seoul", year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "2-digit" })
 
-/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 삭제는 확인을 받고, 지우면 목록으로 돌아간다. */
-function MeetingMenu({ meeting, onEdit }: { meeting: Meeting; onEdit: () => void }) {
-  const navigate = useNavigate()
+/** 머리 줄 끝의 페이지 메뉴(…): 링크 복사 · 수정 · 삭제. 삭제는 확인을 받고, 지우면 onDeleted(페이지는 목록으로, 대화상자는 닫기). */
+function MeetingMenu({ meeting, onEdit, onDeleted }: { meeting: Meeting; onEdit: () => void; onDeleted: () => void }) {
   const remove = useDeleteMeeting()
   const [isConfirming, setConfirming] = useState(false)
   const confirm = () => remove.mutate(meeting.id, {
     onSuccess: () => {
       toast.add({ type: "success", title: "회의록을 지웠습니다", description: meeting.title })
-      void navigate({ to: paths.meetings, replace: true })
+      onDeleted()
     },
   })
   return (
@@ -195,29 +195,53 @@ function NotFound() {
 }
 
 /**
- * 회의록 상세(호호코워크 MeetingPage): 경로 회의록 › 제목, 머리 줄 끝에 페이지 메뉴. 받아쓴 원문이 있으면 툴바에 회의록 · 전사원문 탭.
- * 수정은 데스크톱에서 이 회의록 위 대화상자, 휴대폰에서는 이 자리를 대신하는 양식 페이지다(?compose). 호호코워크에는 회의록
- * 수정이 없어 자기 주소(/meetings/{id}/edit)도 없으므로 ?compose로 둔다.
+ * 회의록 하나가 놓이는 곳(호호코워크 MeetingPage + DetailSurface). page: 자기 페이지, 경로 회의록 › 제목과 머리 줄 끝의 메뉴.
+ * dialog: 데스크톱에서 목록의 줄이 연 대화상자(최대 60rem), 머리에 메뉴 · 크게 보기 · 닫기. 받아쓴 원문이 있으면
+ * 회의록 · 전사원문 탭(페이지는 툴바, 대화상자는 머리 아래). 수정은 onEdit이 연다(페이지와 대화상자가 여는 곳이 다르다).
+ */
+export function MeetingSurface({ id, surface, onClose, onExpand, onEdit }: {
+  id: string
+  surface: "dialog" | "page"
+  onClose?: () => void
+  onExpand?: () => void
+  onEdit: () => void
+}) {
+  const navigate = useNavigate()
+  const { data: meeting } = useMeeting(id)
+  const [tab, setTab] = useState<Tab>("minutes")
+  const hasTranscript = Boolean(meeting && meeting.transcript.length > 0)
+  const leave = () => (surface === "dialog" && onClose ? onClose() : void navigate({ to: paths.meetings, replace: true }))
+  return (
+    <DetailSurface surface={surface} title="회의록" onClose={onClose} onExpand={onExpand}
+      crumbs={[{ label: "회의록", href: paths.meetings }, { label: meeting?.title ?? "회의록", icon: MeetingIcon }]}
+      actions={meeting && <MeetingMenu meeting={meeting} onEdit={onEdit} onDeleted={leave} />}
+      views={hasTranscript && <PageViews label="회의록 보기" views={TABS} value={tab} onChange={setTab} />}>
+      {meeting === undefined ? <DetailSkeleton />
+        : meeting === null ? <NotFound />
+          : <MeetingNotes meeting={meeting} tab={hasTranscript ? tab : "minutes"} />}
+    </DetailSurface>
+  )
+}
+
+/**
+ * 회의록 상세의 자기 페이지(/meetings/{id}): 링크 · 새로고침 · 크게 보기, 그리고 휴대폰은 늘 여기로 온다(데스크톱에서 목록의
+ * 줄을 누르면 목록 위 대화상자다). 수정은 데스크톱에서 이 회의록 위 대화상자, 휴대폰에서는 이 자리를 대신하는 양식 페이지다
+ * (?compose). 호호코워크에는 회의록 수정이 없어 자기 주소(/meetings/{id}/edit)도 없으므로 ?compose로 둔다.
  */
 export function MeetingPage() {
   const { meetingId = "" } = useParams({ strict: false })
   const { data: meeting } = useMeeting(meetingId)
   const isMobile = useIsMobile()
   const compose = useComposeParam()
-  const [tab, setTab] = useState<Tab>("minutes")
-  const hasTranscript = Boolean(meeting && meeting.transcript.length > 0)
   const editor = meeting && compose.isOpen && (
     <MeetingCompose key={meeting.id} meeting={meeting} surface={isMobile ? "page" : "dialog"} onClose={compose.close} onSaved={compose.close} />
   )
   if (editor && isMobile) return editor
   return (
-    <Page crumbs={[{ label: "회의록", href: paths.meetings }, { label: meeting?.title ?? "회의록", icon: MeetingIcon }]} isFullScreen
-      actions={meeting && <MeetingMenu meeting={meeting} onEdit={compose.open} />}
-      views={hasTranscript && <PageViews label="회의록 보기" views={TABS} value={tab} onChange={setTab} />}>
-      {meeting === undefined ? <DetailSkeleton />
-        : meeting === null ? <NotFound />
-          : <MeetingNotes meeting={meeting} tab={hasTranscript ? tab : "minutes"} />}
+    <>
+      <MeetingSurface key={meetingId} id={meetingId} surface="page" onEdit={compose.open} />
       {editor}
-    </Page>
+    </>
   )
 }
+

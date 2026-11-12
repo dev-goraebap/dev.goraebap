@@ -1,5 +1,4 @@
 import { useState } from "react"
-import type { MouseEvent } from "react"
 import {
   ReportStateBadge, isSubmitted, momentText, summaryOf, weeklyReportHref, weeklyReportWriteHref, type WeeklyReport,
 } from "@/entities/weekly-report"
@@ -7,8 +6,7 @@ import { toggleValue } from "@/shared/lib/toggle"
 import { cn } from "@/shared/lib/utils"
 import { ListGroupHeader } from "@/shared/ui/list-group-header"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
-import { RowLink } from "@/shared/ui/row-link"
-import { useOpenPanel } from "@/shared/lib/panel"
+import { DetailLink } from "@/shared/ui/detail-surface"
 
 /** 줄은 자기 바탕을 칠해 페이지의 점 무늬를 가리고, 가리키면 옅게 덮는다(업무 줄과 같다). */
 const ROW = "relative border-b bg-background px-4 text-sm hover:bg-row-hover"
@@ -17,19 +15,9 @@ const ROW = "relative border-b bg-background px-4 text-sm hover:bg-row-hover"
 const hrefOf = (report: WeeklyReport) =>
   report.isMine && !isSubmitted(report.state) ? weeklyReportWriteHref(report.weekStart) : weeklyReportHref(report.id)
 
-/**
- * 이름을 그 보고로 잇는 줄 링크(줄 어디를 눌러도 열린다, 호호코워크 DetailLink). 그냥 누르면 데스크톱은 목록 위 대화상자,
- * 휴대폰은 페이지로 가고, 보조 키를 누르거나 가운데 단추로 누르면 브라우저가 그 주소를 연다(새 탭).
- */
+/** 이름을 그 보고로 잇는 줄 링크. 데스크톱은 목록 위 대화상자, 휴대폰은 페이지, 보조 키는 새 탭(DetailLink). */
 function ReportLink({ report, className }: { report: WeeklyReport; className?: string }) {
-  const open = useOpenPanel()
-  const href = hrefOf(report)
-  const click = (event: MouseEvent) => {
-    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
-    event.preventDefault()
-    open(href)
-  }
-  return <RowLink to={href} onClick={click} className={className}>{report.author.name}</RowLink>
+  return <DetailLink href={hrefOf(report)} className={className}>{report.author.name}</DetailLink>
 }
 
 const Mine = () => <span className="shrink-0 text-xs text-muted-foreground">나</span>

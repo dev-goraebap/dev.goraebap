@@ -1,13 +1,10 @@
-import { useRef } from "react"
-import { ME, weeklyReportHref } from "@/entities/weekly-report"
+import { ME, useMyWeeklyReport, weeklyReportHref } from "@/entities/weekly-report"
 import { paths } from "@/shared/config"
-import { useIsMobile } from "@/shared/lib/use-mobile"
-import { Button } from "@/shared/ui/button"
-import { PlaceChip } from "@/shared/ui/compose"
-import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/dialog"
-import { FileTextIcon, MaximizeIcon, PenSquareIcon, XIcon } from "@/shared/ui/icon"
-import { Page } from "@/shared/ui/page"
-import { WriteForm } from "./WriteForm"
+import { ComposeSurface, PlaceChip } from "@/shared/ui/compose"
+import { FileTextIcon, PenSquareIcon } from "@/shared/ui/icon"
+import type { Crumb } from "@/shared/ui/page"
+import { Skeleton } from "@/shared/ui/skeleton"
+import { WriteForm, type WritePlace } from "./WriteForm"
 
 type WriteSurfaceProps = {
   /** dialog: 목록 · 보고 위 대화상자(데스크톱). page: 자기 페이지(링크 · 새로고침 · 크게 보기, 휴대폰은 늘). */
@@ -22,41 +19,28 @@ type WriteSurfaceProps = {
   onDone: (href: string) => void
 }
 
-const TITLE = "주간보고 작성"
+const CRUMBS: Crumb[] = [{ label: "주간보고", href: paths.weeklyReports }, { label: "주간보고 작성", icon: PenSquareIcon }]
 
 /**
- * 주간보고 작성이 놓이는 곳(호호코워크 WeeklyReportCompose의 ComposeSurface). 데스크톱 대화상자는 화면 위 12%에서 뜨고(최대 45rem)
- * 머리에 부서 칩 · 이름 · 크게 보기 · 닫기, 페이지는 경로와 45rem 단. 단계가 있는 양식이라(이전 · 임시 저장 · 다음)
- * shared/ui/compose의 바닥 줄 대신 WriteForm이 바닥 줄을 그린다.
+ * 주간보고 작성이 놓이는 곳(호호코워크 WeeklyReportCompose의 ComposeSurface): 다른 만들기 양식과 같은 대화상자 · 페이지 ·
+ * 휴대폰 화면에 부서 칩과 "주간보고 작성". 내 보고를 읽는 동안에도 같은 자리에 뼈대와 누를 수 없는 다음을 둔다.
  */
 export function WriteSurface({ surface, week, thisWeek, onWeek, onClose, onExpand, onDone }: WriteSurfaceProps) {
-  const isMobile = useIsMobile()
-  const keepRef = useRef<(() => void) | undefined>(undefined)
-  const form = (isPage: boolean) => (
-    <WriteForm week={week} thisWeek={thisWeek} isPage={isPage} onWeek={onWeek} keepRef={keepRef} onCancel={isPage ? onClose : undefined}
-      onSaved={saved => onDone(weeklyReportHref(saved.id))} />
-  )
-  if (surface === "page" || isMobile) {
+  const { data } = useMyWeeklyReport(week)
+  const place: WritePlace = { surface, crumbs: CRUMBS, chip: <PlaceChip icon={<FileTextIcon />} label={ME.department} />, onClose }
+  if (!data) {
     return (
-      <Page crumbs={[{ label: "주간보고", href: paths.weeklyReports }, { label: TITLE, icon: PenSquareIcon }]} isFullScreen>
-        {form(true)}
-      </Page>
+      <ComposeSurface {...place} submit={{ label: "다음", onSubmit: () => {}, isDisabled: true }}>
+        <div aria-busy="true" aria-label="주간보고를 읽는 중" className="flex flex-col gap-4">
+          <Skeleton className="h-6 w-2/3" />
+          <Skeleton className="h-4 w-1/3" />
+          <Skeleton className="h-40 w-full" />
+        </div>
+      </ComposeSurface>
     )
   }
-  const expand = onExpand && (() => { keepRef.current?.(); onExpand() })
   return (
-    <Dialog open onOpenChange={isOpen => { if (!isOpen) onClose() }}>
-      <DialogContent showCloseButton={false} className="top-[12dvh] flex max-h-[76dvh] translate-y-0 flex-col gap-0 p-0 sm:max-w-180">
-        <div className="flex min-w-0 shrink-0 items-center gap-3 px-10 pt-7 pb-4">
-          <PlaceChip icon={<FileTextIcon />} label={ME.department} />
-          <DialogTitle className="min-w-0 flex-1 truncate text-xl leading-normal font-semibold">{TITLE}</DialogTitle>
-          <div className="-mr-2 flex shrink-0 items-center gap-1">
-            {expand && <Button variant="ghost" size="icon-sm" aria-label="크게 보기" title="크게 보기" onClick={expand}><MaximizeIcon /></Button>}
-            <DialogClose render={<Button variant="ghost" size="icon-sm" aria-label="닫기" title="닫기" />}><XIcon /></DialogClose>
-          </div>
-        </div>
-        {form(false)}
-      </DialogContent>
-    </Dialog>
+    <WriteForm key={data.report.weekStart} {...place} report={data.report} prefill={data.prefill} thisWeek={thisWeek} onWeek={onWeek} onExpand={onExpand}
+      onSaved={saved => onDone(weeklyReportHref(saved.id))} />
   )
 }

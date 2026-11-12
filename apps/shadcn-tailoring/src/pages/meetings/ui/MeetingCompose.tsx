@@ -142,6 +142,7 @@ export function MeetingCompose({ meeting, project, surface, onClose, onExpand, o
   return (
     <ComposeSurface surface={surface} crumbs={crumbs} chip={<PlaceChip icon={<MeetingIcon />} label="회의록" />} onClose={onClose}
       onExpand={onExpand && !isPending ? () => { carryDraft(carryKey, draft); onExpand() } : undefined}
+      error={hasTried ? problem : undefined}
       submit={{
         label: meeting ? "저장" : "회의록 만들기", onSubmit: submit,
         isDisabled: Boolean(meeting && problem), isPending,
@@ -166,7 +167,6 @@ export function MeetingCompose({ meeting, project, surface, onClose, onExpand, o
       </>}>
       <ComposeFields title={draft.title} onTitle={title => set({ title: title.slice(0, TITLE_MAX) })} titlePlaceholder="회의 제목"
         body={draft.note} onBody={note => set({ note })} bodyPlaceholder="요약에 참고할 내용을 적어 주세요" />
-      {hasTried && problem && <p role="alert" className="text-sm text-destructive">{problem}</p>}
     </ComposeSurface>
   )
 }

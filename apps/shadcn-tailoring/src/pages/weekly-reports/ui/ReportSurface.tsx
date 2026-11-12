@@ -5,9 +5,8 @@ import { useIsMobile } from "@/shared/lib/use-mobile"
 import { cn } from "@/shared/lib/utils"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
-import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/dialog"
-import { FileTextIcon, LinkIcon, MaximizeIcon, PenSquareIcon, XIcon } from "@/shared/ui/icon"
-import { Page } from "@/shared/ui/page"
+import { DetailSurface } from "@/shared/ui/detail-surface"
+import { FileTextIcon, LinkIcon, PenSquareIcon } from "@/shared/ui/icon"
 import { PageState } from "@/shared/ui/page-state"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
@@ -68,32 +67,11 @@ export function ReportSurface({ id, surface, onClose, onExpand }: {
   const open = useOpenPanel()
   const { data: report } = useWeeklyReportById(id)
   const write = () => report && open(weeklyReportWriteHref(report.weekStart, weeklyReportHref(report.id)), { inherit: true })
-  const menu = report && <ReportMenu report={report} onWrite={write} />
   const name = report ? `${report.author.name} · ${(isMobile ? weekShortText : weekText)(report.weekStart)}` : "보고"
-
-  if (surface === "page" || isMobile) {
-    return (
-      <Page crumbs={[{ label: "주간보고", href: paths.weeklyReports }, { label: name, icon: FileTextIcon }]} actions={menu} isFullScreen>
-        <Body report={report} onWrite={write} />
-      </Page>
-    )
-  }
   return (
-    <Dialog open onOpenChange={isOpen => { if (!isOpen) onClose?.() }}>
-      <DialogContent showCloseButton={false}
-        className="top-[12dvh] flex max-h-[76dvh] min-h-[min(24rem,76dvh)] translate-y-0 flex-col gap-0 overflow-hidden p-0 sm:max-w-[min(60rem,calc(100vw-3rem))]">
-        <div className="flex min-w-0 shrink-0 items-center gap-2 border-b px-4 py-2.5">
-          <DialogTitle className="min-w-0 flex-1 truncate text-sm font-semibold">주간보고</DialogTitle>
-          <div className="flex shrink-0 items-center gap-1">
-            {menu}
-            {onExpand && <Button variant="ghost" size="icon-sm" aria-label="크게 보기" title="크게 보기" onClick={onExpand}><MaximizeIcon /></Button>}
-            <DialogClose render={<Button variant="ghost" size="icon-sm" aria-label="닫기" title="닫기" />}><XIcon /></DialogClose>
-          </div>
-        </div>
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
-          <Body report={report} onWrite={write} />
-        </div>
-      </DialogContent>
-    </Dialog>
+    <DetailSurface surface={surface} title="주간보고" crumbs={[{ label: "주간보고", href: paths.weeklyReports }, { label: name, icon: FileTextIcon }]}
+      actions={report && <ReportMenu report={report} onWrite={write} />} onClose={onClose} onExpand={onExpand}>
+      <Body report={report} onWrite={write} />
+    </DetailSurface>
   )
 }
