@@ -1,3 +1,0 @@
-/* 로고는 홈으로 가는 길: 링크 색 없이, 키보드로 닿을 때만 고리. */
-.brand { display: inline-flex; min-inline-size: 0; border-radius: var(--radius-element); color: inherit; text-decoration: none; }
-.brand:focus-visible { outline: var(--focus-outline-width) var(--focus-outline-style) var(--focus-outline-color); outline-offset: var(--focus-outline-offset); }

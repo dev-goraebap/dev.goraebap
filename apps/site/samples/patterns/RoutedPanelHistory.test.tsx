@@ -3,15 +3,16 @@ import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet
 import { page } from 'vitest/browser';
 import { test } from 'vitest';
 import { expect, userEvent, waitFor, within } from '../catalog/testing';
-import { useOpenPanel, useRoutedPanel } from '../../src/shared/ui/patterns/routing/routed-panel';
+import { useOpenPanel, usePanel } from '@/shared/lib/panel';
 
 function Rows() {
   const open = useOpenPanel();
-  const panel = useRoutedPanel();
+  const panel = usePanel();
   return <>
     <button onClick={() => open('/editor/first')}>열기</button>
     {panel.href ? <section role="dialog" aria-label="내용">
       <span>{panel.href}</span>
+      {/* 대화상자 안에서 다른 것을 열면 그 자리를 바꾼다(기록을 쌓지 않는다). */}
       <button onClick={() => open('/editor/second')}>다음 내용</button>
       <button onClick={panel.close}>닫기</button>
     </section> : null}

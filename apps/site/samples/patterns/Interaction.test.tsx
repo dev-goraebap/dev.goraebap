@@ -14,10 +14,13 @@ const VerifyRowControls: Sample = {
     const page = within(canvasElement.ownerDocument.body);
     const rows = await page.findByRole("list", { name: "자료" });
     await userEvent.click(within(rows).getAllByRole("button", { name: "지우의 자료만 보기" })[0]);
-    await expect(await page.findByRole("navigation", { name: "적용한 필터" })).toBeVisible();
-    await expect(page.getByRole("heading", { name: "모든 자료" })).toBeInTheDocument();
+    // 행 안의 단추는 필터만 걸고 목록에 머문다(경로의 지금 자리가 그대로 "모든 자료").
+    await expect(await page.findByRole("group", { name: "작성자 필터" })).toBeVisible();
+    await expect(within(page.getByRole("navigation", { name: "경로" })).getByText("모든 자료").closest("span[aria-current=page]")).not.toBeNull();
+    // 행의 제목 링크(행 전체를 덮는다)는 상세를 연다.
     await userEvent.click(within(page.getByRole("list", { name: "자료" })).getAllByRole("link")[0]);
-    await waitFor(() => expect(page.getByRole("heading", { level: 1 })).not.toHaveTextContent("모든 자료"));
+    await waitFor(() => expect(page.getByRole("heading", { level: 1 })).toBeInTheDocument());
+    await expect(page.getByRole("heading", { level: 1 })).not.toHaveTextContent("모든 자료");
   },
 };
 

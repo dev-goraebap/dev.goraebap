@@ -14,7 +14,8 @@ const VerifyClearConditions: Sample = {
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(await page.findByRole("button", { name: "조건 지우기" }));
     await expect(await page.findByRole("link", { name: /좋은 인터페이스를 만드는 작은 기준들/ })).toBeVisible();
-    await expect(page.queryByRole("navigation", { name: "적용한 필터" })).not.toBeInTheDocument();
+    // 걸린 필터 줄(필터마다 "<이름> 필터" 묶음)도 함께 걷힌다.
+    await expect(page.queryByRole("group", { name: "종류 필터" })).not.toBeInTheDocument();
   },
 };
 

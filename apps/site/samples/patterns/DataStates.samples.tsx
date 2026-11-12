@@ -1,8 +1,8 @@
 import type { Meta, SampleOf } from "../catalog/types";
 import { LibraryApp } from "../playground/library/app/LibraryApp";
 import { createResourceApi } from "../playground/library/mocks/resource-api";
-import { Button } from "@astryxdesign/core/Button";
-import { BootCover } from "@/shared/ui/patterns/boot/BootCover";
+import { BootCover } from "@/shared/ui/boot-cover";
+import { Button } from "@/shared/ui/button";
 import { useEffect, useState } from "react";
 
 /** 첫 방문: 덮개가 앱 위에 있다가 첫 화면이 준비되면(여기서는 1.2초 뒤) 걷힌다. 다시 보기로 처음부터 본다. */
@@ -13,16 +13,15 @@ function FirstVisit() {
   return <>
     <LibraryApp api={createResourceApi({ delay: 0 })} />
     <BootCover key={round} isReady={isReady} />
-    <div style={{ position: "fixed", insetBlockEnd: 16, insetInlineEnd: 16, zIndex: 20 }}>
-      <Button label="다시 보기" variant="secondary" size="sm" onClick={() => setRound(round + 1)} />
-    </div>
+    {/* 덮개(z-50) 위에 두어 걷히기 전에도 누를 수 있다. 휴대폰은 하단 탭 · FAB를 피해 도구 줄의 빈 왼쪽에 둔다. */}
+    <Button variant="secondary" size="sm" className="fixed right-4 bottom-4 z-60 max-md:top-16 max-md:right-auto max-md:bottom-auto max-md:left-4 max-md:h-11" onClick={() => setRound(round + 1)}>다시 보기</Button>
   </>;
 }
 
 const meta = {
   title: "Patterns (사용 패턴)/데이터 상태", id: "patterns-data-states", component: LibraryApp,
   layout: "fullscreen", height: "34rem",
-  device: "desktop",
+  device: "desktop", kit: "shadcn",
 } satisfies Meta<typeof LibraryApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;
