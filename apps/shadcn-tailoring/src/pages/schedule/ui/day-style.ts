@@ -11,7 +11,14 @@ export function weekdayTone(weekday: number) {
   return undefined
 }
 
-export const dayTone = (day: string) => weekdayTone(weekdayOf(day))
+/** 공휴일 이름(날짜 → 이름). 일정 화면이 공휴일 엔터티에서 만들어 격자마다 넘긴다. */
+export type HolidayNames = ReadonlyMap<string, string>
+
+/** 날의 글자색(호호코워크 data-off · data-saturday): 공휴일은 요일과 상관없이 휴일색, 아니면 요일의 색. */
+export const dayTone = (day: string, holidays?: HolidayNames) => (holidays?.has(day) ? "text-day-off" : weekdayTone(weekdayOf(day)))
+
+/** 날의 읽는 이름 뒤에 붙는 공휴일: "11월 3일 화요일 개천절". */
+export const holidaySuffix = (day: string, holidays?: HolidayNames) => (holidays?.has(day) ? ` ${holidays.get(day)}` : "")
 
 /** 월간 · 주간 격자의 일정 표시(막대 · 블록)가 가리킬 때 조금 진해지는 바탕. */
 export const MARK_FILL = "bg-(--event-fill) text-(--event-ink) hover:bg-[color-mix(in_srgb,var(--event-fill)_80%,var(--foreground))]"

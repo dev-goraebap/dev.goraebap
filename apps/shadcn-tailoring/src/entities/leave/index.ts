@@ -1,8 +1,16 @@
-export { useAttendance, useLeaveRequests, useLeaveSummary, useLeaveUsage, useRequestLeave } from "./api/use-leave"
+export {
+  useAttendance, useLeaveRequests, useLeaveSummary, useLeaveUsage, useRequestLeave, useSpecialTypes, useSuggestedLine,
+} from "./api/use-leave"
 export { scaleTop } from "./model/summary"
 export {
-  HALF_DAYS, LEAVE_STATUSES, LEAVE_TYPES, countWorkdays, currentMonth, dateText, dayText, durationText, formatDays, halfDayMark,
-  leaveDays, leaveStatusMark, leaveTypeMark, monthTitle, periodText, shiftMonth, shortDateText, todayIso,
+  LEAVE_STATUSES, currentMonth, dateText, isoOf, dayText, durationText, formatDays, leaveStatusMark, leaveTitle, monthTitle, periodText,
+  shiftMonth, shortDateText, slotLabels, todayIso,
 } from "./model/text"
-export type { AttendanceDay, HalfDay, LeaveRequest, LeaveStatus, LeaveSummary, LeaveType, MonthUsage, NewLeaveRequest } from "./model/types"
+export {
+  LEAVE_KINDS, addDays, bookingsOf, countWorkdays, dayOpen, isClosed, kindLabels, kindOf, kindSlots, leaveDays, rangeClashes, slotHours,
+  slotOptions, slotRange, slotShare, specialNote, specialRules, usageText, type LeaveKind, type SlotOption,
+} from "./model/work-day"
+export type {
+  Approver, AttendanceDay, LeaveRequest, LeaveSlot, LeaveStatus, LeaveSummary, LeaveType, MonthUsage, NewLeaveRequest, SpecialType, SpecialTypeId,
+} from "./model/types"
 export { LeaveStatusBadge } from "./ui/LeaveStatusBadge"

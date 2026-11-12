@@ -26,24 +26,28 @@ export function DayEventList({ day, events }: { day: string; events: readonly Ca
   )
 }
 
-/** 휴대폰 월간: 고른 날의 제목, 개수, 일정 목록. */
-export function DayAgenda({ day, events }: { day: string; events: readonly CalendarEvent[] }) {
+/** 휴대폰 월간: 고른 날의 제목(공휴일이면 이름을 휴일색으로 붙인다), 개수, 일정 목록. */
+export function DayAgenda({ day, holiday, events }: { day: string; holiday?: string; events: readonly CalendarEvent[] }) {
   const count = events.filter(event => covers(event, day)).length
   return (
     <section aria-label={`${dayTitle(day)} 일정`} className="flex flex-col gap-3 px-4 py-3">
-      <h2 className="text-base font-semibold">{dayTitle(day)}</h2>
+      <h2 className="text-base font-semibold">
+        {dayTitle(day)}
+        {holiday && <span className="text-sm font-medium text-day-off"> {holiday}</span>}
+      </h2>
       {count > 0 && <p className="text-xs font-medium text-muted-foreground">일정 {count}</p>}
       <DayEventList day={day} events={events} />
     </section>
   )
 }
 
-/** "+N 더보기": 그 날의 모든 일정을 연다. 데스크톱 팝오버, 휴대폰 바텀시트. */
-export function DayMorePopover({ day, events, trigger }: { day: string; events: readonly CalendarEvent[]; trigger: ReactElement }) {
+/** "+N 더보기": 그 날의 모든 일정을 연다. 데스크톱 팝오버, 휴대폰 바텀시트. 공휴일이면 제목에 이름을 붙인다. */
+export function DayMorePopover({ day, holiday, events, trigger }: { day: string; holiday?: string; events: readonly CalendarEvent[]; trigger: ReactElement }) {
+  const title = holiday ? `${dayTitle(day)} ${holiday}` : dayTitle(day)
   return (
-    <AdaptivePopover title={dayTitle(day)} trigger={trigger} className="w-80 p-3">
+    <AdaptivePopover title={title} trigger={trigger} className="w-80 p-3">
       <div className="flex flex-col gap-1">
-        <p className="font-semibold max-md:hidden">{dayTitle(day)}</p>
+        <p className="font-semibold max-md:hidden">{dayTitle(day)}{holiday && <span className="text-sm font-medium text-day-off"> {holiday}</span>}</p>
         <DayEventList day={day} events={events} />
       </div>
     </AdaptivePopover>

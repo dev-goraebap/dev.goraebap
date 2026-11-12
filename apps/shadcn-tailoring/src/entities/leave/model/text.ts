@@ -1,19 +1,13 @@
-import { ClockIcon, HomeIcon, UmbrellaIcon, type Icon } from "@/shared/ui/icon"
-import type { HalfDay, LeaveStatus, LeaveType } from "./types"
+import type { LeaveRequest, LeaveSlot, LeaveStatus, SpecialType } from "./types"
 
 /** 상태 점의 색: app/styles/index.css의 --mark-* 토큰. */
 export type StatusTone = "bg-mark-medium" | "bg-mark-done" | "bg-mark-urgent"
 
-export const LEAVE_TYPES: readonly { value: LeaveType; label: string; icon: Icon; description: string }[] = [
-  { value: "annual", label: "연차", icon: UmbrellaIcon, description: "하루 이상 쉽니다. 연차에서 빠집니다." },
-  { value: "half", label: "반차", icon: ClockIcon, description: "오전이나 오후 반나절(0.5일)을 쉽니다." },
-  { value: "sick", label: "병가", icon: HomeIcon, description: "아파서 쉽니다. 연차에서 빠지지 않습니다." },
-]
-
-export const HALF_DAYS: readonly { value: HalfDay; label: string; time: string }[] = [
-  { value: "am", label: "오전 반차", time: "09:00 – 14:00" },
-  { value: "pm", label: "오후 반차", time: "14:00 – 18:00" },
-]
+/** 쉬는 칸의 이름(호호코워크 slotLabels). */
+export const slotLabels: Record<LeaveSlot, string> = {
+  FULL_DAY: "종일", HALF_DAY_AM: "오전 반차", HALF_DAY_PM: "오후 반차",
+  QUARTER_DAY_1: "반반차 1", QUARTER_DAY_2: "반반차 2", QUARTER_DAY_3: "반반차 3", QUARTER_DAY_4: "반반차 4",
+}
 
 export const LEAVE_STATUSES: readonly { value: LeaveStatus; label: string; tone: StatusTone }[] = [
   { value: "pending", label: "승인 대기", tone: "bg-mark-medium" },
@@ -21,12 +15,16 @@ export const LEAVE_STATUSES: readonly { value: LeaveStatus; label: string; tone:
   { value: "rejected", label: "반려", tone: "bg-mark-urgent" },
 ]
 
-const find = <T extends { value: string }>(list: readonly T[], value: string) => list.find(each => each.value === value) ?? list[0]
-export const leaveTypeMark = (type: LeaveType) => find(LEAVE_TYPES, type)
-export const halfDayMark = (half: HalfDay) => find(HALF_DAYS, half)
-export const leaveStatusMark = (status: LeaveStatus) => find(LEAVE_STATUSES, status)
+/** 신청 줄의 이름: 연차는 칸에 따라 연차 · 오전 반차 · 반반차 1, 특별휴가는 그 이름(종일이 아니면 칸을 붙인다). */
+export function leaveTitle(request: Pick<LeaveRequest, "type" | "slot">, types: readonly SpecialType[] = []) {
+  if (request.type === "annual") return request.slot === "FULL_DAY" ? "연차" : slotLabels[request.slot]
+  const name = types.find(type => type.id === request.type)?.name ?? "특별휴가"
+  return request.slot === "FULL_DAY" ? name : `${name} · ${slotLabels[request.slot]}`
+}
 
-/** 1.5 → "1.5", 2 → "2". */
+export const leaveStatusMark = (status: LeaveStatus) => LEAVE_STATUSES.find(each => each.value === status) ?? LEAVE_STATUSES[0]
+
+/** 1.5 → "1.5", 0.25 → "0.25", 2 → "2". */
 export const formatDays = (value: number) => (Number.isInteger(value) ? String(value) : String(Math.round(value * 100) / 100))
 /** 1.5 → "1.5일". */
 export const dayText = (days: number) => `${formatDays(days)}일`
@@ -60,15 +58,3 @@ export function shiftMonth(month: string, by: number) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}`
 }
 export const monthTitle = (month: string) => `${month.slice(0, 4)}년 ${Number(month.slice(5))}월`
-
-/** 두 날짜 사이(양 끝 포함)의 근무일(월~금). 공휴일은 세지 않는다(목 데이터에 공휴일이 없다). */
-export function countWorkdays(start: string, end: string) {
-  let count = 0
-  for (const day = asDate(start); day <= asDate(end); day.setDate(day.getDate() + 1)) {
-    if (day.getDay() !== 0 && day.getDay() !== 6) count += 1
-  }
-  return count
-}
-
-/** 신청이 쓰는 일수: 반차 0.5, 그 밖에는 근무일 수. */
-export const leaveDays = (type: LeaveType, start: string, end: string) => (type === "half" ? 0.5 : countWorkdays(start, end))

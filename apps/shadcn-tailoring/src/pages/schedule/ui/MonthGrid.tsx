@@ -5,7 +5,7 @@ import {
 import { cn } from "@/shared/lib/utils"
 import { fitWeek, weekRows } from "../model/month-layout"
 import { DayMorePopover } from "./DayEvents"
-import { dayTone, MARK_FILL, MARK_FOCUS, TODAY_HATCH, weekdayTone } from "./day-style"
+import { dayTone, MARK_FILL, MARK_FOCUS, TODAY_HATCH, weekdayTone, type HolidayNames } from "./day-style"
 import { EventPopover } from "./EventPopover"
 
 /** 주 안에서 표시가 놓일 칸과 줄. check-ui: allow-style 일정마다 계산한 격자 위치다. */
@@ -31,7 +31,7 @@ function useWeekRoom(grid: RefObject<HTMLElement | null>) {
  * 데스크톱 월간(호호코워크 MonthGrid): 요일 줄 아래 여섯 주가 높이를 나누고, 가는 선으로 날과 주를 나눈다. 날짜는 요일 이름과 같은
  * 왼쪽 시작점(1일은 "11월 1일"), 그 아래 여러 날 막대, 그다음 시각 일정 한 줄씩, 넘친 것은 "+N 더보기". 다른 달의 날은 흐리게.
  */
-export function MonthGrid({ month, today, events }: { month: string; today: string; events: readonly CalendarEvent[] }) {
+export function MonthGrid({ month, today, events, holidays }: { month: string; today: string; events: readonly CalendarEvent[]; holidays: HolidayNames }) {
   const grid = useRef<HTMLOListElement>(null)
   const room = useWeekRoom(grid)
   return (
@@ -53,13 +53,16 @@ export function MonthGrid({ month, today, events }: { month: string; today: stri
               className="relative grid min-h-0 grid-cols-7 gap-y-[3px] overflow-hidden border-b pb-1 last:border-b-0">
               {days.map((day, column) => {
                 const hasInlineMore = inlineFoot && week.hidden[column] > 0
+                const holiday = holidays.get(day)
                 return (
                   <div key={day} style={at(column, "1 / -1")}
-                    className={cn("-mb-1 flex min-w-0 items-start border-l px-3 pt-1 first:border-l-transparent", dayTone(day), day === today && TODAY_HATCH)}>
+                    className={cn("-mb-1 flex min-w-0 items-start gap-1 border-l px-3 pt-1 first:border-l-transparent", dayTone(day, holidays), day === today && TODAY_HATCH)}>
                     <time dateTime={day} aria-current={day === today ? "date" : undefined}
-                      className={cn("inline-flex h-6 min-w-[1em] items-center justify-center text-xs font-semibold tabular-nums", isOutside(column) && "opacity-40")}>
+                      className={cn("inline-flex h-6 min-w-[1em] shrink-0 items-center justify-center text-xs font-semibold tabular-nums", isOutside(column) && "opacity-40")}>
                       {day.endsWith("-01") && !hasInlineMore ? monthDay(day) : dayNumber(day)}
                     </time>
+                    {/* 공휴일 이름(호호코워크 .holiday): 날짜 옆에 작게, 칸이 좁으면 줄인다. */}
+                    {holiday && <span className={cn("min-w-0 truncate text-[0.6875rem] leading-6", isOutside(column) && "opacity-40", hasInlineMore && "pe-6")}>{holiday}</span>}
                   </div>
                 )
               })}
@@ -94,7 +97,7 @@ export function MonthGrid({ month, today, events }: { month: string; today: stri
                 </ol>
               ))}
               {week.hidden.map((count, column) => count > 0 && (
-                <DayMorePopover key={days[column]} day={days[column]} events={events} trigger={
+                <DayMorePopover key={days[column]} day={days[column]} holiday={holidays.get(days[column])} events={events} trigger={
                   <button type="button" aria-label={`${monthDay(days[column])} 일정 ${count}개 더보기`} style={at(column, inlineFoot ? 1 : footRow)}
                     className={cn(MARK_FOCUS, "relative z-1 mx-[3px] h-5 justify-self-start rounded-[3px] px-1.5 text-[0.6875rem] font-semibold text-muted-foreground hover:bg-accent hover:text-foreground",
                       inlineFoot && "mt-1 self-start justify-self-end")}>

@@ -1,4 +1,6 @@
-import { currentMonth, dayText, shortDateText, useLeaveRequests, useLeaveSummary, type LeaveSummary } from "@/entities/leave"
+import { useMemo } from "react"
+import { closedDays, useHolidays } from "@/entities/holiday"
+import { currentMonth, dayText, shortDateText, useLeaveRequests, useLeaveSummary, useSpecialTypes, type LeaveSummary } from "@/entities/leave"
 import { PageState } from "@/shared/ui/page-state"
 import { SettingsSection } from "@/shared/ui/settings"
 import { Skeleton } from "@/shared/ui/skeleton"
@@ -22,11 +24,12 @@ function AnnualSummary({ summary }: { summary: LeaveSummary }) {
 
 function Requests() {
   const requests = useLeaveRequests()
+  const types = useSpecialTypes()
   if (requests.isPending) return <Skeleton aria-label="신청 내역을 불러오는 중" className="h-40 w-full" />
   if (!requests.data?.length) {
     return <PageState kind="empty" isCompact title="아직 신청한 휴가가 없습니다" description="신청하기로 첫 휴가를 올려 보세요." />
   }
-  return <LeaveRequestList requests={requests.data} />
+  return <LeaveRequestList requests={requests.data} types={types.data ?? []} />
 }
 
 /**
@@ -36,6 +39,8 @@ function Requests() {
 export function LeaveTab() {
   const summary = useLeaveSummary()
   const month = currentMonth()
+  const { data: holidays } = useHolidays()
+  const closed = useMemo(() => closedDays(holidays ?? []), [holidays])
   return (
     <>
       <section aria-label="연차" className="flex flex-col gap-2">
@@ -45,7 +50,7 @@ export function LeaveTab() {
       <SettingsSection title="신청 내역" note="승인 대기 중인 신청은 결재자가 승인하면 연차에서 빠집니다.">
         <Requests />
       </SettingsSection>
-      <MonthlyUsage year={Number(month.slice(0, 4))} thisMonth={Number(month.slice(5))} />
+      <MonthlyUsage year={Number(month.slice(0, 4))} thisMonth={Number(month.slice(5))} closed={closed} />
     </>
   )
 }

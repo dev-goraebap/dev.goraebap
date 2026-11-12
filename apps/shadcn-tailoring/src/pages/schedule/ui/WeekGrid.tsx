@@ -5,7 +5,7 @@ import {
 import { cn } from "@/shared/lib/utils"
 import { layBars } from "../model/month-layout"
 import { END_HOUR, layDay, START_HOUR } from "../model/week-layout"
-import { dayTone, MARK_FILL, MARK_FOCUS } from "./day-style"
+import { dayTone, holidaySuffix, MARK_FILL, MARK_FOCUS, type HolidayNames } from "./day-style"
 import { EventPopover } from "./EventPopover"
 
 const HOURS = Array.from({ length: END_HOUR - START_HOUR }, (_, index) => START_HOUR + index)
@@ -24,9 +24,11 @@ function useNow() {
 /**
  * 시간 축 위에 날들을 나란히 놓은 주간(호호코워크 WeekGrid). 요일 머리(hasHead), 종일 일정 줄, 그 아래 08–20시 격자가 남은 높이를
  * 채우고(한 시간 최소 3rem) 모자라면 스스로 넘긴다. 오늘이 보이면 지금 한 시간 앞에서, 아니면 아침 첫 시각에서 연다.
- * 데스크톱은 일곱 날, 휴대폰은 고른 하루.
+ * 데스크톱은 일곱 날, 휴대폰은 고른 하루. 머리의 일요일 · 공휴일은 휴일색이고 공휴일은 이름을 아래에 적는다.
  */
-export function WeekGrid({ days, today, events, hasHead }: { days: string[]; today: string; events: readonly CalendarEvent[]; hasHead: boolean }) {
+export function WeekGrid({ days, today, events, holidays, hasHead }: {
+  days: string[]; today: string; events: readonly CalendarEvent[]; holidays: HolidayNames; hasHead: boolean
+}) {
   const now = useNow()
   const scroll = useRef<HTMLElement>(null)
   const { bars } = layBars(events, days)
@@ -45,13 +47,15 @@ export function WeekGrid({ days, today, events, hasHead }: { days: string[]; tod
       {hasHead && (
         <ol className={cn("grid shrink-0 overflow-hidden border-b pl-14 [scrollbar-gutter:stable]", DAY_COLUMNS)}>
           {days.map(day => (
-            <li key={day} aria-label={dayTitle(day)}
-              className={cn("flex min-w-0 items-center justify-center gap-1 border-l py-2", day === today ? "text-foreground" : dayTone(day) ?? "text-muted-foreground")}>
+            <li key={day} aria-label={`${dayTitle(day)}${holidaySuffix(day, holidays)}`}
+              className={cn("flex min-w-0 flex-wrap items-center justify-center gap-x-1 border-l py-2", day === today ? "text-foreground" : dayTone(day, holidays) ?? "text-muted-foreground")}>
               <span className="text-xs font-medium">{WEEKDAYS[weekdayOf(day)]}</span>
               <time dateTime={day} aria-current={day === today ? "date" : undefined}
                 className={cn("inline-grid h-6 min-w-6 place-items-center rounded-full px-1 text-sm font-semibold tabular-nums", day === today && "bg-primary text-primary-foreground")}>
                 {dayNumber(day)}
               </time>
+              {/* 공휴일 이름(호호코워크 .headHoliday): 요일과 날짜 아래 한 줄, 칸이 좁으면 줄인다. */}
+              {holidays.has(day) && <span className="min-w-0 basis-full truncate text-center text-[0.6875rem]">{holidays.get(day)}</span>}
             </li>
           ))}
         </ol>

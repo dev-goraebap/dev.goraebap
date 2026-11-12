@@ -41,9 +41,9 @@ function MonthBar({ column, top, isCurrent }: { column: MonthUsage; top: number;
   )
 }
 
-/** 올해 휴가(호호코워크 MonthlyUsage): 합계 범례와 열두 달 막대. 이번 달 이름은 진하게. */
-export function MonthlyUsage({ year, thisMonth }: { year: number; thisMonth: number }) {
-  const usage = useLeaveUsage(year)
+/** 올해 휴가(호호코워크 MonthlyUsage): 합계 범례와 열두 달 막대. 이번 달 이름은 진하게. 공휴일(closed)은 세지 않는다. */
+export function MonthlyUsage({ year, thisMonth, closed }: { year: number; thisMonth: number; closed: ReadonlySet<string> }) {
+  const usage = useLeaveUsage(year, closed)
   const columns = usage.data ?? []
   const total = (part: Part) => columns.reduce((sum, column) => sum + column[part], 0)
   const top = scaleTop(columns.map(column => column.total))

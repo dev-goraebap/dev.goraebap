@@ -1,3 +1,5 @@
+import { useMemo } from "react"
+import { closedDays, useHolidays } from "@/entities/holiday"
 import { dateText, durationText, LeaveStatusBadge, monthTitle, useAttendance, type AttendanceDay } from "@/entities/leave"
 import { Item, ItemActions, ItemContent, ItemDescription, ItemGroup, ItemMedia, ItemTitle } from "@/shared/ui/item"
 import { PageState } from "@/shared/ui/page-state"
@@ -28,7 +30,9 @@ function OvertimeDayItem({ day }: { day: AttendanceDay }) {
  * 출퇴근 기록 중 연장근무가 있는 날만 줄로 보이고, 줄에 그날의 출퇴근 시각을 함께 적는다.
  */
 export function OvertimeTab({ month }: { month: string }) {
-  const attendance = useAttendance(month)
+  const { data: holidays } = useHolidays()
+  const closed = useMemo(() => closedDays(holidays ?? []), [holidays])
+  const attendance = useAttendance(month, closed)
   const days = (attendance.data ?? []).filter(day => day.overtimeMinutes > 0)
   const inReview = sumMinutes(days.filter(day => day.overtimeStatus === "pending"))
   return (
