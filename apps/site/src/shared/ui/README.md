@@ -27,7 +27,7 @@ demo에서 가져오지 않은 것: 제품 표시(`brand`), 목업 로그인(`se
 
 ```text
 npx shadcn@latest init -b base -p nova
-# components.json: aliases를 components · ui → @/shared/ui, lib · hooks → @/shared/lib, utils → @/shared/lib/utils로,
+# components.json: aliases를 components · ui → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지)으로,
 #   registries에 "@webcraft": "https://goraebap.xyz/r/{name}.json"
 npx shadcn@latest add @webcraft/theme @webcraft/page @webcraft/compose
 ```

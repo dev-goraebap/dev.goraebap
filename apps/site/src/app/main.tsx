@@ -1,5 +1,5 @@
-import '@/shared/styles/tailwind.css';
-import '@/shared/styles/site.css';
+import '@/app/styles/tailwind.css';
+import '@/app/styles/site.css';
 import { createRootRoute, createRoute, createRouter, redirect, RouterProvider } from '@tanstack/react-router';
 import { createRoot } from 'react-dom/client';
 import { docAt, firstOf, loadDoc } from '@/entities/document';

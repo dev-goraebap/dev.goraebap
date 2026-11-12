@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { eventCategory } from "../model/categories"
 import type { EventCategory, EventColor } from "../model/types"
 

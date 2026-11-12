@@ -1,5 +1,5 @@
 import type { ComponentProps, ReactElement } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip"
 

@@ -7,7 +7,7 @@
  */
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { createContext, createElement, useContext, useLayoutEffect, useState, type ReactNode } from "react";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "cn";
 import { Toaster } from "@/shared/ui/toast";
 import { TooltipProvider } from "@/shared/ui/tooltip";
 import type { Layout, Meta, Sample } from "./types";

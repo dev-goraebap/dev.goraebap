@@ -1,7 +1,7 @@
 import { Handle, Position, type Node, type NodeProps } from "@xyflow/react"
 import { memo } from "react"
 import { MemberAvatar } from "@/entities/member"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Badge } from "@/shared/ui/badge"
 import type { DepartmentBox } from "../model/pyramid-layout"
 

@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
 import type { Meta, SampleOf } from "../catalog/types";
 import { useIsMobile } from "@/shared/lib/use-mobile";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "cn";
 import { ActionMenu } from "@/shared/ui/action-menu";
 import { Alert, AlertTitle } from "@/shared/ui/alert";
 import { Badge } from "@/shared/ui/badge";

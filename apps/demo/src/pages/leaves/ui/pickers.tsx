@@ -3,7 +3,7 @@ import {
   dateText, kindLabels, LEAVE_KINDS, periodText, slotLabels, slotRange, specialNote, type LeaveKind, type LeaveSlot, type SlotOption,
   type SpecialType,
 } from "@/entities/leave"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { CalendarIcon, ClockIcon, StarIcon, UmbrellaIcon } from "@/shared/ui/icon"
 import { OptionPill, PropertyPill } from "@/shared/ui/property-pill"
 import type { DateDraft } from "../model/new-request"

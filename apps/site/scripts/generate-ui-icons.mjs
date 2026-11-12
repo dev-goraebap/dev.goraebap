@@ -63,7 +63,8 @@ const lines = Object.entries(SOLAR).map(([name, key]) => {
   const linear = body(key, "linear")
   if (!linear) throw new Error(`Solar 아이콘 없음: ${key}-linear`)
   const chosen = body(key, "bold-duotone")
-  return `export const ${name} = solar(${JSON.stringify(name)}, ${JSON.stringify(linear)}${chosen ? `, ${JSON.stringify(chosen)}` : ""})`
+  // 순수 표시: 없으면 묶을 때 solar() 호출을 지우지 못해, 아이콘 하나만 가져와도 전부가 따라온다.
+  return `export const ${name} = /* @__PURE__ */ solar(${JSON.stringify(name)}, ${JSON.stringify(linear)}${chosen ? `, ${JSON.stringify(chosen)}` : ""})`
 })
 // 머리 주석은 import 뒤에 둔다. shadcn add가 첫 문장 앞의 주석을 지우므로 앞에 두면 받은 프로젝트에서 저작자 표시가 사라진다.
 await fs.writeFile(new URL("../src/shared/ui/icon/icons.generated.ts", import.meta.url),

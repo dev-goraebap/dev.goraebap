@@ -3,7 +3,7 @@ import {
   WorkItemAssignee, WorkItemPriorityIcon, WorkItemStatusIcon, columnOf, isClosedCategory, workItemHref, type ColumnCategory, type WorkflowColumn,
   type WorkItem,
 } from "@/entities/work-item"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 import { ChevronRightIcon } from "@/shared/ui/icon"
 import { RowLink } from "@/shared/ui/row-link"

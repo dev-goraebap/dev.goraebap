@@ -1,5 +1,5 @@
 import { useId, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import { PersonAvatar } from "@/shared/ui/person-avatar"

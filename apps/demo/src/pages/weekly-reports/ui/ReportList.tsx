@@ -3,7 +3,7 @@ import {
   ReportStateBadge, isSubmitted, momentText, summaryOf, weeklyReportHref, weeklyReportWriteHref, type WeeklyReport,
 } from "@/entities/weekly-report"
 import { toggleValue } from "@/shared/lib/toggle"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { ListGroupHeader } from "@/shared/ui/list-group-header"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { DetailLink } from "@/shared/ui/detail-surface"

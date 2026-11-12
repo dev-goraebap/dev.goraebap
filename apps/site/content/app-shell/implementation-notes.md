@@ -14,7 +14,7 @@ arc42: "8.8"
 
 부품은 shadcn/ui의 Base UI 기반 `base-nova` 스타일입니다. 요소를 바꿀 때는 `asChild`가 아니라 `render` prop을 씁니다(`<Button render={<Link to="..." />} nativeButton={false}>`).
 
-스타일은 Tailwind CSS v4 유틸리티와 의미 토큰으로만 씁니다. 별도 CSS 파일·CSS 모듈·StyleX를 쓰지 않습니다. 토큰은 한 CSS 파일(`src/shared/styles/tailwind.css`)의 `:root`와 `[data-theme=dark]`에 정의하고 `@theme inline`으로 Tailwind에 노출합니다. 라이트·다크는 `html[data-theme=dark|light]` 하나가 정하며 Tailwind `dark:` 변형도 이것을 봅니다. 색은 토큰에서만 바꾸고 `dark:`로 덮어쓰지 않습니다. 휴대폰 글자 크기 조정은 같은 파일의 `@media (width < 64rem)`에 둡니다.
+스타일은 Tailwind CSS v4 유틸리티와 의미 토큰으로만 씁니다. 별도 CSS 파일·CSS 모듈·StyleX를 쓰지 않습니다. 토큰은 한 CSS 파일(`src/app/styles/tailwind.css`)의 `:root`와 `[data-theme=dark]`에 정의하고 `@theme inline`으로 Tailwind에 노출합니다. 라이트·다크는 `html[data-theme=dark|light]` 하나가 정하며 Tailwind `dark:` 변형도 이것을 봅니다. 색은 토큰에서만 바꾸고 `dark:`로 덮어쓰지 않습니다. 휴대폰 글자 크기 조정은 같은 파일의 `@media (width < 64rem)`에 둡니다.
 
 부품 사용법(조합, 폼 `Field`, `render`, 아이콘의 `data-icon`, `gap-*` 간격, `size-*` 등)은 shadcn 공식 스킬과 shadcn MCP가 맡습니다. Webcraft 지침은 면 단계·휴대폰 규칙·로딩 방식·대화상자 ↔ 페이지·문구 같은 우리 규칙을 맡습니다. 둘이 다르면 Webcraft 규칙이 우선이고, 부품 API는 shadcn 문서를 따릅니다.
 
@@ -34,7 +34,7 @@ arc42: "8.8"
 | 목록 옆에서 항목을 훑는 [미리보기 패널](/app-shell/peek/) | `[고래밥]` | `usePeek` (`?peek=`), `PeekLayout`·`PeekPanel`, `InboxLayout`·`InboxPane`, `usePeekRows` | `src/shared/lib/use-peek.ts`와 `src/shared/ui/peek/`(본문 폭의 45%). 처음 열 때는 방문 기록을 쌓고(`push`), 다른 행으로 옮길 때는 기록을 바꾸며(`replace`), 이 기록에서 열었으면 닫을 때 한 걸음 뒤로 갑니다. 휴대폰에서는 대상 페이지로 바꿔 갑니다(`replace`) |
 | 검색어·필터·표시를 URL에 남기는 [목록 조건 주소](/app-shell/filters-and-display/) | `[고래밥]` | `useAddressFilters`, `useAddressWords`(300ms), `useAddressChoices` | `src/shared/lib/list-address.ts`. 검색어 입력 중에는 방문 기록을 쌓지 않고(`replace`) 300ms 뒤 주소만 갱신합니다 |
 | 필수 값이 비어도 제출 버튼을 막지 않는 작성 양식([상태와 피드백](/app-shell/states-and-feedback/)) | `[관례]` | `ComposeSurface`, `ComposeFields`, `FormDialog`, `focusFirstInvalid` | `src/shared/ui/compose/`와 `src/shared/lib/focus-invalid.ts`. 빠진 값은 알약의 `isInvalid`(`aria-invalid`)로 알리고 `focusFirstInvalid`로 첫 빠진 항목에 초점을 옮깁니다. 쓴 내용이 있으면(`isDirty`) 닫기·취소에서 버릴지 묻습니다 |
-| 먹색 강조와 4단계 면, 휴대폰 크기 조정([시각 위계](/common/visual-hierarchy/)) | `[선호]` `[관례]` | 토큰 CSS, `max-md:` 유틸리티 | `src/shared/styles/tailwind.css`. 면 4단계는 `--sidebar`(바닥)·`--background`(페이지)·`--card`(올린 면)·`--popover`(뜬 면)이고, 휴대폰 크기 조정은 같은 파일의 `@media (width < 64rem)`와 부품의 `max-md:`에 둡니다 |
+| 먹색 강조와 4단계 면, 휴대폰 크기 조정([시각 위계](/common/visual-hierarchy/)) | `[선호]` `[관례]` | 토큰 CSS, `max-md:` 유틸리티 | `src/app/styles/tailwind.css`. 면 4단계는 `--sidebar`(바닥)·`--background`(페이지)·`--card`(올린 면)·`--popover`(뜬 면)이고, 휴대폰 크기 조정은 같은 파일의 `@media (width < 64rem)`와 부품의 `max-md:`에 둡니다 |
 | 이름으로 부르고 선·채움으로 상태를 나타내는 [아이콘](/common/icons/) | `[선호]` | `@/shared/ui/icon`(lucide 식 이름 `CalendarIcon`), `chosen` prop | `scripts/generate-ui-icons.mjs`의 매핑으로 Solar 아이콘을 생성합니다. 기본은 Linear, 고름·열림·지금 자리는 같은 아이콘의 Bold Duotone(`chosen`)을 씁니다 |
 
 ## 주요 상호작용의 구현 세부
@@ -77,13 +77,13 @@ arc42: "8.8"
 | `src/shared/ui/*.tsx` | shadcn 부품(Button 변형 `view`·`view-active`·`tool`·`create`, Badge `label` 변형, Input·Textarea·Select와 Field·FieldGroup, Dialog·Drawer 등)과 조합 부품(`FormDialog`·`ConfirmDialog`·`DetailSurface`, `AdaptivePopover`·`ActionMenu`·`OptionList`, `PropertyPill`·`OptionPill`·`DatePill`·`InfoPill`, `SearchTool`, `DisplayMenu`, `DateCalendar`·`DatePicker`, `SegmentedControl`, `ListMore`, `RowLink`·`RouterAnchor`) |
 | `src/shared/ui/<폴더>/` | 앱 셸(`app-shell`), 페이지(`page`), 상세·활동(`reading`: `DetailLayout`·`ActivityFeed`), 옆 패널(`side-panel`), 미리보기(`peek`), 상태 화면(`page-state`), 작성 양식(`compose`), 필터(`filter`), 본문 수정 화면(`body-edit`), 첫 방문 덮개(`boot-cover`), 순서 바꾸기(`reorder`), 본문 칸(`editor`), 문서 편집기(`document`), 아이콘(`icon`) |
 | `src/shared/lib` | `useIsMobile`, 목록 위 대화상자(`panel`), 초안(`draft`), 목록 조건의 주소(`list-address`), 미리보기 주소(`use-peek`), 필수 값 초점 이동(`focus-invalid`) |
-| `src/shared/styles/tailwind.css` | 토큰(`:root`·`[data-theme=dark]`), `@theme inline`, 휴대폰 크기 조정 |
+| `src/app/styles/tailwind.css` | 토큰(`:root`·`[data-theme=dark]`), `@theme inline`, 휴대폰 크기 조정 |
 
 키트 부품은 `render={<Link … />}`나 `RowLink`(`createLink`)로 라우터에 이어지므로 루트에 링크 Provider를 두지 않습니다. 본문(Markdown·MDX)의 앱 링크만 `RouterAnchor`를 씁니다.
 
 새 프로젝트에 키트를 적용할 때는 아래 순서를 따릅니다.
 
-1. 프로젝트의 `components.json`에 `"registries": { "@webcraft": "https://goraebap.xyz/r/{name}.json" }`을 둡니다. 레지스트리 파일은 Webcraft FSD 별칭을 그대로 import하며 shadcn이 다른 별칭으로 바꿔 주지 않으므로, aliases를 `ui: "@/shared/ui"`, `lib: "@/shared/lib"`, `utils: "@/shared/lib/utils"`로, tsconfig의 `@/*`를 `src/*`로 둡니다.
+1. 프로젝트의 `components.json`에 `"registries": { "@webcraft": "https://goraebap.xyz/r/{name}.json" }`을 둡니다. 레지스트리 파일은 Webcraft FSD 별칭을 그대로 import하며 shadcn이 다른 별칭으로 바꿔 주지 않으므로, aliases를 `ui: "@/shared/ui"`, `lib: "@/shared/lib"`, `utils: "cn"`으로, tsconfig의 `@/*`를 `src/*`로 둡니다.
 2. 토큰과 기본 CSS는 `npx shadcn@latest add @webcraft/theme`으로 받습니다.
 3. 쓸 항목만 `npx shadcn@latest add @webcraft/<이름>`으로 받습니다. 받은 코드는 그 프로젝트 소유입니다. 빈 상태 그림(webp 12개)은 레지스트리 JSON에 담을 수 없어 `https://goraebap.xyz/r/assets/page-state/landscapes/`에서 따로 받습니다(`page-state` 항목 설치 안내에 명령이 있습니다).
 4. 작성 양식을 쓰면 라우터보다 위에 `DraftProvider`를 둡니다.

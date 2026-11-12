@@ -4,7 +4,7 @@ import { useNotifications, useReadAllNotifications, type Notification } from "@/
 import { paths } from "@/shared/config"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { useStoredWidth } from "@/shared/lib/use-stored-width"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { InboxIllustration, PageState } from "@/shared/ui/page-state"
 import { CircleCheckIcon, InboxIcon, SettingsIcon } from "@/shared/ui/icon"
 import { ActionMenu } from "@/shared/ui/action-menu"

@@ -1,6 +1,6 @@
 import { useOpenPanel, usePanel } from '@/shared/lib/panel';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Alert, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog';

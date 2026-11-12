@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState, type CSSProperties, type RefObject }
 import {
   clock, dayNumber, dayTitle, eventTone, EventDot, isSameMonth, monthDay, monthTitle, monthWeeks, shortClock, WEEKDAYS, type CalendarEvent,
 } from "@/entities/event"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { fitWeek, weekRows } from "../model/month-layout"
 import { dayTone, MARK_FILL, MARK_FOCUS, TODAY_HATCH, weekdayTone, type HolidayNames } from "./day-style"
 import { EventPopover } from "./EventPopover"

@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { ActionMenu } from '@/shared/ui/action-menu';
 import { Button } from '@/shared/ui/button';
 import { FileTextIcon, FolderIcon, FolderInputIcon, ImageIcon, PencilIcon, PlusIcon } from '@/shared/ui/icon';

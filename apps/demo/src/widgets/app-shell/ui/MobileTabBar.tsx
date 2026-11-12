@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { paths } from "@/shared/config"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/shared/ui/drawer"
 import { ArrowLeftIcon, MoreHorizontalIcon } from "@/shared/ui/icon"
 import { entriesOf, type NavChild, type NavEntry } from "../model/nav"

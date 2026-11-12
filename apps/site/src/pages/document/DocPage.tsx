@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef, useState, type ComponentType, type MouseEvent 
 import type { GuideDoc } from '@/entities/document';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { paths } from '@/shared/config/paths';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { useTocSpy } from './use-toc-spy';
 
 type Heading = { id: string; label: string; level: number };

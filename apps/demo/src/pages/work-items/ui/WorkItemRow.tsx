@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { WorkItemAssignee, WorkItemDate, WorkItemLabels, WorkItemPriorityIcon, WorkItemStatusIcon, WorkItemTypeLabel, type WorkItem } from "@/entities/work-item"
 import { WorkItemLink } from "./WorkItemLink"
 import { WorkItemMenu } from "./WorkItemMenu"

@@ -4,7 +4,7 @@ import { useState, type ReactNode } from 'react';
 import { useAddressChoices, useAddressFilters, useAddressWords } from '@/shared/lib/list-address';
 import { usePanel, useOpenPanel } from '@/shared/lib/panel';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { ActionMenu, type MenuAction } from '@/shared/ui/action-menu';
 import { Alert, AlertTitle } from '@/shared/ui/alert';
 import { Badge } from '@/shared/ui/badge';

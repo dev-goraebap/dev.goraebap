@@ -1,5 +1,5 @@
 import { ProjectMark, type Project } from "@/entities/project"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { ProjectLead, ProjectLink, ProjectMembers, ProjectMenu, ProjectProgress, ProjectStar } from "./ProjectParts"
 
 /** 줄은 자기 바탕을 칠해 페이지의 점 무늬를 가리고, 가리키면 옅게 덮는다. */

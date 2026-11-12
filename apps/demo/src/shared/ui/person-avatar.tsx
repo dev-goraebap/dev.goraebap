@@ -1,5 +1,5 @@
 import { derivedAvatar, drawnAvatarSource } from "@/shared/lib/avatar"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
 
 /**

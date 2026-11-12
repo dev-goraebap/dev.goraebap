@@ -1,7 +1,7 @@
 import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
 import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group"
 import type { CSSProperties } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 
 export type SegmentedOption<T extends string> = { value: T; label: string }
 

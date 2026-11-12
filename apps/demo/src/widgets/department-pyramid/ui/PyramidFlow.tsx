@@ -2,7 +2,7 @@ import { Background, BackgroundVariant, Controls, ReactFlow, type EdgeTypes, typ
 import "@xyflow/react/dist/style.css"
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { Department, Member } from "@/entities/member"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { pyramidLayout } from "../model/pyramid-layout"
 import { PyramidLinkEdge, type PyramidLinkFlowEdge } from "./PyramidLinkEdge"
 import { PyramidNode, type PyramidFlowNode } from "./PyramidNode"

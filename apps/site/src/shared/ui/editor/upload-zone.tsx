@@ -3,7 +3,7 @@ import { Plugin, PluginKey, type EditorState } from "@tiptap/pm/state"
 import { Decoration, DecorationSet, type EditorView } from "@tiptap/pm/view"
 import { useState } from "react"
 import { createRoot } from "react-dom/client"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { UploadIcon, XIcon } from "@/shared/ui/icon"
 

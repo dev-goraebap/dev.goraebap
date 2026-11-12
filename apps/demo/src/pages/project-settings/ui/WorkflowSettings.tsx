@@ -4,7 +4,7 @@ import {
   CATEGORIES, COLUMN_NAME_MAX, WorkflowCategoryIcon, categoryMark, countInColumn, useDeleteWorkflowColumn, useOrderWorkflowColumns,
   useSaveWorkflowColumn, useWorkflow, useWorkItems, type ColumnCategory, type WorkflowColumn,
 } from "@/entities/work-item"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"

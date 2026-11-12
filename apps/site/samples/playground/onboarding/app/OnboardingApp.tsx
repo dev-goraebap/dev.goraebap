@@ -1,7 +1,7 @@
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, RouterProvider, useNavigate, useSearch } from '@tanstack/react-router';
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import logo from '@/shared/brand/logo.svg?raw';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Button } from '@/shared/ui/button';
 import { Field, FieldError, FieldLabel } from '@/shared/ui/field';
 import { CheckIcon } from '@/shared/ui/icon';

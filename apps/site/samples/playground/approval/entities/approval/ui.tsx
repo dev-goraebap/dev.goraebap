@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { CheckIcon, XIcon } from '@/shared/ui/icon';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { resultLabel, resultOf, stepStateOf, timeText, type Approval, type Result } from './model';

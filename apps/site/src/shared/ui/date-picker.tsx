@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { ko } from "react-day-picker/locale/ko"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
 import { Button } from "@/shared/ui/button"
 import { Calendar } from "@/shared/ui/calendar"

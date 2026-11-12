@@ -1,5 +1,5 @@
 import { useId, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { ArrowUpIcon, type Icon } from "@/shared/ui/icon"
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/shared/ui/input-group"

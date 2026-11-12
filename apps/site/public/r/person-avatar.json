@@ -3,15 +3,17 @@
   "name": "person-avatar",
   "title": "사람 아바타",
   "description": "원형 아바타. 그림이 없으면 이름 첫 글자. 기본 그림은 제품이 picture로 정한다.",
+  "dependencies": [
+    "cn@^0.5.2"
+  ],
   "registryDependencies": [
-    "utils",
     "@webcraft/avatar",
     "@webcraft/theme"
   ],
   "files": [
     {
       "path": "src/shared/ui/person-avatar.tsx",
-      "content": "import { cn } from \"@/shared/lib/utils\"\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/shared/ui/avatar\"\n\n/**\n * 사람 아바타(원형). 고른 그림(picture)이 있으면 그것을, 없거나 뜨기 전에는 이름 첫 글자를 보인다.\n * 기본 그림은 제품마다 다르므로 키트에 두지 않는다. 제품이 기본 그림을 정하면 picture로 넘긴다.\n * 기본 크기 20px(목록 줄 · 활동). 크기는 className의 size-*로 바꾼다(Avatar의 size 변형을 고정하지 않아 어떤 크기든 이긴다).\n */\nexport function PersonAvatar({ name, picture, className }: { name: string; picture?: string; className?: string }) {\n  return (\n    <Avatar className={cn(\"size-5\", className)}>\n      {picture && <AvatarImage src={picture} alt=\"\" />}\n      <AvatarFallback className=\"text-[0.625rem] font-semibold\">{name.slice(0, 1)}</AvatarFallback>\n    </Avatar>\n  )\n}\n",
+      "content": "import { cn } from \"cn\"\nimport { Avatar, AvatarFallback, AvatarImage } from \"@/shared/ui/avatar\"\n\n/**\n * 사람 아바타(원형). 고른 그림(picture)이 있으면 그것을, 없거나 뜨기 전에는 이름 첫 글자를 보인다.\n * 기본 그림은 제품마다 다르므로 키트에 두지 않는다. 제품이 기본 그림을 정하면 picture로 넘긴다.\n * 기본 크기 20px(목록 줄 · 활동). 크기는 className의 size-*로 바꾼다(Avatar의 size 변형을 고정하지 않아 어떤 크기든 이긴다).\n */\nexport function PersonAvatar({ name, picture, className }: { name: string; picture?: string; className?: string }) {\n  return (\n    <Avatar className={cn(\"size-5\", className)}>\n      {picture && <AvatarImage src={picture} alt=\"\" />}\n      <AvatarFallback className=\"text-[0.625rem] font-semibold\">{name.slice(0, 1)}</AvatarFallback>\n    </Avatar>\n  )\n}\n",
       "type": "registry:ui",
       "target": "src/shared/ui/person-avatar.tsx"
     }

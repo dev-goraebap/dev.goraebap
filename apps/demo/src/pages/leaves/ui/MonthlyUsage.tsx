@@ -1,5 +1,5 @@
 import { dayText, formatDays, scaleTop, useLeaveUsage, type MonthUsage } from "@/entities/leave"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Skeleton } from "@/shared/ui/skeleton"
 
 type Part = "annual" | "other" | "scheduled"

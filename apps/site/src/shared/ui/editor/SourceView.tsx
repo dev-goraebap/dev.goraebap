@@ -1,7 +1,7 @@
 import { closeHistory } from "@tiptap/pm/history"
 import { NodeViewWrapper, ReactNodeViewRenderer, type NodeViewProps } from "@tiptap/react"
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type KeyboardEvent } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { GlobeIcon, PencilIcon, ZoomInIcon } from "@/shared/ui/icon"
 import { Input } from "@/shared/ui/input"

@@ -7,7 +7,7 @@
       "name": "theme",
       "type": "registry:theme",
       "title": "Webcraft 토큰",
-      "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티. 다크 모드는 html[data-theme=dark](dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → @/shared/lib/utils)을 쓴다.",
+      "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티. 다크 모드는 html[data-theme=dark](dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지))을 쓴다.",
       "docs": "다크 모드는 html[data-theme=dark]입니다. shadcn init이 남긴 .dark { … } 블록과 @custom-variant dark (&:is(.dark *)) 줄은 지웁니다(뒤에 더한 data-theme 변형과 겹칩니다). 모드는 @webcraft/appearance가 data-theme에 반영합니다.",
       "dependencies": [
         "pretendard",
@@ -25,30 +25,36 @@
           "color-unread-strong": "color-mix(in srgb, var(--foreground) 14%, var(--background))",
           "color-state-description": "color-mix(in srgb, var(--icon-muted) 75%, var(--background))",
           "radius-surface": "1rem",
-          "shadow-surface": "0 1px 2px var(--shadow-color), 0 0 0 1px var(--border)"
+          "shadow-surface": "0 1px 2px var(--shadow-color), 0 0 0 1px var(--border)",
+          "color-card": "var(--card)",
+          "color-card-foreground": "var(--card-foreground)",
+          "color-popover": "var(--popover)",
+          "color-popover-foreground": "var(--popover-foreground)",
+          "color-primary": "var(--primary)",
+          "color-secondary": "var(--secondary)",
+          "color-secondary-foreground": "var(--secondary-foreground)",
+          "color-accent": "var(--accent)",
+          "color-accent-foreground": "var(--accent-foreground)",
+          "color-border": "var(--border)",
+          "color-input": "var(--input)",
+          "color-ring": "var(--ring)",
+          "color-pressed": "var(--pressed)",
+          "color-sidebar-foreground": "var(--sidebar-foreground)",
+          "color-sidebar-primary": "var(--sidebar-primary)",
+          "color-sidebar-accent": "var(--sidebar-accent)",
+          "color-sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
+          "color-sidebar-border": "var(--sidebar-border)",
+          "color-sidebar-ring": "var(--sidebar-ring)"
         },
         "light": {
           "background": "#f9f9fa",
           "foreground": "#1b1b1b",
           "sidebar": "#efeff0",
-          "card": "color-mix(in srgb, var(--background) 25%, #ffffff)",
-          "card-foreground": "var(--foreground)",
-          "popover": "color-mix(in srgb, var(--background) 15%, #ffffff)",
-          "popover-foreground": "var(--foreground)",
-          "primary": "var(--foreground)",
           "primary-foreground": "#ffffff",
-          "secondary": "color-mix(in srgb, var(--foreground) 10%, var(--background))",
-          "secondary-foreground": "var(--foreground)",
           "muted": "#ececed",
           "muted-foreground": "#5c5c5e",
-          "accent": "color-mix(in srgb, var(--foreground) 4%, transparent)",
-          "accent-foreground": "var(--foreground)",
           "destructive": "oklch(0.577 0.245 27.325)",
-          "border": "color-mix(in srgb, var(--foreground) 13%, var(--background))",
-          "input": "color-mix(in srgb, var(--foreground) 18%, var(--background))",
-          "ring": "color-mix(in srgb, var(--foreground) 72%, var(--background))",
           "icon-muted": "#6b6b6f",
-          "pressed": "color-mix(in srgb, var(--foreground) 7%, transparent)",
           "shadow-color": "rgb(0 0 0 / 0.04)",
           "chart-1": "oklch(0.87 0 0)",
           "chart-2": "oklch(0.556 0 0)",
@@ -56,13 +62,7 @@
           "chart-4": "oklch(0.371 0 0)",
           "chart-5": "oklch(0.269 0 0)",
           "radius": "0.5rem",
-          "sidebar-foreground": "var(--foreground)",
-          "sidebar-primary": "var(--foreground)",
           "sidebar-primary-foreground": "#ffffff",
-          "sidebar-accent": "var(--pressed)",
-          "sidebar-accent-foreground": "var(--foreground)",
-          "sidebar-border": "var(--border)",
-          "sidebar-ring": "var(--ring)",
           "mark-backlog": "#d7d7da",
           "mark-progress": "#524622",
           "mark-done": "#374c36",
@@ -102,7 +102,26 @@
           "--text-sm": "0.8125rem",
           "--text-sm--line-height": "1.5",
           "--text-base": "0.9375rem",
-          "--text-base--line-height": "1.6"
+          "--text-base--line-height": "1.6",
+          "--card": "color-mix(in srgb, var(--background) 25%, #ffffff)",
+          "--card-foreground": "var(--foreground)",
+          "--popover": "color-mix(in srgb, var(--background) 15%, #ffffff)",
+          "--popover-foreground": "var(--foreground)",
+          "--primary": "var(--foreground)",
+          "--secondary": "color-mix(in srgb, var(--foreground) 10%, var(--background))",
+          "--secondary-foreground": "var(--foreground)",
+          "--accent": "color-mix(in srgb, var(--foreground) 4%, transparent)",
+          "--accent-foreground": "var(--foreground)",
+          "--border": "color-mix(in srgb, var(--foreground) 13%, var(--background))",
+          "--input": "color-mix(in srgb, var(--foreground) 18%, var(--background))",
+          "--ring": "color-mix(in srgb, var(--foreground) 72%, var(--background))",
+          "--pressed": "color-mix(in srgb, var(--foreground) 7%, transparent)",
+          "--sidebar-foreground": "var(--foreground)",
+          "--sidebar-primary": "var(--foreground)",
+          "--sidebar-accent": "var(--pressed)",
+          "--sidebar-accent-foreground": "var(--foreground)",
+          "--sidebar-border": "var(--border)",
+          "--sidebar-ring": "var(--ring)"
         },
         "[data-theme=dark]": {
           "--background": "#121213",
@@ -372,10 +391,10 @@
       "title": "날짜 고르기",
       "description": "DateCalendar와 팝오버 ↔ 바텀시트로 여는 DatePicker(한국어 달력).",
       "dependencies": [
-        "react-day-picker@^10.0.2"
+        "react-day-picker@^10.0.2",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/adaptive-popover",
         "@webcraft/button",
         "@webcraft/calendar",
@@ -477,7 +496,6 @@
       "title": "그룹 머리",
       "description": "목록을 묶었을 때 그룹마다 붙는 띠(이름 · 개수 · 접기).",
       "registryDependencies": [
-        "utils",
         "@webcraft/button",
         "@webcraft/icon",
         "@webcraft/theme"
@@ -488,6 +506,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/list-group-header.tsx"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -530,7 +551,6 @@
       "title": "사람 아바타",
       "description": "원형 아바타. 그림이 없으면 이름 첫 글자. 기본 그림은 제품이 picture로 정한다.",
       "registryDependencies": [
-        "utils",
         "@webcraft/avatar",
         "@webcraft/theme"
       ],
@@ -540,6 +560,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/person-avatar.tsx"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -548,10 +571,10 @@
       "title": "속성 알약",
       "description": "눌러 값을 고르는 속성 알약(필수 isRequired · 오류 isInvalid)과 pillVariants.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/adaptive-popover",
         "@webcraft/button",
         "@webcraft/date-picker",
@@ -574,10 +597,10 @@
       "title": "줄 링크",
       "description": "줄 어디를 눌러도 열리는 TanStack Router 링크.",
       "dependencies": [
-        "@tanstack/react-router@^1.170.0"
+        "@tanstack/react-router@^1.170.0",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/theme"
       ],
       "files": [
@@ -594,7 +617,6 @@
       "title": "목록 끝",
       "description": "조각씩 읽는 목록 아래의 \"전체 중 읽은 수\"와 더 보기.",
       "registryDependencies": [
-        "utils",
         "@webcraft/button",
         "@webcraft/spinner",
         "@webcraft/theme"
@@ -605,6 +627,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/list-more.tsx"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -633,10 +658,10 @@
       "title": "구간 고르기",
       "description": "둘~넷 중 하나를 고르는 칸. 고른 칸의 면이 미끄러진다.",
       "dependencies": [
-        "@base-ui/react@^1.9.0"
+        "@base-ui/react@^1.9.0",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/theme"
       ],
       "files": [
@@ -653,10 +678,10 @@
       "title": "페이지 틀",
       "description": "상위 페이지의 틀: 데스크톱은 머리 줄(경로 · 동작 · 만들기)과 툴바, 휴대폰은 60px 이상 앱 바와 FAB, 바닥 고정 동작 줄(footer). 페이지 h1의 주인(useOwnPageTitle) · 보기 탭(PageViews) · 도구 점(ToolDot) · 전체 화면 알림(chrome) 포함.",
       "dependencies": [
-        "@tanstack/react-router@^1.170.0"
+        "@tanstack/react-router@^1.170.0",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/button",
         "@webcraft/icon",
         "@webcraft/theme",
@@ -730,7 +755,6 @@
       "title": "만들기 양식",
       "description": "ComposeSurface(데스크톱 대화상자 ↔ 페이지, 바닥 줄의 actions · error, 쓴 것이 있으면 닫기 전에 버릴지 묻는 isDirty) · ComposeFields(제목 · 본문) · FileDropzone · FileList.",
       "registryDependencies": [
-        "utils",
         "@webcraft/button",
         "@webcraft/dialog",
         "@webcraft/icon",
@@ -772,6 +796,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/compose/files.ts"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -819,7 +846,6 @@
       "title": "상태 화면",
       "description": "보일 것이 없을 때(없음 · 찾은 것 없음 · 404 · 실패)의 풍경 그림과 제목 · 설명 · 동작. 그림(webp 12장)은 레지스트리 JSON으로 옮길 수 없어 따로 받는다(README 참고).",
       "registryDependencies": [
-        "utils",
         "@webcraft/theme"
       ],
       "docs": "풍경 그림 12장(webp)은 레지스트리 JSON에 담기지 않습니다(글자 파일만 옮겨짐). 프로젝트 루트에서 받아 src/shared/ui/page-state/landscapes/에 둡니다: for n in empty search error-404 error-500; do for i in 01 02 03; do curl -fsSLo src/shared/ui/page-state/landscapes/$n-$i.webp --create-dirs https://goraebap.xyz/r/assets/page-state/landscapes/$n-$i.webp; done; done",
@@ -844,6 +870,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/page-state/InboxIllustration.tsx"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -852,7 +881,6 @@
       "title": "읽기 상세",
       "description": "본문이 있는 것의 상세: DetailLayout(본문 + 속성 칸) · MarkdownBody(가벼운 Markdown 읽기) · ActivityFeed · CommentComposer.",
       "registryDependencies": [
-        "utils",
         "@webcraft/icon",
         "@webcraft/input-group",
         "@webcraft/person-avatar",
@@ -887,6 +915,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/reading/ui/ActivityFeed.tsx"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -1649,10 +1680,10 @@
       "description": "메뉴를 데이터(NavSpace: 묶음 · 항목 · 아래 줄 · 돌아가기 · 수)로 받는 앱 틀. 데스크톱은 220~380px로 끌어 조절하고 아이콘만으로 접는 사이드바와 inset · split 본문, 휴대폰은 앞 네 곳의 하단 탭과 더보기 바텀시트. 로고 · 나(내 메뉴) · 도구 · 바닥 줄(AgentBar)은 자리로 받는다.",
       "dependencies": [
         "@base-ui/react@^1.9.0",
-        "@tanstack/react-router@^1.170.0"
+        "@tanstack/react-router@^1.170.0",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/avatar",
         "@webcraft/button",
         "@webcraft/drawer",
@@ -1778,7 +1809,6 @@
       "title": "옆 패널",
       "description": "목록 옆에서 줄 하나의 사실을 보는 패널(WithPanel): 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트. Facts는 이름과 값 목록.",
       "registryDependencies": [
-        "utils",
         "@webcraft/button",
         "@webcraft/drawer",
         "@webcraft/icon",
@@ -1796,6 +1826,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/side-panel/index.ts"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -1804,7 +1837,6 @@
       "title": "순서 바꾸기",
       "description": "useRowReorder: 손잡이를 끌거나 Alt + ↑/↓로 줄 순서를 바꾼다(따라오는 복사본 · 이웃 줄 미끄러짐 · 끝에서 스크롤 · Esc 취소 · 마지막 순서만 저장 · 화면 낭독기 알림). ReorderGrip · ReorderAnnouncer · reorderRowClass.",
       "registryDependencies": [
-        "utils",
         "@webcraft/icon",
         "@webcraft/theme"
       ],
@@ -1829,6 +1861,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/reorder/use-row-reorder.ts"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -1924,7 +1959,6 @@
       "description": "BootCover와 index.html에 같은 덮개를 미리 넣는 Vite 플러그인(boot-cover/plugin의 bootCover). 앱 스크립트 전에도 토큰과 같은 색(라이트 · 다크)으로 그림과 '불러오는 중입니다'를 보이고, 첫 경로가 준비되면 걷는다.",
       "docs": "vite.config.ts에 bootCover()를 더합니다: import { bootCover } from './src/shared/ui/boot-cover/plugin'. 앱 루트에 <BootCover isReady={…} />를 두고 첫 경로가 풀리면 isReady를 켭니다. 토큰 색을 바꾸면 plugin.ts의 BOOT_COLORS도 맞춥니다.",
       "registryDependencies": [
-        "utils",
         "@webcraft/theme"
       ],
       "files": [
@@ -1948,6 +1982,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/boot-cover/plugin.ts"
         }
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
       ]
     },
     {
@@ -1969,10 +2006,10 @@
         "@tiptap/extension-text-align@3.32.0",
         "@tiptap/extension-text-style@3.32.0",
         "mermaid@^11.17.2",
-        "yet-another-react-lightbox@3.33.0"
+        "yet-another-react-lightbox@3.33.0",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/button",
         "@webcraft/dialog",
         "@webcraft/drawer",
@@ -2129,10 +2166,10 @@
       "dependencies": [
         "@tiptap/core@3.32.0",
         "@tiptap/pm@3.32.0",
-        "@tiptap/react@^3.32.0"
+        "@tiptap/react@^3.32.0",
+        "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "utils",
         "@webcraft/adaptive-popover",
         "@webcraft/button",
         "@webcraft/editor",

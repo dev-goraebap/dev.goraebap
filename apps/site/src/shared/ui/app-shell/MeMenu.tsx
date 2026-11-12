@@ -1,5 +1,5 @@
 import type { ReactElement, ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu"
 import { MoreVerticalIcon } from "@/shared/ui/icon"

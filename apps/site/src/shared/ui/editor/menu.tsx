@@ -1,6 +1,6 @@
 import { useState, type ReactElement, type ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/shared/ui/drawer"
 import {

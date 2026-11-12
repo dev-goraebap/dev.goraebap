@@ -1,5 +1,5 @@
 import { announcementHref, categoryLabel, listDateText, type Announcement } from "@/entities/announcement"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Badge } from "@/shared/ui/badge"
 import { DetailLink } from "@/shared/ui/detail-surface"
 import { EyeIcon, PaperclipIcon, PinIcon } from "@/shared/ui/icon"

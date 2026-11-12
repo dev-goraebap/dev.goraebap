@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { BOOT_MARK, tintBootMark } from "./boot-mark"
 
 /** 너무 빨리 걷혀 깜빡이지 않도록 보이는 최소 시간(ms). 걷힐 때는 0.7초에 걸쳐 사라진다. */

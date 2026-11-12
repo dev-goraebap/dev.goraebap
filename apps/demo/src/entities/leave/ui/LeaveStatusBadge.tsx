@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Badge } from "@/shared/ui/badge"
 import { leaveStatusMark } from "../model/text"
 import type { LeaveStatus } from "../model/types"

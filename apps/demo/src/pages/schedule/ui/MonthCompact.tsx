@@ -1,5 +1,5 @@
 import { covers, dayNumber, dayTitle, EventDot, isSameMonth, monthTitle, monthWeeks, WEEKDAYS, type CalendarEvent } from "@/entities/event"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { dayTone, holidaySuffix, TODAY_HATCH, weekdayTone, type HolidayNames } from "./day-style"
 
 /** 휴대폰의 날 아래 점 수. 일정이 더 많아도 셋까지. */

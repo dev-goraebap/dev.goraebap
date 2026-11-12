@@ -1,5 +1,5 @@
 import type { Editor } from "@tiptap/react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { COLORS } from "./colors"
 import type { MenuEntry } from "./menu"
 import type { HeadingLevel } from "./schema"

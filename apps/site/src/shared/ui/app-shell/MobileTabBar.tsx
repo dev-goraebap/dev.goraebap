@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@/shared/ui/drawer"
 import { ArrowLeftIcon, FileTextIcon, MoreHorizontalIcon, XIcon } from "@/shared/ui/icon"

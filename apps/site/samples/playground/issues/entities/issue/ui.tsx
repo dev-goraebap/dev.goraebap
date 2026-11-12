@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Button } from '@/shared/ui/button';
 import { CalendarIcon, CircleCheckIcon, ClockIcon, EyeIcon, RefreshCwIcon, SirenIcon, type Icon } from '@/shared/ui/icon';
 import { PersonAvatar } from '@/shared/ui/person-avatar';

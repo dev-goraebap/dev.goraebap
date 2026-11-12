@@ -4,7 +4,7 @@ import { LayoutGridIcon, ListFilterIcon, ListIcon } from "@/shared/ui/icon";
 import { Comparison } from "../catalog/Comparison";
 
 /**
- * shadcn 토큰(src/shared/styles/tailwind.css). 강조색은 글자색(먹색 · 흰색)이고 나머지 회색은 글자색을 면에 섞어 만든다.
+ * shadcn 토큰(src/app/styles/tailwind.css). 강조색은 글자색(먹색 · 흰색)이고 나머지 회색은 글자색을 면에 섞어 만든다.
  * 칩의 클래스는 빌드가 찾도록 글자 그대로 둔다.
  */
 const tokens: [token: string, label: string, chip: string][] = [

@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Badge } from "@/shared/ui/badge"
 import { PersonAvatar as SharedPersonAvatar } from "@/shared/ui/person-avatar"
 import { CalendarIcon } from "@/shared/ui/icon"

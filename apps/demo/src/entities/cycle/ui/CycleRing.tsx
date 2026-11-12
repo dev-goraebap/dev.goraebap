@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import type { CycleState } from "../model/types"
 
 const RADIUS = 6

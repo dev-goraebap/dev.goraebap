@@ -1,6 +1,6 @@
 import type { JSONContent } from "@tiptap/react"
 import { useRef, useState, type ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { EditorToolbar, RichEditor, type EditorHandle, type LinkChoice, type ReadLinkPreview, type UploadFile } from "@/shared/ui/editor"
 import { SettingsIcon } from "@/shared/ui/icon"

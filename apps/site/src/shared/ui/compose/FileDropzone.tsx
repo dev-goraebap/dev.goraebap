@@ -1,5 +1,5 @@
 import { useId, useRef, useState, type DragEvent } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { UploadIcon } from "@/shared/ui/icon"
 import { fileSizeText } from "./files"
 

@@ -1,5 +1,5 @@
 import type { CSSProperties } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { projectIcon } from "../model/marks"
 import type { ProjectIconName } from "../model/types"
 

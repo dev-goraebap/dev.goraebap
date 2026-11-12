@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router"
 import { useCallback, useMemo, useState, type ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { ArrowLeftIcon, ChevronRightIcon, PlusIcon, type Icon } from "@/shared/ui/icon"
 import { PageTitleProvider, useFullScreen, usePageChrome } from "./chrome"

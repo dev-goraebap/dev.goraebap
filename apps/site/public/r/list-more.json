@@ -3,8 +3,10 @@
   "name": "list-more",
   "title": "목록 끝",
   "description": "조각씩 읽는 목록 아래의 \"전체 중 읽은 수\"와 더 보기.",
+  "dependencies": [
+    "cn@^0.5.2"
+  ],
   "registryDependencies": [
-    "utils",
     "@webcraft/button",
     "@webcraft/spinner",
     "@webcraft/theme"
@@ -12,7 +14,7 @@
   "files": [
     {
       "path": "src/shared/ui/list-more.tsx",
-      "content": "import { cn } from \"@/shared/lib/utils\"\nimport { Button } from \"@/shared/ui/button\"\nimport { Spinner } from \"@/shared/ui/spinner\"\n\n/**\n * 목록 끝(호호코워크 ListMore, layout-patterns.md의 읽은 수): 조각씩 읽는 목록 아래에 \"전체 중 읽은 수\"와 더 보기.\n * 전체를 모르면(total 없음) 지금 수만, 다 읽었으면(hasMore 아님) 수만 남긴다. 수는 바뀔 때 읽어 준다(aria-live).\n * 휴대폰 목록 위에 만들기 FAB가 떠 있으면 hasFab으로 그 높이만큼 아래를 비워 마지막 줄이 가리지 않게 한다.\n */\nexport function ListMore({ shown, total, unit = \"건\", hasMore, isLoading = false, onMore, hasFab = false, className }: {\n  /** 지금 보이는 수. */\n  shown: number\n  /** 전체 수. 모르면 비운다. */\n  total?: number\n  /** 세는 말: 건 · 개 · 명. */\n  unit?: string\n  /** 더 읽을 것이 있다. */\n  hasMore: boolean\n  /** 다음 조각을 읽는 중: 더 보기에 돌림표를 두고 막는다. */\n  isLoading?: boolean\n  onMore: () => void\n  hasFab?: boolean\n  className?: string\n}) {\n  return (\n    <div data-slot=\"list-more\" className={cn(\"flex flex-col items-center gap-2 px-4 pt-3 pb-10\", hasFab && \"max-md:pb-24\", className)}>\n      <p aria-live=\"polite\" className=\"text-xs text-muted-foreground tabular-nums\">\n        {total === undefined ? `${shown}${unit}` : `${total}${unit} 중 ${shown}${unit}`}\n      </p>\n      {hasMore && (\n        <Button variant=\"secondary\" className=\"rounded-full max-md:h-11 max-md:min-w-22 max-md:px-5\" disabled={isLoading} onClick={onMore}>\n          {isLoading && <Spinner data-icon=\"inline-start\" />}\n          더 보기\n        </Button>\n      )}\n    </div>\n  )\n}\n",
+      "content": "import { cn } from \"cn\"\nimport { Button } from \"@/shared/ui/button\"\nimport { Spinner } from \"@/shared/ui/spinner\"\n\n/**\n * 목록 끝(호호코워크 ListMore, layout-patterns.md의 읽은 수): 조각씩 읽는 목록 아래에 \"전체 중 읽은 수\"와 더 보기.\n * 전체를 모르면(total 없음) 지금 수만, 다 읽었으면(hasMore 아님) 수만 남긴다. 수는 바뀔 때 읽어 준다(aria-live).\n * 휴대폰 목록 위에 만들기 FAB가 떠 있으면 hasFab으로 그 높이만큼 아래를 비워 마지막 줄이 가리지 않게 한다.\n */\nexport function ListMore({ shown, total, unit = \"건\", hasMore, isLoading = false, onMore, hasFab = false, className }: {\n  /** 지금 보이는 수. */\n  shown: number\n  /** 전체 수. 모르면 비운다. */\n  total?: number\n  /** 세는 말: 건 · 개 · 명. */\n  unit?: string\n  /** 더 읽을 것이 있다. */\n  hasMore: boolean\n  /** 다음 조각을 읽는 중: 더 보기에 돌림표를 두고 막는다. */\n  isLoading?: boolean\n  onMore: () => void\n  hasFab?: boolean\n  className?: string\n}) {\n  return (\n    <div data-slot=\"list-more\" className={cn(\"flex flex-col items-center gap-2 px-4 pt-3 pb-10\", hasFab && \"max-md:pb-24\", className)}>\n      <p aria-live=\"polite\" className=\"text-xs text-muted-foreground tabular-nums\">\n        {total === undefined ? `${shown}${unit}` : `${total}${unit} 중 ${shown}${unit}`}\n      </p>\n      {hasMore && (\n        <Button variant=\"secondary\" className=\"rounded-full max-md:h-11 max-md:min-w-22 max-md:px-5\" disabled={isLoading} onClick={onMore}>\n          {isLoading && <Spinner data-icon=\"inline-start\" />}\n          더 보기\n        </Button>\n      )}\n    </div>\n  )\n}\n",
       "type": "registry:ui",
       "target": "src/shared/ui/list-more.tsx"
     }

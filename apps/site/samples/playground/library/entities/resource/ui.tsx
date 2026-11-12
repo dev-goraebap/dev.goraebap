@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { CalendarIcon, StarIcon } from '@/shared/ui/icon';

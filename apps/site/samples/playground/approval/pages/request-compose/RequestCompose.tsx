@@ -1,7 +1,7 @@
 import { useDraft } from '@/shared/lib/draft';
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Button } from '@/shared/ui/button';
 import { ComposeSurface } from '@/shared/ui/compose';
 import { DateCalendar } from '@/shared/ui/date-picker';

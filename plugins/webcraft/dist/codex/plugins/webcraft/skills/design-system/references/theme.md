@@ -4,7 +4,7 @@ arc42: "8.5"
 
 # 테마와 색상
 
-테마는 색·글자·간격·면·경계·모서리와 부품 변형의 기본값을 한 곳에서 정합니다. 프로젝트가 값을 정하지 않았으면 키트의 [토큰 CSS](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/styles/tailwind.css)(레지스트리의 `@webcraft/theme`)에서 출발합니다. 토큰은 이 파일의 `:root`와 `[data-theme=dark]`에 정의하고 `@theme inline`으로 Tailwind에 노출합니다. 화면은 Tailwind CSS v4 유틸리티와 의미 토큰으로만 칠하며, 별도 CSS 파일·CSS 모듈·StyleX를 쓰지 않습니다.
+테마는 색·글자·간격·면·경계·모서리와 부품 변형의 기본값을 한 곳에서 정합니다. 프로젝트가 값을 정하지 않았으면 키트의 [토큰 CSS](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/app/styles/tailwind.css)(레지스트리의 `@webcraft/theme`)에서 출발합니다. 토큰은 이 파일의 `:root`와 `[data-theme=dark]`에 정의하고 `@theme inline`으로 Tailwind에 노출합니다. 화면은 Tailwind CSS v4 유틸리티와 의미 토큰으로만 칠하며, 별도 CSS 파일·CSS 모듈·StyleX를 쓰지 않습니다.
 
 ## 기준 색에서 파생한다
 
@@ -37,7 +37,7 @@ arc42: "8.5"
 
 ## 휴대폰 크기와 라이트·다크
 
-휴대폰 크기는 [토큰 CSS](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/styles/tailwind.css)의 `@media (width < 64rem)`와 부품의 `max-md:` 유틸리티로 정합니다.
+휴대폰 크기는 [토큰 CSS](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/app/styles/tailwind.css)의 `@media (width < 64rem)`와 부품의 `max-md:` 유틸리티로 정합니다.
 
 라이트·다크는 `html[data-theme=dark|light]` 하나가 정하며, Tailwind `dark:` 변형도 이 속성을 봅니다. 색은 토큰에서만 바꾸고 `dark:`로 색을 덮어쓰지 않습니다. 견본과 화면 안에 별도 테마 전환을 두지 않습니다. 아이콘을 고르는 기준은 [아이콘](icons.md), 면의 단계는 [면과 경계](surfaces.md)가 소유합니다.
 

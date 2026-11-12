@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from "react"
 import {
   clock, currentMoment, dayNumber, dayTitle, eventTone, minuteOf, timeRange, weekdayOf, WEEKDAYS, type CalendarEvent,
 } from "@/entities/event"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { layBars } from "../model/month-layout"
 import { END_HOUR, layDay, START_HOUR } from "../model/week-layout"
 import { dayTone, holidaySuffix, MARK_FILL, MARK_FOCUS, type HolidayNames } from "./day-style"

@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority"
 import { useState, type ComponentProps, type ReactNode } from "react"
 import { toggleValue } from "@/shared/lib/toggle"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
 import { Button } from "@/shared/ui/button"
 import { DateCalendar } from "@/shared/ui/date-picker"

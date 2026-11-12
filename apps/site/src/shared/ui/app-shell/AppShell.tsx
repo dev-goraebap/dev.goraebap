@@ -1,6 +1,6 @@
 import { useMemo, useState, type CSSProperties, type ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { PageChromeProvider } from "@/shared/ui/page"
 import { SidebarProvider } from "@/shared/ui/sidebar"
 import { TooltipProvider } from "@/shared/ui/tooltip"

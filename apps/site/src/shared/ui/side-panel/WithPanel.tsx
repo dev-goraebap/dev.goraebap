@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/shared/ui/drawer"
 import { XIcon } from "@/shared/ui/icon"

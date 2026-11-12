@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from 'react';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Button } from '@/shared/ui/button';
 import { PlusIcon } from '@/shared/ui/icon';
 import { PageState } from '@/shared/ui/page-state';

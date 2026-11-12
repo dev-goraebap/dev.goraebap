@@ -10,7 +10,7 @@ arc42: "8.8"
 
 1. 현재 UI와 디자인 기록을 읽고 다른 결정이 있는지 확인합니다. 프로젝트가 이미 가진 Page·필터·설정을 다시 만들지 않습니다.
 2. [패턴 카탈로그](pattern-catalog.md)에서 필요한 지침·코드·견본을 읽습니다. 받을 레지스트리 항목과 필요한 슬롯·반응형 조건을 확인합니다.
-3. 프로젝트 `components.json`에 `"registries": { "@webcraft": "https://goraebap.xyz/r/{name}.json" }`을 두고, 실제로 쓸 항목만 `npx shadcn@latest add @webcraft/<이름>`으로 받습니다. 레지스트리 파일은 Webcraft FSD 별칭을 그대로 import하며 shadcn이 다른 별칭으로 바꿔 주지 않습니다. 그래서 `components.json`의 aliases를 `ui: "@/shared/ui"`, `lib: "@/shared/lib"`, `utils: "@/shared/lib/utils"`로, tsconfig의 `@/*`를 `src/*`로 둡니다. 스킬 설치·동기화는 제품 코드를 복사하거나 import를 넣지 않습니다.
+3. 프로젝트 `components.json`에 `"registries": { "@webcraft": "https://goraebap.xyz/r/{name}.json" }`을 두고, 실제로 쓸 항목만 `npx shadcn@latest add @webcraft/<이름>`으로 받습니다. 레지스트리 파일은 Webcraft FSD 별칭을 그대로 import하며 shadcn이 다른 별칭으로 바꿔 주지 않습니다. 그래서 `components.json`의 aliases를 `ui: "@/shared/ui"`, `lib: "@/shared/lib"`로, tsconfig의 `@/*`를 `src/*`로 둡니다. `cn`은 `cn` 패키지에서 가져옵니다(`utils: "cn"`). FSD는 `utils`처럼 역할로 지은 파일을 두지 않으므로 `shared/lib/utils.ts`를 만들지 않습니다. 스킬 설치·동기화는 제품 코드를 복사하거나 import를 넣지 않습니다.
 4. 토큰과 기본 CSS는 `@webcraft/theme` 항목으로 받습니다. 빈 상태 그림(webp 12개)은 레지스트리 JSON에 담을 수 없어 `https://goraebap.xyz/r/assets/page-state/landscapes/`에서 따로 받습니다(`page-state` 항목의 설치 안내에 명령이 있습니다). 키트 부품은 `render={<Link … />}`나 `RowLink`로 라우터에 이어지므로 루트에 링크 Provider를 두지 않습니다. 라우터·세션·API·메뉴·아이콘 매핑·저장 계약은 프로젝트 소유자가 연결합니다.
 5. 프로젝트의 테마·모바일 탐색·오버레이를 연결한 뒤 실제 화면에서 확인합니다. 타입 검사만으로 시각적 재현을 보장하지 않습니다.
 

@@ -1,5 +1,3 @@
-import '@/shared/styles/tailwind.css';
-import '@/shared/styles/fonts.css';
 import { useEffect, useState, useSyncExternalStore } from 'react';
 import { loadSample, type SampleEntry } from '@samples/catalog/registry';
 import { SampleView } from '@samples/catalog/SampleView';

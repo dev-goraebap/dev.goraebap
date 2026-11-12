@@ -50,7 +50,8 @@ const lines = Object.entries(SOLAR).map(([name, key]) => {
   const linear = body(key, "linear")
   if (!linear) throw new Error(`Solar 아이콘 없음: ${key}-linear`)
   const chosen = body(key, "bold-duotone")
-  return `export const ${name} = solar(${JSON.stringify(name)}, ${JSON.stringify(linear)}${chosen ? `, ${JSON.stringify(chosen)}` : ""})`
+  // 순수 표시: 없으면 묶을 때 solar() 호출을 지우지 못해, 아이콘 하나만 가져와도 전부가 따라온다.
+  return `export const ${name} = /* @__PURE__ */ solar(${JSON.stringify(name)}, ${JSON.stringify(linear)}${chosen ? `, ${JSON.stringify(chosen)}` : ""})`
 })
 await fs.writeFile(new URL("../src/shared/ui/icon/icons.generated.ts", import.meta.url),
   `// npm run icons로 생성한다. 직접 고치지 않는다.\n// Solar icons by 480 Design, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/).\nimport { solar } from "./solar"\n\n${lines.join("\n")}\n`)

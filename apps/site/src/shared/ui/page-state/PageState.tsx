@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, type ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { StateLandscape, type StateKind, type StateVariant } from "./StateLandscape"
 
 /** 페이지의 메시지가 창 높이의 어디에서 시작하는지(위 막대가 달라도 같은 자리). */

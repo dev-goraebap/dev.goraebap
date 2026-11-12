@@ -1,4 +1,4 @@
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Badge } from "@/shared/ui/badge"
 import { statusMark } from "../model/format"
 import type { MeetingStatus } from "../model/types"

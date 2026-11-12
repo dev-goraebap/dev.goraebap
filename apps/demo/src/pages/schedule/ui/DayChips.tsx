@@ -1,5 +1,5 @@
 import { covers, dayNumber, dayTitle, weekdayOf, WEEKDAYS, type CalendarEvent } from "@/entities/event"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { dayTone, holidaySuffix, type HolidayNames } from "./day-style"
 
 /** 휴대폰 주간의 요일 칩 줄: 요일과 날짜(일요일 · 공휴일은 휴일색), 고른 날은 눌린 바탕, 오늘 날짜는 강조 원, 일정이 있는 날은 아래 점. */

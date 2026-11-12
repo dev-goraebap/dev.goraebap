@@ -1,7 +1,7 @@
 import type { ReactNode } from "react"
 import { useUpdateProject, type Project } from "@/entities/project"
 import { projectPath } from "@/shared/config"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
 import { ArchiveIcon, ArchiveUpIcon, CopyIcon, StarIcon, UsersIcon } from "@/shared/ui/icon"

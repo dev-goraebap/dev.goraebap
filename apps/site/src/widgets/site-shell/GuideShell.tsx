@@ -31,7 +31,7 @@ const KEEP_AT_LEAST_MS = 300;
 /**
  * 화면 이동의 진행 표시(업무 앱의 RouteStage와 같은 규칙). 뼈대(스켈레톤)나 가리는 덮개를 두지 않는다: 다음 문서를 준비하는 동안
  * 지금 문서를 그대로 두고, 150ms가 지나면 콘텐츠 면 위쪽 테두리가 흐른다. 띄웠으면 최소 300ms 둔 뒤 내린다.
- * 준비된 문서끼리는 콘텐츠 영역만 View Transition으로 200ms 교차 페이드한다(app/main.tsx, shared/styles/site.css).
+ * 준비된 문서끼리는 콘텐츠 영역만 View Transition으로 200ms 교차 페이드한다(app/main.tsx, app/styles/site.css).
  */
 function useProgress() {
   const moving = useRouterState({ select: state => state.status === 'pending' && !!state.resolvedLocation && state.location.pathname !== state.resolvedLocation.pathname });

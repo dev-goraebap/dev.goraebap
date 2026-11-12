@@ -1,5 +1,5 @@
 import { useId, useState } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import empty01 from "./landscapes/empty-01.webp"
 import empty02 from "./landscapes/empty-02.webp"
 import empty03 from "./landscapes/empty-03.webp"

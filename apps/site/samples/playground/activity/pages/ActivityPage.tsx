@@ -1,7 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { useAddressFilters } from '@/shared/lib/list-address';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
 import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/filter';

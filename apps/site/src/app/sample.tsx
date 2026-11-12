@@ -1,3 +1,5 @@
+import '@/app/styles/tailwind.css';
+import '@/app/styles/fonts.css';
 import { createRoot } from 'react-dom/client';
 import { SampleFrame } from '../widgets/samples';
 

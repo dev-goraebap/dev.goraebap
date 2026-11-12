@@ -1,6 +1,6 @@
 import type { Meta, SampleOf } from "../catalog/types";
 import { focusFirstInvalid } from "@/shared/lib/focus-invalid";
-import { cn } from "@/shared/lib/utils";
+import { cn } from "cn";
 import { Button } from "@/shared/ui/button";
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog";
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/dialog";

@@ -1,5 +1,5 @@
 import { MeetingStatusBadge, meetingHref, rowHeldText, type Meeting } from "@/entities/meeting"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Badge } from "@/shared/ui/badge"
 import { DetailLink } from "@/shared/ui/detail-surface"
 import { ProjectsIcon } from "@/shared/ui/icon"

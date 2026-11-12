@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 
 /** 상세 속성의 한 묶음(속성 · 라벨 · 프로젝트 …): 넓은 옆 칸에서 이 이름 아래에 알약이 줄로 선다. */
 export type DetailSection = { title: string; items: ReactNode }

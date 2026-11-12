@@ -7,7 +7,7 @@ import {
 import { paths, projectPath } from "@/shared/config"
 import { useComposeParam } from "@/shared/lib/use-compose-param"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"

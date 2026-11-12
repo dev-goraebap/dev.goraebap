@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { GripIcon } from "@/shared/ui/icon"
 import type { RowReorder } from "./use-row-reorder"
 

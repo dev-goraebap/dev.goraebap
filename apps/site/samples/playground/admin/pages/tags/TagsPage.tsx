@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useAddressWords } from '@/shared/lib/list-address';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { ActionMenu } from '@/shared/ui/action-menu';
 import { Alert, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';

@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { Button } from '@/shared/ui/button';
 import { ArrowUpIcon } from '@/shared/ui/icon';
 import { PersonAvatar } from '@/shared/ui/person-avatar';

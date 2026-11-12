@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/utils';
+import { cn } from 'cn';
 import { AdaptivePopover } from '@/shared/ui/adaptive-popover';
 import { Button } from '@/shared/ui/button';
 import { PlusIcon, UserIcon, XIcon } from '@/shared/ui/icon';

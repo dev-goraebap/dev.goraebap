@@ -10,7 +10,7 @@ arc42: "8.8"
 
 | 범주 | 소유하는 내용 | 지침 | 코드 |
 | --- | --- | --- | --- |
-| Foundations (디자인 기초) | 테마·색상, 글자, 간격·크기, 면·경계·그림자·곡률, 아이콘, 모션 | [테마](theme.md), [글자](typography.md), [간격](spacing.md), [면](surfaces.md), [아이콘](icons.md), [모션](motion.md) | [토큰 CSS](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/styles/tailwind.css), [icon](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/icon) |
+| Foundations (디자인 기초) | 테마·색상, 글자, 간격·크기, 면·경계·그림자·곡률, 아이콘, 모션 | [테마](theme.md), [글자](typography.md), [간격](spacing.md), [면](surfaces.md), [아이콘](icons.md), [모션](motion.md) | [토큰 CSS](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/app/styles/tailwind.css), [icon](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/icon) |
 | Primitives (기본 부품) | shadcn 부품의 쓰임과 변형 | [기본 부품](basic-components.md) | [shared/ui](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui)의 shadcn 부품 |
 | Composites (조합 부품) | 다이얼로그·곁에 여는 내용·검색·필터·표시·속성·올리기·상태·본문 칸 | [조합 부품](composed-components.md), [다이얼로그](dialog.md), [검색·필터·표시](search-filter.md) | [shared/ui](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui)의 조합 부품 |
 | Layouts (레이아웃) | 앱 셸·사이드바·모바일 탐색·페이지 머리·툴바·목록·상세·설정·옆 패널 | [앱 셸](app-layout.md), [페이지 배치](layout-patterns.md) | [app-shell](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/app-shell), [page](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/page) |

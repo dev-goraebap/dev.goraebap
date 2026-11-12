@@ -1,6 +1,6 @@
 import type { JSONContent } from "@tiptap/react"
 import { useState, type ReactNode, type RefObject } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { RichEditor, type EditorHandle, type ReadLinkPreview } from "@/shared/ui/editor"
 import { COLUMN, DESK, PAGELESS } from "./DocumentEditor"
 import { useFitZoom, useIsPhoneScreen } from "./hooks"

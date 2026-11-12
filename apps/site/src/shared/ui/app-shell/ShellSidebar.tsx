@@ -1,7 +1,7 @@
 import { Collapsible } from "@base-ui/react/collapsible"
 import { Link } from "@tanstack/react-router"
 import { useEffect, useState, type ReactNode } from "react"
-import { cn } from "@/shared/lib/utils"
+import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { ArrowLeftIcon, ChevronDownIcon, ChevronsLeftIcon, ChevronsRightIcon } from "@/shared/ui/icon"
 import {
