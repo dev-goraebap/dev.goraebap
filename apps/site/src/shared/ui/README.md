@@ -8,7 +8,7 @@
 
 | 위치 | 담는 것 |
 | --- | --- |
-| `*.tsx`(바로 아래) | shadcn 부품(우리가 고침: button의 view · tool · create, badge의 label, sidebar · input · textarea · select의 크기)과 공통 부품(adaptive-popover, action-menu, option-list, confirm-dialog, form-dialog, detail-surface, date-picker, property-pill · info-pill, display-menu, list-group-header, pane-resize-handle, segmented-control, row-link, person-avatar, search-tool) |
+| `*.tsx`(바로 아래) | shadcn 부품(우리가 고침: button의 view · tool · create, badge의 label, sidebar · input · textarea · select의 크기)과 공통 부품(adaptive-popover, action-menu, option-list, confirm-dialog, form-dialog, detail-surface, date-picker, property-pill · info-pill, display-menu, list-group-header, pane-resize-handle, segmented-control, row-link, list-more, person-avatar, search-tool) |
 | `icon/` | lucide와 같은 이름으로 부르는 Solar 아이콘. `npm run icons:ui`가 `scripts/generate-ui-icons.mjs`의 이름표로 `icons.generated.ts`를 만든다 |
 | `page/` · `settings/` · `compose/` · `filter/` · `page-state/` · `reading/` | 페이지 틀, 설정 화면, 만들기 양식, 필터, 상태 화면(풍경 그림 webp), 읽기 상세 |
 | `../lib/` | `useIsMobile`, `appearance`(모드 · 목록 높이), `useStoredWidth`, `toggleValue`, `panel`(목록 위 대화상자), `useComposeParam`, `cn` |

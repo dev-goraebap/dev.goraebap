@@ -14,7 +14,7 @@ const VerifyJourney: Sample = {
     await userEvent.click(await page.findByRole("button", { name: "자료 추가" }));
     const dialog = await page.findByRole("dialog", { name: "새 자료" });
     await userEvent.type(within(dialog).getByRole("textbox", { name: "제목" }), "접근성 검토 기록");
-    await userEvent.click(within(dialog).getByRole("button", { name: "컬렉션" }));
+    await userEvent.click(within(dialog).getByRole("button", { name: "컬렉션 (필수)" }));
     await userEvent.click(await page.findByRole("option", { name: "읽을거리" }));
     await userEvent.click(within(dialog).getByRole("button", { name: "추가하기" }));
     await expect(await page.findByRole("heading", { level: 1, name: "접근성 검토 기록" })).toBeVisible();

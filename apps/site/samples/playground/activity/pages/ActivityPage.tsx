@@ -5,18 +5,18 @@ import { cn } from '@/shared/lib/utils';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
 import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/filter';
-import { CircleCheckIcon, HistoryIcon, PencilIcon, PlusIcon, ReplyIcon, CircleXIcon, TriangleAlertIcon, type Icon } from '@/shared/ui/icon';
+import { CircleCheckIcon, HistoryIcon, MessageCircleIcon, PencilIcon, PlusIcon, TrashIcon, TriangleAlertIcon, type Icon } from '@/shared/ui/icon';
 import { Page } from '@/shared/ui/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { Skeleton } from '@/shared/ui/skeleton';
-import { Spinner } from '@/shared/ui/spinner';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
 import { activityQueries, conditionsOf, exactText, filterKeys, filters, groupByDay, kinds, onePeriod, relativeText, useActivityApi,
   type Activity, type ActivityKind } from '../entities/activity';
+import { ListMore } from '@/shared/ui/list-more';
 
-/** 종류의 표식. 댓글 · 삭제는 키트에 맞는 아이콘이 없어 가까운 것(답장 · 엑스 원)을 쓴다. */
-const marks: Record<ActivityKind, Icon> = { create: PlusIcon, edit: PencilIcon, comment: ReplyIcon, approve: CircleCheckIcon, delete: CircleXIcon };
+/** 종류의 표식. */
+const marks: Record<ActivityKind, Icon> = { create: PlusIcon, edit: PencilIcon, comment: MessageCircleIcon, approve: CircleCheckIcon, delete: TrashIcon };
 
 /**
  * 활동 기록: 시간순 읽기 전용 타임라인. 툴바의 필터(기간 · 사람 · 종류)와 확정한 조건은 주소가 가진다. 날짜로 나누고 줄마다
@@ -80,24 +80,13 @@ function Row({ item }: { item: Activity }) {
     <Tooltip>
       <TooltipTrigger render={<time dateTime={item.at} tabIndex={0} />}
         className="rounded-sm text-xs/6 whitespace-nowrap text-muted-foreground tabular-nums outline-none focus-visible:ring-2 focus-visible:ring-ring">
-        {relativeText(item.at)}<span className="sr-only"> ({exactText(item.at)})</span>
+        {relativeText(item.at)}
       </TooltipTrigger>
       <TooltipContent>{exactText(item.at)}</TooltipContent>
     </Tooltip>
   </li>;
 }
 
-/** 목록 아래: 전체 중 읽은 수와 더 보기. 다 읽었으면 수만 남는다. */
-function ListMore({ shown, total, unit, hasMore, isLoading, onMore }: {
-  shown: number; total: number; unit: string; hasMore: boolean; isLoading: boolean; onMore: () => void;
-}) {
-  return <div className="flex flex-col items-center gap-2 px-4 pt-2 pb-10">
-    <p className="text-xs text-muted-foreground tabular-nums">{total}{unit} 중 {shown}{unit}</p>
-    {hasMore ? <Button variant="secondary" className="rounded-full max-md:h-11 max-md:px-5" disabled={isLoading} onClick={onMore}>
-      {isLoading && <Spinner data-icon="inline-start" />}더 보기
-    </Button> : null}
-  </div>;
-}
 
 /** 읽는 동안: 줄 모양의 자리. */
 function TimelineSkeleton() {

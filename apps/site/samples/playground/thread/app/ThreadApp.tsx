@@ -1,6 +1,6 @@
 import type { NavSpace } from '@/shared/ui/app-shell';
 import { Button } from '@/shared/ui/button';
-import { MailIcon } from '@/shared/ui/icon';
+import { MessageCircleIcon } from '@/shared/ui/icon';
 import { Page } from '@/shared/ui/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
@@ -17,18 +17,18 @@ import { RoomsPage } from '../pages/RoomsPage';
 /** 라우터 주소의 타입은 사이트 라우터에 등록되어 있어, 견본 앱의 주소는 글자로 넘긴다. */
 const ROOMS: string = '/rooms';
 
-/** 셸: 메뉴가 대화방을 나열한다. 대화 아이콘이 키트에 없어 편지 아이콘으로 대신한다. */
+/** 셸: 메뉴가 대화방을 나열한다. */
 function Shell() {
   const api = useThreadApi();
   const rooms = useQuery(threadQueries.rooms(api));
   const space: NavSpace = {
-    id: 'main', title: '대화', sections: [{ title: '대화방', entries: (rooms.data ?? []).map(room => ({ path: `/rooms/${room.id}`, label: room.name, icon: MailIcon })) }],
+    id: 'main', title: '대화', sections: [{ title: '대화방', entries: (rooms.data ?? []).map(room => ({ path: `/rooms/${room.id}`, label: room.name, icon: MessageCircleIcon })) }],
   };
   const layout = useShellLayout();
   const location = useLocation();
   return (
     <PlaygroundShell space={space} pathname={location.pathname} layout={layout}
-      brand={isFolded => <span className="flex min-w-0 items-center gap-2"><MailIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate font-semibold">대화</span>}</span>}
+      brand={isFolded => <span className="flex min-w-0 items-center gap-2"><MessageCircleIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate font-semibold">대화</span>}</span>}
       footer={isFolded => (isFolded ? null : <span className="px-2 text-xs text-muted-foreground">예제 · 메모리 저장</span>)}>
       <Outlet />
     </PlaygroundShell>

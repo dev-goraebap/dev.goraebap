@@ -46,7 +46,7 @@ export function FormDialog({ open, onOpenChange, title, description, submitLabel
               {description && <DrawerDescription>{description}</DrawerDescription>}
             </DrawerHeader>
             {children && <div className="flex min-h-0 flex-col gap-4 overflow-y-auto p-4">{children}</div>}
-            <DrawerFooter className="flex-row pb-[calc(1rem+env(safe-area-inset-bottom))] *:flex-1">
+            <DrawerFooter className="flex-row pb-[calc(1rem+env(safe-area-inset-bottom))] *:min-w-22 *:flex-1">
               <DrawerClose render={<Button type="button" variant="ghost" className="h-11" />}>취소</DrawerClose>
               {save}
             </DrawerFooter>

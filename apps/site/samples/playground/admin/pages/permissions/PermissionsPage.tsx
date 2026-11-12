@@ -51,19 +51,18 @@ export function PermissionsPage() {
       action={<Button variant="secondary" onClick={() => void query.refetch()}>다시 시도</Button>} />;
     return <RoleList role={role} onRole={setRole} valueOf={valueOf} onToggle={toggle} />;
   };
-  return <Page crumbs={[{ label: '권한', icon: ShieldCheckIcon }]}
+  // 저장 줄: 바닥에 붙어 목록을 내려도 보인다. 바꾼 것이 있을 때만 나타난다.
+  return <Page crumbs={[{ label: '권한', icon: ShieldCheckIcon }]} footerLabel="변경 사항 저장"
+    footer={changed.size > 0 ? <>
+      <Button variant="ghost" disabled={save.isPending} onClick={() => setChanged(new Set())}>되돌리기</Button>
+      <Button disabled={save.isPending} onClick={submit}>
+        {save.isPending ? <Spinner data-icon="inline-start" /> : null}변경 {changed.size}개 저장
+      </Button>
+    </> : undefined}
     below={save.isError ? <Alert variant="destructive" className="shrink-0 rounded-none border-x-0 border-t-0">
       <TriangleAlertIcon /><AlertTitle>권한을 저장하지 못했습니다. 바꾼 칸은 그대로 남아 있습니다. 다시 저장해 주세요.</AlertTitle>
     </Alert> : undefined}>
     {content()}
-    {/* 저장 줄: 본문 바닥에 붙어(sticky) 목록을 내려도 보인다. 바꾼 것이 있을 때만 나타난다. */}
-    {changed.size > 0 ? <div role="region" aria-label="변경 사항 저장"
-      className="sticky bottom-0 z-10 mt-auto flex shrink-0 items-center justify-end gap-2 border-t bg-background px-4 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
-      <Button variant="ghost" disabled={save.isPending} className="max-md:h-11" onClick={() => setChanged(new Set())}>되돌리기</Button>
-      <Button disabled={save.isPending} className="max-md:h-11 max-md:flex-1" onClick={submit}>
-        {save.isPending ? <Spinner data-icon="inline-start" /> : null}변경 {changed.size}개 저장
-      </Button>
-    </div> : null}
     <ConfirmDialog open={blocker.status === 'blocked'} onOpenChange={open => { if (!open) blocker.reset?.(); }} title="저장하지 않고 나갈까요?"
       description={`바꾼 권한 ${changed.size}개가 저장되지 않고 사라집니다.`}
       action={{ label: '나가기', onAction: () => blocker.proceed?.() }} />

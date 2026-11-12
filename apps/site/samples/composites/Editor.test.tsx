@@ -27,30 +27,27 @@ const VerifyBlockMenu: Sample = {
       await expect(within(menu).getByRole("menuitem", { name: new RegExp(`^${name}( |$)`) })).toBeInTheDocument();
     await userEvent.keyboard("{Escape}");
     await waitFor(() => expect(page.queryByRole("menu", { name: "블록 메뉴" })).not.toBeInTheDocument());
-    // 단축키는 블록을 고른 채(메뉴 없이) 쓴다: Ctrl+누르기로 고르고 Ctrl+D는 복제, Alt+↓는 아래로 옮기기, Delete는 지우기.
-    // 메뉴 안의 키는 메뉴가 다루므로 메뉴가 열린 동안에는 단축키가 돌지 않는다. Esc는 고른 것을 푼다.
-    const choose = async (name: string) => {
-      await userEvent.keyboard("{Escape}");
-      const user = userEvent.setup();
-      await user.keyboard("{Control>}");
-      await user.click(page.getByRole("button", { name }));
-      await user.keyboard("{/Control}");
-      await waitFor(() => expect(page.getByRole("button", { name })).toHaveAttribute("aria-pressed", "true"));
-      // 손잡이는 블록 메뉴를 여는 단추라 초점이 그 위에 있으면 ↓를 메뉴가 가져간다(키트에 알린 문제). 초점을 본문 밖으로 둔다.
-      page.getByRole("button", { name }).blur();
+    // 단축키는 손잡이에 초점을 둔 채 쓴다: Ctrl+D는 복제, Alt+↓는 아래로 옮기기, Delete는 지우기(메뉴의 표기와 같다).
+    // 손잡이는 블록 메뉴를 여는 단추지만 블록 단축키는 메뉴가 가져가지 않는다. 메뉴는 열리지 않는다.
+    const focusGrip = async (name: string) => {
+      page.getByRole("button", { name }).focus();
+      await waitFor(() => expect(page.getByRole("button", { name })).toHaveFocus());
     };
     const grips = () => page.getAllByRole("button", { name: /번 블록 선택$/ }).length;
     const gripsBefore = grips();
-    await choose("1번 블록 선택");
+    await focusGrip("1번 블록 선택");
     await userEvent.keyboard("{Control>}d{/Control}");
     await waitFor(() => expect(topLevel(canvasElement).filter(text => text.startsWith("이 본문은")).length).toBe(before + 1));
+    await expect(page.queryByRole("menu", { name: "블록 메뉴" })).not.toBeInTheDocument();
     // 손잡이는 본문을 다시 잰 뒤 늘어난다. 그 전의 2번은 아직 옛 블록이다.
     await waitFor(() => expect(grips()).toBe(gripsBefore + 1));
-    // 복제본(2번)을 아래로 옮기면 다음 제목과 자리를 바꾼다.
-    await choose("2번 블록 선택");
+    // 복제본(2번)을 아래로 옮기면 다음 제목과 자리를 바꾼다. 초점은 옮긴 블록의 손잡이에 남는다.
+    await userEvent.keyboard("{Escape}");
+    await focusGrip("2번 블록 선택");
     await userEvent.keyboard("{Alt>}{ArrowDown}{/Alt}");
     await waitFor(() => expect(topLevel(canvasElement)[1]).toBe("분기 지표"));
-    await choose("3번 블록 선택");
+    await expect(page.queryByRole("menu", { name: "블록 메뉴" })).not.toBeInTheDocument();
+    await waitFor(() => expect(page.getByRole("button", { name: "3번 블록 선택" })).toHaveFocus());
     await userEvent.keyboard("{Delete}");
     await waitFor(() => expect(topLevel(canvasElement).filter(text => text.startsWith("이 본문은")).length).toBe(before));
     await userEvent.keyboard("{Escape}");
@@ -168,10 +165,10 @@ const VerifyReading: Sample = {
     await expect(frame.getAttribute("sandbox")).toBe("allow-scripts allow-modals allow-forms allow-popups");
     await expect(frame.getAttribute("referrerpolicy")).toBe("no-referrer");
     await userEvent.click(within(article).getByRole("button", { name: "분기 지표.html 크게 보기" }));
-    const viewer = await page.findByRole("dialog", { name: /^분기 지표\.html/ });
+    const viewer = await page.findByRole("dialog", { name: "분기 지표.html 크게 보기" });
     await expect(within(viewer).queryByRole("button", { name: "새 탭에서 열기" })).not.toBeInTheDocument();
     await userEvent.click(within(viewer).getByRole("button", { name: "닫기" }));
-    await waitFor(() => expect(page.queryByRole("dialog", { name: /^분기 지표\.html/ })).not.toBeInTheDocument());
+    await waitFor(() => expect(page.queryByRole("dialog", { name: "분기 지표.html 크게 보기" })).not.toBeInTheDocument());
   },
 };
 

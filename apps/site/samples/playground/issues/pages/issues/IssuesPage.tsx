@@ -18,6 +18,7 @@ import { IssueRow, PriorityMark, StatusIcon } from '../../entities/issue/ui';
 import { IssuePeek } from '../issue-detail/IssueDetailPage';
 import { BoardView } from './BoardView';
 import { directions, displayChoices, filterKeys, filters, groups, initialDisplay, layouts, sorts, visibleIssues, type Display } from './model';
+import { ListMore } from '@/shared/ui/list-more';
 
 const PAGE = 8;
 const pageOf = (id: string) => `/issues/${id}`;
@@ -71,7 +72,7 @@ export function IssuesPage({ onCreate }: { onCreate: () => void }) {
           </ul> : null}
         </Group>;
       })}
-      <ListMore shown={Math.min(limit, items.length)} total={items.length} unit="개" hasMore={limit < items.length} onMore={() => setLimit(limit + PAGE)} />
+      <ListMore shown={Math.min(limit, items.length)} total={items.length} unit="개" hasMore={limit < items.length} onMore={() => setLimit(limit + PAGE)} hasFab />
     </div>;
   };
   return <PeekLayout aside={peek.id ? <PeekPanel id={peek.id} title={peeked ? `${peeked.id} ${peeked.title}` : '이슈'} pageHref={pageOf(peek.id)} onClose={peek.close}>
@@ -115,13 +116,6 @@ function Group({ label, icon, count, isGrouped, children }: { label: string; ico
   </section>;
 }
 
-/** 목록 아래: 전체 중 보이는 수와 더 보기. 끝없이 불러오지 않고 조각씩 늘린다. */
-function ListMore({ shown, total, unit, hasMore, onMore }: { shown: number; total: number; unit: string; hasMore: boolean; onMore: () => void }) {
-  return <div className="flex flex-col items-center gap-2 px-4 pt-4 pb-24 md:pb-10">
-    <p className="text-xs text-muted-foreground tabular-nums">{total}{unit} 중 {shown}{unit}</p>
-    {hasMore ? <Button variant="secondary" className="rounded-full max-md:h-11 max-md:px-5" onClick={onMore}>더 보기</Button> : null}
-  </div>;
-}
 
 function ListSkeleton() {
   return <div aria-busy="true" aria-label="이슈를 불러오는 중" className="flex flex-col">

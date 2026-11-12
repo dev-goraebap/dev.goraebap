@@ -1,7 +1,7 @@
 import { cn } from '@/shared/lib/utils';
 import { ActionMenu } from '@/shared/ui/action-menu';
 import { Button } from '@/shared/ui/button';
-import { FileTextIcon, FolderIcon, FolderWithFilesIcon, ImageIcon, PencilIcon, PlusIcon } from '@/shared/ui/icon';
+import { FileTextIcon, FolderIcon, FolderInputIcon, ImageIcon, PencilIcon, PlusIcon } from '@/shared/ui/icon';
 import { PageState } from '@/shared/ui/page-state';
 import { RowLink } from '@/shared/ui/row-link';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
@@ -16,12 +16,12 @@ const dateText = (value: string) => `${Number(value.slice(5, 7))}월 ${Number(va
 
 type Handlers = { onMove: (node: FolderNode) => void; onRename: (node: FolderNode) => void };
 
-/** 행 끝 메뉴(…): 옮기기 · 이름 바꾸기. 줄 링크 위에 떠서 따로 눌린다. 옮기기 아이콘이 키트에 없어 파일 든 폴더 아이콘으로 대신한다. */
+/** 행 끝 메뉴(…): 옮기기 · 이름 바꾸기. 줄 링크 위에 떠서 따로 눌린다. */
 function RowMenu({ node, onMove, onRename }: Handlers & { node: FolderNode }) {
   return (
     <span className="relative z-1 flex">
       <ActionMenu label={`${node.name} 메뉴`} title={node.name} size="row" actions={[
-        { label: '옮기기', icon: FolderWithFilesIcon, onSelect: () => onMove(node) },
+        { label: '옮기기', icon: FolderInputIcon, onSelect: () => onMove(node) },
         { label: '이름 바꾸기', icon: PencilIcon, onSelect: () => onRename(node) },
       ]} />
     </span>

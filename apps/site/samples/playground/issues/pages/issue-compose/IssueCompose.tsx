@@ -2,9 +2,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { JSONContent } from '@tiptap/react';
 import { useState } from 'react';
 import { useDraft } from '@/shared/lib/draft';
+import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { Button } from '@/shared/ui/button';
 import { ComposeSurface, PlaceChip } from '@/shared/ui/compose';
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { RichDraft } from '@/shared/ui/editor';
 import { ChartNoAxesColumnIcon, LinkIcon, SquareCheckIcon, TagIcon, UserIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
@@ -17,14 +17,6 @@ import { assigneeOptions, priorityOptions, statusOptions } from '../../entities/
 
 type Draft = { title: string; body?: JSONContent; status: Issue['status']; priority?: Issue['priority']; assignee?: string; due?: string };
 const empty: Draft = { title: '', status: 'todo' };
-
-/**
- * 빠진 칸으로 초점을 옮긴다: 제목 칸(aria-invalid)과 빠진 알약(data-pill-invalid) 중 화면 순서로 첫 번째.
- * 키트 속성 알약은 aria-invalid를 받지 않아 감싼 요소의 표시로 찾는다.
- */
-const focusMissing = () => requestAnimationFrame(() => {
-  document.querySelector<HTMLElement>('[role=dialog] [aria-invalid="true"], [role=dialog] [data-pill-invalid] [data-slot=property-pill], [data-slot=page] [aria-invalid="true"], [data-slot=page] [data-pill-invalid] [data-slot=property-pill]')?.focus();
-});
 
 /** 새 이슈와 수정을 같은 양식으로 쓴다. 수정은 저장한 값을 읽은 뒤 연다. parent가 있으면 그 이슈의 하위 이슈로 만든다. */
 export function IssueCompose({ id, parent, surface, onClose, onExpand, onDone }: {
@@ -63,50 +55,41 @@ function ComposeBody({ id, parent, initial, crumbs, surface, onClose, onExpand, 
     },
   });
   const isDirty = JSON.stringify(draft) !== JSON.stringify(initial);
-  const [isLeaveAsked, setLeaveAsked] = useState(false);
   const leave = () => { clearDraft(); onClose(); };
-  // 고친 것이 있으면 닫기(닫기 · Esc · 바깥 누르기 · 취소)가 먼저 묻는다. 키트 양식 틀은 묻지 않으므로 여기서 가로챈다.
-  const close = () => (isDirty ? setLeaveAsked(true) : leave());
   // 제출 버튼은 막지 않는다. 처음 누른 뒤부터 빠진 값을 곁에 알리고 첫 번째로 초점을 옮긴다.
   const [isTried, setTried] = useState(false);
   const lacks = { title: !draft.title.trim(), priority: !draft.priority };
   const submit = () => {
-    if (lacks.title || !draft.priority) { setTried(true); focusMissing(); return; }
+    if (lacks.title || !draft.priority) { setTried(true); focusFirstInvalid(); return; }
     save.mutate({ title: draft.title.trim(), body: draft.body ?? { type: 'doc' }, status: draft.status, priority: draft.priority,
       assignee: draft.assignee, due: draft.due, parent });
   };
   const titleError = isTried && lacks.title ? '제목을 입력해 주세요.' : undefined;
   const isPriorityMissing = isTried && lacks.priority;
   const isPage = surface === 'page';
-  return <>
-    <ComposeSurface surface={surface} crumbs={crumbs} chip={<PlaceChip icon={<TagIcon />} label={parent ? `${parent}의 하위 이슈` : '이슈'} />}
-      onClose={close} onExpand={onExpand}
-      error={save.isError ? '저장하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
-      submit={{ label: id ? '저장' : '추가하기', isPending: save.isPending, onSubmit: submit }}
-      pills={<>
-        <OptionPill label="상태" icon={SquareCheckIcon} value={draft.status} options={statusOptions} onChange={status => set({ status })} />
-        <span data-pill-invalid={isPriorityMissing || undefined} className="contents data-pill-invalid:[&_[data-slot=property-pill]]:ring-destructive">
-          <OptionPill label="우선순위" emptyText="우선순위 (필수)" icon={ChartNoAxesColumnIcon} value={draft.priority} options={priorityOptions}
-            onChange={priority => set({ priority })} />
-        </span>
-        <OptionPill label="담당자" emptyText="담당자 지정" icon={UserIcon} value={draft.assignee} options={assigneeOptions}
-          onChange={name => set({ assignee: name === NONE ? undefined : name })} />
-        <DatePill label="마감일" value={draft.due} format={day => `마감일 ${dueText(day)}`} onChange={due => set({ due })} />
-        {parent ? <InfoPill label="상위 이슈" icon={<LinkIcon />}>{parent}</InfoPill> : null}
-        {isPriorityMissing ? <p role="alert" className="basis-full text-sm text-destructive">필수 속성을 정해 주세요: 우선순위</p> : null}
-      </>}>
-      <div className="flex flex-col gap-1">
-        <input aria-label="제목" placeholder="이슈 제목" autoFocus autoComplete="off" value={draft.title} onChange={event => set({ title: event.target.value })}
-          aria-invalid={!!titleError || undefined} aria-describedby={titleError ? 'issue-title-error' : undefined}
-          className="w-full bg-transparent text-lg leading-snug font-semibold outline-none placeholder:text-muted-foreground/70 aria-invalid:shadow-[0_2px_0_-1px_var(--destructive)] group-data-page/compose:text-2xl" />
-        {titleError ? <p id="issue-title-error" className="text-sm text-destructive">{titleError}</p> : null}
-      </div>
-      <div className={isPage ? 'min-h-48' : 'min-h-14'}>
-        <RichDraft value={draft.body} onChange={body => set({ body })} isPage={isPage} placeholder="무엇을 왜 해야 하는지 적어 보세요" />
-      </div>
-    </ComposeSurface>
-    <ConfirmDialog open={isLeaveAsked} onOpenChange={setLeaveAsked} title="작성 중인 내용을 버릴까요?"
-      description="닫으면 지금까지 쓴 제목 · 본문 · 속성이 사라집니다."
-      action={{ label: '버리기', onAction: () => { setLeaveAsked(false); leave(); } }} />
-  </>;
+  return <ComposeSurface surface={surface} crumbs={crumbs} chip={<PlaceChip icon={<TagIcon />} label={parent ? `${parent}의 하위 이슈` : '이슈'} />}
+    // 고친 것이 있으면 닫기(닫기 · Esc · 바깥 누르기 · 취소)가 먼저 버릴지 묻는다.
+    onClose={leave} isDirty={isDirty} discard={{ description: '닫으면 지금까지 쓴 제목 · 본문 · 속성이 사라집니다.' }} onExpand={onExpand}
+    error={save.isError ? '저장하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
+    submit={{ label: id ? '저장' : '추가하기', isPending: save.isPending, onSubmit: submit }}
+    pills={<>
+      <OptionPill label="상태" icon={SquareCheckIcon} value={draft.status} options={statusOptions} onChange={status => set({ status })} />
+      <OptionPill label="우선순위" isRequired isInvalid={isPriorityMissing} icon={ChartNoAxesColumnIcon} value={draft.priority} options={priorityOptions}
+        onChange={priority => set({ priority })} />
+      <OptionPill label="담당자" emptyText="담당자 지정" icon={UserIcon} value={draft.assignee} options={assigneeOptions}
+        onChange={name => set({ assignee: name === NONE ? undefined : name })} />
+      <DatePill label="마감일" value={draft.due} format={day => `마감일 ${dueText(day)}`} onChange={due => set({ due })} />
+      {parent ? <InfoPill label="상위 이슈" icon={<LinkIcon />}>{parent}</InfoPill> : null}
+      {isPriorityMissing ? <p role="alert" className="basis-full text-sm text-destructive">필수 속성을 정해 주세요: 우선순위</p> : null}
+    </>}>
+    <div className="flex flex-col gap-1">
+      <input aria-label="제목" placeholder="이슈 제목" autoFocus autoComplete="off" value={draft.title} onChange={event => set({ title: event.target.value })}
+        aria-invalid={!!titleError || undefined} aria-describedby={titleError ? 'issue-title-error' : undefined}
+        className="w-full bg-transparent text-lg leading-snug font-semibold outline-none placeholder:text-muted-foreground/70 aria-invalid:shadow-[0_2px_0_-1px_var(--destructive)] group-data-page/compose:text-2xl" />
+      {titleError ? <p id="issue-title-error" className="text-sm text-destructive">{titleError}</p> : null}
+    </div>
+    <div className={isPage ? 'min-h-48' : 'min-h-14'}>
+      <RichDraft value={draft.body} onChange={body => set({ body })} isPage={isPage} placeholder="무엇을 왜 해야 하는지 적어 보세요" />
+    </div>
+  </ComposeSurface>;
 }

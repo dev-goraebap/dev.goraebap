@@ -13,6 +13,7 @@ import { OptionList, type Option } from "@/shared/ui/option-list"
  * 휴대폰은 44px · 15px. 비어 있으면 보조 글자색.
  * 상세의 넓은 옆 칸(DetailLayout의 @container/detail이 60rem 이상)에서는 같은 알약이 테두리와 바탕 없는 32px 줄이 된다.
  * 누르는 알약(PropertyPill)은 가리킴 · 초점 · 열림을 보이고, 읽기만 하는 알약(InfoPill)은 interactive: false다.
+ * 제출 검사에서 빠진 필수 속성(aria-invalid)은 오류 색 테두리와 글자다.
  */
 export const pillVariants = cva([
   "inline-flex h-6 max-w-64 min-w-0 shrink items-center gap-1.5 rounded-full bg-muted pr-2.5 pl-2 text-xs font-medium text-foreground",
@@ -28,6 +29,8 @@ export const pillVariants = cva([
         "outline-none select-none hover:bg-[color-mix(in_srgb,var(--foreground)_8%,var(--muted))]",
         "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring",
         "@min-[60rem]/detail:hover:bg-muted @min-[60rem]/detail:aria-expanded:bg-muted",
+        // 제출 검사에서 빠진 필수 속성: 오류 색 테두리(넓은 옆 칸에서도 테두리를 되살린다).
+        "aria-invalid:ring-destructive aria-invalid:text-destructive @min-[60rem]/detail:aria-invalid:ring-1",
       ],
       false: "",
     },
@@ -39,11 +42,23 @@ function PillButton({ isEmpty, className, ...props }: ComponentProps<"button"> &
   return <button type="button" data-slot="property-pill" data-empty={isEmpty || undefined} className={cn(pillVariants(), className)} {...props} />
 }
 
+/** 필수 · 오류 표시. 세 알약이 같이 받는다. */
+export type PillCheck = {
+  /** 필수 속성: 비었을 때 이름 뒤에 *를 보이고, 읽는 이름에 "(필수)"를 붙인다. */
+  isRequired?: boolean
+  /**
+   * 제출 검사 결과 빠졌다: aria-invalid와 오류 색 테두리. lib/focus-invalid의 focusFirstInvalid가 다른 칸과 함께 화면 순서로 찾는다.
+   * 까닭("필수 속성을 정해 주세요: 우선순위")은 알약 곁에 부르는 쪽이 둔다.
+   */
+  isInvalid?: boolean
+}
+
 /**
  * 속성 알약(호호코워크 PropertyPill): 비어 있으면 속성의 아이콘과 이름, 정해지면 그 값. 누르면 정하는 것이 옆에 뜬다
  * (데스크톱 팝오버, 휴대폰 바텀시트). children은 닫기 함수를 받는다. 새 업무 양식과 상세의 속성이 같이 쓴다.
+ * 필수(isRequired)는 단추라 aria-required를 받을 수 없어(ARIA에서 button에 허용되지 않는다) 읽는 이름에 "(필수)"를 붙인다.
  */
-export function PropertyPill({ label, icon, text, children, width = "w-60" }: {
+export function PropertyPill({ label, icon, text, children, width = "w-60", isRequired, isInvalid }: PillCheck & {
   /** 속성 이름: 빈 알약의 글자이자 팝오버 · 시트의 제목. */
   label: string
   /** 비었을 때 속성의 표식, 정해지면 값의 표식. */
@@ -56,12 +71,14 @@ export function PropertyPill({ label, icon, text, children, width = "w-60" }: {
 }) {
   const [isOpen, setOpen] = useState(false)
   const isEmpty = text === undefined
+  const isMarked = isRequired && isEmpty
   return (
     <AdaptivePopover title={label} open={isOpen} onOpenChange={setOpen} className={cn(width, "p-1.5")}
       trigger={
-        <PillButton isEmpty={isEmpty} aria-label={label}>
+        <PillButton isEmpty={isEmpty} aria-label={isMarked ? `${label} (필수)` : label} aria-invalid={isInvalid || undefined}>
           {icon}
           <span className="min-w-0 truncate">{isEmpty ? label : text}</span>
+          {isMarked && <span aria-hidden className="-ml-1 text-destructive">*</span>}
         </PillButton>
       }>
       {children(() => setOpen(false))}
@@ -78,7 +95,7 @@ type OptionPillProps<T extends string> = {
   emptyText?: string
   /** 정해진 값 앞에 속성 이름을 붙인다(유형: 업무). */
   showLabel?: boolean
-} & ({ isMultiple?: false; value?: T; onChange: (value: T) => void } | { isMultiple: true; value: readonly T[]; onChange: (value: T[]) => void })
+} & PillCheck & ({ isMultiple?: false; value?: T; onChange: (value: T) => void } | { isMultiple: true; value: readonly T[]; onChange: (value: T[]) => void })
 
 /** 여러 값의 표식은 조금씩 겹쳐 셋까지. */
 function StackedMarks({ options }: { options: Option[] }) {
@@ -90,7 +107,7 @@ function StackedMarks({ options }: { options: Option[] }) {
  * "라벨 2"처럼 첫 값 대신 개수를 보인다. 고를 것이 일곱 개를 넘으면 찾기 칸을 둔다.
  */
 export function OptionPill<T extends string>(props: OptionPillProps<T>) {
-  const { label, icon: EmptyIcon, options, emptyText, showLabel } = props
+  const { label, icon: EmptyIcon, options, emptyText, showLabel, isRequired, isInvalid } = props
   const chosen: readonly T[] = props.isMultiple ? props.value : props.value ? [props.value] : []
   const picked = options.filter(option => chosen.includes(option.value))
   const first = picked[0]
@@ -104,7 +121,8 @@ export function OptionPill<T extends string>(props: OptionPillProps<T>) {
     }
   }
   return (
-    <PropertyPill label={first || !emptyText ? label : emptyText} icon={mark} text={showLabel && valueText ? `${label}: ${valueText}` : valueText}>
+    <PropertyPill label={first || !emptyText ? label : emptyText} icon={mark} text={showLabel && valueText ? `${label}: ${valueText}` : valueText}
+      isRequired={isRequired} isInvalid={isInvalid}>
       {close => (
         <OptionList label={`${label} 고르기`} options={options} chosen={chosen} isSearchable={options.length > 7}
           onPick={value => pick(value as T, close)} />
@@ -114,7 +132,7 @@ export function OptionPill<T extends string>(props: OptionPillProps<T>) {
 }
 
 /** 날짜 알약(호호코워크 DuePill): 비면 달력 아이콘과 이름, 정하면 포맷한 날짜. 누르면 달력이 뜨고, 날을 고르면 닫힌다. 지우면 비운다. */
-export function DatePill({ label, value, format, onChange }: {
+export function DatePill({ label, value, format, onChange, isRequired, isInvalid }: PillCheck & {
   label: string
   /** YYYY-MM-DD */
   value?: string
@@ -122,7 +140,7 @@ export function DatePill({ label, value, format, onChange }: {
   onChange: (value: string | undefined) => void
 }) {
   return (
-    <PropertyPill label={label} icon={<CalendarIcon />} text={value && format(value)} width="w-auto">
+    <PropertyPill label={label} icon={<CalendarIcon />} text={value && format(value)} width="w-auto" isRequired={isRequired} isInvalid={isInvalid}>
       {close => (
         <div className="flex flex-col gap-1.5 p-1.5">
           <DateCalendar value={value} onChange={day => { onChange(day); close() }} />

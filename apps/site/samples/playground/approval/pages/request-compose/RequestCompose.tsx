@@ -1,16 +1,17 @@
 import { useDraft } from '@/shared/lib/draft';
+import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { cn } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { ComposeSurface } from '@/shared/ui/compose';
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { DateCalendar } from '@/shared/ui/date-picker';
 import { CalendarIcon, CheckIcon, FileTextIcon } from '@/shared/ui/icon';
+import { useOwnPageTitle } from '@/shared/ui/page';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { OptionPill, PropertyPill } from '@/shared/ui/property-pill';
 import { Textarea } from '@/shared/ui/textarea';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useReducer, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { addDays, annualBalance, approvalKeys, dayWeekText, defaultLine, leaveKinds, leaveLabel, me, today, useApprovalApi, weekdays,
   type LeaveKind, type LinePerson } from '../../entities/approval';
 import { LINE_ROW, LineEditor } from './LineEditor';
@@ -34,18 +35,16 @@ function checkDraft(draft: Draft) {
   };
 }
 
-/** 첫 빠진 칸으로 초점을 옮긴다. 단계가 바뀌어 그려진 뒤에 찾는다(알약은 aria-invalid를 받지 않아 묶음의 첫 버튼으로). */
-const focusInvalid = () => requestAnimationFrame(() => requestAnimationFrame(() => {
-  (document.querySelector<HTMLElement>('[data-invalid-field] button') ?? document.querySelector<HTMLElement>('[aria-invalid="true"]'))?.focus();
-}));
+/** 첫 빠진 칸(aria-invalid: 알약 · 사유 · 결재자 추가)으로 초점을 옮긴다. 단계가 바뀌어 그려진 다음 프레임에 찾는다. */
+const focusInvalid = () => requestAnimationFrame(() => focusFirstInvalid());
 
 const range = (start: string, end: string) => `${dayWeekText(start)}${start === end ? '' : ` – ${dayWeekText(end)}`}`;
 
 /** 날짜 알약: 오늘 · 내일 · 다음 주를 바로 고르거나 달력에서 고른다(키트 DatePill에 빠른 고르기를 더한 것). */
-function DayPill({ label, value, onChange }: { label: string; value?: string; onChange: (value: string) => void }) {
+function DayPill({ label, value, onChange, isInvalid }: { label: string; value?: string; onChange: (value: string) => void; isInvalid?: boolean }) {
   const quick = [{ label: '오늘', day: today }, { label: '내일', day: addDays(today, 1) }, { label: '다음 주', day: addDays(today, 7) }];
   return (
-    <PropertyPill label={label} icon={<CalendarIcon />} text={value && dayWeekText(value)} width="w-auto">
+    <PropertyPill label={label} isRequired isInvalid={isInvalid} icon={<CalendarIcon />} text={value && dayWeekText(value)} width="w-auto">
       {close => (
         <div className="flex flex-col gap-2 p-1.5">
           <div role="group" aria-label="빠른 고르기" className="flex gap-1">
@@ -61,6 +60,12 @@ function DayPill({ label, value, onChange }: { label: string; value?: string; on
 }
 
 /** 양식의 한 부분: 작은 이름 아래 그 칸. */
+/** 데스크톱 양식의 보이는 제목. 이것이 페이지의 h1이라 Page는 숨긴 h1을 두지 않는다. */
+function ComposeTitle({ children }: { children: string }) {
+  useOwnPageTitle();
+  return <h1 className="text-2xl font-semibold">{children}</h1>;
+}
+
 function Part({ label, children }: { label: string; children: ReactNode }) {
   return (
     <section aria-label={label} className="flex flex-col gap-2">
@@ -103,11 +108,8 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
   const client = useQueryClient();
   const isMobile = useIsMobile();
   const [draft, setDraft, clearDraft] = useDraft<Draft>('approval:new', initial);
-  // 키트 DraftProvider는 맥락 값을 고정해(useMemo) 초안을 바꿔도 이 양식이 다시 그려지지 않는다. 고칠 때까지 스스로 다시 그린다.
-  const [, redraw] = useReducer((count: number) => count + 1, 0);
-  const set = (patch: Partial<Draft>) => { setDraft({ ...draft, ...patch }); redraw(); };
+  const set = (patch: Partial<Draft>) => setDraft({ ...draft, ...patch });
   const [isTried, setTried] = useState(false);
-  const [isLeaving, setLeaving] = useState(false);
   const checked = checkDraft(draft);
   const save = useMutation({
     mutationFn: () => api.create({ kind: draft.kind, start: draft.start!, end: draft.end!, reason: draft.reason.trim(), line: draft.line }),
@@ -132,11 +134,11 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
   const showReasonError = isTried && !!checked.reason;
   const parts = step === 'info' ? <>
     <Part label="종류와 기간">
-      <div role="group" aria-label="종류와 기간" className="flex flex-wrap items-center gap-1.5" data-invalid-field={showDatesError ? '' : undefined}>
+      <div role="group" aria-label="종류와 기간" className="flex flex-wrap items-center gap-1.5">
         <OptionPill label="종류" icon={FileTextIcon} value={draft.kind} options={leaveKinds.map(each => ({ value: each.id, label: each.label }))}
           onChange={kind => set({ kind })} />
-        <DayPill label="시작일" value={draft.start} onChange={start => set({ start, end: draft.end ?? start })} />
-        <DayPill label="종료일" value={draft.end} onChange={end => set({ end, start: draft.start ?? end })} />
+        <DayPill label="시작일" value={draft.start} isInvalid={showDatesError} onChange={start => set({ start, end: draft.end ?? start })} />
+        <DayPill label="종료일" value={draft.end} isInvalid={showDatesError} onChange={end => set({ end, start: draft.start ?? end })} />
       </div>
       {showDatesError
         ? <p role="alert" className="text-sm text-destructive">{checked.dates}</p>
@@ -178,23 +180,20 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
     </Part>
   </>;
   return (
-    <>
-      <ComposeSurface surface="page" crumbs={[{ label: '내 신청', href: '/requests', icon: FileTextIcon }, { label: '휴가 신청' }]}
-        onClose={() => (isDirty ? setLeaving(true) : leave())}
-        actions={step === 'info' ? undefined : <Button variant="ghost" onClick={() => go(steps[index - 1].id)}>이전</Button>}
-        error={save.isError ? '제출하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
-        submit={{ label: step === 'review' ? '제출' : '다음', isPending: save.isPending, onSubmit: submit }}>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            {/* 휴대폰은 앱 바가 이름을 보인다. */}
-            {isMobile ? null : <h1 className="text-2xl font-semibold">휴가 신청</h1>}
-            <Steps current={index} onGo={go} />
-          </div>
-          {parts}
+    <ComposeSurface surface="page" crumbs={[{ label: '내 신청', href: '/requests', icon: FileTextIcon }, { label: '휴가 신청' }]}
+      onClose={leave} isDirty={isDirty}
+      discard={{ title: '작성 중인 신청을 버릴까요?', description: '지금 나가면 입력한 기간 · 사유 · 결재선이 사라집니다.', label: '버리고 나가기' }}
+      actions={step === 'info' ? undefined : <Button variant="ghost" onClick={() => go(steps[index - 1].id)}>이전</Button>}
+      error={save.isError ? '제출하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
+      submit={{ label: step === 'review' ? '제출' : '다음', isPending: save.isPending, onSubmit: submit }}>
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-3">
+          {/* 휴대폰은 앱 바가 이름(h1)을 보인다. 데스크톱은 이 제목이 페이지의 h1이다. */}
+          {isMobile ? null : <ComposeTitle>휴가 신청</ComposeTitle>}
+          <Steps current={index} onGo={go} />
         </div>
-      </ComposeSurface>
-      <ConfirmDialog open={isLeaving} onOpenChange={setLeaving} title="작성 중인 신청을 버릴까요?" description="지금 나가면 입력한 기간 · 사유 · 결재선이 사라집니다."
-        action={{ label: '버리고 나가기', onAction: () => { setLeaving(false); leave(); } }} />
-    </>
+        {parts}
+      </div>
+    </ComposeSurface>
   );
 }

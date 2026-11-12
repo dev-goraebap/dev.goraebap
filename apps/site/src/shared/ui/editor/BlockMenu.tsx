@@ -26,7 +26,7 @@ export async function copyBlocks(editor: Editor, ranges: { pos: number; size: nu
 
 /**
  * 블록 손잡이를 누르면 뜨는 메뉴의 항목. 위에는 블록의 종류, 그 아래로 색(글자색 · 배경색)과 종류 바꾸기(하위 메뉴), 서식 지우기,
- * 복제 · 복사 · 링크 복사, 위 · 아래로 옮기기, 삭제가 묶음별로 놓인다. 단축키는 블록을 고른 채 누르면 동작한다(RichEditor의 keys).
+ * 복제 · 복사 · 링크 복사, 위 · 아래로 옮기기, 삭제가 묶음별로 놓인다. 단축키는 블록을 고른 채, 또는 손잡이에 초점을 둔 채 누르면 동작한다(RichEditor의 blockShortcut).
  */
 export function blockMenuEntries({ editor, block, atomic, onStep }: {
   editor: Editor; block: MenuBlock; atomic: (fn: () => unknown) => void; onStep: (direction: number) => void

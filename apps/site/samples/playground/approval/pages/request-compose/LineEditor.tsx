@@ -55,9 +55,9 @@ export function LineEditor({ line, onChange, error }: { line: LinePerson[]; onCh
         ))}
       </ul>
       <ReorderAnnouncer reorder={reorder} />
-      <div className="flex flex-wrap items-center gap-3" data-invalid-field={error ? '' : undefined}>
+      <div className="flex flex-wrap items-center gap-3">
         <AdaptivePopover title="결재자 추가" open={isAdding} onOpenChange={setAdding} className="w-72 p-1.5"
-          trigger={<Button variant="secondary" size="sm" className="max-md:h-11 max-md:px-4"><PlusIcon data-icon="inline-start" />결재자 추가</Button>}>
+          trigger={<Button variant="secondary" size="sm" aria-invalid={error ? true : undefined} className="max-md:h-11 max-md:px-4"><PlusIcon data-icon="inline-start" />결재자 추가</Button>}>
           {candidates.length
             ? <OptionList label="결재자 고르기" isSearchable
               options={candidates.map(each => ({ value: each.approver, label: `${each.approver} · ${each.role}`, icon: <PersonAvatar name={each.approver} className="size-5" /> }))}

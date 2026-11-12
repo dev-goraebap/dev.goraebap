@@ -6,7 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button, buttonVariants } from '@/shared/ui/button';
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { RichBody } from '@/shared/ui/editor';
-import { CalendarIcon, ChartNoAxesColumnIcon, CircleXIcon, LinkIcon, ListChecksIcon, PencilIcon, PlusIcon, SquareCheckIcon, TagIcon, TriangleAlertIcon,
+import { CalendarIcon, ChartNoAxesColumnIcon, LinkIcon, ListChecksIcon, PencilIcon, PlusIcon, SquareCheckIcon, TagIcon, TrashIcon, TriangleAlertIcon,
   UserIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
 import { Input } from '@/shared/ui/input';
@@ -79,7 +79,7 @@ export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: 
       <ActionMenu label="이슈 메뉴" actions={[
         { label: '수정', icon: PencilIcon, onSelect: onEdit },
         { label: '링크 복사', icon: LinkIcon, onSelect: () => void copy() },
-        ...(issue.author === me ? [{ label: '삭제', icon: CircleXIcon, onSelect: () => setDeleting(true) }] : []),
+        ...(issue.author === me ? [{ label: '삭제', icon: TrashIcon, onSelect: () => setDeleting(true) }] : []),
       ]} />
     </div>}
     below={<>

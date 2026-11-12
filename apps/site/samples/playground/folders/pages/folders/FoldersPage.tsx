@@ -72,8 +72,6 @@ export function FoldersPage() {
     if (isMobile) return contents;
     return (
       <div className="flex min-h-full flex-1 bg-background">
-        {/* 데스크톱 머리 줄은 경로만 보이므로 지금 폴더의 이름을 읽기용 제목으로 둔다(휴대폰은 앱 바가 제목이다). */}
-        <h1 className="sr-only">{folder.name}</h1>
         {/* check-ui: allow-style 나무 너비는 사용자가 끌어 정한 값이다. */}
         <aside aria-label="폴더 나무" style={{ width: `${treeWidth / 16}rem` } as CSSProperties}
           className="sticky top-0 box-border max-h-full shrink-0 self-start overflow-auto p-2">

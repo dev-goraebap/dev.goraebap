@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Page, type Crumb } from "@/shared/ui/page"
+import { Page, useOwnPageTitle, type Crumb } from "@/shared/ui/page"
 
 type SettingsBodyProps = {
   title: string
@@ -13,6 +13,8 @@ type SettingsBodyProps = {
  * 그 아래에 SettingsSection이 이어진다. 페이지 틀(Page)을 따로 그리는 곳(프로젝트 설정)은 이것만 쓴다.
  */
 export function SettingsBody({ title, description, children }: SettingsBodyProps) {
+  // 제목이 페이지의 h1이다(Page 머리 줄은 h1을 두지 않는다).
+  useOwnPageTitle()
   return (
     // 앱 셸이 이미 main을 그리므로 여기서는 main을 겹치지 않는다.
     <div className="flex justify-center px-4 py-10 max-md:py-6">

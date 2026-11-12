@@ -165,7 +165,7 @@ function TopItem({ entry, current, groups }: { entry: NavEntry; current: NavEntr
       {badge}
       <GroupTrigger entry={entry} />
       <Collapsible.Panel>
-        <SidebarMenuSub className="mt-0.5">
+        <SidebarMenuSub>
           {children.map(child => <SubItem key={keyOf(child)} entry={child} current={current} groups={groups} />)}
         </SidebarMenuSub>
       </Collapsible.Panel>
@@ -192,7 +192,7 @@ function SubItem({ entry, current, groups }: { entry: NavEntry; current: NavEntr
       {badge}
       <GroupTrigger entry={entry} />
       <Collapsible.Panel>
-        <SidebarMenuSub className="mt-0.5 mr-0 pr-0">
+        <SidebarMenuSub className="mr-0 pr-0">
           {children.map(child => <SubItem key={keyOf(child)} entry={child} current={current} groups={groups} />)}
         </SidebarMenuSub>
       </Collapsible.Panel>

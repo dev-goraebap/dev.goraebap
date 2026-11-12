@@ -16,12 +16,12 @@ const VerifyMore: Sample = {
     await expect(await page.findByText("46건 중 10건")).toBeVisible();
     await expect(rowsOf(canvasElement)).toHaveLength(10);
     await expect(page.getAllByRole("heading", { level: 2 })[0]).toHaveTextContent("오늘");
-    // 상대 시각에 포인터를 올리면 정확한 시각이 보인다.
-    await userEvent.hover(rowsOf(canvasElement)[0].querySelector("time")!);
-    // 키트 툴팁(Base UI)은 role="tooltip"을 달지 않는다. 그린 툴팁 면을 보고, 화면 낭독기는 시각 옆의 숨긴 글자로 읽는다.
-    await waitFor(() => expect(canvasElement.ownerDocument.querySelector("[data-slot=tooltip-content]")).toHaveTextContent("2026년 11월 8일 오전 10:40"));
-    await expect(rowsOf(canvasElement)[0].querySelector("time")).toHaveTextContent("2026년 11월 8일 오전 10:40");
-    await userEvent.unhover(rowsOf(canvasElement)[0].querySelector("time")!);
+    // 상대 시각에 포인터를 올리면 정확한 시각이 툴팁(role="tooltip")으로 보이고, 시각의 설명(aria-describedby)으로 읽힌다.
+    const time = rowsOf(canvasElement)[0].querySelector("time")!;
+    await userEvent.hover(time);
+    await expect(await page.findByRole("tooltip")).toHaveTextContent("2026년 11월 8일 오전 10:40");
+    await expect(time).toHaveAccessibleDescription("2026년 11월 8일 오전 10:40");
+    await userEvent.unhover(time);
     // 더 보기는 다음 조각을 목록 아래에 이어 붙인다.
     await userEvent.click(page.getByRole("button", { name: "더 보기" }));
     await expect(await page.findByText("46건 중 20건")).toBeVisible();

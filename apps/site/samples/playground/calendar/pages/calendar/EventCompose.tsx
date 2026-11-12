@@ -7,7 +7,7 @@ import { PageState } from '@/shared/ui/page-state';
 import { DatePill, OptionPill } from '@/shared/ui/property-pill';
 import { Spinner } from '@/shared/ui/spinner';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useReducer, useState } from 'react';
+import { useState } from 'react';
 import { colors, dayText, eventKeys, eventQueries, eventTone, TODAY, useEventApi, type CalendarEvent, type DateKey, type NewEvent } from '../../entities/event';
 
 const ALL_DAY = 'all-day';
@@ -39,9 +39,7 @@ function EventFields({ event, date, surface, onClose, onExpand, onDone }: Omit<P
   const client = useQueryClient();
   const initial: NewEvent = { title: event?.title ?? '', place: event?.place ?? '', start: event?.start ?? date, end: event?.end ?? date, color: event?.color ?? 'blue', time: event?.time };
   const [draft, setDraft, clear] = useDraft<NewEvent>(`calendar:${event?.id ?? 'new'}`, initial);
-  // 키트 DraftProvider는 맥락 값을 고정해(useMemo) 초안을 바꿔도 이 양식이 다시 그려지지 않는다. 고칠 때까지 스스로 다시 그린다.
-  const [, redraw] = useReducer((count: number) => count + 1, 0);
-  const set = (patch: Partial<NewEvent>) => { setDraft({ ...draft, ...patch }); redraw(); };
+  const set = (patch: Partial<NewEvent>) => setDraft({ ...draft, ...patch });
   const [isTried, setTried] = useState(false);
   const save = useMutation({
     mutationFn: () => (event ? api.update(event.id, draft) : api.create(draft)),

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react"
 import { cn } from "@/shared/lib/utils"
+import { useOwnPageTitle } from "@/shared/ui/page"
 
 /** 상세 속성의 한 묶음(속성 · 라벨 · 프로젝트 …): 넓은 옆 칸에서 이 이름 아래에 알약이 줄로 선다. */
 export type DetailSection = { title: string; items: ReactNode }
@@ -36,8 +37,9 @@ const SIDE = [
 const GROUP = "contents @min-[60rem]/detail:flex @min-[60rem]/detail:flex-col @min-[60rem]/detail:items-start @min-[60rem]/detail:gap-0.5"
 const GROUP_TITLE = "hidden px-2 pb-1 text-xs font-medium text-muted-foreground @min-[60rem]/detail:block"
 
-/** 상세의 제목. 본문 안의 어떤 소제목(26px)보다 크다. */
+/** 상세의 제목. 본문 안의 어떤 소제목(26px)보다 크다. 이 제목이 페이지의 h1이라 Page 머리 줄은 h1을 두지 않는다. */
 function DetailTitle({ children }: { children: string }) {
+  useOwnPageTitle()
   return <h1 className="text-[2rem] leading-[1.3] font-bold tracking-[-0.025em] text-balance break-keep">{children}</h1>
 }
 

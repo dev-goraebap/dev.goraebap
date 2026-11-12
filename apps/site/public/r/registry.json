@@ -349,7 +349,7 @@
       "name": "confirm-dialog",
       "type": "registry:ui",
       "title": "확인 창",
-      "description": "지우기 같은 되돌리기 어려운 동작의 확인. 데스크톱은 확인 창, 휴대폰은 바텀시트.",
+      "description": "지우기 같은 되돌리기 어려운 동작의 확인(승인처럼 파괴하지 않는 동작은 variant default, 머무는 단추 이름은 cancelLabel). 데스크톱은 확인 창, 휴대폰은 바텀시트.",
       "registryDependencies": [
         "@webcraft/alert-dialog",
         "@webcraft/button",
@@ -546,7 +546,7 @@
       "name": "property-pill",
       "type": "registry:ui",
       "title": "속성 알약",
-      "description": "눌러 값을 고르는 속성 알약과 pillVariants.",
+      "description": "눌러 값을 고르는 속성 알약(필수 isRequired · 오류 isInvalid)과 pillVariants.",
       "dependencies": [
         "class-variance-authority"
       ],
@@ -585,6 +585,25 @@
           "path": "src/shared/ui/row-link.tsx",
           "type": "registry:ui",
           "target": "src/shared/ui/row-link.tsx"
+        }
+      ]
+    },
+    {
+      "name": "list-more",
+      "type": "registry:ui",
+      "title": "목록 끝",
+      "description": "조각씩 읽는 목록 아래의 \"전체 중 읽은 수\"와 더 보기.",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/button",
+        "@webcraft/spinner",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/list-more.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/list-more.tsx"
         }
       ]
     },
@@ -632,7 +651,7 @@
       "name": "page",
       "type": "registry:ui",
       "title": "페이지 틀",
-      "description": "상위 페이지의 틀: 데스크톱은 머리 줄(경로 · 동작 · 만들기)과 툴바, 휴대폰은 52px 앱 바와 FAB. 보기 탭(PageViews) · 도구 점(ToolDot) · 전체 화면 알림(chrome) 포함.",
+      "description": "상위 페이지의 틀: 데스크톱은 머리 줄(경로 · 동작 · 만들기)과 툴바, 휴대폰은 60px 이상 앱 바와 FAB, 바닥 고정 동작 줄(footer). 페이지 h1의 주인(useOwnPageTitle) · 보기 탭(PageViews) · 도구 점(ToolDot) · 전체 화면 알림(chrome) 포함.",
       "dependencies": [
         "@tanstack/react-router@^1.170.0"
       ],
@@ -709,7 +728,7 @@
       "name": "compose",
       "type": "registry:ui",
       "title": "만들기 양식",
-      "description": "ComposeSurface(데스크톱 대화상자 ↔ 페이지, 바닥 줄의 actions · error) · ComposeFields(제목 · 본문) · FileDropzone · FileList.",
+      "description": "ComposeSurface(데스크톱 대화상자 ↔ 페이지, 바닥 줄의 actions · error, 쓴 것이 있으면 닫기 전에 버릴지 묻는 isDirty) · ComposeFields(제목 · 본문) · FileDropzone · FileList.",
       "registryDependencies": [
         "utils",
         "@webcraft/button",
@@ -719,7 +738,8 @@
         "@webcraft/spinner",
         "@webcraft/switch",
         "@webcraft/theme",
-        "@webcraft/use-mobile"
+        "@webcraft/use-mobile",
+        "@webcraft/confirm-dialog"
       ],
       "files": [
         {
@@ -838,7 +858,8 @@
         "@webcraft/person-avatar",
         "@webcraft/theme",
         "@webcraft/action-menu",
-        "@webcraft/confirm-dialog"
+        "@webcraft/confirm-dialog",
+        "@webcraft/page"
       ],
       "files": [
         {
@@ -1605,7 +1626,7 @@
       "name": "tooltip",
       "type": "registry:ui",
       "title": "tooltip",
-      "description": "shadcn tooltip(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "description": "shadcn tooltip(base-nova)의 Webcraft 판. 열린 동안 role=\"tooltip\"과 트리거의 aria-describedby를 잇는다. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
       "dependencies": [
         "@base-ui/react@^1.9.0",
         "cn@^0.5.2"

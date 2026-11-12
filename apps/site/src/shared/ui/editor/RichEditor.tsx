@@ -275,6 +275,27 @@ export function RichEditor({ value, isEditable, onChange, label = "본문", plac
     const destination = siblingStep(blockTree(editor.state.doc), selectedRef.current, direction)
     if (destination) move(selectedRef.current, destination)
   }
+  /**
+   * 고른 블록의 단축키(블록 메뉴의 표기와 같다): Ctrl+D 복제, Ctrl+C 복사, Delete · Backspace 지우기, Alt+↑ · ↓ 옮기기, Ctrl+Z 되돌리기.
+   * 처리했으면 true. 창의 키 듣기와 손잡이가 함께 부른다.
+   */
+  function blockShortcut(event: { key: string; ctrlKey: boolean; metaKey: boolean; altKey: boolean; shiftKey: boolean }): boolean {
+    if (!editor || !selectedRef.current.length) return false
+    const mod = event.ctrlKey || event.metaKey, key = event.key.toLowerCase()
+    const picked = () => selectionRoots(blockTree(editor.state.doc), selectedRef.current).map(block => ({ pos: block.pos, size: block.node.nodeSize, node: block.node })).sort((a, b) => b.pos - a.pos)
+    if (mod && !event.altKey && key === "z") { if (event.shiftKey) editor.commands.redo(); else editor.commands.undo(); return true }
+    if (mod && !event.altKey && key === "d") { atomic(() => { for (const block of picked()) editor.chain().insertContentAt(block.pos + block.size, block.node.toJSON()).run() }); return true }
+    if (mod && !event.altKey && key === "c") { void copyBlocks(editor, picked()); return true }
+    if (!mod && !event.altKey && (event.key === "Delete" || event.key === "Backspace")) {
+      atomic(() => { for (const block of picked()) editor.chain().deleteRange({ from: block.pos, to: block.pos + block.size }).run() })
+      setSelected([]); setContext(null)
+      return true
+    }
+    if (event.altKey && !mod && (event.key === "ArrowUp" || event.key === "ArrowDown")) { step(event.key === "ArrowUp" ? -1 : 1); return true }
+    return false
+  }
+  const shortcutRef = useRef(blockShortcut)
+  shortcutRef.current = blockShortcut
   // 블록 끌어 옮기기와 고른 블록의 단축키.
   useEffect(() => {
     if (!editor || !isEditable) return
@@ -321,19 +342,8 @@ export function RichEditor({ value, isEditable, onChange, label = "본문", plac
       if (event.key === "Escape") { const wasDragging = dragging.current?.active; cancel(); if (!wasDragging) setSelected([]) }
       const element = event.target as HTMLElement
       // 메뉴(포털) 안의 키는 메뉴가 다룬다.
-      if (element.closest("input,textarea,select,[contenteditable=true],[role=menu],[role=dialog]") || !selectedRef.current.length) return
-      const mod = event.ctrlKey || event.metaKey, key = event.key.toLowerCase()
-      if (mod && key === "z") { event.preventDefault(); if (event.shiftKey) editor.commands.redo(); else editor.commands.undo() }
-      const picked = () => selectionRoots(blockTree(editor.state.doc), selectedRef.current).map(block => ({ pos: block.pos, size: block.node.nodeSize, node: block.node })).sort((a, b) => b.pos - a.pos)
-      if (mod && key === "d") { event.preventDefault(); atomic(() => { for (const block of picked()) editor.chain().insertContentAt(block.pos + block.size, block.node.toJSON()).run() }) }
-      if (mod && key === "c") { event.preventDefault(); void copyBlocks(editor, picked()) }
-      if (event.key === "Delete" || event.key === "Backspace") {
-        event.preventDefault()
-        atomic(() => { for (const block of picked()) editor.chain().deleteRange({ from: block.pos, to: block.pos + block.size }).run() })
-        setSelected([]); setContext(null)
-      }
-      if (event.altKey && event.key === "ArrowUp") { event.preventDefault(); step(-1) }
-      if (event.altKey && event.key === "ArrowDown") { event.preventDefault(); step(1) }
+      if (element.closest("input,textarea,select,[contenteditable=true],[role=menu],[role=dialog]")) return
+      if (shortcutRef.current(event)) event.preventDefault()
     }
     const scroll = () => measure(editor)
     window.addEventListener("pointermove", motion, { passive: false }); window.addEventListener("pointerup", end); window.addEventListener("pointercancel", cancel)
@@ -429,6 +439,19 @@ export function RichEditor({ value, isEditable, onChange, label = "본문", plac
                     <Button variant="ghost" size="icon-sm" aria-label={`${index + 1}번 블록 선택`} data-grip="" aria-pressed={selected.includes(block.id)}
                       className="h-6.75 w-6 min-w-6 cursor-grab touch-none rounded-md p-0 text-icon-muted select-none hover:bg-accent hover:text-foreground aria-pressed:text-foreground"
                       onContextMenu={event => { event.preventDefault(); setSelected([block.id]); setContext(block.id) }}
+                      // 손잡이는 블록 메뉴를 여는 단추라 ↓ 같은 키를 메뉴가 먼저 가져간다. 블록 단축키는 붙잡는 단계에서 먼저 처리하고
+                      // 메뉴 쪽으로 넘기지 않는다. 고르지 않은 손잡이에서 누르면 그 블록 하나에 쓴다.
+                      onKeyDownCapture={event => {
+                        if (event.nativeEvent.isComposing) return
+                        const isPicked = selectedRef.current.includes(block.id)
+                        const previous = selectedRef.current
+                        if (!isPicked) selectedRef.current = [block.id]
+                        if (!shortcutRef.current(event)) { selectedRef.current = previous; return }
+                        event.preventDefault(); event.stopPropagation()
+                        // 지운 블록의 손잡이는 사라지므로 초점을 본문으로 돌린다.
+                        if (event.key === "Delete" || event.key === "Backspace") editor.view.focus()
+                        else if (!isPicked) setSelected([block.id])
+                      }}
                       onPointerDown={event => {
                         if (event.button !== 0) return
                         event.preventDefault(); event.currentTarget.focus({ preventScroll: true })

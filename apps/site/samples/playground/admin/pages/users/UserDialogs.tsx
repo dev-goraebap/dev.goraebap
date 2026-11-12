@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { carryDraft, useCarriedDraft } from '@/shared/lib/panel';
 import { ComposeSurface } from '@/shared/ui/compose';
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { Field, FieldDescription, FieldError, FieldLabel, FieldTitle } from '@/shared/ui/field';
 import { FormDialog } from '@/shared/ui/form-dialog';
 import { ShieldCheckIcon, UsersIcon } from '@/shared/ui/icon';
@@ -28,7 +27,6 @@ export function InviteDialog({ onClose, surface = 'dialog', onExpand }: { onClos
   const carried = useCarriedDraft<Draft>(CARRY);
   const [draft, setDraft] = useState<Draft>(() => carried ?? { text: '', role: 'viewer' });
   const [problem, setProblem] = useState<string>();
-  const [isLeaving, setLeaving] = useState(false);
   const invite = useMutation({
     mutationFn: (emails: string[]) => api.users.invite({ emails, role: draft.role }),
     onSuccess: () => { void client.invalidateQueries({ queryKey: adminKeys.users }); onClose(); },
@@ -41,23 +39,20 @@ export function InviteDialog({ onClose, surface = 'dialog', onExpand }: { onClos
     setProblem(undefined);
     invite.mutate(emails);
   };
-  return <>
-    <ComposeSurface surface={surface} crumbs={[{ label: '사용자', href: '/users', icon: UsersIcon }, { label: '사용자 초대' }]}
-      onClose={() => (draft.text.trim() ? setLeaving(true) : onClose())}
-      onExpand={onExpand && (() => { carryDraft(CARRY, draft); onExpand(); })}
-      submit={{ label: '초대 보내기', isPending: invite.isPending, onSubmit: submit }}
-      error={invite.isError && !isRejection(invite.error) ? '초대를 보내지 못했습니다. 입력은 그대로 남아 있습니다.' : undefined}
-      pills={<OptionPill label="역할" icon={ShieldCheckIcon} value={draft.role} options={roleOptions} onChange={role => setDraft({ ...draft, role })} />}>
-      <Field data-invalid={problem ? true : undefined}>
-        <FieldLabel htmlFor="invite-emails">이메일</FieldLabel>
-        <Textarea id="invite-emails" rows={4} value={draft.text} autoFocus placeholder="jiwoo@example.com" aria-invalid={problem ? true : undefined}
-          onChange={event => { setDraft({ ...draft, text: event.target.value }); setProblem(undefined); }} />
-        {problem ? <FieldError>{problem}</FieldError> : <FieldDescription>쉼표나 줄바꿈으로 여러 개를 나눠 적습니다.</FieldDescription>}
-      </Field>
-    </ComposeSurface>
-    <ConfirmDialog open={isLeaving} onOpenChange={setLeaving} title="작성 중인 초대를 버릴까요?" description="지금 닫으면 적은 이메일이 사라집니다."
-      action={{ label: '버리기', onAction: () => { setLeaving(false); onClose(); } }} />
-  </>;
+  return <ComposeSurface surface={surface} crumbs={[{ label: '사용자', href: '/users', icon: UsersIcon }, { label: '사용자 초대' }]}
+    onClose={onClose} isDirty={!!draft.text.trim()}
+    discard={{ title: '작성 중인 초대를 버릴까요?', description: '지금 닫으면 적은 이메일이 사라집니다.' }}
+    onExpand={onExpand && (() => { carryDraft(CARRY, draft); onExpand(); })}
+    submit={{ label: '초대 보내기', isPending: invite.isPending, onSubmit: submit }}
+    error={invite.isError && !isRejection(invite.error) ? '초대를 보내지 못했습니다. 입력은 그대로 남아 있습니다.' : undefined}
+    pills={<OptionPill label="역할" icon={ShieldCheckIcon} value={draft.role} options={roleOptions} onChange={role => setDraft({ ...draft, role })} />}>
+    <Field data-invalid={problem ? true : undefined}>
+      <FieldLabel htmlFor="invite-emails">이메일</FieldLabel>
+      <Textarea id="invite-emails" rows={4} value={draft.text} autoFocus placeholder="jiwoo@example.com" aria-invalid={problem ? true : undefined}
+        onChange={event => { setDraft({ ...draft, text: event.target.value }); setProblem(undefined); }} />
+      {problem ? <FieldError>{problem}</FieldError> : <FieldDescription>쉼표나 줄바꿈으로 여러 개를 나눠 적습니다.</FieldDescription>}
+    </Field>
+  </ComposeSurface>;
 }
 
 /** 한 명 또는 고른 여러 명의 역할을 같은 값으로 바꾼다(키트 FormDialog: 데스크톱 대화상자, 휴대폰 바텀시트). */

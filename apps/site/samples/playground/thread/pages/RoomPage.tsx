@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
-import { ChevronDownIcon, MailIcon, TriangleAlertIcon } from '@/shared/ui/icon';
+import { ChevronDownIcon, MessageCircleIcon, TriangleAlertIcon } from '@/shared/ui/icon';
 import { Page, type Crumb } from '@/shared/ui/page';
 import { PageState } from '@/shared/ui/page-state';
 import { Spinner } from '@/shared/ui/spinner';
@@ -87,7 +87,7 @@ export function RoomPage({ roomId }: { roomId: string }) {
     void deliver(item);
   };
 
-  const crumbs = (label: string): Crumb[] => [{ label: '대화', href: ROOMS, icon: MailIcon }, { label }];
+  const crumbs = (label: string): Crumb[] => [{ label: '대화', href: ROOMS, icon: MessageCircleIcon }, { label }];
   if (rooms.isPending || (query.isPending && !query.data)) {
     return <Page crumbs={crumbs(room?.name ?? '대화방')} isFullScreen>{plain(<div className="flex flex-1 items-center justify-center"><Spinner aria-label="대화를 불러오는 중" className="size-6" /></div>)}</Page>;
   }

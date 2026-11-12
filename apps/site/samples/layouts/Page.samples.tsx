@@ -5,7 +5,6 @@ import { cn } from "@/shared/lib/utils";
 import { ActionMenu } from "@/shared/ui/action-menu";
 import { Alert, AlertTitle } from "@/shared/ui/alert";
 import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
 import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterState } from "@/shared/ui/filter";
 import { ArchiveIcon, FileTextIcon, FolderIcon, InboxIcon, InfoIcon, LinkIcon, PencilIcon, TriangleAlertIcon, UserIcon } from "@/shared/ui/icon";
 import { Page, PageViews } from "@/shared/ui/page";
@@ -20,6 +19,7 @@ import { Facts, WithPanel } from "@/shared/ui/side-panel";
 import { Switch } from "@/shared/ui/switch";
 import { Table as DataTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
 import { rows } from "./demo";
+import { ListMore } from "@/shared/ui/list-more"
 
 /** 줄 링크의 주소. 견본 틀의 메모리 라우터는 어떤 주소든 이 견본을 그린다(사이트 라우터의 주소 타입과 무관해 글자로 둔다). */
 const ITEMS: string = "/items";
@@ -32,16 +32,6 @@ const ROW_SURFACE = "relative bg-background hover:bg-row-hover";
 
 type FilterKey = "owner";
 const FILTERS = [{ key: "owner" as const, label: "담당", icon: UserIcon, options: ["서윤", "지우", "도현"].map(value => ({ value, label: value })) }];
-
-/** 목록 끝: 지금 보인 수와 전체, 더 보기. 키트에 아직 목록 끝 부품이 없어 견본 안에 둔다. */
-function ListMore({ shown, total }: { shown: number; total: number }) {
-  return (
-    <div className="flex items-center justify-between gap-3 bg-background px-4 py-3 text-sm text-muted-foreground max-md:pb-24">
-      <span className="tabular-nums">{total}개 중 {shown}개</span>
-      <Button variant="secondary" size="sm" className="max-md:h-11 max-md:px-4">더 보기</Button>
-    </div>
-  );
-}
 
 function ListPage({ hasBanner = false }: { hasBanner?: boolean }) {
   const isMobile = useIsMobile();
@@ -80,7 +70,7 @@ function ListPage({ hasBanner = false }: { hasBanner?: boolean }) {
           </li>
         ))}
       </ul>
-      <ListMore shown={8} total={24} />
+      <ListMore shown={8} total={24} unit="개" hasMore onMore={() => {}} hasFab />
     </Page>
   );
 }

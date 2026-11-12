@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
-import { useIsMobile } from '@/shared/lib/use-mobile';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button, buttonVariants } from '@/shared/ui/button';
 import { TriangleAlertIcon } from '@/shared/ui/icon';
@@ -13,13 +12,12 @@ import { useArchiveToggle } from './archive';
 import { NotificationView } from './NotificationView';
 
 /**
- * 알림 한 건의 자기 페이지. 휴대폰의 목록 행과 상세 칸의 "페이지로 열기", 공유한 주소가 연다. 휴대폰은 전체 화면(하단 탭 없음)이고
- * 앱 바가 이 페이지의 제목(h1)을 가지므로 내용의 제목은 한 단계 낮춘다.
+ * 알림 한 건의 자기 페이지. 휴대폰의 목록 행과 상세 칸의 "페이지로 열기", 공유한 주소가 연다. 휴대폰은 전체 화면(하단 탭 없음)이다.
+ * 내용의 제목이 페이지의 h1이다(Page 앱 바 이름은 그때 h1이 아니다).
  */
 export function NotificationPage({ id }: { id: string }) {
   const api = useNotificationApi();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const { markRead } = useNotificationRead();
   const query = useQuery(notificationQueries.all(api));
   const item = query.data?.find(each => each.id === id);
@@ -45,7 +43,7 @@ export function NotificationPage({ id }: { id: string }) {
       <AlertDescription>잠시 후 다시 눌러 주세요.</AlertDescription>
     </Alert> : undefined}>
     <div className="flex flex-1 flex-col bg-background">
-      <NotificationView item={item} headingLevel={isMobile ? 2 : 1} isBusy={toggle.isPending} onToggleArchive={() => toggle.mutate(item)} />
+      <NotificationView item={item} isBusy={toggle.isPending} onToggleArchive={() => toggle.mutate(item)} />
     </div>
   </Page>;
 }

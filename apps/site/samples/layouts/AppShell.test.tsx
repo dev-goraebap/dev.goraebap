@@ -80,8 +80,7 @@ const VerifyNestedMore: Sample = {
 
 /*
  * 사이드바 하위 메뉴 간격(design-system/references/app-layout.md): 하위 줄도 상위 줄끼리와 같은 2px로 띄우고,
- * 펼친 묶음 끝에는 8px를 더한다. 지금 키트 사이드바(SidebarMenuSub의 gap-1 · py-0.5)는 하위 4px, 묶음 끝 4px라 규칙과 다르다.
- * 키트를 고치기 전까지 test.fails로 둔다. 키트가 고쳐지면 이 검사가 "통과해서 실패"하므로 test로 되돌린다.
+ * 펼친 묶음 끝에는 8px를 더한다(키트 SidebarMenuSub).
  */
 const VerifyNestedSidebar: Sample = {
   name: "사이드바 하위 메뉴 간격 검증",
@@ -113,7 +112,7 @@ const VerifyCurrentGroupOpen: Sample = {
 };
 
 test(VerifyCurrentGroupOpen.name, () => runSample(meta, VerifyCurrentGroupOpen));
-test.fails(VerifyNestedSidebar.name, () => runSample(meta, VerifyNestedSidebar));
+test(VerifyNestedSidebar.name, () => runSample(meta, VerifyNestedSidebar));
 test(VerifyNestedMore.name, () => runSample(meta, VerifyNestedMore));
 test(VerifySidebar.name, () => runSample(meta, VerifySidebar));
 test(VerifyPhoneTabs.name, () => runSample(meta, VerifyPhoneTabs));

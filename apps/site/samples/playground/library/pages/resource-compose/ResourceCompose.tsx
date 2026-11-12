@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { carryDraft, useCarriedDraft } from '@/shared/lib/panel';
 import { ComposeSurface, FileDropzone, FileList, MB } from '@/shared/ui/compose';
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { RichDraft } from '@/shared/ui/editor';
 import { FileTextIcon, FolderIcon, LibraryIcon, LinkIcon, PaperclipIcon } from '@/shared/ui/icon';
 import { Input } from '@/shared/ui/input';
@@ -30,7 +29,6 @@ export function ResourceCompose({ surface, onClose, onExpand, onDone }: {
   const [draft, setDraft] = useState<Draft>(() => carried ?? empty);
   const set = (patch: Partial<Draft>) => setDraft(current => ({ ...current, ...patch }));
   const [isTried, setTried] = useState(false);
-  const [isLeaving, setLeaving] = useState(false);
   const save = useMutation({
     mutationFn: () => api.create({ title: draft.title.trim(), body: draft.body ?? { type: 'doc' }, kind: draft.kind, collection: draft.collection!,
       url: draft.kind === 'link' ? draft.url.trim() : undefined, files: draft.files.map(file => file.name) }),
@@ -47,39 +45,34 @@ export function ResourceCompose({ surface, onClose, onExpand, onDone }: {
     if (lacks.title || lacks.collection || lacks.url) { setTried(true); focusFirstInvalid(); return; }
     save.mutate();
   };
-  const leave = onClose;
-  return <>
-    <ComposeSurface surface={surface} crumbs={crumbs} onClose={() => (isDirty ? setLeaving(true) : leave())} onExpand={onExpand && (() => { carryDraft(CARRY, draft); onExpand(); })}
-      error={save.isError ? '저장하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
-      submit={{ label: '추가하기', isPending: save.isPending, onSubmit: submit }}
-      pills={<>
-        <OptionPill label="종류" icon={FileTextIcon} value={draft.kind} options={kinds.map(kind => ({ value: kind.id, label: kind.label, icon: <kind.icon /> }))}
-          onChange={kind => set({ kind })} />
-        <OptionPill label="컬렉션" icon={FolderIcon} value={draft.collection} options={collections.map(each => ({ value: each.id, label: each.name }))}
-          onChange={collection => set({ collection })} />
-        {draft.kind === 'link' ? <PropertyPill label="주소" icon={<LinkIcon />} text={draft.url || undefined} width="w-80">
-          {close => <div className="p-1.5">
-            <Input aria-label="주소" placeholder="https://" value={draft.url} autoFocus onChange={event => set({ url: event.target.value })}
-              onKeyDown={event => { if (event.key === 'Enter') close(); }} />
-          </div>}
-        </PropertyPill> : null}
-        <PropertyPill label="첨부" icon={<PaperclipIcon />} text={draft.files.length ? `첨부 ${draft.files.length}개` : undefined} width="w-88">
-          {() => <div className="flex flex-col gap-2 p-1">
-            <FileDropzone label="파일 올리기" isMultiple maxBytes={10 * MB} onPick={files => set({ files: [...draft.files, ...files] })} />
-            <FileList label="첨부" files={draft.files} onRemove={file => set({ files: draft.files.filter(each => each !== file) })} />
-          </div>}
-        </PropertyPill>
-        {/* 빠진 속성의 안내는 알약 곁(다음 줄)에 둔다. 바닥 줄에는 동작만 있다. */}
-        {isTried && lackedPills.length ? <p role="alert" className="basis-full text-sm text-destructive">필수 속성을 정해 주세요: {lackedPills.join(', ')}</p> : null}
-      </>}>
-      <input aria-label="제목" placeholder="자료 제목" autoFocus autoComplete="off" value={draft.title} onChange={event => set({ title: event.target.value })}
-        aria-invalid={isTried && lacks.title ? true : undefined} aria-describedby={isTried && lacks.title ? 'resource-title-error' : undefined}
-        className="w-full bg-transparent text-lg leading-snug font-semibold outline-none placeholder:text-muted-foreground/70 group-data-page/compose:text-2xl" />
-      {isTried && lacks.title ? <p id="resource-title-error" className="-mt-2 text-sm text-destructive">제목을 입력해 주세요.</p> : null}
-      <RichDraft value={draft.body} onChange={body => set({ body })} isPage={surface === 'page'} placeholder="무엇을 남길지 적어 보세요" />
-    </ComposeSurface>
-    <ConfirmDialog open={isLeaving} onOpenChange={setLeaving} title="작성 중인 내용을 버릴까요?"
-      description="지금 닫으면 쓰던 제목과 본문, 고른 속성이 사라집니다."
-      action={{ label: '버리기', onAction: () => { setLeaving(false); leave(); } }} />
-  </>;
+  return <ComposeSurface surface={surface} crumbs={crumbs} onClose={onClose} isDirty={isDirty}
+    discard={{ description: '지금 닫으면 쓰던 제목과 본문, 고른 속성이 사라집니다.' }} onExpand={onExpand && (() => { carryDraft(CARRY, draft); onExpand(); })}
+    error={save.isError ? '저장하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
+    submit={{ label: '추가하기', isPending: save.isPending, onSubmit: submit }}
+    pills={<>
+      <OptionPill label="종류" icon={FileTextIcon} value={draft.kind} options={kinds.map(kind => ({ value: kind.id, label: kind.label, icon: <kind.icon /> }))}
+        onChange={kind => set({ kind })} />
+      <OptionPill label="컬렉션" isRequired isInvalid={isTried && lacks.collection} icon={FolderIcon} value={draft.collection} options={collections.map(each => ({ value: each.id, label: each.name }))}
+        onChange={collection => set({ collection })} />
+      {draft.kind === 'link' ? <PropertyPill label="주소" isRequired isInvalid={isTried && lacks.url} icon={<LinkIcon />} text={draft.url || undefined} width="w-80">
+        {close => <div className="p-1.5">
+          <Input aria-label="주소" placeholder="https://" value={draft.url} autoFocus onChange={event => set({ url: event.target.value })}
+            onKeyDown={event => { if (event.key === 'Enter') close(); }} />
+        </div>}
+      </PropertyPill> : null}
+      <PropertyPill label="첨부" icon={<PaperclipIcon />} text={draft.files.length ? `첨부 ${draft.files.length}개` : undefined} width="w-88">
+        {() => <div className="flex flex-col gap-2 p-1">
+          <FileDropzone label="파일 올리기" isMultiple maxBytes={10 * MB} onPick={files => set({ files: [...draft.files, ...files] })} />
+          <FileList label="첨부" files={draft.files} onRemove={file => set({ files: draft.files.filter(each => each !== file) })} />
+        </div>}
+      </PropertyPill>
+      {/* 빠진 속성의 안내는 알약 곁(다음 줄)에 둔다. 바닥 줄에는 동작만 있다. */}
+      {isTried && lackedPills.length ? <p role="alert" className="basis-full text-sm text-destructive">필수 속성을 정해 주세요: {lackedPills.join(', ')}</p> : null}
+    </>}>
+    <input aria-label="제목" placeholder="자료 제목" autoFocus autoComplete="off" value={draft.title} onChange={event => set({ title: event.target.value })}
+      aria-invalid={isTried && lacks.title ? true : undefined} aria-describedby={isTried && lacks.title ? 'resource-title-error' : undefined}
+      className="w-full bg-transparent text-lg leading-snug font-semibold outline-none placeholder:text-muted-foreground/70 group-data-page/compose:text-2xl" />
+    {isTried && lacks.title ? <p id="resource-title-error" className="-mt-2 text-sm text-destructive">제목을 입력해 주세요.</p> : null}
+    <RichDraft value={draft.body} onChange={body => set({ body })} isPage={surface === 'page'} placeholder="무엇을 남길지 적어 보세요" />
+  </ComposeSurface>;
 }

@@ -13,7 +13,7 @@ import { Checkbox } from '@/shared/ui/checkbox';
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { DisplayChoice, DisplayMenu } from '@/shared/ui/display-menu';
 import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/filter';
-import { ArrowDownIcon, ArrowUpIcon, LockIcon, RefreshCwIcon, ShieldCheckIcon, Undo2Icon, UsersIcon, TriangleAlertIcon } from '@/shared/ui/icon';
+import { ArrowDownIcon, ArrowUpIcon, LockIcon, RefreshCwIcon, RotateCcwIcon, ShieldCheckIcon, UsersIcon, TriangleAlertIcon } from '@/shared/ui/icon';
 import { Page } from '@/shared/ui/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
@@ -73,7 +73,7 @@ export function UsersPage() {
     { label: '역할 바꾸기', icon: ShieldCheckIcon, onSelect: () => setPending({ kind: 'role', ids: [user.id] }) },
     ...(user.status === 'invited' ? [{ label: '다시 초대', icon: RefreshCwIcon, onSelect: () => resend.mutate(user) }] : []),
     user.status === 'inactive'
-      ? { label: '활성화', icon: Undo2Icon, onSelect: () => change.mutate({ ids: [user.id], patch: { status: 'active' } }) }
+      ? { label: '활성화', icon: RotateCcwIcon, onSelect: () => change.mutate({ ids: [user.id], patch: { status: 'active' } }) }
       : { label: '비활성화', icon: LockIcon, onSelect: () => setPending({ kind: 'deactivate', ids: [user.id] }) },
   ];
   /** 표 머리를 누르면: 같은 열이면 방향을 바꾸고, 다른 열이면 그 열의 오름차순. 표시 메뉴와 같은 주소 값이다. */

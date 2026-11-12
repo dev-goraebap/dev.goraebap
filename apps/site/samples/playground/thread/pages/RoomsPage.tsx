@@ -1,5 +1,5 @@
 import { Button } from '@/shared/ui/button';
-import { MailIcon } from '@/shared/ui/icon';
+import { MessageCircleIcon } from '@/shared/ui/icon';
 import { Page } from '@/shared/ui/page';
 import { PageState } from '@/shared/ui/page-state';
 import { RowLink } from '@/shared/ui/row-link';
@@ -20,7 +20,7 @@ export function RoomsPage() {
       <ul aria-label="대화방" className="flex flex-col">
         {query.data.map(room => (
           <li key={room.id} className="relative flex min-h-14 items-center gap-3 border-b bg-background px-4 py-2.5 hover:bg-row-hover">
-            <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full bg-muted text-icon-muted"><MailIcon /></span>
+            <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full bg-muted text-icon-muted"><MessageCircleIcon /></span>
             <span className="flex min-w-0 flex-1 flex-col gap-0.5">
               <RowLink to={`/rooms/${room.id}` as string} className="truncate font-medium">{room.name}</RowLink>
               <span className="truncate text-sm text-muted-foreground">{room.members.join(', ')}</span>
@@ -31,5 +31,5 @@ export function RoomsPage() {
       </ul>
     );
   };
-  return <Page crumbs={[{ label: '대화', icon: MailIcon }]}>{content()}</Page>;
+  return <Page crumbs={[{ label: '대화', icon: MessageCircleIcon }]}>{content()}</Page>;
 }

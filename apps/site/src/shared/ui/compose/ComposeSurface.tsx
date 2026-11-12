@@ -1,7 +1,8 @@
-import type { KeyboardEvent, ReactNode } from "react"
+import { useState, type KeyboardEvent, type ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { cn } from "@/shared/lib/utils"
 import { Button } from "@/shared/ui/button"
+import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/dialog"
 import { MaximizeIcon, XIcon } from "@/shared/ui/icon"
 import { Page, type Crumb } from "@/shared/ui/page"
@@ -28,6 +29,10 @@ type ComposeSurfaceProps = {
   isContinuing?: boolean
   onContinuing?: (isContinuing: boolean) => void
   onClose: () => void
+  /** 쓴 것이 있다. 그러면 닫기(닫기 단추 · Esc · 바깥 누르기 · 취소)가 먼저 버릴지 묻고, 버리기를 고르면 onClose를 부른다. */
+  isDirty?: boolean
+  /** 버릴지 묻는 말을 양식에 맞게. 기본은 "작성 중인 내용을 버릴까요?" · "지금 닫으면 쓴 내용이 사라집니다." · "버리기". */
+  discard?: { title?: string; description?: string; label?: string }
   /** 크게 보기: 같은 양식을 자기 페이지로. 대화상자에만 있다. */
   onExpand?: () => void
   /** 제목과 본문(ComposeFields). */
@@ -39,21 +44,29 @@ type ComposeSurfaceProps = {
  * 머리에 놓일 곳 칩 · 이름 · 크게 보기 · 닫기, 바닥에 계속 만들기 · 만들기. 데스크톱 페이지는 45rem 단에 같은 양식과
  * 취소. 휴대폰은 늘 전체 화면 페이지: 앱 바 ←, 스크롤하는 양식, 고정한 알약 줄, 취소 · 만들기 바닥 줄(만들기가 남은 폭을 채운다).
  * 바닥 줄의 앞쪽에는 다른 동작(actions), 그 뒤에 까닭(error)을 둔다. Ctrl/⌘+Enter가 만들기를 누른다.
+ * 쓴 것이 있으면(isDirty) 닫기 전에 버릴지 묻는다(ConfirmDialog).
  */
-export function ComposeSurface(props: ComposeSurfaceProps) {
+export function ComposeSurface({ isDirty = false, discard, ...props }: ComposeSurfaceProps) {
   const isMobile = useIsMobile()
-  const { submit } = props
+  const [isDiscarding, setDiscarding] = useState(false)
+  const { submit, onClose } = props
   const press = (event: KeyboardEvent) => {
     if (event.key !== "Enter" || !(event.ctrlKey || event.metaKey) || event.nativeEvent.isComposing) return
     event.preventDefault()
     if (!submit.isDisabled && !submit.isPending) submit.onSubmit()
   }
-  if (isMobile) return <PhoneCompose {...props} onKeyDown={press} />
-  if (props.surface === "page") return <PageCompose {...props} onKeyDown={press} />
-  return <DialogCompose {...props} onKeyDown={press} />
+  const surface = { ...props, onKeyDown: press, onClose: () => (isDirty ? setDiscarding(true) : onClose()) }
+  return (
+    <>
+      {isMobile ? <PhoneCompose {...surface} /> : props.surface === "page" ? <PageCompose {...surface} /> : <DialogCompose {...surface} />}
+      <ConfirmDialog open={isDiscarding} onOpenChange={setDiscarding}
+        title={discard?.title ?? "작성 중인 내용을 버릴까요?"} description={discard?.description ?? "지금 닫으면 쓴 내용이 사라집니다."}
+        action={{ label: discard?.label ?? "버리기", onAction: () => { setDiscarding(false); onClose() } }} />
+    </>
+  )
 }
 
-type SurfaceProps = ComposeSurfaceProps & { onKeyDown: (event: KeyboardEvent) => void }
+type SurfaceProps = Omit<ComposeSurfaceProps, "isDirty" | "discard"> & { onKeyDown: (event: KeyboardEvent) => void }
 
 const titleOf = (crumbs: Crumb[]) => crumbs[crumbs.length - 1]?.label ?? "작성"
 
@@ -158,8 +171,8 @@ function PhoneCompose({ crumbs, chip, pills, submit, actions, error, isContinuin
           {onContinuing && <Continuing value={isContinuing} onChange={onContinuing} />}
           <div className="flex items-center gap-2">
             {actions && <div data-slot="compose-actions" className="flex shrink-0 items-center gap-1 [&_button]:h-11">{actions}</div>}
-            <Button variant="ghost" className="h-11 px-4" onClick={onClose}>취소</Button>
-            <SubmitButton submit={submit} className="h-11 flex-1" />
+            <Button variant="ghost" className="h-11 min-w-22 px-4" onClick={onClose}>취소</Button>
+            <SubmitButton submit={submit} className="h-11 min-w-22 flex-1" />
           </div>
         </footer>
       </div>

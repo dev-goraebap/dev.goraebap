@@ -20,3 +20,20 @@ export function useFullScreen(isFullScreen: boolean) {
     return () => setFullScreen(false)
   }, [isFullScreen, setFullScreen])
 }
+
+/**
+ * 페이지 제목(h1)의 주인. 페이지마다 접근 가능한 h1은 하나다(layout-patterns.md): 기본은 Page가 지금 이름으로 h1을 두고
+ * (휴대폰은 앱 바 이름, 데스크톱은 경로와 별개로 숨긴 h1), 본문이 자기 제목을 h1로 그리면(상세 · 설정 · 작성 양식)
+ * 그 부품이 useOwnPageTitle()로 알리고 Page는 h1을 두지 않는다. 앱 바 이름은 그대로 보이되 글자일 뿐이다.
+ */
+type PageTitle = { claim: () => () => void }
+
+const PageTitleContext = createContext<PageTitle>({ claim: () => () => {} })
+
+export const PageTitleProvider = PageTitleContext.Provider
+
+/** 본문이 이 페이지의 h1을 그린다고 Page에 알린다. isOwn이 false면(목록 옆 칸에서 h2로 그릴 때) 알리지 않는다. */
+export function useOwnPageTitle(isOwn = true) {
+  const { claim } = useContext(PageTitleContext)
+  useLayoutEffect(() => (isOwn ? claim() : undefined), [isOwn, claim])
+}

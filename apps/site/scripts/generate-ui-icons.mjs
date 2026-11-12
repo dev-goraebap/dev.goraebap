@@ -44,6 +44,8 @@ const SOLAR = {
   GripIcon: "hamburger-menu", EyeClosedIcon: "eye-closed", LayoutGridIcon: "widget-4",
   // 파일 올리기 · 회의 녹음
   UploadIcon: "upload-minimalistic", MicrophoneIcon: "microphone-large",
+  // 지우기 · 댓글 · 폴더로 옮기기 · 되살리기(Trash2Icon은 가벼운 빼기, TrashIcon은 지우기)
+  TrashIcon: "trash-bin-trash", MessageCircleIcon: "chat-round-line", FolderInputIcon: "move-to-folder", RotateCcwIcon: "undo-left-round",
 
   // ── 리치 에디터 · 문서 편집기(shared/ui/editor · document). Astryx 키트의 이름표(generate-icons.mjs)와 같은 Solar를 고른다.
   BoldIcon: "text-bold", ItalicIcon: "text-italic", UnderlineIcon: "text-underline", StrikethroughIcon: "text-cross", CodeIcon: "code",

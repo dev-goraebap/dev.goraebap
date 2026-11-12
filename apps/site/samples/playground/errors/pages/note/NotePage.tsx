@@ -38,11 +38,12 @@ export function NotePage() {
   };
   const titleError = isTried && !title.trim() ? '제목을 입력해 주세요.' : undefined;
   const status = isSaved && !save.isPending ? <span role="status" className="text-xs text-muted-foreground max-md:mr-auto max-md:text-sm">저장됨</span> : null;
-  const saveButton = <Button className="max-md:h-11 max-md:flex-1" disabled={save.isPending} onClick={submit}>
+  const saveButton = <Button disabled={save.isPending} onClick={submit}>
     {save.isPending && <Spinner data-icon="inline-start" />}저장
   </Button>;
   return <Page crumbs={[{ label: '메모', href: '/notes/new' }, { label: title.trim() || '새 메모' }]} isFullScreen
     actions={isMobile ? undefined : <div className="flex shrink-0 items-center gap-2">{status}{saveButton}</div>}
+    footer={isMobile ? <>{status}{saveButton}</> : undefined}
     below={save.isError ? <Alert variant="destructive" className="shrink-0 rounded-none border-x-0 border-t-0">
       <TriangleAlertIcon />
       <AlertTitle>저장하지 못했습니다</AlertTitle>
@@ -62,6 +63,5 @@ export function NotePage() {
         </Field>
       </div>
     </div>
-    {isMobile && <footer className="sticky bottom-0 flex shrink-0 items-center gap-2 border-t bg-background px-4 pt-2 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">{status}{saveButton}</footer>}
   </Page>;
 }

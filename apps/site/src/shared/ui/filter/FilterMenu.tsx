@@ -23,7 +23,8 @@ export function FilterMenu<K extends string>({ filters }: { filters: Filters<K> 
   }
   const done = (
     <div className="flex justify-end pt-3">
-      <Button variant="secondary" size="lg" className="rounded-full px-5" onClick={() => setMenu({ isOpen: false })}>완료</Button>
+      {/* 휴대폰의 짧은 실행 단추는 44px 높이에 88px 이상 너비(spacing.md). */}
+      <Button variant="secondary" size="lg" className="h-11 min-w-22 rounded-full px-5" onClick={() => setMenu({ isOpen: false })}>완료</Button>
     </div>
   )
   return (

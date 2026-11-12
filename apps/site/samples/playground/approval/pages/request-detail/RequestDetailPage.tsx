@@ -1,10 +1,7 @@
-import { useIsMobile } from '@/shared/lib/use-mobile';
+import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
-import {
-  AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from '@/shared/ui/alert-dialog';
 import { Button } from '@/shared/ui/button';
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from '@/shared/ui/drawer';
+import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { FormDialog } from '@/shared/ui/form-dialog';
 import { CalendarIcon, ClockIcon, FileTextIcon, InboxIcon, TriangleAlertIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
@@ -19,50 +16,6 @@ import { Link } from '@tanstack/react-router';
 import { useState, type ReactNode } from 'react';
 import { approvalKeys, approvalQueries, currentOf, daysOf, dayWeekText, leaveLabel, me, ResultMark, Timeline, titleOf, useApprovalApi,
   type DecisionResult } from '../../entities/approval';
-
-/**
- * 되돌릴 수 없지만 지우는 일은 아닌 결정(승인)의 확인. 키트 ConfirmDialog는 삭제용이라 동작 단추가 붉으므로, 같은 틀에 주 단추를 둔다.
- * 데스크톱은 가운데 확인 창, 휴대폰은 바텀시트(동작이 위, 취소가 아래). 처리하는 동안에는 닫히지 않는다.
- */
-function ApproveConfirm({ open, onOpenChange, description, isPending, onApprove }: {
-  open: boolean; onOpenChange: (open: boolean) => void; description: string; isPending: boolean; onApprove: () => void;
-}) {
-  const isMobile = useIsMobile();
-  const change = (next: boolean) => { if (!isPending) onOpenChange(next); };
-  const action = (className?: string) => (
-    <Button disabled={isPending} className={className} onClick={onApprove}>{isPending && <Spinner data-icon="inline-start" />}승인</Button>
-  );
-  if (isMobile) {
-    return (
-      <Drawer open={open} onOpenChange={change}>
-        <DrawerContent role="alertdialog">
-          <DrawerHeader className="gap-1.5 pb-2">
-            <DrawerTitle className="text-lg font-semibold">승인할까요?</DrawerTitle>
-            <DrawerDescription className="text-base">{description}</DrawerDescription>
-          </DrawerHeader>
-          <DrawerFooter className="pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-            {action('h-11')}
-            <DrawerClose render={<Button variant="ghost" className="h-11" />}>취소</DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    );
-  }
-  return (
-    <AlertDialog open={open} onOpenChange={change}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>승인할까요?</AlertDialogTitle>
-          <AlertDialogDescription>{description}</AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel variant="ghost">취소</AlertDialogCancel>
-          {action()}
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
 
 const plain = (children: ReactNode) => <div className="flex flex-1 flex-col bg-background">{children}</div>;
 
@@ -101,7 +54,7 @@ export function RequestDetailPage({ id }: { id: string }) {
   const isMine = approval.applicant === me;
   const isMyTurn = !isMine && currentOf(approval)?.approver === me;
   const submitReject = () => {
-    if (!reason.trim()) { setTried(true); requestAnimationFrame(() => document.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus()); return; }
+    if (!reason.trim()) { setTried(true); focusFirstInvalid(); return; }
     decide.mutate({ result: 'rejected', opinion: reason });
   };
   const closeReject = () => { setAsking(undefined); setReason(''); setTried(false); decide.reset(); };
@@ -109,6 +62,11 @@ export function RequestDetailPage({ id }: { id: string }) {
   const isReasonMissing = isTried && !reason.trim();
   return (
     <Page crumbs={crumbs(approval.id, isMine)} isFullScreen
+      // 결정 줄: 지금 내 차례인 결재자에게만 바닥에 붙는다.
+      footer={isMyTurn ? <>
+        <Button variant="secondary" onClick={() => setAsking('rejected')}>반려</Button>
+        <Button onClick={() => setAsking('approved')}>승인</Button>
+      </> : undefined}
       below={decide.isError && !asking ? (
         <Alert variant="destructive" className="shrink-0 rounded-none border-x-0 border-t-0">
           <TriangleAlertIcon />
@@ -137,16 +95,11 @@ export function RequestDetailPage({ id }: { id: string }) {
           <Timeline approval={approval} />
         </section>
       </DetailLayout>
-      {isMyTurn ? (
-        // 결정 줄: 본문이 스크롤해도 바닥에 붙는다. 휴대폰은 두 단추가 폭을 나눠 갖는다(44px).
-        <div className="sticky bottom-0 z-2 mt-auto flex shrink-0 justify-end gap-2 border-t bg-background px-4 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] max-md:*:h-11 max-md:*:flex-1">
-          <Button variant="secondary" onClick={() => setAsking('rejected')}>반려</Button>
-          <Button onClick={() => setAsking('approved')}>승인</Button>
-        </div>
-      ) : null}
-      <ApproveConfirm open={asking === 'approved'} onOpenChange={open => { if (!open) setAsking(undefined); }} isPending={decide.isPending}
+      {/* 승인은 되돌릴 수 없지만 지우는 일은 아니라 기본 색 동작으로 묻는다. */}
+      <ConfirmDialog open={asking === 'approved'} onOpenChange={open => { if (!open) setAsking(undefined); }} title="승인할까요?"
         description={isLastApprover ? '승인하면 결재가 모두 끝나고 신청자에게 승인으로 알려집니다.' : '승인하면 다음 결재자에게 넘어갑니다. 승인한 뒤에는 바꿀 수 없습니다.'}
-        onApprove={() => decide.mutate({ result: 'approved' }, { onError: () => setAsking(undefined) })} />
+        action={{ label: '승인', variant: 'default', isPending: decide.isPending,
+          onAction: () => decide.mutate({ result: 'approved' }, { onError: () => setAsking(undefined) }) }} />
       <FormDialog open={asking === 'rejected'} onOpenChange={open => { if (!open) closeReject(); }} title="반려 이유" description={`${approval.applicant}님의 ${titleOf(approval)}`}
         submitLabel="반려하기" isDestructive isPending={decide.isPending} onSubmit={submitReject}>
         <div className="flex flex-col gap-2">

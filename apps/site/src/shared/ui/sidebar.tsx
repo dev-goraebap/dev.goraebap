@@ -495,12 +495,19 @@ const sidebarMenuButtonVariants = cva(
   }
 )
 
+/** 툴팁 트리거 안의 실제 요소에 disabled를 직접 준다(TooltipTrigger의 disabled는 툴팁만 끈다). */
+function disabledRender(render: useRender.ComponentProps<"button">["render"]): useRender.ComponentProps<"button">["render"] {
+  if (typeof render === "function") return (props, state) => render({ ...props, disabled: true } as typeof props, state)
+  return React.cloneElement((render ?? <button type="button" />) as React.ReactElement<{ disabled?: boolean }>, { disabled: true })
+}
+
 function SidebarMenuButton({
   render,
   isActive = false,
   variant = "default",
   size = "default",
   tooltip,
+  disabled,
   className,
   ...props
 }: useRender.ComponentProps<"button"> &
@@ -515,9 +522,13 @@ function SidebarMenuButton({
       {
         className: cn(sidebarMenuButtonVariants({ variant, size }), className),
       },
+      // 툴팁이 있으면 disabled가 TooltipTrigger에서 멈추므로(툴팁만 끈다) 단추 자체에도 알린다.
+      tooltip && disabled ? { "aria-disabled": true, tabIndex: -1 } : { disabled },
       props
     ),
-    render: !tooltip ? render : <TooltipTrigger render={render} />,
+    render: !tooltip
+      ? render
+      : <TooltipTrigger disabled={disabled} render={disabled ? disabledRender(render) : render} />,
     state: {
       slot: "sidebar-menu-button",
       sidebar: "menu-button",
@@ -634,13 +645,14 @@ function SidebarMenuSkeleton({
   )
 }
 
+/** 하위 줄도 상위 줄끼리와 같은 2px로 띄우고, 펼친 묶음 끝에는 8px를 더해 다음 상위 항목과 경계를 보인다(app-layout.md). */
 function SidebarMenuSub({ className, ...props }: React.ComponentProps<"ul">) {
   return (
     <ul
       data-slot="sidebar-menu-sub"
       data-sidebar="menu-sub"
       className={cn(
-        "mx-3.5 flex min-w-0 translate-x-px flex-col gap-1 border-l border-sidebar-border px-2.5 py-0.5 group-data-[collapsible=icon]:hidden",
+        "mx-3.5 mt-0.5 mb-2 flex min-w-0 translate-x-px flex-col gap-0.5 border-l border-sidebar-border px-2.5 group-data-[collapsible=icon]:hidden",
         className
       )}
       {...props}

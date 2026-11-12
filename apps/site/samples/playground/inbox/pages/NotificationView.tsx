@@ -1,16 +1,19 @@
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { ArchiveIcon, ArchiveUpIcon, FileTextIcon } from '@/shared/ui/icon';
+import { useOwnPageTitle } from '@/shared/ui/page';
 import { Spinner } from '@/shared/ui/spinner';
 import { kinds, timeText, type Notification } from '../entities/notification';
 
 /**
  * 알림의 내용: 무엇이 왔는지(종류 · 시각 · 제목 · 본문), 가리키는 대상, 보관 동작. 목록 옆 상세 칸과 자기 페이지가 같은 부품을
  * 쓴다. 휴대폰과 직접 진입은 페이지로, 데스크톱 목록은 상세 칸으로 보인다. 읽는 폭은 45rem.
+ * 자기 페이지에서는 제목이 페이지의 h1이고(앱 바 이름은 h1이 아니다), 목록 옆 칸에서는 목록 페이지 아래 h2다.
  */
 export function NotificationView({ item, headingLevel = 1, isBusy, onToggleArchive }: {
   item: Notification; headingLevel?: 1 | 2; isBusy: boolean; onToggleArchive: () => void;
 }) {
+  useOwnPageTitle(headingLevel === 1);
   const Heading = headingLevel === 1 ? 'h1' : 'h2';
   return <article className="mx-auto flex w-full max-w-180 flex-col gap-4 px-4 py-5 break-keep wrap-anywhere md:py-6">
     <div className="flex flex-col gap-2">

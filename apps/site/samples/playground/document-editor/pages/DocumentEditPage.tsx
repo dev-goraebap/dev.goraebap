@@ -1,10 +1,7 @@
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import {
-  AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from '@/shared/ui/alert-dialog';
 import { Button } from '@/shared/ui/button';
+import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { DocumentEditor, PageLookMenu, type DocumentMode, type PageLayout } from '@/shared/ui/document';
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from '@/shared/ui/drawer';
 import { FileTextIcon } from '@/shared/ui/icon';
 import { Page } from '@/shared/ui/page';
 import type { JSONContent } from '@tiptap/react';
@@ -12,41 +9,6 @@ import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useDocumentValue, usePageLook, useSaveDocumentValue } from '../app/store';
 import { ModeSwitch } from './DocumentReadPage';
-
-const LEAVE_TITLE = '저장하지 않은 내용이 있습니다';
-const LEAVE_TEXT = '지금 나가면 저장하지 않은 내용이 사라집니다. 남기려면 계속 작성을 눌러 저장하세요.';
-
-/**
- * 나가기 확인: 계속 작성(머문다) · 버리고 나가기. 키트 ConfirmDialog는 머무는 단추가 "취소"로 고정이라, 무엇이 남는지 드러나게
- * 같은 틀(데스크톱 확인 창, 휴대폰 바텀시트)에 "계속 작성"을 둔다.
- */
-function LeaveConfirm({ open, onOpenChange, onLeave }: { open: boolean; onOpenChange: (open: boolean) => void; onLeave: () => void }) {
-  const isMobile = useIsMobile();
-  if (isMobile) {
-    return (
-      <Drawer open={open} onOpenChange={onOpenChange}>
-        <DrawerContent role="alertdialog">
-          <DrawerHeader className="gap-1.5 pb-2"><DrawerTitle className="text-lg font-semibold">{LEAVE_TITLE}</DrawerTitle><DrawerDescription className="text-base">{LEAVE_TEXT}</DrawerDescription></DrawerHeader>
-          <DrawerFooter className="pt-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
-            <Button variant="destructive" className="h-11" onClick={onLeave}>버리고 나가기</Button>
-            <DrawerClose render={<Button variant="ghost" className="h-11" />}>계속 작성</DrawerClose>
-          </DrawerFooter>
-        </DrawerContent>
-      </Drawer>
-    );
-  }
-  return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader><AlertDialogTitle>{LEAVE_TITLE}</AlertDialogTitle><AlertDialogDescription>{LEAVE_TEXT}</AlertDialogDescription></AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel variant="ghost">계속 작성</AlertDialogCancel>
-          <Button variant="destructive" onClick={onLeave}>버리고 나가기</Button>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
 
 /**
  * 문서 수정: 대화상자 없이 전체 페이지에서 쓴다. 위에 서식 막대(왼쪽 확대/축소, 오른쪽 문서 설정 · 페이지 모양 · 페이지 / 페이지 없음), 아래에 제목 칸과 본문.
@@ -112,7 +74,10 @@ export function DocumentEditPage() {
           </footer>
         )}
       </div>
-      <LeaveConfirm open={isLeaveAsked} onOpenChange={setLeaveAsked} onLeave={() => { setLeaveAsked(false); leave(); }} />
+      {/* 나가기 확인: 머무는 단추를 "계속 작성"으로 불러 무엇이 남는지 드러낸다. */}
+      <ConfirmDialog open={isLeaveAsked} onOpenChange={setLeaveAsked} title="저장하지 않은 내용이 있습니다"
+        description="지금 나가면 저장하지 않은 내용이 사라집니다. 남기려면 계속 작성을 눌러 저장하세요." cancelLabel="계속 작성"
+        action={{ label: '버리고 나가기', onAction: () => { setLeaveAsked(false); leave(); } }} />
     </Page>
   );
 }

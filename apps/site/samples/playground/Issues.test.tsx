@@ -18,7 +18,11 @@ const VerifyCreate: Sample = {
     await userEvent.type(within(dialog).getByRole("textbox", { name: "제목" }), "알림 설정 문구 점검");
     await userEvent.click(within(dialog).getByRole("button", { name: "추가하기" }));
     await expect(await within(dialog).findByText("필수 속성을 정해 주세요: 우선순위")).toBeVisible();
-    await userEvent.click(within(dialog).getByRole("button", { name: "우선순위 (필수)" }));
+    // 빠진 필수 알약은 aria-invalid를 받고, 제출 검사가 그리로 초점을 옮긴다.
+    const priority = within(dialog).getByRole("button", { name: "우선순위 (필수)" });
+    await expect(priority).toHaveAttribute("aria-invalid", "true");
+    await waitFor(() => expect(priority).toHaveFocus());
+    await userEvent.click(priority);
     await userEvent.click(await page.findByRole("option", { name: "높음" }));
     await userEvent.click(within(dialog).getByRole("button", { name: "추가하기" }));
     await expect(await page.findByRole("heading", { level: 1, name: "알림 설정 문구 점검" })).toBeVisible();

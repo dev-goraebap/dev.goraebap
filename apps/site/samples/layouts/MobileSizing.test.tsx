@@ -9,8 +9,6 @@ import pageMeta, { HeaderAndToolbar } from './Page.samples';
 /*
  * 휴대폰 크기 규칙(design-system/references/app-layout.md · composed-components.md · icons.md):
  * 머리 줄 · 툴바 최소 60px, 시트의 선택 줄 48px, 완료 단추 88px 이상, 동작 · 선택 목록은 48px 줄에 15px 글자 · 20px 아이콘.
- * 지금 키트는 앱 바 · 툴바가 52px(Page의 h-13), 필터 시트의 완료가 약 68px(FilterMenu의 px-5), 동작 메뉴 줄이 14px 글자 · 16px 아이콘(ActionMenu의 Button 기본)이라
- * 그 몫은 test.fails로 따로 둔다. 키트를 고치면 "통과해서 실패"하므로 test로 되돌린다.
  */
 const bars = (canvasElement: HTMLElement) => ({
   header: canvasElement.querySelector<HTMLElement>('[data-slot=page-app-bar]')!,
@@ -34,7 +32,7 @@ test('모바일과 중간 폭에서도 시트 선택 행 크기를 유지한다'
   },
 }, 'phone'));
 
-test.fails('모바일 머리 줄과 툴바는 60px 이상이다(키트 수정 대기)', () => runSample(pageMeta, {
+test('모바일 머리 줄과 툴바는 60px 이상이다', () => runSample(pageMeta, {
   ...HeaderAndToolbar,
   play: async ({ canvasElement }) => {
     const { header, toolbar } = bars(canvasElement);
@@ -43,7 +41,7 @@ test.fails('모바일 머리 줄과 툴바는 60px 이상이다(키트 수정 �
   },
 }, 'phone'));
 
-test.fails('모바일 시트의 완료 단추는 88px 이상이다(키트 수정 대기)', () => runSample(pageMeta, {
+test('모바일 시트의 완료 단추는 88px 이상이다', () => runSample(pageMeta, {
   ...HeaderAndToolbar,
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole('button', { name: '필터, 1개 적용 중' }));
@@ -74,7 +72,7 @@ test('모바일 동작 메뉴는 48px 행이고 선택 후 닫힌다', () => run
   },
 }, 'phone'));
 
-test.fails('모바일 동작 메뉴는 15px 글자와 20px 아이콘이다(키트 수정 대기)', () => runSample(pageMeta, {
+test('모바일 동작 메뉴는 15px 글자와 20px 아이콘이다', () => runSample(pageMeta, {
   ...SortMenu,
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole('button', { name: '정렬' }));

@@ -52,10 +52,11 @@ function HtmlViewer({ page, onClose }: { page: HtmlPage | null; onClose: () => v
   const canOpenTab = !!page && !page.src.startsWith("blob:")
   return (
     <Dialog open={!!page} onOpenChange={next => { if (!next) onClose() }}>
-      <DialogContent showCloseButton={false} aria-label={page ? `${page.title} 크게 보기` : undefined}
+      <DialogContent showCloseButton={false}
         className="flex h-[94dvh] w-[min(96vw,100rem)] max-w-none flex-col gap-0 overflow-hidden p-0 sm:max-w-none">
         <div className="flex flex-none items-center justify-between gap-2 border-b px-3 py-2">
-          <DialogTitle className="min-w-0 truncate text-sm font-semibold">{page?.title}</DialogTitle>
+          {/* 대화상자의 이름은 제목이 정한다(aria-label보다 앞선다). 보이는 제목은 파일 이름, 읽는 이름은 "<파일> 크게 보기". */}
+          <DialogTitle className="min-w-0 truncate text-sm font-semibold">{page?.title}<span className="sr-only"> 크게 보기</span></DialogTitle>
           <div className="flex items-center gap-2">
             {canOpenTab ? <Button variant="secondary" size="sm" className="max-md:h-11" onClick={() => window.open(page.src, "_blank", "noopener,noreferrer")}>새 탭에서 열기</Button> : null}
             <Button variant="secondary" size="sm" className="max-md:h-11" onClick={onClose}>닫기</Button>
