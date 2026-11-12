@@ -1,6 +1,6 @@
 import { useId, useRef, useState, type DragEvent } from "react"
 import { cn } from "@/shared/lib/utils"
-import { ArchiveUpIcon } from "@/shared/ui/icon"
+import { UploadIcon } from "@/shared/ui/icon"
 import { fileSizeText } from "./files"
 
 /**
@@ -64,7 +64,7 @@ export function FileDropzone({ label, hint, accept, maxBytes, isMultiple = false
           "hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-50",
           "data-dragging:border-ring data-dragging:bg-muted",
         )}>
-        <ArchiveUpIcon className="size-5 text-muted-foreground" />
+        <UploadIcon className="size-5 text-muted-foreground" />
         <span className="text-sm font-medium">{label}</span>
         <span className="text-xs text-muted-foreground">{isDragging ? "여기에 놓으세요" : "파일을 끌어다 놓거나 눌러서 고르세요"}</span>
         {about && <span id={hintId} className="text-xs text-muted-foreground">{about}</span>}

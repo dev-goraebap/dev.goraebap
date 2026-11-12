@@ -1,5 +1,5 @@
 import { FileDropzone, FileList, MB, mergeFiles } from "@/shared/ui/compose"
-import { FileIcon, ImageIcon } from "@/shared/ui/icon"
+import { ImageIcon, MicrophoneIcon } from "@/shared/ui/icon"
 import { PropertyPill } from "@/shared/ui/property-pill"
 
 /** 회의 녹음은 하나, 회의 사진은 여러 장(호호코워크 MeetingAttachments). 형식과 크기는 호호코워크 서버가 받는 그대로다. */
@@ -21,7 +21,7 @@ export function MeetingAttachment({ kind, files, onChange, isDisabled }: {
 }) {
   const isSingle = kind === "audio"
   const { label, accept, maxBytes, hint } = KINDS[kind]
-  const Mark = isSingle ? FileIcon : ImageIcon
+  const Mark = isSingle ? MicrophoneIcon : ImageIcon
   const text = files.length === 0 ? undefined : isSingle ? files[0].name : `${label} ${files.length}장`
   return (
     <PropertyPill label={label} icon={<Mark />} text={text} width="w-88">

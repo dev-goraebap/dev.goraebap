@@ -19,9 +19,18 @@ declare module "@tanstack/react-router" {
 
 type Search = Record<string, unknown>
 
+/** 값은 TanStack Router의 기본 parseSearch처럼 JSON으로 읽는다. 글자 "1"로 두면 mask 주소가 ?compose=%221%22로 따옴표가 붙는다. */
+const parseValue = (value: string): unknown => {
+  try {
+    return JSON.parse(value)
+  } catch {
+    return value
+  }
+}
+
 function split(href: string) {
   const url = new URL(href, "http://cowork.invalid")
-  return { pathname: url.pathname, search: Object.fromEntries(url.searchParams) as Search }
+  return { pathname: url.pathname, search: Object.fromEntries([...url.searchParams].map(([key, value]) => [key, parseValue(value)])) as Search }
 }
 
 /**

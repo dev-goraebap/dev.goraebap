@@ -1,7 +1,7 @@
 import { useId } from "react"
 import { sizeText, type Meeting, type MeetingFile } from "@/entities/meeting"
 import { Button } from "@/shared/ui/button"
-import { DownloadIcon, FileIcon, ImageIcon, SquareArrowOutUpRightIcon } from "@/shared/ui/icon"
+import { DownloadIcon, FileIcon, ImageIcon, MicrophoneIcon, SquareArrowOutUpRightIcon } from "@/shared/ui/icon"
 
 /** 파일 하나의 열기 · 내려받기. 이 브라우저 안의 주소(object URL)라 새 탭에서 열고, download로 원래 이름 그대로 받는다. */
 function FileActions({ file }: { file: MeetingFile & { url: string } }) {
@@ -26,7 +26,7 @@ function FileRow({ file }: { file: MeetingFile }) {
     <li className="flex min-h-12 items-center gap-3 px-3 py-2 not-last:border-b">
       {isImage && file.url
         ? <img src={file.url} alt="" className="size-9 shrink-0 rounded-md object-cover" />
-        : <span className="grid size-9 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">{isImage ? <ImageIcon /> : <FileIcon />}</span>}
+        : <span className="grid size-9 shrink-0 place-items-center rounded-md bg-muted text-muted-foreground">{isImage ? <ImageIcon /> : file.type.startsWith("audio/") ? <MicrophoneIcon /> : <FileIcon />}</span>}
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="truncate text-sm font-medium">{file.name}</span>
         <span className="text-xs text-muted-foreground tabular-nums">{sizeText(file.size)}</span>
