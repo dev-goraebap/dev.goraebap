@@ -8,7 +8,7 @@ import { cn } from "@/shared/lib/utils"
 import { ListGroupHeader } from "@/shared/ui/list-group-header"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { RowLink } from "@/shared/ui/row-link"
-import { useOpenPanel } from "../model/panel"
+import { useOpenPanel } from "@/shared/lib/panel"
 
 /** 줄은 자기 바탕을 칠해 페이지의 점 무늬를 가리고, 가리키면 옅게 덮는다(업무 줄과 같다). */
 const ROW = "relative border-b bg-background px-4 text-sm hover:bg-row-hover"

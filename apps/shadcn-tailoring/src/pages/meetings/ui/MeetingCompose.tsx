@@ -13,7 +13,7 @@ import { type Crumb } from "@/shared/ui/page"
 import { PersonAvatar } from "@/shared/ui/person-avatar"
 import { OptionPill, PropertyPill } from "@/shared/ui/property-pill"
 import { toast } from "@/shared/ui/toast"
-import { carryDraft, useCarriedDraft } from "../model/panel"
+import { carryDraft, useCarriedDraft } from "@/shared/lib/panel"
 import { MeetingAttachment } from "./MeetingAttachments"
 import { heldOf, MeetingEventPill } from "./MeetingEventPicker"
 

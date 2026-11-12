@@ -11,7 +11,7 @@ import { Skeleton } from "@/shared/ui/skeleton"
 import { NEW_HREF } from "../model/address"
 import { applyFilters, FILTERS, INITIAL_DISPLAY, orderItems, type Display } from "../model/list"
 import { AnnouncementCompose } from "./AnnouncementCompose"
-import { useOpenPanel, usePanel } from "../model/panel"
+import { useOpenPanel, usePanel } from "@/shared/lib/panel"
 import { AnnouncementDisplayMenu } from "./AnnouncementDisplayMenu"
 import { AnnouncementRows, AnnouncementTable } from "./AnnouncementList"
 

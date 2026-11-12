@@ -9,7 +9,7 @@ import { CalendarIcon } from "@/shared/ui/icon"
 import { OptionPill } from "@/shared/ui/property-pill"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
-import { carryDraft, useCarriedDraft } from "../model/panel"
+import { carryDraft, useCarriedDraft } from "@/shared/lib/panel"
 
 /** 회사 양식의 세 단계(호호코워크 WeeklyReportCompose). 비고만 비워도 된다. */
 const STEPS: readonly { part: keyof ReportParts; label: string; placeholder: string; required?: string }[] = [

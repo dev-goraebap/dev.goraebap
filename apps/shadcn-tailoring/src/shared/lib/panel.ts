@@ -6,7 +6,7 @@ import { useIsMobile } from "@/shared/lib/use-mobile"
  * 목록 위 대화상자로 여는 페이지(호호코워크 shared/lib/panel). 데스크톱은 지금 페이지 주소에 ?panel=<페이지 주소>를 달고
  * 주소창에는 TanStack Router의 mask로 그 페이지의 주소를 보인다(unmaskOnReload: 새로고침 · 복사한 주소는 페이지로 연다).
  * 휴대폰에는 대화상자가 없어 늘 그 페이지로 간다.
- * 공지사항 · 회의록 · 주간보고가 같은 사본을 쓴다. shared/lib로 옮길 후보다(이 작업 범위가 shared를 막아 슬라이스마다 둔다).
+ * 공지사항 · 회의록 · 주간보고가 함께 쓴다. 업무 만들기(features/work-item-create)는 같은 방식의 앞선 사본이다.
  */
 const KEY = "panel"
 

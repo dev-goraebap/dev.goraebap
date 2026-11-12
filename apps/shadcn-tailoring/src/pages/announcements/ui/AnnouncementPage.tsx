@@ -16,7 +16,7 @@ import { DetailLayout, MarkdownBody, type DetailSection } from "@/shared/ui/read
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
 import { composeTarget, editHref } from "../model/address"
-import { useOpenPanel, usePanel } from "../model/panel"
+import { useOpenPanel, usePanel } from "@/shared/lib/panel"
 import { AnnouncementCompose } from "./AnnouncementCompose"
 import { AnnouncementFiles } from "./AnnouncementFiles"
 

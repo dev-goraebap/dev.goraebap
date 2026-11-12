@@ -10,7 +10,7 @@ import { MegaphoneIcon, PinIcon, TagIcon } from "@/shared/ui/icon"
 import { type Crumb } from "@/shared/ui/page"
 import { OptionPill, PropertyPill } from "@/shared/ui/property-pill"
 import { toast } from "@/shared/ui/toast"
-import { carryDraft, useCarriedDraft } from "../model/panel"
+import { carryDraft, useCarriedDraft } from "@/shared/lib/panel"
 
 const TITLE_MAX = 200
 

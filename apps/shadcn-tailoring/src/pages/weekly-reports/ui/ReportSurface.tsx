@@ -11,7 +11,7 @@ import { Page } from "@/shared/ui/page"
 import { PageState } from "@/shared/ui/page-state"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { toast } from "@/shared/ui/toast"
-import { useOpenPanel } from "../model/panel"
+import { useOpenPanel } from "@/shared/lib/panel"
 import { ReportDetail } from "./ReportDetail"
 
 const PLAIN = "flex flex-1 flex-col bg-background"

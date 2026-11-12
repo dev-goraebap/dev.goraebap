@@ -11,7 +11,7 @@ import { SearchTool } from "@/shared/ui/search-tool"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { NEW_PATH, newMeetingHref, projectFrom } from "../model/address"
 import { applyFilters, DIRECTIONS, FILTERS, orderItems, type Direction } from "../model/list"
-import { useOpenPanel, usePanel } from "../model/panel"
+import { useOpenPanel, usePanel } from "@/shared/lib/panel"
 import { MeetingCompose } from "./MeetingCompose"
 import { MeetingRows, MeetingTable } from "./MeetingList"
 
