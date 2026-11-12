@@ -47,7 +47,7 @@ Codex:
 codex plugin marketplace upgrade dev-goraebap
 ```
 
-## 이전 이름에서 전환
+## 설치 이름 맞추기
 
 `goraebap-workflow@goraebap-workflow`가 설치돼 있으면 `webcraft@dev-goraebap`을 설치하고, 설치를 확인한 뒤 사용자가 허용한 범위에서 `goraebap-workflow@goraebap-workflow`를 지웁니다. 입구 스킬 이름은 `goraebap-mode`입니다. 프로젝트 AGENTS.md의 연결은 `webcraft@dev-goraebap`과 설치된 판을 가리키게 고칩니다. 사본에서 바꾼 규칙과 제품 전용 스킬은 보존합니다.
 

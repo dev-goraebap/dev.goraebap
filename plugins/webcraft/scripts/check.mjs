@@ -10,7 +10,7 @@ let sections = 0;
 // 아키텍처 정의서(arc42)의 절: 1~9와 8절의 하위 절. 사이트의 아키텍처 메뉴(apps/site/content-plugin.ts)와 같다.
 const ARC42 = /^([1-79]|8\.[1-9])$/;
 // 꼬리 구획은 이 이름과 순서로 파일 맨 끝에만 둔다(글쓰기 기준의 「참고 문서의 구획」).
-const TAILS = ['전환 중', '작업 절차', '근거'];
+const TAILS = ['작업 절차'];
 function checkSections(file, content) {
   const front = /^---\r?\n([\s\S]*?)\r?\n---/.exec(content)?.[1] ?? '';
   const value = /^arc42: "([^"]+)"\r?$/m.exec(front)?.[1];
