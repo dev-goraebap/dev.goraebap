@@ -1,4 +1,5 @@
 import { paths, projectPath } from "@/shared/config"
+import type { ReactNode } from "react"
 import {
   BranchIcon, CalendarIcon, ClockIcon, FileTextIcon, FolderWithFilesIcon, InboxIcon, KanbanSquareIcon, MeetingIcon, MegaphoneIcon,
   MonitorIcon, ProjectsIcon, RepeatIcon, SettingsIcon, UserIcon, UsersIcon, WorkflowIcon, type Icon,
@@ -6,6 +7,11 @@ import {
 
 /** 메뉴의 목적지 하나. */
 export type NavEntry = { path: string; label: string; icon: Icon }
+/**
+ * 항목 아래 줄 하나(호호코워크 AppFrame childrenOf): 메인의 프로젝트 아래 별표한 프로젝트, 프로젝트 안의 업무 아래 업무 뷰 · 문서 아래 저장한 뷰.
+ * 뷰는 같은 페이지의 ?view로 가린다. media가 있으면 아이콘 대신 그린다(프로젝트 표식).
+ */
+export type NavChild = { key: string; path: string; search?: Record<string, string>; label: string; icon: Icon; media?: ReactNode; isCurrent: boolean }
 /** 제목이 있는 항목 묶음. 첫 묶음은 제목을 숨긴다. */
 export type NavSection = { title: string; isHeaderHidden?: boolean; entries: NavEntry[] }
 /** 주소에 따라 사이드바(휴대폰은 하단 탭)가 보이는 메뉴 하나. 메인이 아니면 맨 위에 돌아가기가 있다. */

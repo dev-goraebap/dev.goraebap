@@ -1,3 +1,4 @@
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useDeferredValue, useMemo, useState } from "react"
 import type { DocumentLibrary } from "@/entities/document"
 import { paths, projectPath } from "@/shared/config"
@@ -12,10 +13,9 @@ import { PageState } from "@/shared/ui/page-state"
 import { SearchTool } from "@/shared/ui/search-tool"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { DIRECTIONS, LAYOUTS, SORTS, applyFilters, displayOf, filtersOf, orderDocuments, type Display } from "../model/library"
+import { ALL_VIEW, requestedView, withView } from "../model/view"
 import { DocumentCompose } from "./DocumentCompose"
 import { DocumentGrid, DocumentRows } from "./DocumentList"
-
-const ALL = "all"
 
 function GridSkeleton() {
   return (
@@ -51,32 +51,37 @@ function LibraryDisplayMenu({ value, initial, onChange }: { value: Display; init
 /**
  * 프로젝트 문서함(호호코워크 ProjectLibrary의 목록): 뷰(전체 문서 · 저장한 뷰), 찾기(제목 · 내용) · 문서 라벨 필터 · 표시(보기 · 정렬),
  * 새 문서. 맨 위 문서만 카드(그리드)나 줄(리스트)로 서고, 하위 페이지는 문서를 열어 목차로 오간다.
- * 저장한 뷰를 고르면 그 뷰의 라벨 · 보기 · 정렬로 바뀐다. 새 문서는 데스크톱에서 대화상자, 휴대폰에서는 이 자리를 대신하는 양식이다(?compose).
+ * 저장한 뷰를 고르면(주소의 ?view, 사이드바 문서 아래 줄과 같은 주소) 그 뷰의 라벨 · 보기 · 정렬로 바뀐다. 새 문서는 데스크톱에서 대화상자, 휴대폰에서는 이 자리를 대신하는 양식이다(?compose).
  */
 export function DocumentLibraryView({ projectKey, projectName, library }: { projectKey: string; projectName: string; library?: DocumentLibrary }) {
   const isMobile = useIsMobile()
   const compose = useComposeParam()
   const filters = useFilters(filtersOf(library?.labels ?? []))
-  const [viewId, setViewId] = useState(ALL)
-  const view = library?.views.find(each => each.id === viewId)
+  const navigate = useNavigate()
+  const requested = requestedView(useSearch({ strict: false }) as Record<string, unknown>)
+  // 모르는 뷰(지운 뷰의 옛 링크)는 전체 문서로 본다.
+  const view = library?.views.find(each => each.id === requested)
+  const viewId = view?.id ?? ALL_VIEW
   const initial = displayOf(view)
   const [display, setDisplay] = useState<Display>(initial)
   const [words, setWords] = useState("")
+  // 주소의 뷰가 바뀌면(뷰 알약 · 사이드바 · 뒤로 가기) 그 뷰의 라벨 · 보기 · 정렬로 다시 맞춘다. 문서함을 읽은 뒤에야 뷰를 안다.
+  const [appliedView, setAppliedView] = useState<string>()
+  if (library && appliedView !== viewId) {
+    setAppliedView(viewId)
+    setDisplay(displayOf(view))
+    filters.clear()
+    if (view?.labelIds.length) filters.change("label", view.labelIds)
+  }
   const query = useDeferredValue(words.trim())
 
   const shown = useMemo(() => orderDocuments(applyFilters(library?.documents ?? [], filters.state, query), display),
     [library, filters.state, query, display])
 
-  const pickView = (id: string) => {
-    const next = library?.views.find(each => each.id === id)
-    setViewId(id)
-    setDisplay(displayOf(next))
-    filters.clear()
-    if (next?.labelIds.length) filters.change("label", next.labelIds)
-  }
+  const base = projectPath(projectKey, "documents")
+  const pickView = (id: string) => void navigate({ to: base, search: (current: Record<string, unknown>) => withView(current, id) as never })
   const clear = () => { filters.clear(); setWords("") }
 
-  const base = projectPath(projectKey, "documents")
   const composer = library && (
     <DocumentCompose projectKey={projectKey} projectName={projectName} labels={library.labels} surface={isMobile ? "page" : "dialog"}
       onClose={compose.close} onSaved={id => compose.done(`${base}/${id}`)} />
@@ -84,7 +89,7 @@ export function DocumentLibraryView({ projectKey, projectName, library }: { proj
   if (compose.isOpen && isMobile && composer) return composer
 
   const views: PageView<string>[] = [
-    { value: ALL, label: "전체 문서", icon: LayoutGridIcon },
+    { value: ALL_VIEW, label: "전체 문서", icon: LayoutGridIcon },
     ...(library?.views ?? []).map(each => ({ value: each.id, label: each.name, icon: ListFilterIcon })),
   ]
   const crumbs: Crumb[] = [

@@ -1,32 +1,23 @@
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useEffect, useMemo, useState } from "react"
 import { useCurrentProject } from "@/entities/project"
 import { ME, useStatusColumns, useWorkItems } from "@/entities/work-item"
 import { useNewWorkItemPanel, useOpenNewWorkItem, WorkItemCompose } from "@/features/work-item-create"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { paths } from "@/shared/config"
+import { paths, projectPath } from "@/shared/config"
 import { Button } from "@/shared/ui/button"
 import { PageState } from "@/shared/ui/page-state"
-import {
-  KanbanSquareIcon, ListIcon, ProjectsIcon, TableIcon, UserIcon,
-} from "@/shared/ui/icon"
-import { Page, PageViews, type PageView } from "@/shared/ui/page"
+import { KanbanSquareIcon, ProjectsIcon } from "@/shared/ui/icon"
+import { Page, PageViews } from "@/shared/ui/page"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { FilterBar, FilterChips, FilterMenu, useFilters } from "@/shared/ui/filter"
 import { applyFilters, filtersOf, groupItems, INITIAL_DISPLAY, sortItems, type Display } from "../model/filters"
+import { parseView, VIEWS, withView, type View } from "../model/view"
 import { WorkItemDisplayMenu } from "./WorkItemDisplayMenu"
 import { WorkItemsPageMenu } from "./WorkItemMenu"
 import { WorkItemBoard } from "./WorkItemBoard"
 import { Rows, WorkItemListView } from "./WorkItemListView"
 import { WorkItemTable } from "./WorkItemTable"
-
-type View = "all" | "board" | "table" | "mine"
-
-const VIEWS: PageView<View>[] = [
-  { value: "all", label: "전체 업무", icon: ListIcon },
-  { value: "board", label: "보드", icon: KanbanSquareIcon },
-  { value: "table", label: "표", icon: TableIcon },
-  { value: "mine", label: "내 업무", icon: UserIcon },
-]
 
 function ListSkeleton() {
   return (
@@ -44,7 +35,7 @@ function ListSkeleton() {
 }
 
 /**
- * 프로젝트 하나의 업무(호호코워크 ProjectWorkItemsPage, /projects/$projectKey/work-items). 뷰 네 개(리스트 · 보드 · 표 · 내 업무)와 필터 · 표시 도구,
+ * 프로젝트 하나의 업무(호호코워크 ProjectWorkItemsPage, /projects/$projectKey/work-items). 뷰 네 개(리스트 · 보드 · 표 · 내 업무, 주소의 ?view)와 필터 · 표시 도구,
  * 걸린 필터 줄, 새 업무. 필터와 표시는 서버가 하듯 여기서 걸러 정렬한다.
  */
 export function WorkItemsPage() {
@@ -56,7 +47,10 @@ export function WorkItemsPage() {
   const filterDefs = useMemo(() => filtersOf(columns), [columns])
   const filters = useFilters(filterDefs)
   const [display, setDisplay] = useState<Display>(INITIAL_DISPLAY)
-  const [view, setView] = useState<View>("all")
+  const navigate = useNavigate()
+  const view = parseView(useSearch({ strict: false }) as Record<string, unknown>)
+  // 뷰를 바꾸면 기록에 남는다: 뒤로 가기가 앞의 뷰로, 사이드바의 줄과 같은 주소다.
+  const setView = (next: View) => void navigate({ to: projectPath(projectKey), search: (current: Record<string, unknown>) => withView(current, next) as never })
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const openCreate = useOpenNewWorkItem()
   const panel = useNewWorkItemPanel()

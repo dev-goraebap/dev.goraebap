@@ -19,3 +19,4 @@ export {
   PersonAvatar, UnassignedAvatar, WorkItemAssignee, WorkItemDate, WorkItemLabelDot, WorkItemLabelPill, WorkItemLabels,
   WorkItemPriorityIcon, WorkItemStatusIcon, WorkItemTypeLabel, WorkflowCategoryIcon, WorkflowColumnIcon,
 } from "./ui/WorkItemMarks"
+export { ALL_VIEW, WORK_ITEM_VIEWS, type WorkItemView } from "./model/views"
