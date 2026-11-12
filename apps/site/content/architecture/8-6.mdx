@@ -5,15 +5,15 @@ sidebar:
   order: 14
 ---
 
-이 절은 앱의 바깥 틀부터 페이지 안 구역의 배치, 항목을 여는 표현과 그 주소 계약, 휴대폰 적응을 다룹니다. 앱 셸(`AppFrame`)과 페이지(`Page`)는 화면마다 새로 만들지 않고 고정된 슬롯을 채우며, 데스크톱 사이드바와 휴대폰 하단 탭은 `64rem` 분기점 하나에서 바뀝니다. 항목을 열 때는 정해진 질문을 위에서부터 묻고 처음 맞는 표현을 고릅니다. 메뉴 트리 구성, 각 목록의 성격(처리 목록·작업 목록), 상세의 속성 항목은 프로젝트가 정합니다.
+이 절은 앱의 바깥 틀부터 페이지 안 구역의 배치, 항목을 여는 표현과 그 주소 계약, 휴대폰 적응을 다룹니다. 앱 셸(`AppShell`)과 페이지(`Page`)는 화면마다 새로 만들지 않고 고정된 슬롯을 채우며, 데스크톱 사이드바와 휴대폰 하단 탭은 `64rem` 분기점 하나에서 바뀝니다. 항목을 열 때는 정해진 질문을 위에서부터 묻고 처음 맞는 표현을 고릅니다. 메뉴 트리 구성, 각 목록의 성격(처리 목록·작업 목록), 상세의 속성 항목은 프로젝트가 정합니다.
 
 ## 8.6.1 앱 셸
 
-앱 셸은 Astryx `AppShell`과 `SideNav` 위에 메뉴·페이지·휴대폰 탐색을 조립하고, 셸은 고정한 채 본문만 스크롤합니다.
+앱 셸(`AppShell`)은 shadcn `Sidebar` 위에 메뉴(`NavSpace` 데이터)·페이지·휴대폰 탐색을 조립하고, 셸은 고정한 채 본문만 스크롤합니다.
 
 ```mermaid
 flowchart LR
-  subgraph SHELL["AppFrame (바닥 면)"]
+  subgraph SHELL["AppShell (바닥 면)"]
     direction LR
     NAV["사이드바<br/>340px, 220~380px<br/>로고·상자 버튼·메뉴"]
     subgraph PAGE["Page (페이지 면)"]
@@ -54,7 +54,7 @@ flowchart LR
 | 작성 페이지 | 같은 45rem 열, 위아래 32px |
 | 옆 패널 | 주소가 필요 없는 짧은 조회. 데스크톱 오른쪽 26rem, 휴대폰 바텀시트 |
 
-머리 줄 왼쪽은 경로(마지막 단계부터 말줄임), 오른쪽은 도구·페이지 메뉴(…)·만들기 순이고, 시각적 경로와 별개로 접근 가능한 `h1`을 둡니다. 상세 속성 열은 목차 → 대상별 속성 → 정보(작성자·작성일·수정일·버전 수) 순서로 둡니다. 상세는 [페이지 배치](/rules/design-system/references/layout-patterns/)와 해설 [머리 줄과 툴바](/app-shell/header-and-toolbar/)·[목록·표·보드](/app-shell/collections/)·[콘텐츠 폭](/app-shell/content-width/)에 있습니다.
+머리 줄 왼쪽은 경로(마지막 단계부터 말줄임), 오른쪽은 도구·페이지 메뉴(…)·만들기 순이고, 페이지마다 접근 가능한 `h1`은 하나이며 `Page`가 기본으로 냅니다. 본문이 자기 제목을 그리면 `useOwnPageTitle()`로 넘깁니다. 상세 속성 열은 목차 → 대상별 속성 → 정보(작성자·작성일·수정일·버전 수) 순서로 둡니다. 상세는 [페이지 배치](/rules/design-system/references/layout-patterns/)와 해설 [머리 줄과 툴바](/app-shell/header-and-toolbar/)·[목록·표·보드](/app-shell/collections/)·[콘텐츠 폭](/app-shell/content-width/)에 있습니다.
 
 ## 8.6.3 표현 고르기
 
@@ -93,11 +93,11 @@ flowchart TB
 
 | 표현 | 공통 틀 | 주소와 기록 | 닫기 |
 | :--- | :--- | :--- | :--- |
-| 대화상자 | `AppDialog`(머리·스크롤 본문·선택적 바닥, 위아래 12dvh). 제품 화면은 Astryx `Dialog`를 직접 쓰지 않습니다 | 없음 | 닫기 X·Esc·배경, 초점은 연 요소로 |
+| 대화상자 | shadcn `Dialog` 위의 키트 틀(`FormDialog`·`ConfirmDialog`·`DetailSurface`, 머리·스크롤 본문·선택적 바닥, 위아래 12dvh). 제품 화면은 `Dialog`를 직접 조립하지 않습니다 | 없음 | 닫기 X·Esc·배경, 초점은 연 요소로 |
 | 미리보기 패널 | `PeekPanel`(본문의 약 45%), 처리 목록은 `InboxLayout` | 처음 열 때 `push`, 열린 채 다른 항목은 `replace`. 새로고침·공유에서 목록과 패널을 함께 엽니다 | Esc·닫기, 초점은 그 행으로 |
-| 라우트 마스킹 | 목록 위 대화상자, `useOpenPanel`·`useRoutedPanel` | 목록 주소에 `?panel=대상`, 주소창에는 대상 주소. 직접 링크·새로고침(`unmaskOnReload`)은 대상 페이지 | 내부 이동 횟수와 관계없이 창 전체를 닫고 처음 연 목록의 조건·스크롤로 복귀 |
+| 라우트 마스킹 | 목록 위 대화상자, `useOpenPanel`·`usePanel` | 목록 주소에 `?panel=대상`, 주소창에는 대상 주소. 직접 링크·새로고침(`unmaskOnReload`)은 대상 페이지 | 내부 이동 횟수와 관계없이 창 전체를 닫고 처음 연 목록의 조건·스크롤로 복귀 |
 
-목록에서 행을 누르면 무엇이 열리는지는 목록이 하는 일로 정하고 한 목록 안에서 하나로 통일합니다. 받은 항목·알림·승인 대기 같은 처리 목록은 미리보기를, 업무·문서·자료 같은 작업 목록은 자기 페이지를 열며, 애매하면 작업 목록으로 봅니다. 대화상자 쓰임은 되돌리기 어려운 결정(`AlertDialog`), 몇 칸의 짧은 양식(`FormDialog`), 제목·본문 작성(`ComposeSurface`)의 셋입니다. 상세는 [공통 다이얼로그](/rules/design-system/references/dialog/), [미리보기 패널](/rules/design-system/references/peek/), [라우트 마스킹](/rules/design-system/references/route-masking/)에 있고, 상태·복귀의 코드 계약은 [8.4](/architecture/8-4/)가 소유합니다.
+목록에서 행을 누르면 무엇이 열리는지는 목록이 하는 일로 정하고 한 목록 안에서 하나로 통일합니다. 받은 항목·알림·승인 대기 같은 처리 목록은 미리보기를, 업무·문서·자료 같은 작업 목록은 자기 페이지를 열며, 애매하면 작업 목록으로 봅니다. 대화상자 쓰임은 되돌리기 어려운 결정(`ConfirmDialog`), 몇 칸의 짧은 양식(`FormDialog`), 제목·본문 작성(`ComposeSurface`)의 셋입니다. 상세는 [공통 다이얼로그](/rules/design-system/references/dialog/), [미리보기 패널](/rules/design-system/references/peek/), [라우트 마스킹](/rules/design-system/references/route-masking/)에 있고, 상태·복귀의 코드 계약은 [8.4](/architecture/8-4/)가 소유합니다.
 
 ## 이 절의 지침
 

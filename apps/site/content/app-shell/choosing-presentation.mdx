@@ -60,9 +60,9 @@ arc42: "8.6"
 3. **[관례] 입력이 남아 있는 채로 닫을 때는 확인합니다.**
    사용자가 값을 입력한 상태에서 바깥 영역 클릭, `Esc`, 닫기 버튼으로 대화상자나 시트를 닫으려 하면 입력이 사라진다는 점을 알리고 닫을지 확인합니다([Apple HIG](https://developer.apple.com/design/human-interface-guidelines/modality)).
 4. **[관례] 데스크톱 팝오버는 휴대폰에서 바텀시트로, 입력 대화상자는 전체 화면으로 바꿉니다.**
-   - 그 자리 팝오버는 휴대폰에서 바텀시트로 엽니다. [NN/g Bottom sheets 지침](https://www.nngroup.com/articles/bottom-sheet/)에 따라 바텀시트에는 짧은 조작만 담고, 끌어서 닫기에만 의존하지 않도록 눈에 보이는 닫기 버튼을 두며, 뒤로가기로 닫히게 합니다. 시트 위에 시트를 쌓지 않고, 시트 안에서 다른 페이지로 이동하지 않습니다.
+   - 그 자리 팝오버는 휴대폰에서 바텀시트로 엽니다. [NN/g Bottom sheets 지침](https://www.nngroup.com/articles/bottom-sheet/)에 따라 바텀시트에는 짧은 조작만 담고, 끌어서 닫기에만 의존하지 않도록 눈에 보이는 닫기 버튼을 두며, `Esc`와 바깥 누름으로도 닫히게 합니다. 시트 위에 시트를 쌓지 않고, 시트 안에서 다른 페이지로 이동하지 않습니다.
    - 짧은 양식 대화상자처럼 키보드 입력이 들어가는 화면은 휴대폰에서 화면 높이와 키보드 공간이 부족하므로 전체 화면으로 엽니다([Primer Dialog 지침](https://primer.style/product/components/dialog/guidelines/)).
-   - 휴대폰 전환 폭(1024px)과 주소 없는 바텀시트의 뒤로가기(`CloseWatcher`) 처리는 [적응형](/app-shell/adaptive/)에서 다룹니다.
+   - 휴대폰 전환 폭(1024px), 주소 없는 바텀시트를 닫는 방법과 뒤로가기 처리는 [적응형](/app-shell/adaptive/)에서 다룹니다.
 
 <Sample id="composites-dialog/default" />
 <Sample id="composites-overview/menus" device="phone" />

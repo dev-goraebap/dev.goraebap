@@ -5,7 +5,7 @@ sidebar:
   order: 13
 ---
 
-이 절은 모든 화면의 바탕이 되는 시각 위계와 디자인 토큰을 다룹니다. 위계는 중요한 것을 키우기보다 덜 중요한 것을 누그러뜨려 만들고, 값은 화면마다 새로 정하지 않고 테마 한 곳의 토큰에서 가져옵니다. 프로젝트가 값을 정하지 않았으면 Astryx Stone 테마를 확장한 키트의 기본 테마와 Solar 아이콘에서 출발합니다. 고유 브랜드 디자인이나 큰 화면 배율이 필요하면 프로젝트 규칙으로 조정합니다.
+이 절은 모든 화면의 바탕이 되는 시각 위계와 디자인 토큰을 다룹니다. 위계는 중요한 것을 키우기보다 덜 중요한 것을 누그러뜨려 만들고, 값은 화면마다 새로 정하지 않고 테마 한 곳의 토큰에서 가져옵니다. 프로젝트가 값을 정하지 않았으면 키트의 토큰 CSS(`@webcraft/theme`)와 Solar 아이콘에서 출발합니다. 고유 브랜드 디자인이나 큰 화면 배율이 필요하면 프로젝트 규칙으로 조정합니다.
 
 ## 8.5.1 토큰의 위계
 
@@ -34,13 +34,13 @@ flowchart LR
 
 | 역할 | 토큰 | 기본값(라이트/다크) |
 | :--- | :--- | :--- |
-| 내부 구분선(행·표·툴바·카드 테두리) | `--color-border` | 글자 13% / 11% |
-| 바깥 경계(split 선·inset 외곽·대화상자·팝오버·입력 칸·필터 칩) | `--color-border-emphasized` | 글자 18% / 16% |
-| 포인터 아래 | `--color-overlay-hover` | 글자 4% / 5% |
-| 고른 값·켜진 도구 채움 | `--color-background-gray` | 글자 10% / 13% |
+| 내부 구분선(행·표·툴바·카드 테두리) | `--border` | 글자 13% / 11% |
+| 바깥 경계(split 선·inset 외곽·대화상자·팝오버·입력 칸·필터 칩) | `--input` | 글자 18% / 16% |
+| 포인터 아래 | `--accent`, 목록 줄은 `bg-row-hover` | 글자 4% / 5% |
+| 고른 값·켜진 도구 채움 | `--secondary`, 메뉴의 지금 자리는 `--pressed` | 글자 10% / 13%, `--pressed`는 7% / 8% |
 | 키보드 초점 | `--focus-outline-color` | 강조색 72%, 부품 경계 안쪽 2px |
 
-강조색은 글자색과 같은 먹색이며 앱 크롬에 브랜드 색조를 두지 않습니다. 업무 데이터의 색(사용자가 고른 색, 분류 색)은 UI 테마 색과 따로 관리합니다. 상태는 색 하나로만 전달하지 않고 채움 아이콘·이름·`aria-pressed`·`aria-current`·`aria-expanded`를 함께 둡니다. 라이트·다크는 앱 루트의 `Theme mode` 하나가 정하고, 테마 부품 규칙이 `@media`를 받지 않으므로 휴대폰 크기는 `responsive.css` 한 파일에서 정합니다. 상세는 [테마와 색상](/rules/design-system/references/theme/)에 있습니다.
+강조색은 글자색과 같은 먹색이며 앱 크롬에 브랜드 색조를 두지 않습니다. 업무 데이터의 색(사용자가 고른 색, 분류 색)은 UI 테마 색과 따로 관리합니다. 상태는 색 하나로만 전달하지 않고 채움 아이콘·이름·`aria-pressed`·`aria-current`·`aria-expanded`를 함께 둡니다. 라이트·다크는 `html[data-theme=dark|light]` 하나가 정하며 색은 토큰에서만 바꾸고 `dark:`로 덮어쓰지 않습니다. 휴대폰 크기는 토큰 CSS의 `@media (width < 64rem)`와 부품의 `max-md:` 유틸리티로 정합니다. 상세는 [테마와 색상](/rules/design-system/references/theme/)에 있습니다.
 
 ## 8.5.3 면과 선
 
@@ -48,12 +48,12 @@ flowchart LR
 
 | 단계 | 쓰임 | 표현 | 모서리 |
 | :--- | :--- | :--- | :--- |
-| 바닥 | 사이드바와 페이지가 놓이는 앱 바탕 | `--color-background-body` | — |
-| 페이지 | 작업 영역·행·표 머리 | `--color-background-surface` | inset 페이지 16px squircle |
-| 올린 면 | 설정 묶음·카드·첨부 칸 | `--color-background-card`, `--color-border` 테두리 | 16px squircle |
-| 뜬 면 | 메뉴·팝오버·대화상자 | `--color-background-popover`, `--color-border-emphasized`, 그림자 | 팝오버 12px, 대화상자 16px |
+| 바닥 | 사이드바와 페이지가 놓이는 앱 바탕 | `--sidebar` | — |
+| 페이지 | 작업 영역·행·표 머리 | `--background` | inset 페이지 16px squircle |
+| 올린 면 | 설정 묶음·카드·첨부 칸 | `--card`, `--border` 테두리 | 16px squircle |
+| 뜬 면 | 메뉴·팝오버·대화상자 | `--popover`, `--input` 테두리, 그림자 | 팝오버 12px, 대화상자 16px |
 
-같은 단계의 면을 겹치지 않으므로 카드 안에 같은 카드를 넣지 않고, 목록 항목은 카드가 아니라 행입니다. 선은 1px 테두리로 그리고 Astryx `Divider`는 쓰지 않습니다. 그림자는 뜬 면에만 두며(메뉴 `--shadow-med`, 대화상자 `--shadow-high`), 일반 페이지 본문 바탕에는 16px 간격의 옅은 점 무늬(7%)를 둡니다. 상세는 [면과 경계](/rules/design-system/references/surfaces/)에 있습니다.
+같은 단계의 면을 겹치지 않으므로 카드 안에 같은 카드를 넣지 않고, 목록 항목은 카드가 아니라 행입니다. 선은 1px 테두리(`border`)로 그립니다. 그림자는 뜬 면에만 둡니다. inset 페이지 면은 `shadow-surface`(아주 옅은 그림자와 가는 외곽선), 팝오버·메뉴는 `shadow-md`와 가는 테두리(`ring-1 ring-foreground/10`)를 쓰고, 대화상자는 그림자 대신 가는 테두리와 배경 막으로 구분합니다. 일반 페이지(목록·설정)는 Page 바탕에 `bg-dots`(글자색 12%의 1px 점, 16px 간격)를 두고, 읽고 쓰는 면은 평평하게 둡니다. 상세는 [면과 경계](/rules/design-system/references/surfaces/)에 있습니다.
 
 ## 8.5.4 글자
 
@@ -61,10 +61,10 @@ flowchart LR
 
 | 쓰임 | 데스크톱 | 휴대폰 | 토큰 |
 | :--- | :--- | :--- | :--- |
-| 보조 정보·작은 이름·날짜 | 12px | 13px | `--text-supporting-size` |
-| 본문·라벨·행 | 13px, 굵기 450, 줄 높이 1.5 | 15px | `--text-body-size` |
-| 큰 본문·작은 제목 | 15px, 제목 600 | 17px | `--text-large-size`, `--text-heading-3-*` |
-| 페이지 제목 | 24px | 24px | `--text-heading-1-size` |
+| 보조 정보·작은 이름·날짜 | 12px | 13px | `text-xs` |
+| 본문·라벨·행 | 13px, 굵기 450, 줄 높이 1.5 | 15px | `text-sm` |
+| 큰 본문·작은 제목 | 15px, 제목 600 | 17px | `text-base`, 제목은 `font-semibold` |
+| 페이지 제목 | 24px | 24px | `text-2xl` |
 
 이 넷에 없는 크기는 이유가 분명할 때만 씁니다. 리치 본문(16px), 휴대폰 입력 칸 글자(16px, iOS 확대 방지), 하단 탭 이름(11px), 상태 그림과 작성 양식 대화상자의 제목(18px)이 그 예입니다. 글꼴은 Pretendard Variable, 고정폭은 JetBrains Mono이며, 위아래로 비교하는 날짜·수·금액은 `hasTabularNumbers`로 맞춥니다. 상세는 [글자](/rules/design-system/references/typography/)에 있습니다.
 

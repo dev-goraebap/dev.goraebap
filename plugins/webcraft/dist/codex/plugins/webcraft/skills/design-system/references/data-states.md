@@ -38,7 +38,7 @@ arc42: "8.7, 6"
 
 ## 상태 화면
 
-[PageState](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/composites/state/PageState.tsx)는 펜 선 그림·제목·필요할 때의 설명·행동입니다. 그림은 테마 색으로 칠해 라이트·다크에서 같은 파일을 씁니다. 페이지에서는 문구를 창 높이의 32%에 고정해 필터 줄·탭이 다른 페이지 사이를 오가도 흔들리지 않습니다. 대화상자·패널·작은 구역은 위쪽에 두는 작은 형태(`isCompact`)를 씁니다. 그림은 장식이라 접근성 트리에서 숨기고, 이미 본 그림은 다시 흐리게 시작하지 않습니다.
+[PageState](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/page-state/PageState.tsx)는 펜 선 그림·제목·필요할 때의 설명·행동입니다. 그림은 테마 색으로 칠해 라이트·다크에서 같은 파일을 씁니다. 페이지에서는 문구를 창 높이의 32%에 고정해 필터 줄·탭이 다른 페이지 사이를 오가도 흔들리지 않습니다. 대화상자·패널·작은 구역은 위쪽에 두는 작은 형태(`isCompact`)를 씁니다. 그림은 장식이라 접근성 트리에서 숨기고, 이미 본 그림은 다시 흐리게 시작하지 않습니다.
 
 ## 첫 화면
 
@@ -49,14 +49,14 @@ arc42: "8.7, 6"
 | 공개 문서·랜딩처럼 검색과 스크립트 없는 읽기가 필요한 화면 | 실제 본문을 미리 그린 HTML(SSG·프리렌더) |
 | 로그인 뒤 업무 앱 | 첫 방문 덮개: 앱 표시의 정지 그림과 "불러오는 중입니다" |
 
-첫 방문 덮개([BootCover](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/patterns/boot/BootCover.tsx), [bootCover 플러그인](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/patterns/boot/boot-cover.ts))은 다음 순서로 동작합니다.
+첫 방문 덮개([BootCover](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/boot-cover/BootCover.tsx), [Vite 플러그인](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/boot-cover/plugin.ts))은 다음 순서로 동작합니다.
 
 1. 빌드 플러그인이 `index.html`의 앱 자리에 덮개를 넣습니다. 색은 테마의 바닥·보조 글자 값을 `light-dark()`로 직접 적습니다. 앱 CSS가 오기 전이기 때문입니다.
 2. 앱 스크립트보다 먼저 실행되는 짧은 스크립트가 저장한 라이트·다크를 문서에 적용합니다.
 3. 앱이 뜨면 같은 모양의 덮개가 그 자리를 이어받아, 첫 경로의 데이터가 준비될 때까지 보입니다. 너무 빨리 걷혀 깜빡이지 않도록 최소 0.3초 보이고, 0.7초에 걸쳐 걷습니다. 덮개 아래의 첫 화면은 이미 다 그려져 있습니다.
 4. 그 뒤의 화면 전환에는 첫 방문 덮개를 다시 쓰지 않습니다. 전환은 아래 "캐시와 전환"을 따릅니다.
 
-미리 그린 본문(SSG)도 키트 테마가 실행 중에 스타일을 넣기 전에는 모양이 다릅니다. 테마를 미리 빌드한 CSS로 함께 내려보내거나, 넘겨받을 때까지 덮개를 둡니다. 빌드 때는 창 폭을 모르므로, 휴대폰·데스크톱 첫 배치는 CSS 미디어 쿼리로 가르거나 덮개 뒤에서 정합니다. 그림은 각 제품이 자기 표시로 바꿉니다. 다른 제품의 그림을 옮기지 않습니다.
+토큰과 스타일은 빌드한 CSS 파일이라 실행 중에 스타일을 넣는 단계가 없습니다. 첫 방문 덮개 플러그인은 CSS를 읽기 전에 저장한 모드(`html[data-theme]`)를 정하고 덮개를 그 모드의 면 색으로 칠합니다. 빌드 때는 창 폭을 모르므로, 휴대폰·데스크톱 첫 배치는 CSS 미디어 쿼리로 가르거나 덮개 뒤에서 정합니다. 그림은 각 제품이 자기 표시로 바꿉니다. 다른 제품의 그림을 옮기지 않습니다.
 
 ## 캐시와 전환
 

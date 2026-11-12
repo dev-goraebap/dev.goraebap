@@ -19,7 +19,7 @@ arc42: "8.5"
 
 ## 완료 축하
 
-신청 제출이나 최종 승인, 초기 설정 완료처럼 사용자의 절차가 성공으로 끝난 순간에는 기준 요소에서 한 번 터져 사라지는 색종이 효과([celebrate](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/foundations/motion/celebrate.ts))를 더할 수 있습니다. 이 효과는 화면의 완료 상태 확정·안내 문구를 대신하지 않는 별개 장식이며, 실패·반려·취소에는 쓰지 않습니다.
+신청 제출이나 최종 승인, 초기 설정 완료처럼 사용자의 절차가 성공으로 끝난 순간에는 기준 요소에서 한 번 터져 사라지는 색종이 효과([celebrate](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/samples/playground/onboarding/app/celebrate.ts))를 더할 수 있습니다. 키트에는 없고 견본 안에 사본이 있습니다. 이 효과는 화면의 완료 상태 확정·안내 문구를 대신하지 않는 별개 장식이며, 실패·반려·취소에는 쓰지 않습니다.
 
 ## 동작 줄이기
 

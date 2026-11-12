@@ -8,26 +8,26 @@ arc42: "8.8"
 
 | 조합 | 소유하는 책임 | 코드 |
 | --- | --- | --- |
-| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [dialog](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/dialog), [기준](dialog.md) |
-| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [popup](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/popup) |
-| 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | 같은 폴더 |
-| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/search), [filter](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/filter), [기준](search-filter.md) |
-| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/property) |
-| 활동·댓글 피드 | 이벤트 한 줄 기록, 댓글 카드·한 단계 답글·수정·삭제·인용, 입력 칸 | [activity](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/activity) |
-| 행 순서 바꾸기 | 드래그 손잡이·`Alt`+방향키 이동·`Esc` 취소·위치 음성 안내 | [reorder](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/reorder) |
-| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [upload](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/upload) |
-| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [state](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/state), [기준](data-states.md) |
-| 본문 칸 | 종이 위의 리치 본문: 블록 메뉴·선택 서식 도구·표·미디어 | [editor](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/editor) |
-| 문서 편집기 | 종이(A4)로 나가는 문서: 상단 서식 막대·페이지 나누기·페이지 설정·머리말·바닥글·내보내기 | [document](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/document) |
-| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group](https://github.com/dev-goraebap/dev.goraebap/tree/main/site/src/shared/ui/composites/list-group) |
+| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [form-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/form-dialog.tsx), [confirm-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/confirm-dialog.tsx), [detail-surface](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/detail-surface.tsx), [기준](dialog.md) |
+| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [adaptive-popover](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/adaptive-popover.tsx) |
+| 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | [action-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/action-menu.tsx)(행 메뉴는 `size="row"`), [option-list](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/option-list.tsx) |
+| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search-tool](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/search-tool.tsx), [filter](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/filter), [display-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/display-menu.tsx), [기준](search-filter.md) |
+| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/property-pill.tsx), [info-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/info-pill.tsx) |
+| 활동·댓글 피드 | 이벤트 한 줄 기록, 댓글 카드·한 단계 답글·수정·삭제·인용, 입력 칸 | [ActivityFeed](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/reading/ui/ActivityFeed.tsx) |
+| 행 순서 바꾸기 | 드래그 손잡이·`Alt`+방향키 이동·`Esc` 취소·위치 음성 안내 | [reorder](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/reorder) |
+| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [FileDropzone](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/compose/FileDropzone.tsx) |
+| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [page-state](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/page-state), [기준](data-states.md) |
+| 본문 칸 | 종이 위의 리치 본문: 블록 메뉴·선택 서식 도구·표·미디어 | [editor](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/editor) |
+| 문서 편집기 | 종이(A4)로 나가는 문서: 상단 서식 막대·페이지 나누기·페이지 설정·머리말·바닥글·내보내기 | [document](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/document) |
+| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group-header](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/list-group-header.tsx) |
 
 구현이 없는 조합을 메뉴에 빈 항목으로 만들지 않습니다. 제품 고유 조합(아이콘 표시 고르기, 전역 검색 팔레트, 프로필 패널)은 프로젝트가 소유합니다.
 
 ## 곁에 여는 내용
 
-버튼 곁에 여는 것은 데스크톱에서 팝오버, 휴대폰에서 언제나 바텀시트입니다. 휴대폰에 팝오버를 두지 않습니다. 내용은 고른 뒤 닫을 수 있도록 `close`를 받습니다. `AdaptivePopover`에 `isOpen`을 주면 바깥에서 열림을 제어하고 `onOpenChange`에서 변경을 받아 외부 상태에 반영합니다. 외부 제어 없이 최초에 열어 둘 때는 `defaultOpen`을 쓰며, `trigger`를 대신 클릭하는 우회는 쓰지 않습니다. 시트의 손잡이는 위 24px에 겹치므로 내용은 그 아래에서 시작하고 좌우 12px, 아래 20px을 씁니다. 이 여백은 한 부품(SheetBody)에 두어 시트마다 다시 쓰지 않습니다. 내용이 짧으면 시트가 화면 대부분을 차지하지 않게 하고(hug), 검색·긴 목록은 키보드를 고려해 높게(tall) 엽니다.
+버튼 곁에 여는 것은 데스크톱에서 팝오버, 휴대폰에서 언제나 바텀시트입니다. 휴대폰에 팝오버를 두지 않습니다. 내용은 고른 뒤 닫을 수 있도록 `close`를 받습니다. `AdaptivePopover`에 `isOpen`을 주면 바깥에서 열림을 제어하고 `onOpenChange`에서 변경을 받아 외부 상태에 반영합니다. 외부 제어 없이 최초에 열어 둘 때는 `defaultOpen`을 쓰며, `trigger`를 대신 클릭하는 우회는 쓰지 않습니다. 시트의 손잡이는 위 24px에 겹치므로 내용은 그 아래에서 시작하고 좌우 12px, 아래 20px을 씁니다. 이 여백은 한 부품(`AdaptivePopover`)에 두어 시트마다 다시 쓰지 않습니다. 내용이 짧으면 시트가 화면 대부분을 차지하지 않게 하고(hug), 검색·긴 목록은 키보드를 고려해 높게(tall) 엽니다.
 
-주소가 없는 시트는 브라우저의 닫기 요청(CloseWatcher와 같은 장치)으로 안드로이드 뒤로가기와 Esc에 닫힙니다. 네이티브 `<dialog>`를 `showModal()`로 여는 시트(Astryx BottomSheet의 기본, 배경 막 있음)는 지원 브라우저에서 이 요청을 `cancel`로 이미 받으므로 따로 등록하지 않습니다. 겹쳐 등록하면 한 번에 두 번 닫힙니다. 직접 만든 시트나 배경 막 없는 시트만 CloseWatcher를 등록합니다. 외부 제어 API가 시트 열림을 주소 쿼리에 저장하라는 규칙은 아니며, 열림 상태를 쿼리에 두지 않습니다. 짧은 조작마다 방문 기록이 쌓이고 새로고침하면 시트가 다시 열리기 때문입니다. 닫기 요청을 지원하지 않는 브라우저(iOS 사파리 등)에서는 뒤로가기가 이전 페이지로 갈 수 있으므로, 시트마다 보이는 닫기 버튼을 두고 잃으면 아까운 입력은 시트에 담지 않습니다. 입력이 길면 주소가 있는 화면으로 엽니다. 시트는 쌓지 않습니다.
+키트의 시트(Drawer, Base UI)는 Esc와 바깥 누름으로 닫힙니다. 안드로이드 뒤로가기는 주소가 있는 화면(페이지·mask 대화상자)이 맡습니다. 주소가 없는 시트가 하드웨어 뒤로가기로 닫히는지는 확인하지 못했습니다. 시트의 열림 상태는 주소 쿼리에 두지 않습니다. 짧은 조작마다 방문 기록이 쌓이고 새로고침하면 시트가 다시 열리기 때문입니다. 뒤로가기가 시트를 닫지 않고 이전 페이지로 갈 수 있으므로, 시트마다 보이는 닫기 버튼을 두고 잃으면 아까운 입력은 시트에 담지 않습니다. 입력이 길면 주소가 있는 화면으로 엽니다. 시트는 쌓지 않습니다.
 
 팝오버와 바텀시트는 열렸을 때만 내용을 만듭니다. 행마다 붙는 메뉴의 확인 대화상자는 그 동작을 고를 때만 만듭니다. 닫힌 메뉴 내용과 행마다 미리 만든 확인 대화상자(`<dialog>`)를 화면 이동 때 한꺼번에 정리하면 메인 스레드가 멈춥니다. 행마다 권한 판단에 필요한 데이터는 메뉴에 포인터나 초점이 갈 때 미리 읽습니다.
 
@@ -37,11 +37,11 @@ arc42: "8.8"
 
 ## 속성 알약
 
-작성·상세의 속성(종류·분류·날짜·담당·첨부)은 24px(휴대폰 44px) 알약입니다. 비었으면 속성의 아이콘과 이름을 보이고 정하면 값을 보입니다. 필수 속성은 빈 값에 `*`와 접근 가능한 이름 "(필수)"로 표시되며(`isRequired`), `isInvalid`에는 제출 검사 결과를 전달해 오류를 표시합니다. `DatePill`은 Astryx `Calendar`로 날짜를 고르고 `isRequired`와 `isInvalid`를 지원하며, `dateStyle`은 기본 `relative`이고 날짜 자체가 중요한 일정·신청·예약에서는 월·일·요일을 표시하는 `absolute`를 씁니다. 시작일과 종료일을 함께 받는 기간에서는 한쪽이 비어 있을 때 고른 날짜로 다른 쪽도 같이 채워 하루 기간부터 시작합니다. 긴 값은 최대 폭에서 말줄임하고 전체 값을 title로 남깁니다. 넓은 상세의 오른쪽 열에서는 같은 요소가 테두리 없는 행으로 바뀝니다. 읽기 전용이면 값만 보입니다.
+작성·상세의 속성(종류·분류·날짜·담당·첨부)은 24px(휴대폰 44px) 알약입니다. 비었으면 속성의 아이콘과 이름을 보이고 정하면 값을 보입니다. 필수 속성은 빈 값에 `*`를 보이고 접근 가능한 이름에 "(필수)"를 붙입니다(`isRequired`). 제출 검사에서 빠지면 `isInvalid`로 `aria-invalid`와 붉은 테두리를 보이고, 첫 빠진 칸에 초점을 옮깁니다(`focusFirstInvalid`). 키트는 `PropertyPill`·`OptionPill`·`DatePill`과 읽기 전용 `InfoPill`입니다. `DatePill`은 키트의 `DateCalendar`로 날짜를 고르고 `isRequired`와 `isInvalid`를 지원합니다. 날짜 표기는 부르는 쪽이 `format`으로 정하며, 보통은 상대 표기를, 날짜 자체가 중요한 일정·신청·예약에서는 월·일·요일을 표시하는 절대 표기를 씁니다. 시작일과 종료일을 함께 받는 기간에서는 한쪽이 비어 있을 때 고른 날짜로 다른 쪽도 같이 채워 하루 기간부터 시작합니다. 긴 값은 최대 폭에서 말줄임하고 전체 값을 title로 남깁니다. 넓은 상세의 오른쪽 열에서는 같은 요소가 테두리 없는 행으로 바뀝니다. 읽기 전용이면 값만 보입니다.
 
 ## 활동·댓글 피드
 
-상세 화면 아래의 이력과 의견은 `ActivityFeed`로 함께 둡니다. 생성·수정 같은 상태 이력은 세로 선 위의 조용한 한 줄 이벤트로 보이고, 댓글은 카드로 구분합니다. 키트 견본에서는 사람 아바타로 `PersonAvatar`(18가지 SVG 얼굴)를 쓰며, 제품은 자체 아바타를 쓸 수 있습니다. 댓글 카드 안에는 한 단계 답글과 답글 열기·입력 칸을 두며, 본인이 쓴 댓글·답글은 카드 메뉴에서 고치거나 확인 창을 거쳐 지울 수 있습니다. 본문 구절 인용(`Quote`)과 하단 `ChatComposer` 입력을 지원합니다.
+상세 화면 아래의 이력과 의견은 `ActivityFeed`로 함께 둡니다. 생성·수정 같은 상태 이력은 세로 선 위의 조용한 한 줄 이벤트로 보이고, 댓글은 카드로 구분합니다. 사람 아바타는 `PersonAvatar`이며, 그림(`picture`)을 넘기지 않으면 이름 첫 글자를 보입니다. 기본 그림은 제품이 정합니다. 댓글 카드 안에는 한 단계 답글과 답글 열기·입력 칸을 두며, 본인이 쓴 댓글·답글은 카드 메뉴에서 고치거나 확인 창을 거쳐 지울 수 있습니다. 본문 구절 인용(`Quote`)과 하단 댓글 칸(`CommentComposer`)을 지원합니다.
 
 ## 행 순서 바꾸기
 
@@ -118,4 +118,4 @@ HTML 임베드는 올린 HTML을 본문 안의 격리된 틀로 미리 봅니다
 
 읽기(상세) 화면은 다른 상세와 같은 `DetailLayout`입니다. 오른쪽 정보 칸에 페이지 항목(`PagesPill`, "N페이지")을 두고, 누르면 페이지 목록(번호와 대표 제목, 새 제목 없이 이어지는 페이지는 "이어짐")이 열려 고른 페이지로 갑니다. 왼쪽 페이지 목록 사이드바는 두지 않습니다. 내보내기(`ExportMenu`)는 내려받기 아이콘과 묶음 메뉴로, 내보내기 묶음(PDF로 저장, 인쇄)과 공유 묶음(링크 복사)을 둡니다. 서버에서 PDF를 만드는 앱은 `onSavePdf`를 넘기고, 주지 않으면 브라우저 인쇄 창을 엽니다. DOCX는 다루지 않습니다. 인쇄의 한계는 [인쇄와 PDF](print.md)를 따릅니다.
 
-부품은 `DocumentEditor`(편집), `DocumentView`(읽기), `model.ts`(모드·페이지 설정·페이지 모양), `pagination.ts`(Tiptap 확장 `Pagination`), `PageCanvas`(종이 틀·머리말·바닥글), `DocumentSettings`, `PageLookMenu`, `ZoomControl`, `ExportMenu`, `PagesPill`, `usePagedFrame`(편집과 읽기가 함께 쓰는 연결)입니다. 상단 막대는 composites/editor의 `EditorToolbar`입니다. 채택할 때는 composites/editor·popup·property를 함께 옮깁니다.
+부품은 `DocumentEditor`(편집), `DocumentView`(읽기), `model.ts`(모드·페이지 설정·페이지 모양), `pagination.ts`(Tiptap 확장 `Pagination`), `PageCanvas`(종이 틀·머리말·바닥글), `DocumentSettings`, `PageLookMenu`, `ZoomControl`, `ExportMenu`, `PagesPill`, `usePagedFrame`(편집과 읽기가 함께 쓰는 연결)입니다. 상단 막대는 키트 editor의 `EditorToolbar`입니다. 레지스트리에서 `@webcraft/document`를 받으면 필요한 항목이 함께 옵니다.

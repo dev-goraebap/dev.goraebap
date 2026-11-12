@@ -4,7 +4,7 @@ arc42: "8.6"
 
 # 공통 다이얼로그
 
-모든 대화상자는 한 틀([AppDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/composites/dialog/AppDialog.tsx))을 씁니다. 머리·스크롤 본문·선택적 바닥이며 긴 본문에서도 본문만 스크롤하고 제목·닫기·마지막 동작은 보입니다. 제품 화면은 Astryx Dialog를 직접 쓰지 않습니다.
+대화상자는 shadcn Dialog 위에 만든 키트의 틀을 씁니다. 짧은 양식은 [FormDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/form-dialog.tsx), 확인은 [ConfirmDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/confirm-dialog.tsx), 상세는 [DetailSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/detail-surface.tsx)(상세 페이지 ↔ 60rem 대화상자)입니다. 머리·스크롤 본문·선택적 바닥이며 긴 본문에서도 본문만 스크롤하고 제목·닫기·마지막 동작은 보입니다. 제품 화면은 shadcn Dialog를 직접 조립하지 않습니다.
 
 | 항목 | 기준 |
 | --- | --- |
@@ -27,11 +27,11 @@ arc42: "8.6"
 
 | 쓰임 | 부품 | 동작 |
 | --- | --- | --- |
-| 되돌리기 어려운 결정 | AlertDialog | 닫기 X와 제목 초점 없이 취소에 첫 초점. 휴대폰은 버튼을 세로로 쌓고 주 동작을 위에 |
+| 되돌리기 어려운 결정 | ConfirmDialog | 닫기 X와 제목 초점 없이 취소에 첫 초점. 휴대폰은 버튼을 세로로 쌓고 주 동작을 위에 |
 | 몇 칸의 짧은 양식 | FormDialog | 칸 곁의 입력 오류와 칸 아래 실패 이유, 바닥 취소·제출. 제출 버튼은 비활성화하지 않고 누르면 검사합니다. 한 줄 칸의 Enter는 제출(한글 조합 중 제외). 저장 중에는 닫기를 막습니다. 휴대폰은 전체 화면 |
 | 제목·본문이 있는 작성 | ComposeSurface | [생성 양식](creation-form.md). 자기 주소가 있고 페이지로 확장합니다 |
 
-입력이 있는 대화상자를 닫기·Esc·배경·뒤로가기로 닫을 때 버릴지 묻는 정책을 제품에서 하나로 정합니다. 키트의 작성 양식은 입력이 있으면 "계속 작성 / 버리기"를 묻습니다.
+입력이 있는 대화상자를 닫기·Esc·배경·뒤로가기로 닫을 때 버릴지 묻는 정책을 제품에서 하나로 정합니다. 키트의 작성 양식(ComposeSurface)은 쓴 내용이 있으면(`isDirty`) 닫기·취소에서 "작성 중인 내용을 버릴까요?"로 묻고 "버리기"를 고르게 합니다.
 
 ## 확인할 동작
 

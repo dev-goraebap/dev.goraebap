@@ -11,7 +11,7 @@ Webcraft는 특정 제품이 아니라 여러 업무용 웹 앱이 함께 따르
 
 ```mermaid
 flowchart LR
-    U["사용자<br/>(데스크톱·휴대폰 브라우저)"] --> SPA["React SPA<br/>(TanStack Router/Query, Astryx)"]
+    U["사용자<br/>(데스크톱·휴대폰 브라우저)"] --> SPA["React SPA<br/>(TanStack Router/Query, shadcn/ui)"]
     SPA -- "HTTP API<br/>(OpenAPI 생성 타입)" --> API["Java 백엔드<br/>(Spring Boot 모듈형 모놀리스)"]
     API --> DB["관계형 DB<br/>(Flyway·jOOQ)"]
     API -.-> FILE["첨부 파일 저장"]
