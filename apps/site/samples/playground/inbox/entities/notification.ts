@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { createContext, useContext } from 'react';
-import { BellIcon, ReplyIcon, ShieldCheckIcon, UserIcon, type Icon } from '@/shared/ui/icon';
+import { BellIcon, MessageCircleIcon, ShieldCheckIcon, UserIcon, type Icon } from '@/shared/ui/icon';
 
 /** 알림: 다른 사람이나 시스템이 나에게 보낸 것. 처리 목록이라 하나씩 열어 확인하고 보관한다. */
 export type NotificationKind = 'mention' | 'assign' | 'approval' | 'system';
@@ -10,9 +10,9 @@ export type Notification = {
   subject: string; excerpt: string; body: string; sentAt: string; archived: boolean;
 };
 
-/** 종류의 이름과 표식. 멘션은 키트에 말풍선 아이콘이 없어 답장 아이콘으로 대신한다. */
+/** 종류의 이름과 표식. */
 export const kinds: Record<NotificationKind, { label: string; icon: Icon }> = {
-  mention: { label: '멘션', icon: ReplyIcon },
+  mention: { label: '멘션', icon: MessageCircleIcon },
   assign: { label: '배정', icon: UserIcon },
   approval: { label: '승인 요청', icon: ShieldCheckIcon },
   system: { label: '시스템', icon: BellIcon },

@@ -96,7 +96,7 @@ export function GuideShell() {
     : [{ label: doc ? (doc.path === doc.group && doc.path !== '/webcraft/' ? groupLabel(doc.group) : doc.title) : isBlogList ? '모든 글' : area === 'settings' ? (pathname.includes('/plugins') ? '플러그인' : '화면') : '없는 문서' }];
   return <>
     <AppShell space={space} pathname={pathname} tabs={tabs} openGroups="current" layout={layout}
-      // 문서 사이트는 메뉴 이름이 길어(8.4.1 …) 처음부터 가장 넓게 연다(옛 셸과 같은 380px).
+      // 문서 사이트는 메뉴 이름이 길어(8.4.1 …) 처음부터 가장 넓게(380px) 연다.
       sidebarWidth={{ initial: 380, min: 220, max: 380 }}
       brand={isFolded => <Brand isFolded={isFolded} area={area} />}
       headerTools={<DocSearch />}

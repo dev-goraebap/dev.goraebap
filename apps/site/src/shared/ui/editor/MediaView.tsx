@@ -69,7 +69,7 @@ const isAtHand = (src: string) => {
 const LABELS = { image: "이미지", video: "동영상", audio: "오디오", file: "파일" } as const
 const WIDTHS = [25, 50, 75, 100]
 
-/** 사진 · 동영상의 너비 고르기(25 · 50 · 75 · 100%, 옛 본문의 다른 값은 그 값도 보인다). */
+/** 사진 · 동영상의 너비 고르기(25 · 50 · 75 · 100%, 저장된 본문의 다른 값은 그 값도 보인다). */
 function WidthMenu({ width, onChange }: { width: number; onChange: (value: number) => void }) {
   const [isOpen, setOpen] = useState(false)
   return (

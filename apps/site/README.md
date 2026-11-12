@@ -40,7 +40,7 @@ Webcraft의 규칙 원본은 `plugins/webcraft/skills/`입니다. 사이트에�
 
 `content/blog/posts/<slug>/index.md`에 글을 두고 이미지는 같은 폴더의 `assets/`에 둡니다. 기존 블로그에서 가져온 글 4편은 본문을 그대로 보존합니다. 외부 아키텍처 서브모듈 문서는 이번 이관에 포함하지 않습니다.
 
-글의 frontmatter에는 `title`, `description`, `date`, `tags`, `published`를 적고, 필요하면 `updated`와 `cover`를 더합니다. `published: false`인 글은 공개 목록에 넣지 않습니다. `date`와 `updated`는 `YYYY-MM-DD` 형식을 사용합니다. 글의 새 주소는 `/blog/<slug>/`이며 이전 `/posts/<slug>` 주소도 새 주소로 연결합니다.
+글의 frontmatter에는 `title`, `description`, `date`, `tags`, `published`를 적고, 필요하면 `updated`와 `cover`를 더합니다. `published: false`인 글은 공개 목록에 넣지 않습니다. `date`와 `updated`는 `YYYY-MM-DD` 형식을 사용합니다. 글의 주소는 `/blog/<slug>/`이며 `/posts/<slug>` 주소도 이 주소로 연결합니다.
 
 이미지는 `assets/` 원본을 사용합니다. 배포 시 빌드 도구가 원본 자산을 공개 경로로 복사합니다. 대표 이미지가 있으면 원본을 목록에 사용하며, 기존 최적화 이미지가 있으면 우선 사용합니다. Mermaid 코드 블록은 읽을 때 도표로 그리며 도표 원문도 펼쳐 볼 수 있습니다.
 

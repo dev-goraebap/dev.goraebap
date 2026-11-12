@@ -14,14 +14,14 @@ arc42: "none"
 | --- | --- |
 | 새 프로젝트를 지침에 연결 | [연결](#연결) |
 | 프로젝트만 다르게 하는 규칙 추가·정리 | [프로젝트 규칙](references/project-rules.md) |
-| 예전 사본 방식(`.agents/skills`의 지침 사본·동기화 훅)에서 바꾸기 | [사본에서 전환](references/migrate-from-copies.md) |
+| 사본 방식(`.agents/skills`의 지침 사본·동기화 훅)에서 바꾸기 | [사본에서 전환](references/migrate-from-copies.md) |
 | 프로젝트 규칙 중 공통으로 올릴 것 찾기 | [회수](#회수) |
 | 지침 제안 올리기·검토 | [지침 제안](references/proposals.md) |
 
 ## 연결
 
 1. 현재 폴더의 Git 루트, status와 staging, 기존 AGENTS.md·CLAUDE.md·`.agents/skills`를 읽습니다. 다른 저장소는 바꾸지 않습니다.
-2. 예전 사본(접두사가 붙은 `*-mode`·`*-frontend` 같은 지침 폴더, `scripts/sync-skills.mjs`, 동기화 시작 훅)이 있으면 연결 대신 [사본에서 전환](references/migrate-from-copies.md)을 따릅니다.
+2. 지침 사본(접두사가 붙은 `*-mode`·`*-frontend` 같은 지침 폴더, `scripts/sync-skills.mjs`, 동기화 시작 훅)이 있으면 연결 대신 [사본에서 전환](references/migrate-from-copies.md)을 따릅니다.
 3. AGENTS.md에 아래 "개발 지침" 블록을 넣습니다. 파일이 없으면 만들고, 있으면 기존 프로젝트 설명과 팀 규칙을 보존한 채 블록만 더합니다. 최소 판은 설치된 플러그인의 판(`plugin.json`의 `version`)으로 적습니다.
 4. 기존 AGENTS.md에 지침과 다른 결정이 이미 있으면 [프로젝트 규칙](references/project-rules.md) 표로 옮깁니다. 확인할 수 없는 의도는 추정하지 말고 사용자에게 묻습니다.
 5. Claude Code 사용자에게는 이 마켓플레이스의 자동 갱신을 켤지 한 번 묻고 켜는 방법(`/plugin` → Marketplaces → `dev-goraebap` → Enable auto-update, 또는 조직 관리 설정의 `extraKnownMarketplaces` 항목에 `"autoUpdate": true` 추가)을 안내합니다. 사용자 설정 파일은 에이전트가 임의로 고치지 않습니다.

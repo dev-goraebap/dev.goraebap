@@ -62,7 +62,7 @@ const projectRoutes = project.addChildren([
   inProject("settings/$section", ProjectSettingsPage),
 ])
 
-// 예전 업무 주소(전체 업무)는 cowork 프로젝트의 업무로 옮겼다.
+// /work-items 주소는 cowork 프로젝트의 업무로 보낸다.
 const movedRoutes = [
   moved("/work-items", () => projectPath("cowork")),
   moved("/work-items/new", () => projectPath("cowork", "work-items/new")),

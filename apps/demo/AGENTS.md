@@ -1,6 +1,6 @@
 # demo
 
-shadcn/ui(Base UI)와 Tailwind CSS v4로 호호코워크 웹과 같은 화면을 만드는 실험 앱입니다. 화면 기준은 [호호코워크 재현 설계](docs/hohocowork-parity.md)입니다. 저장소 루트의 Webcraft 디자인 지침(`plugins/webcraft/skills/design-system`)은 Astryx를 전제로 하므로 이 앱에는 적용하지 않습니다. 이 파일과 shadcn 공식 문서를 따릅니다.
+shadcn/ui(Base UI)와 Tailwind CSS v4로 호호코워크 웹과 같은 화면을 만드는 실험 앱입니다. 화면 기준은 [호호코워크 재현 설계](docs/hohocowork-parity.md)입니다. 저장소 루트의 Webcraft 디자인 지침(`plugins/webcraft/skills/design-system`, shadcn/ui · Tailwind v4 기준)을 따르고, 이 파일에는 호호코워크 재현 기준·목업 데이터 같은 데모 고유 규칙만 둡니다. 지침과 이 파일이 다르면 이 파일의 데모 고유 규칙이 우선합니다.
 
 ## 스택과 실행
 

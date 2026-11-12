@@ -5,7 +5,7 @@ import { MaximizeIcon, XIcon } from "@/shared/ui/icon"
 import { usePeekClose } from "./use-peek-close"
 
 /**
- * 목록과 그 옆 칸(미리보기 · 옆 패널)을 나란히 두는 틀(옛 Page의 aside 자리). 목록 쪽(Page)은 남은 폭을 쓰고 칸은 자기 폭을 정한다.
+ * 목록과 그 옆 칸(미리보기 · 옆 패널)을 나란히 두는 틀. 목록 쪽(Page)은 남은 폭을 쓰고 칸은 자기 폭을 정한다.
  * 칸은 머리부터 바닥까지 목록과 따로 스크롤한다. aside가 없으면 목록만 그린다(휴대폰은 usePeek이 id를 비워 늘 목록만).
  */
 export function PeekLayout({ aside, children }: { aside?: ReactNode; children: ReactNode }) {

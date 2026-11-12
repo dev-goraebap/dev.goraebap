@@ -22,7 +22,7 @@ const BLOCK_TYPES = ['paragraph', 'heading', 'blockquote', 'bulletList', 'ordere
 
 export const blank: JSONContent = { type: 'doc', content: [{ type: 'paragraph' }] };
 
-/** 처음 여는 본문을 다듬는다: 빠지거나 겹친 blockId를 채우고, 예전 본문의 1단계 제목은 2단계로 내린다. */
+/** 처음 여는 본문을 다듬는다: 빠지거나 겹친 blockId를 채우고, 저장된 본문의 1단계 제목은 2단계로 내린다. */
 export function prepareDocument(value: JSONContent | undefined): JSONContent {
   const copy: JSONContent = structuredClone(value?.type === 'doc' ? value : blank);
   const seen = new Set<string>();

@@ -14,7 +14,7 @@ const paragraphs = ["자료를 정리할 때 다시 볼 기준을 남깁니다."
   "화면 높이가 짧아도 마지막 동작에 닿아야 합니다.", "키보드로 닫으면 초점은 열었던 버튼으로 돌아갑니다."];
 
 /**
- * 머리 · 스크롤 본문 · 바닥의 한 틀. 키트에 이 틀이 아직 없어 shadcn Dialog로 짓는다(옛 AppDialog와 같은 배치).
+ * 머리 · 스크롤 본문 · 바닥의 한 틀. 키트에 없는 틀이라 견본이 shadcn Dialog로 짓는다.
  * 창 위 12dvh에 두고 아래에도 같은 여유를 남겨 긴 본문에서도 제목 · 닫기 · 마지막 동작에 닿는다. 열면 제목에 초점을 둔다.
  */
 export function Basic({ isLong = false, hasFooterDivider = false }: { isLong?: boolean; hasFooterDivider?: boolean }) {
