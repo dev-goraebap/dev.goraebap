@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react"
 
-type Store = { drafts: Map<string, unknown>; touch: () => void }
+type Store = { drafts: Map<string, unknown>; touch: () => void; version: number }
 const DraftContext = createContext<Store | null>(null)
 
 /**
@@ -10,10 +10,11 @@ const DraftContext = createContext<Store | null>(null)
  * 크게 보기 한 번만 넘기면 되는 곳은 lib/panel의 carryDraft로 충분하다. 이것은 화면을 오가도 남아야 할 초안에 쓴다.
  */
 export function DraftProvider({ children }: { children: ReactNode }) {
-  const [, setVersion] = useState(0)
+  const [version, setVersion] = useState(0)
   const drafts = useRef(new Map<string, unknown>()).current
   const touch = useCallback(() => setVersion(version => version + 1), [])
-  const store = useMemo(() => ({ drafts, touch }), [drafts, touch])
+  // version을 값에 넣어야 초안이 바뀔 때 context 값이 새로 생겨 useDraft를 쓰는 양식이 다시 그려진다.
+  const store = useMemo(() => ({ drafts, touch, version }), [drafts, touch, version])
   return <DraftContext value={store}>{children}</DraftContext>
 }
 
