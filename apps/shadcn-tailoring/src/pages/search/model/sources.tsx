@@ -50,7 +50,7 @@ export function useSearchSources() {
     {
       id: "projects", title: "프로젝트", isLoading: projects.isPending,
       hits: (projects.data ?? []).filter(project => project.status === "active").map(project => ({
-        id: `project:${project.key}`, label: project.name, where: project.key, href: projectPath(project.key), icon: ProjectsIcon,
+        id: `project:${project.key}`, label: project.name, where: project.key, href: projectPath(project.slug), icon: ProjectsIcon,
         media: <ProjectMark icon={project.icon} color={project.color} size="sm" />,
       })),
     },

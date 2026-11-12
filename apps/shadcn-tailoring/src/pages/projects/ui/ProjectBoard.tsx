@@ -13,7 +13,7 @@ function ProjectCard({ project }: { project: Project }) {
     <li className="relative flex flex-col gap-2 rounded-lg border bg-card p-3 text-sm shadow-xs">
       <div className="flex items-center gap-2">
         <ProjectMark icon={project.icon} color={project.color} size="sm" />
-        <ProjectLink projectKey={project.key} className="min-w-0 flex-1 truncate font-medium">{project.name}</ProjectLink>
+        <ProjectLink projectKey={project.slug} className="min-w-0 flex-1 truncate font-medium">{project.name}</ProjectLink>
         {project.status === "active" && <ProjectStar project={project} />}
         <ProjectMenu project={project} />
       </div>

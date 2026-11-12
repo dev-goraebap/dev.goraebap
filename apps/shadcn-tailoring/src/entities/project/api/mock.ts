@@ -16,5 +16,5 @@ const SEEDS: Seed[] = [
 ]
 
 export const mockProjects: Project[] = SEEDS.map(([key, name, description, icon, color, lead, memberCount, progress, status = "active", starred = false], index) => ({
-  id: `project-${index + 1}`, key, name, description, icon, color, lead: PROJECT_PEOPLE[lead], memberCount, progress, status, starred, position: index,
+  id: `project-${index + 1}`, key, slug: key.toLowerCase(), name, description, icon, color, lead: PROJECT_PEOPLE[lead], memberCount, progress, status, starred, position: index,
 }))

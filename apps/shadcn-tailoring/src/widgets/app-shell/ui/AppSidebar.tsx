@@ -109,7 +109,7 @@ function ProjectsMenuItem({ entry, isCurrent }: { entry: NavEntry; isCurrent: bo
         <SidebarMenuSub className="mt-0.5">
           {starred.map(project => (
             <SidebarMenuSubItem key={project.key}>
-              <SidebarMenuSubButton render={<Link to={projectPath(project.key)} />}>
+              <SidebarMenuSubButton render={<Link to={projectPath(project.slug)} />}>
                 <ProjectMark icon={project.icon} color={project.color} size="sm" />
                 <span>{project.name}</span>
               </SidebarMenuSubButton>
