@@ -4,7 +4,7 @@ import type { Member, MyPatch } from "../model/types"
 import { mockMembers } from "./mock"
 
 const listKey = ["members"] as const
-/** 내가 바꾼 것(그림 · 휴대전화)은 서버 대신 이 브라우저에 남긴다. */
+/** 내가 바꾼 것(그림 · 사진 · 휴대전화)은 서버 대신 이 브라우저에 남긴다. */
 const MINE_KEY = "shadcn-tailoring-my-profile"
 
 function readMine(): MyPatch {
@@ -19,7 +19,7 @@ function writeMine(patch: MyPatch) {
   try {
     localStorage.setItem(MINE_KEY, JSON.stringify({ ...readMine(), ...patch }))
   } catch {
-    // 저장소를 못 쓰면 이번 화면에서만 바뀐다.
+    // 저장소를 못 쓰거나 가득 차면(사진은 수십 KB) 이번 화면에서만 바뀐다.
   }
 }
 
@@ -40,7 +40,7 @@ export function useMember(id: string) {
   return useQuery({ ...listOptions, select: (members: Member[]) => members.find(member => member.id === id) ?? null })
 }
 
-/** 내 그림 · 휴대전화를 바꾼다. 이 브라우저에 남기고 캐시의 내 줄을 고친다. */
+/** 내 그림 · 사진 · 휴대전화를 바꾼다. undefined로 넘긴 칸은 비운다(JSON에서 빠진다). 이 브라우저에 남기고 캐시의 내 줄을 고친다. */
 export function useUpdateMe() {
   const client = useQueryClient()
   return useMutation({

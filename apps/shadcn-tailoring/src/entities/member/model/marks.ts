@@ -30,8 +30,9 @@ export const statusMark = (status: MemberStatus) => STATUSES.find(each => each.v
 /** 줄의 둘째 줄과 프로필의 소속: 직위가 있으면 직위, 없으면 직급. */
 export const roleOf = (member: Member) => member.position ?? member.rank
 
-/** 구성원의 그림 주소: 고른 그림, 고르지 않았으면 아이디로 정해지는 그림. */
-export const memberPicture = (member: Pick<Member, "id" | "picture">) => drawnAvatarSource(member.picture ?? derivedAvatar(member.id))
+/** 구성원의 그림 주소: 올린 사진, 없으면 고른 그림, 그것도 없으면 아이디로 정해지는 그림. */
+export const memberPicture = (member: Pick<Member, "id" | "picture" | "photo">) =>
+  member.photo ?? drawnAvatarSource(member.picture ?? derivedAvatar(member.id))
 
 /** 부서장을 앞에, 나머지는 직급이 높은 순 · 이름 순(호호코워크 조직도의 순서). */
 const RANKS = ["대표", "부장", "차장", "과장", "대리", "사원"]

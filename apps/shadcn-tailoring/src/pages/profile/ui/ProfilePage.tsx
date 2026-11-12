@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { PictureDialog } from "@/features/picture-change"
 import { departmentOf, ME_ID, MemberAvatar, MemberStatusBadge, roleOf, useMember } from "@/entities/member"
 import { paths } from "@/shared/config"
 import { Button } from "@/shared/ui/button"
@@ -6,14 +7,13 @@ import { GalleryEditIcon, PencilIcon, UserIcon } from "@/shared/ui/icon"
 import { SettingsPage, SettingsRow, SettingsSection } from "@/shared/ui/settings"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { PhoneDialog } from "./PhoneDialog"
-import { PictureDialog } from "./PictureDialog"
 
 /** 글자 값. 비었으면 SettingsRow가 보조색 "-"를 그린다. */
 const text = (value?: string) => (value ? <span className="text-right">{value}</span> : undefined)
 
 /**
  * 내 정보(호호코워크 account/ProfilePage): 소속(그림 · 이름 · 부서 · 직위 · 상태와 인사 정보)과 개인 정보(휴대전화).
- * 프로필 이미지와 휴대전화만 직접 바꾼다(그림 18장 중 고르기, 번호 고치기). 바꾼 것은 이 브라우저에 남는다.
+ * 프로필 이미지와 휴대전화만 직접 바꾼다(사진 올려 자르기 · 그림 18장 중 고르기, 번호 고치기). 바꾼 것은 이 브라우저에 남는다.
  */
 export function ProfilePage() {
   const { data: me } = useMember(ME_ID)

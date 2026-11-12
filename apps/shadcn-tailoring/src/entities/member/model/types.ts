@@ -20,7 +20,9 @@ export type Member = {
   joinedAt: string
   /** 고른 기본 그림 번호(0~17). 없으면 아이디로 정해지는 그림. */
   picture?: number
+  /** 올린 사진(512px 정사각 JPEG의 data URL). 있으면 그림보다 앞선다. 서버 대신 이 브라우저에 남기므로 새로고침에도 살아야 해 object URL이 아니다. */
+  photo?: string
 }
 
-/** 내가 직접 바꿀 수 있는 것(호호코워크 내 정보: 프로필 이미지 · 휴대전화). */
-export type MyPatch = Partial<Pick<Member, "picture" | "phone">>
+/** 내가 직접 바꿀 수 있는 것(호호코워크 내 정보: 프로필 이미지 · 휴대전화). 그림과 사진은 하나만 남도록 부르는 쪽이 다른 쪽을 undefined로 비운다. */
+export type MyPatch = Partial<Pick<Member, "picture" | "photo" | "phone">>
