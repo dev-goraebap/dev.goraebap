@@ -7,7 +7,7 @@ import type { Plugin } from 'vite';
 import { visit } from 'unist-util-visit';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-export const skillsRoot = path.resolve(here, '../plugins/webcraft/skills');
+export const skillsRoot = path.resolve(here, '../../plugins/webcraft/skills');
 export const contentRoot = path.resolve(here, 'content');
 
 export type GuideDoc = {
@@ -79,7 +79,7 @@ const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => {
   return statSync(file).isDirectory() ? walk(file) : [file];
 });
 const posix = (file: string) => file.split(path.sep).join('/');
-const repoPath = (file: string) => posix(path.relative(path.resolve(here, '..'), file));
+const repoPath = (file: string) => posix(path.relative(path.resolve(here, '../..'), file));
 
 /** 본문에서 미리 준비할 것: <Sample id="…">의 id와 ```mermaid 코드 블록의 원문. */
 const assetsOf = (text: string) => {

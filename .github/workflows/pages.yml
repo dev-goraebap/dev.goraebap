@@ -19,7 +19,11 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            apps/site/package-lock.json
       - run: npm ci
+      - run: npm ci --prefix apps/site
       - run: npm run check
       - run: npm test
       - run: npm run site:check
@@ -27,7 +31,7 @@ jobs:
       - run: npm run site:build
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: site/dist
+          path: apps/site/dist
   deploy:
     needs: build
     runs-on: ubuntu-latest

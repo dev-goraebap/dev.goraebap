@@ -23,7 +23,7 @@ const SOLAR = {
   video: 'video-frame-play-horizontal', audio: 'music-note', 'alert-circle': 'danger-circle',
 };
 
-const solar = JSON.parse(await fs.readFile(new URL('../../node_modules/@iconify-json/solar/icons.json', import.meta.url), 'utf8'));
+const solar = JSON.parse(await fs.readFile(new URL('../node_modules/@iconify-json/solar/icons.json', import.meta.url), 'utf8'));
 const body = (key, style) => solar.icons[`${key}-${style}`]?.body;
 const lines = Object.entries(SOLAR).map(([name, key]) => {
   const linear = body(key, 'linear');

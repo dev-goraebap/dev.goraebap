@@ -4,7 +4,7 @@ arc42: "8.6, 5"
 
 # 앱 셸과 모바일 탐색
 
-앱 셸([AppFrame](https://github.com/dev-goraebap/dev.goraebap/blob/main/site/src/shared/ui/layouts/app/AppFrame.tsx))은 Astryx AppShell과 SideNav 위에 메뉴·페이지·휴대폰 탐색을 조립합니다. 메뉴·테마·밀도는 페이지마다 새로 만들지 않습니다.
+앱 셸([AppFrame](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/layouts/app/AppFrame.tsx))은 Astryx AppShell과 SideNav 위에 메뉴·페이지·휴대폰 탐색을 조립합니다. 메뉴·테마·밀도는 페이지마다 새로 만들지 않습니다.
 
 ## 데스크톱: Inset과 Split
 

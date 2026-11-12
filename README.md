@@ -24,9 +24,10 @@ Claude Code 설치와 프로젝트 연결·기존 지침 사본 전환은 [플�
 | 위치 | 역할 |
 | --- | --- |
 | `plugins/webcraft/` | 플러그인 지침 원본·패키징 도구·테스트·생성 배포본 |
-| `site/src/` | 블로그와 Webcraft를 함께 제공하는 React 사이트. FSD 계층으로 구성합니다 |
-| `site/content/blog/posts/` | 블로그 글과 원본 이미지 |
-| `site/content/` | Webcraft 화면 해설과 견본 문서 |
-| `site/samples/` | 실제 동작을 검증하는 실행 견본 |
+| `apps/site/src/` | 블로그와 Webcraft를 함께 제공하는 React 사이트. FSD 계층으로 구성합니다 |
+| `apps/site/content/blog/posts/` | 블로그 글과 원본 이미지 |
+| `apps/site/content/` | Webcraft 화면 해설과 견본 문서 |
+| `apps/site/samples/` | 실제 동작을 검증하는 실행 견본 |
+| `apps/demo/` | 호호코워크 화면을 shadcn으로 재현한 데모 앱 |
 
-사이트 실행·글 추가·배포 방법은 [사이트 개발 안내](site/README.md), 플러그인 개발은 [플러그인 개발 안내](plugins/webcraft/README.md)를 따릅니다. 에이전트 작업 규칙은 [AGENTS.md](AGENTS.md)에 있습니다.
+사이트 실행·글 추가·배포 방법은 [사이트 개발 안내](apps/site/README.md), 플러그인 개발은 [플러그인 개발 안내](plugins/webcraft/README.md)를 따릅니다. 에이전트 작업 규칙은 [AGENTS.md](AGENTS.md)에 있습니다.

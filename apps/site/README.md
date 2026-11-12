@@ -4,10 +4,10 @@
 
 ## 실행과 검사
 
-저장소 루트에서 실행합니다.
+의존성은 `apps/site/package.json`이 따로 관리합니다. 명령은 저장소 루트에서 실행합니다(루트의 `site:*`가 이 폴더의 명령을 부릅니다).
 
 ```text
-npm ci
+npm ci --prefix apps/site
 npm run site
 npm run site:check
 npm run site:test

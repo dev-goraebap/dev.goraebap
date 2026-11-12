@@ -4,7 +4,7 @@ arc42: "8.6"
 
 # 페이지 배치
 
-페이지([Page](https://github.com/dev-goraebap/dev.goraebap/blob/main/site/src/shared/ui/layouts/page/Page.tsx))는 머리 줄·배너 자리·툴바·적용 줄·본문의 순서를 고정합니다. 머리와 툴바는 고정하고 본문만 스크롤합니다. 구현 전에 기존 Page와 같은 역할의 화면을 읽고 각 조작을 보기·조건·표시·주 동작으로 나눕니다.
+페이지([Page](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/layouts/page/Page.tsx))는 머리 줄·배너 자리·툴바·적용 줄·본문의 순서를 고정합니다. 머리와 툴바는 고정하고 본문만 스크롤합니다. 구현 전에 기존 Page와 같은 역할의 화면을 읽고 각 조작을 보기·조건·표시·주 동작으로 나눕니다.
 
 ## 머리 줄과 툴바
 
@@ -35,7 +35,7 @@ arc42: "8.6"
 
 ## 상세
 
-본문이 있는 대상의 상세([DetailLayout](https://github.com/dev-goraebap/dev.goraebap/blob/main/site/src/shared/ui/layouts/detail/DetailLayout.tsx))는 최대 45rem 읽기 열에 소속·제목·본문·이어지는 것(하위 항목·활동)을 둡니다. 속성은 넓으면 오른쪽 16rem 열에 묶음 이름과 함께(스크롤해도 보입니다), 좁으면 제목과 본문 사이의 줄바꿈되는 알약으로 옮깁니다. 같은 요소를 옮기므로 속성을 두 벌 렌더링하지 않습니다. 창 폭이 아니라 컨테이너 폭(60rem)으로 판단해 대화상자·패널에서도 맞게 바뀝니다. 긴 제목·주소는 줄을 넘겨 가로로 넘치지 않습니다. 상세와 작성 면은 점 무늬 없이 평평합니다.
+본문이 있는 대상의 상세([DetailLayout](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/layouts/detail/DetailLayout.tsx))는 최대 45rem 읽기 열에 소속·제목·본문·이어지는 것(하위 항목·활동)을 둡니다. 속성은 넓으면 오른쪽 16rem 열에 묶음 이름과 함께(스크롤해도 보입니다), 좁으면 제목과 본문 사이의 줄바꿈되는 알약으로 옮깁니다. 같은 요소를 옮기므로 속성을 두 벌 렌더링하지 않습니다. 창 폭이 아니라 컨테이너 폭(60rem)으로 판단해 대화상자·패널에서도 맞게 바뀝니다. 긴 제목·주소는 줄을 넘겨 가로로 넘치지 않습니다. 상세와 작성 면은 점 무늬 없이 평평합니다.
 
 본문이 있는 모든 상세는 속성 열을 같은 순서로 둡니다. 본문에 제목이 있으면 맨 위에 "목차" 묶음, 그 아래 대상별 속성, 맨 끝에 "정보" 묶음(작성자 아바타·작성일·수정일과 고친 사람·버전 수)을 두고, 모르는 값은 줄째 뺍니다. 목차와 버전 줄도 다른 속성과 같은 속성 행 부품으로 그려 아이콘·글자 자리를 맞춥니다. 누르면 목차는 테두리 있는 팝오버, 버전은 버전 기록 대화상자를 엽니다. 휴대폰은 목차를 오른쪽 아래 떠 있는 둥근 버튼과 바텀시트로 둡니다. 편집기 가장자리에 목차 표시를 붙이지 않습니다. 상세의 더 보기(…) 메뉴는 페이지 머리 줄 한 곳에 둡니다.
 
@@ -55,4 +55,4 @@ arc42: "8.6"
 
 ## 옆 패널
 
-주소가 필요 없는 짧은 조회(기록 한 줄의 사실)는 목록 옆 패널([WithPanel](https://github.com/dev-goraebap/dev.goraebap/blob/main/site/src/shared/ui/layouts/side-panel/WithPanel.tsx))로 엽니다. 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트입니다. 편집이나 긴 내용은 자기 주소를 가진 상세로 엽니다. 목록과 상세를 나란히 두는 받은함은 목록 폭을 조절할 수 있게 하되 처음에는 최대 너비로 열고([사이드바](app-layout.md#사이드바)와 같은 규칙) 휴대폰에서는 목록만 보인 뒤 항목을 페이지로 엽니다.
+주소가 필요 없는 짧은 조회(기록 한 줄의 사실)는 목록 옆 패널([WithPanel](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/layouts/side-panel/WithPanel.tsx))로 엽니다. 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트입니다. 편집이나 긴 내용은 자기 주소를 가진 상세로 엽니다. 목록과 상세를 나란히 두는 받은함은 목록 폭을 조절할 수 있게 하되 처음에는 최대 너비로 열고([사이드바](app-layout.md#사이드바)와 같은 규칙) 휴대폰에서는 목록만 보인 뒤 항목을 페이지로 엽니다.

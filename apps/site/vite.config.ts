@@ -39,9 +39,9 @@ export default defineConfig({
   ],
   resolve: {
     alias: { '@samples': local('samples'), '@': local('src') },
-    dedupe: ['react', 'react-dom', '@astryxdesign/core', '@astryxdesign/theme-stone'],
+    dedupe: ['react', 'react-dom', '@mdx-js/react', '@astryxdesign/core', '@astryxdesign/theme-stone'],
   },
-  server: { port: 4451, fs: { allow: [local('..')] } },
+  server: { port: 4451, fs: { allow: [local('../..')] } },
   preview: { port: 4451 },
   build: {
     outDir: local('dist'),
