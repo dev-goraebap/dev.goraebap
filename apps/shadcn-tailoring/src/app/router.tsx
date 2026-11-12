@@ -45,6 +45,7 @@ const projectRoutes = project.addChildren([
   inProject("work-items/$number", WorkItemDetailPage),
   inProject("cycles", ProjectCyclesPage),
   inProject("documents", ProjectDocumentsPage),
+  inProject("documents/$documentId", ProjectDocumentsPage),
   inProject("members", ProjectMembersPage),
   inProject("settings/$section", ProjectSettingsPage),
 ])

@@ -1,15 +1,15 @@
-import { useCurrentProject } from "@/entities/project"
-import { paths, projectPath } from "@/shared/config"
-import { SettingsIcon, ProjectsIcon } from "@/shared/ui/icon"
-import { Page } from "@/shared/ui/page"
-import { PageState } from "@/shared/ui/page-state"
+import { useParams } from "@tanstack/react-router"
+import { NotFoundSection } from "./NotFoundSection"
+import { CycleSettings } from "./CycleSettings"
+import { GeneralSettings } from "./GeneralSettings"
+import { IntegrationSettings } from "./IntegrationSettings"
+import { WorkflowSettings } from "./WorkflowSettings"
 
-/** 프로젝트의 설정(자리만 잡은 페이지). */
+const SECTIONS = { general: GeneralSettings, workflow: WorkflowSettings, cycles: CycleSettings, integrations: IntegrationSettings }
+
+/** 프로젝트 관리(/projects/$projectKey/settings/$section): 일반 · 워크플로 · 사이클 · 저장소 연동 중 주소의 쪽을 그린다. */
 export function ProjectSettingsPage() {
-  const { key, project } = useCurrentProject()
-  return (
-    <Page crumbs={[{ label: "프로젝트", href: paths.projects }, { label: project?.name ?? key, icon: ProjectsIcon, href: projectPath(key) }, { label: "설정", icon: SettingsIcon }]}>
-      <PageState kind="empty" title="설정을 준비하고 있습니다" />
-    </Page>
-  )
+  const { section = "" } = useParams({ strict: false }) as { section?: string }
+  const Section = SECTIONS[section as keyof typeof SECTIONS] ?? NotFoundSection
+  return <Section />
 }
