@@ -1928,6 +1928,277 @@
           "target": "src/shared/ui/boot-cover/plugin.ts"
         }
       ]
+    },
+    {
+      "name": "editor",
+      "type": "registry:ui",
+      "title": "리치 에디터",
+      "description": "Tiptap 3 리치 본문: RichEditor(읽기 · 편집 한 에디터) · RichDraft · RichBody · 상단 서식 막대 EditorToolbar. 블록 손잡이 메뉴 · `/` 명령 · 선택 서식 도구 · 표 도구 · 올리는 칸 · 사진 · 동영상 · 파일 · Mermaid 도표 · HTML 임베드(격리 틀) · 링크 카드 · 크게 보기. 메뉴는 데스크톱 드롭다운, 휴대폰 바텀시트.",
+      "docs": "올리기(upload)와 링크 미리보기(readPreview)는 호스트가 서버에 이어 넘깁니다. 미리보기는 서버가 읽어야 하고(브라우저가 남의 사이트를 직접 부르지 않습니다), 올린 HTML은 서버가 격리 정책을 붙여 내보냅니다. 본문 글자색 · 배경색은 var(--editor-ink-*) · var(--editor-fill-*)로 저장되며 테마의 --event-* 색에서 계산합니다.",
+      "dependencies": [
+        "@tiptap/core@3.32.0",
+        "@tiptap/pm@3.32.0",
+        "@tiptap/react@^3.32.0",
+        "@tiptap/starter-kit@^3.32.0",
+        "@tiptap/extension-highlight@3.32.0",
+        "@tiptap/extension-list@3.32.0",
+        "@tiptap/extension-subscript@3.32.0",
+        "@tiptap/extension-superscript@3.32.0",
+        "@tiptap/extension-table@3.32.0",
+        "@tiptap/extension-text-align@3.32.0",
+        "@tiptap/extension-text-style@3.32.0",
+        "mermaid@^11.17.2",
+        "yet-another-react-lightbox@3.33.0"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/button",
+        "@webcraft/dialog",
+        "@webcraft/drawer",
+        "@webcraft/dropdown-menu",
+        "@webcraft/icon",
+        "@webcraft/input",
+        "@webcraft/input-group",
+        "@webcraft/popover",
+        "@webcraft/progress",
+        "@webcraft/textarea",
+        "@webcraft/theme",
+        "@webcraft/tooltip",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/editor/BlockMenu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/BlockMenu.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/EditorToolbar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/EditorToolbar.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/LinkCard.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/LinkCard.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/LinkPanel.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/LinkPanel.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/MediaView.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/MediaView.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/RichBody.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/RichBody.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/RichDraft.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/RichDraft.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/RichEditor.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/RichEditor.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/SelectionMenu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/SelectionMenu.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/SourceView.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/SourceView.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/TableControls.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/TableControls.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/ZoomViewer.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/ZoomViewer.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/block-tree.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/block-tree.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/colors.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/colors.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/diagram.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/diagram.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/file-kinds.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/file-kinds.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/format.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/format.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/index.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/menu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/menu.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/prose.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/prose.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/schema.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/schema.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/tool.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/tool.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/types.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/types.ts"
+        },
+        {
+          "path": "src/shared/ui/editor/upload-zone.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/upload-zone.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/uploads.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/uploads.tsx"
+        },
+        {
+          "path": "src/shared/ui/editor/zoom.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/editor/zoom.tsx"
+        }
+      ]
+    },
+    {
+      "name": "document",
+      "type": "registry:ui",
+      "title": "문서 편집기",
+      "description": "종이(A4 · A5 · Letter) 위에 쓰고 읽는 문서: DocumentEditor · DocumentView, 페이지 나누기 Tiptap 확장(Pagination), 종이 틀 · 머리말 · 바닥글(PageCanvas), DocumentSettings · PageLookMenu · ZoomControl · ExportMenu · PagesPill, 화면과 같은 경계의 인쇄. 휴대폰은 늘 페이지 없음.",
+      "docs": "페이지 설정(PageSetup)은 본문과 따로 문서에 저장하고, 페이지 모양(PageLook)은 보는 사람의 화면 설정이라 저장하지 않습니다. 서버에서 PDF를 만들면 ExportMenu의 onSavePdf를 넘깁니다(없으면 브라우저 인쇄 창). ExportMenu의 알림은 앱 뿌리의 Toaster(@webcraft/toast)가 보입니다.",
+      "dependencies": [
+        "@tiptap/core@3.32.0",
+        "@tiptap/pm@3.32.0",
+        "@tiptap/react@^3.32.0"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/adaptive-popover",
+        "@webcraft/button",
+        "@webcraft/editor",
+        "@webcraft/field",
+        "@webcraft/icon",
+        "@webcraft/input",
+        "@webcraft/input-group",
+        "@webcraft/property-pill",
+        "@webcraft/segmented-control",
+        "@webcraft/select",
+        "@webcraft/switch",
+        "@webcraft/theme",
+        "@webcraft/toast",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/document/DocumentEditor.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/DocumentEditor.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/DocumentSettings.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/DocumentSettings.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/DocumentView.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/DocumentView.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/ExportMenu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/ExportMenu.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/PageCanvas.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/PageCanvas.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/PageLookMenu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/PageLookMenu.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/PagesPill.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/PagesPill.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/ZoomControl.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/ZoomControl.tsx"
+        },
+        {
+          "path": "src/shared/ui/document/hooks.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/hooks.ts"
+        },
+        {
+          "path": "src/shared/ui/document/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/index.ts"
+        },
+        {
+          "path": "src/shared/ui/document/model.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/model.ts"
+        },
+        {
+          "path": "src/shared/ui/document/pagination.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/pagination.ts"
+        },
+        {
+          "path": "src/shared/ui/document/print.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/print.ts"
+        },
+        {
+          "path": "src/shared/ui/document/usePagedFrame.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/document/usePagedFrame.tsx"
+        }
+      ]
     }
   ]
 }

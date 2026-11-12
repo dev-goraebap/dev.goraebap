@@ -44,6 +44,13 @@ const SOLAR = {
   GripIcon: "hamburger-menu", EyeClosedIcon: "eye-closed", LayoutGridIcon: "widget-4",
   // 파일 올리기 · 회의 녹음
   UploadIcon: "upload-minimalistic", MicrophoneIcon: "microphone-large",
+
+  // ── 리치 에디터 · 문서 편집기(shared/ui/editor · document). Astryx 키트의 이름표(generate-icons.mjs)와 같은 Solar를 고른다.
+  BoldIcon: "text-bold", ItalicIcon: "text-italic", UnderlineIcon: "text-underline", StrikethroughIcon: "text-cross", CodeIcon: "code",
+  HeadingIcon: "text-format", PilcrowIcon: "text-square", ListOrderedIcon: "list-ordered", QuoteIcon: "quote", SquareCodeIcon: "code-square",
+  GlobeIcon: "global", PaletteIcon: "palette-round", ReplaceIcon: "square-transfer-horizontal", EraserIcon: "eraser", ClipboardIcon: "clipboard",
+  Link2Icon: "link-minimalistic-2", ArrowRightIcon: "arrow-right", CornerDownLeftIcon: "reply", VideoIcon: "video-frame-play-horizontal",
+  MusicIcon: "music-note", ZoomInIcon: "magnifier-zoom-in", Undo2Icon: "undo-left", Redo2Icon: "undo-right", PrinterIcon: "printer-minimalistic",
 }
 
 const solar = JSON.parse(await fs.readFile(new URL("../node_modules/@iconify-json/solar/icons.json", import.meta.url), "utf8"))
