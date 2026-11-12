@@ -36,5 +36,26 @@ const VerifyAlert: Sample = {
   },
 };
 
+const VerifyForm: Sample = {
+  name: "짧은 양식의 빠진 칸 검증",
+  render: () => samples.Form.render!({} as never),
+  play: async ({ canvasElement }) => {
+    const page = within(canvasElement.ownerDocument.body);
+    await userEvent.click(page.getByRole("button", { name: "이름 바꾸기" }));
+    const name = await page.findByRole("textbox", { name: "이름" });
+    await waitFor(() => expect(name).toHaveFocus());
+    await userEvent.clear(name);
+    // 제출은 막지 않는다. 누르면 빠진 칸에 표시와 설명을 붙이고 그 칸으로 초점을 옮긴다.
+    await userEvent.click(page.getByRole("button", { name: "바꾸기" }));
+    await waitFor(() => expect(name).toHaveAttribute("aria-invalid", "true"));
+    await expect(page.getByRole("alert")).toHaveTextContent("이름을 입력해 주세요.");
+    await waitFor(() => expect(name).toHaveFocus());
+    await userEvent.type(name, "읽을거리{Enter}");
+    await waitFor(() => expect(page.queryByRole("textbox", { name: "이름" })).not.toBeInTheDocument());
+  },
+};
+
 test(VerifyFocus.name, () => runSample(meta, VerifyFocus));
+test(VerifyForm.name, () => runSample(meta, VerifyForm));
+test(`${VerifyForm.name} · 휴대폰 바텀시트`, () => runSample(meta, VerifyForm, "phone"));
 test(VerifyAlert.name, () => runSample(meta, VerifyAlert));

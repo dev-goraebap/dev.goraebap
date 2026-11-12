@@ -1,5 +1,5 @@
 import type { JSONContent } from '@tiptap/react';
-import type { LinkChoice, LinkPreview, ReadLinkPreview, UploadFile } from '@/shared/ui/composites/editor/types';
+import type { LinkChoice, LinkPreview, ReadLinkPreview, UploadFile } from '@/shared/ui/editor';
 
 /*
  * 리치 에디터 견본의 가짜 호스트. 키트에는 서버가 없으므로 올리기는 고른 파일을 blob 주소로 돌려주고(진행률은 흉내),

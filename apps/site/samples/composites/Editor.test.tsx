@@ -21,26 +21,42 @@ const VerifyBlockMenu: Sample = {
     await waitFor(() => expect(page.getAllByRole("button", { name: /번 블록 선택$/ }).length).toBeGreaterThan(5));
     const before = topLevel(canvasElement).filter(text => text.startsWith("이 본문은")).length;
     await userEvent.click(page.getByRole("button", { name: "1번 블록 선택" }));
-    const menu = await page.findByRole("dialog", { name: "블록 메뉴" });
+    const menu = await page.findByRole("menu", { name: "블록 메뉴" });
     for (const name of ["색", "종류 바꾸기", "서식 지우기", "복제", "복사", "링크 복사", "위로 옮기기", "아래로 옮기기", "삭제"])
-      await expect(within(menu).getByRole("menuitem", { name })).toBeInTheDocument();
-    // 메뉴가 열린 채(블록을 고른 채) Ctrl+D는 복제, Alt+↓는 아래로 옮기기, Delete는 지우기.
+      // 단축키 표기(Ctrl D · Alt ↓ · Del)가 이름 뒤에 붙는다.
+      await expect(within(menu).getByRole("menuitem", { name: new RegExp(`^${name}( |$)`) })).toBeInTheDocument();
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() => expect(page.queryByRole("menu", { name: "블록 메뉴" })).not.toBeInTheDocument());
+    // 단축키는 블록을 고른 채(메뉴 없이) 쓴다: Ctrl+누르기로 고르고 Ctrl+D는 복제, Alt+↓는 아래로 옮기기, Delete는 지우기.
+    // 메뉴 안의 키는 메뉴가 다루므로 메뉴가 열린 동안에는 단축키가 돌지 않는다. Esc는 고른 것을 푼다.
+    const choose = async (name: string) => {
+      await userEvent.keyboard("{Escape}");
+      const user = userEvent.setup();
+      await user.keyboard("{Control>}");
+      await user.click(page.getByRole("button", { name }));
+      await user.keyboard("{/Control}");
+      await waitFor(() => expect(page.getByRole("button", { name })).toHaveAttribute("aria-pressed", "true"));
+      // 손잡이는 블록 메뉴를 여는 단추라 초점이 그 위에 있으면 ↓를 메뉴가 가져간다(키트에 알린 문제). 초점을 본문 밖으로 둔다.
+      page.getByRole("button", { name }).blur();
+    };
+    const grips = () => page.getAllByRole("button", { name: /번 블록 선택$/ }).length;
+    const gripsBefore = grips();
+    await choose("1번 블록 선택");
     await userEvent.keyboard("{Control>}d{/Control}");
     await waitFor(() => expect(topLevel(canvasElement).filter(text => text.startsWith("이 본문은")).length).toBe(before + 1));
-    await userEvent.keyboard("{Escape}");
-    await waitFor(() => expect(page.queryByRole("dialog", { name: "블록 메뉴" })).not.toBeInTheDocument());
+    // 손잡이는 본문을 다시 잰 뒤 늘어난다. 그 전의 2번은 아직 옛 블록이다.
+    await waitFor(() => expect(grips()).toBe(gripsBefore + 1));
     // 복제본(2번)을 아래로 옮기면 다음 제목과 자리를 바꾼다.
-    await userEvent.click(page.getByRole("button", { name: "2번 블록 선택" }));
-    await page.findByRole("dialog", { name: "블록 메뉴" });
+    await choose("2번 블록 선택");
     await userEvent.keyboard("{Alt>}{ArrowDown}{/Alt}");
     await waitFor(() => expect(topLevel(canvasElement)[1]).toBe("분기 지표"));
-    await userEvent.click(page.getByRole("button", { name: "3번 블록 선택" }));
-    await page.findByRole("dialog", { name: "블록 메뉴" });
+    await choose("3번 블록 선택");
     await userEvent.keyboard("{Delete}");
     await waitFor(() => expect(topLevel(canvasElement).filter(text => text.startsWith("이 본문은")).length).toBe(before));
+    await userEvent.keyboard("{Escape}");
     // 하위 메뉴: 종류 바꾸기로 제목 3을 고른다.
     await userEvent.click(page.getByRole("button", { name: "1번 블록 선택" }));
-    const again = await page.findByRole("dialog", { name: "블록 메뉴" });
+    const again = await page.findByRole("menu", { name: "블록 메뉴" });
     await userEvent.click(within(again).getByRole("menuitem", { name: "종류 바꾸기" }));
     await userEvent.click(within(await page.findByRole("menu", { name: "종류 바꾸기" })).getByRole("menuitem", { name: "제목 3" }));
     await waitFor(() => expect(body(canvasElement).firstElementChild?.tagName).toBe("H3"));
@@ -78,7 +94,7 @@ const VerifyUploadZone: Sample = {
     target.dispatchEvent(new DragEvent("drop", { bubbles: true, cancelable: true, dataTransfer: transfer }));
     await waitFor(() => expect(page.queryByRole("group", { name: "파일 올리는 칸" })).not.toBeInTheDocument());
     await expect(await page.findByRole("region", { name: "파일 업로드" })).toBeVisible();
-    await waitFor(() => expect(canvasElement.querySelector('[data-tone="red"]')?.textContent).toContain("회의 메모.pdf"), { timeout: 4000 });
+    await waitFor(() => expect(body(canvasElement).textContent).toContain("회의 메모.pdf"), { timeout: 4000 });
   },
 };
 
@@ -97,7 +113,7 @@ const VerifyLinkPanel: Sample = {
     await userEvent.click(within(toolbar).getByRole("button", { name: "링크" }));
     const panel = await page.findByRole("dialog", { name: "링크" });
     await userEvent.type(within(panel).getByRole("textbox", { name: "링크 주소 또는 문서 이름" }), "배포");
-    await userEvent.click(await within(panel).findByRole("menuitem", { name: /배포 절차/ }));
+    await userEvent.click(await within(panel).findByRole("button", { name: /배포 절차/ }));
     await waitFor(() => expect(heading.querySelector("a")?.getAttribute("href")).toBe("/documents/release"));
     // 주소는 https://를 붙여 건다.
     await pick(body(canvasElement).querySelectorAll("h2")[1]);
@@ -119,7 +135,7 @@ const VerifyTable: Sample = {
     await userEvent.click(table.querySelectorAll("td")[0]);
     await userEvent.click(await page.findByRole("button", { name: "행 메뉴" }));
     const menu = await page.findByRole("menu", { name: "행 메뉴" });
-    for (const name of ["위에 행 추가", "아래에 행 추가", "위로 옮기기", "아래로 옮기기", "머리글 행 켜기·끄기", "행 삭제"]) await expect(within(menu).getByRole("menuitem", { name })).toBeInTheDocument();
+    for (const name of ["위에 행 추가", "아래에 행 추가", "위로 옮기기", "아래로 옮기기", "머리글 행 켜기 · 끄기", "행 삭제"]) await expect(within(menu).getByRole("menuitem", { name })).toBeInTheDocument();
     await userEvent.click(within(menu).getByRole("menuitem", { name: "아래에 행 추가" }));
     await waitFor(() => expect(rows()).toBe(start + 1));
     // 끝에 열을 더하는 + 막대, 열 메뉴의 Esc 닫기.
@@ -152,10 +168,10 @@ const VerifyReading: Sample = {
     await expect(frame.getAttribute("sandbox")).toBe("allow-scripts allow-modals allow-forms allow-popups");
     await expect(frame.getAttribute("referrerpolicy")).toBe("no-referrer");
     await userEvent.click(within(article).getByRole("button", { name: "분기 지표.html 크게 보기" }));
-    const viewer = await page.findByRole("dialog", { name: "분기 지표.html 크게 보기" });
+    const viewer = await page.findByRole("dialog", { name: /^분기 지표\.html/ });
     await expect(within(viewer).queryByRole("button", { name: "새 탭에서 열기" })).not.toBeInTheDocument();
     await userEvent.click(within(viewer).getByRole("button", { name: "닫기" }));
-    await waitFor(() => expect(page.queryByRole("dialog", { name: "분기 지표.html 크게 보기" })).not.toBeInTheDocument());
+    await waitFor(() => expect(page.queryByRole("dialog", { name: /^분기 지표\.html/ })).not.toBeInTheDocument());
   },
 };
 
