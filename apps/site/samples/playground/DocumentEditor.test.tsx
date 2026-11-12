@@ -86,7 +86,8 @@ const VerifyEditing: Sample = {
     await userEvent.click(within(ask).getByRole("button", { name: "계속 작성" }));
     await expect(page.getByRole("textbox", { name: "본문" })).toHaveTextContent("새로 쓴 문단 30");
     // 페이지 없음으로 바꿔도 쓴 내용이 그대로다.
-    await userEvent.click(page.getByRole("radio", { name: "페이지 없음" }));
+    // 보기 전환은 칸 고르기(SegmentedControl)라 누름 단추다.
+    await userEvent.click(page.getByRole("button", { name: "페이지 없음" }));
     await waitFor(() => expect(canvasElement.ownerDocument.querySelector("[data-page-count]")).toBeNull());
     await expect(page.getByRole("textbox", { name: "본문" })).toHaveTextContent("새로 쓴 문단 30");
   },
@@ -100,11 +101,13 @@ const VerifyReading: Sample = {
     await waitFor(() => expect(pageCount(canvasElement)).toBeGreaterThan(5), { timeout: 8000 });
     await waitFor(() => expect(boundaryProblems(canvasElement)).toEqual([]), { timeout: 8000 });
     const count = pageCount(canvasElement);
-    // 오른쪽 정보 칸의 페이지 항목: 페이지 수, 누르면 페이지 목록(대표 제목), 고르면 그 페이지로 간다.
-    const pill = page.getByRole("button", { name: `페이지: ${count}페이지` });
+    // 오른쪽 속성 칸의 페이지 항목: 페이지 수, 누르면 페이지 목록(대표 제목), 고르면 그 페이지로 간다.
+    const properties = page.getByRole("complementary", { name: "속성" });
+    const pill = within(properties).getByRole("button", { name: "페이지" });
+    await expect(pill).toHaveTextContent(`${count}페이지`);
     await userEvent.click(pill);
     const popover = await page.findByRole("dialog", { name: "페이지" });
-    const labels = [...popover.querySelectorAll("li, [role=option], [role=menuitem]")].map(item => item.textContent ?? "").filter(Boolean);
+    const labels = [...popover.querySelectorAll("li, [role=listitem], [role=option], [role=menuitem]")].map(item => item.textContent ?? "").filter(Boolean);
     await expect(labels.length).toBe(count);
     await expect(labels[0]).toContain("1. 소개와 목표");
     await expect(labels.some(label => label.includes("제목 없음"))).toBe(false);
@@ -124,19 +127,19 @@ const VerifyReading: Sample = {
     await userEvent.keyboard("{Escape}");
     // 페이지 모양: 구분선 + 물결이면 종이 사이마다 선이 하나, 연한 바탕이면 바깥이 종이와 다른 색이다.
     await userEvent.click(page.getByRole("button", { name: "페이지 모양" }));
-    await userEvent.click(await page.findByRole("radio", { name: "구분선" }));
-    await userEvent.click(await page.findByRole("radio", { name: "물결" }));
+    await userEvent.click(await page.findByRole("button", { name: "구분선" }));
+    await userEvent.click(await page.findByRole("button", { name: "물결" }));
     const canvas = () => canvasElement.ownerDocument.querySelector<HTMLElement>("[data-page-count]")!;
     await waitFor(() => expect(canvas().dataset.line).toBe("wavy"));
     await expect(canvas().querySelectorAll("[data-sheet] > :last-child:not([data-sheet])").length).toBeGreaterThan(0);
-    await userEvent.click(await page.findByRole("radio", { name: "연한 바탕" }));
+    await userEvent.click(await page.findByRole("button", { name: "연한 바탕" }));
     await waitFor(() => expect(canvas().dataset.look).toBe("tinted"));
     const desk = canvas().closest("[data-print-root]")!;
     await expect(getComputedStyle(desk).backgroundColor).not.toBe(getComputedStyle(canvas().querySelector("[data-sheet]")!).backgroundColor);
     await userEvent.keyboard("{Escape}");
-    await userEvent.click(page.getByRole("radio", { name: "페이지 없음" }));
+    await userEvent.click(page.getByRole("button", { name: "페이지 없음" }));
     await waitFor(() => expect(canvasElement.ownerDocument.querySelector("[data-page-count]")).toBeNull());
-    await expect(page.queryByRole("button", { name: /^페이지: / })).toBeNull();
+    await expect(within(page.getByRole("complementary", { name: "속성" })).queryByRole("button", { name: "페이지" })).toBeNull();
     await expect(page.getAllByRole("heading", { level: 1, name: "시스템 정의서" }).length).toBeGreaterThan(0);
   },
 };
@@ -156,7 +159,7 @@ const VerifySettings: Sample = {
     // 바닥글을 두 번 누르면 문서 설정의 머리말·바닥글 칸이 열리고, 고친 글이 모든 종이에 보인다.
     await userEvent.dblClick(first.querySelector('[aria-label^="바닥글"]')!);
     const settings = await page.findByRole("complementary", { name: "문서 설정" });
-    await expect(within(settings).getByRole("radio", { name: "머리말 · 바닥글" })).toBeChecked();
+    await expect(within(settings).getByRole("button", { name: "머리말 · 바닥글" })).toHaveAttribute("aria-pressed", "true");
     const center = within(settings).getByRole("textbox", { name: "가운데" });
     await userEvent.clear(center);
     await userEvent.type(center, "검토용");
@@ -165,12 +168,11 @@ const VerifySettings: Sample = {
     await userEvent.click(within(settings).getByRole("switch", { name: /첫 페이지 다르게/ }));
     await waitFor(() => expect(document.querySelector('[data-sheet="1"]')).not.toHaveTextContent("시스템 정의서"));
     // 가로 용지로 바꾸면 종이가 넓어지고 다시 나눈다(쓴 내용은 그대로).
-    await userEvent.click(within(settings).getByRole("radio", { name: "머리말 · 바닥글" }));
-    await userEvent.click(within(settings).getByRole("radio", { name: "문서" }));
+    await userEvent.click(within(settings).getByRole("button", { name: "문서" }));
     // 종이 폭(설정 값)이 넓어진다. 화면에서는 칸 폭에 맞춰 줄어들 수 있으므로 종이 틀의 값을 본다.
     const paperWidth = () => parseFloat(getComputedStyle(document.querySelector<HTMLElement>("[data-page-count]")!).getPropertyValue("--pg-width"));
     const before = paperWidth();
-    await userEvent.click(within(settings).getByRole("radio", { name: "가로" }));
+    await userEvent.click(within(settings).getByRole("button", { name: "가로" }));
     await waitFor(() => expect(paperWidth() / before).toBeCloseTo(297 / 210, 2));
     await waitFor(() => expect(boundaryProblems(canvasElement)).toEqual([]), { timeout: 8000 });
     // 확대/축소: 고정 배율로 바꾸면 종이 폭이 그만큼 바뀐다.
@@ -193,7 +195,8 @@ const VerifyPhone: Sample = {
   },
 };
 
-test(VerifyEditing.name, () => runSample(meta, VerifyEditing), 60000);
+// 서른 문단을 한 글자씩 치며 매번 다시 나누므로 오래 걸린다(키트 편집기에서 단독 실행 약 55초).
+test(VerifyEditing.name, () => runSample(meta, VerifyEditing), 120000);
 test(VerifyReading.name, () => runSample(meta, VerifyReading), 30000);
 test(VerifySettings.name, () => runSample(meta, VerifySettings), 40000);
 test(VerifyPhone.name, () => runSample(meta, VerifyPhone, "phone"), 20000);

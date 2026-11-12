@@ -1,15 +1,11 @@
-import { Button } from '@astryxdesign/core/Button';
-import { HStack } from '@astryxdesign/core/HStack';
-import { LinkProvider } from '@astryxdesign/core/Link';
-import { Text } from '@astryxdesign/core/Text';
-import { PageState } from '@/shared/ui/composites/state/PageState';
-import { icon } from '@/shared/ui/foundations/icons/solar-icon';
-import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
-import type { NavSpace } from '@/shared/ui/layouts/app/nav';
-import { Page } from '@/shared/ui/layouts/page/Page';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
+import type { NavSpace } from '@/shared/ui/app-shell';
+import { Button } from '@/shared/ui/button';
+import { MailIcon } from '@/shared/ui/icon';
+import { Page } from '@/shared/ui/page';
+import { PageState } from '@/shared/ui/page-state';
+import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation, useNavigate, useParams,
+import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation, useParams,
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
 import { useShellLayout } from '../../../catalog/shell-layout';
@@ -18,23 +14,25 @@ import { createThreadApi } from '../mocks/thread-api';
 import { RoomPage } from '../pages/RoomPage';
 import { RoomsPage } from '../pages/RoomsPage';
 
-/** 셸: 메뉴가 대화방을 나열한다. */
+/** 라우터 주소의 타입은 사이트 라우터에 등록되어 있어, 견본 앱의 주소는 글자로 넘긴다. */
+const ROOMS: string = '/rooms';
+
+/** 셸: 메뉴가 대화방을 나열한다. 대화 아이콘이 키트에 없어 편지 아이콘으로 대신한다. */
 function Shell() {
   const api = useThreadApi();
   const rooms = useQuery(threadQueries.rooms(api));
   const space: NavSpace = {
-    id: 'main', title: '대화', sections: [{ title: '대화방', entries: (rooms.data ?? []).map(room => ({ path: `/rooms/${room.id}`, label: room.name, icon: 'comment' as const })) }],
+    id: 'main', title: '대화', sections: [{ title: '대화방', entries: (rooms.data ?? []).map(room => ({ path: `/rooms/${room.id}`, label: room.name, icon: MailIcon })) }],
   };
   const layout = useShellLayout();
   const location = useLocation();
-  const navigate = useNavigate();
-  return <LinkProvider component={RouterLink}>
-    <AppFrame space={space} pathname={location.pathname} layout={layout} onNavigate={path => void navigate({ href: path })}
-      brand={isFolded => <HStack gap={2} vAlign="center" paddingInline={2}>{icon('comment', true)}{isFolded ? null : <Text weight="semibold">대화</Text>}</HStack>}
-      footer={<HStack width="100%" paddingInline={2}><Text type="supporting" color="secondary" hasTabularNumbers>예제 · 메모리 저장</Text></HStack>}>
+  return (
+    <PlaygroundShell space={space} pathname={location.pathname} layout={layout}
+      brand={isFolded => <span className="flex min-w-0 items-center gap-2"><MailIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate font-semibold">대화</span>}</span>}
+      footer={isFolded => (isFolded ? null : <span className="px-2 text-xs text-muted-foreground">예제 · 메모리 저장</span>)}>
       <Outlet />
-    </AppFrame>
-  </LinkProvider>;
+    </PlaygroundShell>
+  );
 }
 
 function RoomRoute() {
@@ -43,16 +41,20 @@ function RoomRoute() {
 }
 
 function RouteError({ reset }: ErrorComponentProps) {
-  return <Page crumbs={[{ label: '대화' }]}>
-    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button label="다시 시도" variant="secondary" onClick={reset} />} />
-  </Page>;
+  return (
+    <Page crumbs={[{ label: '대화' }]}>
+      <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
+    </Page>
+  );
 }
 
 function NotFound() {
-  return <Page crumbs={[{ label: '대화', href: '/rooms' }, { label: '없는 페이지' }]} isDetail>
-    <PageState kind="not-found" title="페이지를 찾을 수 없습니다" description="주소가 바뀌었거나 지워졌을 수 있습니다."
-      action={<Button label="대화 목록으로" variant="secondary" href="/rooms" />} />
-  </Page>;
+  return (
+    <Page crumbs={[{ label: '대화', href: ROOMS }, { label: '없는 페이지' }]} isFullScreen>
+      <PageState kind="not-found" title="페이지를 찾을 수 없습니다" description="주소가 바뀌었거나 지워졌을 수 있습니다."
+        action={<Button variant="secondary" nativeButton={false} render={<Link to={ROOMS} />}>대화 목록으로</Button>} />
+    </Page>
+  );
 }
 
 export function createThreadRouter(initialPath: string) {
@@ -80,9 +82,11 @@ export function ThreadApp({ initialPath = '/rooms/design', api, incomingAfter, i
   const [outbox, setAll] = useState<Record<string, Outgoing[]>>(initialOutbox);
   const setOutbox = useCallback((roomId: string, update: (list: Outgoing[]) => Outgoing[]) => setAll(all => ({ ...all, [roomId]: update(all[roomId] ?? []) })), []);
   const outboxState = useMemo(() => ({ outbox, setOutbox }), [outbox, setOutbox]);
-  return <QueryClientProvider client={client}>
-    <ThreadApiContext value={server}>
-      <OutboxContext value={outboxState}><RouterProvider router={router} /></OutboxContext>
-    </ThreadApiContext>
-  </QueryClientProvider>;
+  return (
+    <QueryClientProvider client={client}>
+      <ThreadApiContext value={server}>
+        <OutboxContext value={outboxState}><RouterProvider router={router} /></OutboxContext>
+      </ThreadApiContext>
+    </QueryClientProvider>
+  );
 }

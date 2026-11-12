@@ -41,10 +41,7 @@ const VerifyMove: Sample = {
     await userEvent.click(within(dialog).getByRole("button", { name: "옮기기" }));
     await waitFor(() => expect(within(dialog).getAllByText("옮길 폴더를 골라 주세요.").length).toBeGreaterThan(0));
     await userEvent.click(within(dialog).getByRole("combobox", { name: /옮길 폴더/ }));
-    // Astryx 0.7 메뉴는 손을 뗀 좌표 아래의 행을 고른다(useMenuPress). 실제 브라우저의 마우스로는 고를 수 있으나
-    // 테스트 실행기의 클릭은 그 판정에 맞지 않아, Astryx가 함께 보장하는 키보드로 마지막 폴더를 고른다.
-    await page.findByRole("option", { name: "내 폴더 / 보관함" });
-    await userEvent.keyboard("{End}{Enter}");
+    await userEvent.click(await page.findByRole("option", { name: "내 폴더 / 보관함" }));
     await expect(within(dialog).getByRole("combobox", { name: /옮길 폴더/ })).toHaveTextContent("내 폴더 / 보관함");
     await userEvent.click(within(dialog).getByRole("button", { name: "옮기기" }));
     await waitFor(() => expect(page.queryByText("색 기준표.docx", { selector: "p, span" })).not.toBeInTheDocument(), { timeout: 4000 });
@@ -101,7 +98,8 @@ const VerifyPhone: Sample = {
     await expect(page.queryByRole("tree")).not.toBeInTheDocument();
     await userEvent.click(await page.findByRole("link", { name: /문서/ }));
     await expect(await page.findByRole("heading", { level: 1, name: "문서" })).toBeInTheDocument();
-    await userEvent.click(page.getByRole("link", { name: "내 폴더" }));
+    // 앱 바의 ←가 위 폴더로 간다("내 폴더(으)로", 키트 Page는 단추 모양의 링크로 그린다).
+    await userEvent.click(page.getByRole("button", { name: /^내 폴더/ }));
     await expect(await page.findByRole("link", { name: /사진/ })).toBeVisible();
   },
 };

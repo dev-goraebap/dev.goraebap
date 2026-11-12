@@ -1,11 +1,7 @@
-import { HStack } from '@astryxdesign/core/HStack';
-import { LinkProvider } from '@astryxdesign/core/Link';
-import { Text } from '@astryxdesign/core/Text';
-import { icon } from '@/shared/ui/foundations/icons/solar-icon';
-import type { NavSpace } from '@/shared/ui/layouts/app/nav';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
-import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
-import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation, useNavigate } from '@tanstack/react-router';
+import type { NavSpace } from '@/shared/ui/app-shell';
+import { FileTextIcon } from '@/shared/ui/icon';
+import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
+import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useShellLayout } from '../../../catalog/shell-layout';
 import { DocumentEditPage } from '../pages/DocumentEditPage';
@@ -13,20 +9,19 @@ import { DocumentReadPage } from '../pages/DocumentReadPage';
 import { DocumentStoreProvider } from './store';
 
 const space: NavSpace = {
-  id: 'main', title: '문서', sections: [{ title: '문서', isHeaderHidden: true, entries: [{ path: '/documents/spec', label: '시스템 정의서', icon: 'document' }] }],
+  id: 'main', title: '문서', sections: [{ title: '문서', isHeaderHidden: true, entries: [{ path: '/documents/spec', label: '시스템 정의서', icon: FileTextIcon }] }],
 };
 
 function Shell() {
   const layout = useShellLayout();
   const location = useLocation();
-  const navigate = useNavigate();
-  return <LinkProvider component={RouterLink}>
-    <AppFrame space={space} pathname={location.pathname} layout={layout} onNavigate={path => void navigate({ href: path })}
-      brand={isFolded => <HStack gap={2} vAlign="center" paddingInline={2}>{icon('document', true)}{isFolded ? null : <Text weight="semibold">문서 편집기</Text>}</HStack>}
-      footer={<HStack width="100%" paddingInline={2}><Text type="supporting" color="secondary">예제 · 메모리 저장</Text></HStack>}>
+  return (
+    <PlaygroundShell space={space} pathname={location.pathname} layout={layout}
+      brand={isFolded => <span className="flex min-w-0 items-center gap-2"><FileTextIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate font-semibold">문서 편집기</span>}</span>}
+      footer={isFolded => (isFolded ? null : <span className="px-2 text-xs text-muted-foreground">예제 · 메모리 저장</span>)}>
       <Outlet />
-    </AppFrame>
-  </LinkProvider>;
+    </PlaygroundShell>
+  );
 }
 
 function createDocumentRouter(initialPath: string) {

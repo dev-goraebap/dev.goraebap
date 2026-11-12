@@ -1,21 +1,19 @@
-import { celebrate } from '@/shared/ui/foundations/motion/celebrate';
-import { PersonAvatar as Avatar } from '@/shared/ui/foundations/avatar/PersonAvatar';
-import { Button } from '@astryxdesign/core/Button';
-import { HStack } from '@astryxdesign/core/HStack';
-import { Step, Stepper } from '@astryxdesign/core/Stepper';
-import { Text } from '@astryxdesign/core/Text';
-import { TextArea } from '@astryxdesign/core/TextArea';
-import { VStack } from '@astryxdesign/core/VStack';
-import { DatePill, OptionPill } from '@/shared/ui/composites/property/PropertyPill';
-import { PaperForm } from '@/shared/ui/patterns/compose/ComposeForm';
-import { ComposeSurface } from '@/shared/ui/patterns/compose/ComposeSurface';
-import { useDraft } from '@/shared/ui/patterns/compose/draft-store';
+import { useDraft } from '@/shared/lib/draft';
+import { useIsMobile } from '@/shared/lib/use-mobile';
+import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { ComposeSurface } from '@/shared/ui/compose';
+import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
+import { DateCalendar } from '@/shared/ui/date-picker';
+import { CalendarIcon, CheckIcon, FileTextIcon } from '@/shared/ui/icon';
+import { PersonAvatar } from '@/shared/ui/person-avatar';
+import { OptionPill, PropertyPill } from '@/shared/ui/property-pill';
+import { Textarea } from '@/shared/ui/textarea';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
-import { annualBalance, approvalKeys, dayWeekText, defaultLine, leaveKinds, leaveLabel, me, today, useApprovalApi, weekdays,
+import { useReducer, useState, type ReactNode } from 'react';
+import { addDays, annualBalance, approvalKeys, dayWeekText, defaultLine, leaveKinds, leaveLabel, me, today, useApprovalApi, weekdays,
   type LeaveKind, type LinePerson } from '../../entities/approval';
-import { LineEditor } from './LineEditor';
-import styles from './compose.module.css';
+import { LINE_ROW, LineEditor } from './LineEditor';
 
 export type ComposeStep = 'info' | 'line' | 'review';
 const steps: { id: ComposeStep; label: string }[] = [{ id: 'info', label: '정보' }, { id: 'line', label: '결재선' }, { id: 'review', label: '확인' }];
@@ -36,28 +34,84 @@ function checkDraft(draft: Draft) {
   };
 }
 
-/** 첫 빠진 칸으로 초점을 옮긴다. 단계가 바뀌어 그려진 뒤에 찾는다. */
+/** 첫 빠진 칸으로 초점을 옮긴다. 단계가 바뀌어 그려진 뒤에 찾는다(알약은 aria-invalid를 받지 않아 묶음의 첫 버튼으로). */
 const focusInvalid = () => requestAnimationFrame(() => requestAnimationFrame(() => {
-  (document.querySelector<HTMLElement>('[aria-invalid="true"]') ?? document.querySelector<HTMLElement>('[data-invalid-field] button'))?.focus();
+  (document.querySelector<HTMLElement>('[data-invalid-field] button') ?? document.querySelector<HTMLElement>('[aria-invalid="true"]'))?.focus();
 }));
+
+const range = (start: string, end: string) => `${dayWeekText(start)}${start === end ? '' : ` – ${dayWeekText(end)}`}`;
+
+/** 날짜 알약: 오늘 · 내일 · 다음 주를 바로 고르거나 달력에서 고른다(키트 DatePill에 빠른 고르기를 더한 것). */
+function DayPill({ label, value, onChange }: { label: string; value?: string; onChange: (value: string) => void }) {
+  const quick = [{ label: '오늘', day: today }, { label: '내일', day: addDays(today, 1) }, { label: '다음 주', day: addDays(today, 7) }];
+  return (
+    <PropertyPill label={label} icon={<CalendarIcon />} text={value && dayWeekText(value)} width="w-auto">
+      {close => (
+        <div className="flex flex-col gap-2 p-1.5">
+          <div role="group" aria-label="빠른 고르기" className="flex gap-1">
+            {quick.map(each => (
+              <Button key={each.label} variant="secondary" size="sm" className="flex-1 max-md:h-11" onClick={() => { onChange(each.day); close(); }}>{each.label}</Button>
+            ))}
+          </div>
+          <DateCalendar value={value} onChange={day => { onChange(day); close(); }} />
+        </div>
+      )}
+    </PropertyPill>
+  );
+}
+
+/** 양식의 한 부분: 작은 이름 아래 그 칸. */
+function Part({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <section aria-label={label} className="flex flex-col gap-2">
+      <h2 className="text-sm font-semibold text-muted-foreground">{label}</h2>
+      {children}
+    </section>
+  );
+}
+
+/** 단계 표시: 지난 단계는 확인 표시, 지금 단계는 강조. 누르면 그 단계로 간다(값은 초안이 지킨다). */
+function Steps({ current, onGo }: { current: number; onGo: (step: ComposeStep) => void }) {
+  return (
+    <ol aria-label="신청 단계" className="flex flex-wrap items-center gap-1">
+      {steps.map((each, order) => (
+        <li key={each.id} className="flex items-center gap-1">
+          {order > 0 ? <span aria-hidden className="h-px w-4 bg-border" /> : null}
+          <Button variant={order === current ? 'view-active' : 'view'} size="sm" aria-current={order === current ? 'step' : undefined}
+            className="max-md:h-11 max-md:px-3" onClick={() => onGo(each.id)}>
+            <span aria-hidden className={cn('grid size-4 place-items-center rounded-full text-[0.625rem] tabular-nums',
+              order < current ? 'bg-primary text-primary-foreground' : order === current ? 'bg-foreground text-background' : 'ring-1 ring-border')}>
+              {order < current ? <CheckIcon className="size-2.5" /> : order + 1}
+            </span>
+            {each.label}
+          </Button>
+        </li>
+      ))}
+    </ol>
+  );
+}
 
 /**
  * 휴가 신청: 여러 사람의 결정이 걸린 신청이라 단계형이다(정보 → 결재선 → 확인). 단계는 주소의 step이 가지고 값은 라우터 위의 초안이
- * 가진다. 다음은 현재 단계만 검사하고 마지막 제출은 전체를 검사해 빠진 단계로 돌려보낸다. 바닥 줄에는 취소 · 이전 · 다음(제출)만
- * 두고, 남은 연차 같은 안내와 오류는 해당 칸 곁에 둔다.
+ * 가진다. 다음은 현재 단계만 검사하고 마지막 제출은 전체를 검사해 빠진 단계로 돌려보낸다. 바닥 줄에는 이전 · 취소 · 다음(제출)만
+ * 두고, 남은 연차 같은 안내와 오류는 해당 칸 곁에 둔다. 쓴 것이 있으면 취소가 먼저 묻는다.
  */
 export function RequestCompose({ step, onStep, onClose, onDone }: {
   step: ComposeStep; onStep: (step: ComposeStep) => void; onClose: () => void; onDone: (id: string) => void;
 }) {
   const api = useApprovalApi();
   const client = useQueryClient();
+  const isMobile = useIsMobile();
   const [draft, setDraft, clearDraft] = useDraft<Draft>('approval:new', initial);
-  const set = (patch: Partial<Draft>) => setDraft({ ...draft, ...patch });
+  // 키트 DraftProvider는 맥락 값을 고정해(useMemo) 초안을 바꿔도 이 양식이 다시 그려지지 않는다. 고칠 때까지 스스로 다시 그린다.
+  const [, redraw] = useReducer((count: number) => count + 1, 0);
+  const set = (patch: Partial<Draft>) => { setDraft({ ...draft, ...patch }); redraw(); };
   const [isTried, setTried] = useState(false);
+  const [isLeaving, setLeaving] = useState(false);
   const checked = checkDraft(draft);
   const save = useMutation({
     mutationFn: () => api.create({ kind: draft.kind, start: draft.start!, end: draft.end!, reason: draft.reason.trim(), line: draft.line }),
-    onSuccess: saved => { celebrate(document.querySelector('button[type="submit"]') ?? document.activeElement); void client.invalidateQueries({ queryKey: approvalKeys.all }); clearDraft(); onDone(saved.id); },
+    onSuccess: saved => { void client.invalidateQueries({ queryKey: approvalKeys.all }); clearDraft(); onDone(saved.id); },
   });
   const go = (next: ComposeStep) => { setTried(false); onStep(next); };
   const stop = (to?: ComposeStep) => { setTried(true); if (to && to !== step) onStep(to); focusInvalid(); };
@@ -69,60 +123,78 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
     save.mutate();
   };
   const index = steps.findIndex(each => each.id === step);
-  const progress = <Stepper activeStep={index} label="신청 단계" density="compact" onStepClick={next => go(steps[next].id)}>
-    {steps.map((each, order) => <Step key={each.id} step={order} label={each.label} />)}
-  </Stepper>;
-  const range = draft.start && draft.end && !checked.dates
-    ? `${dayWeekText(draft.start)}${draft.start === draft.end ? '' : ` – ${dayWeekText(draft.end)}`} · 평일 ${checked.days}일${draft.kind === 'annual' ? ` · 사용 후 남는 연차 ${annualBalance - checked.days}일` : ''}`
+  const isDirty = JSON.stringify(draft) !== JSON.stringify(initial);
+  const leave = () => { clearDraft(); onClose(); };
+  const summary = draft.start && draft.end && !checked.dates
+    ? `${range(draft.start, draft.end)} · 평일 ${checked.days}일${draft.kind === 'annual' ? ` · 사용 후 남는 연차 ${annualBalance - checked.days}일` : ''}`
     : `남은 연차 ${annualBalance}일`;
   const showDatesError = isTried && !!checked.dates;
-  const parts = step === 'info' ? [
-    { label: '종류와 기간', content: <VStack gap={2}>
-      <HStack gap={1.5} wrap="wrap" vAlign="center" role="group" aria-label="종류와 기간" data-invalid-field={showDatesError ? '' : undefined}>
-        <OptionPill label="종류" icon="document" value={draft.kind} options={leaveKinds.map(each => ({ value: each.id, label: each.label }))}
-          onChange={kind => set({ kind: kind as LeaveKind })} />
-        <DatePill label="시작일" value={draft.start} today={today} onChange={start => set({ start, end: draft.end ?? start })} dateStyle="absolute" isRequired
-          isInvalid={showDatesError && !draft.start} />
-        <DatePill label="종료일" value={draft.end} today={today} onChange={end => set({ end, start: draft.start ?? end })} dateStyle="absolute" isRequired
-          isInvalid={showDatesError && !!draft.start} />
-      </HStack>
-      {showDatesError ? <Text className={styles.error} type="supporting" role="alert">{checked.dates}</Text>
-        : <Text type="supporting" color="secondary" hasTabularNumbers>{range}</Text>}
-    </VStack> },
-    { label: '사유', content: <TextArea label="사유" isLabelHidden rows={5} value={draft.reason} onChange={reason => set({ reason })} placeholder="결재자가 판단할 수 있게 사유와 업무 인수인계를 적어 주세요."
-      status={isTried && checked.reason ? { type: 'error', message: checked.reason } : undefined} /> },
-  ] : step === 'line' ? [
-    { label: '결재선', content: <VStack gap={2}>
-      <Text type="supporting" color="secondary" className={styles.note}>위에서부터 차례로 결재합니다. 앞사람이 승인해야 다음 사람에게 넘어갑니다.</Text>
+  const showReasonError = isTried && !!checked.reason;
+  const parts = step === 'info' ? <>
+    <Part label="종류와 기간">
+      <div role="group" aria-label="종류와 기간" className="flex flex-wrap items-center gap-1.5" data-invalid-field={showDatesError ? '' : undefined}>
+        <OptionPill label="종류" icon={FileTextIcon} value={draft.kind} options={leaveKinds.map(each => ({ value: each.id, label: each.label }))}
+          onChange={kind => set({ kind })} />
+        <DayPill label="시작일" value={draft.start} onChange={start => set({ start, end: draft.end ?? start })} />
+        <DayPill label="종료일" value={draft.end} onChange={end => set({ end, start: draft.start ?? end })} />
+      </div>
+      {showDatesError
+        ? <p role="alert" className="text-sm text-destructive">{checked.dates}</p>
+        : <p className="text-sm text-muted-foreground tabular-nums">{summary}</p>}
+    </Part>
+    <Part label="사유">
+      <Textarea aria-label="사유" rows={5} value={draft.reason} onChange={event => set({ reason: event.target.value })} aria-invalid={showReasonError || undefined}
+        aria-describedby={showReasonError ? 'approval-reason-error' : undefined} placeholder="결재자가 판단할 수 있게 사유와 업무 인수인계를 적어 주세요."
+        className="min-h-32 max-md:text-base" />
+      {showReasonError ? <p id="approval-reason-error" role="alert" className="text-sm text-destructive">{checked.reason}</p> : null}
+    </Part>
+  </> : step === 'line' ? (
+    <Part label="결재선">
+      <p className="text-sm text-muted-foreground">위에서부터 차례로 결재합니다. 앞사람이 승인해야 다음 사람에게 넘어갑니다.</p>
       <LineEditor line={draft.line} onChange={line => set({ line })} error={isTried ? checked.line : undefined} />
-    </VStack> },
-  ] : [
-    { label: '신청 내용', content: <div className={styles.review}>
-      <dl className={styles.summary}>
-        <dt>종류</dt><dd>{leaveLabel(draft.kind)}</dd>
-        <dt>기간</dt><dd>{draft.start && draft.end ? `${dayWeekText(draft.start)}${draft.start === draft.end ? '' : ` – ${dayWeekText(draft.end)}`}` : '정하지 않음'}</dd>
-        <dt>일수</dt><dd>{checked.days}일</dd>
-        <dt>사유</dt><dd>{draft.reason.trim() || '비어 있음'}</dd>
+    </Part>
+  ) : <>
+    <Part label="신청 내용">
+      <dl className="grid grid-cols-1 gap-x-4 gap-y-0.5 text-sm md:grid-cols-[6rem_minmax(0,1fr)] md:gap-y-2">
+        <dt className="text-muted-foreground">종류</dt><dd className="max-md:mb-2">{leaveLabel(draft.kind)}</dd>
+        <dt className="text-muted-foreground">기간</dt><dd className="max-md:mb-2">{draft.start && draft.end ? range(draft.start, draft.end) : '정하지 않음'}</dd>
+        <dt className="text-muted-foreground">일수</dt><dd className="max-md:mb-2">{checked.days}일</dd>
+        <dt className="text-muted-foreground">사유</dt><dd className="min-w-0 [overflow-wrap:anywhere]">{draft.reason.trim() || '비어 있음'}</dd>
       </dl>
-      <HStack><Button label="정보 수정" variant="subtle" size="sm" onClick={() => go('info')} /></HStack>
-    </div> },
-    { label: '결재선', content: <div className={styles.review}>
-      <ol className={styles.line} aria-label="결재 순서">
-        {draft.line.map((person, order) => <li key={person.approver} className={styles.person}>
-          <Text className={styles.order} type="supporting" color="secondary" hasTabularNumbers aria-hidden="true">{order + 1}</Text>
-          <Avatar name={person.approver} size="xsm" shape="circle" /><Text>{person.approver} · {person.role}</Text>
-        </li>)}
+      <div><Button variant="ghost" size="sm" className="max-md:h-11" onClick={() => go('info')}>정보 수정</Button></div>
+    </Part>
+    <Part label="결재선">
+      <ol aria-label="결재 순서" className="flex flex-col border-t">
+        {draft.line.map((person, order) => (
+          <li key={person.approver} className={LINE_ROW}>
+            <span aria-hidden className="w-5 shrink-0 text-center text-sm text-muted-foreground tabular-nums">{order + 1}</span>
+            <PersonAvatar name={person.approver} className="size-6" />
+            <span className="min-w-0 truncate">{person.approver} · {person.role}</span>
+          </li>
+        ))}
       </ol>
-      <Text type="supporting" color="secondary">{me}님이 제출하면 첫 번째 결재자에게 바로 전달됩니다.</Text>
-      <HStack><Button label="결재선 수정" variant="subtle" size="sm" onClick={() => go('line')} /></HStack>
-    </div> },
-  ];
-  return <ComposeSurface surface="page" crumbs={[{ label: '내 신청', href: '/requests', icon: 'document' }, { label: '휴가 신청' }]}
-    isDirty={JSON.stringify(draft) !== JSON.stringify(initial)}
-    onClose={() => { clearDraft(); onClose(); }}
-    previous={step === 'info' ? undefined : { onClick: () => go(steps[index - 1].id) }}
-    error={save.isError ? '제출하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
-    submit={{ label: step === 'review' ? '제출' : '다음', isPending: save.isPending, onSubmit: submit }}>
-    <PaperForm isPage heading="휴가 신청" about={progress} parts={parts} />
-  </ComposeSurface>;
+      <p className="text-sm text-muted-foreground">{me}님이 제출하면 첫 번째 결재자에게 바로 전달됩니다.</p>
+      <div><Button variant="ghost" size="sm" className="max-md:h-11" onClick={() => go('line')}>결재선 수정</Button></div>
+    </Part>
+  </>;
+  return (
+    <>
+      <ComposeSurface surface="page" crumbs={[{ label: '내 신청', href: '/requests', icon: FileTextIcon }, { label: '휴가 신청' }]}
+        onClose={() => (isDirty ? setLeaving(true) : leave())}
+        actions={step === 'info' ? undefined : <Button variant="ghost" onClick={() => go(steps[index - 1].id)}>이전</Button>}
+        error={save.isError ? '제출하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
+        submit={{ label: step === 'review' ? '제출' : '다음', isPending: save.isPending, onSubmit: submit }}>
+        <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-3">
+            {/* 휴대폰은 앱 바가 이름을 보인다. */}
+            {isMobile ? null : <h1 className="text-2xl font-semibold">휴가 신청</h1>}
+            <Steps current={index} onGo={go} />
+          </div>
+          {parts}
+        </div>
+      </ComposeSurface>
+      <ConfirmDialog open={isLeaving} onOpenChange={setLeaving} title="작성 중인 신청을 버릴까요?" description="지금 나가면 입력한 기간 · 사유 · 결재선이 사라집니다."
+        action={{ label: '버리고 나가기', onAction: () => { setLeaving(false); leave(); } }} />
+    </>
+  );
 }

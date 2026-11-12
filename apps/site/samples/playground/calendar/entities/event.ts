@@ -1,9 +1,18 @@
-import type { ISODateString } from '@astryxdesign/core/Calendar';
 import { queryOptions } from '@tanstack/react-query';
 import { createContext, useContext } from 'react';
 
-export type DateKey = ISODateString;
+/** 로컬 날짜 "YYYY-MM-DD". */
+export type DateKey = string;
 export type EventColor = 'blue' | 'green' | 'orange' | 'purple';
+/*
+ * 색 이름 → 일정 막대 · 점의 색 변수: --event-fill(옅은 면)과 --event-ink(그 위 글자 · 점). 표시는 bg-(--event-fill) text-(--event-ink)로 칠한다.
+ */
+export const eventTone: Record<EventColor, string> = {
+  blue: '[--event-fill:var(--event-blue)] [--event-ink:var(--event-blue-foreground)]',
+  green: '[--event-fill:var(--event-green)] [--event-ink:var(--event-green-foreground)]',
+  orange: '[--event-fill:var(--event-orange)] [--event-ink:var(--event-orange-foreground)]',
+  purple: '[--event-fill:var(--event-purple)] [--event-ink:var(--event-purple-foreground)]',
+};
 export const colors: { id: EventColor; label: string }[] = [
   { id: 'blue', label: '파랑' }, { id: 'green', label: '초록' }, { id: 'orange', label: '주황' }, { id: 'purple', label: '보라' },
 ];

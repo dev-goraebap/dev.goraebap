@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE_SETUP, type PageSetup } from '@/shared/ui/composites/document/model';
+import { DEFAULT_PAGE_SETUP, type PageSetup } from '@/shared/ui/document';
 import type { JSONContent } from '@tiptap/react';
 
 const text = (value: string): JSONContent => ({ type: 'text', text: value });

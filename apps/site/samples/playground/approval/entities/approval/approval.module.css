@@ -1,3 +1,0 @@
-.opinion { display: block; padding-block-end: var(--spacing-1); overflow-wrap: anywhere; }
-.rejected { display: inline-grid; place-items: center; inline-size: 1rem; block-size: 1rem; color: var(--color-icon-red); }
-.rejected svg { inline-size: 1rem; block-size: 1rem; }

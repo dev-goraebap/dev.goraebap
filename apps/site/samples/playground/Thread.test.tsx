@@ -38,10 +38,11 @@ const VerifySend: Sample = {
     await userEvent.click(input);
     await userEvent.type(input, "@지");
     await userEvent.click(await page.findByRole("option", { name: /지우/ }));
-    await expect(input).toHaveTextContent("@지우");
+    // 입력 칸은 글 칸(textarea)이라 값으로 확인한다.
+    await expect(input).toHaveValue("@지우 ");
     await userEvent.type(input, "시안 확인했어요");
     await userEvent.click(page.getByRole("button", { name: "보내기" }));
-    await expect(input).toHaveTextContent("");
+    await expect(input).toHaveValue("");
     await expect(await within(log).findByText("시안 확인했어요", { exact: false })).toBeVisible();
     // 내가 보낸 글이면 아래로 따라간다.
     await waitFor(() => expect(scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight).toBeLessThan(4));

@@ -33,9 +33,10 @@ const VerifyOverflow: Sample = {
     const edit = await page.findByRole("button", { name: "수정" });
     // 팝오버·시트가 열리는 동안에는 아직 보이지 않는다.
     await waitFor(() => expect(edit).toBeVisible());
-    await expect(page.getByRole("button", { name: "주", pressed: true })).toBeVisible();
-    await userEvent.click(page.getByRole("button", { name: "월" }));
-    await waitFor(() => expect(page.getByRole("button", { name: "월", pressed: true })).toBeVisible());
+    // 보기는 탭이다: 주 보기가 골라져 있고, 월을 누르면 월 보기로 돌아간다.
+    await expect(page.getByRole("tab", { name: "주", selected: true })).toBeVisible();
+    await userEvent.click(page.getByRole("tab", { name: "월" }));
+    await waitFor(() => expect(page.getByRole("tab", { name: "월", selected: true })).toBeVisible());
   },
 };
 

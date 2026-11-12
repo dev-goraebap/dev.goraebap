@@ -1,6 +1,6 @@
 import type { JSONContent } from '@tiptap/react';
 import { createContext, useContext, useState, type ReactNode } from 'react';
-import { DEFAULT_PAGE_LOOK, type PageLook, type PageSetup } from '@/shared/ui/composites/document/model';
+import { DEFAULT_PAGE_LOOK, type PageLook, type PageSetup } from '@/shared/ui/document';
 import { sampleDocument } from '../mocks/seed';
 
 /** 견본 문서: 제목·본문과 페이지 설정(용지·여백·머리말·바닥글). 본문은 페이지를 모른다. */

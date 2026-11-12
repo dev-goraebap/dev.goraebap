@@ -89,3 +89,6 @@ export const timeText = (value: string) =>
 
 export const titleOf = (approval: Pick<Approval, 'kind' | 'start' | 'end'>) => `${leaveLabel(approval.kind)} ${rangeText(approval.start, approval.end)}`;
 export const daysOf = (approval: Pick<Approval, 'start' | 'end'>) => weekdays(approval.start, approval.end);
+
+/** 날짜(YYYY-MM-DD)에 날을 더한다. 신청 양식의 빠른 고르기(내일 · 다음 주)가 쓴다. */
+export const addDays = (value: string, days: number) => new Date(utc(value).getTime() + days * 86_400_000).toISOString().slice(0, 10);

@@ -7,7 +7,7 @@ import { CalendarApp } from "./calendar/app/CalendarApp";
  */
 const meta = {
   title: "Playground (플레이그라운드)/일정", id: "playground-calendar", component: CalendarApp,
-  layout: "fullscreen", height: "44rem", device: "desktop",
+  layout: "fullscreen", height: "44rem", device: "desktop", kit: "shadcn",
 } satisfies Meta<typeof CalendarApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;
