@@ -1,97 +1,85 @@
-import { Button } from '@astryxdesign/core/Button';
-import { Center } from '@astryxdesign/core/Center';
-import { HStack } from '@astryxdesign/core/HStack';
-import { IconButton } from '@astryxdesign/core/IconButton';
-import { Spinner } from '@astryxdesign/core/Spinner';
-import { Text } from '@astryxdesign/core/Text';
-import { TextInput } from '@astryxdesign/core/TextInput';
-import { VStack } from '@astryxdesign/core/VStack';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { JSONContent } from '@tiptap/react';
-import { RichDraft } from '@/shared/ui/composites/editor/RichDraft';
-import { OptionPill, PropertyPill } from '@/shared/ui/composites/property/PropertyPill';
-import { PageState } from '@/shared/ui/composites/state/PageState';
-import { FileDropzone } from '@/shared/ui/composites/upload/FileDropzone';
-import { icon } from '@/shared/ui/foundations/icons/solar-icon';
-import { Page } from '@/shared/ui/layouts/page/Page';
-import { ComposeForm } from '@/shared/ui/patterns/compose/ComposeForm';
-import { ComposeSurface } from '@/shared/ui/patterns/compose/ComposeSurface';
-import { useDraft } from '@/shared/ui/patterns/compose/draft-store';
-import { focusFirstInvalid } from '@/shared/ui/patterns/compose/validation';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
-import { collections, kinds, resourceKeys, resourceQueries, useResourceApi, type NewResource, type Resource } from '../../entities/resource';
+import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
+import { carryDraft, useCarriedDraft } from '@/shared/lib/panel';
+import { ComposeSurface, FileDropzone, FileList, MB } from '@/shared/ui/compose';
+import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
+import { RichDraft } from '@/shared/ui/editor';
+import { FileTextIcon, FolderIcon, LibraryIcon, LinkIcon, PaperclipIcon } from '@/shared/ui/icon';
+import { Input } from '@/shared/ui/input';
+import { OptionPill, PropertyPill } from '@/shared/ui/property-pill';
+import { collections, kinds, plainText, resourceKeys, useResourceApi, type Resource } from '../../entities/resource';
 
-type Draft = { title: string; body?: JSONContent; kind?: Resource['kind']; collection?: string; url: string; files: string[] };
+type Draft = { title: string; body?: JSONContent; kind: Resource['kind']; collection?: string; url: string; files: File[] };
 const empty: Draft = { title: '', kind: 'document', url: '', files: [] };
+const CARRY = 'resource:new';
+const crumbs = [{ label: '서가', href: '/resources', icon: LibraryIcon }, { label: '새 자료' }];
 
-/** 새 자료와 수정을 같은 양식으로 쓴다. 수정은 저장한 값을 읽은 뒤 연다. */
-export function ResourceCompose({ id, surface, onClose, onExpand, onDone }: {
-  id?: string; surface: 'dialog' | 'page'; onClose: () => void; onExpand?: () => void; onDone: (id: string) => void;
-}) {
-  const api = useResourceApi();
-  const query = useQuery({ ...resourceQueries.detail(api, id ?? ''), enabled: !!id });
-  const crumbs = [{ label: '서가', href: '/resources', icon: 'library' as const }, { label: id ? '자료 수정' : '새 자료' }];
-  if (id && query.isPending) return surface === 'page'
-    ? <Page crumbs={crumbs} isDetail><Center height="100%"><Spinner label="자료를 불러오는 중" /></Center></Page> : null;
-  if (id && query.isError) return <Page crumbs={crumbs} isDetail>
-    <PageState kind="error" title="자료를 불러오지 못했습니다" action={<Button label="다시 시도" variant="secondary" onClick={() => void query.refetch()} />} />
-  </Page>;
-  const initial: Draft = query.data ? { title: query.data.title, body: query.data.body, kind: query.data.kind, collection: query.data.collection, url: query.data.url ?? '', files: query.data.files } : empty;
-  return <ComposeBody key={id ?? 'new'} id={id} initial={initial} crumbs={crumbs} surface={surface} onClose={onClose} onExpand={onExpand} onDone={onDone} />;
-}
-
-function ComposeBody({ id, initial, crumbs, surface, onClose, onExpand, onDone }: {
-  id?: string; initial: Draft; crumbs: { label: string; href?: string; icon?: 'library' }[]; surface: 'dialog' | 'page';
-  onClose: () => void; onExpand?: () => void; onDone: (id: string) => void;
+/**
+ * 새 자료 양식(키트 ComposeSurface): 데스크톱에서 목록의 버튼으로 열면 목록 위 대화상자, 작성 페이지 · 크게 보기 · 휴대폰은 자기 페이지.
+ * 크게 보기는 쓰던 내용(고른 파일까지)을 페이지로 넘긴다(키트 carryDraft). 고친 것이 있는데 닫으면 버릴지 먼저 묻는다
+ * (키트 양식은 묻지 않고 닫으므로 이 앱이 확인을 덧붙인다). 제출 버튼은 막지 않고, 처음 누른 뒤부터 빠진 값을 칸 곁에 알린다.
+ */
+export function ResourceCompose({ surface, onClose, onExpand, onDone }: {
+  surface: 'dialog' | 'page'; onClose: () => void; onExpand?: () => void; onDone: (id: string) => void;
 }) {
   const api = useResourceApi();
   const client = useQueryClient();
-  const [draft, setDraft, clearDraft] = useDraft<Draft>(`resource:${id ?? 'new'}`, initial);
-  const set = (patch: Partial<Draft>) => setDraft({ ...draft, ...patch });
+  const carried = useCarriedDraft<Draft>(CARRY);
+  const [draft, setDraft] = useState<Draft>(() => carried ?? empty);
+  const set = (patch: Partial<Draft>) => setDraft(current => ({ ...current, ...patch }));
+  const [isTried, setTried] = useState(false);
+  const [isLeaving, setLeaving] = useState(false);
   const save = useMutation({
-    mutationFn: (input: NewResource) => id ? api.update(id, input) : api.create(input),
+    mutationFn: () => api.create({ title: draft.title.trim(), body: draft.body ?? { type: 'doc' }, kind: draft.kind, collection: draft.collection!,
+      url: draft.kind === 'link' ? draft.url.trim() : undefined, files: draft.files.map(file => file.name) }),
     onSuccess: saved => {
       void client.invalidateQueries({ queryKey: resourceKeys.all });
-      clearDraft();
       onDone(saved.id);
     },
   });
-  const isDirty = JSON.stringify(draft) !== JSON.stringify(initial);
-  // 제출 버튼은 막지 않는다. 처음 누른 뒤부터 빠진 값을 곁에 알리고 첫 번째로 초점을 옮긴다.
-  const [isTried, setTried] = useState(false);
+  // 본문 칸은 처음 그릴 때 빈 문서를 알려 오므로 본문은 글자로 비교한다.
+  const isDirty = !!(draft.title.trim() || plainText(draft.body).trim() || draft.collection || draft.url.trim() || draft.files.length || draft.kind !== empty.kind);
   const lacks = { title: !draft.title.trim(), collection: !draft.collection, url: draft.kind === 'link' && !draft.url.trim() };
   const lackedPills = [lacks.collection && '컬렉션', lacks.url && '주소'].filter(Boolean);
   const submit = () => {
-    if (lacks.title || lacks.collection || lacks.url || !draft.kind || !draft.collection) { setTried(true); focusFirstInvalid(); return; }
-    save.mutate({ title: draft.title.trim(), body: draft.body ?? { type: 'doc' }, kind: draft.kind,
-      collection: draft.collection, url: draft.kind === 'link' ? draft.url.trim() : undefined, files: draft.files });
+    if (lacks.title || lacks.collection || lacks.url) { setTried(true); focusFirstInvalid(); return; }
+    save.mutate();
   };
-  return <ComposeSurface surface={surface} crumbs={crumbs} isDirty={isDirty}
-    onClose={() => { clearDraft(); onClose(); }} onExpand={onExpand}
-    error={save.isError ? '저장하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
-    submit={{ label: id ? '저장' : '추가하기', isPending: save.isPending, onSubmit: submit }}>
-    <ComposeForm isPage={surface === 'page'} title={draft.title} onTitle={title => set({ title })} titlePlaceholder="자료 제목"
-      titleError={isTried && lacks.title ? '제목을 입력해 주세요.' : undefined}
-      pillsError={isTried && lackedPills.length ? `필수 속성을 정해 주세요: ${lackedPills.join(', ')}` : undefined}
-      body={<RichDraft value={draft.body} onChange={body => set({ body })} isPage={surface === 'page'} placeholder="무엇을 남길지 적어 보세요" />}
+  const leave = onClose;
+  return <>
+    <ComposeSurface surface={surface} crumbs={crumbs} onClose={() => (isDirty ? setLeaving(true) : leave())} onExpand={onExpand && (() => { carryDraft(CARRY, draft); onExpand(); })}
+      error={save.isError ? '저장하지 못했습니다. 입력한 내용은 그대로 있습니다.' : undefined}
+      submit={{ label: '추가하기', isPending: save.isPending, onSubmit: submit }}
       pills={<>
-        <OptionPill label="종류" icon="document" value={draft.kind} options={kinds.map(kind => ({ value: kind.id, label: kind.label, icon: icon(kind.icon) }))}
-          onChange={kind => set({ kind: kind as Resource['kind'] })} />
-        <OptionPill label="컬렉션" icon="folder" isRequired isInvalid={isTried && lacks.collection} value={draft.collection} options={collections.map(each => ({ value: each.id, label: each.name }))}
+        <OptionPill label="종류" icon={FileTextIcon} value={draft.kind} options={kinds.map(kind => ({ value: kind.id, label: kind.label, icon: <kind.icon /> }))}
+          onChange={kind => set({ kind })} />
+        <OptionPill label="컬렉션" icon={FolderIcon} value={draft.collection} options={collections.map(each => ({ value: each.id, label: each.name }))}
           onChange={collection => set({ collection })} />
-        {draft.kind === 'link' ? <PropertyPill label="주소" icon={icon('link', !!draft.url)} isEmpty={!draft.url} isRequired isInvalid={isTried && lacks.url} text={draft.url} width="20rem"
-          content={close => <VStack gap={2}>
-            <TextInput label="주소" placeholder="https://" value={draft.url} hasAutoFocus onChange={url => set({ url })}
+        {draft.kind === 'link' ? <PropertyPill label="주소" icon={<LinkIcon />} text={draft.url || undefined} width="w-80">
+          {close => <div className="p-1.5">
+            <Input aria-label="주소" placeholder="https://" value={draft.url} autoFocus onChange={event => set({ url: event.target.value })}
               onKeyDown={event => { if (event.key === 'Enter') close(); }} />
-          </VStack>} /> : null}
-        <PropertyPill label="첨부" icon={icon('attachment', draft.files.length > 0)} isEmpty={!draft.files.length} text={`첨부 ${draft.files.length}개`} width="20rem"
-          content={() => <VStack gap={2}>
-            <FileDropzone label="파일 올리기" multiple maxBytes={10 * 1024 ** 2} onPick={files => set({ files: [...draft.files, ...files.map(file => file.name)] })} />
-            {draft.files.map(name => <HStack key={name} gap={2} vAlign="center" hAlign="between">
-              <Text maxLines={1}>{name}</Text>
-              <IconButton label={`${name} 빼기`} variant="ghost" size="sm" icon={icon('close')} onClick={() => set({ files: draft.files.filter(each => each !== name) })} />
-            </HStack>)}
-          </VStack>} />
-      </>} />
-  </ComposeSurface>;
+          </div>}
+        </PropertyPill> : null}
+        <PropertyPill label="첨부" icon={<PaperclipIcon />} text={draft.files.length ? `첨부 ${draft.files.length}개` : undefined} width="w-88">
+          {() => <div className="flex flex-col gap-2 p-1">
+            <FileDropzone label="파일 올리기" isMultiple maxBytes={10 * MB} onPick={files => set({ files: [...draft.files, ...files] })} />
+            <FileList label="첨부" files={draft.files} onRemove={file => set({ files: draft.files.filter(each => each !== file) })} />
+          </div>}
+        </PropertyPill>
+        {/* 빠진 속성의 안내는 알약 곁(다음 줄)에 둔다. 바닥 줄에는 동작만 있다. */}
+        {isTried && lackedPills.length ? <p role="alert" className="basis-full text-sm text-destructive">필수 속성을 정해 주세요: {lackedPills.join(', ')}</p> : null}
+      </>}>
+      <input aria-label="제목" placeholder="자료 제목" autoFocus autoComplete="off" value={draft.title} onChange={event => set({ title: event.target.value })}
+        aria-invalid={isTried && lacks.title ? true : undefined} aria-describedby={isTried && lacks.title ? 'resource-title-error' : undefined}
+        className="w-full bg-transparent text-lg leading-snug font-semibold outline-none placeholder:text-muted-foreground/70 group-data-page/compose:text-2xl" />
+      {isTried && lacks.title ? <p id="resource-title-error" className="-mt-2 text-sm text-destructive">제목을 입력해 주세요.</p> : null}
+      <RichDraft value={draft.body} onChange={body => set({ body })} isPage={surface === 'page'} placeholder="무엇을 남길지 적어 보세요" />
+    </ComposeSurface>
+    <ConfirmDialog open={isLeaving} onOpenChange={setLeaving} title="작성 중인 내용을 버릴까요?"
+      description="지금 닫으면 쓰던 제목과 본문, 고른 속성이 사라집니다."
+      action={{ label: '버리기', onAction: () => { setLeaving(false); leave(); } }} />
+  </>;
 }

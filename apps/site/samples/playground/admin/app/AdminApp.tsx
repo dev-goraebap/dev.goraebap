@@ -1,65 +1,63 @@
-import { DraftProvider } from '@/shared/ui/patterns/compose/draft-store';
-import {InviteDialog} from '../pages/users/UserDialogs';
-import { Button } from '@astryxdesign/core/Button';
-import { HStack } from '@astryxdesign/core/HStack';
-import { LinkProvider } from '@astryxdesign/core/Link';
-import { Text } from '@astryxdesign/core/Text';
-import { PageState } from '@/shared/ui/composites/state/PageState';
-import { icon } from '@/shared/ui/foundations/icons/solar-icon';
-import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
-import type { NavSpace } from '@/shared/ui/layouts/app/nav';
-import { Page } from '@/shared/ui/layouts/page/Page';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation, useNavigate,
+import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation, useNavigate,
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useState } from 'react';
+import type { NavSpace } from '@/shared/ui/app-shell';
+import { Button } from '@/shared/ui/button';
+import { SettingsIcon, ShieldCheckIcon, TagIcon, UsersIcon } from '@/shared/ui/icon';
+import { Page } from '@/shared/ui/page';
+import { PageState } from '@/shared/ui/page-state';
+import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';
 import { AdminApiContext, type AdminApi } from '../entities/admin';
 import { createAdminApi } from '../mocks/admin-api';
 import { PermissionsPage } from '../pages/permissions/PermissionsPage';
 import { TagsPage } from '../pages/tags/TagsPage';
-import { UsersPage } from '../pages/users/UsersPage';
 import { validateUsersSearch } from '../pages/users/model';
+import { InviteDialog } from '../pages/users/UserDialogs';
+import { UsersPage } from '../pages/users/UsersPage';
 import { PresetContext, type Preset } from './preset';
-import styles from './app.module.css';
 
 const space: NavSpace = {
   id: 'main', title: '관리', sections: [
     { title: '관리', isHeaderHidden: true, entries: [
-      { path: '/tags', label: '태그', icon: 'tag' },
-      { path: '/users', label: '사용자', icon: 'people' },
-      { path: '/permissions', label: '권한', icon: 'shield' },
+      { path: '/tags', label: '태그', icon: TagIcon },
+      { path: '/users', label: '사용자', icon: UsersIcon },
+      { path: '/permissions', label: '권한', icon: ShieldCheckIcon },
     ] },
   ],
 };
 
-/** 셸: 주소가 메뉴의 현재 항목을 정한다. */
+/** 셸: 주소가 메뉴의 현재 항목을 정한다. 로고는 처음(태그)으로 가는 링크다. */
 function Shell() {
   const layout = useShellLayout();
   const location = useLocation();
-  const navigate = useNavigate();
-  return <LinkProvider component={RouterLink}>
-    <AppFrame space={space} pathname={location.pathname} layout={layout} onNavigate={path => void navigate({ href: path })}
-      brand={isFolded => <a className={styles.brand} href="/tags" aria-label="관리 처음으로" onClick={event => { event.preventDefault(); void navigate({ href: '/tags' }); }}>
-        <HStack gap={2} vAlign="center">{icon('settings', true)}{isFolded ? null : <Text weight="semibold">관리</Text>}</HStack>
-      </a>}>
-      <Outlet />
-    </AppFrame>
-  </LinkProvider>;
+  return <PlaygroundShell space={space} pathname={location.pathname} layout={layout}
+    brand={isFolded => <Link to={'/tags' as string} aria-label="관리 처음으로"
+      className="flex min-w-0 items-center gap-2 rounded-md px-1 font-semibold outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
+      <SettingsIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate">관리</span>}
+    </Link>}>
+    <Outlet />
+  </PlaygroundShell>;
 }
 
 function RouteError({ reset }: ErrorComponentProps) {
-  return <Page crumbs={[{ label: '관리' }]}>
-    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button label="다시 시도" variant="secondary" onClick={reset} />} />
+  return <Page crumbs={[{ label: '관리', icon: SettingsIcon }]}>
+    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
   </Page>;
 }
 
 function NotFound() {
-  return <Page crumbs={[{ label: '관리', href: '/tags' }, { label: '없는 페이지' }]} isDetail>
+  return <Page crumbs={[{ label: '관리', href: '/tags', icon: SettingsIcon }, { label: '없는 페이지' }]} isFullScreen>
     <PageState kind="not-found" title="페이지를 찾을 수 없습니다" description="주소가 바뀌었거나 지워졌을 수 있습니다."
-      action={<Button label="태그로" variant="secondary" href="/tags" />} />
+      action={<Button variant="secondary" nativeButton={false} render={<Link to={'/tags' as string} />}>태그로</Button>} />
   </Page>;
+}
+
+/** 초대 페이지(/users/invite): 링크 · 새로고침 · 크게 보기 · 휴대폰이 여는 자기 주소의 양식. */
+function InviteRoute() {
+  const navigate = useNavigate();
+  return <InviteDialog surface="page" onClose={() => void navigate({ href: '/users' })} />;
 }
 
 const validateTagsSearch = (raw: Record<string, unknown>) => ({
@@ -72,16 +70,16 @@ export function createAdminRouter(initialPath: string) {
   const home = createRoute({ getParentRoute: () => root, path: '/', component: TagsPage, validateSearch: validateTagsSearch });
   const users = createRoute({ getParentRoute: () => root, path: '/users', component: UsersPage, validateSearch: validateUsersSearch });
   const permissions = createRoute({ getParentRoute: () => root, path: '/permissions', component: PermissionsPage });
-  const invite=createRoute({getParentRoute:()=>root,path:'/users/invite',component:function(){const navigate=useNavigate();return <InviteDialog surface="page" onClose={()=>void navigate({href:'/users'})}/>}});
-  return createRouter({unmaskOnReload:true,
-    routeTree: root.addChildren([home, tags, users, permissions,invite]),
+  const invite = createRoute({ getParentRoute: () => root, path: '/users/invite', component: InviteRoute });
+  return createRouter({
+    routeTree: root.addChildren([home, tags, users, permissions, invite]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
-    defaultPreload: 'intent', scrollRestoration: true,
+    unmaskOnReload: true, defaultPreload: 'intent', scrollRestoration: true,
   });
 }
 
 /**
- * 관리 앱의 조립: 조회 캐시, 모의 저장소, 라우터. 견본마다 새로 만들며 메모리 히스토리를 쓴다. 배치(Inset·Split)는
+ * 관리 앱의 조립: 조회 캐시, 모의 저장소, 라우터. 견본마다 새로 만들며 메모리 히스토리를 쓴다. 배치(Inset · Split)는
  * 가이드 머리 줄의 전환을 셸이 따른다.
  */
 export function AdminApp({ api, initialPath = '/tags', preset = {} }: { api?: AdminApi; initialPath?: string; preset?: Preset }) {
@@ -90,7 +88,7 @@ export function AdminApp({ api, initialPath = '/tags', preset = {} }: { api?: Ad
   const [router] = useState(() => createAdminRouter(initialPath));
   return <QueryClientProvider client={client}>
     <AdminApiContext value={repository}>
-      <PresetContext value={preset}><DraftProvider><RouterProvider router={router} /></DraftProvider></PresetContext>
+      <PresetContext value={preset}><RouterProvider router={router} /></PresetContext>
     </AdminApiContext>
   </QueryClientProvider>;
 }

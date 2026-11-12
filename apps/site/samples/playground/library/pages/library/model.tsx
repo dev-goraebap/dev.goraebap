@@ -1,8 +1,9 @@
-import type { Display, DisplayChoice, SortKey } from '@/shared/ui/composites/filter/DisplayMenu';
-import type { ListFilter } from '@/shared/ui/composites/filter/types';
+import type { FilterDef } from '@/shared/ui/filter';
+import { FileTextIcon, UserIcon } from '@/shared/ui/icon';
+import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { authors, collections, kinds, type Resource } from '../../entities/resource';
 
-/** 목록 주소의 검증. 표시 외의 조건(검색·필터·컬렉션)은 여기서, 표시는 useAddressDisplay가 읽는다. */
+/** 목록 주소의 검증. 표시 외의 조건(검색 · 필터 · 컬렉션)은 여기서, 필터 · 표시 값은 키트의 useAddressFilters · useAddressChoices가 읽는다. */
 export type LibrarySearch = { q?: string; collection?: string; starred?: boolean; panel?: string };
 export function validateLibrarySearch(raw: Record<string, unknown>): Record<string, unknown> & LibrarySearch {
   return {
@@ -14,22 +15,26 @@ export function validateLibrarySearch(raw: Record<string, unknown>): Record<stri
   };
 }
 
-export const filters: ListFilter[] = [
-  { key: 'kind', label: '종류', icon: 'document', isMultiple: true, options: kinds.map(kind => ({ value: kind.id, label: kind.label })) },
-  { key: 'author', label: '작성자', icon: 'user', isMultiple: true, options: authors.map(name => ({ value: name, label: name })) },
+export type FilterKey = 'kind' | 'author';
+export const filterKeys: FilterKey[] = ['kind', 'author'];
+export const filters: FilterDef<FilterKey>[] = [
+  { key: 'kind', label: '종류', icon: FileTextIcon, options: kinds.map(kind => ({ value: kind.id, label: kind.label, icon: <kind.icon className="text-icon-muted" /> })) },
+  { key: 'author', label: '작성자', icon: UserIcon, options: authors.map(name => ({ value: name, label: name, icon: <PersonAvatar name={name} /> })) },
 ];
 
-export const layouts: DisplayChoice[] = [
-  { id: 'list', label: '리스트', icon: 'layout-list' },
-  { id: 'grid', label: '그리드', icon: 'layout-grid' },
-  { id: 'table', label: '표', icon: 'layout-table' },
-];
-export const sorts: SortKey[] = [{ id: 'updated', label: '수정일', kind: 'date' }, { id: 'title', label: '제목', kind: 'text' }];
-export const groups: DisplayChoice[] = [{ id: 'none', label: '없음' }, { id: 'kind', label: '종류' }, { id: 'collection', label: '컬렉션' }];
+/** 표시(하나씩 고르는 묶음). 주소에는 처음과 다른 값만 남는다(?layout=grid&sort=title). */
+export type Display = { layout: 'list' | 'grid' | 'table'; sort: 'updated' | 'title'; direction: 'desc' | 'asc'; group: 'none' | 'kind' | 'collection' };
 export const initialDisplay: Display = { layout: 'list', sort: 'updated', direction: 'desc', group: 'none' };
+export const layouts: { value: Display['layout']; label: string }[] = [{ value: 'list', label: '리스트' }, { value: 'grid', label: '그리드' }, { value: 'table', label: '표' }];
+export const sorts: { value: Display['sort']; label: string }[] = [{ value: 'updated', label: '수정일' }, { value: 'title', label: '제목' }];
+export const directions: { value: Display['direction']; label: string }[] = [{ value: 'desc', label: '내림차순' }, { value: 'asc', label: '오름차순' }];
+export const groups: { value: Display['group']; label: string }[] = [{ value: 'none', label: '없음' }, { value: 'kind', label: '종류' }, { value: 'collection', label: '컬렉션' }];
+export const allowedDisplay = {
+  layout: layouts.map(each => each.value), sort: sorts.map(each => each.value), direction: directions.map(each => each.value), group: groups.map(each => each.value),
+};
 
 /** 화면 상태가 아닌 조회 결과에 조건을 적용한다. 큰 목록은 서버가 거른다. */
-export function visibleResources(items: Resource[], { q, collection, starred }: LibrarySearch, state: Record<string, string[]>, display: Display) {
+export function visibleResources(items: Resource[], { q, collection, starred }: LibrarySearch, state: Partial<Record<FilterKey, string[]>>, display: Display) {
   const needle = q?.trim().toLowerCase();
   const kept = items.filter(item => (!collection || item.collection === collection) && (!starred || item.starred)
     && (!needle || `${item.title} ${item.summary}`.toLowerCase().includes(needle))

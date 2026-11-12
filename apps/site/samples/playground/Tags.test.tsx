@@ -46,7 +46,7 @@ const VerifyRemove: Sample = {
 };
 
 const VerifyPhone: Sample = {
-  name: "휴대폰 추가 FAB·전체 화면 양식 검증",
+  name: "휴대폰 추가 FAB·바텀시트 양식 검증",
   args: { initialPath: "/tags" },
   device: "phone",
   play: async ({ canvasElement }) => {
@@ -55,7 +55,7 @@ const VerifyPhone: Sample = {
     await userEvent.click(page.getByRole("button", { name: "태그 추가" }));
     const dialog = await page.findByRole("dialog", { name: "새 태그" });
     await userEvent.click(within(dialog).getByRole("button", { name: "추가하기" }));
-    await expect(await within(dialog).findByText("태그 이름을 입력해 주세요.", { ignore: "script, style, [data-astryx-modal-live-region]" })).toBeInTheDocument();
+    await expect(await within(dialog).findByText("태그 이름을 입력해 주세요.")).toBeInTheDocument();
   },
 };
 

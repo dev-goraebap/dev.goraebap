@@ -1,5 +1,5 @@
 import type { JSONContent } from '@tiptap/react';
-import type { IconName } from '@/shared/ui/foundations/icons/solar-icon';
+import { FileTextIcon, ImageIcon, LinkIcon, type Icon } from '@/shared/ui/icon';
 
 export type ResourceKind = 'link' | 'document' | 'image';
 export type Resource = {
@@ -17,10 +17,10 @@ export type Resource = {
 };
 export type NewResource = Pick<Resource, 'title' | 'body' | 'kind' | 'collection' | 'url' | 'files'>;
 
-export const kinds: { id: ResourceKind; label: string; icon: IconName }[] = [
-  { id: 'document', label: '문서', icon: 'document' },
-  { id: 'link', label: '링크', icon: 'link' },
-  { id: 'image', label: '이미지', icon: 'image' },
+export const kinds: { id: ResourceKind; label: string; icon: Icon }[] = [
+  { id: 'document', label: '문서', icon: FileTextIcon },
+  { id: 'link', label: '링크', icon: LinkIcon },
+  { id: 'image', label: '이미지', icon: ImageIcon },
 ];
 export const kindOf = (id: ResourceKind) => kinds.find(kind => kind.id === id)!;
 
