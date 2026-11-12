@@ -1,6 +1,0 @@
-/* 메뉴 행은 팝오버 자체 여백 안에서 8px 들여 쓴다. */
-.row { padding-inline: var(--spacing-2); }
-@media (width < 64rem) {
-  .row { min-block-size: 3rem; }
-  .row svg { flex: none; inline-size: 1.25rem; block-size: 1.25rem; }
-}

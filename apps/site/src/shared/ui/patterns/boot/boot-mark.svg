@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" fill="none" aria-hidden="true">
-  <!-- 중립 기본 그림: 앱 창 하나. 제품은 자기 표시로 바꾼다. 선은 보조 글자색, 면은 페이지 면 색으로 칠한다. -->
-  <rect x="28" y="38" width="104" height="84" rx="12" fill="rgb(254,254,255)" stroke="rgb(0,0,0)" stroke-width="3" />
-  <path d="M28 58h104" stroke="rgb(0,0,0)" stroke-width="3" />
-  <circle cx="42" cy="48" r="3" fill="rgb(0,0,0)" />
-  <circle cx="52" cy="48" r="3" fill="rgb(0,0,0)" />
-  <path d="M46 76h44M46 90h68M46 104h36" stroke="rgb(0,0,0)" stroke-width="3" stroke-linecap="round" />
-</svg>
