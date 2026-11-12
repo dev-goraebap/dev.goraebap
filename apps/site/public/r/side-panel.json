@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "side-panel",
+  "title": "옆 패널",
+  "description": "목록 옆에서 줄 하나의 사실을 보는 패널(WithPanel): 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트. Facts는 이름과 값 목록.",
+  "registryDependencies": [
+    "utils",
+    "@webcraft/button",
+    "@webcraft/drawer",
+    "@webcraft/icon",
+    "@webcraft/theme",
+    "@webcraft/use-mobile"
+  ],
+  "files": [
+    {
+      "path": "src/shared/ui/side-panel/WithPanel.tsx",
+      "content": "import type { ReactNode } from \"react\"\nimport { useIsMobile } from \"@/shared/lib/use-mobile\"\nimport { cn } from \"@/shared/lib/utils\"\nimport { Button } from \"@/shared/ui/button\"\nimport { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from \"@/shared/ui/drawer\"\nimport { XIcon } from \"@/shared/ui/icon\"\n\ntype WithPanelProps = {\n  title?: string\n  subtitle?: string\n  /** 패널 내용(Facts 등). 없으면 목록만. */\n  panel?: ReactNode\n  /** 데스크톱 패널 폭(Tailwind 폭 클래스). 기본 26rem. */\n  width?: string\n  /** 패널 끝의 동작(자기 페이지로 · 수정). */\n  footer?: ReactNode\n  onClose: () => void\n  /** 목록(Page). */\n  children: ReactNode\n}\n\n/**\n * 목록 옆에서 줄 하나의 사실을 보는 패널(주소가 필요 없는 짧은 조회: 기록 · 로그 한 줄). 데스크톱은 오른쪽 패널(제목 · 부제 · 닫기),\n * 휴대폰은 아래에서 올라오는 바텀시트. 편집이나 긴 내용은 자기 주소를 가진 상세(DetailSurface · PeekPanel)로 연다.\n */\nexport function WithPanel({ title, subtitle, panel, width = \"w-[26rem]\", footer, onClose, children }: WithPanelProps) {\n  const isMobile = useIsMobile()\n  if (isMobile) {\n    return (\n      <>\n        {children}\n        <Drawer open={Boolean(panel)} onOpenChange={isOpen => { if (!isOpen) onClose() }}>\n          <DrawerContent>\n            <DrawerHeader className=\"gap-0.5 px-4 pt-4 pb-2 text-left\">\n              <DrawerTitle className=\"text-base font-semibold\">{title ?? \"자세히\"}</DrawerTitle>\n              {subtitle && <DrawerDescription>{subtitle}</DrawerDescription>}\n            </DrawerHeader>\n            <div className=\"flex min-h-0 flex-col gap-4 overflow-y-auto px-4 pb-[calc(1.25rem+env(safe-area-inset-bottom))]\">\n              {panel}\n              {footer}\n            </div>\n          </DrawerContent>\n        </Drawer>\n      </>\n    )\n  }\n  return (\n    <div data-slot=\"with-panel\" className=\"flex min-h-0 min-w-0 flex-1\">\n      <div className=\"flex min-w-0 flex-1 flex-col\">{children}</div>\n      {panel && (\n        <aside aria-label={title ?? \"자세히\"} className={cn(\"flex max-w-[50%] shrink-0 flex-col gap-4 overflow-y-auto border-l bg-background p-4\", width)}>\n          <div className=\"flex items-start justify-between gap-2\">\n            <div className=\"flex min-w-0 flex-col\">\n              <h2 className=\"text-sm font-semibold break-keep\">{title}</h2>\n              {subtitle && <p className=\"text-sm text-muted-foreground\">{subtitle}</p>}\n            </div>\n            <Button variant=\"ghost\" size=\"icon-sm\" aria-label=\"닫기\" title=\"닫기\" onClick={onClose} className=\"-mt-1 -mr-1\"><XIcon /></Button>\n          </div>\n          {panel}\n          {footer}\n        </aside>\n      )}\n    </div>\n  )\n}\n\n/** 이름과 값의 사실 목록: 데스크톱은 두 열, 휴대폰은 이름 아래 값. 긴 값(주소 · 해시)은 어디서든 줄을 바꾼다. */\nexport function Facts({ facts }: { facts: [string, ReactNode][] }) {\n  return (\n    <dl className=\"m-0 grid grid-cols-1 gap-x-4 text-sm md:grid-cols-[max-content_minmax(0,1fr)] md:gap-y-2\">\n      {facts.map(([label, value]) => (\n        <div key={label} className=\"contents\">\n          <dt className=\"text-muted-foreground\">{label}</dt>\n          <dd className=\"m-0 min-w-0 wrap-anywhere max-md:mb-2\">{value}</dd>\n        </div>\n      ))}\n    </dl>\n  )\n}\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/side-panel/WithPanel.tsx"
+    },
+    {
+      "path": "src/shared/ui/side-panel/index.ts",
+      "content": "export { Facts, WithPanel } from \"./WithPanel\"\n",
+      "type": "registry:ui",
+      "target": "src/shared/ui/side-panel/index.ts"
+    }
+  ],
+  "type": "registry:ui"
+}

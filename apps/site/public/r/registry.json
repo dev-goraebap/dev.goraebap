@@ -836,7 +836,9 @@
         "@webcraft/icon",
         "@webcraft/input-group",
         "@webcraft/person-avatar",
-        "@webcraft/theme"
+        "@webcraft/theme",
+        "@webcraft/action-menu",
+        "@webcraft/confirm-dialog"
       ],
       "files": [
         {
@@ -1616,6 +1618,314 @@
           "path": "src/shared/ui/tooltip.tsx",
           "type": "registry:ui",
           "target": "src/shared/ui/tooltip.tsx"
+        }
+      ]
+    },
+    {
+      "name": "app-shell",
+      "type": "registry:ui",
+      "title": "앱 셸",
+      "description": "메뉴를 데이터(NavSpace: 묶음 · 항목 · 아래 줄 · 돌아가기 · 수)로 받는 앱 틀. 데스크톱은 220~380px로 끌어 조절하고 아이콘만으로 접는 사이드바와 inset · split 본문, 휴대폰은 앞 네 곳의 하단 탭과 더보기 바텀시트. 로고 · 나(내 메뉴) · 도구 · 바닥 줄(AgentBar)은 자리로 받는다.",
+      "dependencies": [
+        "@base-ui/react@^1.9.0",
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "registryDependencies": [
+        "utils",
+        "@webcraft/avatar",
+        "@webcraft/button",
+        "@webcraft/drawer",
+        "@webcraft/dropdown-menu",
+        "@webcraft/icon",
+        "@webcraft/page",
+        "@webcraft/sidebar",
+        "@webcraft/skeleton",
+        "@webcraft/theme",
+        "@webcraft/tooltip",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/app-shell/AgentBar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/AgentBar.tsx"
+        },
+        {
+          "path": "src/shared/ui/app-shell/AppShell.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/AppShell.tsx"
+        },
+        {
+          "path": "src/shared/ui/app-shell/MeMenu.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/MeMenu.tsx"
+        },
+        {
+          "path": "src/shared/ui/app-shell/MobileTabBar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/MobileTabBar.tsx"
+        },
+        {
+          "path": "src/shared/ui/app-shell/ShellSidebar.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/ShellSidebar.tsx"
+        },
+        {
+          "path": "src/shared/ui/app-shell/SidebarResizeHandle.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/SidebarResizeHandle.tsx"
+        },
+        {
+          "path": "src/shared/ui/app-shell/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/index.ts"
+        },
+        {
+          "path": "src/shared/ui/app-shell/nav.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/app-shell/nav.ts"
+        }
+      ]
+    },
+    {
+      "name": "use-peek",
+      "type": "registry:hook",
+      "title": "usePeek",
+      "description": "목록 옆 미리보기의 대상을 ?peek=ID로 주소에 둔다: 처음 열면 기록을 쌓고 옮기면 바꾸며, 닫기는 연 기록이면 뒤로 간다. 휴대폰은 대상 페이지로 옮긴다.",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "registryDependencies": [
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/lib/use-peek.ts",
+          "type": "registry:hook",
+          "target": "src/shared/lib/use-peek.ts"
+        }
+      ]
+    },
+    {
+      "name": "peek",
+      "type": "registry:ui",
+      "title": "목록 옆 미리보기",
+      "description": "PeekLayout · PeekPanel(작업 목록 옆 45% 비모달 미리보기), InboxLayout · InboxPane(처리 목록의 끌어 조절하는 두 칸과 빈 상태), usePeekRows(줄 누르기 · Space · ↑↓). Esc로 닫고 초점을 그 줄로 돌린다.",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/page-state",
+        "@webcraft/pane-resize-handle",
+        "@webcraft/theme",
+        "@webcraft/use-mobile",
+        "@webcraft/use-peek"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/peek/InboxLayout.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/peek/InboxLayout.tsx"
+        },
+        {
+          "path": "src/shared/ui/peek/PeekPanel.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/peek/PeekPanel.tsx"
+        },
+        {
+          "path": "src/shared/ui/peek/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/peek/index.ts"
+        },
+        {
+          "path": "src/shared/ui/peek/use-peek-close.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/peek/use-peek-close.ts"
+        },
+        {
+          "path": "src/shared/ui/peek/use-peek-rows.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/peek/use-peek-rows.ts"
+        }
+      ]
+    },
+    {
+      "name": "side-panel",
+      "type": "registry:ui",
+      "title": "옆 패널",
+      "description": "목록 옆에서 줄 하나의 사실을 보는 패널(WithPanel): 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트. Facts는 이름과 값 목록.",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/button",
+        "@webcraft/drawer",
+        "@webcraft/icon",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/side-panel/WithPanel.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/side-panel/WithPanel.tsx"
+        },
+        {
+          "path": "src/shared/ui/side-panel/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/side-panel/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "reorder",
+      "type": "registry:ui",
+      "title": "순서 바꾸기",
+      "description": "useRowReorder: 손잡이를 끌거나 Alt + ↑/↓로 줄 순서를 바꾼다(따라오는 복사본 · 이웃 줄 미끄러짐 · 끝에서 스크롤 · Esc 취소 · 마지막 순서만 저장 · 화면 낭독기 알림). ReorderGrip · ReorderAnnouncer · reorderRowClass.",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/reorder/Reorder.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reorder/Reorder.tsx"
+        },
+        {
+          "path": "src/shared/ui/reorder/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reorder/index.ts"
+        },
+        {
+          "path": "src/shared/ui/reorder/order.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reorder/order.ts"
+        },
+        {
+          "path": "src/shared/ui/reorder/use-row-reorder.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/reorder/use-row-reorder.ts"
+        }
+      ]
+    },
+    {
+      "name": "draft",
+      "type": "registry:lib",
+      "title": "초안 저장소",
+      "description": "DraftProvider · useDraft: 양식이 다시 마운트되어도(분기점 · 대화상자 ↔ 페이지 · 다른 화면에 다녀오기) 초안이 남는 메모리 저장소. 라우터보다 위에 둔다.",
+      "files": [
+        {
+          "path": "src/shared/lib/draft.tsx",
+          "type": "registry:lib",
+          "target": "src/shared/lib/draft.tsx"
+        }
+      ]
+    },
+    {
+      "name": "focus-invalid",
+      "type": "registry:lib",
+      "title": "focusFirstInvalid",
+      "description": "제출 검사에서 빠진 첫 칸(aria-invalid)으로 초점을 옮긴다.",
+      "files": [
+        {
+          "path": "src/shared/lib/focus-invalid.ts",
+          "type": "registry:lib",
+          "target": "src/shared/lib/focus-invalid.ts"
+        }
+      ]
+    },
+    {
+      "name": "list-address",
+      "type": "registry:lib",
+      "title": "목록 조건의 주소",
+      "description": "찾는 말(useAddressWords, 300ms 뒤 주소로) · 필터(useAddressFilters, useFilters의 state에 넘긴다) · 표시(useAddressChoices)를 기록을 쌓지 않고 주소에 두고, 기본값은 주소에서 뺀다.",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "files": [
+        {
+          "path": "src/shared/lib/list-address.ts",
+          "type": "registry:lib",
+          "target": "src/shared/lib/list-address.ts"
+        }
+      ]
+    },
+    {
+      "name": "body-edit",
+      "type": "registry:ui",
+      "title": "본문 수정 화면",
+      "description": "BodyEditPage: 제목과 본문만 고치는 …/edit 화면. 데스크톱은 머리 줄의 저장 상태 · 저장 · 취소 · 완료, 휴대폰은 전체 화면과 바닥 줄. Ctrl/⌘+S 저장, 고친 것이 있으면 취소 전에 묻는다. 본문 칸은 앱의 에디터를 renderBody로 넣는다.",
+      "registryDependencies": [
+        "@webcraft/alert",
+        "@webcraft/button",
+        "@webcraft/confirm-dialog",
+        "@webcraft/icon",
+        "@webcraft/page",
+        "@webcraft/spinner",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/body-edit/BodyEditPage.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/body-edit/BodyEditPage.tsx"
+        },
+        {
+          "path": "src/shared/ui/body-edit/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/body-edit/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "router-anchor",
+      "type": "registry:ui",
+      "title": "RouterAnchor",
+      "description": "주소(href)만 아는 링크(Markdown · MDX 본문, 서버가 준 HTML)를 라우터로 옮긴다. 보조 키 · 새 창 · 다른 사이트는 브라우저에 맡긴다. 키트 부품은 render(<Link />)로 이어지므로 LinkProvider 같은 전역 연결은 없다.",
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/router-anchor.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/router-anchor.tsx"
+        }
+      ]
+    },
+    {
+      "name": "boot-cover",
+      "type": "registry:ui",
+      "title": "첫 방문 덮개",
+      "description": "BootCover와 index.html에 같은 덮개를 미리 넣는 Vite 플러그인(boot-cover/plugin의 bootCover). 앱 스크립트 전에도 토큰과 같은 색(라이트 · 다크)으로 그림과 '불러오는 중입니다'를 보이고, 첫 경로가 준비되면 걷는다.",
+      "docs": "vite.config.ts에 bootCover()를 더합니다: import { bootCover } from './src/shared/ui/boot-cover/plugin'. 앱 루트에 <BootCover isReady={…} />를 두고 첫 경로가 풀리면 isReady를 켭니다. 토큰 색을 바꾸면 plugin.ts의 BOOT_COLORS도 맞춥니다.",
+      "registryDependencies": [
+        "utils",
+        "@webcraft/theme"
+      ],
+      "files": [
+        {
+          "path": "src/shared/ui/boot-cover/BootCover.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/boot-cover/BootCover.tsx"
+        },
+        {
+          "path": "src/shared/ui/boot-cover/boot-mark.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/boot-cover/boot-mark.ts"
+        },
+        {
+          "path": "src/shared/ui/boot-cover/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/boot-cover/index.ts"
+        },
+        {
+          "path": "src/shared/ui/boot-cover/plugin.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/boot-cover/plugin.ts"
         }
       ]
     }

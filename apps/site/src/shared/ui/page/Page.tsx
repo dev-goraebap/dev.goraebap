@@ -23,6 +23,8 @@ type PageProps = {
   below?: ReactNode
   /** 상세 · 양식 페이지: 휴대폰에서 전체 화면(하단 탭 없이, 앱 바는 ← · 제목 · 페이지 메뉴만). */
   isFullScreen?: boolean
+  /** 휴대폰 앱 바 ←를 위 단계 링크 대신 이 함수로 둔다(고친 것을 버릴지 먼저 묻는 수정 화면). */
+  onBack?: () => void
   children: ReactNode
 }
 
@@ -30,13 +32,13 @@ type PageProps = {
  * 목록 같은 상위 페이지의 틀(호호코워크 Page). 데스크톱: 52px 머리 줄(경로 · 동작 · 만들기) + 44px 툴바(뷰 · 도구).
  * 휴대폰: 52px 앱 바(뒤로 · 제목 · 공통 도구) + 52px 도구 줄, 만들기는 FAB. 본문은 남은 높이를 채우고 스스로 스크롤한다.
  */
-export function Page({ crumbs, actions, create, views, tools, below, isFullScreen = false, children }: PageProps) {
+export function Page({ crumbs, actions, create, views, tools, below, isFullScreen = false, onBack, children }: PageProps) {
   const isMobile = useIsMobile()
   useFullScreen(isMobile && isFullScreen)
   const hasToolbar = Boolean(views || tools)
   return (
     <div data-slot="page" className="flex min-h-0 flex-1 flex-col">
-      {isMobile ? <PageAppBar crumbs={crumbs} actions={actions} isFullScreen={isFullScreen} /> : <PageHeader crumbs={crumbs} actions={actions} create={create} />}
+      {isMobile ? <PageAppBar crumbs={crumbs} actions={actions} isFullScreen={isFullScreen} onBack={onBack} /> :<PageHeader crumbs={crumbs} actions={actions} create={create} />}
       {hasToolbar && (
         <div data-slot="page-toolbar" className="flex h-13 shrink-0 items-center gap-2 border-b px-4 md:h-11">
           <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto [scrollbar-width:none]">{views}</div>
@@ -94,13 +96,17 @@ function PageHeader({ crumbs, actions, create }: Pick<PageProps, "crumbs" | "act
 }
 
 /** 휴대폰 앱 바: 위 단계가 있으면 ←, 이 페이지 이름, 페이지 메뉴, 오른쪽에 공통 도구(전체 화면이면 없음). */
-function PageAppBar({ crumbs, actions, isFullScreen }: Pick<PageProps, "crumbs" | "actions" | "isFullScreen">) {
+function PageAppBar({ crumbs, actions, isFullScreen, onBack }: Pick<PageProps, "crumbs" | "actions" | "isFullScreen" | "onBack">) {
   const { tools: chrome } = usePageChrome()
   const current = crumbs[crumbs.length - 1]
   const parent = [...crumbs].slice(0, -1).reverse().find(crumb => crumb.href)
   return (
     <header data-slot="page-app-bar" className="flex h-13 shrink-0 items-center gap-1 border-b px-2">
-      {parent?.href ? (
+      {onBack ? (
+        <Button variant="ghost" size="icon" aria-label={parent ? `${parent.label}(으)로` : "뒤로"} onClick={onBack}>
+          <ArrowLeftIcon />
+        </Button>
+      ) : parent?.href ? (
         <Button variant="ghost" size="icon" aria-label={`${parent.label}(으)로`} nativeButton={false} render={<Link to={parent.href} />}>
           <ArrowLeftIcon />
         </Button>

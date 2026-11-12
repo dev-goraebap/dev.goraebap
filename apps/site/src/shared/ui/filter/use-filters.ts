@@ -10,10 +10,21 @@ export type FilterState<K extends string> = Partial<Record<K, string[]>>
 /**
  * 목록 페이지의 필터 상태(호호코워크 useFilters): 고른 값, 데스크톱 칩 줄에 보이는 필터(걸렸거나 막 더해 아직 빈 것),
  * 필터 메뉴(열림과 어느 필터의 값 단계인지). 무엇으로 거르는지(defs)는 페이지가 정한다.
+ * 고른 값을 주소에 두려면 state · onStateChange를 넘긴다(lib/list-address의 useAddressFilters). 칩 줄에는 걸린 필터가 늘 보인다.
  */
-export function useFilters<K extends string>(defs: readonly FilterDef<K>[]) {
-  const [state, setState] = useState<FilterState<K>>({})
-  const [shown, setShown] = useState<K[]>([])
+export function useFilters<K extends string>(defs: readonly FilterDef<K>[], controlled?: {
+  state: FilterState<K>; onStateChange: (next: FilterState<K>) => void
+}) {
+  const [ownState, setOwnState] = useState<FilterState<K>>({})
+  const state = controlled?.state ?? ownState
+  const setState = (update: (current: FilterState<K>) => FilterState<K>) => {
+    if (controlled) controlled.onStateChange(update(controlled.state))
+    else setOwnState(update)
+  }
+  const [ownShown, setShown] = useState<K[]>([])
+  // 주소에서 온 조건은 칩 줄에 늘 보인다(막 더해 아직 빈 필터는 화면 상태로 덧붙는다).
+  const applied = defs.filter(def => (state[def.key]?.length ?? 0) > 0).map(def => def.key)
+  const shown = [...applied.filter(key => !ownShown.includes(key)), ...ownShown]
   const [menu, setMenu] = useState<{ isOpen: boolean; step?: K }>({ isOpen: false })
   const show = (key: K) => setShown(current => (current.includes(key) ? current : [...current, key]))
   const change = (key: K, values: string[]) => {
@@ -31,7 +42,7 @@ export function useFilters<K extends string>(defs: readonly FilterDef<K>[]) {
       return { shown: names.slice(0, 2).join(", "), more: Math.max(0, names.length - 2) }
     },
     remove: (key: K) => { change(key, []); setShown(current => current.filter(each => each !== key)) },
-    clear: () => { setState({}); setShown([]) },
+    clear: () => { setState(() => ({})); setShown([]) },
   }
 }
 
