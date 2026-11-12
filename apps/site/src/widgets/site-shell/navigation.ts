@@ -1,9 +1,24 @@
 import { architectureSections, contentGroups, skillGroups } from 'virtual:guide-docs';
 import { docs } from '@/entities/document';
-import type { IconName } from '@/shared/ui/foundations/icons/solar-icon';
-import type { NavEntry, NavSpace } from '@/shared/ui/layouts/app/nav';
+import type { NavEntry, NavSpace } from '@/shared/ui/app-shell';
+import {
+  ArchiveIcon, BookIcon, ClockIcon, CopyIcon, EyeIcon, FileTextIcon, GripIcon, HomeIcon, KanbanSquareIcon, LayoutGridIcon, LibraryIcon,
+  LinkIcon, ListIcon, LockIcon, PaperclipIcon, PanelLeftIcon, PenSquareIcon, SettingsIcon, SunIcon, type Icon,
+} from '@/shared/ui/icon';
+
+/**
+ * 문서 목록(content-plugin)이 이름으로 적은 아이콘을 키트 아이콘 부품으로 바꾼다. 이름과 그림은 Astryx 이름표(generate-icons.mjs)와
+ * 같은 Solar라 옮긴 뒤에도 메뉴 그림이 같다. 목록에 새 이름을 쓰면 여기에 더한다(없으면 문서 아이콘).
+ */
+const ICONS: Record<string, Icon> = {
+  archive: ArchiveIcon, attachment: PaperclipIcon, book: BookIcon, clock: ClockIcon, copy: CopyIcon, edit: PenSquareIcon, grip: GripIcon,
+  home: HomeIcon, 'layout-board': KanbanSquareIcon, 'layout-grid': LayoutGridIcon, 'layout-list': ListIcon, library: LibraryIcon, link: LinkIcon,
+  lock: LockIcon, settings: SettingsIcon, sidebar: PanelLeftIcon, sun: SunIcon,
+};
+const iconOf = (name?: string) => (name ? ICONS[name] ?? FileTextIcon : undefined);
+
 const entriesOf = (groups: { path: string; label: string; icon: string }[]): NavEntry[] => groups.map(group => ({
-  path: group.path, label: group.label, icon: group.icon as IconName,
+  path: group.path, label: group.label, icon: iconOf(group.icon),
   children: docs.filter(doc => doc.group === group.path).map(doc => ({ path: doc.path, label: doc.group.startsWith('/webcraft/rules/') && doc.path === doc.group ? '개요' : doc.title })),
 }));
 const content = (dirs: string[]) => contentGroups.filter(item => dirs.some(dir => item.dir === dir || item.dir.startsWith(`${dir}/`)))
@@ -22,7 +37,7 @@ const docsIn = (id: string): NavEntry[] => docs.filter(doc => doc.arc42?.[0] ===
   .map((doc, index) => ({ path: doc.path, label: `${id}.${index + 1} ${doc.title}` }));
 const sectionEntry = (section: (typeof architectureSections)[number]): NavEntry => {
   const subsections = architectureSections.filter(item => item.id.startsWith(`${section.id}.`));
-  return { path: sectionPath(section.id), label: `${section.id}${section.id.includes('.') ? '' : '.'} ${section.label}`, icon: section.icon as IconName | undefined,
+  return { path: sectionPath(section.id), label: `${section.id}${section.id.includes('.') ? '' : '.'} ${section.label}`, icon: iconOf(section.icon),
     children: subsections.length ? subsections.map(sectionEntry) : docsIn(section.id) };
 };
 
@@ -33,12 +48,12 @@ const sectionEntry = (section: (typeof architectureSections)[number]): NavEntry 
 export const guideSpace: NavSpace = {
   id: 'webcraft', title: 'Webcraft',
   sections: [
-    { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: 'home' }, ...entriesOf(rules(['goraebap-mode', 'manage-workflow']))] },
-    { title: '아키텍처', entries: [{ path: '/webcraft/architecture/', label: '아키텍처 정의서', icon: 'view' }, ...architectureSections.filter(section => !section.id.includes('.')).map(sectionEntry)] },
+    { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: HomeIcon }, ...entriesOf(rules(['goraebap-mode', 'manage-workflow']))] },
+    { title: '아키텍처', entries: [{ path: '/webcraft/architecture/', label: '아키텍처 정의서', icon: EyeIcon }, ...architectureSections.filter(section => !section.id.includes('.')).map(sectionEntry)] },
     { title: 'UI 키트', entries: entriesOf(content(['catalog'])) },
   ],
 };
 
-export const blogSpace: NavSpace = { id: 'blog', title: 'Blog', sections: [{ title: '개발 기록', isHeaderHidden: true, entries: [{ path: '/blog/', label: '모든 글', icon: 'book' }, ...docs.filter(doc => doc.kind === 'post').map(doc => ({ path: doc.path, label: doc.title, icon: 'document' as const }))] }] };
+export const blogSpace: NavSpace = { id: 'blog', title: 'Blog', sections: [{ title: '개발 기록', isHeaderHidden: true, entries: [{ path: '/blog/', label: '모든 글', icon: BookIcon }, ...docs.filter(doc => doc.kind === 'post').map(doc => ({ path: doc.path, label: doc.title, icon: FileTextIcon }))] }] };
 
-export const settingsSpace: NavSpace = { id: 'settings', title: '설정', back: { path: '/blog/', label: '사이트로' }, sections: [{ title: '설정', isHeaderHidden: true, entries: [{ path: '/settings/appearance/', label: '화면', icon: 'sun' }, { path: '/settings/plugins/', label: '플러그인', icon: 'settings' }] }] };
+export const settingsSpace: NavSpace = { id: 'settings', title: '설정', back: { path: '/blog/', label: '사이트로' }, sections: [{ title: '설정', isHeaderHidden: true, entries: [{ path: '/settings/appearance/', label: '화면', icon: SunIcon }, { path: '/settings/plugins/', label: '플러그인', icon: SettingsIcon }] }] };

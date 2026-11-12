@@ -10,7 +10,8 @@ import remarkGfm from 'remark-gfm';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import { defineConfig } from 'vite';
 import { stylexForOwnSource } from './stylex-plugin';
-import { bootCover } from './src/shared/ui/patterns/boot/boot-cover';
+import { THEME_KEY } from './src/shared/config/preferences';
+import { bootCover } from './src/shared/ui/boot-cover/plugin';
 import { guideContent, rehypeSkillLinks, rehypeDiagrams } from './content-plugin';
 
 const local = (path: string) => fileURLToPath(new URL(path, import.meta.url));
@@ -36,7 +37,9 @@ export default defineConfig({
     },
     react({ include: /\.(jsx|tsx|md|mdx)$/ }),
     tailwindcss(),
-    bootCover({ mark: readFileSync(local('src/shared/loading/rocket-still.svg'), 'utf8'), modeKey: 'guide-theme',
+    // 첫 방문 덮개(키트 boot-cover): 로켓의 첫 장면을 앱 스크립트보다 먼저 그리고, 저장한 모드(guide-theme)를 html에 미리 둔다.
+    // 앱이 뜨면 GuideShell의 BootCover가 움직이는 로켓으로 이어받는다. 견본 입구(sample.html)에는 넣지 않는다.
+    bootCover({ mark: readFileSync(local('src/shared/loading/rocket-still.svg'), 'utf8'), modeKey: THEME_KEY,
       include: path => path === '/index.html' }),
   ],
   resolve: {

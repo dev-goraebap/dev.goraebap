@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ComponentPropsWithRef } from 'react';
+import { Button } from '@/shared/ui/button';
 import type { DiagramSlide } from './ZoomViewer';
-import styles from './diagram.module.css';
 
 type Scheme = 'light' | 'dark';
 /*
@@ -95,12 +95,18 @@ export function Diagram({ 'data-diagram': source, ...props }: ComponentPropsWith
     return () => { cancelled = true; };
   }, [key, source, scheme]);
   if (!source) return <div {...props} />;
-  return <figure className={styles.frame}>
+  // 도표 틀: 업무 앱의 리치 본문 도표처럼 테두리와 바탕이 있는 면 가운데에 둔다. 넓은 도표도 스크롤 없이 폭에 맞춰 전체를 보인다.
+  return <figure className="relative my-6 overflow-hidden rounded-lg border bg-muted">
     {error ? <pre>{source}</pre> : <>
-      <button type="button" className={styles.zoom} onClick={open} aria-label="도표 크게 보기">크게 보기</button>
-      <div ref={node} className={styles.canvas} role="img" aria-label={LABEL} onDoubleClick={open} />
+      {/* 크게 보기 단추: 틀 오른쪽 위. 도표를 두 번 눌러도 열린다. */}
+      <Button type="button" variant="outline" size="xs" className="absolute top-2 right-2 z-1 cursor-zoom-in text-muted-foreground no-underline" onClick={open} aria-label="도표 크게 보기">크게 보기</Button>
+      <div ref={node} role="img" aria-label={LABEL} onDoubleClick={open}
+        className="grid min-h-32 cursor-zoom-in place-items-center px-5.5 pt-10 pb-6 max-sm:px-3 max-sm:py-4.5 [&_svg]:mx-auto [&_svg]:block [&_svg]:h-auto [&_svg]:font-sans [&_.node_polygon]:filter-none! [&_.node_rect]:filter-none!" />
     </>}
     {zoomed ? <Suspense fallback={null}><ZoomViewer slide={zoomed} onClose={() => setZoomed(null)} /></Suspense> : null}
-    <details className={styles.source}><summary>도표 원문</summary><pre>{source}</pre></details>
+    {/* 본문의 접기(.prose details) 모양 대신 틀 바닥의 한 줄로 둔다. 유틸리티 층이 .prose(components 층)를 이긴다. */}
+    <details className="m-0 rounded-none border-0 border-t px-4 py-2 text-[0.8125rem] text-muted-foreground [&_pre]:mt-2 [&_pre]:mb-0 [&>summary]:p-0 [&>summary]:text-[0.8125rem] [&>summary]:font-normal">
+      <summary>도표 원문</summary><pre>{source}</pre>
+    </details>
   </figure>;
 }

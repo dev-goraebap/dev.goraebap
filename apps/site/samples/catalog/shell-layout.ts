@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from 'react';
-import type { ShellLayout } from '@/shared/ui/layouts/app/AppFrame';
+import { SHELL_LAYOUT_KEY } from '@/shared/config/preferences';
+import type { ShellLayout } from '@/shared/ui/app-shell';
 
-/** 가이드가 고른 셸 배치를 저장하는 키. 가이드 머리 줄의 배치 전환이 쓰고, 견본이 읽는다. */
-import { SHELL_LAYOUT_KEY } from '@/shared/ui/layouts/app/shell-layout-key';
+/** 가이드가 고른 셸 배치를 저장하는 키. 가이드 화면 설정(entities/preferences)이 쓰고, 견본이 읽는다. */
 export { SHELL_LAYOUT_KEY };
 
 /** 가이드 안에서는 바깥 문서의 data-shell-layout을, 새 창에서는 저장한 선택을 따른다. 없으면 inset. */
@@ -26,8 +26,8 @@ function subscribe(listener: () => void) {
 }
 
 /**
- * 견본 앱의 셸 배치(Inset·Split). 배치마다 견본을 따로 두지 않고 가이드 머리 줄의 전환 하나로 모든 견본이 같은 배치로
- * 바뀐다. 견본 앱은 AppFrame의 layout에 이 값을 넘긴다.
+ * 견본 앱의 셸 배치(Inset·Split). 배치마다 견본을 따로 두지 않고 가이드 화면 설정의 전환 하나로 모든 견본이 같은 배치로
+ * 바뀐다. 견본 앱은 셸의 layout에 이 값을 넘긴다(Astryx AppFrame과 키트 AppShell의 값이 같다: 'inset' · 'split').
  */
 export function useShellLayout(): ShellLayout {
   return useSyncExternalStore(subscribe, read, () => 'inset');

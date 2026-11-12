@@ -6,7 +6,7 @@ import { Sample } from './Sample';
 export function SampleGroup({ group }: { group: string }) {
   const [list, setList] = useState<SampleEntry[]>([]);
   useEffect(() => { void loadGroup(group).then(setList); }, [group]);
-  return <>{list.map(entry => <section key={entry.id} className="sample-section">
+  return <>{list.map(entry => <section key={entry.id} className="not-first:mt-10">
     <h2 id={entry.key}>{entry.name}</h2>
     <Sample id={entry.id} />
   </section>)}</>;

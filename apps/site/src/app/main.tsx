@@ -1,14 +1,14 @@
-import '@/shared/ui/foundations/base.css';
+// 사이트 화면은 shadcn 키트만 쓴다(Astryx의 base.css를 읽지 않는다). Astryx 견본은 sample.html의 iframe에서 따로 그린다.
 import '@/shared/styles/tailwind.css';
-import '../shared/styles/samples.css';
+import '@/shared/styles/site.css';
 import { createRootRoute, createRoute, createRouter, redirect, RouterProvider } from '@tanstack/react-router';
 import { createRoot } from 'react-dom/client';
-import { docAt, firstOf, loadDoc } from '../entities/document';
-import { DocPage } from '../pages/document';
-import { SettingsPage } from '../pages/settings';
-import { BlogPage } from '../pages/blog';
-import { prepareDiagrams } from '../shared/markdown/Diagram';
-import { prepareSamples } from '../widgets/samples';
+import { docAt, firstOf, loadDoc } from '@/entities/document';
+import { BlogPage } from '@/pages/blog';
+import { DocPage } from '@/pages/document';
+import { SettingsPage } from '@/pages/settings';
+import { prepareDiagrams } from '@/shared/markdown/Diagram';
+import { prepareSamples } from '@/widgets/samples';
 import { SiteApp } from './providers';
 
 /** 주소의 문서를 찾아 본문을 불러온다. 묶음 주소(/app-shell/ 등)는 그 묶음의 첫 문서로 보낸다. */
@@ -51,11 +51,11 @@ const router = createRouter({
   // 다음 문서가 준비될 때까지 지금 문서를 그대로 둔다. 진행 표시는 셸이 150ms 뒤에 띄운다.
   defaultPendingMs: Infinity,
   // 준비된 문서끼리는 콘텐츠 영역만 교차 페이드한다(업무 앱과 같은 규칙). 라우터는 loader가 끝난 뒤 전환을 시작하므로
-  // 준비하는 동안 진행 표시가 멈추지 않는다. 동작 줄이기 설정, 진행 중인 전환, 크게 보기 등 열린 창 위에서는 하지 않는다.
+  // 준비하는 동안 진행 표시가 멈추지 않는다. 동작 줄이기 설정, 진행 중인 전환, 열린 창(문서 찾기 · 더보기 시트 · 크게 보기) 위에서는 하지 않는다.
   defaultViewTransition: typeof CSS !== 'undefined' && CSS.supports('selector(:active-view-transition-type(guide-content))') && {
     types: ({ fromLocation, pathChanged }) => {
       if (!fromLocation || !pathChanged || matchMedia('(prefers-reduced-motion: reduce)').matches
-        || document.documentElement.matches(':active-view-transition') || document.querySelector('dialog[open], .yarl__portal_open')) return false;
+        || document.documentElement.matches(':active-view-transition') || document.querySelector('[role=dialog], dialog[open], .yarl__portal_open')) return false;
       return ['guide-content'];
     },
   },

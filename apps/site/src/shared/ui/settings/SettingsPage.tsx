@@ -14,7 +14,8 @@ type SettingsBodyProps = {
  */
 export function SettingsBody({ title, description, children }: SettingsBodyProps) {
   return (
-    <main className="flex justify-center px-4 py-10 max-md:py-6">
+    // 앱 셸이 이미 main을 그리므로 여기서는 main을 겹치지 않는다.
+    <div className="flex justify-center px-4 py-10 max-md:py-6">
       <div className="flex w-full max-w-180 min-w-0 flex-col gap-8">
         <header className="flex flex-col gap-1">
           <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
@@ -22,7 +23,7 @@ export function SettingsBody({ title, description, children }: SettingsBodyProps
         </header>
         {children}
       </div>
-    </main>
+    </div>
   )
 }
 

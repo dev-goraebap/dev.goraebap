@@ -1,58 +1,19 @@
-import { Selector } from '@astryxdesign/core/Selector';
-import logo from '@/shared/ui/foundations/brand/logo.svg?raw';
-import { Button } from '@astryxdesign/core/Button';
+import { Link, Outlet, useRouter, useRouterState } from '@tanstack/react-router';
+import { useEffect, useRef, useState } from 'react';
+import { docAt, groupLabel } from '@/entities/document';
 import { usePreferences } from '@/entities/preferences';
+import { paths } from '@/shared/config/paths';
 import { siteVersion } from '@/shared/config/site';
-import { BlogTools } from './BlogTools';
-import { AgentBar } from './AgentBar';
-import shell from './shell.module.css';
-import { guideSpace, blogSpace, settingsSpace } from './navigation';
-import { CommandPalette } from '@astryxdesign/core/CommandPalette';
-import { LinkProvider } from '@astryxdesign/core/Link';
-import { IconButton } from '@astryxdesign/core/IconButton';
-import { Text } from '@astryxdesign/core/Text';
-import { createStaticSource } from '@astryxdesign/core/Typeahead';
-import { icon } from '@/shared/ui/foundations/icons/solar-icon';
-import { ReferenceTheme } from '@/shared/ui/foundations/ReferenceTheme';
-import { useIsPhone } from '@/shared/ui/foundations/media';
-import { AppFrame } from '@/shared/ui/layouts/app/AppFrame';
-import { Page } from '@/shared/ui/layouts/page/Page';
-import { BootCover } from '@/shared/ui/patterns/boot/BootCover';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
-import { Outlet, useRouter, useRouterState } from '@tanstack/react-router';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { docAt, firstOf, groupLabel, searchEntries } from '../../entities/document';
-import { RocketMark } from '../../shared/loading/RocketMark';
-import styles from '../../shared/styles/prose.module.css';
-
-function Brand({ isFolded, area }: { isFolded: boolean; area: 'blog' | 'webcraft' | 'settings' }) {
-  const router = useRouter();
-  return <div className={shell.brand}>
-    <RouterLink href="/blog/" aria-label="dev-goraebap 처음으로"><span className={shell.logo} dangerouslySetInnerHTML={{ __html: logo }} /></RouterLink>
-    {isFolded ? null : <div>{area === 'settings' ? <Text weight="semibold">설정</Text> : <Selector label="사이트 영역" isLabelHidden value={area} width="8rem" options={[{ value: 'blog', label: 'Blog' }, { value: 'webcraft', label: 'Webcraft' }]} onChange={value => void router.navigate({ href: `/${value}/` })} />}</div>}
-  </div>;
-}
-
-/** 문서 찾기: 문서 제목·묶음·설명으로 고른다. Ctrl+K(맥 ⌘K)로 연다. */
-function Search() {
-  const router = useRouter();
-  const [isOpen, setOpen] = useState(false);
-  const source = useMemo(() => createStaticSource(searchEntries.map(entry => ({ id: entry.id, label: entry.label, auxiliaryData: { group: entry.group, description: entry.description } })), {
-    keywords: item => [String((item.auxiliaryData as { group?: string })?.group ?? ''), String((item.auxiliaryData as { description?: string })?.description ?? '')],
-  }), []);
-  useEffect(() => {
-    const keydown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') { event.preventDefault(); setOpen(true); }
-    };
-    window.addEventListener('keydown', keydown);
-    return () => window.removeEventListener('keydown', keydown);
-  }, []);
-  return <>
-    <IconButton label="문서 찾기" tooltip="문서 찾기 (Ctrl K)" variant="ghost" size="sm" icon={icon('search')} onClick={() => setOpen(true)} />
-    <CommandPalette isOpen={isOpen} onOpenChange={setOpen} label="문서 찾기" searchSource={source}
-      emptySearchText="맞는 문서가 없습니다." onValueChange={path => { if (path) void router.navigate({ href: path }); }} />
-  </>;
-}
+import { RocketMark } from '@/shared/loading/RocketMark';
+import { AgentBar, AppShell, type NavEntry } from '@/shared/ui/app-shell';
+import { BootCover } from '@/shared/ui/boot-cover';
+import { Button } from '@/shared/ui/button';
+import { SettingsIcon } from '@/shared/ui/icon';
+import { Page, type Crumb } from '@/shared/ui/page';
+import { useBlogTools } from './BlogTools';
+import { AreaSwitch, Brand, Logo, type Area } from './Brand';
+import { DocSearch } from './DocSearch';
+import { blogSpace, guideSpace, settingsSpace } from './navigation';
 
 /** 첫 방문 덮개를 첫 문서가 풀린 뒤 걷는다. 이후 전환에는 쓰지 않는다. */
 function useFirstResolved() {
@@ -68,9 +29,9 @@ const SHOW_AFTER_MS = 150;
 const KEEP_AT_LEAST_MS = 300;
 
 /**
- * 화면 이동의 진행 표시(업무 앱의 RouteStage와 같은 규칙). 가리는 덮개를 두지 않는다: 다음 문서를 준비하는 동안 지금
- * 문서를 그대로 두고, 150ms가 지나면 콘텐츠 카드 위쪽 테두리가 테마 강조색으로 흐른다. 띄웠으면 최소 300ms 둔 뒤 내린다.
- * 준비된 문서끼리는 콘텐츠 영역만 View Transition으로 200ms 교차 페이드한다(main.tsx, base.css).
+ * 화면 이동의 진행 표시(업무 앱의 RouteStage와 같은 규칙). 뼈대(스켈레톤)나 가리는 덮개를 두지 않는다: 다음 문서를 준비하는 동안
+ * 지금 문서를 그대로 두고, 150ms가 지나면 콘텐츠 면 위쪽 테두리가 흐른다. 띄웠으면 최소 300ms 둔 뒤 내린다.
+ * 준비된 문서끼리는 콘텐츠 영역만 View Transition으로 200ms 교차 페이드한다(app/main.tsx, shared/styles/site.css).
  */
 function useProgress() {
   const moving = useRouterState({ select: state => state.status === 'pending' && !!state.resolvedLocation && state.location.pathname !== state.resolvedLocation.pathname });
@@ -87,49 +48,75 @@ function useProgress() {
   return { moving, shown };
 }
 
+/** 휴대폰 하단 탭: 영역마다 자주 여는 곳. 나머지는 더보기에서 고른다. 탭은 좁으므로 괄호 속 한글명을 뗀다. */
+const TAB_PATHS: Record<Area, string[]> = {
+  settings: ['/settings/appearance/', '/settings/plugins/'],
+  blog: ['/blog/', '/settings/appearance/'],
+  webcraft: ['/webcraft/', '/webcraft/rules/goraebap-mode/', '/webcraft/rules/design-system/', '/webcraft/catalog/playground/'],
+};
+const settingsTab: NavEntry = { path: '/settings/appearance/', label: '설정', icon: SettingsIcon };
+
+/** 사이드바 바닥: 설정 들어가기와 사이트 버전. 접히면 설정 아이콘만. */
+function SidebarFooter({ isFolded }: { isFolded: boolean }) {
+  if (isFolded) {
+    return <Button variant="ghost" size="icon-sm" aria-label="설정" title="설정" nativeButton={false} render={<Link to={paths.appearance} />}><SettingsIcon /></Button>;
+  }
+  return <>
+    <Button variant="ghost" size="sm" nativeButton={false} render={<Link to={paths.appearance} />}><SettingsIcon data-icon="inline-start" />설정</Button>
+    <span className="px-1 font-mono text-[0.6875rem]">v{siteVersion}</span>
+  </>;
+}
+
 /**
- * 사이트의 AppFrame과 Page에 콘텐츠를 넣는다. 사이드바에 전역 검색과 설정을 두고, 페이지 머리에는 해당 목록의 도구만 둔다.
+ * 사이트 셸: 키트 AppShell에 영역(Blog · Webcraft · 설정)의 메뉴를 데이터로 넘기고, Page에 경로와 목록 도구를 넣는다.
+ * 사이드바 머리에 로고 · 영역 고르기 · 문서 찾기, 바닥에 설정 · 버전, 데스크톱 본문 아래에 Agent 줄을 둔다.
+ * 휴대폰은 앱 바 오른쪽에 문서 찾기와 로고 · 영역 고르기, 아래에 하단 탭과 더보기가 온다.
+ * 페이지 본문(page-body)의 점 무늬는 읽는 화면에 두지 않으므로 콘텐츠 자리가 페이지 면으로 덮는다.
  */
 export function GuideShell() {
   const router = useRouter();
-  const { mode, layout } = usePreferences();
-  const isPhone = useIsPhone();
+  const { layout } = usePreferences();
   const isReady = useFirstResolved();
   const progress = useProgress();
+  const blogTools = useBlogTools();
   const pathname = useRouterState({ select: state => state.resolvedLocation?.pathname ?? state.location.pathname });
   const doc = docAt(pathname);
-  useEffect(() => { document.title = `${doc?.title ?? (pathname === '/blog/' ? '모든 글' : '설정')} · dev-goraebap`; }, [doc]);
-  const area = pathname.startsWith('/settings/') ? 'settings' : pathname.startsWith('/blog/') ? 'blog' : 'webcraft';
+  const isBlogList = pathname === '/blog/';
+  useEffect(() => { document.title = `${doc?.title ?? (isBlogList ? '모든 글' : '설정')} · dev-goraebap`; }, [doc, isBlogList]);
+  const area: Area = pathname.startsWith('/settings/') ? 'settings' : pathname.startsWith('/blog/') ? 'blog' : 'webcraft';
   const space = area === 'settings' ? settingsSpace : area === 'blog' ? blogSpace : guideSpace;
   const groups = space.sections.flatMap(section => section.entries);
-  // 휴대폰 하단 탭: 자주 여는 네 묶음. 나머지는 더보기에서 고른다. 탭은 좁으므로 괄호 속 한글명을 뗀다.
-  const tabs = (area === 'settings' ? ['/settings/appearance/', '/settings/plugins/'] : area === 'blog' ? ['/blog/', '/settings/appearance/'] : ['/webcraft/', '/webcraft/rules/goraebap-mode/', '/webcraft/rules/design-system/', '/webcraft/catalog/playground/'])
-    .map(path => groups.find(entry => entry.path === path) ?? (path === '/settings/appearance/' ? { path, label: '설정', icon: 'settings' as const } : undefined)).filter((entry): entry is NonNullable<typeof entry> => !!entry)
+  const tabs = TAB_PATHS[area]
+    .map(path => groups.find(entry => entry.path === path) ?? (path === settingsTab.path ? settingsTab : undefined))
+    .filter((entry): entry is NavEntry => !!entry)
     .map(entry => ({ ...entry, label: entry.label.replace(/ \(.*\)$/, '') }));
   // 묶음 › 문서. 지침의 첫 장(묶음 주소와 같은 문서)과 첫 화면은 이름 하나만 둔다.
-  const crumbs = doc && doc.path !== '/webcraft/' && doc.path !== doc.group
+  const crumbs: Crumb[] = doc && doc.path !== '/webcraft/' && doc.path !== doc.group
     ? [{ label: groupLabel(doc.group), href: doc.group }, { label: doc.title }]
-    : [{ label: doc ? (doc.path === doc.group && doc.path !== '/webcraft/' ? groupLabel(doc.group) : doc.title) : pathname === '/blog/' ? '모든 글' : area === 'settings' ? (pathname.includes('/plugins') ? '플러그인' : '화면') : '없는 문서' }];
-  return <ReferenceTheme mode={mode}>
-    <LinkProvider component={RouterLink}>
-        <AppFrame space={space} pathname={pathname} tabs={tabs} openGroups="current" layout={layout} brand={isFolded => <Brand isFolded={isFolded} area={area} />}
-          headerTools={<Search />}
-          sidebarBottom={folded => folded ? <IconButton label="설정" variant="ghost" size="sm" icon={icon('settings')} onClick={() => void router.navigate({ href: '/settings/appearance/' })} /> : <div className={shell.settingsEntry}><Button label="설정" width="100%" variant="ghost" size="sm" icon={icon('settings')} onClick={() => void router.navigate({ href: '/settings/appearance/' })} /></div>}
-          footer={folded => folded ? null : <div className={shell.footer}><span className={shell.version}>v{siteVersion}</span></div>}
-          pageFooter={!isPhone ? <AgentBar onAgent={() => void router.navigate({ href: '/settings/plugins/' })} /> : undefined}
-          phoneAppBar={<div className={shell.phoneBrand}><Brand isFolded={false} area={area} /></div>}
-          // 자기 페이지가 없는 묶음 메뉴(UI 키트의 묶음 등)만 묶음의 첫 문서로 간다. 아키텍처 절처럼 개요 페이지가 있으면 그 페이지로.
-          onNavigate={path => void router.navigate({ href: docAt(path) ? path : firstOf(path) ?? path })}>
-          <Page crumbs={crumbs} views={isPhone && pathname === '/blog/' ? <></> : undefined} tools={pathname === '/blog/' ? <BlogTools /> : undefined} hasHeading={pathname === '/blog/'} hasPattern={false} stableGutter>
-            <div className={styles.stage} aria-busy={progress.moving || undefined}>
-              {/* 늘 그려 두고 보이기만 바꾼다. 화면 읽기 프로그램에는 상태 문구로 알린다. */}
-              <div className={styles.glow} data-visible={progress.shown || undefined} data-route-progress={progress.shown ? '' : undefined} aria-hidden="true" />
-              <span className={styles.spoken} role="status" aria-live="polite">{progress.shown ? '다음 문서를 불러오는 중' : ''}</span>
-              <div className={styles.content}><Outlet /></div>
-            </div>
-          </Page>
-        </AppFrame>
-        <BootCover isReady={isReady} mark={<RocketMark />} />
-    </LinkProvider>
-  </ReferenceTheme>;
+    : [{ label: doc ? (doc.path === doc.group && doc.path !== '/webcraft/' ? groupLabel(doc.group) : doc.title) : isBlogList ? '모든 글' : area === 'settings' ? (pathname.includes('/plugins') ? '플러그인' : '화면') : '없는 문서' }];
+  return <>
+    <AppShell space={space} pathname={pathname} tabs={tabs} openGroups="current" layout={layout}
+      // 문서 사이트는 메뉴 이름이 길어(8.4.1 …) 처음부터 가장 넓게 연다(옛 셸과 같은 380px).
+      sidebarWidth={{ initial: 380, min: 220, max: 380 }}
+      brand={isFolded => <Brand isFolded={isFolded} area={area} />}
+      headerTools={<DocSearch />}
+      footer={isFolded => <SidebarFooter isFolded={isFolded} />}
+      bottomBar={<AgentBar onOpen={() => void router.navigate({ href: paths.plugins })} />}
+      phoneTools={<><DocSearch size="icon" /><Logo /><AreaSwitch area={area} /></>}>
+      {/* 긴 문서를 오갈 때 스크롤 막대가 생기고 사라지며 본문이 옆으로 흔들리지 않게 자리를 늘 둔다. */}
+      <div className="contents **:data-[slot=page-body]:[scrollbar-gutter:stable]">
+        <Page crumbs={crumbs} tools={isBlogList ? blogTools.tools : undefined} below={isBlogList ? blogTools.below : undefined}>
+          <div className="relative isolate flex flex-1 flex-col bg-background" aria-busy={progress.moving || undefined}>
+            {/* 늘 그려 두고 보이기만 바꾼다. 본문을 내려 읽는 중에도 보이도록 스크롤 맨 위에 붙인다. 화면 읽기 프로그램에는 상태 문구로 알린다. */}
+            <div aria-hidden data-visible={progress.shown || undefined} data-route-progress={progress.shown ? '' : undefined}
+              className="route-progress pointer-events-none sticky top-0 z-4 -mb-0.5 h-0.5 opacity-0 transition-opacity duration-240 data-visible:opacity-100 motion-reduce:transition-none" />
+            <span className="sr-only" role="status" aria-live="polite">{progress.shown ? '다음 문서를 불러오는 중' : ''}</span>
+            {/* 화면이 바뀔 때 교차 페이드하는 단위: 콘텐츠 영역 하나. 진행 표시 줄은 이 밖에 있어 그대로 움직인다. */}
+            <div className="flex flex-1 flex-col [view-transition-name:guide-content]"><Outlet /></div>
+          </div>
+        </Page>
+      </div>
+    </AppShell>
+    <BootCover isReady={isReady} mark={<RocketMark />} />
+  </>;
 }

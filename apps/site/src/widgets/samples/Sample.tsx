@@ -1,10 +1,12 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { loadSample, type SampleEntry } from '@samples/catalog/registry';
 import type { Device } from '@samples/catalog/types';
+import { SegmentedControl } from '@/shared/ui/segmented-control';
 import measured from './sample-sizes.json';
 
 /** 견본을 그리는 기기 폭. 데스크톱은 키트가 데스크톱으로 판정하는 최소 폭, 휴대폰은 390px. */
 const WIDTH: Record<Device, number> = { desktop: 1280, phone: 390 };
+const DEVICES: { value: Device; label: string }[] = [{ value: 'desktop', label: '데스크톱' }, { value: 'phone', label: '휴대폰' }];
 const rem = (value?: string) => (value?.endsWith('rem') ? Math.round(parseFloat(value) * 16) : undefined);
 
 /**
@@ -80,25 +82,29 @@ export function Sample({ id, caption, device }: { id: string; caption?: string; 
   const src = entry ? `/sample.html?id=${encodeURIComponent(id)}${current !== entry.device ? `&device=${current}` : ''}` : undefined;
   const name = entry?.name ?? '';
 
-  return <figure className="sample">
-    <div className="sample-bar">
-      <span className="sample-name">{caption ?? name}</span>
-      <div className="sample-tools">
-        <div className="sample-devices" role="group" aria-label={`${name} 보기 기기`}>
-          {(['desktop', 'phone'] as const).map(each => <button key={each} type="button" aria-pressed={current === each}
-            onClick={() => setShown(each)}>{each === 'desktop' ? '데스크톱' : '휴대폰'}</button>)}
-        </div>
-        {src ? <a className="sample-open" href={src} target="_blank" rel="noopener">새 창에서 열기</a> : null}
+  const isReady = isLoaded && (!isAuto || !!size);
+
+  return <figure className="my-6">
+    {/* 틀 위 한 줄: 왼쪽 견본 이름, 오른쪽 기기 전환과 새 창. */}
+    <div className="mb-2 flex items-center justify-between gap-3 text-xs leading-normal text-muted-foreground max-md:mb-3">
+      <span className="min-w-0 truncate">{caption ?? name}</span>
+      <div className="flex shrink-0 items-center gap-3">
+        <SegmentedControl label={`${name} 보기 기기`} options={DEVICES} value={current} onChange={setShown} className="[&_button]:text-xs" />
+        {/* 휴대폰에서는 누르는 영역을 글자 줄 위아래로 넓혀 44px를 맞춘다. */}
+        {src ? <a href={src} target="_blank" rel="noopener" className="relative text-inherit max-md:after:absolute max-md:after:inset-x-0 max-md:after:-inset-y-3.25">새 창에서 열기</a> : null}
       </div>
     </div>
     {/* 크기를 아는 견본(정한 높이, 기억한 크기)은 처음부터 그 높이로, 모르는 견본은 크기가 오면 높이를 부드럽게 늘린다.
         견본은 다 그려지고 크기가 정해진 뒤에 나타난다(그리는 도중의 모습을 보이지 않는다). */}
-    <div ref={stage} className="sample-stage" data-sizing={isAuto && !size ? '' : undefined} style={{ blockSize: Math.ceil(height * scale) }}>
+    <div ref={stage} className="relative overflow-hidden rounded-xl border bg-background transition-[height] duration-200 ease-out motion-reduce:transition-none"
+      // check-ui: allow-style 틀 높이는 견본이 알려 온 크기와 본문 폭에 맞춘 배율로 정해진다.
+      style={{ height: Math.ceil(height * scale) }}>
       {src && isNear ? <iframe key={src} ref={frame} src={src} title={`견본: ${name}`} onLoad={() => setLoaded(true)}
-        data-ready={isLoaded && (!isAuto || !!size) ? '' : undefined}
-        style={{ inlineSize: width, blockSize: height, transform: scale < 1 ? `scale(${scale})` : undefined,
-          marginInlineStart: stageWidth / 2 - (width * scale) / 2 }} /> : null}
-      {isLoaded ? null : <span className="sample-wait" aria-hidden="true">견본을 불러오는 중</span>}
+        data-ready={isReady ? '' : undefined}
+        className="block origin-top-left border-0 bg-transparent opacity-0 transition-opacity duration-200 data-ready:opacity-100 motion-reduce:transition-none"
+        // check-ui: allow-style 기기 폭으로 그리고 본문 칸에 맞춰 줄인다. 크기 · 배율 · 가운데 자리는 그릴 때 정해진다.
+        style={{ width, height, transform: scale < 1 ? `scale(${scale})` : undefined, marginInlineStart: stageWidth / 2 - (width * scale) / 2 }} /> : null}
+      {isLoaded ? null : <span className="pointer-events-none absolute inset-0 grid place-items-center text-xs text-muted-foreground" aria-hidden="true">견본을 불러오는 중</span>}
     </div>
   </figure>;
 }

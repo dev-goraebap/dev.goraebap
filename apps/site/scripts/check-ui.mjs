@@ -12,9 +12,11 @@ import { fileURLToPath } from "node:url"
 //
 // 사이트는 Astryx 키트에서 옮겨 가는 중이라 src 전체가 아니라 아래 TARGETS만 검사한다. 화면을 shadcn으로 옮기면
 // 그 폴더를 TARGETS에 더하고, Astryx를 걷어 내면 src 전체로 넓힌다. EXCLUDE는 옛 Astryx 키트 폴더다.
+// 사이트 화면(app · pages · widgets · entities와 shared의 markdown · loading · config · styles)은 옮겼다. 견본(samples/)은 src 밖이라
+// 여기서 보지 않는다.
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../src")
-const TARGETS = ["shared/ui", "shared/lib"]
+const TARGETS = ["shared/ui", "shared/lib", "shared/markdown", "shared/loading", "shared/config", "shared/styles", "entities", "widgets", "pages", "app"]
 const EXCLUDE = ["shared/ui/foundations", "shared/ui/composites", "shared/ui/layouts", "shared/ui/patterns"]
 const LAYERS = ["app", "pages", "widgets", "features", "entities", "shared"]
 const PALETTE = /\b(?:bg|text|border|ring|fill|stroke|from|to|via|outline|decoration|shadow)-(?:red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|neutral|stone)-\d{2,3}\b/

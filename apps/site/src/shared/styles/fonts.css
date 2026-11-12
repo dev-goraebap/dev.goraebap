@@ -1,0 +1,7 @@
+/*
+ * 토큰이 이름으로 부르는 글꼴(Pretendard Variable, JetBrains Mono Variable)을 실제로 불러온다. 빠지면 Windows에서 맑은 고딕으로
+ * 대체되어 작은 글자가 흐리고 두껍게 보인다. Pretendard는 쓰는 글자만 받는 동적 분할판이다.
+ * 사이트(site.css)와 shadcn 견본 iframe(SampleFrame)이 읽는다. Astryx 견본은 foundations/base.css가 같은 글꼴을 읽는다.
+ */
+@import 'pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css';
+@import '@fontsource-variable/jetbrains-mono';

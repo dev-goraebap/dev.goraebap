@@ -1,6 +1,5 @@
 import { lazy, Suspense, useState, type ComponentPropsWithRef } from 'react';
 import type { ViewerSlide } from './ZoomViewer';
-import styles from './zoom-viewer.module.css';
 
 const ZoomViewer = lazy(() => import('./ZoomViewer'));
 
@@ -8,7 +7,8 @@ const ZoomViewer = lazy(() => import('./ZoomViewer'));
 export function ZoomImage({ alt = '', ...props }: ComponentPropsWithRef<'img'>) {
   const [slide, setSlide] = useState<ViewerSlide | null>(null);
   return <>
-    <button type="button" className={styles.imageButton} aria-label={`${alt || '이미지'} 크게 보기`}
+    {/* 모양은 이미지 그대로, 누르면 크게 보기. */}
+    <button type="button" className="mx-auto block w-fit max-w-full cursor-zoom-in rounded-lg p-0 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2" aria-label={`${alt || '이미지'} 크게 보기`}
       onClick={event => {
         const image = event.currentTarget.querySelector('img');
         if (!image?.currentSrc && !props.src) return;

@@ -1,6 +1,8 @@
 import { architectureSections, docsOfSection } from '@/entities/document';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
+import { Link } from '@tanstack/react-router';
 
+/** 절 개요 페이지 주소(content-plugin의 sectionPath와 같다). */
+const sectionPath = (id: string): string => `/webcraft/architecture/${id.replace('.', '-')}/`;
 const where = (source: string) => source.startsWith('plugins/') ? '지침' : '해설';
 
 function DocList({ id }: { id: string }) {
@@ -9,7 +11,7 @@ function DocList({ id }: { id: string }) {
   if (!found.length) return <p>이 절을 원천으로 삼는 지침 문서가 없습니다. 위 개요가 이 절의 내용 전부입니다.</p>;
   return <ul>
     {found.map(doc => <li key={doc.path}>
-      <RouterLink href={doc.path}>{doc.title}</RouterLink> ({where(doc.source)}{doc.arc42?.[0] === id ? '' : `, 주로 ${doc.arc42?.[0]}절`})
+      <Link to={doc.path}>{doc.title}</Link> ({where(doc.source)}{doc.arc42?.[0] === id ? '' : `, 주로 ${doc.arc42?.[0]}절`})
       {doc.description ? ` — ${doc.description}` : null}
     </li>)}
   </ul>;
@@ -24,7 +26,7 @@ export function SectionDocs({ section }: { section: string }) {
   if (!subsections.length) return <DocList id={section} />;
   return <>
     {subsections.map(item => <section key={item.id} aria-labelledby={`section-${item.id}`}>
-      <h3 id={`section-${item.id}`}><RouterLink href={`/webcraft/architecture/${item.id.replace('.', '-')}/`}>{item.id} {item.label}</RouterLink></h3>
+      <h3 id={`section-${item.id}`}><Link to={sectionPath(item.id)}>{item.id} {item.label}</Link></h3>
       <DocList id={item.id} />
     </section>)}
   </>;
