@@ -1,14 +1,14 @@
-import { useLocation, useNavigate, useRouter } from "@tanstack/react-router"
+import { useLocation, useNavigate, useParams, useRouter } from "@tanstack/react-router"
 import { STATUSES, workItemHref, type WorkItemStatus } from "@/entities/work-item"
-import { paths } from "@/shared/config"
+import { projectPath } from "@/shared/config"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 
 /**
- * 새 업무의 주소(호호코워크 shared/lib/panel). 자기 페이지는 /work-items/new(?status=처음 상태)다. 데스크톱에서 목록의
- * 버튼으로 열면 목록 주소에 ?panel=new를 달고 주소창에는 TanStack Router의 mask로 /work-items/new를 보인다
+ * 새 업무의 주소(호호코워크 shared/lib/panel). 자기 페이지는 프로젝트의 work-items/new(?status=처음 상태)다. 데스크톱에서
+ * 목록의 버튼으로 열면 목록 주소에 ?panel=new를 달고 주소창에는 TanStack Router의 mask로 그 페이지 주소를 보인다
  * (unmaskOnReload: 새로고침 · 복사한 주소는 페이지로 연다). 휴대폰에는 대화상자가 없어 늘 페이지로 간다.
  */
-export const NEW_WORK_ITEM_PATH = `${paths.workItems}/new`
+const useProjectKey = () => (useParams({ strict: false }) as { projectKey?: string }).projectKey ?? ""
 
 const PANEL = "panel"
 const PANEL_VALUE = "new"
@@ -32,13 +32,15 @@ const statusSearch = (status?: WorkItemStatus) => (status ? { status } : {})
 export function useOpenNewWorkItem() {
   const navigate = useNavigate()
   const isMobile = useIsMobile()
+  const projectKey = useProjectKey()
+  const newPath = projectPath(projectKey, "work-items/new")
   return (status?: WorkItemStatus) => {
-    if (isMobile) return void navigate({ to: NEW_WORK_ITEM_PATH, search: statusSearch(status) })
+    if (isMobile) return void navigate({ to: newPath, search: statusSearch(status) })
     void navigate({
-      to: paths.workItems,
+      to: projectPath(projectKey),
       search: (current: Search) => ({ ...current, [PANEL]: PANEL_VALUE, status }),
       state: current => ({ ...current, newWorkItemPanel: true }),
-      mask: { to: NEW_WORK_ITEM_PATH, search: statusSearch(status), unmaskOnReload: true },
+      mask: { to: newPath, search: statusSearch(status), unmaskOnReload: true },
     })
   }
 }
@@ -51,6 +53,7 @@ export function useNewWorkItemPanel() {
   const router = useRouter()
   const navigate = useNavigate()
   const location = useLocation()
+  const projectKey = useProjectKey()
   const { [PANEL]: panel, status: chosen, ...rest } = location.search as Search
   const status = statusFromSearch({ status: chosen })
   const isOpenedHere = Boolean(location.state.newWorkItemPanel)
@@ -61,7 +64,7 @@ export function useNewWorkItemPanel() {
       if (isOpenedHere) return router.history.back()
       void navigate({ to: location.pathname, search: rest, replace: true })
     },
-    expand: () => void navigate({ to: NEW_WORK_ITEM_PATH, search: statusSearch(status), replace: true }),
+    expand: () => void navigate({ to: projectPath(projectKey, "work-items/new"), search: statusSearch(status), replace: true }),
     done: (key: string) => void navigate({ to: workItemHref(key), replace: true }),
   }
 }

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { useUpdateProject, type Project } from "@/entities/project"
-import { paths } from "@/shared/config"
+import { projectPath } from "@/shared/config"
 import { cn } from "@/shared/lib/utils"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
@@ -11,12 +11,11 @@ import { RowLink } from "@/shared/ui/row-link"
 import { toast } from "@/shared/ui/toast"
 
 /**
- * 프로젝트 이름을 업무로 잇는 줄 링크(줄 · 카드 전체가 눌리고, 별표 · 메뉴만 따로 눌린다).
- * 프로젝트 안 주소(/projects/$key/work-items)가 아직 없어 모든 프로젝트가 업무 목록을 연다.
+ * 프로젝트 이름을 그 프로젝트의 업무(/projects/$projectKey/work-items)로 잇는 줄 링크(줄 · 카드 전체가 눌리고, 별표 · 메뉴만 따로 눌린다).
  */
-export function ProjectLink({ className, children }: { className?: string; children: ReactNode }) {
+export function ProjectLink({ projectKey, className, children }: { projectKey: string; className?: string; children: ReactNode }) {
   return (
-    <RowLink to={paths.workItems} className={className}>
+    <RowLink to={projectPath(projectKey)} className={className}>
       {children}
       <span className="sr-only"> 업무 열기</span>
     </RowLink>

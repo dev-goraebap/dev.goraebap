@@ -16,7 +16,7 @@ export function ProjectRow({ project, isCompact }: { project: Project; isCompact
       <li className={cn(ROW, "py-3")}>
         <ProjectMark icon={project.icon} color={project.color} />
         <span className="flex min-w-0 flex-1 flex-col">
-          <ProjectLink className="truncate font-medium">{project.name}</ProjectLink>
+          <ProjectLink projectKey={project.key} className="truncate font-medium">{project.name}</ProjectLink>
           <span className="truncate text-xs text-muted-foreground tabular-nums">{project.key} · {project.progress}% · {project.lead.name}</span>
         </span>
         {isActive && <ProjectStar project={project} />}
@@ -28,7 +28,7 @@ export function ProjectRow({ project, isCompact }: { project: Project; isCompact
     <li className={cn(ROW, "py-2.5 compact:py-1.5")}>
       <ProjectMark icon={project.icon} color={project.color} />
       <span className="flex min-w-0 flex-1 flex-col">
-        <ProjectLink className="truncate font-medium">{project.name}</ProjectLink>
+        <ProjectLink projectKey={project.key} className="truncate font-medium">{project.name}</ProjectLink>
         <span className="truncate text-xs text-muted-foreground">
           <span className="tabular-nums">{project.key}</span>{project.description && ` · ${project.description}`}
         </span>

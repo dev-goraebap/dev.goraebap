@@ -1,8 +1,9 @@
+import { workItemPath } from "@/shared/config"
 import { toast } from "@/shared/ui/toast"
 import type { WorkItem } from "../model/types"
 
-/** 업무 상세의 주소. 라우트 /work-items/$workItemKey와 같다. */
-export const workItemHref = (key: string) => `/work-items/${encodeURIComponent(key)}`
+/** 업무 상세의 주소(/projects/cowork/work-items/14). */
+export const workItemHref = workItemPath
 
 const copy = async (text: string, title: string) => {
   try {

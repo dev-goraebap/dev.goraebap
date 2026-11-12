@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useState } from "react"
+import { useCurrentProject } from "@/entities/project"
 import { ME, useWorkItems, type WorkItemStatus } from "@/entities/work-item"
 import { useNewWorkItemPanel, useOpenNewWorkItem, WorkItemCompose } from "@/features/work-item-create"
 import { useIsMobile } from "@/shared/lib/use-mobile"
+import { paths } from "@/shared/config"
 import { Button } from "@/shared/ui/button"
 import { PageState } from "@/shared/ui/page-state"
 import {
@@ -42,12 +44,13 @@ function ListSkeleton() {
 }
 
 /**
- * 프로젝트 cowork의 업무(호호코워크 ProjectWorkItemsPage). 뷰 네 개(리스트 · 보드 · 표 · 내 업무)와 필터 · 표시 도구,
+ * 프로젝트 하나의 업무(호호코워크 ProjectWorkItemsPage, /projects/$projectKey/work-items). 뷰 네 개(리스트 · 보드 · 표 · 내 업무)와 필터 · 표시 도구,
  * 걸린 필터 줄, 새 업무. 필터와 표시는 서버가 하듯 여기서 걸러 정렬한다.
  */
 export function WorkItemsPage() {
   const isMobile = useIsMobile()
-  const { data, isPending } = useWorkItems()
+  const { key: projectKey, project } = useCurrentProject()
+  const { data, isPending } = useWorkItems(projectKey)
   const filters = useFilters(FILTERS)
   const [display, setDisplay] = useState<Display>(INITIAL_DISPLAY)
   const [view, setView] = useState<View>("all")
@@ -68,7 +71,7 @@ export function WorkItemsPage() {
   const below = isMobile ? <FilterChips filters={filters} /> : <FilterBar filters={filters} />
 
   const body = () => {
-    if (isPending) return <ListSkeleton />
+    if (isPending || project === undefined) return <ListSkeleton />
     if (items.length === 0) {
       return (
         <PageState kind={isNarrowed ? "search" : "empty"}
@@ -97,7 +100,7 @@ export function WorkItemsPage() {
 
   return (
     <Page
-      crumbs={[{ label: "프로젝트" }, { label: "cowork", icon: ProjectsIcon }, { label: "업무", icon: KanbanSquareIcon }]}
+      crumbs={[{ label: "프로젝트", href: paths.projects }, { label: project?.name ?? projectKey, icon: ProjectsIcon }, { label: "업무", icon: KanbanSquareIcon }]}
       actions={<WorkItemsPageMenu />}
       create={{ label: "새 업무", onClick: () => openCreate() }}
       views={<PageViews label="업무 뷰" views={VIEWS} value={view} onChange={setView} />}
@@ -105,7 +108,7 @@ export function WorkItemsPage() {
       below={below}>
       {body()}
       {panel.isOpen && !isMobile && (
-        <WorkItemCompose key={panel.status} surface="dialog" status={panel.status}
+        <WorkItemCompose key={panel.status} projectKey={projectKey} surface="dialog" status={panel.status}
           onClose={panel.close} onExpand={panel.expand} onCreated={item => panel.done(item.key)} />
       )}
     </Page>

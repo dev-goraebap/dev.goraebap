@@ -4,7 +4,7 @@ import { meetingHref, useMeetings } from "@/entities/meeting"
 import { departmentOf, MemberAvatar, useMembers } from "@/entities/member"
 import { ProjectMark, useProjects } from "@/entities/project"
 import { useWorkItems, workItemHref } from "@/entities/work-item"
-import { paths } from "@/shared/config"
+import { paths, projectPath } from "@/shared/config"
 import { KanbanSquareIcon, MeetingIcon, MegaphoneIcon, ProjectsIcon, UserIcon } from "@/shared/ui/icon"
 import { NAV_PLACES } from "@/widgets/app-shell"
 import type { SearchHit, SearchSource } from "@/widgets/global-search"
@@ -48,10 +48,9 @@ export function useSearchSources() {
       })),
     },
     {
-      // 프로젝트 화면이 생기기 전까지는 업무로 간다(사이드바의 별표 프로젝트와 같다).
       id: "projects", title: "프로젝트", isLoading: projects.isPending,
       hits: (projects.data ?? []).filter(project => project.status === "active").map(project => ({
-        id: `project:${project.key}`, label: project.name, where: project.key, href: paths.workItems, icon: ProjectsIcon,
+        id: `project:${project.key}`, label: project.name, where: project.key, href: projectPath(project.key), icon: ProjectsIcon,
         media: <ProjectMark icon={project.icon} color={project.color} size="sm" />,
       })),
     },

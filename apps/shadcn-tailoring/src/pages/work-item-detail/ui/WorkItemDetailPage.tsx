@@ -3,7 +3,8 @@ import { useState } from "react"
 import {
   copyWorkItemKey, copyWorkItemLink, typeMark, useDeleteWorkItem, useUpdateWorkItem, useWorkItem, type WorkItem,
 } from "@/entities/work-item"
-import { paths } from "@/shared/config"
+import { useCurrentProject } from "@/entities/project"
+import { paths, projectPath } from "@/shared/config"
 import { ActionMenu } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
@@ -24,7 +25,7 @@ function WorkItemPageMenu({ item }: { item: WorkItem }) {
   const confirm = () => remove.mutate(item.key, {
     onSuccess: () => {
       toast.add({ type: "success", title: `${item.key}를 지웠습니다` })
-      void navigate({ to: paths.workItems })
+      void navigate({ to: projectPath(item.key.slice(0, item.key.lastIndexOf("-"))) })
     },
   })
   return (
@@ -42,13 +43,13 @@ function WorkItemPageMenu({ item }: { item: WorkItem }) {
 }
 
 /** 읽어 온 업무: 소속 줄 · 제목 · 본문 · 활동, 속성 알약. */
-function WorkItemDetail({ item }: { item: WorkItem }) {
+function WorkItemDetail({ item, projectName }: { item: WorkItem; projectName: string }) {
   const update = useUpdateWorkItem()
   return (
     <DetailLayout label={`${item.key} ${item.title}`} title={item.title}
       head={
         <p className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
-          <span className="truncate">cowork</span>
+          <span className="truncate">{projectName}</span>
           <span className="shrink-0 tabular-nums">{item.key}</span>
         </p>
       }
@@ -77,31 +78,33 @@ function DetailSkeleton() {
   )
 }
 
-function NotFound() {
+function NotFound({ projectKey }: { projectKey: string }) {
   return (
     <div className={PLAIN}>
       <PageState kind="not-found" title="업무를 찾을 수 없습니다" description="지워졌거나 주소가 바뀌었을 수 있습니다."
-        action={<Button variant="outline" nativeButton={false} render={<Link to={paths.workItems} />}>업무 목록으로</Button>} />
+        action={<Button variant="outline" nativeButton={false} render={<Link to={projectPath(projectKey)} />}>업무 목록으로</Button>} />
     </div>
   )
 }
 
 /**
- * 업무 상세(호호코워크 업무 페이지): 경로 프로젝트 › cowork › 업무 › 키, 머리 줄 끝에 페이지 메뉴.
+ * 업무 상세(호호코워크 업무 페이지, /projects/$projectKey/work-items/$number): 경로 프로젝트 › 프로젝트 이름 › 업무 › 키, 머리 줄 끝에 페이지 메뉴.
  * 휴대폰은 앱 바의 ← 가 업무 목록으로 가고, 속성 알약은 화면 아래에 고정된다(DetailLayout).
  */
 export function WorkItemDetailPage() {
-  const { workItemKey = "" } = useParams({ strict: false })
+  const { number = "" } = useParams({ strict: false }) as { number?: string }
+  const { key: projectKey, project } = useCurrentProject()
+  const workItemKey = `${projectKey}-${number}`
   const { data: item } = useWorkItem(workItemKey)
   const crumbs: Crumb[] = [
     { label: "프로젝트", href: paths.projects },
-    { label: "cowork", href: paths.workItems, icon: ProjectsIcon },
-    { label: "업무", href: paths.workItems },
+    { label: project?.name ?? projectKey, href: projectPath(projectKey), icon: ProjectsIcon },
+    { label: "업무", href: projectPath(projectKey) },
     { label: workItemKey, icon: item ? typeMark(item.type).icon : KanbanSquareIcon },
   ]
   return (
     <Page crumbs={crumbs} actions={item && <WorkItemPageMenu item={item} />} isFullScreen>
-      {item === undefined ? <DetailSkeleton /> : item === null ? <NotFound /> : <WorkItemDetail item={item} />}
+      {item === undefined ? <DetailSkeleton /> : item === null ? <NotFound projectKey={projectKey} /> : <WorkItemDetail item={item} projectName={project?.name ?? projectKey} />}
     </Page>
   )
 }

@@ -3,28 +3,30 @@ import {
   LABELS, PEOPLE, PRIORITIES, STATUSES, TYPES, PersonAvatar, WorkItemLabelDot, WorkItemPriorityIcon, WorkItemStatusIcon,
   formatWorkItemDate, statusMark, typeMark, useCreateWorkItem, type WorkItem, type WorkItemStatus,
 } from "@/entities/work-item"
-import { paths } from "@/shared/config"
+import { useProject } from "@/entities/project"
+import { paths, projectPath } from "@/shared/config"
 import { ComposeFields, ComposeSurface, PlaceChip } from "@/shared/ui/compose"
 import { ChartNoAxesColumnIcon, ListChecksIcon, ProjectsIcon, SquareCheckIcon, TagIcon, UserIcon } from "@/shared/ui/icon"
 import { DatePill, OptionPill } from "@/shared/ui/property-pill"
 import { toast } from "@/shared/ui/toast"
 import { blankDraft, isReady, toNewWorkItem, type WorkItemDraft } from "../model/draft"
 
-const CRUMBS = [{ label: "프로젝트", href: paths.projects }, { label: "cowork", icon: ProjectsIcon, href: paths.workItems }, { label: "새 업무" }]
-
 /**
  * 새 업무(호호코워크 NewWorkItem): 제목과 본문을 종이 위에 쓰고, 유형 · 상태 · 우선순위 · 담당자 · 라벨 · 기한을 알약으로 고른다.
  * 목록 위 대화상자나 자기 페이지(ComposeSurface)에 놓인다. 만들면 알리고 onCreated로 넘긴다. 계속 만들기를 켜면
- * 제목과 본문만 비우고 속성은 남긴 채 열어 둔다. status는 처음 고를 상태이며, 바꾸려면 key로 새로 그린다.
+ * 제목과 본문만 비우고 속성은 남긴 채 열어 둔다. projectKey는 업무를 둘 프로젝트(주소의 소문자 키), status는 처음 고를 상태이며 바꾸려면 key로 새로 그린다.
  */
-export function WorkItemCompose({ surface, status, onClose, onExpand, onCreated }: {
+export function WorkItemCompose({ projectKey, surface, status, onClose, onExpand, onCreated }: {
+  projectKey: string
   surface: "dialog" | "page"
   status?: WorkItemStatus
   onClose: () => void
   onExpand?: () => void
   onCreated: (item: WorkItem) => void
 }) {
-  const create = useCreateWorkItem()
+  const create = useCreateWorkItem(projectKey)
+  const projectName = useProject(projectKey).data?.name ?? projectKey
+  const crumbs = [{ label: "프로젝트", href: paths.projects }, { label: projectName, icon: ProjectsIcon, href: projectPath(projectKey) }, { label: "새 업무" }]
   const [draft, setDraft] = useState(() => blankDraft(status))
   const [isContinuing, setContinuing] = useState(false)
   const set = (patch: Partial<WorkItemDraft>) => setDraft(current => ({ ...current, ...patch }))
@@ -36,7 +38,7 @@ export function WorkItemCompose({ surface, status, onClose, onExpand, onCreated 
     },
   })
   return (
-    <ComposeSurface surface={surface} crumbs={CRUMBS} chip={<PlaceChip icon={<ProjectsIcon />} label="cowork" />}
+    <ComposeSurface surface={surface} crumbs={crumbs} chip={<PlaceChip icon={<ProjectsIcon />} label={projectName} />}
       isContinuing={isContinuing} onContinuing={setContinuing} onClose={onClose} onExpand={onExpand}
       submit={{ label: "만들기", onSubmit: submit, isDisabled: !isReady(draft), isPending: create.isPending }}
       pills={<>

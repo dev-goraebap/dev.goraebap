@@ -2,9 +2,10 @@ import { useMutation, useQuery, useQueryClient, type QueryClient } from "@tansta
 import { changesOf } from "../model/activity"
 import { ME } from "../model/marks"
 import type { NewWorkItem, WorkItem, WorkItemActivity, WorkItemPatch } from "../model/types"
-import { mockActivityOf, mockWorkItems, PROJECT_KEY } from "./mock"
+import { mockActivityOf, mockWorkItems } from "./mock"
 
-const listKey = ["work-items", PROJECT_KEY] as const
+/** 회사의 업무를 한 캐시에 둔다. 프로젝트의 업무는 키 앞부분(cowork-)으로 고른다. */
+const listKey = ["work-items"] as const
 const activityKey = (key: string) => [...listKey, key, "activity"] as const
 
 /** 서버가 없으므로 약 300ms 뒤에 목 데이터를 돌려준다. 이후 변경은 쿼리 캐시에만 남는다. */
@@ -12,8 +13,12 @@ const later = <T,>(value: T) => new Promise<T>(resolve => setTimeout(() => resol
 
 const listOptions = { queryKey: listKey, queryFn: () => later(mockWorkItems), staleTime: Infinity }
 
-export function useWorkItems() {
-  return useQuery(listOptions)
+const projectOf = (key: string) => key.slice(0, key.lastIndexOf("-"))
+
+/** 프로젝트(주소의 소문자 키) 하나의 업무. 키를 비우면 회사의 모든 업무(전역 검색). */
+export function useWorkItems(projectKey?: string) {
+  const wanted = projectKey?.toLowerCase()
+  return useQuery({ ...listOptions, select: (items: WorkItem[]) => (wanted ? items.filter(item => projectOf(item.key) === wanted) : items) })
 }
 
 /** 키 하나의 업무. 목록과 같은 캐시를 읽으므로 상세에서 바꾸면 목록도 바뀐다. 읽는 동안 undefined, 없으면 null. */
@@ -39,14 +44,15 @@ export function useWorkItemActivity(key: string) {
 const appendActivity = (client: QueryClient, key: string, entries: WorkItemActivity[]) =>
   client.setQueryData<WorkItemActivity[]>(activityKey(key), old => (old ? [...old, ...entries] : old))
 
-/** 새 업무를 다음 번호로 만들어 캐시 맨 앞에 넣는다. 목록을 아직 읽지 않았으면(새 업무 페이지로 바로 온 경우) 먼저 읽는다. */
-export function useCreateWorkItem() {
+/** 새 업무를 그 프로젝트의 다음 번호로 만들어 캐시 맨 앞에 넣는다. 목록을 아직 읽지 않았으면(새 업무 페이지로 바로 온 경우) 먼저 읽는다. */
+export function useCreateWorkItem(projectKey: string) {
+  const prefix = projectKey.toLowerCase()
   const client = useQueryClient()
   return useMutation({
     mutationFn: async (input: NewWorkItem): Promise<WorkItem> => {
       const items = await client.ensureQueryData(listOptions)
-      const number = Math.max(0, ...items.map(item => item.number)) + 1
-      return { ...input, id: `work-item-${number}`, key: `${PROJECT_KEY}-${number}`, number, updatedAt: new Date().toISOString() }
+      const number = Math.max(0, ...items.filter(item => projectOf(item.key) === prefix).map(item => item.number)) + 1
+      return { ...input, id: `work-item-${prefix}-${number}`, key: `${prefix}-${number}`, number, updatedAt: new Date().toISOString() }
     },
     onSuccess: item => client.setQueryData<WorkItem[]>(listKey, old => [item, ...(old ?? [])]),
   })

@@ -1,6 +1,6 @@
 import { useRouterState } from "@tanstack/react-router"
 import type { Notification, NotificationKind } from "@/entities/notification"
-import { paths } from "@/shared/config"
+import { paths, projectPath } from "@/shared/config"
 import { CalendarIcon, InboxIcon, InboxInIcon, MegaphoneIcon, type Icon } from "@/shared/ui/icon"
 import type { PageView } from "@/shared/ui/page"
 
@@ -40,5 +40,6 @@ export const pageHrefOf: Record<NotificationKind, string> = {
   approval: paths.leaves,
   notice: paths.announcements,
   event: paths.schedule,
-  mention: paths.workItems,
+  // 목 알림의 언급은 모두 호호코워크(cowork) 프로젝트의 업무에서 온다.
+  mention: projectPath("cowork"),
 }
