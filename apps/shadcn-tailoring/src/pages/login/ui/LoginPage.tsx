@@ -1,6 +1,7 @@
-import { useNavigate } from "@tanstack/react-router"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useState, type FormEvent } from "react"
 import { paths } from "@/shared/config"
+import { safeRedirect, signIn } from "@/shared/lib/session"
 import { BrandWordmark } from "@/shared/ui/brand"
 import { Button } from "@/shared/ui/button"
 import { Card, CardContent, CardDescription, CardHeader } from "@/shared/ui/card"
@@ -10,16 +11,20 @@ import { AuthBackground } from "./AuthBackground"
 
 /**
  * 로그인(호호코워크 LoginPage): 업무 이메일을 적으면 인증 코드를 보내고, 받은 코드로 들어간다. 앱 셸 밖의 화면이다.
- * 서버가 없으므로 어떤 값이든 들어가 알림함으로 간다.
+ * 서버가 없으므로 어떤 값이든 들어가고, 셸이 보낸 원래 주소(?redirect=)나 알림함으로 간다.
  */
 export function LoginPage() {
   const navigate = useNavigate()
+  const redirectTo = safeRedirect((useSearch({ strict: false }) as Record<string, unknown>).redirect)
   const [email, setEmail] = useState("")
   const [sentTo, setSentTo] = useState<string>()
   const [code, setCode] = useState("")
   const submit = (event: FormEvent) => {
     event.preventDefault()
-    if (sentTo) void navigate({ to: paths.notifications })
+    if (sentTo) {
+      signIn(sentTo)
+      void navigate({ href: redirectTo ?? paths.notifications, replace: true })
+    }
     else setSentTo(email.trim())
   }
   return (

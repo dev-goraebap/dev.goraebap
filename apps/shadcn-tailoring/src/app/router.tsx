@@ -1,9 +1,9 @@
 import { createRootRoute, createRoute, createRouter, Outlet, redirect } from "@tanstack/react-router"
 import { useCurrentProject } from "@/entities/project"
-import { AnnouncementPage, AnnouncementsPage } from "@/pages/announcements"
+import { AnnouncementComposePage, AnnouncementPage, AnnouncementsPage } from "@/pages/announcements"
 import { LeaveNewPage, LeavesPage } from "@/pages/leaves"
 import { LoginPage } from "@/pages/login"
-import { MeetingPage, MeetingsPage } from "@/pages/meetings"
+import { MeetingCreatePage, MeetingPage, MeetingsPage } from "@/pages/meetings"
 import { MemberProfilePage, MembersPage } from "@/pages/members"
 import { NotFoundPage } from "@/pages/not-found"
 import { NotificationsPage } from "@/pages/notifications"
@@ -18,14 +18,26 @@ import { SearchDialog, SearchPage } from "@/pages/search"
 import { SettingsPage } from "@/pages/settings"
 import { WorkItemDetailPage } from "@/pages/work-item-detail"
 import { WorkItemNewPage } from "@/pages/work-item-new"
-import { WeeklyReportsPage } from "@/pages/weekly-reports"
+import { WeeklyReportPage, WeeklyReportsPage, WeeklyReportWritePage } from "@/pages/weekly-reports"
 import { WorkItemsPage } from "@/pages/work-items"
 import { paths, projectPath, workItemPath } from "@/shared/config"
+import { isSignedIn, safeRedirect } from "@/shared/lib/session"
 import { AppShell } from "@/widgets/app-shell"
 
-// 로그인은 셸 밖, 나머지 화면은 셸(경로 없는 레이아웃) 안에 둔다.
+// 로그인은 셸 밖, 나머지 화면은 셸(경로 없는 레이아웃) 안에 둔다. 들어오지 않았으면 셸 대신 로그인으로 보내고, 들어온 뒤 원래 주소로 돌아온다.
 const root = createRootRoute()
-const shell = createRoute({ getParentRoute: () => root, id: "shell", component: () => <AppShell search={SearchDialog} /> })
+const shell = createRoute({
+  getParentRoute: () => root, id: "shell", component: () => <AppShell search={SearchDialog} />,
+  beforeLoad: ({ location }) => {
+    if (!isSignedIn()) throw redirect({ to: paths.login, search: { redirect: location.href }, replace: true })
+  },
+})
+const login = createRoute({
+  getParentRoute: () => root, path: paths.login, component: LoginPage,
+  beforeLoad: ({ search }) => {
+    if (isSignedIn()) throw redirect({ href: safeRedirect((search as Record<string, unknown>).redirect) ?? paths.notifications, replace: true })
+  },
+})
 const route = (path: string, component: () => React.ReactNode) => createRoute({ getParentRoute: () => shell, path, component })
 const moved = (path: string, to: (params: Record<string, string>) => string) =>
   createRoute({ getParentRoute: () => shell, path, beforeLoad: ({ params }) => { throw redirect({ href: to(params as Record<string, string>), replace: true }) } })
@@ -68,10 +80,16 @@ export const router = createRouter({
     route(paths.members, MembersPage),
     route(`${paths.members}/$memberId`, MemberProfilePage),
     route(paths.announcements, AnnouncementsPage),
+    route(`${paths.announcements}/new`, AnnouncementComposePage),
     route(`${paths.announcements}/$announcementId`, AnnouncementPage),
+    route(`${paths.announcements}/$announcementId/edit`, AnnouncementComposePage),
     route(paths.meetings, MeetingsPage),
+    route(`${paths.meetings}/new`, MeetingCreatePage),
     route(`${paths.meetings}/$meetingId`, MeetingPage),
     route(paths.weeklyReports, WeeklyReportsPage),
+    route(`${paths.weeklyReports}/write`, WeeklyReportWritePage),
+    route(`${paths.weeklyReports}/write/$weekStart`, WeeklyReportWritePage),
+    route(`${paths.weeklyReports}/$reportId`, WeeklyReportPage),
     route(paths.leaves, LeavesPage),
     route(`${paths.leaves}/new`, LeaveNewPage),
     route(paths.projects, ProjectsPage),
@@ -79,7 +97,7 @@ export const router = createRouter({
     ...movedRoutes,
     route(paths.search, SearchPage),
     route("$", NotFoundPage),
-  ]), createRoute({ getParentRoute: () => root, path: paths.login, component: LoginPage })]),
+  ]), login]),
   defaultNotFoundComponent: NotFoundPage,
 })
 
