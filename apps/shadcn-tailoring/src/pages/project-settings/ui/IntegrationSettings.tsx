@@ -35,7 +35,7 @@ export function IntegrationSettings() {
     const connected = integrations.data
     return (
       <SettingsBody title="저장소 연동"
-        description={`저장소의 브랜치 · PR(MR) · 커밋에 업무 번호(예: ${project.key}-1)를 적으면 그 업무의 활동에 이어지고, 아래 규칙대로 상태가 옮겨집니다.`}>
+        description={`저장소의 브랜치 · PR(MR) · 커밋에 업무 번호(예: ${project.key.toLowerCase()}-1)를 적으면 그 업무의 활동에 이어지고, 아래 규칙대로 상태가 옮겨집니다.`}>
         {connected.map(integration => <Connected key={integration.id} projectKey={key} integration={integration} />)}
         <SettingsSection title={connected.length ? "저장소 추가 연결" : "저장소 연결"}>
           {CODE_PROVIDERS.map(provider => (
