@@ -8,7 +8,7 @@ import { ActivityApp } from "./activity/app/ActivityApp";
 const meta = {
   title: "Playground (플레이그라운드)/활동 기록", id: "playground-activity", component: ActivityApp,
   layout: "fullscreen", height: "38rem",
-  device: "desktop",
+  device: "desktop", kit: "shadcn",
 } satisfies Meta<typeof ActivityApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

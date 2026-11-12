@@ -1,17 +1,13 @@
-import { Button } from '@astryxdesign/core/Button';
-import { HStack } from '@astryxdesign/core/HStack';
-import { LinkProvider } from '@astryxdesign/core/Link';
-import { Text } from '@astryxdesign/core/Text';
-import { PageState } from '@/shared/ui/composites/state/PageState';
-import { icon } from '@/shared/ui/foundations/icons/solar-icon';
-import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
-import type { NavSpace } from '@/shared/ui/layouts/app/nav';
-import { Page } from '@/shared/ui/layouts/page/Page';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation, useNavigate,
+import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation, useNavigate,
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
+import type { NavSpace } from '@/shared/ui/app-shell';
+import { Button, buttonVariants } from '@/shared/ui/button';
+import { FileTextIcon, PenSquareIcon } from '@/shared/ui/icon';
+import { Page } from '@/shared/ui/page';
+import { PageState } from '@/shared/ui/page-state';
+import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';
 import { SessionApiContext, type SessionApi } from '../entities/session';
 import { createSessionApi } from '../mocks/session-api';
@@ -23,37 +19,41 @@ import { RestrictedPage } from '../pages/restricted/RestrictedPage';
 const space: NavSpace = {
   id: 'main', title: '작업 공간', sections: [
     { title: '작업', isHeaderHidden: true, entries: [
-      { path: '/notes/new', label: '메모 쓰기', icon: 'edit' },
-      { path: '/docs/plan', label: '설계 문서', icon: 'document' },
+      { path: '/notes/new', label: '메모 쓰기', icon: PenSquareIcon },
+      { path: '/docs/plan', label: '설계 문서', icon: FileTextIcon },
     ] },
   ],
 };
 
-/** 점검 화면은 셸 밖이고, 나머지는 같은 셸 안이다. 세션 만료 대화상자는 어느 화면 위에서든 열린다. */
+/** 사이드바 머리의 표시: 작업 공간의 첫 화면으로 가는 링크. 접히면 아이콘만. */
+export function WorkspaceBrand({ isFolded = false }: { isFolded?: boolean }) {
+  return <Link to={'/notes/new' as string} aria-label="작업 공간 처음으로"
+    className="flex min-w-0 items-center gap-2 rounded-lg px-2 font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring">
+    <FileTextIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate">작업 공간</span>}
+  </Link>;
+}
+
+/** 점검 화면은 셸 밖이고, 나머지는 같은 셸 안이다. 세션 만료 화면은 어느 화면 위에서든 열린다. */
 function Frame() {
   const layout = useShellLayout();
   const location = useLocation();
-  const navigate = useNavigate();
-  if (location.pathname === '/maintenance') return <LinkProvider component={RouterLink}><Outlet /></LinkProvider>;
-  return <LinkProvider component={RouterLink}>
-    <AppFrame space={space} pathname={location.pathname} layout={layout} onNavigate={path => void navigate({ href: path })}
-      brand={isFolded => <HStack gap={2} vAlign="center">{icon('document', true)}{isFolded ? null : <Text weight="semibold">작업 공간</Text>}</HStack>}>
-      <Outlet />
-    </AppFrame>
-  </LinkProvider>;
+  if (location.pathname === '/maintenance') return <Outlet />;
+  return <PlaygroundShell space={space} pathname={location.pathname} layout={layout} brand={isFolded => <WorkspaceBrand isFolded={isFolded} />}>
+    <Outlet />
+  </PlaygroundShell>;
 }
 
 function RouteError({ reset }: ErrorComponentProps) {
   return <Page crumbs={[{ label: '작업 공간' }]}>
-    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button label="다시 시도" variant="secondary" onClick={reset} />} />
+    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
   </Page>;
 }
 
 /** 셸 안의 404: 메뉴는 그대로 두고 본문만 "없음"으로 바꾼다. 돌아갈 곳 하나를 둔다. */
 function NotFound() {
-  return <Page crumbs={[{ label: '작업 공간' }, { label: '없는 페이지' }]} isDetail>
+  return <Page crumbs={[{ label: '작업 공간', href: '/notes/new' }, { label: '없는 페이지' }]} isFullScreen>
     <PageState kind="not-found" title="페이지를 찾을 수 없습니다" description="주소가 바뀌었거나 지워졌을 수 있습니다."
-      action={<Button label="메모 쓰기로" variant="secondary" href="/notes/new" />} />
+      action={<Link to={'/notes/new' as string} className={buttonVariants({ variant: 'secondary', className: 'max-md:h-11' })}>메모 쓰기로</Link>} />
   </Page>;
 }
 

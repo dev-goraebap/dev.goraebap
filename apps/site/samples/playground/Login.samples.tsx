@@ -7,7 +7,7 @@ import { LoginApp } from "./login/app/LoginApp";
  */
 const meta = {
   title: "Playground (플레이그라운드)/로그인", id: "playground-login", component: LoginApp,
-  layout: "fullscreen", height: "40rem", device: "desktop",
+  layout: "fullscreen", height: "40rem", device: "desktop", kit: "shadcn",
 } satisfies Meta<typeof LoginApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

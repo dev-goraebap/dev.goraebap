@@ -1,17 +1,13 @@
-import { Button } from '@astryxdesign/core/Button';
-import { HStack } from '@astryxdesign/core/HStack';
-import { LinkProvider } from '@astryxdesign/core/Link';
-import { Text } from '@astryxdesign/core/Text';
-import { PageState } from '@/shared/ui/composites/state/PageState';
-import { icon } from '@/shared/ui/foundations/icons/solar-icon';
-import { PlaygroundFrame as AppFrame } from '@samples/playground/PlaygroundFrame';
-import type { NavSpace } from '@/shared/ui/layouts/app/nav';
-import { Page } from '@/shared/ui/layouts/page/Page';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
-import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation, useNavigate, useParams,
+import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation, useParams,
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
+import type { NavSpace } from '@/shared/ui/app-shell';
+import { Button, buttonVariants } from '@/shared/ui/button';
+import { ArchiveIcon, BellIcon, InboxIcon } from '@/shared/ui/icon';
+import { Page } from '@/shared/ui/page';
+import { PageState } from '@/shared/ui/page-state';
+import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';
 import { initiallyRead, NotificationApiContext, NotificationReadContext, notificationQueries, seedNotifications, useNotificationApi, useNotificationRead,
   type Notification } from '../entities/notification';
@@ -21,8 +17,8 @@ import { NotificationPage } from '../pages/NotificationPage';
 
 const spaceOf = (unread: number): NavSpace => ({
   id: 'main', title: '알림', sections: [{ title: '알림', isHeaderHidden: true, entries: [
-    { path: '/inbox', label: '받은 알림', icon: 'inbox', badge: unread || undefined },
-    { path: '/archive', label: '보관함', icon: 'archive' },
+    { path: '/inbox', label: '받은 알림', icon: InboxIcon, badge: unread || undefined },
+    { path: '/archive', label: '보관함', icon: ArchiveIcon },
   ] }],
 });
 
@@ -34,14 +30,14 @@ function Shell() {
   const unread = (query.data ?? []).filter(each => !each.archived && !read.has(each.id)).length;
   const layout = useShellLayout();
   const location = useLocation();
-  const navigate = useNavigate();
-  return <LinkProvider component={RouterLink}>
-    <AppFrame space={spaceOf(unread)} pathname={location.pathname} layout={layout} onNavigate={path => void navigate({ href: path })}
-      brand={isFolded => <HStack gap={2} vAlign="center" paddingInline={2}>{icon('bell', true)}{isFolded ? null : <Text weight="semibold">알림</Text>}</HStack>}
-      footer={<HStack width="100%" paddingInline={2}><Text type="supporting" color="secondary" hasTabularNumbers>예제 · 메모리 저장</Text></HStack>}>
-      <Outlet />
-    </AppFrame>
-  </LinkProvider>;
+  return <PlaygroundShell space={spaceOf(unread)} pathname={location.pathname} layout={layout}
+    brand={isFolded => <Link to={'/inbox' as string} aria-label="알림 처음으로"
+      className="flex min-w-0 items-center gap-2 rounded-lg px-2 font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring">
+      <BellIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate">알림</span>}
+    </Link>}
+    footer={isFolded => isFolded ? null : <span className="px-2 text-xs text-muted-foreground">예제 · 메모리 저장</span>}>
+    <Outlet />
+  </PlaygroundShell>;
 }
 
 function DetailRoute() {
@@ -51,14 +47,14 @@ function DetailRoute() {
 
 function RouteError({ reset }: ErrorComponentProps) {
   return <Page crumbs={[{ label: '알림' }]}>
-    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button label="다시 시도" variant="secondary" onClick={reset} />} />
+    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
   </Page>;
 }
 
 function NotFound() {
-  return <Page crumbs={[{ label: '받은 알림', href: '/inbox' }, { label: '없는 페이지' }]} isDetail>
+  return <Page crumbs={[{ label: '받은 알림', href: '/inbox' }, { label: '없는 페이지' }]} isFullScreen>
     <PageState kind="not-found" title="페이지를 찾을 수 없습니다" description="주소가 바뀌었거나 지워졌을 수 있습니다."
-      action={<Button label="받은 알림으로" variant="secondary" href="/inbox" />} />
+      action={<Link to={'/inbox' as string} className={buttonVariants({ variant: 'secondary', className: 'max-md:h-11' })}>받은 알림으로</Link>} />
   </Page>;
 }
 

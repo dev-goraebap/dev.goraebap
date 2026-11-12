@@ -7,7 +7,7 @@ import { IssuesApp } from "./issues/app/IssuesApp";
  */
 const meta = {
   title: "Playground (플레이그라운드)/이슈", id: "playground-issues", component: IssuesApp,
-  layout: "fullscreen", height: "40rem", device: "desktop",
+  layout: "fullscreen", height: "40rem", device: "desktop", kit: "shadcn",
 } satisfies Meta<typeof IssuesApp>;
 export default meta;
 type Sample = SampleOf<typeof meta>;

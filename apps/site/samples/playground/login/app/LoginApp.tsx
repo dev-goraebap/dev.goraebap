@@ -1,14 +1,11 @@
-import {SignUpPage,OtpPage} from '../pages/login/AccountPages';
-import {useSearch} from '@tanstack/react-router';
-import { LinkProvider } from '@astryxdesign/core/Link';
-import { RouterLink } from '@/shared/ui/patterns/routing/RouterLink';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useNavigate } from '@tanstack/react-router';
+import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useNavigate, useSearch } from '@tanstack/react-router';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { AuthApiContext, type AuthApi } from '../entities/auth';
 import { createAuthApi } from '../mocks/auth-api';
 import { SignedInPage } from '../pages/done/SignedInPage';
 import { ForgotPage } from '../pages/forgot/ForgotPage';
+import { OtpPage, SignUpPage } from '../pages/login/AccountPages';
 import { LoginPage } from '../pages/login/LoginPage';
 
 /** 로그인한 계정 이름. 주소에 싣지 않고 앱이 들고 있는다. */
@@ -24,10 +21,8 @@ function ToLogin() {
 type Seed = { initialEmail?: string; hasInitialFailure?: boolean };
 
 export function createLoginRouter(initialPath: string, seed: Seed) {
-  const root = createRootRoute({
-    component: () => <LinkProvider component={RouterLink}><Outlet /></LinkProvider>,
-    notFoundComponent: () => <ToLogin />,
-  });
+  // 셸 없는 화면: 견본 틀의 높이를 채우고 넘치면 이 안에서 스크롤한다.
+  const root = createRootRoute({ component: () => <div className="h-full overflow-auto"><Outlet /></div>, notFoundComponent: () => <ToLogin /> });
   const home = createRoute({ getParentRoute: () => root, path: '/', component: () => <ToLogin /> });
   const login = createRoute({ getParentRoute: () => root, path: '/login', component: function LoginRoute() {
     const navigate = useNavigate();
@@ -38,18 +33,24 @@ export function createLoginRouter(initialPath: string, seed: Seed) {
     const navigate = useNavigate();
     return <ForgotPage onBack={() => void navigate({ href: '/login' })} />;
   } });
-  const done = createRoute({
-    getParentRoute: () => root, path: '/done',
-    component: function DoneRoute() {
-      const { name } = useContext(SessionContext);
-      const navigate = useNavigate();
-      return <SignedInPage name={name} onSignOut={() => void navigate({ href: '/login', replace: true })} />;
-    },
-  });
-  const signup=createRoute({getParentRoute:()=>root,path:'/signup',component:function(){const navigate=useNavigate();return <SignUpPage onCreated={email=>void navigate({href:`/otp?email=${encodeURIComponent(email)}&sent=true`})}/>}});
-  const otp=createRoute({getParentRoute:()=>root,path:'/otp',component:function(){const navigate=useNavigate();const search=useSearch({strict:false}) as {email?:string;sent?:boolean};const session=useContext(SessionContext);return <OtpPage initialEmail={search.email} hasCode={search.sent} onSignedIn={name=>{session.setName(name);void navigate({href:'/done',replace:true})}}/>}});
+  const done = createRoute({ getParentRoute: () => root, path: '/done', component: function DoneRoute() {
+    const { name } = useContext(SessionContext);
+    const navigate = useNavigate();
+    return <SignedInPage name={name} onSignOut={() => void navigate({ href: '/login', replace: true })} />;
+  } });
+  const signup = createRoute({ getParentRoute: () => root, path: '/signup', component: function SignUpRoute() {
+    const navigate = useNavigate();
+    return <SignUpPage onCreated={email => void navigate({ href: `/otp?email=${encodeURIComponent(email)}&sent=true` })} />;
+  } });
+  const otp = createRoute({ getParentRoute: () => root, path: '/otp', component: function OtpRoute() {
+    const navigate = useNavigate();
+    const search = useSearch({ strict: false }) as { email?: string; sent?: boolean };
+    const session = useContext(SessionContext);
+    return <OtpPage initialEmail={search.email} hasCode={search.sent}
+      onSignedIn={name => { session.setName(name); void navigate({ href: '/done', replace: true }); }} />;
+  } });
   return createRouter({
-    routeTree: root.addChildren([home, login, forgot, done,signup,otp]),
+    routeTree: root.addChildren([home, login, forgot, done, signup, otp]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
   });
 }

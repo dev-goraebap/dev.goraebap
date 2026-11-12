@@ -1,6 +1,7 @@
-import type { ListFilter } from '@/shared/ui/composites/filter/types';
 import { infiniteQueryOptions, keepPreviousData } from '@tanstack/react-query';
 import { createContext, useContext } from 'react';
+import type { FilterDef, FilterState } from '@/shared/ui/filter';
+import { CalendarIcon, TagIcon, UserIcon } from '@/shared/ui/icon';
 
 /** 활동: 누가·무엇을·언제. 읽기만 하는 기록이라 고치거나 지우는 동작이 없다. */
 export type ActivityKind = 'create' | 'edit' | 'comment' | 'approve' | 'delete';
@@ -22,15 +23,23 @@ export const periods = [{ value: 'today', label: '오늘' }, { value: 'week', la
 /** 조건: 기간은 하나, 사람과 종류는 여럿(같은 속성 안은 OR, 속성끼리는 AND). 비어 있으면 거르지 않는다. */
 export type Conditions = { period?: string; actors: string[]; kinds: string[] };
 
-export const filters: ListFilter[] = [
-  { key: 'period', label: '기간', icon: 'calendar', options: periods },
-  { key: 'actor', label: '사람', icon: 'user', isMultiple: true, options: actors.map(name => ({ value: name, label: name })) },
-  { key: 'type', label: '종류', icon: 'tag', isMultiple: true, options: Object.entries(kinds).map(([value, each]) => ({ value, label: each.label })) },
+export type FilterKey = 'period' | 'actor' | 'type';
+export const filterKeys: FilterKey[] = ['period', 'actor', 'type'];
+export const filters: FilterDef<FilterKey>[] = [
+  { key: 'period', label: '기간', icon: CalendarIcon, options: periods },
+  { key: 'actor', label: '사람', icon: UserIcon, options: actors.map(name => ({ value: name, label: name })) },
+  { key: 'type', label: '종류', icon: TagIcon, options: Object.entries(kinds).map(([value, each]) => ({ value, label: each.label })) },
 ];
 
+/** 기간은 하나만 고른다: 새로 고른 값이 앞의 값을 바꾼다(키트 필터는 여러 값을 고르는 모양이라 여기서 하나로 줄인다). */
+export function onePeriod(next: FilterState<FilterKey>, current: FilterState<FilterKey>): FilterState<FilterKey> {
+  const period = next.period ?? [];
+  return { ...next, period: period.length > 1 ? period.filter(value => !current.period?.includes(value)).slice(-1) : period };
+}
+
 /** 주소에 적힌 값 중 선택지에 있는 것만 조건으로 쓴다. */
-export function conditionsOf(state: Record<string, string[]>): Conditions {
-  const allowed = (key: string) => (state[key] ?? []).filter(value => filters.find(filter => filter.key === key)?.options.some(option => option.value === value));
+export function conditionsOf(state: FilterState<FilterKey>): Conditions {
+  const allowed = (key: FilterKey) => (state[key] ?? []).filter(value => filters.find(filter => filter.key === key)?.options.some(option => option.value === value));
   return { period: allowed('period')[0], actors: allowed('actor'), kinds: allowed('type') };
 }
 

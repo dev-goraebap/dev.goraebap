@@ -26,12 +26,12 @@ export type Issue = {
 export type NewIssue = Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due' | 'parent' | 'type' | 'labels' | 'start'>;
 export type IssuePatch = Partial<Pick<Issue, 'title' | 'body' | 'status' | 'priority' | 'assignee' | 'due' | 'parent' | 'type' | 'labels' | 'start'>>;
 
-/** 보드의 칸이자 목록의 그룹 순서. dot은 StatusDot의 색 의미. */
-export const statuses: { id: IssueStatus; label: string; dot: 'neutral' | 'accent' | 'warning' | 'success' }[] = [
-  { id: 'todo', label: '할 일', dot: 'neutral' },
-  { id: 'doing', label: '진행 중', dot: 'accent' },
-  { id: 'review', label: '검토 중', dot: 'warning' },
-  { id: 'done', label: '완료', dot: 'success' },
+/** 보드의 칸이자 목록의 그룹 순서. 표식(아이콘 · 색)은 ui의 StatusMark가 정한다. */
+export const statuses: { id: IssueStatus; label: string }[] = [
+  { id: 'todo', label: '할 일' },
+  { id: 'doing', label: '진행 중' },
+  { id: 'review', label: '검토 중' },
+  { id: 'done', label: '완료' },
 ];
 export const statusOf = (id: IssueStatus) => statuses.find(each => each.id === id)!;
 
@@ -58,6 +58,16 @@ export const dateText = (value: string) =>
   new Intl.DateTimeFormat('ko', { month: 'long', day: 'numeric', timeZone: 'UTC' }).format(new Date(value.length === 10 ? `${value}T00:00:00Z` : value));
 export const timeText = (value: string) =>
   new Intl.DateTimeFormat('ko', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZone: 'UTC' }).format(new Date(value));
+
+const between = (from: string, to: string) => Math.round((Date.parse(`${to}T00:00:00Z`) - Date.parse(`${from}T00:00:00Z`)) / 86_400_000);
+/** 마감까지의 거리: 오늘 · 내일 · N일 뒤 · N일 지남. */
+export function dueText(day: string) {
+  const days = between(today, day);
+  return days === 0 ? '오늘' : days === 1 ? '내일' : days > 1 ? `${days}일 뒤` : `${-days}일 지남`;
+}
+/** "11월 12일 (목)": 날짜 자체가 중요한 값(시작일). */
+export const absoluteText = (day: string) => new Intl.DateTimeFormat('ko', { month: 'long', day: 'numeric', weekday: 'short', timeZone: 'UTC' })
+  .format(new Date(`${day}T00:00:00Z`));
 
 export function plainText(node?: JSONContent): string {
   return node?.text ?? node?.content?.map(plainText).join(' ') ?? '';

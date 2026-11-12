@@ -1,26 +1,20 @@
-import { Text } from '@astryxdesign/core/Text';
-import { Banner } from '@astryxdesign/core/Banner';
-import { Button } from '@astryxdesign/core/Button';
-import { CheckboxInput } from '@astryxdesign/core/CheckboxInput';
-import { HStack } from '@astryxdesign/core/HStack';
-import { Link } from '@astryxdesign/core/Link';
-import { TextInput } from '@astryxdesign/core/TextInput';
-import { VStack } from '@astryxdesign/core/VStack';
-import { focusFirstInvalid } from '@/shared/ui/patterns/compose/validation';
 import { useMutation } from '@tanstack/react-query';
-import { useState, type FormEvent } from 'react';
+import { Link } from '@tanstack/react-router';
+import { useId, useState, type FormEvent } from 'react';
+import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
+import { Checkbox } from '@/shared/ui/checkbox';
 import { InvalidCredentials, useAuthApi } from '../../entities/auth';
-import { AuthCard } from '../auth-card/AuthCard';
-import styles from '../../app/login.module.css';
+import { AuthButton, AuthCard, AuthError, AuthField, textLink } from '../auth-card/AuthCard';
 
 /**
- * 로그인. 칸이 비었으면 그 칸 곁에 알리고, 서버가 거절하면 양식 위 배너로 알린다. 배너는 어느 칸이 틀렸는지 말하지
+ * 로그인. 칸이 비었으면 그 칸 곁에 알리고, 서버가 거절하면 양식 안 한 줄로 알린다. 그 줄은 어느 칸이 틀렸는지 말하지
  * 않고 입력은 그대로 둔다. 제출 버튼은 막지 않고 보내는 동안 진행 표시만 한다.
  */
 export function LoginPage({ initialEmail = '', hasInitialFailure = false, onSignedIn }: {
   initialEmail?: string; hasInitialFailure?: boolean; onSignedIn: (name: string) => void;
 }) {
   const api = useAuthApi();
+  const showId = useId();
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState('');
   const [isShown, setShown] = useState(false);
@@ -40,22 +34,26 @@ export function LoginPage({ initialEmail = '', hasInitialFailure = false, onSign
     signIn.mutate();
   };
   return <AuthCard title="로그인">
-    <form className={styles.form} noValidate onSubmit={submit}>
-      <VStack gap={4}>
-        <TextInput label="이메일" type="email" placeholder="name@example.com" value={email} onChange={setEmail} hasAutoFocus={!hasInitialFailure}
-          statusVariant="detached" status={isTried && lacks.email ? { type: 'error', message: '이메일을 입력해 주세요.' } : undefined} />
-        <VStack gap={2}>
-          <TextInput label="비밀번호" type={isShown ? 'text' : 'password'} value={password} onChange={setPassword}
-            statusVariant="detached" status={isTried && lacks.password ? { type: 'error', message: '비밀번호를 입력해 주세요.' } : undefined} />
-          <HStack hAlign="between" vAlign="center" wrap="wrap" gap={2}>
-            <CheckboxInput label="비밀번호 보기" value={isShown} onChange={setShown} />
-            <Link href="/forgot">비밀번호 찾기</Link>
-          </HStack>
-        </VStack>
-        {failure ? <Text className={styles.error} role="alert">{failure === 'credentials' ? '이메일 또는 비밀번호가 맞지 않습니다.' : '로그인하지 못했습니다. 잠시 후 다시 시도해 주세요.'}</Text> : null}
-        <Button label="로그인" variant="primary" type="submit" isLoading={signIn.isPending} width="100%" />
-        <div className={styles.links}><Link href="/signup">회원가입</Link><Link href="/otp">인증 코드로 로그인</Link></div>
-      </VStack>
+    <form className="flex flex-col gap-4" noValidate onSubmit={submit}>
+      <AuthField label="이메일" type="email" autoComplete="email" placeholder="name@example.com" value={email} onChange={event => setEmail(event.target.value)}
+        autoFocus={!hasInitialFailure} error={isTried && lacks.email ? '이메일을 입력해 주세요.' : undefined} />
+      <div className="flex flex-col gap-2">
+        <AuthField label="비밀번호" type={isShown ? 'text' : 'password'} autoComplete="current-password" value={password}
+          onChange={event => setPassword(event.target.value)} error={isTried && lacks.password ? '비밀번호를 입력해 주세요.' : undefined} />
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <label className="flex min-h-11 items-center gap-2 text-sm md:min-h-0">
+            <Checkbox id={showId} checked={isShown} onCheckedChange={setShown} aria-label="비밀번호 보기" />
+            비밀번호 보기
+          </label>
+          <Link to={'/forgot' as string} className={textLink}>비밀번호 찾기</Link>
+        </div>
+      </div>
+      {failure ? <AuthError>{failure === 'credentials' ? '이메일 또는 비밀번호가 맞지 않습니다.' : '로그인하지 못했습니다. 잠시 후 다시 시도해 주세요.'}</AuthError> : null}
+      <AuthButton type="submit" isPending={signIn.isPending}>로그인</AuthButton>
+      <div className="flex justify-center gap-4">
+        <Link to={'/signup' as string} className={textLink}>회원가입</Link>
+        <Link to={'/otp' as string} className={textLink}>인증 코드로 로그인</Link>
+      </div>
     </form>
   </AuthCard>;
 }
