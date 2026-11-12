@@ -1,8 +1,9 @@
 import {
-  STATUSES, typeMark, WorkItemAssignee, WorkItemLabels, WorkItemPriorityIcon, WorkItemStatusIcon, type WorkItem, type WorkItemStatus,
+  typeMark, WorkflowColumnIcon, WorkItemAssignee, WorkItemLabels, WorkItemPriorityIcon, type WorkflowColumn, type WorkItem, type WorkItemStatus,
 } from "@/entities/work-item"
 import { Button } from "@/shared/ui/button"
 import { PlusIcon } from "@/shared/ui/icon"
+import { columnIdOf } from "../model/filters"
 import { WorkItemLink } from "./WorkItemLink"
 import { WorkItemMenu } from "./WorkItemMenu"
 
@@ -27,24 +28,26 @@ function BoardCard({ item }: { item: WorkItem }) {
 }
 
 /**
- * 보드 뷰: 상태마다 칸, 칸 안에서 카드가 세로로 넘어간다. 가로 넘김은 본문 안에서만.
- * 휴대폰은 칸 하나 폭(304px)씩 옆으로 넘기며 칸에 맞춰 멈춘다.
+ * 보드 뷰: 프로젝트 워크플로의 칸마다 한 줄, 칸 안에서 카드가 세로로 넘어간다. 업무가 없는 칸도 그린다(그 칸의 +로 만든다).
+ * 가로 넘김은 본문 안에서만. 휴대폰은 칸 하나 폭(304px)씩 옆으로 넘기며 칸에 맞춰 멈춘다.
  */
-export function WorkItemBoard({ items, onCreateIn }: { items: WorkItem[]; onCreateIn?: (status: WorkItemStatus) => void }) {
+export function WorkItemBoard({ items, columns, onCreateIn }: {
+  items: WorkItem[]; columns: readonly WorkflowColumn[]; onCreateIn?: (status: WorkItemStatus) => void
+}) {
   return (
     <div className="flex min-h-0 flex-1 snap-x snap-mandatory gap-3 overflow-x-auto p-3 max-md:scroll-px-3 md:snap-none">
-      {STATUSES.map(status => {
-        const cards = items.filter(item => item.status === status.value)
+      {columns.map(column => {
+        const cards = items.filter(item => columnIdOf(columns, item) === column.id)
         return (
-          <section key={status.value} aria-label={status.label}
+          <section key={column.id} aria-label={column.name}
             className="flex w-76 shrink-0 snap-start flex-col rounded-xl bg-band md:w-72">
             <header className="flex h-11 shrink-0 items-center gap-2 pr-1.5 pl-3 text-sm font-medium md:h-10">
-              <WorkItemStatusIcon status={status.value} />
-              {status.label}
+              <WorkflowColumnIcon column={column} />
+              <span className="truncate">{column.name}</span>
               <span className="font-normal text-muted-foreground tabular-nums">{cards.length}</span>
               {onCreateIn && (
-                <Button variant="ghost" size="icon-xs" aria-label={`${status.label}에 업무 만들기`} className="ml-auto max-md:size-9"
-                  onClick={() => onCreateIn(status.value)}>
+                <Button variant="ghost" size="icon-xs" aria-label={`${column.name}에 업무 만들기`} className="ml-auto max-md:size-9"
+                  onClick={() => onCreateIn(column.id)}>
                   <PlusIcon />
                 </Button>
               )}

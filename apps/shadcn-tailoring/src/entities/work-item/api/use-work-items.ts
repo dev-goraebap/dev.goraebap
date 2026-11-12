@@ -1,19 +1,19 @@
 import { useMutation, useQuery, useQueryClient, type QueryClient } from "@tanstack/react-query"
 import { changesOf } from "../model/activity"
+import { projectKeyOf as projectOf } from "../model/key"
 import { ME } from "../model/marks"
 import type { NewWorkItem, WorkItem, WorkItemActivity, WorkItemPatch } from "../model/types"
+import { workItemsKey } from "./keys"
 import { mockActivityOf, mockWorkItems } from "./mock"
+import { cachedColumns } from "./use-workflow"
 
-/** 회사의 업무를 한 캐시에 둔다. 프로젝트의 업무는 키 앞부분(cowork-)으로 고른다. */
-const listKey = ["work-items"] as const
+const listKey = workItemsKey
 const activityKey = (key: string) => [...listKey, key, "activity"] as const
 
 /** 서버가 없으므로 약 300ms 뒤에 목 데이터를 돌려준다. 이후 변경은 쿼리 캐시에만 남는다. */
 const later = <T,>(value: T) => new Promise<T>(resolve => setTimeout(() => resolve(value), 300))
 
 const listOptions = { queryKey: listKey, queryFn: () => later(mockWorkItems), staleTime: Infinity }
-
-const projectOf = (key: string) => key.slice(0, key.lastIndexOf("-"))
 
 /** 프로젝트(주소의 소문자 키) 하나의 업무. 키를 비우면 회사의 모든 업무(전역 검색). */
 export function useWorkItems(projectKey?: string) {
@@ -58,7 +58,7 @@ export function useCreateWorkItem(projectKey: string) {
   })
 }
 
-/** 속성을 바꾼다. 캐시의 업무를 고치고, 바꾼 속성마다 "나"의 활동 한 줄을 남긴다. */
+/** 속성을 바꾼다. 캐시의 업무를 고치고, 바꾼 속성마다 "나"의 활동 한 줄을 남긴다(상태는 그때의 칸 이름으로). */
 export function useUpdateWorkItem() {
   const client = useQueryClient()
   return useMutation({
@@ -69,7 +69,7 @@ export function useUpdateWorkItem() {
     },
     onSuccess: ({ item, patch, at }) => {
       client.setQueryData<WorkItem[]>(listKey, old => old?.map(each => (each.key === item.key ? { ...each, ...patch, updatedAt: at } : each)))
-      appendActivity(client, item.key, changesOf(item, patch).map(change => ({
+      appendActivity(client, item.key, changesOf(item, patch, cachedColumns(client, projectOf(item.key))).map(change => ({
         ...change, kind: "changed" as const, id: `${item.key}-${change.field}-${at}`, at, actor: ME,
       })))
     },

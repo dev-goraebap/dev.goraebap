@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { useCurrentProject } from "@/entities/project"
-import { ME, useWorkItems, type WorkItemStatus } from "@/entities/work-item"
+import { ME, useStatusColumns, useWorkItems } from "@/entities/work-item"
 import { useNewWorkItemPanel, useOpenNewWorkItem, WorkItemCompose } from "@/features/work-item-create"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { paths } from "@/shared/config"
@@ -12,7 +12,7 @@ import {
 import { Page, PageViews, type PageView } from "@/shared/ui/page"
 import { Skeleton } from "@/shared/ui/skeleton"
 import { FilterBar, FilterChips, FilterMenu, useFilters } from "@/shared/ui/filter"
-import { applyFilters, FILTERS, groupItems, INITIAL_DISPLAY, sortItems, type Display } from "../model/filters"
+import { applyFilters, filtersOf, groupItems, INITIAL_DISPLAY, sortItems, type Display } from "../model/filters"
 import { WorkItemDisplayMenu } from "./WorkItemDisplayMenu"
 import { WorkItemsPageMenu } from "./WorkItemMenu"
 import { WorkItemBoard } from "./WorkItemBoard"
@@ -51,7 +51,10 @@ export function WorkItemsPage() {
   const isMobile = useIsMobile()
   const { key: projectKey, project } = useCurrentProject()
   const { data, isPending } = useWorkItems(projectKey)
-  const filters = useFilters(FILTERS)
+  // 보드의 칸 · 상태 필터 · 상태 묶음은 프로젝트의 워크플로를 따른다(설정에서 고치면 바로 바뀐다).
+  const columns = useStatusColumns(projectKey)
+  const filterDefs = useMemo(() => filtersOf(columns), [columns])
+  const filters = useFilters(filterDefs)
   const [display, setDisplay] = useState<Display>(INITIAL_DISPLAY)
   const [view, setView] = useState<View>("all")
   const [selected, setSelected] = useState<Set<string>>(new Set())
@@ -63,9 +66,9 @@ export function WorkItemsPage() {
   useEffect(() => { if (shouldExpand) expandPanel() }, [shouldExpand])
 
   const items = useMemo(() => {
-    const shown = sortItems(applyFilters(data ?? [], filters.state), display)
+    const shown = sortItems(applyFilters(data ?? [], filters.state, columns), display)
     return view === "mine" ? shown.filter(item => item.assignee?.id === ME.id) : shown
-  }, [data, filters.state, display, view])
+  }, [data, filters.state, columns, display, view])
   const isNarrowed = filters.active.length > 0
 
   const below = isMobile ? <FilterChips filters={filters} /> : <FilterBar filters={filters} />
@@ -82,7 +85,7 @@ export function WorkItemsPage() {
             : <Button variant="create" onClick={() => openCreate()}>새 업무</Button>} />
       )
     }
-    if (view === "board") return <WorkItemBoard items={items} onCreateIn={openCreate} />
+    if (view === "board") return <WorkItemBoard items={items} columns={columns} onCreateIn={openCreate} />
     if (view === "table") {
       // 휴대폰의 표는 묶지 않은 목록이다(호호코워크와 같이).
       if (isMobile) return <Rows items={items} isCompact />
@@ -93,8 +96,8 @@ export function WorkItemsPage() {
       )
     }
     return (
-      <WorkItemListView groups={groupItems(items, display.group)} isCompact={isMobile}
-        onCreateIn={display.group === "status" ? id => openCreate(id as WorkItemStatus) : undefined} />
+      <WorkItemListView groups={groupItems(items, display.group, columns)} isCompact={isMobile}
+        onCreateIn={display.group === "status" ? openCreate : undefined} />
     )
   }
 

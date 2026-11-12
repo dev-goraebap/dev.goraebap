@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { CYCLE_STATES, cycleState, today, useCycles, useDeleteCycle, useSaveCycle, type Cycle, type CycleState } from "@/entities/cycle"
 import { useCurrentProject } from "@/entities/project"
-import { useWorkItems, type WorkItem } from "@/entities/work-item"
+import { columnOf, isClosedCategory, useStatusColumns, useWorkItems, type WorkflowColumn, type WorkItem } from "@/entities/work-item"
 import { paths, projectPath } from "@/shared/config"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
@@ -21,9 +21,12 @@ type Dialog = { kind: "edit"; cycle?: Cycle; nonce: number } | { kind: "finish";
 const labelOf = (cycle: Cycle, state: CycleState, next?: Cycle) =>
   state === "upcoming" ? (cycle.id === next?.id ? "다음" : "계획") : CYCLE_STATES[state]
 
-function totalsOf(items: WorkItem[]): CycleTotals {
-  const done = items.filter(item => item.status === "done").length
-  return { scope: items.length, done, ratio: items.length ? done / items.length : 0 }
+/** 완료율과 범위: 완료 분류의 칸이 끝낸 일, 취소 분류는 하지 않기로 한 일이라 범위에서 뺀다(리니어와 같이). */
+function totalsOf(items: WorkItem[], columns: readonly WorkflowColumn[]): CycleTotals {
+  const categories = items.map(item => columnOf(columns, item.status).category)
+  const scope = categories.filter(category => category !== "CANCELED").length
+  const done = categories.filter(category => category === "COMPLETED").length
+  return { scope, done, ratio: scope ? done / scope : 0 }
 }
 
 /**
@@ -36,6 +39,7 @@ export function ProjectCyclesPage() {
   const { key, project } = useCurrentProject()
   const cycles = useCycles(key)
   const workItems = useWorkItems(key)
+  const columns = useStatusColumns(key)
   const saveCycle = useSaveCycle(key)
   const deleteCycle = useDeleteCycle(key)
   const [dialog, setDialog] = useState<Dialog | null>(null)
@@ -88,7 +92,7 @@ export function ProjectCyclesPage() {
           const state = cycleState(cycle, on)
           const items = itemsOf(cycle)
           return (
-            <CycleRow key={cycle.id} cycle={cycle} state={state} label={labelOf(cycle, state, next)} totals={totalsOf(items)} items={items}
+            <CycleRow key={cycle.id} cycle={cycle} state={state} label={labelOf(cycle, state, next)} totals={totalsOf(items, columns)} items={items} columns={columns}
               isFirst={index === 0} isOpen={opened[cycle.id] ?? state === "current"}
               onToggle={() => setOpened(old => ({ ...old, [cycle.id]: !(old[cycle.id] ?? state === "current") }))}
               actions={[
@@ -119,7 +123,7 @@ export function ProjectCyclesPage() {
       )}
       {dialog?.kind === "finish" && (
         <FinishCycleDialog key={dialog.nonce} projectKey={key} cycle={dialog.cycle} cycles={list} open={isDialogOpen} onOpenChange={setDialogOpen}
-          unfinished={itemsOf(dialog.cycle).filter(item => item.status !== "done").map(item => item.key)} />
+          unfinished={itemsOf(dialog.cycle).filter(item => !isClosedCategory(columnOf(columns, item.status).category)).map(item => item.key)} />
       )}
       {dialog?.kind === "delete" && (
         <ConfirmDialog open={isDialogOpen} onOpenChange={setDialogOpen} title={`'${dialog.cycle.name}' 사이클을 지울까요?`}

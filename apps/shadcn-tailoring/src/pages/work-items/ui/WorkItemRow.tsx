@@ -12,7 +12,7 @@ function Lead({ item }: { item: WorkItem }) {
     <span className="flex shrink-0 items-center gap-2">
       <WorkItemPriorityIcon priority={item.priority} />
       <span className="max-w-20 truncate text-muted-foreground tabular-nums md:max-w-30">{item.key}</span>
-      <WorkItemStatusIcon status={item.status} />
+      <WorkItemStatusIcon item={item} />
     </span>
   )
 }

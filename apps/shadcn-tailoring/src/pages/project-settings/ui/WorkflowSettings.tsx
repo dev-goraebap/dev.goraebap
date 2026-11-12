@@ -1,6 +1,9 @@
 import { useId, useState, type DragEvent, type KeyboardEvent } from "react"
 import { useCurrentProject } from "@/entities/project"
-import { useWorkItems } from "@/entities/work-item"
+import {
+  CATEGORIES, COLUMN_NAME_MAX, WorkflowCategoryIcon, categoryMark, countInColumn, useDeleteWorkflowColumn, useOrderWorkflowColumns,
+  useSaveWorkflowColumn, useWorkflow, useWorkItems, type ColumnCategory, type WorkflowColumn,
+} from "@/entities/work-item"
 import { cn } from "@/shared/lib/utils"
 import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 import { Button } from "@/shared/ui/button"
@@ -11,26 +14,17 @@ import { Input } from "@/shared/ui/input"
 import { PageState } from "@/shared/ui/page-state"
 import { SettingsSection } from "@/shared/ui/settings"
 import { toast } from "@/shared/ui/toast"
-import {
-  CATEGORIES, COLUMN_NAME_MAX, categoryMark, useDeleteColumn, useOrderColumns, useSaveColumn, useWorkflowColumns,
-  type BoardColumn, type ColumnCategory,
-} from "../model/workflow"
 import { FormDialog, SettingsBody } from "./GeneralParts"
 import { ProjectSettingsFrame } from "./ProjectSettingsFrame"
-
-/** 분류 표식: 상태 아이콘 가족(멈춤 · 시계 · 회전 · 체크 · 엑스)과 그 색. */
-export function CategoryIcon({ category, className }: { category: ColumnCategory; className?: string }) {
-  const mark = categoryMark(category)
-  return <mark.icon aria-hidden className={cn("size-4 shrink-0", mark.tone, className)} />
-}
 
 /**
  * 프로젝트 설정의 워크플로(호호코워크 ProjectWorkflowPage): 업무가 거쳐 가는 상태(보드의 칸, 각각 다섯 분류 중 하나)를
  * 손잡이로 끌어 순서를 바꾸고, 더하고 고치고 지운다. 보관한 프로젝트는 읽기만 한다.
+ * 칸은 업무 entity의 워크플로 캐시에 있어 여기서 고치면 보드 · 목록 · 필터 · 상태 고르기가 바로 따라온다.
  */
 export function WorkflowSettings() {
   const { key, project } = useCurrentProject()
-  const columns = useWorkflowColumns(key)
+  const columns = useWorkflow(key)
   const body = () => {
     if (project === null) return <PageState kind="not-found" title="프로젝트를 찾을 수 없습니다" description="주소가 바뀌었거나 없는 프로젝트입니다." />
     if (!project || !columns.data) return null
@@ -52,14 +46,14 @@ const moved = (ids: string[], id: string, to: number) => {
 }
 
 /** 보드 순서의 상태들. 줄마다 손잡이(끌기 · Alt+화살표), 분류 표식, 이름, 분류, 메뉴(수정 · 옮기기 · 삭제). */
-function Statuses({ projectKey, columns, canChange }: { projectKey: string; columns: BoardColumn[]; canChange: boolean }) {
+function Statuses({ projectKey, columns, canChange }: { projectKey: string; columns: WorkflowColumn[]; canChange: boolean }) {
   const hintId = useId()
   const items = useWorkItems(projectKey)
-  const save = useSaveColumn(projectKey)
-  const remove = useDeleteColumn(projectKey)
-  const order = useOrderColumns(projectKey)
-  const [editing, setEditing] = useState<BoardColumn | "new" | null>(null)
-  const [deleting, setDeleting] = useState<BoardColumn | null>(null)
+  const save = useSaveWorkflowColumn(projectKey)
+  const remove = useDeleteWorkflowColumn(projectKey)
+  const order = useOrderWorkflowColumns(projectKey)
+  const [editing, setEditing] = useState<WorkflowColumn | "new" | null>(null)
+  const [deleting, setDeleting] = useState<WorkflowColumn | null>(null)
   const [dragging, setDragging] = useState<string | null>(null)
   // 끄는 동안의 순서(놓으면 저장, Esc · 밖에 놓으면 버림).
   const [preview, setPreview] = useState<string[] | null>(null)
@@ -67,7 +61,7 @@ function Statuses({ projectKey, columns, canChange }: { projectKey: string; colu
 
   const byId = new Map(columns.map(column => [column.id, column]))
   const ids = preview ?? columns.map(column => column.id)
-  const shown = ids.map(id => byId.get(id)).filter((column): column is BoardColumn => !!column)
+  const shown = ids.map(id => byId.get(id)).filter((column): column is WorkflowColumn => !!column)
 
   const commit = (next: string[], id: string) => {
     order.mutate(next)
@@ -107,8 +101,8 @@ function Statuses({ projectKey, columns, canChange }: { projectKey: string; colu
     move(id, event.key === "ArrowUp" ? -1 : 1)
   }
 
-  const countOf = (column: BoardColumn) => (column.status ? (items.data ?? []).filter(item => item.status === column.status).length : 0)
-  const actionsOf = (column: BoardColumn, index: number): MenuAction[] => [
+  const countOf = (column: WorkflowColumn) => countInColumn(items.data, column.id)
+  const actionsOf = (column: WorkflowColumn, index: number): MenuAction[] => [
     { label: "수정", icon: PencilIcon, onSelect: () => setEditing(column) },
     ...(index > 0 ? [{ label: "위로 옮기기", icon: ArrowUpIcon, onSelect: () => move(column.id, -1) }] : []),
     ...(index < columns.length - 1 ? [{ label: "아래로 옮기기", icon: ArrowDownIcon, onSelect: () => move(column.id, 1) }] : []),
@@ -145,7 +139,7 @@ function Statuses({ projectKey, columns, canChange }: { projectKey: string; colu
                   <ArrowUpDownIcon className="size-4" />
                 </button>
               )}
-              <CategoryIcon category={column.category} />
+              <WorkflowCategoryIcon category={column.category} className="size-4" />
               <span className="truncate">{column.name}</span>
               <span className="truncate text-sm text-muted-foreground">{categoryMark(column.category).label}</span>
               {canChange && <ActionMenu size="row" label={`${column.name} 메뉴`} title={column.name} actions={actionsOf(column, index)} />}
@@ -180,7 +174,7 @@ function Statuses({ projectKey, columns, canChange }: { projectKey: string; colu
 
 /** 상태 추가 · 수정: 이름과 분류. */
 function ColumnDialog({ column, isPending, onSave, onClose }: {
-  column?: BoardColumn; isPending: boolean; onSave: (name: string, category: ColumnCategory) => void; onClose: () => void
+  column?: WorkflowColumn; isPending: boolean; onSave: (name: string, category: ColumnCategory) => void; onClose: () => void
 }) {
   const nameId = useId()
   const [name, setName] = useState(column?.name ?? "")
@@ -202,7 +196,7 @@ function ColumnDialog({ column, isPending, onSave, onClose }: {
           {CATEGORIES.map(each => (
             <button key={each.value} type="button" role="radio" aria-checked={each.value === category} onClick={() => setCategory(each.value)}
               className="flex h-9 items-center gap-2 px-3 text-left text-sm outline-none hover:bg-row-hover focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset aria-checked:bg-muted max-md:h-12 max-md:text-base">
-              <CategoryIcon category={each.value} />
+              <WorkflowCategoryIcon category={each.value} className="size-4" />
               <span className="flex-1">{each.label}</span>
               {each.value === category && <CheckIcon className="size-4" />}
             </button>

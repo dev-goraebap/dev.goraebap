@@ -49,7 +49,7 @@ export function WorkItemTable({ items, selected, onSelectedChange }: {
             <TableCell className="max-w-26 truncate text-muted-foreground tabular-nums">{item.key}</TableCell>
             <TableCell className="max-w-64">
               <span className="flex min-w-0 items-center gap-2">
-                <WorkItemStatusIcon status={item.status} />
+                <WorkItemStatusIcon item={item} />
                 <WorkItemLink itemKey={item.key} className="truncate">{item.title}</WorkItemLink>
               </span>
             </TableCell>

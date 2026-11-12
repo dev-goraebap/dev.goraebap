@@ -1,5 +1,8 @@
 import { CycleRing, shortDay, type Cycle, type CycleState } from "@/entities/cycle"
-import { WorkItemAssignee, WorkItemPriorityIcon, WorkItemStatusIcon, workItemHref, type WorkItem } from "@/entities/work-item"
+import {
+  WorkItemAssignee, WorkItemPriorityIcon, WorkItemStatusIcon, columnOf, isClosedCategory, workItemHref, type ColumnCategory, type WorkflowColumn,
+  type WorkItem,
+} from "@/entities/work-item"
 import { cn } from "@/shared/lib/utils"
 import { ActionMenu, type MenuAction } from "@/shared/ui/action-menu"
 import { ChevronRightIcon } from "@/shared/ui/icon"
@@ -7,17 +10,17 @@ import { RowLink } from "@/shared/ui/row-link"
 
 export type CycleTotals = { scope: number; done: number; ratio: number }
 
-/** 펼친 사이클 안 업무의 차례: 진행 중 → 할 일 → 백로그 → 완료(손댈 것이 위로). */
-const STATUS_ORDER: Record<WorkItem["status"], number> = { in_progress: 0, todo: 1, backlog: 2, done: 3 }
+/** 펼친 사이클 안 업무의 차례: 칸의 분류로 진행 중 → 할 일 → 백로그 → 완료 → 취소(손댈 것이 위로). 같은 분류는 보드의 칸 순서. */
+const CATEGORY_ORDER: Record<ColumnCategory, number> = { STARTED: 0, UNSTARTED: 1, BACKLOG: 2, COMPLETED: 3, CANCELED: 4 }
 
-/** 펼친 사이클의 업무 한 줄: 우선순위 · 키 · 상태 · 제목, 데스크톱은 오른쪽에 담당자. 줄 어디를 눌러도 상세로 간다. */
-function CycleWorkItem({ item }: { item: WorkItem }) {
+/** 펼친 사이클의 업무 한 줄: 우선순위 · 키 · 상태 · 제목, 데스크톱은 오른쪽에 담당자. 닫힌 업무는 제목을 흐린다. 줄 어디를 눌러도 상세로 간다. */
+function CycleWorkItem({ item, isClosed }: { item: WorkItem; isClosed: boolean }) {
   return (
     <li className="relative flex min-h-10 items-center gap-2 border-t px-3 py-2 text-sm hover:bg-row-hover max-md:min-h-12">
       <WorkItemPriorityIcon priority={item.priority} />
       <span className="max-w-20 shrink-0 truncate text-muted-foreground tabular-nums">{item.key}</span>
-      <WorkItemStatusIcon status={item.status} />
-      <RowLink to={workItemHref(item.key)} className={cn("min-w-0 flex-1 truncate", item.status === "done" && "text-muted-foreground")}>{item.title}</RowLink>
+      <WorkItemStatusIcon item={item} />
+      <RowLink to={workItemHref(item.key)} className={cn("min-w-0 flex-1 truncate", isClosed && "text-muted-foreground")}>{item.title}</RowLink>
       <WorkItemAssignee person={item.assignee} className="max-md:hidden" />
     </li>
   )
@@ -29,12 +32,17 @@ function CycleWorkItem({ item }: { item: WorkItem }) {
  * 호호코워크는 줄을 누르면 업무 목록을 사이클로 걸러 열지만, 여기 업무 목록에는 사이클 필터가 없어 줄 아래에 업무를 펼친다.
  * 휴대폰: 레일이 좁아지고 목표를 빼며, 상태 · 완료율 · 범위는 이름 아래 한 줄로 내린다.
  */
-export function CycleRow({ cycle, state, label, totals, items, isFirst, isOpen, onToggle, actions }: {
-  cycle: Cycle; state: CycleState; label: string; totals: CycleTotals; items: WorkItem[]
+export function CycleRow({ cycle, state, label, totals, items, columns, isFirst, isOpen, onToggle, actions }: {
+  cycle: Cycle; state: CycleState; label: string; totals: CycleTotals; items: WorkItem[]; columns: readonly WorkflowColumn[]
   isFirst: boolean; isOpen: boolean; onToggle: () => void; actions: MenuAction[]
 }) {
   const percent = `${Math.round(totals.ratio * 100)}%`
-  const sorted = [...items].sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status])
+  const sorted = items
+    .map(item => {
+      const column = columnOf(columns, item.status)
+      return { item, column, rank: CATEGORY_ORDER[column.category] * columns.length + columns.indexOf(column) }
+    })
+    .sort((a, b) => a.rank - b.rank)
   const isCurrent = state === "current"
   return (
     <li className={cn("relative flex items-stretch bg-background", isCurrent && "bg-linear-to-r from-mark-progress/6 to-mark-progress/6")}>
@@ -79,7 +87,7 @@ export function CycleRow({ cycle, state, label, totals, items, isFirst, isOpen, 
         {isOpen && (
           sorted.length > 0 ? (
             <ul aria-label={`${cycle.name} 업무`} className="mb-2 flex flex-col">
-              {sorted.map(item => <CycleWorkItem key={item.key} item={item} />)}
+              {sorted.map(({ item, column }) => <CycleWorkItem key={item.key} item={item} isClosed={isClosedCategory(column.category)} />)}
             </ul>
           ) : (
             <p className="mb-2 border-t px-3 py-3 text-sm text-muted-foreground">담긴 업무가 없습니다.</p>

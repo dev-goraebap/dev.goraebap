@@ -1,5 +1,5 @@
-/** 보드 칸의 흐름 순서. 칸 이름은 marks.ts의 STATUSES가 정한다. */
-export type WorkItemStatus = "backlog" | "todo" | "in_progress" | "done"
+/** 업무가 놓인 보드 칸의 id. 칸(이름 · 분류 · 순서)은 프로젝트의 워크플로(workflow.ts)가 정한다. */
+export type WorkItemStatus = string
 /** 가장 급한 것부터, 마지막이 없음. */
 export type WorkItemPriority = "urgent" | "high" | "medium" | "low" | "none"
 export type WorkItemType = "task" | "feature" | "bug" | "epic"

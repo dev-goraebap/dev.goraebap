@@ -1,22 +1,27 @@
 import { CalendarIcon, ChartNoAxesColumnIcon, ListChecksIcon, PenSquareIcon, SquareCheckIcon, TagIcon, UserIcon, type Icon } from "@/shared/ui/icon"
 import { formatWorkItemDate } from "./format"
-import { priorityMark, statusMark, typeMark } from "./marks"
+import { priorityMark, typeMark } from "./marks"
 import type { WorkItem, WorkItemActivity, WorkItemField, WorkItemPatch } from "./types"
+import { columnOf, type WorkflowColumn } from "./workflow"
 
 type Change = Extract<WorkItemActivity, { kind: "changed" }>
 
-/** 속성 값을 활동이 읽는 글자로. 비면 undefined. */
-const shown: { [Field in WorkItemField]: (value: WorkItem[Field]) => string | undefined } = {
-  status: value => value && statusMark(value).label,
+/** 속성 값을 활동이 읽는 글자로. 비면 undefined. 상태는 프로젝트의 칸 이름이다. */
+const shownWith = (columns: readonly WorkflowColumn[]): { [Field in WorkItemField]: (value: WorkItem[Field]) => string | undefined } => ({
+  status: value => value && columnOf(columns, value).name,
   priority: value => value && priorityMark(value).label,
   type: value => value && typeMark(value).label,
   assignee: value => value?.name,
   labels: value => (value?.length ? value.map(label => label.name).join(", ") : undefined),
   dueDate: value => value && formatWorkItemDate(value),
-}
+})
 
-/** 바꾼 속성마다 활동 한 줄의 내용(바꾸기 전후). 값이 같으면 남기지 않는다. */
-export function changesOf(item: WorkItem, patch: WorkItemPatch): Pick<Change, "field" | "before" | "after">[] {
+/**
+ * 바꾼 속성마다 활동 한 줄의 내용(바꾸기 전후). 값이 같으면 남기지 않는다. 글자로 남기므로 칸 이름을 나중에 바꿔도
+ * 지난 활동은 그때의 이름 그대로다.
+ */
+export function changesOf(item: WorkItem, patch: WorkItemPatch, columns: readonly WorkflowColumn[]): Pick<Change, "field" | "before" | "after">[] {
+  const shown = shownWith(columns)
   return (Object.keys(patch) as WorkItemField[]).flatMap(field => {
     const show = shown[field] as (value: unknown) => string | undefined
     const before = show(item[field])

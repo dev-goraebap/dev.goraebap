@@ -1,5 +1,5 @@
 import { useLocation, useNavigate, useParams, useRouter } from "@tanstack/react-router"
-import { STATUSES, workItemHref, type WorkItemStatus } from "@/entities/work-item"
+import { workItemHref, type WorkItemStatus } from "@/entities/work-item"
 import { projectPath } from "@/shared/config"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 
@@ -22,9 +22,9 @@ declare module "@tanstack/react-router" {
 
 type Search = Record<string, unknown>
 
-/** 주소의 처음 상태(?status=). 모르는 값은 버린다. */
+/** 주소의 처음 상태(?status=칸 id). 칸은 프로젝트마다 다르므로 여기서는 글자인지만 보고, 없는 칸은 양식이 대체 칸으로 바꾼다. */
 export const statusFromSearch = (search: Search): WorkItemStatus | undefined =>
-  STATUSES.find(status => status.value === search.status)?.value
+  typeof search.status === "string" && search.status ? search.status : undefined
 
 const statusSearch = (status?: WorkItemStatus) => (status ? { status } : {})
 

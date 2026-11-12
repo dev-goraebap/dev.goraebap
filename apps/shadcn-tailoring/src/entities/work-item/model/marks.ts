@@ -1,18 +1,10 @@
-import { ChartNoAxesColumnIcon, CircleCheckIcon, CirclePauseIcon, ClockIcon, ListChecksIcon, RefreshCwIcon, SirenIcon, type Icon } from "@/shared/ui/icon"
-import type { Person, WorkItemLabel, WorkItemPriority, WorkItemStatus, WorkItemType } from "./types"
+import { ChartNoAxesColumnIcon, ListChecksIcon, SirenIcon, type Icon } from "@/shared/ui/icon"
+import type { Person, WorkItemLabel, WorkItemPriority, WorkItemType } from "./types"
 
-/** 표식 색: app/styles/index.css의 --mark-* 토큰(라이트 · 다크)을 쓰는 글자색 클래스. 상태와 우선순위는 모양과 함께 색으로도 구분한다. */
+/** 표식 색: app/styles/index.css의 --mark-* 토큰(라이트 · 다크)을 쓰는 글자색 클래스. 상태(칸의 분류)와 우선순위는 모양과 함께 색으로도 구분한다. */
 export type MarkTone = "text-mark-backlog" | "text-mark-progress" | "text-mark-done" | "text-mark-urgent" | "text-mark-high" | "text-mark-medium" | "text-mark-low"
 
 type Mark<T> = { value: T; label: string; icon: Icon; tone?: MarkTone }
-
-/** 상태: 보드 칸 순서. 원 모양 아이콘 한 가족(멈춤 · 시계 · 회전 · 체크). */
-export const STATUSES: readonly Mark<WorkItemStatus>[] = [
-  { value: "backlog", label: "백로그", icon: CirclePauseIcon, tone: "text-mark-backlog" },
-  { value: "todo", label: "할 일", icon: ClockIcon },
-  { value: "in_progress", label: "진행 중", icon: RefreshCwIcon, tone: "text-mark-progress" },
-  { value: "done", label: "완료", icon: CircleCheckIcon, tone: "text-mark-done" },
-]
 
 /** 우선순위: 긴급은 사이렌, 나머지는 막대 단계, 없음은 점선. */
 export const PRIORITIES: readonly (Mark<WorkItemPriority> & { level: number })[] = [
@@ -41,6 +33,5 @@ export const PEOPLE: readonly Person[] = ["고재범", "김하늘", "이도윤",
 export const ME: Person = PEOPLE[0]
 
 const find = <T extends { value: string }>(list: readonly T[], value: string) => list.find(each => each.value === value) ?? list[0]
-export const statusMark = (status: WorkItemStatus) => find(STATUSES, status)
 export const priorityMark = (priority: WorkItemPriority) => find(PRIORITIES, priority)
 export const typeMark = (type: WorkItemType) => find(TYPES, type)

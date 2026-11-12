@@ -1,7 +1,7 @@
 import { Link, useNavigate, useParams } from "@tanstack/react-router"
 import { useState } from "react"
 import {
-  copyWorkItemKey, copyWorkItemLink, typeMark, useDeleteWorkItem, useUpdateWorkItem, useWorkItem, type WorkItem,
+  copyWorkItemKey, copyWorkItemLink, projectKeyOf, typeMark, useDeleteWorkItem, useStatusColumns, useUpdateWorkItem, useWorkItem, type WorkItem,
 } from "@/entities/work-item"
 import { useCurrentProject } from "@/entities/project"
 import { paths, projectPath } from "@/shared/config"
@@ -45,6 +45,7 @@ function WorkItemPageMenu({ item }: { item: WorkItem }) {
 /** 읽어 온 업무: 소속 줄 · 제목 · 본문 · 활동, 속성 알약. */
 function WorkItemDetail({ item, projectName }: { item: WorkItem; projectName: string }) {
   const update = useUpdateWorkItem()
+  const columns = useStatusColumns(projectKeyOf(item.key))
   return (
     <DetailLayout label={`${item.key} ${item.title}`} title={item.title}
       head={
@@ -53,7 +54,7 @@ function WorkItemDetail({ item, projectName }: { item: WorkItem; projectName: st
           <span className="shrink-0 tabular-nums">{item.key}</span>
         </p>
       }
-      sections={workItemSections(item, patch => update.mutate({ key: item.key, patch }))}
+      sections={workItemSections(item, columns, patch => update.mutate({ key: item.key, patch }))}
       after={<WorkItemActivity itemKey={item.key} />}>
       {item.body ? <MarkdownBody source={item.body} /> : <p className="text-muted-foreground">설명이 없습니다.</p>}
     </DetailLayout>

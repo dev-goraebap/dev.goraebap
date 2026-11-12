@@ -1,5 +1,6 @@
 import { useId, useState, type ReactNode } from "react"
 import { useCurrentProject } from "@/entities/project"
+import { useWorkflow, type WorkflowColumn } from "@/entities/work-item"
 import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
@@ -15,7 +16,6 @@ import {
   CODE_PROVIDERS, RULE_EVENTS, providerOf, useConnectRepository, useDisconnectRepository, useIntegrations, useReviseToken, useRules, useSetRule,
   type CodeIntegration, type CodeProvider, type RuleChoice, type RuleEvent,
 } from "../model/integration"
-import { useWorkflowColumns, type BoardColumn } from "../model/workflow"
 import { FormDialog, SettingsBody } from "./GeneralParts"
 import { ProjectSettingsFrame } from "./ProjectSettingsFrame"
 
@@ -211,14 +211,14 @@ function TokenDialog({ projectKey, integration, onClose }: { projectKey: string;
 }
 
 /** 보드가 정하는 기본 칸: 브랜치는 첫 진행 중, PR을 열면 마지막 진행 중, 병합하면 첫 완료. */
-function defaultColumn(event: RuleEvent, columns: BoardColumn[]) {
+function defaultColumn(event: RuleEvent, columns: readonly WorkflowColumn[]) {
   const started = columns.filter(column => column.category === "STARTED")
   if (event === "branch_push") return started[0]
   if (event === "pr_opened") return started[started.length - 1]
   return columns.find(column => column.category === "COMPLETED")
 }
 
-const valueOf = (choice: RuleChoice, columns: BoardColumn[]) =>
+const valueOf = (choice: RuleChoice, columns: readonly WorkflowColumn[]) =>
   choice.kind === "column" ? (columns.some(column => column.id === choice.columnId) ? choice.columnId : "default") : choice.kind
 
 /** 규칙 하나의 고르기: 보드 기본값 · 칸들 · 옮기지 않음. 데스크톱 팝오버, 휴대폰 바텀시트. */
@@ -241,10 +241,10 @@ function RulePicker({ label, value, options, onChange }: {
   )
 }
 
-/** 자동 이동 규칙: 이벤트마다 그 업무를 옮길 칸. 칸은 워크플로 쪽의 상태다. 휴대폰은 이름 아래로 고르기를 내린다. */
+/** 자동 이동 규칙: 이벤트마다 그 업무를 옮길 칸. 칸은 프로젝트 워크플로(업무 entity)의 상태다. 휴대폰은 이름 아래로 고르기를 내린다. */
 function Rules({ projectKey }: { projectKey: string }) {
   const rules = useRules(projectKey)
-  const columns = useWorkflowColumns(projectKey)
+  const columns = useWorkflow(projectKey)
   const setRule = useSetRule(projectKey)
   if (!rules.data || !columns.data) return null
   const board = columns.data

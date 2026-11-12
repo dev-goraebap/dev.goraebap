@@ -2,17 +2,30 @@ import { cn } from "@/shared/lib/utils"
 import { Badge } from "@/shared/ui/badge"
 import { PersonAvatar as SharedPersonAvatar } from "@/shared/ui/person-avatar"
 import { CalendarIcon } from "@/shared/ui/icon"
+import { useItemColumn } from "../api/use-workflow"
 import { formatWorkItemDate } from "../model/format"
-import { priorityMark, statusMark, typeMark, type MarkTone } from "../model/marks"
-import type { Person, WorkItemLabel, WorkItemPriority, WorkItemStatus, WorkItemType } from "../model/types"
+import { priorityMark, typeMark, type MarkTone } from "../model/marks"
+import type { Person, WorkItem, WorkItemLabel, WorkItemPriority, WorkItemType } from "../model/types"
+import { categoryMark, type ColumnCategory, type WorkflowColumn } from "../model/workflow"
 
 /** 표식 색 클래스. 색이 없는 표식은 보조 아이콘 색. */
 const toneClass = (tone?: MarkTone) => tone ?? "text-icon-muted"
 
-/** 상태 아이콘(16px, 상태 색). 이름은 화면 읽기용으로 붙인다. */
-export function WorkItemStatusIcon({ status, className }: { status: WorkItemStatus; className?: string }) {
-  const mark = statusMark(status)
-  return <mark.icon role="img" aria-hidden={false} aria-label={mark.label} className={cn("shrink-0", toneClass(mark.tone), className)} />
+/** 분류 아이콘(16px, 분류 색). 옆에 이름을 쓰는 자리(설정의 분류 고르기)라 화면 읽기에서는 감춘다. */
+export function WorkflowCategoryIcon({ category, className }: { category: ColumnCategory; className?: string }) {
+  const mark = categoryMark(category)
+  return <mark.icon aria-hidden className={cn("shrink-0", toneClass(mark.tone), className)} />
+}
+
+/** 칸(상태) 아이콘: 모양과 색은 칸의 분류가, 화면 읽기의 이름은 칸 이름이 정한다. 보드 머리 · 묶음 · 고르기에 쓴다. */
+export function WorkflowColumnIcon({ column, className }: { column: WorkflowColumn; className?: string }) {
+  const mark = categoryMark(column.category)
+  return <mark.icon role="img" aria-hidden={false} aria-label={column.name} className={cn("shrink-0", toneClass(mark.tone), className)} />
+}
+
+/** 업무 한 줄의 상태 아이콘. 업무 키의 프로젝트 워크플로에서 칸을 찾는다(지워진 칸이면 대체 칸). */
+export function WorkItemStatusIcon({ item, className }: { item: Pick<WorkItem, "key" | "status">; className?: string }) {
+  return <WorkflowColumnIcon column={useItemColumn(item)} className={className} />
 }
 
 /** 우선순위 표식: 긴급은 사이렌, 나머지는 세 막대 중 채운 단계, 없음은 점선 세 개. */
