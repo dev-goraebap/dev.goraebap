@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { AppShell, type AppShellProps, type NavEntry } from "@/shared/ui/app-shell"
+import { AppShell, type AppShellProps, type NavEntry } from "@/shared/ui/layout/app-shell"
 import { FileTextIcon, FolderIcon, UserIcon } from "@/shared/ui/icon"
 
 /**

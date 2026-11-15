@@ -7,7 +7,23 @@ import { cn } from "cn"
 import { Button } from "@/shared/ui/button"
 import { XIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon, OctagonXIcon, Loader2Icon } from "@/shared/ui/icon"
 
-const toast = ToastPrimitive.createToastManager()
+/**
+ * 토스트를 띄우는 곳. `data: { countdown: true }`를 주면 닫히기까지 남은 시간(timeout)을 줄어드는 막대로 보이고,
+ * 포인터가 올라가거나 초점이 들어와 닫힘이 멈춘 동안 막대도 멈춘다(되돌리기 토스트).
+ */
+const toast = ToastPrimitive.createToastManager<ToastData>()
+
+type ToastData = { countdown?: boolean }
+
+/** 남은 시간 막대. Base UI는 목록이 펼쳐진 동안(data-expanded: 가리킴 · 초점) 닫힘을 멈추므로 막대도 그동안 멈춘다. */
+function ToastCountdown({ timeout }: { timeout: number }) {
+  return (
+    <span aria-hidden="true" data-slot="toast-countdown"
+      // check-ui: allow-style 토스트마다 다른 닫힘 시간(timeout)
+      style={{ animationDuration: `${timeout}ms` }}
+      className="pointer-events-none absolute inset-x-4 bottom-1.5 h-0.5 origin-left rounded-full bg-ring animate-[toast-countdown_linear_forwards] group-data-expanded/toast:[animation-play-state:paused]" />
+  )
+}
 
 function ToastProvider({ ...props }: ToastPrimitive.Provider.Props) {
   return <ToastPrimitive.Provider {...props} />
@@ -22,7 +38,8 @@ function ToastViewport({ className, ...props }: ToastPrimitive.Viewport.Props) {
     <ToastPrimitive.Viewport
       data-slot="toast-viewport"
       className={cn(
-        "pointer-events-none fixed inset-x-4 bottom-4 z-50 mx-auto w-auto max-w-sm outline-none sm:right-4 sm:left-auto sm:mx-0 sm:w-full",
+        // 대화상자 · 시트(z-50)와 그 흐린 바탕보다 위에 뜬다: 대화상자 안에서 한 일의 결과도 가려지지 않게.
+        "pointer-events-none fixed inset-x-4 bottom-4 z-100 mx-auto w-auto max-w-sm outline-none sm:right-4 sm:left-auto sm:mx-0 sm:w-full",
         className
       )}
       {...props}
@@ -117,7 +134,7 @@ function ToastClose({
   return (
     <ToastPrimitive.Close
       data-slot="toast-close"
-      aria-label="Close toast"
+      aria-label="닫기"
       render={render}
       className={cn(
         "relative shrink-0 text-muted-foreground after:absolute after:-inset-2 after:content-[''] hover:text-foreground",
@@ -184,7 +201,7 @@ function ToastList() {
 
   return toasts.map((toastItem) => (
     <Toast key={toastItem.id} toast={toastItem}>
-      <ToastContent>
+      <ToastContent className={toastItem.data?.countdown ? "relative" : undefined}>
         <ToastIcon type={toastItem.type} />
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <ToastTitle />
@@ -192,6 +209,7 @@ function ToastList() {
         </div>
         <ToastAction />
         <ToastClose />
+        {toastItem.data?.countdown && toastItem.timeout ? <ToastCountdown timeout={toastItem.timeout} /> : null}
       </ToastContent>
     </Toast>
   ))

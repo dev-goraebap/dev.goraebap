@@ -5,7 +5,7 @@ import { Alert, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { ShieldCheckIcon, TriangleAlertIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { SegmentedControl } from '@/shared/ui/segmented-control';
 import { SettingsRow, SettingsSection } from '@/shared/ui/settings';

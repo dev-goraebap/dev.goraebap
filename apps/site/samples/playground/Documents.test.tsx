@@ -91,23 +91,23 @@ const VerifyPageFoot: Sample = {
 };
 
 const VerifyPhoneFoot: Sample = {
-  name: "휴대폰 작성 페이지 바닥 고정 검증",
+  name: "휴대폰 작성 페이지 머리 · 바닥 고정 검증",
   render: () => <LibrarySample initialPath="/resources/new" />,
   device: "phone",
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
+    // 휴대폰 양식은 머리에 둥근 닫기와 보내기(↑), 바닥에 속성 알약이 붙고 그 사이의 제목 · 본문만 스크롤한다.
     const submit = await page.findByRole("button", { name: "추가하기" });
-    // 휴대폰은 동작 줄이 스크롤되는 양식 밖(화면 바닥)에 붙어 양식을 내려도 늘 보인다.
-    const bar = submit.closest("footer") as HTMLElement;
-    await expect(bar).not.toBeNull();
+    const head = submit.closest("header") as HTMLElement;
+    await expect(head).not.toBeNull();
+    await expect(within(head).getByRole("button", { name: "닫기" })).toBeVisible();
     let scroller = page.getByRole("textbox", { name: "제목" }).parentElement;
     while (scroller && !/(auto|scroll)/.test(getComputedStyle(scroller).overflowY)) scroller = scroller.parentElement;
     await expect(scroller).not.toBeNull();
-    await expect(scroller!.contains(bar)).toBe(false);
-    await expect([...bar.querySelectorAll("button")].map(each => each.textContent?.trim())).toEqual(["취소", "추가하기"]);
-    await userEvent.click(submit);
-    const hint = await page.findByText(/필수 속성을 정해 주세요/);
-    await expect(bar.contains(hint)).toBe(false);
+    await expect(scroller!.contains(head)).toBe(false);
+    const foot = page.getByRole("group", { name: "속성" }).closest("footer") as HTMLElement;
+    await expect(foot).not.toBeNull();
+    await expect(scroller!.contains(foot)).toBe(false);
   },
 };
 

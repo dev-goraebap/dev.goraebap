@@ -1,8 +1,8 @@
 import { DraftProvider } from '@/shared/lib/draft';
-import type { NavSpace } from '@/shared/ui/app-shell';
+import type { NavSpace } from '@/shared/ui/layout/app-shell';
 import { Button } from '@/shared/ui/button';
 import { CalendarIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

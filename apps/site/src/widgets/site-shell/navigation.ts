@@ -1,6 +1,6 @@
 import { architectureSections, contentGroups, skillGroups } from 'virtual:guide-docs';
 import { docs } from '@/entities/document';
-import type { NavEntry, NavSpace } from '@/shared/ui/app-shell';
+import type { NavEntry, NavSpace } from '@/shared/ui/layout/app-shell';
 import {
   ArchiveIcon, BookIcon, ClockIcon, CopyIcon, EyeIcon, FileTextIcon, GripIcon, HomeIcon, KanbanSquareIcon, LayoutGridIcon, LibraryIcon,
   LinkIcon, ListIcon, LockIcon, PaperclipIcon, PanelLeftIcon, PenSquareIcon, SettingsIcon, SunIcon, type Icon,

@@ -7,7 +7,7 @@ import { Button } from '@/shared/ui/button';
 import { Field, FieldError, FieldLabel } from '@/shared/ui/field';
 import { TriangleAlertIcon } from '@/shared/ui/icon';
 import { Input } from '@/shared/ui/input';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { Spinner } from '@/shared/ui/spinner';
 import { Textarea } from '@/shared/ui/textarea';
 import { useGuard, useSessionApi } from '../../entities/session';

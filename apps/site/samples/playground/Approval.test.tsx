@@ -89,7 +89,7 @@ const VerifyPhone: Sample = {
     const page = within(canvasElement.ownerDocument.body);
     await page.findByRole("list", { name: "결재선" });
     await expect(page.getByRole("button", { name: "다음" })).toBeVisible();
-    await expect(page.getByRole("button", { name: "취소" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "닫기" })).toBeVisible();
     await expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(document.documentElement.clientWidth);
     await userEvent.click(page.getByRole("button", { name: "결재자 추가" }));
     await userEvent.click(await page.findByRole("option", { name: /민준/ }));

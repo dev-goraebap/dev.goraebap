@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "theme",
   "title": "Webcraft 토큰",
-  "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티. 다크 모드는 html[data-theme=dark](dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지))을 쓴다.",
+  "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티, 조작 면 토큰(control · control-hover · control-on · control-border), 화면 전환(콘텐츠 영역 .route-content · 휴대폰 유리 막대 · 대화상자 바꿔 끼우기 · 페이지로 열기). 다크 모드는 html(:root)의 data-theme=dark(dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지))을 쓴다.",
   "dependencies": [
     "pretendard",
     "@fontsource-variable/jetbrains-mono",
@@ -38,7 +38,11 @@
       "color-sidebar-accent": "var(--sidebar-accent)",
       "color-sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
       "color-sidebar-border": "var(--sidebar-border)",
-      "color-sidebar-ring": "var(--sidebar-ring)"
+      "color-sidebar-ring": "var(--sidebar-ring)",
+      "color-control": "color-mix(in srgb, var(--foreground) 5%, var(--background))",
+      "color-control-hover": "color-mix(in srgb, var(--foreground) 9%, var(--background))",
+      "color-control-on": "color-mix(in srgb, var(--foreground) 14%, var(--background))",
+      "color-control-border": "color-mix(in srgb, var(--foreground) 11%, var(--background))"
     },
     "light": {
       "background": "#f9f9fa",
@@ -90,7 +94,7 @@
   "css": {
     "@import \"pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css\"": {},
     "@import \"@fontsource-variable/jetbrains-mono\"": {},
-    "@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *))": {},
+    "@custom-variant dark (&:where(:root[data-theme=dark], :root[data-theme=dark] *))": {},
     "@custom-variant compact (&:where([data-density=compact] *))": {},
     ":root": {
       "--text-sm": "0.8125rem",
@@ -106,7 +110,7 @@
       "--secondary-foreground": "var(--foreground)",
       "--accent": "color-mix(in srgb, var(--foreground) 4%, transparent)",
       "--accent-foreground": "var(--foreground)",
-      "--border": "color-mix(in srgb, var(--foreground) 13%, var(--background))",
+      "--border": "color-mix(in srgb, var(--foreground) 9%, var(--background))",
       "--input": "color-mix(in srgb, var(--foreground) 18%, var(--background))",
       "--ring": "color-mix(in srgb, var(--foreground) 72%, var(--background))",
       "--pressed": "color-mix(in srgb, var(--foreground) 7%, transparent)",
@@ -117,7 +121,7 @@
       "--sidebar-border": "var(--border)",
       "--sidebar-ring": "var(--ring)"
     },
-    "[data-theme=dark]": {
+    ":root[data-theme=dark]": {
       "--background": "#121213",
       "--foreground": "#f7f8f8",
       "--sidebar": "#09090a",
@@ -129,7 +133,7 @@
       "--muted-foreground": "#8a8f98",
       "--accent": "color-mix(in srgb, var(--foreground) 5%, transparent)",
       "--destructive": "oklch(0.704 0.191 22.216)",
-      "--border": "color-mix(in srgb, var(--foreground) 11%, var(--background))",
+      "--border": "color-mix(in srgb, var(--foreground) 8%, var(--background))",
       "--input": "color-mix(in srgb, var(--foreground) 16%, var(--background))",
       "--icon-muted": "#8a8f98",
       "--pressed": "color-mix(in srgb, var(--foreground) 8%, transparent)",
@@ -178,7 +182,147 @@
     "@utility squircle": {
       "corner-shape": "squircle"
     },
+    ".route-content": {
+      "view-transition-name": "app-content"
+    },
+    "::view-transition": {
+      "pointer-events": "none"
+    },
+    "::view-transition-group(app-content)": {
+      "animation-duration": "200ms",
+      "animation-timing-function": "ease-in-out"
+    },
+    "::view-transition-image-pair(app-content)": {
+      "isolation": "isolate"
+    },
+    "::view-transition-old(app-content)": {
+      "animation": "app-content-out 200ms ease-in-out both",
+      "mix-blend-mode": "plus-lighter"
+    },
+    "::view-transition-new(app-content)": {
+      "animation": "app-content-in 200ms ease-in-out both",
+      "mix-blend-mode": "plus-lighter"
+    },
+    ".phone-bar": {
+      "view-transition-name": "app-phone-bar"
+    },
+    ".phone-bar-search": {
+      "view-transition-name": "app-phone-search"
+    },
+    "::view-transition-group(app-phone-bar), ::view-transition-new(app-phone-bar), ::view-transition-group(app-phone-search), ::view-transition-new(app-phone-search)": {
+      "animation": "none"
+    },
+    "::view-transition-old(app-phone-bar), ::view-transition-old(app-phone-search)": {
+      "display": "none"
+    },
+    "::view-transition-image-pair(app-phone-bar), ::view-transition-image-pair(app-phone-search)": {
+      "overflow": "hidden",
+      "border-radius": "9999px"
+    },
+    "@media (min-width: 48rem)": {
+      "::view-transition-image-pair(app-content)": {
+        "overflow": "hidden",
+        "border-radius": "calc(var(--radius-surface) * 1.5)",
+        "corner-shape": "squircle"
+      }
+    },
+    "@media (prefers-reduced-motion: reduce)": {
+      "::view-transition-group(app-content), ::view-transition-old(app-content), ::view-transition-new(app-content)": {
+        "animation": "none"
+      }
+    },
+    ":root[data-vt=\"dialog\"] .route-content": {
+      "view-transition-name": "none"
+    },
+    ":root[data-vt=\"dialog\"] [data-slot=\"dialog-content\"][data-panel]": {
+      "view-transition-name": "panel-dialog"
+    },
+    "::view-transition-group(panel-dialog)": {
+      "animation-duration": "200ms",
+      "animation-timing-function": "cubic-bezier(0.2, 0, 0, 1)"
+    },
+    "::view-transition-image-pair(panel-dialog)": {
+      "isolation": "isolate",
+      "overflow": "hidden",
+      "border-radius": "1rem"
+    },
+    "::view-transition-old(panel-dialog)": {
+      "animation": "app-content-out 200ms ease-in-out both",
+      "mix-blend-mode": "plus-lighter"
+    },
+    "::view-transition-new(panel-dialog)": {
+      "animation": "app-content-in 200ms ease-in-out both",
+      "mix-blend-mode": "plus-lighter"
+    },
+    ":active-view-transition-type(panel-expand) .route-content": {
+      "view-transition-name": "panel-expand"
+    },
+    ":active-view-transition-type(panel-expand):has([data-slot=\"dialog-content\"][data-panel]) .route-content": {
+      "view-transition-name": "none"
+    },
+    ":active-view-transition-type(panel-expand) [data-slot=\"dialog-content\"][data-panel]": {
+      "view-transition-name": "panel-expand"
+    },
+    ":active-view-transition-type(panel-expand) [data-slot=\"dialog-overlay\"]": {
+      "view-transition-name": "panel-expand-backdrop"
+    },
+    "::view-transition-group(panel-expand)": {
+      "animation-duration": "250ms",
+      "animation-timing-function": "cubic-bezier(0.2, 0, 0, 1)"
+    },
+    "::view-transition-image-pair(panel-expand)": {
+      "isolation": "isolate",
+      "overflow": "hidden",
+      "border-radius": "1rem"
+    },
+    "::view-transition-old(panel-expand)": {
+      "animation": "app-content-out 120ms ease-out both"
+    },
+    "::view-transition-new(panel-expand)": {
+      "animation": "app-content-in 250ms ease-out both"
+    },
+    "::view-transition-old(panel-expand-backdrop)": {
+      "animation": "app-content-out 250ms ease-out both"
+    },
+    ".fade-strip": {
+      "--fade-l": "0px",
+      "--fade-r": "0px",
+      "mask-image": "linear-gradient(to right, transparent, currentColor var(--fade-l), currentColor calc(100% - var(--fade-r)), transparent)"
+    },
+    ".fade-strip:not([data-start])": {
+      "--fade-l": "1.5rem"
+    },
+    ".fade-strip:not([data-end])": {
+      "--fade-r": "1.5rem"
+    },
     "@layer base": {
+      "@keyframes app-content-out": {
+        "from": {
+          "opacity": "1"
+        },
+        "to": {
+          "opacity": "0"
+        }
+      },
+      "@keyframes app-content-in": {
+        "from": {
+          "opacity": "0"
+        },
+        "to": {
+          "opacity": "1"
+        }
+      },
+      "@keyframes toast-countdown": {
+        "from": {
+          "transform": "scaleX(1)"
+        },
+        "to": {
+          "transform": "scaleX(0)"
+        }
+      },
+      "button:not(:disabled):not([aria-disabled=\"true\"]), [role=\"button\"]:not([aria-disabled=\"true\"]), [role=\"menuitem\"]:not([aria-disabled=\"true\"]):not([data-disabled]), [role=\"option\"]:not([aria-disabled=\"true\"]):not([data-disabled]), [role=\"tab\"]:not([aria-disabled=\"true\"]), [role=\"checkbox\"]:not([aria-disabled=\"true\"]), [role=\"switch\"]:not([aria-disabled=\"true\"]), [role=\"radio\"]:not([aria-disabled=\"true\"]), [cmdk-item]:not([data-disabled=\"true\"]), summary, label:has(input:not(:disabled)), select:not(:disabled)": {
+        "cursor": "pointer"
+      },
       "@keyframes page-state-enter": {
         "from": {
           "opacity": "0",
@@ -209,6 +353,6 @@
       }
     }
   },
-  "docs": "다크 모드는 html[data-theme=dark]입니다. shadcn init이 남긴 .dark { … } 블록과 @custom-variant dark (&:is(.dark *)) 줄은 지웁니다(뒤에 더한 data-theme 변형과 겹칩니다). 모드는 @webcraft/appearance가 data-theme에 반영합니다.",
+  "docs": "다크 모드는 html(:root)의 data-theme=dark입니다. 라우터가 그리는 자리(Outlet을 감싼 요소)에 route-content 클래스를 달면 화면 전환이 그 영역만 잡습니다. shadcn init이 남긴 .dark { … } 블록과 @custom-variant dark (&:is(.dark *)) 줄은 지웁니다(뒤에 더한 data-theme 변형과 겹칩니다). 모드는 @webcraft/appearance가 data-theme에 반영합니다.",
   "type": "registry:theme"
 }

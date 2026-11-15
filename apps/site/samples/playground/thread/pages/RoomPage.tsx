@@ -1,7 +1,7 @@
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
 import { ChevronDownIcon, MessageCircleIcon, TriangleAlertIcon } from '@/shared/ui/icon';
-import { Page, type Crumb } from '@/shared/ui/page';
+import { Page, type Crumb } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { Spinner } from '@/shared/ui/spinner';
 import { useQuery, useQueryClient } from '@tanstack/react-query';

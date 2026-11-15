@@ -6,7 +6,7 @@ import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, Dr
 import { Spinner } from "@/shared/ui/spinner"
 
 /**
- * 짧은 양식(호호코워크 FormDialog): 제목 · 설명 · 칸 · 취소와 제출. 데스크톱은 대화상자, 휴대폰은 바텀시트.
+ * 짧은 양식: 제목 · 설명 · 칸 · 취소와 제출. 데스크톱은 대화상자, 휴대폰은 바텀시트.
  * 제출은 양식 제출이라 Enter로도 된다. 제출하는 동안에는 닫히지 않는다. 열고 닫기는 부르는 쪽이 정한다.
  * 칸 없이 묻는 말만 둘 수도 있다(보관 확인). 되돌릴 수 없는 삭제의 확인은 ConfirmDialog를 쓴다.
  */
@@ -57,8 +57,8 @@ export function FormDialog({ open, onOpenChange, title, description, submitLabel
   }
   return (
     <Dialog open={open} onOpenChange={change}>
-      <DialogContent className="sm:max-w-110">
-        <form onSubmit={submit} className="flex flex-col gap-4">
+      <DialogContent>
+        <form onSubmit={submit} className="flex min-w-0 flex-col gap-4">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             {description && <DialogDescription>{description}</DialogDescription>}

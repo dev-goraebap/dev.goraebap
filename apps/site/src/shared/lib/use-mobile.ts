@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from "react"
 
-/** 휴대폰과 데스크톱을 가르는 분기점. CSS의 md:(64rem)와 같다(호호코워크 MOBILE_QUERY). */
+/** 휴대폰과 데스크톱을 가르는 분기점. CSS의 md:(64rem)와 같다. */
 export const MOBILE_QUERY = "(width < 64rem)"
 
 const subscribe = (onChange: () => void) => {

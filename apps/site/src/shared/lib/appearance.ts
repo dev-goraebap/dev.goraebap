@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from "react"
 
 /**
- * 화면 설정(호호코워크 shared/lib/appearance): 모드와 목록 높이. 고르면 바로 바뀌고 이 브라우저에만 남는다.
+ * 화면 설정: 모드와 목록 높이. 고르면 바로 바뀌고 이 브라우저에만 남는다.
  * 모드는 html의 data-theme(light · dark), 목록 높이는 html의 data-density로 CSS가 읽는다.
  * 토큰(tailwind.css)의 dark 변형이 [data-theme=dark]를 보므로 .dark 클래스는 쓰지 않는다.
  */

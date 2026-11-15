@@ -22,11 +22,11 @@ arc42: "8.5, 2"
 | 팝오버·시트·메뉴·속성 알약·올리기·본문 칸 | [Composites](references/composed-components.md) |
 | 대화상자·확인 창·짧은 양식 | [공통 다이얼로그](references/dialog.md) |
 | 검색·필터·표시 도구 | [검색·필터·표시](references/search-filter.md) |
-| 앱 셸·사이드바·모바일 탐색 | [앱 셸](references/app-layout.md) |
-| 페이지 머리·툴바·목록·상세·설정·옆 패널 | [페이지 배치](references/layout-patterns.md) |
+| 앱 셸·공간·사이드바·모바일 탐색 | [앱 셸](references/app-layout.md) |
+| 리소스의 목록·상세·생성·수정을 띄울 곳과 오가는 방식 | [리소스 화면 패턴](references/resource-patterns.md) |
+| 페이지 머리·칸 머리·툴바·목록·표·상세·설정·옆 패널의 모양 | [페이지 배치](references/layout-patterns.md) |
 | 제목·본문 작성과 초안 | [생성 양식](references/creation-form.md) |
 | 목록 위 대화상자와 주소 | [라우트 마스킹](references/route-masking.md) |
-| 목록 옆 미리보기와 행 클릭 | [미리보기 패널](references/peek.md) |
 | 대기·빈 상태·실패·전환 | [데이터 상태](references/data-states.md) |
 | 표면 고르기·누르는 대상·키보드 | [입력과 상호작용](references/interaction-patterns.md) |
 | UI 문구·본문 편집·검증 | [문구·본문과 검증](references/content-and-review.md) |

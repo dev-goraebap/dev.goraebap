@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { Button } from '@/shared/ui/button';
 import { FileTextIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { Spinner } from '@/shared/ui/spinner';
 import { useSessionApi } from '../../entities/session';

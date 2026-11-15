@@ -1,5 +1,5 @@
 /**
- * 만들기 양식의 제목과 본문(호호코워크 ComposeForm): 테두리 없이 종이 위에 쓴다. 제목은 큰 글씨, 본문은 쓰는 만큼 늘어난다.
+ * 만들기 양식의 제목과 본문: 테두리 없이 종이 위에 쓴다. 제목은 큰 글씨, 본문은 쓰는 만큼 늘어난다.
  * 크기는 놓인 곳(ComposeSurface)이 정한다: 대화상자는 18px 제목과 3.5rem 본문, 페이지는 24px 제목과 12rem 본문.
  */
 export function ComposeFields({ title, onTitle, titlePlaceholder, body, onBody, bodyPlaceholder }: {

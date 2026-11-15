@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { SHELL_LAYOUT_KEY } from '@/shared/config/preferences';
-import type { ShellLayout } from '@/shared/ui/app-shell';
+import type { ShellLayout } from '@/shared/ui/layout/app-shell';
 
 /** 가이드가 고른 셸 배치를 저장하는 키. 가이드 화면 설정(entities/preferences)이 쓰고, 견본이 읽는다. */
 export { SHELL_LAYOUT_KEY };

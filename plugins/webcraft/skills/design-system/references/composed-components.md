@@ -20,6 +20,9 @@ arc42: "8.8"
 | 본문 칸 | 종이 위의 리치 본문: 블록 메뉴·선택 서식 도구·표·미디어 | [editor](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/editor) |
 | 문서 편집기 | 종이(A4)로 나가는 문서: 상단 서식 막대·페이지 나누기·페이지 설정·머리말·바닥글·내보내기 | [document](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/document) |
 | 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group-header](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/list-group-header.tsx) |
+| 목록 끝 줄 | 수·더 보기·페이지 자리의 세 자리 줄, 수의 음성 안내 | [list-more](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/list-more.tsx), [기준](layout-patterns.md#목록-끝-줄) |
+| 표 머리 정렬 | 머리 칸을 눌러 정렬, 방향 표시 | [sortable-head](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/sortable-head.tsx), [기준](layout-patterns.md#표) |
+| 단계 표시 | 번호 동그라미·이름·잇는 선 | [step-indicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/step-indicator.tsx), [기준](creation-form.md#단계형) |
 
 구현이 없는 조합을 메뉴에 빈 항목으로 만들지 않습니다. 제품 고유 조합(아이콘 표시 고르기, 전역 검색 팔레트, 프로필 패널)은 프로젝트가 소유합니다.
 

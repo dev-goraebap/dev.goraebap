@@ -9,7 +9,7 @@ import { DisplayChoice, DisplayMenu } from '@/shared/ui/display-menu';
 import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/filter';
 import { ChevronDownIcon, FolderIcon, LibraryIcon, TriangleAlertIcon } from '@/shared/ui/icon';
 import { ListGroupHeader } from '@/shared/ui/list-group-header';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { RowLink } from '@/shared/ui/row-link';
 import { SearchTool } from '@/shared/ui/search-tool';

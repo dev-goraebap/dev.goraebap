@@ -6,7 +6,7 @@ import { cn } from "cn"
 export type SegmentedOption<T extends string> = { value: T; label: string }
 
 /**
- * 몇 개 중 하나를 고르는 조작(호호코워크 SegmentedControl): 둥근 홈 하나에 같은 폭의 칸이 서고, 고른 칸 아래에
+ * 몇 개 중 하나를 고르는 조작: 둥근 홈 하나에 같은 폭의 칸이 서고, 고른 칸 아래에
  * 올린 면이 미끄러져 온다. 고른 칸을 다시 눌러도 풀리지 않는다. 휴대폰은 칸이 44px로 커진다.
  * Base UI ToggleGroup 위에 짓는다(화살표 키로 칸을 옮기고 Space · Enter로 고른다).
  */

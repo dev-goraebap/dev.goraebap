@@ -1,4 +1,4 @@
-import type { NavSpace } from '@/shared/ui/app-shell';
+import type { NavSpace } from '@/shared/ui/layout/app-shell';
 import { FileTextIcon } from '@/shared/ui/icon';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation } from '@tanstack/react-router';

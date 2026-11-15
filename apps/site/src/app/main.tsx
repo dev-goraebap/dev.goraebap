@@ -23,6 +23,9 @@ async function load(pathname: string) {
   }
   if (path === '/blog/') return { doc: null, Content: BlogPage };
   if (path.includes('/rules/webcraft-mode/')) throw redirect({ href: path.replace('/webcraft-mode/', '/goraebap-mode/'), replace: true } as never);
+  // 미리보기 패널 문서는 리소스 화면 패턴 문서가 이어받는다. 북마크가 죽지 않게 돌려보낸다.
+  if (path.endsWith('/app-shell/peek/') || path.endsWith('/design-system/references/peek/'))
+    throw redirect({ href: path.replace(/peek\/$/, 'resource-patterns/'), replace: true } as never);
   const doc = docAt(path);
   if (!doc) {
     const first = firstOf(path);

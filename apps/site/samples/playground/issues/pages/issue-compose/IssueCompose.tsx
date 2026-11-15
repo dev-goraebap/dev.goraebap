@@ -8,7 +8,7 @@ import { ComposeSurface, PlaceChip } from '@/shared/ui/compose';
 import { RichDraft } from '@/shared/ui/editor';
 import { ChartNoAxesColumnIcon, LinkIcon, SquareCheckIcon, TagIcon, UserIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
-import { Page, type Crumb } from '@/shared/ui/page';
+import { Page, type Crumb } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { DatePill, OptionPill } from '@/shared/ui/property-pill';
 import { Spinner } from '@/shared/ui/spinner';

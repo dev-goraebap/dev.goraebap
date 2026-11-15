@@ -24,7 +24,7 @@ const SOLAR = {
   CirclePauseIcon: "pause-circle", RefreshCwIcon: "refresh", SirenIcon: "siren", ListChecksIcon: "checklist", TagIcon: "tag",
   ChartNoAxesColumnIcon: "chart-2", SquareCheckIcon: "check-square", Maximize2Icon: "maximize-square-minimalistic",
   // 알림함
-  InboxInIcon: "inbox-in", MaximizeIcon: "full-screen", ListChecksIcon: "checklist", MapPinIcon: "map-point",
+  InboxInIcon: "inbox-in", MaximizeIcon: "full-screen", MinimizeIcon: "quit-full-screen", StarAngleIcon: "star-angle", ListChecksIcon: "checklist", MapPinIcon: "map-point",
   CircleXIcon: "close-circle", MailIcon: "letter-unread",
   // 일정
   RowsIcon: "rows-3",

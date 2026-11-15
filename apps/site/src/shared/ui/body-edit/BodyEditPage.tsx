@@ -4,7 +4,7 @@ import { Alert, AlertTitle } from "@/shared/ui/alert"
 import { Button } from "@/shared/ui/button"
 import { ConfirmDialog } from "@/shared/ui/confirm-dialog"
 import { TriangleAlertIcon } from "@/shared/ui/icon"
-import { Page, type Crumb } from "@/shared/ui/page"
+import { Page, type Crumb } from "@/shared/ui/layout/page"
 import { Spinner } from "@/shared/ui/spinner"
 
 export type BodyEditValue<T> = { title: string; body: T }

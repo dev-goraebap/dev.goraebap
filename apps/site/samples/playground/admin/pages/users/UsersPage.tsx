@@ -14,11 +14,12 @@ import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { DisplayChoice, DisplayMenu } from '@/shared/ui/display-menu';
 import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/filter';
 import { ArrowDownIcon, ArrowUpIcon, LockIcon, RefreshCwIcon, RotateCcwIcon, ShieldCheckIcon, UsersIcon, TriangleAlertIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { SearchTool } from '@/shared/ui/search-tool';
 import { Spinner } from '@/shared/ui/spinner';
+import { SortableHead } from '@/shared/ui/sortable-head';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
 import { toast } from '@/shared/ui/toast';
 import { usePreset } from '../../app/preset';
@@ -77,8 +78,7 @@ export function UsersPage() {
       : { label: '비활성화', icon: LockIcon, onSelect: () => setPending({ kind: 'deactivate', ids: [user.id] }) },
   ];
   /** 표 머리를 누르면: 같은 열이면 방향을 바꾸고, 다른 열이면 그 열의 오름차순. 표시 메뉴와 같은 주소 값이다. */
-  const sortBy = (sort: Display['sort']) => setDisplay(display.sort === sort
-    ? { ...display, direction: display.direction === 'asc' ? 'desc' : 'asc' } : { sort, direction: 'asc' });
+  const sortBy = (sort: Display['sort'], direction: Display['direction']) => setDisplay({ ...display, sort, direction });
   const isTweaked = display.sort !== initialDisplay.sort || display.direction !== initialDisplay.direction;
   const subject = (ids: string[]) => (ids.length === 1 ? `${query.data?.find(user => user.id === ids[0])?.name ?? ''}님` : `${ids.length}명`);
   const content = (): ReactNode => {
@@ -102,11 +102,11 @@ export function UsersPage() {
               <TableHead className="h-11 w-12 pl-4">
                 <Checkbox aria-label="보이는 사용자 모두 선택" checked={allState === true} indeterminate={allState === 'mixed'} onCheckedChange={isOn => selectAll(isOn)} />
               </TableHead>
-              <SortHead label="이름" sort="name" display={display} onSort={sortBy} />
+              <SortableHead label="이름" sortKey="name" sort={display.sort} direction={display.direction} onSort={sortBy} />
               <TableHead className="text-muted-foreground">이메일</TableHead>
               <TableHead className="w-28 text-muted-foreground">역할</TableHead>
               <TableHead className="w-28 text-muted-foreground">상태</TableHead>
-              <SortHead label="마지막 접속" sort="lastSeen" display={display} onSort={sortBy} className="w-44 text-right" />
+              <SortableHead label="마지막 접속" sortKey="lastSeen" sort={display.sort} direction={display.direction} onSort={sortBy} align="right" className="w-44" />
               <TableHead className="w-14 pr-4"><span className="sr-only">동작</span></TableHead>
             </TableRow>
           </TableHeader>
@@ -154,18 +154,6 @@ export function UsersPage() {
 }
 
 /** 정렬할 수 있는 표 머리: 누르는 버튼이고 지금 정렬이면 방향 화살표와 aria-sort를 둔다. */
-function SortHead({ label, sort, display, onSort, className }: {
-  label: string; sort: Display['sort']; display: Display; onSort: (sort: Display['sort']) => void; className?: string;
-}) {
-  const isCurrent = display.sort === sort;
-  const Arrow = display.direction === 'asc' ? ArrowUpIcon : ArrowDownIcon;
-  return <TableHead aria-sort={isCurrent ? (display.direction === 'asc' ? 'ascending' : 'descending') : undefined} className={cn('text-muted-foreground', className)}>
-    <Button variant="ghost" size="sm" className="-ml-2 text-muted-foreground" onClick={() => onSort(sort)}>
-      {label}{isCurrent ? <Arrow data-icon="inline-end" /> : null}
-    </Button>
-  </TableHead>;
-}
-
 /** 상태는 색 점과 이름을 함께 보인다. 색은 분류 색 토큰(초록 · 노랑 · 회색). */
 const statusDot: Record<'green' | 'yellow' | 'gray', string> = { green: 'bg-event-green-foreground', yellow: 'bg-event-yellow-foreground', gray: 'bg-event-gray-foreground' };
 function StatusBadge({ status }: { status: UserStatus }) {

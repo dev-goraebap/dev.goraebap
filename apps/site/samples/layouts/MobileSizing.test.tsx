@@ -32,12 +32,12 @@ test('모바일과 중간 폭에서도 시트 선택 행 크기를 유지한다'
   },
 }, 'phone'));
 
-test('모바일 머리 줄과 툴바는 60px 이상이다', () => runSample(pageMeta, {
+test('모바일 머리 줄은 60px, 보기 탭 줄은 52px 이상이다', () => runSample(pageMeta, {
   ...HeaderAndToolbar,
   play: async ({ canvasElement }) => {
     const { header, toolbar } = bars(canvasElement);
     expect(header.getBoundingClientRect().height).toBeGreaterThanOrEqual(60);
-    expect(toolbar.getBoundingClientRect().height).toBeGreaterThanOrEqual(60);
+    expect(toolbar.getBoundingClientRect().height).toBeGreaterThanOrEqual(52);
   },
 }, 'phone'));
 
@@ -65,7 +65,7 @@ test('모바일 동작 메뉴는 48px 행이고 선택 후 닫힌다', () => run
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole('button', { name: '정렬' }));
     const dialog = await within(document.body).findByRole('dialog', { name: '정렬' });
-    const choice = within(dialog).getByRole('button', { name: '제목' });
+    const choice = within(dialog).getByRole('menuitem', { name: '제목' });
     await waitFor(() => expect(choice.getBoundingClientRect().height).toBeGreaterThanOrEqual(48));
     await userEvent.click(choice);
     await waitFor(() => expect(within(document.body).queryByRole('dialog', { name: '정렬' })).not.toBeInTheDocument());
@@ -77,7 +77,7 @@ test('모바일 동작 메뉴는 15px 글자와 20px 아이콘이다', () => run
   play: async ({ canvasElement }) => {
     await userEvent.click(within(canvasElement).getByRole('button', { name: '정렬' }));
     const dialog = await within(document.body).findByRole('dialog', { name: '정렬' });
-    const choice = within(dialog).getByRole('button', { name: '제목' });
+    const choice = within(dialog).getByRole('menuitem', { name: '제목' });
     expect(Math.round(choice.querySelector('svg')!.getBoundingClientRect().width)).toBe(20);
     expect(getComputedStyle(choice).fontSize).toBe('15px');
   },

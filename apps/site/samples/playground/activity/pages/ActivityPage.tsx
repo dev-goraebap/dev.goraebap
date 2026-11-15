@@ -6,7 +6,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
 import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/filter';
 import { CircleCheckIcon, HistoryIcon, MessageCircleIcon, PencilIcon, PlusIcon, TrashIcon, TriangleAlertIcon, type Icon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { Skeleton } from '@/shared/ui/skeleton';

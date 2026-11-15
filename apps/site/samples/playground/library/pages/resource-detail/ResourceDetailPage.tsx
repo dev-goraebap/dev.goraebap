@@ -11,7 +11,7 @@ import { RichBody } from '@/shared/ui/editor';
 import { CalendarIcon, FileTextIcon, FolderIcon, LibraryIcon, LinkIcon, PaperclipIcon, PencilIcon, StarIcon, Trash2Icon, TriangleAlertIcon,
   UserIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { OptionPill } from '@/shared/ui/property-pill';
 import { DetailLayout } from '@/shared/ui/reading';

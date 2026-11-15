@@ -7,7 +7,7 @@ import { Alert, AlertTitle } from "@/shared/ui/alert";
 import { Badge } from "@/shared/ui/badge";
 import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterState } from "@/shared/ui/filter";
 import { ArchiveIcon, FileTextIcon, FolderIcon, InboxIcon, InfoIcon, LinkIcon, PencilIcon, TriangleAlertIcon, UserIcon } from "@/shared/ui/icon";
-import { Page, PageViews } from "@/shared/ui/page";
+import { Page, PageViews } from "@/shared/ui/layout/page";
 import { PersonAvatar } from "@/shared/ui/person-avatar";
 import { OptionPill } from "@/shared/ui/property-pill";
 import { DetailLayout } from "@/shared/ui/reading";

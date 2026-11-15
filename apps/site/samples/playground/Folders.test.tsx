@@ -36,7 +36,7 @@ const VerifyMove: Sample = {
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(await page.findByRole("button", { name: "색 기준표.docx 메뉴" }));
-    await userEvent.click(await page.findByRole("button", { name: "옮기기" }));
+    await userEvent.click(await page.findByRole("menuitem", { name: "옮기기" }));
     const dialog = await page.findByRole("dialog", { name: /옮기기/ });
     await userEvent.click(within(dialog).getByRole("button", { name: "옮기기" }));
     await waitFor(() => expect(within(dialog).getAllByText("옮길 폴더를 골라 주세요.").length).toBeGreaterThan(0));

@@ -3,10 +3,11 @@ import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { cn } from 'cn';
 import { Button } from '@/shared/ui/button';
+import { StepIndicator } from '@/shared/ui/step-indicator';
 import { ComposeSurface } from '@/shared/ui/compose';
 import { DateCalendar } from '@/shared/ui/date-picker';
 import { CalendarIcon, CheckIcon, FileTextIcon } from '@/shared/ui/icon';
-import { useOwnPageTitle } from '@/shared/ui/page';
+import { useOwnPageTitle } from '@/shared/ui/layout/page';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { OptionPill, PropertyPill } from '@/shared/ui/property-pill';
 import { Textarea } from '@/shared/ui/textarea';
@@ -76,26 +77,6 @@ function Part({ label, children }: { label: string; children: ReactNode }) {
 }
 
 /** 단계 표시: 지난 단계는 확인 표시, 지금 단계는 강조. 누르면 그 단계로 간다(값은 초안이 지킨다). */
-function Steps({ current, onGo }: { current: number; onGo: (step: ComposeStep) => void }) {
-  return (
-    <ol aria-label="신청 단계" className="flex flex-wrap items-center gap-1">
-      {steps.map((each, order) => (
-        <li key={each.id} className="flex items-center gap-1">
-          {order > 0 ? <span aria-hidden className="h-px w-4 bg-border" /> : null}
-          <Button variant={order === current ? 'view-active' : 'view'} size="sm" aria-current={order === current ? 'step' : undefined}
-            className="max-md:h-11 max-md:px-3" onClick={() => onGo(each.id)}>
-            <span aria-hidden className={cn('grid size-4 place-items-center rounded-full text-[0.625rem] tabular-nums',
-              order < current ? 'bg-primary text-primary-foreground' : order === current ? 'bg-foreground text-background' : 'ring-1 ring-border')}>
-              {order < current ? <CheckIcon className="size-2.5" /> : order + 1}
-            </span>
-            {each.label}
-          </Button>
-        </li>
-      ))}
-    </ol>
-  );
-}
-
 /**
  * 휴가 신청: 여러 사람의 결정이 걸린 신청이라 단계형이다(정보 → 결재선 → 확인). 단계는 주소의 step이 가지고 값은 라우터 위의 초안이
  * 가진다. 다음은 현재 단계만 검사하고 마지막 제출은 전체를 검사해 빠진 단계로 돌려보낸다. 바닥 줄에는 이전 · 취소 · 다음(제출)만
@@ -190,7 +171,7 @@ export function RequestCompose({ step, onStep, onClose, onDone }: {
         <div className="flex flex-col gap-3">
           {/* 휴대폰은 앱 바가 이름(h1)을 보인다. 데스크톱은 이 제목이 페이지의 h1이다. */}
           {isMobile ? null : <ComposeTitle>휴가 신청</ComposeTitle>}
-          <Steps current={index} onGo={go} />
+          <StepIndicator label="신청 단계" steps={steps.map(each => each.label)} current={index} onStep={order => go(steps[order].id)} />
         </div>
         {parts}
       </div>

@@ -3,11 +3,10 @@ import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, 
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useState } from 'react';
 import { DraftProvider } from '@/shared/lib/draft';
-import { useOpenPanel, usePanel } from '@/shared/lib/panel';
-import type { NavSpace } from '@/shared/ui/app-shell';
+import type { NavSpace } from '@/shared/ui/layout/app-shell';
 import { Button, buttonVariants } from '@/shared/ui/button';
 import { TagIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';
@@ -36,19 +35,10 @@ function Shell() {
   </PlaygroundShell>;
 }
 
-/**
- * 목록과 목록 위의 작성 대화상자(?panel=/issues/new, 주소창에는 mask로 /issues/new). 휴대폰은 대화상자 없이 그 페이지로 가고,
- * 창을 좁히면 남은 ?panel을 그 페이지로 옮긴다(usePanel).
- */
+/** 목록. 페이지 이동형(Drill-down)이라 만들기는 작성 페이지(/issues/new)로 간다. */
 function ListRoute() {
-  const open = useOpenPanel();
-  const panel = usePanel();
-  return <>
-    <IssuesPage onCreate={() => open('/issues/new')} />
-    {panel.pathname === '/issues/new'
-      ? <IssueCompose key={panel.href} surface="dialog" onClose={panel.close} onExpand={panel.expand} onDone={id => panel.done(`/issues/${id}`)} />
-      : null}
-  </>;
+  const navigate = useNavigate();
+  return <IssuesPage onCreate={() => void navigate({ href: '/issues/new' })} />;
 }
 
 function DetailRoute() {
@@ -73,13 +63,13 @@ function ComposeRoute() {
 
 function RouteError({ reset }: ErrorComponentProps) {
   return <Page crumbs={[{ label: '이슈', icon: TagIcon }]}>
-    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
+    <PageState kind="error" title="화면을 열 수 없습니다" action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
   </Page>;
 }
 
 function NotFound() {
   return <Page crumbs={[{ label: '이슈', href: '/issues', icon: TagIcon }, { label: '없는 페이지' }]} isFullScreen>
-    <PageState kind="not-found" title="페이지를 찾을 수 없습니다" description="주소가 바뀌었거나 지워졌을 수 있습니다."
+    <PageState kind="not-found" title="페이지를 찾을 수 없습니다"
       action={<Link to={'/issues' as string} className={buttonVariants({ variant: 'secondary', className: 'max-md:h-11' })}>이슈 목록으로</Link>} />
   </Page>;
 }

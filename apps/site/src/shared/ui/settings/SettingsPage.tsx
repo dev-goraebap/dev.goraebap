@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Page, useOwnPageTitle, type Crumb } from "@/shared/ui/page"
+import { Page, useOwnPageTitle, type Crumb } from "@/shared/ui/layout/page"
 
 type SettingsBodyProps = {
   title: string
@@ -9,7 +9,7 @@ type SettingsBodyProps = {
 }
 
 /**
- * 설정 페이지의 안쪽(호호코워크 SettingsPage 본문): 가운데 한 열(최대 720px), 맨 위에 제목과 한 줄 설명,
+ * 설정 페이지의 안쪽: 가운데 한 열(최대 720px), 맨 위에 제목과 한 줄 설명,
  * 그 아래에 SettingsSection이 이어진다. 페이지 틀(Page)을 따로 그리는 곳(프로젝트 설정)은 이것만 쓴다.
  */
 export function SettingsBody({ title, description, children }: SettingsBodyProps) {
@@ -29,7 +29,7 @@ export function SettingsBody({ title, description, children }: SettingsBodyProps
   )
 }
 
-/** 값을 보고 정하는 페이지(호호코워크 SettingsPage): 머리 줄(경로)과 SettingsBody. */
+/** 값을 보고 정하는 페이지: 머리 줄(경로)과 SettingsBody. */
 export function SettingsPage({ crumbs, ...body }: SettingsBodyProps & { crumbs: Crumb[] }) {
   return (
     <Page crumbs={crumbs}>

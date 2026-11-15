@@ -3,10 +3,10 @@ import { useEffect } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 
 /*
- * 목록 위 대화상자로 여는 페이지(호호코워크 shared/lib/panel). 데스크톱은 지금 페이지 주소에 ?panel=<페이지 주소>를 달고
+ * 목록 위 대화상자로 여는 페이지. 데스크톱은 지금 페이지 주소에 ?panel=<페이지 주소>를 달고
  * 주소창에는 TanStack Router의 mask로 그 페이지의 주소를 보인다(unmaskOnReload: 새로고침 · 복사한 주소는 페이지로 연다).
  * 휴대폰에는 대화상자가 없어 늘 그 페이지로 간다.
- * 공지사항 · 회의록 · 주간보고가 함께 쓴다. 업무 만들기(features/work-item-create)는 같은 방식의 앞선 사본이다.
+ * 목록 위 대화상자(Routed Modal) 패턴의 주소 계약이다. 대화상자의 바꿔 끼우기는 shared/ui/dialog의 swapDialog가 맡는다.
  */
 const KEY = "panel"
 
@@ -35,7 +35,7 @@ function split(href: string) {
 
 /**
  * href를 지금 페이지 위 대화상자로 연다(휴대폰은 그 페이지로 간다). inherit: 대화상자 안이면 그 자리를 바꾸고,
- * 페이지에서 불렀으면 페이지로 간다(호호코워크 surface: 'inherit'). replace: 기록을 쌓지 않는다.
+ * 페이지에서 불렀으면 페이지로 간다. replace: 기록을 쌓지 않는다.
  */
 export function useOpenPanel() {
   const navigate = useNavigate()
@@ -60,6 +60,27 @@ export function useOpenPanel() {
  * expand는 같은 것을 자기 페이지로, done은 다른 주소(만든 것의 상세)로 대화상자 자리를 바꾼다.
  * 휴대폰에서 대화상자 주소를 만나면(창을 좁혔을 때) 그 페이지로 옮긴다.
  */
+/** 목록 위 대화상자가 걷힐 때까지 기다린다(최대 1초). 전환 동안은 화면 그리기가 멈춰 requestAnimationFrame이 돌지 않는다. */
+function dialogGone() {
+  return new Promise<void>(done => {
+    const started = performance.now()
+    const check = () => (!document.querySelector("[data-slot=dialog-content][data-panel]") || performance.now() - started > 1000 ? done() : setTimeout(check, 16))
+    check()
+  })
+}
+
+function canExpandWithTransition() {
+  return !!document.querySelector("[data-slot=dialog-content][data-panel]") && "startViewTransition" in document
+    && CSS.supports("selector(:active-view-transition-type(panel-expand))") && !matchMedia("(prefers-reduced-motion: reduce)").matches
+}
+
+/*
+ * 크게 보기의 화면 전환: 떠 있는 대화상자가 그 자리 · 크기에서 페이지의 콘텐츠 영역으로 커지며 페이지가 된다. 라우터의
+ * viewTransition은 주소를 바꾼 뒤에 화면을 찍어(그때 이미 대화상자가 닫혀 있다) 쓰지 않고 여기서 직접 건다: 다음 페이지를
+ * 미리 준비해 두고, 대화상자가 떠 있는 지금을 찍은 뒤 전환 안에서 이동한다. 이름은 전환 종류 panel-expand 동안만 CSS가 붙인다
+ * (tailwind.css: 전환 전에는 대화상자, 전환 뒤에는 콘텐츠 영역 .route-content). 대화상자가 없거나 지원하지 않거나 움직임
+ * 줄이기면 그냥 이동한다.
+ */
 export function usePanel() {
   const router = useRouter()
   const navigate = useNavigate()
@@ -68,7 +89,16 @@ export function usePanel() {
   const { [KEY]: raw, ...rest } = location.search as Search
   const href = typeof raw === "string" && raw.startsWith("/") ? raw : undefined
   const isOpenedHere = Boolean(location.state.panelOpenedHere)
-  const expand = () => { if (href) void navigate({ href, replace: true }) }
+  const expand = () => {
+    if (!href) return
+    const go = () => navigate({ href, replace: true, viewTransition: false })
+    if (!canExpandWithTransition()) return void go()
+    const target = split(href)
+    void router.preloadRoute({ to: target.pathname, search: target.search }).catch(() => undefined).then(() => {
+      const transition = document.startViewTransition({ update: () => go().then(() => dialogGone()), types: ["panel-expand"] })
+      transition.finished.catch(() => undefined)
+    })
+  }
   useEffect(() => {
     if (isMobile && href) void navigate({ href, replace: true })
   }, [isMobile, href, navigate])
@@ -87,7 +117,7 @@ export function usePanel() {
 }
 
 /*
- * 크게 보기로 넘기는 쓰던 내용(호호코워크 useComposeTransfer). 대화상자가 닫히기 전에 맡기고, 페이지의 양식이 처음 그릴 때 꺼낸다.
+ * 크게 보기로 넘기는 쓰던 내용. 대화상자가 닫히기 전에 맡기고, 페이지의 양식이 처음 그릴 때 꺼낸다.
  * 메모리에만 두므로 새로고침하면 사라진다(File도 그대로 넘어간다).
  */
 const carried = new Map<string, unknown>()

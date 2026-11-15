@@ -6,7 +6,7 @@ import { BodyEditPage } from '@/shared/ui/body-edit';
 import { Button } from '@/shared/ui/button';
 import { RichDraft } from '@/shared/ui/editor';
 import { LibraryIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { Spinner } from '@/shared/ui/spinner';
 import { resourceKeys, resourceQueries, useResourceApi } from '../../entities/resource';

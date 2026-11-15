@@ -4,8 +4,8 @@
   "title": "날짜 고르기",
   "description": "DateCalendar와 팝오버 ↔ 바텀시트로 여는 DatePicker(한국어 달력).",
   "dependencies": [
-    "react-day-picker@^10.0.2",
-    "cn@^0.5.2"
+    "cn@^0.5.2",
+    "react-day-picker@^10.0.2"
   ],
   "registryDependencies": [
     "@webcraft/adaptive-popover",

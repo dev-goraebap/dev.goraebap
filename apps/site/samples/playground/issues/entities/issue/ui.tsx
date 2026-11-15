@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/button';
 import { CalendarIcon, CircleCheckIcon, ClockIcon, EyeIcon, RefreshCwIcon, SirenIcon, type Icon } from '@/shared/ui/icon';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { RowLink } from '@/shared/ui/row-link';
@@ -87,24 +86,19 @@ export function Person({ name, onPick, isCompact = false }: { name?: string; onP
 }
 
 /**
- * 목록 줄: 시작은 우선순위와 키, 제목(한 줄 말줄임). 끝은 늘 있는 값(상태 · 담당자)을 바깥쪽에, 가끔 있는 값(마감 · 미리보기)을 안쪽에.
- * 줄 전체가 상세로 가는 링크(RowLink)이고 담당자 · 미리보기는 그 위에 띄워 따로 누른다. 좁으면 상태는 아이콘만, 담당자는 사진만, 미리보기는 뺀다.
+ * 목록 줄: 시작은 우선순위와 키, 제목(한 줄 말줄임). 끝은 늘 있는 값(상태 · 담당자)을 바깥쪽에, 가끔 있는 값(마감)을 안쪽에.
+ * 줄 전체가 상세로 가는 링크(RowLink)이고 담당자는 그 위에 띄워 따로 누른다. 좁으면 상태는 아이콘만, 담당자는 사진만.
  */
-export function IssueRow({ issue, isCompact, isPeeking = false, onPeek, onAssignee }: {
-  issue: Issue; isCompact: boolean; isPeeking?: boolean; onPeek: (issue: Issue) => void; onAssignee: (name: string) => void;
+export function IssueRow({ issue, isCompact, onAssignee }: {
+  issue: Issue; isCompact: boolean; onAssignee: (name: string) => void;
 }) {
-  return <li data-peek-row={issue.id} aria-current={isPeeking || undefined}
-    className="relative flex items-center gap-3 border-b bg-background px-4 py-3 text-sm hover:bg-row-hover aria-current:bg-muted max-md:min-h-13 compact:py-2">
+  return <li className="relative flex items-center gap-3 border-b bg-background px-4 py-3 text-sm hover:bg-row-hover max-md:min-h-13 compact:py-2">
     <span className="flex shrink-0 items-center gap-2">
       <PriorityMark priority={issue.priority} />
       <span className="min-w-13 text-xs text-muted-foreground tabular-nums">{issue.id}</span>
     </span>
     <RowLink to={`/issues/${issue.id}` as string} aria-label={`${issue.id} ${issue.title}`} className="min-w-0 flex-1 truncate font-medium">{issue.title}</RowLink>
     <span className="flex shrink-0 items-center gap-2.5">
-      {isCompact ? null : <Button variant="ghost" size="icon-xs" aria-label={`${issue.id} 미리보기`} title="미리보기 (Space)" aria-pressed={isPeeking}
-        className="relative z-1 aria-pressed:bg-muted" onClick={() => onPeek(issue)}>
-        <EyeIcon chosen={isPeeking} />
-      </Button>}
       {isCompact ? null : <DueDate issue={issue} />}
       <StatusMark status={issue.status} isCompact={isCompact} />
       <Person name={issue.assignee} onPick={onAssignee} isCompact={isCompact} />
@@ -114,7 +108,7 @@ export function IssueRow({ issue, isCompact, isPeeking = false, onPeek, onAssign
 
 /** 보드 카드: 카드 전체가 하나의 링크라 안에 다른 버튼을 두지 않는다. 담당자는 사진만. 제목은 두 줄까지. */
 export function IssueCard({ issue }: { issue: Issue }) {
-  return <li data-peek-row={issue.id} className="list-none">
+  return <li className="list-none">
     <Link to={`/issues/${issue.id}` as string} aria-label={`${issue.id} ${issue.title}`}
       className="flex flex-col gap-2 rounded-lg border bg-card p-3 text-sm wrap-anywhere shadow-xs outline-none hover:bg-row-hover focus-visible:ring-2 focus-visible:ring-ring">
       <span className="flex items-center gap-2">

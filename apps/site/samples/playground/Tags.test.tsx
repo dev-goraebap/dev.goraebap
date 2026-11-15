@@ -12,7 +12,7 @@ const VerifyRename: Sample = {
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(await page.findByRole("button", { name: "디자인 메뉴" }));
-    await userEvent.click(await page.findByRole("button", { name: "이름 바꾸기" }));
+    await userEvent.click(await page.findByRole("menuitem", { name: "이름 바꾸기" }));
     const dialog = await page.findByRole("dialog", { name: "태그 이름 바꾸기" });
     const name = within(dialog).getByRole("textbox", { name: /이름/ });
     await userEvent.clear(name);
@@ -33,13 +33,13 @@ const VerifyRemove: Sample = {
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(await page.findByRole("button", { name: "긴급 메뉴" }));
-    await userEvent.click(await page.findByRole("button", { name: "지우기" }));
+    await userEvent.click(await page.findByRole("menuitem", { name: "지우기" }));
     const alert = await page.findByRole("alertdialog");
     await expect(within(alert).getByText(/6개 항목/)).toBeInTheDocument();
     await userEvent.click(within(alert).getByRole("button", { name: "지우기" }));
     await waitFor(() => expect(page.queryByText("긴급")).not.toBeInTheDocument());
     await userEvent.click(await page.findByRole("button", { name: "회의 메뉴" }));
-    await userEvent.click(await page.findByRole("button", { name: "지우기" }));
+    await userEvent.click(await page.findByRole("menuitem", { name: "지우기" }));
     await waitFor(() => expect(page.queryByText("회의")).not.toBeInTheDocument());
     await expect(page.queryByRole("alertdialog")).not.toBeInTheDocument();
   },

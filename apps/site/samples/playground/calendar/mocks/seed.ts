@@ -1,6 +1,6 @@
 import type { CalendarEvent } from '../entities/event';
 
-/** 예제의 "오늘"(2026-11-08)을 둘러싼 한 달 남짓. 11월 12일은 일정이 넘쳐 "+3"으로 묶인다. */
+/** 예제의 "오늘"을 둘러싼 한 달 남짓. 11월 12일은 일정이 넘쳐 "+3"으로 묶인다. */
 export const seedEvents: CalendarEvent[] = [
   { id: 'e01', title: '디자인 리뷰', start: '2026-10-30', end: '2026-10-30', time: '14:00', place: '3층 회의실', color: 'blue' },
   { id: 'e02', title: '디자인 리뷰', start: '2026-11-03', end: '2026-11-03', time: '14:00', place: '3층 회의실', color: 'blue' },

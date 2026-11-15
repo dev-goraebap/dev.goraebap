@@ -3,7 +3,7 @@ import { useIsMobile } from '@/shared/lib/use-mobile';
 import { Button } from '@/shared/ui/button';
 import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterDef } from '@/shared/ui/filter';
 import { ClockIcon, FileTextIcon, PlusIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { RowLink } from '@/shared/ui/row-link';
 import { Spinner } from '@/shared/ui/spinner';

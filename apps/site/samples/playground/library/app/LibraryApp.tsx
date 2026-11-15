@@ -3,10 +3,10 @@ import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, 
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { usePanel, useOpenPanel } from '@/shared/lib/panel';
-import type { NavEntry, NavSpace, ShellLayout } from '@/shared/ui/app-shell';
+import type { NavEntry, NavSpace, ShellLayout } from '@/shared/ui/layout/app-shell';
 import { Button } from '@/shared/ui/button';
 import { FolderIcon, LibraryIcon, SettingsIcon, StarIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';

@@ -20,8 +20,9 @@ type WithPanelProps = {
 }
 
 /**
- * 목록 옆에서 줄 하나의 사실을 보는 패널(주소가 필요 없는 짧은 조회: 기록 · 로그 한 줄). 데스크톱은 오른쪽 패널(제목 · 부제 · 닫기),
- * 휴대폰은 아래에서 올라오는 바텀시트. 편집이나 긴 내용은 자기 주소를 가진 상세(DetailSurface · PeekPanel)로 연다.
+ * 옆 패널: 주소가 필요 없는 기록 한 줄의 사실이나, 표 · 그림 위에서 잠깐 보는 대상을 띄운다. 데스크톱은 오른쪽 패널(제목 · 부제 ·
+ * 닫기), 휴대폰은 아래에서 올라오는 바텀시트. 리소스 패턴이 아니다: 주소가 있는 리소스의 상세 · 생성 · 수정은 세 패턴
+ * (List-Detail · Drill-down · Routed Modal) 가운데 하나로 연다.
  */
 export function WithPanel({ title, subtitle, panel, width = "w-[26rem]", footer, onClose, children }: WithPanelProps) {
   const isMobile = useIsMobile()

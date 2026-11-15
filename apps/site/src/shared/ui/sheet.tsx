@@ -4,7 +4,7 @@ import * as React from "react"
 import { Dialog as SheetPrimitive } from "@base-ui/react/dialog"
 import { cn } from "cn"
 
-import { Button } from "@/shared/ui/button"
+import { Button, ButtonStyleReset } from "@/shared/ui/button"
 import { XIcon } from "@/shared/ui/icon"
 
 function Sheet({ ...props }: SheetPrimitive.Root.Props) {
@@ -47,7 +47,7 @@ function SheetContent({
   showCloseButton?: boolean
 }) {
   return (
-    <SheetPortal>
+    <SheetPortal><ButtonStyleReset>
       <SheetOverlay />
       <SheetPrimitive.Popup
         data-slot="sheet-content"
@@ -76,7 +76,7 @@ function SheetContent({
           </SheetPrimitive.Close>
         )}
       </SheetPrimitive.Popup>
-    </SheetPortal>
+    </ButtonStyleReset></SheetPortal>
   )
 }
 

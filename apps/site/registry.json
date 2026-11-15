@@ -7,8 +7,8 @@
       "name": "theme",
       "type": "registry:theme",
       "title": "Webcraft 토큰",
-      "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티. 다크 모드는 html[data-theme=dark](dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지))을 쓴다.",
-      "docs": "다크 모드는 html[data-theme=dark]입니다. shadcn init이 남긴 .dark { … } 블록과 @custom-variant dark (&:is(.dark *)) 줄은 지웁니다(뒤에 더한 data-theme 변형과 겹칩니다). 모드는 @webcraft/appearance가 data-theme에 반영합니다.",
+      "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티, 조작 면 토큰(control · control-hover · control-on · control-border), 화면 전환(콘텐츠 영역 .route-content · 휴대폰 유리 막대 · 대화상자 바꿔 끼우기 · 페이지로 열기). 다크 모드는 html(:root)의 data-theme=dark(dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지))을 쓴다.",
+      "docs": "다크 모드는 html(:root)의 data-theme=dark입니다. 라우터가 그리는 자리(Outlet을 감싼 요소)에 route-content 클래스를 달면 화면 전환이 그 영역만 잡습니다. shadcn init이 남긴 .dark { … } 블록과 @custom-variant dark (&:is(.dark *)) 줄은 지웁니다(뒤에 더한 data-theme 변형과 겹칩니다). 모드는 @webcraft/appearance가 data-theme에 반영합니다.",
       "dependencies": [
         "pretendard",
         "@fontsource-variable/jetbrains-mono",
@@ -44,7 +44,11 @@
           "color-sidebar-accent": "var(--sidebar-accent)",
           "color-sidebar-accent-foreground": "var(--sidebar-accent-foreground)",
           "color-sidebar-border": "var(--sidebar-border)",
-          "color-sidebar-ring": "var(--sidebar-ring)"
+          "color-sidebar-ring": "var(--sidebar-ring)",
+          "color-control": "color-mix(in srgb, var(--foreground) 5%, var(--background))",
+          "color-control-hover": "color-mix(in srgb, var(--foreground) 9%, var(--background))",
+          "color-control-on": "color-mix(in srgb, var(--foreground) 14%, var(--background))",
+          "color-control-border": "color-mix(in srgb, var(--foreground) 11%, var(--background))"
         },
         "light": {
           "background": "#f9f9fa",
@@ -96,7 +100,7 @@
       "css": {
         "@import \"pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css\"": {},
         "@import \"@fontsource-variable/jetbrains-mono\"": {},
-        "@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *))": {},
+        "@custom-variant dark (&:where(:root[data-theme=dark], :root[data-theme=dark] *))": {},
         "@custom-variant compact (&:where([data-density=compact] *))": {},
         ":root": {
           "--text-sm": "0.8125rem",
@@ -112,7 +116,7 @@
           "--secondary-foreground": "var(--foreground)",
           "--accent": "color-mix(in srgb, var(--foreground) 4%, transparent)",
           "--accent-foreground": "var(--foreground)",
-          "--border": "color-mix(in srgb, var(--foreground) 13%, var(--background))",
+          "--border": "color-mix(in srgb, var(--foreground) 9%, var(--background))",
           "--input": "color-mix(in srgb, var(--foreground) 18%, var(--background))",
           "--ring": "color-mix(in srgb, var(--foreground) 72%, var(--background))",
           "--pressed": "color-mix(in srgb, var(--foreground) 7%, transparent)",
@@ -123,7 +127,7 @@
           "--sidebar-border": "var(--border)",
           "--sidebar-ring": "var(--ring)"
         },
-        "[data-theme=dark]": {
+        ":root[data-theme=dark]": {
           "--background": "#121213",
           "--foreground": "#f7f8f8",
           "--sidebar": "#09090a",
@@ -135,7 +139,7 @@
           "--muted-foreground": "#8a8f98",
           "--accent": "color-mix(in srgb, var(--foreground) 5%, transparent)",
           "--destructive": "oklch(0.704 0.191 22.216)",
-          "--border": "color-mix(in srgb, var(--foreground) 11%, var(--background))",
+          "--border": "color-mix(in srgb, var(--foreground) 8%, var(--background))",
           "--input": "color-mix(in srgb, var(--foreground) 16%, var(--background))",
           "--icon-muted": "#8a8f98",
           "--pressed": "color-mix(in srgb, var(--foreground) 8%, transparent)",
@@ -184,7 +188,147 @@
         "@utility squircle": {
           "corner-shape": "squircle"
         },
+        ".route-content": {
+          "view-transition-name": "app-content"
+        },
+        "::view-transition": {
+          "pointer-events": "none"
+        },
+        "::view-transition-group(app-content)": {
+          "animation-duration": "200ms",
+          "animation-timing-function": "ease-in-out"
+        },
+        "::view-transition-image-pair(app-content)": {
+          "isolation": "isolate"
+        },
+        "::view-transition-old(app-content)": {
+          "animation": "app-content-out 200ms ease-in-out both",
+          "mix-blend-mode": "plus-lighter"
+        },
+        "::view-transition-new(app-content)": {
+          "animation": "app-content-in 200ms ease-in-out both",
+          "mix-blend-mode": "plus-lighter"
+        },
+        ".phone-bar": {
+          "view-transition-name": "app-phone-bar"
+        },
+        ".phone-bar-search": {
+          "view-transition-name": "app-phone-search"
+        },
+        "::view-transition-group(app-phone-bar), ::view-transition-new(app-phone-bar), ::view-transition-group(app-phone-search), ::view-transition-new(app-phone-search)": {
+          "animation": "none"
+        },
+        "::view-transition-old(app-phone-bar), ::view-transition-old(app-phone-search)": {
+          "display": "none"
+        },
+        "::view-transition-image-pair(app-phone-bar), ::view-transition-image-pair(app-phone-search)": {
+          "overflow": "hidden",
+          "border-radius": "9999px"
+        },
+        "@media (min-width: 48rem)": {
+          "::view-transition-image-pair(app-content)": {
+            "overflow": "hidden",
+            "border-radius": "calc(var(--radius-surface) * 1.5)",
+            "corner-shape": "squircle"
+          }
+        },
+        "@media (prefers-reduced-motion: reduce)": {
+          "::view-transition-group(app-content), ::view-transition-old(app-content), ::view-transition-new(app-content)": {
+            "animation": "none"
+          }
+        },
+        ":root[data-vt=\"dialog\"] .route-content": {
+          "view-transition-name": "none"
+        },
+        ":root[data-vt=\"dialog\"] [data-slot=\"dialog-content\"][data-panel]": {
+          "view-transition-name": "panel-dialog"
+        },
+        "::view-transition-group(panel-dialog)": {
+          "animation-duration": "200ms",
+          "animation-timing-function": "cubic-bezier(0.2, 0, 0, 1)"
+        },
+        "::view-transition-image-pair(panel-dialog)": {
+          "isolation": "isolate",
+          "overflow": "hidden",
+          "border-radius": "1rem"
+        },
+        "::view-transition-old(panel-dialog)": {
+          "animation": "app-content-out 200ms ease-in-out both",
+          "mix-blend-mode": "plus-lighter"
+        },
+        "::view-transition-new(panel-dialog)": {
+          "animation": "app-content-in 200ms ease-in-out both",
+          "mix-blend-mode": "plus-lighter"
+        },
+        ":active-view-transition-type(panel-expand) .route-content": {
+          "view-transition-name": "panel-expand"
+        },
+        ":active-view-transition-type(panel-expand):has([data-slot=\"dialog-content\"][data-panel]) .route-content": {
+          "view-transition-name": "none"
+        },
+        ":active-view-transition-type(panel-expand) [data-slot=\"dialog-content\"][data-panel]": {
+          "view-transition-name": "panel-expand"
+        },
+        ":active-view-transition-type(panel-expand) [data-slot=\"dialog-overlay\"]": {
+          "view-transition-name": "panel-expand-backdrop"
+        },
+        "::view-transition-group(panel-expand)": {
+          "animation-duration": "250ms",
+          "animation-timing-function": "cubic-bezier(0.2, 0, 0, 1)"
+        },
+        "::view-transition-image-pair(panel-expand)": {
+          "isolation": "isolate",
+          "overflow": "hidden",
+          "border-radius": "1rem"
+        },
+        "::view-transition-old(panel-expand)": {
+          "animation": "app-content-out 120ms ease-out both"
+        },
+        "::view-transition-new(panel-expand)": {
+          "animation": "app-content-in 250ms ease-out both"
+        },
+        "::view-transition-old(panel-expand-backdrop)": {
+          "animation": "app-content-out 250ms ease-out both"
+        },
+        ".fade-strip": {
+          "--fade-l": "0px",
+          "--fade-r": "0px",
+          "mask-image": "linear-gradient(to right, transparent, currentColor var(--fade-l), currentColor calc(100% - var(--fade-r)), transparent)"
+        },
+        ".fade-strip:not([data-start])": {
+          "--fade-l": "1.5rem"
+        },
+        ".fade-strip:not([data-end])": {
+          "--fade-r": "1.5rem"
+        },
         "@layer base": {
+          "@keyframes app-content-out": {
+            "from": {
+              "opacity": "1"
+            },
+            "to": {
+              "opacity": "0"
+            }
+          },
+          "@keyframes app-content-in": {
+            "from": {
+              "opacity": "0"
+            },
+            "to": {
+              "opacity": "1"
+            }
+          },
+          "@keyframes toast-countdown": {
+            "from": {
+              "transform": "scaleX(1)"
+            },
+            "to": {
+              "transform": "scaleX(0)"
+            }
+          },
+          "button:not(:disabled):not([aria-disabled=\"true\"]), [role=\"button\"]:not([aria-disabled=\"true\"]), [role=\"menuitem\"]:not([aria-disabled=\"true\"]):not([data-disabled]), [role=\"option\"]:not([aria-disabled=\"true\"]):not([data-disabled]), [role=\"tab\"]:not([aria-disabled=\"true\"]), [role=\"checkbox\"]:not([aria-disabled=\"true\"]), [role=\"switch\"]:not([aria-disabled=\"true\"]), [role=\"radio\"]:not([aria-disabled=\"true\"]), [cmdk-item]:not([data-disabled=\"true\"]), summary, label:has(input:not(:disabled)), select:not(:disabled)": {
+            "cursor": "pointer"
+          },
           "@keyframes page-state-enter": {
             "from": {
               "opacity": "0",
@@ -272,7 +416,7 @@
       "name": "panel",
       "type": "registry:lib",
       "title": "목록 위 대화상자",
-      "description": "데스크톱은 지금 페이지 위 대화상자(?panel=, 주소창에는 TanStack Router mask로 그 페이지 주소), 휴대폰은 그 페이지로 연다. 크게 보기로 쓰던 내용을 넘기는 carryDraft 포함.",
+      "description": "목록 위 대화상자(Routed Modal): 데스크톱은 지금 페이지 위 대화상자(?panel=, 주소창에는 TanStack Router mask로 그 페이지 주소), 휴대폰은 그 페이지로 연다. 페이지로 열기(expand)는 대화상자가 콘텐츠 영역으로 커지는 화면 전환, 쓰던 내용을 넘기는 carryDraft 포함.",
       "dependencies": [
         "@tanstack/react-router@^1.170.0"
       ],
@@ -285,6 +429,22 @@
           "type": "registry:lib",
           "target": "src/shared/lib/panel.ts"
         }
+      ]
+    },
+    {
+      "name": "route-location",
+      "type": "registry:lib",
+      "title": "그려진 주소와 이동 중인 주소",
+      "description": "usePageLocation(그려진 화면의 주소) · usePendingPathname(이동 중인 목적지). 메뉴의 고른 표시를 페이지 준비가 끝나기 전에 가려는 주소로 옮길 때 쓴다.",
+      "files": [
+        {
+          "path": "src/shared/lib/route-location.ts",
+          "type": "registry:lib",
+          "target": "src/shared/lib/route-location.ts"
+        }
+      ],
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
       ]
     },
     {
@@ -335,7 +495,10 @@
         "@webcraft/adaptive-popover",
         "@webcraft/button",
         "@webcraft/icon",
-        "@webcraft/theme"
+        "@webcraft/menu-item",
+        "@webcraft/phone-tools",
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
       ],
       "files": [
         {
@@ -351,7 +514,9 @@
       "title": "팝오버 ↔ 바텀시트",
       "description": "데스크톱은 팝오버, 휴대폰은 바텀시트로 같은 내용을 띄운다.",
       "registryDependencies": [
+        "@webcraft/button",
         "@webcraft/drawer",
+        "@webcraft/icon",
         "@webcraft/popover",
         "@webcraft/theme",
         "@webcraft/use-mobile"
@@ -391,8 +556,8 @@
       "title": "날짜 고르기",
       "description": "DateCalendar와 팝오버 ↔ 바텀시트로 여는 DatePicker(한국어 달력).",
       "dependencies": [
-        "react-day-picker@^10.0.2",
-        "cn@^0.5.2"
+        "cn@^0.5.2",
+        "react-day-picker@^10.0.2"
       ],
       "registryDependencies": [
         "@webcraft/adaptive-popover",
@@ -415,12 +580,12 @@
       "title": "상세 면",
       "description": "상세를 자기 페이지 또는 목록 위 60rem 대화상자로 보인다. DetailLink는 그 대화상자를 여는 줄 링크.",
       "registryDependencies": [
-        "@webcraft/button",
         "@webcraft/dialog",
-        "@webcraft/icon",
         "@webcraft/page",
+        "@webcraft/pane-frame",
         "@webcraft/panel",
         "@webcraft/row-link",
+        "@webcraft/split-view",
         "@webcraft/theme",
         "@webcraft/use-mobile"
       ],
@@ -430,6 +595,9 @@
           "type": "registry:ui",
           "target": "src/shared/ui/detail-surface.tsx"
         }
+      ],
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0"
       ]
     },
     {
@@ -441,8 +609,10 @@
         "@webcraft/adaptive-popover",
         "@webcraft/button",
         "@webcraft/icon",
-        "@webcraft/page",
-        "@webcraft/theme"
+        "@webcraft/phone-tools",
+        "@webcraft/theme",
+        "@webcraft/tool-dot",
+        "@webcraft/use-mobile"
       ],
       "files": [
         {
@@ -579,6 +749,7 @@
         "@webcraft/button",
         "@webcraft/date-picker",
         "@webcraft/icon",
+        "@webcraft/menu-item",
         "@webcraft/option-list",
         "@webcraft/theme",
         "@webcraft/toggle-value"
@@ -618,6 +789,7 @@
       "description": "조각씩 읽는 목록 아래의 \"전체 중 읽은 수\"와 더 보기.",
       "registryDependencies": [
         "@webcraft/button",
+        "@webcraft/icon",
         "@webcraft/spinner",
         "@webcraft/theme"
       ],
@@ -641,8 +813,10 @@
         "@webcraft/button",
         "@webcraft/icon",
         "@webcraft/input-group",
-        "@webcraft/page",
-        "@webcraft/theme"
+        "@webcraft/phone-tools",
+        "@webcraft/theme",
+        "@webcraft/tool-dot",
+        "@webcraft/use-mobile"
       ],
       "files": [
         {
@@ -673,64 +847,234 @@
       ]
     },
     {
+      "name": "tool-dot",
+      "type": "registry:ui",
+      "title": "도구 점",
+      "description": "툴바 도구(필터 · 표시 · 검색) 귀퉁이의 점: 걸렸거나 처음과 다를 때.",
+      "files": [
+        {
+          "path": "src/shared/ui/tool-dot.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/tool-dot.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ]
+    },
+    {
+      "name": "menu-item",
+      "type": "registry:ui",
+      "title": "메뉴 줄",
+      "description": "팝오버 · 시트 · 메뉴 안의 한 줄(menuItemClass · MenuItem): 데스크톱 36px · 14px · 16px 아이콘, 휴대폰 48px · 15px · 20px 아이콘.",
+      "files": [
+        {
+          "path": "src/shared/ui/menu-item.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/menu-item.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "@webcraft/theme"
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
+      ]
+    },
+    {
+      "name": "sortable-head",
+      "type": "registry:ui",
+      "title": "정렬 머리 칸",
+      "description": "표 머리 칸을 눌러 정렬한다(SortableHead): 지금 칸은 ↑↓, 다른 칸은 가리킬 때 ⇅, aria-sort.",
+      "files": [
+        {
+          "path": "src/shared/ui/sortable-head.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/sortable-head.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/table",
+        "@webcraft/theme"
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
+      ]
+    },
+    {
+      "name": "step-indicator",
+      "type": "registry:ui",
+      "title": "단계 표시",
+      "description": "단계가 있는 양식의 단계(StepIndicator): 번호 동그라미 · 이름 · 잇는 선, 넘으면 선이 채워진다.",
+      "files": [
+        {
+          "path": "src/shared/ui/step-indicator.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/step-indicator.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
+      ]
+    },
+    {
       "name": "page",
       "type": "registry:ui",
       "title": "페이지 틀",
-      "description": "상위 페이지의 틀: 데스크톱은 머리 줄(경로 · 동작 · 만들기)과 툴바, 휴대폰은 60px 이상 앱 바와 FAB, 바닥 고정 동작 줄(footer). 페이지 h1의 주인(useOwnPageTitle) · 보기 탭(PageViews) · 도구 점(ToolDot) · 전체 화면 알림(chrome) 포함.",
+      "description": "상위 페이지의 틀: 데스크톱은 머리 줄(사이드바 접기 · 경로 · 동작 · 만들기, 보기 탭이 없으면 도구도 머리 줄)과 툴바, 휴대폰은 앱 바(큰 제목 또는 둥근 뒤로, 만들기 + · 화면 메뉴 … 알약)와 보기 탭 줄, 바닥 고정 동작 줄(footer). 페이지 h1의 주인(useOwnPageTitle) · 보기 탭(PageViews) · 위 단계(parentCrumb) · 전체 화면 알림(chrome) 포함.",
       "dependencies": [
         "@tanstack/react-router@^1.170.0",
         "cn@^0.5.2"
       ],
       "registryDependencies": [
+        "@webcraft/action-menu",
         "@webcraft/button",
         "@webcraft/icon",
+        "@webcraft/phone-tools",
         "@webcraft/theme",
         "@webcraft/use-mobile"
       ],
       "files": [
         {
-          "path": "src/shared/ui/page/index.ts",
+          "path": "src/shared/ui/layout/page/Page.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/page/index.ts"
+          "target": "src/shared/ui/layout/page/Page.tsx"
         },
         {
-          "path": "src/shared/ui/page/Page.tsx",
+          "path": "src/shared/ui/layout/page/PageViews.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/page/Page.tsx"
+          "target": "src/shared/ui/layout/page/PageViews.tsx"
         },
         {
-          "path": "src/shared/ui/page/PageViews.tsx",
+          "path": "src/shared/ui/layout/page/chrome.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/page/PageViews.tsx"
+          "target": "src/shared/ui/layout/page/chrome.tsx"
         },
         {
-          "path": "src/shared/ui/page/ToolDot.tsx",
+          "path": "src/shared/ui/layout/page/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/page/ToolDot.tsx"
-        },
-        {
-          "path": "src/shared/ui/page/chrome.tsx",
-          "type": "registry:ui",
-          "target": "src/shared/ui/page/chrome.tsx"
+          "target": "src/shared/ui/layout/page/index.ts"
         }
+      ]
+    },
+    {
+      "name": "phone-tools",
+      "type": "registry:ui",
+      "title": "휴대폰 도구 자리",
+      "description": "휴대폰 앱 바의 도구 자리(PhoneToolsProvider · usePhoneTool · ViewFilterSlot): 검색 · 필터 · 표시가 보기 탭 알약과 … 메뉴로 옮겨 간다. 도구는 레이아웃을 모른다.",
+      "files": [
+        {
+          "path": "src/shared/ui/layout/phone-tools/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/phone-tools/index.ts"
+        },
+        {
+          "path": "src/shared/ui/layout/phone-tools/phone-tools.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/phone-tools/phone-tools.tsx"
+        }
+      ],
+      "registryDependencies": [
+        "@webcraft/icon",
+        "@webcraft/theme"
+      ]
+    },
+    {
+      "name": "pane-frame",
+      "type": "registry:ui",
+      "title": "칸 머리 틀",
+      "description": "PaneFrame: 구분선 없는 52px 머리(왼쪽 둥근 뒤로, 오른쪽 둥근 도구), 스크롤해 본문 제목이 가려지면 이름이 나타나고, 본문이 머리 아래로 들어갔을 때만 그늘이 보인다. 상세 · 작성 · 수정 페이지와 목록 오른쪽 칸이 함께 쓴다.",
+      "files": [
+        {
+          "path": "src/shared/ui/layout/pane-frame/PaneFrame.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/pane-frame/PaneFrame.tsx"
+        },
+        {
+          "path": "src/shared/ui/layout/pane-frame/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/pane-frame/index.ts"
+        }
+      ],
+      "registryDependencies": [
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/page",
+        "@webcraft/theme"
+      ],
+      "dependencies": [
+        "cn@^0.5.2"
+      ]
+    },
+    {
+      "name": "split-view",
+      "type": "registry:ui",
+      "title": "목록-상세 분할",
+      "description": "List-Detail 패턴의 틀: SplitView(SplitDetail · SplitColumn · SplitFocusButton · OpenPageButton), SplitList · SplitRow, 진입부 SplitResource, 목록 화면 SplitScreen, 줄 SplitLinkRow. 열린 칸은 주소가 정하고, ?focus=1로 목록을 접는다. 화면마다 빈 칸 문구(placeholder)와 폭 저장 키(widthKey)를 넘긴다.",
+      "files": [
+        {
+          "path": "src/shared/ui/layout/split-view/SplitRows.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/split-view/SplitRows.tsx"
+        },
+        {
+          "path": "src/shared/ui/layout/split-view/SplitScreen.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/split-view/SplitScreen.tsx"
+        },
+        {
+          "path": "src/shared/ui/layout/split-view/SplitView.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/split-view/SplitView.tsx"
+        },
+        {
+          "path": "src/shared/ui/layout/split-view/index.ts",
+          "type": "registry:ui",
+          "target": "src/shared/ui/layout/split-view/index.ts"
+        }
+      ],
+      "registryDependencies": [
+        "@webcraft/appearance",
+        "@webcraft/button",
+        "@webcraft/icon",
+        "@webcraft/page",
+        "@webcraft/page-state",
+        "@webcraft/pane-frame",
+        "@webcraft/pane-resize-handle",
+        "@webcraft/row-link",
+        "@webcraft/theme",
+        "@webcraft/tooltip",
+        "@webcraft/use-mobile",
+        "@webcraft/use-stored-width"
+      ],
+      "dependencies": [
+        "@tanstack/react-router@^1.170.0",
+        "cn@^0.5.2"
       ]
     },
     {
       "name": "settings",
       "type": "registry:ui",
       "title": "설정 화면",
-      "description": "SettingsPage(페이지 틀) · SettingsBody(틀 없는 본문) · SettingsSection · SettingsRow.",
+      "description": "SettingsPage(페이지 틀) · SettingsBody(틀 없는 본문) · SettingsSection · SettingsRow. 표가 들어가는 관리 화면의 넓은 면(AdminSurface)은 45rem 열 대신 본문 폭을 쓴다.",
       "registryDependencies": [
         "@webcraft/card",
+        "@webcraft/detail-surface",
         "@webcraft/field",
         "@webcraft/page",
-        "@webcraft/theme"
+        "@webcraft/theme",
+        "@webcraft/use-mobile"
       ],
       "files": [
         {
-          "path": "src/shared/ui/settings/index.ts",
+          "path": "src/shared/ui/settings/AdminSurface.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/settings/index.ts"
+          "target": "src/shared/ui/settings/AdminSurface.tsx"
         },
         {
           "path": "src/shared/ui/settings/SettingsPage.tsx",
@@ -738,14 +1082,19 @@
           "target": "src/shared/ui/settings/SettingsPage.tsx"
         },
         {
+          "path": "src/shared/ui/settings/SettingsRow.tsx",
+          "type": "registry:ui",
+          "target": "src/shared/ui/settings/SettingsRow.tsx"
+        },
+        {
           "path": "src/shared/ui/settings/SettingsSection.tsx",
           "type": "registry:ui",
           "target": "src/shared/ui/settings/SettingsSection.tsx"
         },
         {
-          "path": "src/shared/ui/settings/SettingsRow.tsx",
+          "path": "src/shared/ui/settings/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/settings/SettingsRow.tsx"
+          "target": "src/shared/ui/settings/index.ts"
         }
       ]
     },
@@ -756,14 +1105,15 @@
       "description": "ComposeSurface(데스크톱 대화상자 ↔ 페이지, 바닥 줄의 actions · error, 쓴 것이 있으면 닫기 전에 버릴지 묻는 isDirty) · ComposeFields(제목 · 본문) · FileDropzone · FileList.",
       "registryDependencies": [
         "@webcraft/button",
+        "@webcraft/confirm-dialog",
         "@webcraft/dialog",
         "@webcraft/icon",
         "@webcraft/page",
+        "@webcraft/pane-frame",
         "@webcraft/spinner",
         "@webcraft/switch",
         "@webcraft/theme",
-        "@webcraft/use-mobile",
-        "@webcraft/confirm-dialog"
+        "@webcraft/use-mobile"
       ],
       "files": [
         {
@@ -798,6 +1148,7 @@
         }
       ],
       "dependencies": [
+        "@tanstack/react-router@^1.170.0",
         "cn@^0.5.2"
       ]
     },
@@ -811,10 +1162,11 @@
         "@webcraft/button",
         "@webcraft/icon",
         "@webcraft/option-list",
-        "@webcraft/page",
+        "@webcraft/phone-tools",
         "@webcraft/popover",
         "@webcraft/theme",
         "@webcraft/toggle-value",
+        "@webcraft/tool-dot",
         "@webcraft/use-mobile"
       ],
       "files": [
@@ -881,13 +1233,14 @@
       "title": "읽기 상세",
       "description": "본문이 있는 것의 상세: DetailLayout(본문 + 속성 칸) · MarkdownBody(가벼운 Markdown 읽기) · ActivityFeed · CommentComposer.",
       "registryDependencies": [
-        "@webcraft/icon",
-        "@webcraft/input-group",
-        "@webcraft/person-avatar",
-        "@webcraft/theme",
         "@webcraft/action-menu",
         "@webcraft/confirm-dialog",
-        "@webcraft/page"
+        "@webcraft/dialog",
+        "@webcraft/icon",
+        "@webcraft/input-group",
+        "@webcraft/page",
+        "@webcraft/person-avatar",
+        "@webcraft/theme"
       ],
       "files": [
         {
@@ -1133,7 +1486,7 @@
       "name": "dialog",
       "type": "registry:ui",
       "title": "dialog",
-      "description": "shadcn dialog(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다.",
+      "description": "shadcn dialog(base-nova)의 Webcraft 판. 아이콘은 Solar(@webcraft/icon)를 쓴다. 목록 위 대화상자의 바꿔 끼우기(DialogPanel · swapDialog), 머리 줄(DialogBar: 이름 · 동작 · 페이지로 열기 ↗ · 닫기)과 본문(DialogBody).",
       "dependencies": [
         "@base-ui/react@^1.9.0",
         "cn@^0.5.2"
@@ -1161,6 +1514,7 @@
         "cn@^0.5.2"
       ],
       "registryDependencies": [
+        "@webcraft/button",
         "@webcraft/theme"
       ],
       "files": [
@@ -1181,6 +1535,7 @@
         "cn@^0.5.2"
       ],
       "registryDependencies": [
+        "@webcraft/button",
         "@webcraft/icon",
         "@webcraft/theme"
       ],
@@ -1328,6 +1683,7 @@
         "cn@^0.5.2"
       ],
       "registryDependencies": [
+        "@webcraft/button",
         "@webcraft/theme"
       ],
       "files": [
@@ -1388,6 +1744,7 @@
         "cn@^0.5.2"
       ],
       "registryDependencies": [
+        "@webcraft/button",
         "@webcraft/icon",
         "@webcraft/theme"
       ],
@@ -1498,7 +1855,6 @@
         "cn@^0.5.2"
       ],
       "registryDependencies": [
-        "@webcraft/icon",
         "@webcraft/theme"
       ],
       "files": [
@@ -1677,7 +2033,7 @@
       "name": "app-shell",
       "type": "registry:ui",
       "title": "앱 셸",
-      "description": "메뉴를 데이터(NavSpace: 묶음 · 항목 · 아래 줄 · 돌아가기 · 수)로 받는 앱 틀. 데스크톱은 220~380px로 끌어 조절하고 아이콘만으로 접는 사이드바와 inset · split 본문, 휴대폰은 앞 네 곳의 하단 탭과 더보기 바텀시트. 로고 · 나(내 메뉴) · 도구 · 바닥 줄(AgentBar)은 자리로 받는다.",
+      "description": "앱 셸: 메뉴는 데이터(NavSpace)로 받고 로고 · 공간 전환 · 내 아바타 · 바닥 줄은 자리로 받는다. 데스크톱 사이드바(끌어 220~380px, 묶음 접기는 새로고침해도 남는다, 맨 아래 관리 진입 adminEntries), 휴대폰은 떠 있는 유리 막대(PhoneBar: 앞 칸 · 메뉴 시트 · 찾기 원)나 하단 탭(MobileTabBar).",
       "dependencies": [
         "@base-ui/react@^1.9.0",
         "@tanstack/react-router@^1.170.0",
@@ -1690,6 +2046,7 @@
         "@webcraft/dropdown-menu",
         "@webcraft/icon",
         "@webcraft/page",
+        "@webcraft/popover",
         "@webcraft/sidebar",
         "@webcraft/skeleton",
         "@webcraft/theme",
@@ -1698,108 +2055,49 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/app-shell/AgentBar.tsx",
+          "path": "src/shared/ui/layout/app-shell/AgentBar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/AgentBar.tsx"
+          "target": "src/shared/ui/layout/app-shell/AgentBar.tsx"
         },
         {
-          "path": "src/shared/ui/app-shell/AppShell.tsx",
+          "path": "src/shared/ui/layout/app-shell/AppShell.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/AppShell.tsx"
+          "target": "src/shared/ui/layout/app-shell/AppShell.tsx"
         },
         {
-          "path": "src/shared/ui/app-shell/MeMenu.tsx",
+          "path": "src/shared/ui/layout/app-shell/MeMenu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/MeMenu.tsx"
+          "target": "src/shared/ui/layout/app-shell/MeMenu.tsx"
         },
         {
-          "path": "src/shared/ui/app-shell/MobileTabBar.tsx",
+          "path": "src/shared/ui/layout/app-shell/MobileTabBar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/MobileTabBar.tsx"
+          "target": "src/shared/ui/layout/app-shell/MobileTabBar.tsx"
         },
         {
-          "path": "src/shared/ui/app-shell/ShellSidebar.tsx",
+          "path": "src/shared/ui/layout/app-shell/PhoneBar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/ShellSidebar.tsx"
+          "target": "src/shared/ui/layout/app-shell/PhoneBar.tsx"
         },
         {
-          "path": "src/shared/ui/app-shell/SidebarResizeHandle.tsx",
+          "path": "src/shared/ui/layout/app-shell/ShellSidebar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/SidebarResizeHandle.tsx"
+          "target": "src/shared/ui/layout/app-shell/ShellSidebar.tsx"
         },
         {
-          "path": "src/shared/ui/app-shell/index.ts",
+          "path": "src/shared/ui/layout/app-shell/SidebarResizeHandle.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/index.ts"
+          "target": "src/shared/ui/layout/app-shell/SidebarResizeHandle.tsx"
         },
         {
-          "path": "src/shared/ui/app-shell/nav.ts",
+          "path": "src/shared/ui/layout/app-shell/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/app-shell/nav.ts"
-        }
-      ]
-    },
-    {
-      "name": "use-peek",
-      "type": "registry:hook",
-      "title": "usePeek",
-      "description": "목록 옆 미리보기의 대상을 ?peek=ID로 주소에 둔다: 처음 열면 기록을 쌓고 옮기면 바꾸며, 닫기는 연 기록이면 뒤로 간다. 휴대폰은 대상 페이지로 옮긴다.",
-      "dependencies": [
-        "@tanstack/react-router@^1.170.0"
-      ],
-      "registryDependencies": [
-        "@webcraft/use-mobile"
-      ],
-      "files": [
-        {
-          "path": "src/shared/lib/use-peek.ts",
-          "type": "registry:hook",
-          "target": "src/shared/lib/use-peek.ts"
-        }
-      ]
-    },
-    {
-      "name": "peek",
-      "type": "registry:ui",
-      "title": "목록 옆 미리보기",
-      "description": "PeekLayout · PeekPanel(작업 목록 옆 45% 비모달 미리보기), InboxLayout · InboxPane(처리 목록의 끌어 조절하는 두 칸과 빈 상태), usePeekRows(줄 누르기 · Space · ↑↓). Esc로 닫고 초점을 그 줄로 돌린다.",
-      "dependencies": [
-        "@tanstack/react-router@^1.170.0"
-      ],
-      "registryDependencies": [
-        "@webcraft/button",
-        "@webcraft/icon",
-        "@webcraft/page-state",
-        "@webcraft/pane-resize-handle",
-        "@webcraft/theme",
-        "@webcraft/use-mobile",
-        "@webcraft/use-peek"
-      ],
-      "files": [
-        {
-          "path": "src/shared/ui/peek/InboxLayout.tsx",
-          "type": "registry:ui",
-          "target": "src/shared/ui/peek/InboxLayout.tsx"
+          "target": "src/shared/ui/layout/app-shell/index.ts"
         },
         {
-          "path": "src/shared/ui/peek/PeekPanel.tsx",
+          "path": "src/shared/ui/layout/app-shell/nav.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/peek/PeekPanel.tsx"
-        },
-        {
-          "path": "src/shared/ui/peek/index.ts",
-          "type": "registry:ui",
-          "target": "src/shared/ui/peek/index.ts"
-        },
-        {
-          "path": "src/shared/ui/peek/use-peek-close.ts",
-          "type": "registry:ui",
-          "target": "src/shared/ui/peek/use-peek-close.ts"
-        },
-        {
-          "path": "src/shared/ui/peek/use-peek-rows.ts",
-          "type": "registry:ui",
-          "target": "src/shared/ui/peek/use-peek-rows.ts"
+          "target": "src/shared/ui/layout/app-shell/nav.ts"
         }
       ]
     },
@@ -1807,7 +2105,7 @@
       "name": "side-panel",
       "type": "registry:ui",
       "title": "옆 패널",
-      "description": "목록 옆에서 줄 하나의 사실을 보는 패널(WithPanel): 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트. Facts는 이름과 값 목록.",
+      "description": "옆 패널(WithPanel): 주소가 필요 없는 기록 한 줄의 사실이나 표 · 그림 위에서 잠깐 보는 대상. 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트. 주소가 있는 리소스의 상세는 리소스 패턴(split-view · page · panel)으로 연다.",
       "registryDependencies": [
         "@webcraft/button",
         "@webcraft/drawer",
@@ -1995,9 +2293,6 @@
       "docs": "올리기(upload)와 링크 미리보기(readPreview)는 호스트가 서버에 이어 넘깁니다. 미리보기는 서버가 읽어야 하고(브라우저가 남의 사이트를 직접 부르지 않습니다), 올린 HTML은 서버가 격리 정책을 붙여 내보냅니다. 본문 글자색 · 배경색은 var(--editor-ink-*) · var(--editor-fill-*)로 저장되며 테마의 --event-* 색에서 계산합니다.",
       "dependencies": [
         "@tiptap/core@3.32.0",
-        "@tiptap/pm@3.32.0",
-        "@tiptap/react@^3.32.0",
-        "@tiptap/starter-kit@^3.32.0",
         "@tiptap/extension-highlight@3.32.0",
         "@tiptap/extension-list@3.32.0",
         "@tiptap/extension-subscript@3.32.0",
@@ -2005,9 +2300,12 @@
         "@tiptap/extension-table@3.32.0",
         "@tiptap/extension-text-align@3.32.0",
         "@tiptap/extension-text-style@3.32.0",
+        "@tiptap/pm@3.32.0",
+        "@tiptap/react@^3.32.0",
+        "@tiptap/starter-kit@^3.32.0",
+        "cn@^0.5.2",
         "mermaid@^11.17.2",
-        "yet-another-react-lightbox@3.33.0",
-        "cn@^0.5.2"
+        "yet-another-react-lightbox@3.33.0"
       ],
       "registryDependencies": [
         "@webcraft/button",
@@ -2177,6 +2475,7 @@
         "@webcraft/icon",
         "@webcraft/input",
         "@webcraft/input-group",
+        "@webcraft/menu-item",
         "@webcraft/property-pill",
         "@webcraft/segmented-control",
         "@webcraft/select",

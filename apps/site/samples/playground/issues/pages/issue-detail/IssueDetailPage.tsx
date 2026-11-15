@@ -5,12 +5,13 @@ import { ActionMenu } from '@/shared/ui/action-menu';
 import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
 import { Button, buttonVariants } from '@/shared/ui/button';
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
+import { DetailSurface } from '@/shared/ui/detail-surface';
 import { RichBody } from '@/shared/ui/editor';
 import { CalendarIcon, ChartNoAxesColumnIcon, LinkIcon, ListChecksIcon, PencilIcon, PlusIcon, SquareCheckIcon, TagIcon, TrashIcon, TriangleAlertIcon,
   UserIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
 import { Input } from '@/shared/ui/input';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { DatePill, OptionPill } from '@/shared/ui/property-pill';
 import { ActivityFeed, DetailLayout, type ActivityItem } from '@/shared/ui/reading';
@@ -73,23 +74,22 @@ export function IssueDetailPage({ id, onEdit, onAddSub }: { id: string; onEdit: 
     try { await navigator.clipboard.writeText(`${location.origin}/issues/${issue.id}`); toast.add({ title: '주소를 복사했습니다' }); }
     catch { toast.add({ title: '주소를 복사하지 못했습니다' }); }
   };
-  return <Page crumbs={[...crumbs, ...(issue.parent ? [{ label: issue.parent, href: `/issues/${issue.parent}` }] : []), { label: issue.id }]} isFullScreen
-    actions={<div className="flex shrink-0 items-center gap-1">
-      <Button variant="ghost" className="max-md:h-11" onClick={onEdit}><PencilIcon data-icon="inline-start" />편집</Button>
+  // 데스크톱은 상세 페이지의 칸 머리(PaneFrame): 둥근 뒤로(목록으로)와 둥근 도구. 이름은 이슈 제목, 번호는 작은 줄(label)이 맡는다.
+  return <DetailSurface surface="page" title={`이슈 ${issue.id}`}
+    crumbs={[...crumbs, ...(issue.parent ? [{ label: issue.parent, href: `/issues/${issue.parent}` }] : []), { label: issue.title }]}
+    actions={<>
+      <Button variant="ghost" size="icon-sm" aria-label="편집" title="편집" onClick={onEdit}><PencilIcon /></Button>
       <ActionMenu label="이슈 메뉴" actions={[
-        { label: '수정', icon: PencilIcon, onSelect: onEdit },
         { label: '링크 복사', icon: LinkIcon, onSelect: () => void copy() },
         ...(issue.author === me ? [{ label: '삭제', icon: TrashIcon, onSelect: () => setDeleting(true) }] : []),
       ]} />
-    </div>}
-    below={<>
-      {change.isError ? <Failure title="속성을 바꾸지 못했습니다" description="화면의 값은 저장된 값입니다. 다시 골라 주세요." /> : null}
-      {remove.isError ? <Failure title="삭제하지 못했습니다" /> : null}
     </>}>
+    {change.isError ? <Failure title="속성을 바꾸지 못했습니다" description="화면의 값은 저장된 값입니다. 다시 골라 주세요." /> : null}
+    {remove.isError ? <Failure title="삭제하지 못했습니다" /> : null}
     <IssueView issue={issue} onChange={patch => change.mutate(patch)} onAddSub={onAddSub} onNavigate={href => void navigate({ href })} />
     <ConfirmDialog open={isDeleting} onOpenChange={setDeleting} title="이슈를 삭제할까요?" description="하위 이슈는 남고 상위 연결만 해제됩니다."
       action={{ label: '삭제', isPending: remove.isPending, onAction: () => remove.mutate() }} />
-  </Page>;
+  </DetailSurface>;
 }
 
 /**
@@ -115,10 +115,10 @@ export function IssueView({ issue, onChange, onAddSub, onNavigate }: {
     return true;
   });
   return <DetailLayout label={`${issue.id} ${issue.title}`} title={issue.title}
-    head={<p className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
-      <span>{issue.id}</span>
-      {issue.parent ? <span>· <Link to={`/issues/${issue.parent}` as string} className="font-medium text-foreground underline-offset-4 hover:underline">{issue.parent}</Link>의 하위 이슈</span> : null}
-    </p>}
+    // 제목 위 줄에는 다른 곳에 없는 것(상위 이슈 링크)만 둔다. 번호는 머리 줄과 주소에 이미 있다.
+    head={issue.parent ? <p className="text-sm text-muted-foreground">
+      <Link to={`/issues/${issue.parent}` as string} className="font-medium text-foreground underline-offset-4 hover:underline">{issue.parent}</Link>의 하위 이슈
+    </p> : undefined}
     sections={[
       { title: '속성', items: <>
         <OptionPill label="상태" icon={SquareCheckIcon} value={issue.status} options={statusOptions} onChange={status => onChange({ status })} />
@@ -214,23 +214,3 @@ function Comments({ issue }: { issue: Issue }) {
   </>;
 }
 
-/** 미리보기 칸의 내용: 같은 조회, 같은 본문. 대기 · 없음 · 실패는 칸 안의 작은 상태로 보이고 목록은 그대로 둔다. */
-export function IssuePeek({ id }: { id: string }) {
-  const api = useIssueApi();
-  const client = useQueryClient();
-  const query = useQuery(issueQueries.detail(api, id));
-  const change = useMutation({
-    mutationFn: (patch: IssuePatch) => api.update(id, patch),
-    onSettled: () => client.invalidateQueries({ queryKey: issueKeys.all }),
-  });
-  if (query.isPending) return <Loading />;
-  if (query.isError && !query.data) {
-    const isMissing = (query.error as { status?: number }).status === 404;
-    return <PageState isCompact kind={isMissing ? 'not-found' : 'error'} title={isMissing ? '이슈를 찾을 수 없습니다' : '이슈를 불러오지 못했습니다'}
-      action={isMissing ? undefined : <Button variant="secondary" onClick={() => void query.refetch()}>다시 시도</Button>} />;
-  }
-  return <>
-    {change.isError ? <Failure title="속성을 바꾸지 못했습니다" /> : null}
-    <IssueView issue={query.data} onChange={patch => change.mutate(patch)} />
-  </>;
-}

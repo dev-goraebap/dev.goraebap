@@ -1,6 +1,6 @@
 import { createContext, useContext, useLayoutEffect, useState, type ReactNode } from 'react';
 import { SHELL_LAYOUT_KEY, THEME_KEY } from '@/shared/config/preferences';
-import type { ShellLayout } from '@/shared/ui/app-shell';
+import type { ShellLayout } from '@/shared/ui/layout/app-shell';
 
 /**
  * 사이트의 화면 설정: 모드(라이트 · 다크)와 셸 배치(Inset · Split). 이 브라우저에만 남는다.

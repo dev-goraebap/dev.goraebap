@@ -18,7 +18,7 @@ function isAccepted(file: File, accept: string | undefined, maxBytes: number | u
 }
 
 /**
- * 파일을 끌어다 놓거나 눌러 고르는 자리(호호코워크 FileDropzone). 끌어 오는 동안 테두리가 진해지고 "여기에 놓으세요"가 된다.
+ * 파일을 끌어다 놓거나 눌러 고르는 자리. 끌어 오는 동안 테두리가 진해지고 "여기에 놓으세요"가 된다.
  * 형식이나 크기가 맞지 않는 파일은 빼고 그 이름을 알린다. 하나만 받는 곳에 여럿을 놓으면 받지 않는다.
  * 무엇을 받는지(hint)가 없으면 크기 한도만 적는다. 고른 파일을 들고 있는 것은 부르는 쪽이다(onPick).
  */
@@ -60,8 +60,8 @@ export function FileDropzone({ label, hint, accept, maxBytes, isMultiple = false
         onDragLeave={event => { if (!(event.relatedTarget instanceof Node) || !event.currentTarget.contains(event.relatedTarget)) setDragging(false) }}
         onDrop={event => { event.preventDefault(); setDragging(false); choose(Array.from(event.dataTransfer.files)) }}
         className={cn(
-          "flex w-full flex-col items-center gap-1 rounded-lg border border-dashed border-input bg-muted/50 px-4 py-5 text-center outline-none",
-          "hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-50",
+          "flex w-full flex-col items-center gap-1 rounded-lg border border-dashed border-input bg-muted/50 px-4 py-5 text-center outline-hidden",
+          "hover:bg-muted focus-visible:outline-2 focus-visible:outline-solid focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-50",
           "data-dragging:border-ring data-dragging:bg-muted",
         )}>
         <UploadIcon className="size-5 text-muted-foreground" />

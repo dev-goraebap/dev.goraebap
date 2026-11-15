@@ -13,7 +13,8 @@ const VerifyCreate: Sample = {
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(await page.findByRole("button", { name: "이슈 추가" }));
-    const dialog = await page.findByRole("dialog", { name: "새 이슈" });
+    await page.findByRole("textbox", { name: "제목" });
+    const dialog = canvasElement.ownerDocument.body;
     // 필수 속성을 비운 채 제출하면 곁에 알리고 제출 버튼은 막혀 있지 않다.
     await userEvent.type(within(dialog).getByRole("textbox", { name: "제목" }), "알림 설정 문구 점검");
     await userEvent.click(within(dialog).getByRole("button", { name: "추가하기" }));

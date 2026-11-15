@@ -116,6 +116,8 @@ export function RichEditor({ value, isEditable, onChange, label = "본문", plac
   const editor: Editor | null = useEditor({
     extensions: [...editorExtensions([MediaNodeView, ...sourceNodeViews]), ...extra.current], content: initial.current, editable: isEditable, immediatelyRender: false,
     editorProps: {
+      // 쓰는 줄을 화면 안으로 끌어올 때 스크롤 칸 끝과 한 뼘(24px) 띄운다(기본 5px). 양식 바닥 바로 위에 붙지 않게.
+      scrollMargin: 24, scrollThreshold: 24,
       attributes: { class: proseClass(isEditable), ...roleOf(isEditable), "aria-label": label,
         ...(placeholder ? { "data-placeholder": placeholder } : {}), ...(isPage ? { "data-page": "" } : {}) },
       handlePaste: (view, event): boolean => {

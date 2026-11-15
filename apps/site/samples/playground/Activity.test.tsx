@@ -55,8 +55,9 @@ const VerifyPhone: Sample = {
     await expect(await page.findByText("46건 중 10건")).toBeVisible();
     const root = canvasElement.ownerDocument.documentElement;
     await expect(root.scrollWidth).toBeLessThanOrEqual(root.clientWidth);
-    // 휴대폰의 필터는 바텀시트다.
-    await userEvent.click(page.getByRole("button", { name: "필터" }));
+    // 휴대폰의 필터는 앱 바 … 메뉴의 항목이고, 고르면 바텀시트가 열린다.
+    await userEvent.click(page.getByRole("button", { name: "화면 메뉴" }));
+    await userEvent.click(await page.findByRole("menuitem", { name: "필터" }));
     await expect(await page.findByRole("dialog", { name: "필터" })).toBeVisible();
     await userEvent.keyboard("{Escape}");
     await userEvent.click(page.getByRole("button", { name: "더 보기" }));

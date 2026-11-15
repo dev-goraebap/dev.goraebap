@@ -12,7 +12,7 @@ import { Field, FieldError, FieldLabel, FieldLegend, FieldSet } from '@/shared/u
 import { FormDialog } from '@/shared/ui/form-dialog';
 import { CheckIcon, PencilIcon, TagIcon, Trash2Icon, TriangleAlertIcon } from '@/shared/ui/icon';
 import { Input } from '@/shared/ui/input';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { SearchTool } from '@/shared/ui/search-tool';
 import { Spinner } from '@/shared/ui/spinner';

@@ -7,7 +7,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/popover"
 import type { Filters } from "./use-filters"
 
 /**
- * 데스크톱 툴바 아래 걸린 필터 줄(호호코워크 FilterBar, 40px): 필터마다 [이름 | 값 | ×] 칩, 아직 없는 필터를 더하는 +,
+ * 데스크톱 툴바 아래 걸린 필터 줄(40px): 필터마다 [이름 | 값 | ×] 칩, 아직 없는 필터를 더하는 +,
  * 걸린 것이 있으면 모두 지우기. 값 칸은 그 필터의 값을 연다. 한 번에 메뉴 하나만 열린다. 보이는 필터가 없으면 그리지 않는다.
  */
 export function FilterBar<K extends string>({ filters }: { filters: Filters<K> }) {
@@ -22,7 +22,7 @@ export function FilterBar<K extends string>({ filters }: { filters: Filters<K> }
         const names = filters.chosenNames(key)
         return (
           <div key={key} role="group" aria-label={`${def.label} 필터`}
-            className="flex h-6 shrink-0 items-stretch divide-x divide-input overflow-hidden rounded-full border border-input bg-background text-xs">
+            className="flex h-6 shrink-0 items-stretch divide-x divide-control-border overflow-hidden rounded-full border border-control-border bg-control text-xs">
             <span className="flex items-center gap-1 px-2 text-muted-foreground"><def.icon className="size-3.5" />{def.label}</span>
             <Popover open={opened === key} onOpenChange={openChange(key)}>
               <PopoverTrigger className="flex items-center gap-1 px-2 hover:bg-accent aria-expanded:bg-accent">

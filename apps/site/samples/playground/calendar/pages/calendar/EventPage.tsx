@@ -1,46 +1,52 @@
-import { useIsMobile } from '@/shared/lib/use-mobile';
 import { Button } from '@/shared/ui/button';
-import { CalendarIcon, ClockIcon, MapPinIcon, PencilIcon } from '@/shared/ui/icon';
+import { CalendarIcon, ClockIcon, MapPinIcon, PencilIcon, Trash2Icon } from '@/shared/ui/icon';
+import { DetailSurface } from '@/shared/ui/detail-surface';
 import { InfoPill } from '@/shared/ui/info-pill';
-import { Page } from '@/shared/ui/page';
 import { PageState } from '@/shared/ui/page-state';
 import { DetailLayout } from '@/shared/ui/reading';
 import { Spinner } from '@/shared/ui/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
-import { dayText, eventQueries, useEventApi, whenText } from '../../entities/event';
-import { EventDot } from './EventParts';
+import { dayText, eventQueries, useEventApi, type CalendarEvent } from '../../entities/event';
 
-/** 일정의 자기 페이지(/calendar/events/{id}): 링크 · 새로고침 · 팝오버의 "페이지로 열기"가 여기로 온다. 수정은 작성 페이지로 간다. */
-export function EventPage() {
-  const { id } = useParams({ strict: false }) as { id: string };
-  const navigate = useNavigate();
-  const isMobile = useIsMobile();
+const crumbsOf = (event?: CalendarEvent) => [{ label: '일정', href: '/calendar', icon: CalendarIcon }, { label: event?.title ?? '일정' }];
+
+/**
+ * 일정 하나의 상세. 격자 위 대화상자(surface="dialog")와 자기 페이지(surface="page")가 같은 조회 · 같은 본문을 쓴다.
+ * 동작(수정 · 지우기)은 머리 줄 오른쪽 한 곳에 둔다.
+ */
+export function EventDetail({ id, surface, onEdit, onDelete, onClose, onExpand }: {
+  id: string; surface: 'dialog' | 'page'; onEdit: () => void; onDelete?: (event: CalendarEvent) => void; onClose?: () => void; onExpand?: () => void;
+}) {
   const query = useQuery(eventQueries.all(useEventApi()));
   const event = query.data?.find(each => each.id === id);
-  const edit = (
-    <Button variant="secondary" size={isMobile ? 'icon' : 'default'} aria-label={isMobile ? '수정' : undefined} className="max-md:size-11"
-      onClick={() => void navigate({ href: `/calendar/events/${id}/edit` })}>
-      <PencilIcon data-icon={isMobile ? undefined : 'inline-start'} />{isMobile ? null : '수정'}
-    </Button>
-  );
+  const actions = event ? <>
+    {onDelete ? <Button variant="tool" size="icon" aria-label="지우기" title="지우기" onClick={() => onDelete(event)}><Trash2Icon /></Button> : null}
+    <Button variant="tool" size="icon" aria-label="수정" title="수정" onClick={onEdit}><PencilIcon /></Button>
+  </> : undefined;
   return (
-    <Page crumbs={[{ label: '일정', href: '/calendar', icon: CalendarIcon }, { label: event?.title ?? '일정' }]} isFullScreen actions={event ? edit : undefined}>
+    <DetailSurface surface={surface} title="일정" crumbs={crumbsOf(event)} actions={actions} onClose={onClose} onExpand={onExpand}>
       {query.isPending
         ? <div className="flex flex-1 items-center justify-center bg-background"><Spinner aria-label="일정을 불러오는 중" className="size-6" /></div>
         : !event
-          ? <div className="flex flex-1 flex-col bg-background"><PageState kind={query.isError ? 'error' : 'not-found'} title="일정을 열 수 없습니다" /></div>
+          ? <div className="flex flex-1 flex-col bg-background"><PageState kind={query.isError ? 'error' : 'not-found'} isCompact={surface === 'dialog'} title="일정을 열 수 없습니다" /></div>
           : (
             <DetailLayout label={event.title} title={event.title}
-              head={<p className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums"><EventDot event={event} />{whenText(event)}</p>}
               sections={[{ title: '일정', items: <>
                 <InfoPill label="시작일" icon={<CalendarIcon />}>{dayText(event.start)}</InfoPill>
                 <InfoPill label="종료일" icon={<CalendarIcon />}>{dayText(event.end)}</InfoPill>
                 <InfoPill label="시각" icon={<ClockIcon />}>{event.time ?? '종일'}</InfoPill>
               </> }]}>
-              <p className="flex items-center gap-2"><MapPinIcon className="text-icon-muted" />{event.place || '정한 장소가 없습니다.'}</p>
+              {event.place ? <p className="flex items-center gap-2"><MapPinIcon className="text-icon-muted" />{event.place}</p> : null}
             </DetailLayout>
           )}
-    </Page>
+    </DetailSurface>
   );
+}
+
+/** 일정의 자기 페이지(/calendar/events/{id}): 휴대폰 · 새로고침 · 직접 링크 · 대화상자의 "페이지로 열기"가 여기로 온다. */
+export function EventPage() {
+  const { id } = useParams({ strict: false }) as { id: string };
+  const navigate = useNavigate();
+  return <EventDetail id={id} surface="page" onEdit={() => void navigate({ href: `/calendar/events/${id}/edit` })} />;
 }

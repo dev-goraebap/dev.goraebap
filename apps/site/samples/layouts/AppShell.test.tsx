@@ -2,7 +2,7 @@ import { test } from "vitest";
 import { expect, userEvent, waitFor, within } from "../catalog/testing";
 import { runSample } from "../catalog/run-sample";
 import type { SampleOf } from "../catalog/types";
-import type { NavSpace } from "@/shared/ui/app-shell";
+import type { NavSpace } from "@/shared/ui/layout/app-shell";
 import { FolderIcon, HomeIcon, LibraryIcon, ListFilterIcon, StarIcon } from "@/shared/ui/icon";
 import meta, * as samples from "./AppShell.samples";
 

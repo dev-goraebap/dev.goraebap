@@ -2,10 +2,10 @@ import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-quer
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation, useParams,
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
-import type { NavSpace } from '@/shared/ui/app-shell';
+import type { NavSpace } from '@/shared/ui/layout/app-shell';
 import { Button, buttonVariants } from '@/shared/ui/button';
 import { ArchiveIcon, BellIcon, InboxIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';
@@ -13,7 +13,6 @@ import { initiallyRead, NotificationApiContext, NotificationReadContext, notific
   type Notification } from '../entities/notification';
 import { createNotificationApi } from '../mocks/notification-api';
 import { InboxPage } from '../pages/InboxPage';
-import { NotificationPage } from '../pages/NotificationPage';
 
 const spaceOf = (unread: number): NavSpace => ({
   id: 'main', title: '알림', sections: [{ title: '알림', isHeaderHidden: true, entries: [
@@ -35,25 +34,25 @@ function Shell() {
       className="flex min-w-0 items-center gap-2 rounded-lg px-2 font-semibold outline-none focus-visible:ring-2 focus-visible:ring-ring">
       <BellIcon chosen className="size-5 shrink-0" />{isFolded ? null : <span className="truncate">알림</span>}
     </Link>}
-    footer={isFolded => isFolded ? null : <span className="px-2 text-xs text-muted-foreground">예제 · 메모리 저장</span>}>
+>
     <Outlet />
   </PlaygroundShell>;
 }
 
-function DetailRoute() {
-  const { id } = useParams({ strict: false }) as { id: string };
-  return <NotificationPage id={id} />;
+function InboxRoute({ scope }: { scope: 'inbox' | 'archive' }) {
+  const { id } = useParams({ strict: false }) as { id?: string };
+  return <InboxPage scope={scope} id={id} />;
 }
 
 function RouteError({ reset }: ErrorComponentProps) {
   return <Page crumbs={[{ label: '알림' }]}>
-    <PageState kind="error" title="화면을 열 수 없습니다" description="잠시 후 다시 시도해 주세요." action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
+    <PageState kind="error" title="화면을 열 수 없습니다" action={<Button variant="secondary" onClick={reset}>다시 시도</Button>} />
   </Page>;
 }
 
 function NotFound() {
   return <Page crumbs={[{ label: '받은 알림', href: '/inbox' }, { label: '없는 페이지' }]} isFullScreen>
-    <PageState kind="not-found" title="페이지를 찾을 수 없습니다" description="주소가 바뀌었거나 지워졌을 수 있습니다."
+    <PageState kind="not-found" title="페이지를 찾을 수 없습니다"
       action={<Link to={'/inbox' as string} className={buttonVariants({ variant: 'secondary', className: 'max-md:h-11' })}>받은 알림으로</Link>} />
   </Page>;
 }
@@ -61,11 +60,12 @@ function NotFound() {
 export function createInboxRouter(initialPath: string) {
   const root = createRootRoute({ component: Shell, errorComponent: RouteError, notFoundComponent: NotFound });
   const home = createRoute({ getParentRoute: () => root, path: '/', component: () => <InboxPage scope="inbox" /> });
-  const inbox = createRoute({ getParentRoute: () => root, path: '/inbox', component: () => <InboxPage scope="inbox" /> });
-  const archive = createRoute({ getParentRoute: () => root, path: '/archive', component: () => <InboxPage scope="archive" /> });
-  const detail = createRoute({ getParentRoute: () => root, path: '/inbox/$id', component: DetailRoute });
+  const inbox = createRoute({ getParentRoute: () => root, path: '/inbox', component: () => <InboxRoute scope="inbox" /> });
+  const archive = createRoute({ getParentRoute: () => root, path: '/archive', component: () => <InboxRoute scope="archive" /> });
+  const item = createRoute({ getParentRoute: () => root, path: '/inbox/$id', component: () => <InboxRoute scope="inbox" /> });
+  const archivedItem = createRoute({ getParentRoute: () => root, path: '/archive/$id', component: () => <InboxRoute scope="archive" /> });
   return createRouter({
-    routeTree: root.addChildren([home, inbox, archive, detail]),
+    routeTree: root.addChildren([home, inbox, archive, item, archivedItem]),
     history: createMemoryHistory({ initialEntries: [initialPath] }),
     defaultPreload: 'intent', scrollRestoration: true,
   });

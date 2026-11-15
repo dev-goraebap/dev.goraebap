@@ -1,15 +1,21 @@
 import { describe, expect, test } from "vitest";
 import { BOOT_COLORS, bootCover } from "@/shared/ui/boot-cover/plugin";
 
-/** 토큰(tailwind.css)을 지금 모드로 읽어 rgb 글자로 돌려준다. 검사 문서는 test-setup에서 tailwind.css를 읽는다. */
+/**
+ * 토큰(tailwind.css)을 그 모드로 읽어 rgb 글자로 돌려준다. 검사 문서는 test-setup에서 tailwind.css를 읽는다. 다크 토큰은
+ * html(:root)의 data-theme만 보므로 문서의 값을 잠시 바꾼다.
+ */
 function tokenColor(name: string, mode: "light" | "dark") {
-  const scope = document.createElement("div");
-  scope.dataset.theme = mode;
+  const root = document.documentElement;
+  const original = root.dataset.theme;
+  root.dataset.theme = mode;
   const probe = document.createElement("span");
   probe.style.color = `var(${name})`;
-  scope.append(probe);
-  document.body.append(scope);
-  try { return getComputedStyle(probe).color; } finally { scope.remove(); }
+  document.body.append(probe);
+  try { return getComputedStyle(probe).color; } finally {
+    probe.remove();
+    if (original === undefined) delete root.dataset.theme; else root.dataset.theme = original;
+  }
 }
 
 const rgb = (hex: string) => {

@@ -8,7 +8,7 @@ export type FilterDef<K extends string> = { key: K; label: string; icon: Icon; o
 export type FilterState<K extends string> = Partial<Record<K, string[]>>
 
 /**
- * 목록 페이지의 필터 상태(호호코워크 useFilters): 고른 값, 데스크톱 칩 줄에 보이는 필터(걸렸거나 막 더해 아직 빈 것),
+ * 목록 페이지의 필터 상태: 고른 값, 데스크톱 칩 줄에 보이는 필터(걸렸거나 막 더해 아직 빈 것),
  * 필터 메뉴(열림과 어느 필터의 값 단계인지). 무엇으로 거르는지(defs)는 페이지가 정한다.
  * 고른 값을 주소에 두려면 state · onStateChange를 넘긴다(lib/list-address의 useAddressFilters). 칩 줄에는 걸린 필터가 늘 보인다.
  */

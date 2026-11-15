@@ -2,10 +2,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation,
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useState } from 'react';
-import type { NavSpace } from '@/shared/ui/app-shell';
+import type { NavSpace } from '@/shared/ui/layout/app-shell';
 import { Button, buttonVariants } from '@/shared/ui/button';
 import { HistoryIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';

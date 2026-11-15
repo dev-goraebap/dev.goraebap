@@ -1,7 +1,7 @@
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { Button } from '@/shared/ui/button';
 import { FileTextIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { RowLink } from '@/shared/ui/row-link';

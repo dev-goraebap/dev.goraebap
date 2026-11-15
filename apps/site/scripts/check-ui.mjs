@@ -2,13 +2,14 @@ import fs from "node:fs"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 
-// shadcn 키트의 화면 코드 규칙 검사(apps/demo의 check-ui와 같은 규칙). npm run check:ui
+// shadcn 키트의 화면 코드 규칙 검사. npm run check:ui
 // - FSD: 아래 계층이 위 계층을, 같은 계층의 다른 슬라이스를 가져오지 않는다. 슬라이스 밖에서는 index.ts로만 가져온다.
 // - 스타일: 팔레트 색 클래스(bg-red-500 …), space-x/y-*, 수동 dark: 색, style={{}}를 쓰지 않는다.
 //   style={{}}는 데이터 값일 때만 윗줄이나 같은 줄에 // check-ui: allow-style <사유>를 달고 쓴다.
 // - 아이콘: lucide-react를 직접 가져오지 않는다(shared/ui/icon의 Solar).
-// shadcn add로 만든 부품(SHADCN)은 FSD와 아이콘 규칙만 본다(스타일은 생성물의 관례를 따른다). demo는 shared/ui 바로 아래의
-// 파일을 모두 생성물로 보지만, 여기서는 이름으로 골라 우리가 쓴 부품(action-menu · segmented-control …)도 스타일을 검사한다.
+// shadcn add로 만든 부품(SHADCN)은 FSD와 아이콘 규칙만 본다(스타일은 생성물의 관례를 따른다). 생성물은 이름으로 골라,
+// shared/ui 바로 아래의 우리가 쓴 부품(action-menu · segmented-control …)은 스타일도 검사한다.
+// - pages는 공간별 폴더로 묶을 수 있다(pages/<공간>/<슬라이스>): 공간 폴더에 index.ts가 없으면 슬라이스를 두 마디로 본다.
 //
 // 사이트 전체(src와 견본 samples)를 검사한다. 견본은 FSD 계층 밖(앱처럼 어느 계층이든 가져온다)이라 스타일 · 아이콘 규칙만 본다.
 
@@ -40,8 +41,13 @@ TARGETS.forEach(target => walk(path.join(site, target)))
 
 const problems = []
 const report = (file, line, message) => problems.push(`${relative(file)}:${line} ${message}`)
+/** pages/<공간>/<슬라이스>: 공간 폴더에 공개 진입점(index.ts)이 없으면 공간으로 묶은 것이라 슬라이스가 두 마디다. */
+const isSpace = (layer, slice) => layer === "pages" && !!slice && fs.existsSync(path.join(site, "src", "pages", slice))
+  && fs.statSync(path.join(site, "src", "pages", slice)).isDirectory() && !fs.existsSync(path.join(site, "src", "pages", slice, "index.ts"))
+/** 경로 마디(계층 · 슬라이스 · 나머지)를 계층 · 슬라이스 · 슬라이스 안의 나머지로 나눈다. */
+const sliceOf = ([layer, slice, ...rest]) => isSpace(layer, slice) ? { layer, slice: `${slice}/${rest[0]}`, rest: rest.slice(1) } : { layer, slice, rest }
 const where = file => {
-  const [layer, slice] = (inSrc(file) ?? "").split("/")
+  const { layer, slice } = sliceOf((inSrc(file) ?? "").split("/"))
   return { layer, slice: layer === "app" || layer === "shared" ? layer : slice }
 }
 
@@ -55,7 +61,7 @@ for (const file of files) {
     const imported = /from\s+["']([^"']+)["']/.exec(text)?.[1]
     if (imported === "lucide-react") report(file, line, "lucide-react 대신 @/shared/ui/icon")
     if (imported?.startsWith("@/")) {
-      const [layer, slice, ...rest] = imported.slice(2).split("/")
+      const { layer, slice, rest } = sliceOf(imported.slice(2).split("/"))
       if (LAYERS.includes(layer) && LAYERS.includes(from.layer)) {
         if (LAYERS.indexOf(layer) < LAYERS.indexOf(from.layer)) report(file, line, `${from.layer}가 위 계층 ${layer}를 가져옴`)
         else if (layer === from.layer && slice !== from.slice && layer !== "shared") report(file, line, `같은 계층의 다른 슬라이스 ${layer}/${slice}를 가져옴`)

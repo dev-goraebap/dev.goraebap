@@ -3,6 +3,7 @@ import { AdaptivePopover } from "@/shared/ui/adaptive-popover"
 import { Button } from "@/shared/ui/button"
 import { ChevronDownIcon, DownloadIcon, FileTextIcon, LinkIcon, PrinterIcon } from "@/shared/ui/icon"
 import { toast } from "@/shared/ui/toast"
+import { MenuItem } from "@/shared/ui/menu-item"
 
 function Group({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -28,7 +29,7 @@ export function ExportMenu({ onSavePdf = () => window.print(), onPrint = () => w
     catch { toast.add({ title: "링크를 복사하지 못했습니다" }) }
   }
   const item = (label: string, icon: ReactNode, run: () => void) => (
-    <Button variant="ghost" className="h-9 justify-start font-normal [&_svg]:text-icon-muted max-md:h-12" onClick={() => { setOpen(false); run() }}>{icon}{label}</Button>
+    <MenuItem className="[&_svg]:text-icon-muted" onClick={() => { setOpen(false); run() }}>{icon}{label}</MenuItem>
   )
   return (
     <AdaptivePopover title="내보내기" align="end" className="w-60 p-1.5" open={isOpen} onOpenChange={setOpen}

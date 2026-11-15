@@ -11,14 +11,14 @@ export const skillsRoot = path.resolve(here, '../../plugins/webcraft/skills');
 export const contentRoot = path.resolve(here, 'content');
 
 export type GuideDoc = {
-  /** 사이트 주소. 예: /rules/frontend/, /app-shell/peek/ */
+  /** 사이트 주소. 예: /rules/frontend/, /app-shell/route-masking/ */
   path: string;
   title: string;
   description?: string;
   /** 메뉴 묶음 주소. 예: /rules/frontend/ */
   group: string;
   order: number;
-  /** import.meta.glob 키와 맞추는 원본 위치. 예: plugins/webcraft/skills/frontend/SKILL.md, site/content/app-shell/peek.mdx */
+  /** import.meta.glob 키와 맞추는 원본 위치. 예: plugins/webcraft/skills/frontend/SKILL.md, site/content/app-shell/route-masking.mdx */
   source: string;
   /** 본문이 스스로 h1을 가지면 true(지침 Markdown). */
   hasTitle: boolean;
@@ -135,7 +135,7 @@ function contentDocs(): GuideDoc[] {
   }).sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 }
 
-/** 지침 Markdown 안의 상대 링크(../frontend/SKILL.md, references/peek.md#…)를 사이트 주소로 바꾼다. */
+/** 지침 Markdown 안의 상대 링크(../frontend/SKILL.md, references/route-masking.md#…)를 사이트 주소로 바꾼다. */
 export function rehypeSkillLinks() {
   return (tree: unknown, file: { path?: string }) => {
     const from = file.path ? path.resolve(file.path) : '';

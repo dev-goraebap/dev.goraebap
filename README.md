@@ -28,6 +28,5 @@ Claude Code 설치와 프로젝트 연결·기존 지침 사본 전환은 [플�
 | `apps/site/content/blog/posts/` | 블로그 글과 원본 이미지 |
 | `apps/site/content/` | Webcraft 화면 해설과 견본 문서 |
 | `apps/site/samples/` | 실제 동작을 검증하는 실행 견본 |
-| `apps/demo/` | 호호코워크 화면을 shadcn으로 재현한 데모 앱 |
 
 사이트 실행·글 추가·배포 방법은 [사이트 개발 안내](apps/site/README.md), 플러그인 개발은 [플러그인 개발 안내](plugins/webcraft/README.md)를 따릅니다. 에이전트 작업 규칙은 [AGENTS.md](AGENTS.md)에 있습니다.

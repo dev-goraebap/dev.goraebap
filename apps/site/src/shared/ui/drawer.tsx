@@ -1,4 +1,5 @@
 import * as React from "react"
+import { ButtonStyleReset } from "@/shared/ui/button"
 import { Drawer as DrawerPrimitive } from "@base-ui/react/drawer"
 import { cn } from "cn"
 
@@ -104,7 +105,7 @@ function DrawerContent({
     swipeDirection === "down" || swipeDirection === "up" ? "y" : "x"
 
   return (
-    <DrawerPortal data-slot="drawer-portal">
+    <DrawerPortal data-slot="drawer-portal"><ButtonStyleReset>
       {modal === true && (
         <DrawerOverlay data-snap-points={hasSnapPoints ? "" : undefined} />
       )}
@@ -157,7 +158,7 @@ function DrawerContent({
           </DrawerPrimitive.Content>
         </DrawerPrimitive.Popup>
       </DrawerPrimitive.Viewport>
-    </DrawerPortal>
+    </ButtonStyleReset></DrawerPortal>
   )
 }
 

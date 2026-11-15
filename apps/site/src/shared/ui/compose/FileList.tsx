@@ -47,7 +47,7 @@ export function FileRemoveButton({ name, isDisabled, onClick }: { name: string; 
 }
 
 /**
- * 고른 파일 목록(호호코워크 compose의 파일 List): 줄마다 표식(사진이면 미리보기) · 이름 · 크기 · 빼기. 길면 안에서 스크롤한다.
+ * 고른 파일 목록: 줄마다 표식(사진이면 미리보기) · 이름 · 크기 · 빼기. 길면 안에서 스크롤한다.
  * children은 같은 목록 끝에 붙는 다른 줄(FileRow)이다. 고른 것도 더한 줄도 없으면 그리지 않는다.
  */
 export function FileList({ label, files, icon, isDisabled, onRemove, children }: {

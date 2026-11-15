@@ -3,7 +3,7 @@ import { Button } from '@/shared/ui/button';
 import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { DocumentEditor, PageLookMenu, type DocumentMode, type PageLayout } from '@/shared/ui/document';
 import { FileTextIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import type { JSONContent } from '@tiptap/react';
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';

@@ -1,7 +1,7 @@
 import { useMemo } from "react"
 import { parseInline, parseMarkdown, type MarkdownBlock } from "../model/markdown"
 
-/** 글 속 코드는 바탕 없이 옅은 밑줄과 조금 옅은 고정폭 글자(호호코워크 읽기 본문). */
+/** 글 속 코드는 바탕 없이 옅은 밑줄과 조금 옅은 고정폭 글자. */
 function Inline({ text }: { text: string }) {
   return parseInline(text).map((part, index) =>
     part.kind === "code" ? (
@@ -41,7 +41,7 @@ function Block({ block }: { block: MarkdownBlock }) {
 }
 
 /**
- * 읽기 본문(호호코워크 MarkdownBody): 16px · 줄 높이 1.7, 문단 사이 한 줄. 긴 낱말과 주소는 칸을 넓히지 않고 접는다.
+ * 읽기 본문: 16px · 줄 높이 1.7, 문단 사이 한 줄. 긴 낱말과 주소는 칸을 넓히지 않고 접는다.
  * 소제목 · 목록 · 인용 · 코드 블록과 글 속 코드 · 굵게만 그린다.
  */
 export function MarkdownBody({ source }: { source: string }) {

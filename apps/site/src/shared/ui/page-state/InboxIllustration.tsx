@@ -1,4 +1,4 @@
-/** 편지가 담긴 알림함 그림(호호코워크 InboxIllustration): 아무것도 고르지 않은 인박스의 오른쪽 칸. 선은 보조 잉크, 표시는 그림 강조색. */
+/** 편지가 담긴 알림함 그림: 아무것도 고르지 않은 인박스의 오른쪽 칸. 선은 보조 잉크, 표시는 그림 강조색. */
 export function InboxIllustration() {
   return (
     <svg viewBox="0 0 320 176" aria-hidden="true" focusable="false" className="block h-44 w-80 max-w-full">

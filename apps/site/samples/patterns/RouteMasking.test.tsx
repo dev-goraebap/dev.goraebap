@@ -15,7 +15,7 @@ const VerifyExpand: Sample = {
     await userEvent.click(await page.findByRole("button", { name: "자료 추가" }));
     const dialog = await page.findByRole("dialog", { name: "새 자료" });
     await userEvent.type(within(dialog).getByRole("textbox", { name: "제목" }), "접근성 검토 기록");
-    await userEvent.click(within(dialog).getByRole("button", { name: "크게 보기" }));
+    await userEvent.click(within(dialog).getByRole("button", { name: "페이지로 열기" }));
     await waitFor(() => expect(page.queryByRole("dialog")).not.toBeInTheDocument());
     await expect(await page.findByRole("textbox", { name: "제목" })).toHaveValue("접근성 검토 기록");
     // 고친 것이 있으면 취소가 버릴지 먼저 묻는다.

@@ -3,7 +3,7 @@ import { useStoredWidth } from '@/shared/lib/use-stored-width';
 import { Alert, AlertTitle } from '@/shared/ui/alert';
 import { Button } from '@/shared/ui/button';
 import { FolderIcon, TriangleAlertIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PaneResizeHandle } from '@/shared/ui/pane-resize-handle';
 import { Spinner } from '@/shared/ui/spinner';

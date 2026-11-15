@@ -3,7 +3,7 @@ import { Button } from '@/shared/ui/button';
 import { DocumentView, ExportMenu, PageLookMenu, PagesPill, scrollToPage, type DocumentMode, type PageLayout } from '@/shared/ui/document';
 import { FileIcon, FileTextIcon, PencilIcon, UserIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
-import { Page } from '@/shared/ui/page';
+import { Page } from '@/shared/ui/layout/page';
 import { DetailLayout } from '@/shared/ui/reading';
 import { SegmentedControl } from '@/shared/ui/segmented-control';
 import { useNavigate } from '@tanstack/react-router';

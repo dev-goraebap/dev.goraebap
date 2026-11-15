@@ -1,7 +1,7 @@
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { ArchiveIcon, ArchiveUpIcon, FileTextIcon } from '@/shared/ui/icon';
-import { useOwnPageTitle } from '@/shared/ui/page';
+import { useOwnPageTitle } from '@/shared/ui/layout/page';
 import { Spinner } from '@/shared/ui/spinner';
 import { kinds, timeText, type Notification } from '../entities/notification';
 

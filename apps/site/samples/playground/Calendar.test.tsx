@@ -28,15 +28,14 @@ const VerifyOverflow: Sample = {
   play: async ({ canvasElement }) => {
     const page = within(canvasElement.ownerDocument.body);
     await userEvent.click(await page.findByRole("button", { name: "+3개 더 보기, 11월 12일 (목)" }));
-    await userEvent.click(await page.findByRole("button", { name: /저녁 모임/ }));
-    // 고른 일정은 그 날의 주 보기에서 열린다.
-    const edit = await page.findByRole("button", { name: "수정" });
-    // 팝오버·시트가 열리는 동안에는 아직 보이지 않는다.
-    await waitFor(() => expect(edit).toBeVisible());
-    // 보기는 탭이다: 주 보기가 골라져 있고, 월을 누르면 월 보기로 돌아간다.
-    await expect(page.getByRole("tab", { name: "주", selected: true })).toBeVisible();
-    await userEvent.click(page.getByRole("tab", { name: "월" }));
-    await waitFor(() => expect(page.getByRole("tab", { name: "월", selected: true })).toBeVisible());
+    await userEvent.click(await page.findByRole("menuitem", { name: /저녁 모임/ }));
+    // 고른 일정은 요약 팝오버 없이 격자 위 상세 대화상자로 열린다(Routed Modal). 격자는 그대로 월 보기다.
+    const dialog = await page.findByRole("dialog");
+    await expect(await within(dialog).findByRole("heading", { name: /저녁 모임/ })).toBeVisible();
+    await expect(page.getByRole("tab", { name: "월", selected: true, hidden: true })).toBeInTheDocument();
+    // 상세에서 수정으로 넘어가면 같은 자리의 대화상자가 양식으로 바뀐다.
+    await userEvent.click(within(dialog).getByRole("button", { name: "수정" }));
+    await expect(await page.findByRole("textbox", { name: /제목/ })).toBeVisible();
   },
 };
 

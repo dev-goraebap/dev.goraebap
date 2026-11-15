@@ -1,13 +1,16 @@
 /*
- * shadcn/ui(Base UI) + Tailwind CSS v4의 토큰과 유틸리티. 값은 apps/demo의 테마와 같다.
+ * shadcn/ui(Base UI) + Tailwind CSS v4의 토큰과 유틸리티(레지스트리 @webcraft/theme).
  * 레이어 순서(theme · base · components · utilities)는 Tailwind가 정한다. 사이트와 견본 모두 이 파일을 가장 먼저 읽는다.
  */
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* 사이트의 라이트 · 다크는 html[data-theme]가 정한다(entities/preferences). */
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+/*
+ * 라이트 · 다크는 html[data-theme]가 정한다. 선택자를 html(:root)로 둔다: 안쪽 요소가 data-theme를 달아도 다크 블록을 다시
+ * 선언해 html에 덮어쓴 기준 색을 가리지 않게 한다.
+ */
+@custom-variant dark (&:where(:root[data-theme=dark], :root[data-theme=dark] *));
 /* 화면 설정의 목록 높이가 촘촘하게일 때(html[data-density=compact]). 페이지 목록 · 표의 줄 높이에만 쓴다. */
 @custom-variant compact (&:where([data-density=compact] *));
 
@@ -56,7 +59,7 @@
 }
 
 /*
- * 호호코워크(web/src/app/theme/linear.ts · boot.ts)의 값을 shadcn 토큰에 옮긴다. 면은 네 단계다.
+ * 키트의 바탕 · 면 값을 shadcn 토큰으로 둔다. 면은 네 단계다.
  *   바닥 --sidebar(사이드바 · 하단 줄) < 페이지 --background < 올린 면 --card(+ 가는 테두리) < 뜬 면 --popover(+ 그림자)
  * 강조색은 글자색(검정 · 흰색)이고, 나머지 회색은 글자색을 면에 섞어 만든다.
  */
@@ -77,7 +80,8 @@
     --accent: color-mix(in srgb, var(--foreground) 4%, transparent);
     --accent-foreground: var(--foreground);
     --destructive: oklch(0.577 0.245 27.325);
-    --border: color-mix(in srgb, var(--foreground) 13%, var(--background));
+    /* 레이아웃 · 표 · 구분선: 알약 테두리(control-border 11%)보다 한 단계 옅다. 알약은 면이 있어 테두리가 더 진해야 같은 무게로 보인다. 입력 칸(input)은 진하게 둔다. */
+    --border: color-mix(in srgb, var(--foreground) 9%, var(--background));
     --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
     --ring: color-mix(in srgb, var(--foreground) 72%, var(--background));
     --icon-muted: #6b6b6f;
@@ -108,7 +112,7 @@
     --mark-low: #2865c3;
     /* 빈 상태 그림의 파란 표시. */
     --illustration-accent: #4a7fd4;
-    /* 일정 분류 색(호호코워크 Linear 테마의 범주 색): 막대 · 블록 바탕(--event-*)과 그 위 글자 · 점(--event-*-foreground). 휴일 · 일요일과 토요일 글자. */
+    /* 일정 분류 색(범주 색): 막대 · 블록 바탕(--event-*)과 그 위 글자 · 점(--event-*-foreground). 휴일 · 일요일과 토요일 글자. */
     --event-blue: #d7e4f5;
     --event-blue-foreground: #3c4856;
     --event-green: #d0e9ce;
@@ -131,7 +135,7 @@
     --saturday: #0969da;
 }
 
-[data-theme=dark] {
+:root[data-theme=dark] {
     --background: #121213;
     --foreground: #f7f8f8;
     --sidebar: #09090a;
@@ -143,7 +147,7 @@
     --muted-foreground: #8a8f98;
     --accent: color-mix(in srgb, var(--foreground) 5%, transparent);
     --destructive: oklch(0.704 0.191 22.216);
-    --border: color-mix(in srgb, var(--foreground) 11%, var(--background));
+    --border: color-mix(in srgb, var(--foreground) 8%, var(--background));
     --input: color-mix(in srgb, var(--foreground) 16%, var(--background));
     --icon-muted: #8a8f98;
     --pressed: color-mix(in srgb, var(--foreground) 8%, transparent);
@@ -181,7 +185,7 @@
 
 /*
  * 글자와 분기점. 데스크톱 본문 13px(text-sm) · 큰 본문 15px(text-base), 휴대폰은 15px · 17px.
- * 휴대폰과 데스크톱은 64rem(1024px)에서 갈린다(호호코워크 MOBILE_QUERY). md: 는 이 분기점이다.
+ * 휴대폰과 데스크톱은 64rem(1024px)에서 갈린다(useIsMobile과 같은 값). md: 는 이 분기점이다.
  */
 @theme {
     --breakpoint-md: 64rem;
@@ -197,6 +201,14 @@
     /* 읽지 않은 줄의 바탕과 그 줄을 가리키거나 고를 때. */
     --color-unread: color-mix(in srgb, var(--foreground) 9%, var(--background));
     --color-unread-strong: color-mix(in srgb, var(--foreground) 14%, var(--background));
+    /*
+     * 조작 면: 단추 · 도구 · 보기 탭 · 속성 알약 · 셀렉트 · 필터가 함께 쓰는 '바탕보다 살짝 밝은 면 + 가는 테두리'.
+     * 가리키면 한 단계, 켜지거나 열리면(지금 보기 · 눌린 도구) 두 단계 밝다.
+     */
+    --color-control: color-mix(in srgb, var(--foreground) 5%, var(--background));
+    --color-control-hover: color-mix(in srgb, var(--foreground) 9%, var(--background));
+    --color-control-on: color-mix(in srgb, var(--foreground) 14%, var(--background));
+    --color-control-border: color-mix(in srgb, var(--foreground) 11%, var(--background));
     --color-mark-backlog: var(--mark-backlog);
     --color-mark-progress: var(--mark-progress);
     --color-mark-done: var(--mark-done);
@@ -241,24 +253,121 @@
     to { opacity: 1; transform: none; }
 }
 
-/* 페이지 바탕의 점 무늬(호호코워크 페이지 면). 줄 · 카드는 자기 바탕을 칠해 점을 가린다. */
+/* 점 무늬. 목록-상세 분할 보기에서 고른 것이 없을 때의 오른쪽 칸에 쓴다. 줄 · 카드는 자기 바탕을 칠해 점을 가린다. */
 @utility bg-dots {
     background-image: radial-gradient(color-mix(in srgb, var(--foreground) 12%, transparent) 1px, transparent 1px);
     background-size: 1rem 1rem;
 }
 
-/* 모서리를 초타원으로(지원하는 브라우저만). 메뉴 항목 · 만들기 버튼 · 앱 본문 면에 쓴다. */
+/* 모서리를 초타원으로(지원하는 브라우저만). 앱 본문 면과 내 아바타에 쓴다. 단추 · 메뉴 항목은 알약 · 둥근 모서리. */
 @utility squircle {
     corner-shape: squircle;
+}
+
+/*
+ * 화면 전환(View Transitions). 문서 전체 대신 앱의 콘텐츠 영역(.route-content를 단 요소)만 200ms 교차 페이드한다. 셸과
+ * 네이티브 대화상자는 잡지 않는다. 앱은 라우터가 그리는 자리(Outlet을 감싼 요소)에 route-content를 단다.
+ */
+:root { view-transition-name: none; }
+::view-transition { pointer-events: none; }
+.route-content { view-transition-name: app-content; }
+::view-transition-group(app-content) { animation-duration: 200ms; animation-timing-function: ease-in-out; }
+::view-transition-image-pair(app-content) { isolation: isolate; }
+::view-transition-old(app-content) { animation: app-content-out 200ms ease-in-out both; mix-blend-mode: plus-lighter; }
+::view-transition-new(app-content) { animation: app-content-in 200ms ease-in-out both; mix-blend-mode: plus-lighter; }
+@keyframes app-content-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes app-content-in { from { opacity: 0; } to { opacity: 1; } }
+/*
+ * 휴대폰 하단 유리 막대(layout/app-shell의 PhoneBar)는 콘텐츠 위에 떠 있다. 전환 동안 콘텐츠 스냅숏은 맨 위 층에 그려져 막대를
+ * 가리므로, 막대도 따로 잡아 그 위에 움직임 없이 새 모습만 둔다. 이름은 유리 면 자체에 둔다: 감싼 요소에 두면 그 요소가 흐림의
+ * 경계(backdrop root)가 되어 뒤의 콘텐츠가 흐려지지 않는다.
+ */
+.phone-bar { view-transition-name: app-phone-bar; }
+.phone-bar-search { view-transition-name: app-phone-search; }
+::view-transition-group(app-phone-bar), ::view-transition-new(app-phone-bar),
+::view-transition-group(app-phone-search), ::view-transition-new(app-phone-search) { animation: none; }
+::view-transition-old(app-phone-bar), ::view-transition-old(app-phone-search) { display: none; }
+/*
+ * 전환 동안의 그림(스냅숏)은 네모다: 잡힌 요소를 둥글게 자르던 바깥 상자(콘텐츠 카드의 초타원 모서리, 둥근 하단 막대)가 그림에는
+ * 없다. 그래서 그림 쌍(image-pair)을 그 면과 같은 모양으로 잘라, 페이지를 옮기는 순간 모서리가 각지게 번쩍이지 않게 한다.
+ */
+::view-transition-image-pair(app-phone-bar), ::view-transition-image-pair(app-phone-search) { overflow: hidden; border-radius: 9999px; }
+@media (min-width: 48rem) {
+  ::view-transition-image-pair(app-content) { overflow: hidden; border-radius: calc(var(--radius-surface) * 1.5); corner-shape: squircle; }
+}
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(app-content), ::view-transition-old(app-content), ::view-transition-new(app-content) { animation: none; }
+}
+/*
+ * 목록 위 대화상자 바꿔 끼우기(shared/ui/dialog의 swapDialog): 전환하는 동안(data-vt="dialog")만 그 대화상자에 이름을 준다.
+ * 페이지 콘텐츠는 이때 잡지 않는다: 잡히면 그 스냅숏이 대화상자 바탕(흐림) 위에 그려져 대화상자가 다시 뜨는 것처럼 보인다.
+ * 앞 · 새 화면은 같은 길이 · 같은 곡선으로 더해 섞어(plus-lighter) 겹치는 동안에도 투명해지지 않는다.
+ */
+:root[data-vt="dialog"] .route-content { view-transition-name: none; }
+:root[data-vt="dialog"] [data-slot="dialog-content"][data-panel] { view-transition-name: panel-dialog; }
+::view-transition-group(panel-dialog) { animation-duration: 200ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1); }
+::view-transition-image-pair(panel-dialog) { isolation: isolate; overflow: hidden; border-radius: 1rem; }
+::view-transition-old(panel-dialog) { animation: app-content-out 200ms ease-in-out both; mix-blend-mode: plus-lighter; }
+::view-transition-new(panel-dialog) { animation: app-content-in 200ms ease-in-out both; mix-blend-mode: plus-lighter; }
+/*
+ * 페이지로 열기(shared/lib/panel의 expand가 거는 전환 종류 panel-expand): 대화상자가 그 자리 · 크기에서 페이지의 콘텐츠 영역으로
+ * 커지며 페이지가 된다(shared element). 같은 이름을 전환 전에는 대화상자에, 전환 뒤에는 콘텐츠 영역에 준다. 둘이 한 화면에 함께
+ * 이름을 가지면 브라우저가 전환을 취소하므로, 대화상자가 있는 동안 콘텐츠 영역은 이름을 두지 않는다. 바탕 흐림은 함께 사라진다.
+ * 대화상자 그림은 빨리 흐려져(0.12초) 늘어나는 글자가 눈에 띄지 않게 한다.
+ */
+:active-view-transition-type(panel-expand) .route-content { view-transition-name: panel-expand; }
+:active-view-transition-type(panel-expand):has([data-slot="dialog-content"][data-panel]) .route-content { view-transition-name: none; }
+:active-view-transition-type(panel-expand) [data-slot="dialog-content"][data-panel] { view-transition-name: panel-expand; }
+:active-view-transition-type(panel-expand) [data-slot="dialog-overlay"] { view-transition-name: panel-expand-backdrop; }
+::view-transition-group(panel-expand) { animation-duration: 250ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1); }
+::view-transition-image-pair(panel-expand) { isolation: isolate; overflow: hidden; border-radius: 1rem; }
+::view-transition-old(panel-expand) { animation: app-content-out 120ms ease-out both; }
+::view-transition-new(panel-expand) { animation: app-content-in 250ms ease-out both; }
+::view-transition-old(panel-expand-backdrop) { animation: app-content-out 250ms ease-out both; }
+
+/*
+ * 가로로 넘치는 칩 줄(페이지 도구 줄의 보기 탭): 더 밀어 볼 내용이 있는 쪽 끝만 1.5rem에 걸쳐 서서히 사라진다.
+ * data-start · data-end는 Page의 보기 탭 줄이 스크롤 위치로 단다(그 끝에 닿았으면 그쪽은 흐리지 않는다).
+ */
+.fade-strip {
+  --fade-l: 0px;
+  --fade-r: 0px;
+  mask-image: linear-gradient(to right, transparent, currentColor var(--fade-l), currentColor calc(100% - var(--fade-r)), transparent);
+}
+.fade-strip:not([data-start]) { --fade-l: 1.5rem; }
+.fade-strip:not([data-end]) { --fade-r: 1.5rem; }
+
+/* 되돌리기 토스트의 남은 시간: 막대가 오른쪽에서 줄어든다(toast.add의 data.countdown). */
+@keyframes toast-countdown {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); }
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+  /*
+   * 누를 수 있는 것은 손 모양 커서. Tailwind v4의 preflight는 button을 cursor: default로 둔다(shadcn/ui v4 문서가 권하는
+   * 덧붙임). 막힌 것은 기본 화살표로 둔다.
+   */
+  button:not(:disabled):not([aria-disabled="true"]),
+  [role="button"]:not([aria-disabled="true"]),
+  [role="menuitem"]:not([aria-disabled="true"]):not([data-disabled]),
+  [role="option"]:not([aria-disabled="true"]):not([data-disabled]),
+  [role="tab"]:not([aria-disabled="true"]),
+  [role="checkbox"]:not([aria-disabled="true"]),
+  [role="switch"]:not([aria-disabled="true"]),
+  [role="radio"]:not([aria-disabled="true"]),
+  [cmdk-item]:not([data-disabled="true"]),
+  summary,
+  label:has(input:not(:disabled)),
+  select:not(:disabled) {
+    cursor: pointer;
+  }
   body {
     @apply bg-background text-foreground;
-    /* Pretendard 450: 호호코워크 본문 굵기. */
+    /* Pretendard 450: 본문 굵기. */
     font-weight: 450;
   }
   html {

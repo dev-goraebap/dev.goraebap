@@ -5,7 +5,7 @@ import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
 import { FormDialog } from '@/shared/ui/form-dialog';
 import { CalendarIcon, ClockIcon, FileTextIcon, InboxIcon, TriangleAlertIcon } from '@/shared/ui/icon';
 import { InfoPill } from '@/shared/ui/info-pill';
-import { Page, type Crumb } from '@/shared/ui/page';
+import { Page, type Crumb } from '@/shared/ui/layout/page';
 import { PageState } from '@/shared/ui/page-state';
 import { PersonAvatar } from '@/shared/ui/person-avatar';
 import { DetailLayout } from '@/shared/ui/reading';

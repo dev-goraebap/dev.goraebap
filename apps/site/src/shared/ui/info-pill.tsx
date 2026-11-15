@@ -2,7 +2,7 @@ import type { ReactNode } from "react"
 import { pillVariants } from "@/shared/ui/property-pill"
 
 /**
- * 읽기만 하는 속성 알약(호호코워크 PropertyPill isDisabled): 상세에서 바꿀 수 없는 값(작성자 · 게시 시각 · 읽은 사람 수 …).
+ * 읽기만 하는 속성 알약: 상세에서 바꿀 수 없는 값(작성자 · 게시 시각 · 읽은 사람 수 …).
  * 모양은 PropertyPill과 같고(pillVariants) 누를 수 없어 버튼이 아니다.
  */
 export function InfoPill({ label, icon, children }: {

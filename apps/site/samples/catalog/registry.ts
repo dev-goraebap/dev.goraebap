@@ -4,7 +4,7 @@ import type { Device, Layout, Meta, Sample, SampleModule } from "./types";
 const loaders = import.meta.glob<SampleModule>("../**/*.samples.tsx");
 
 export type SampleEntry = {
-  /** "묶음 id/견본 키" (예: playground-peek/open) */
+  /** "묶음 id/견본 키" (예: patterns-resource-patterns/list-detail) */
   id: string;
   group: string;
   key: string;

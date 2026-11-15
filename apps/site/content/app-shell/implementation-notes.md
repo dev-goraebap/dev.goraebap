@@ -24,14 +24,14 @@ arc42: "8.8"
 
 | 화면 역할과 규칙 | 성격 | 키트·스택 구현 | 구현 위치와 판단 기준 |
 | --- | --- | --- | --- |
-| 사이드바와 본문 두 영역으로 나누고 본문만 스크롤하는 [셸과 사이드바](/app-shell/shell-and-sidebar/) | `[관례]` `[고래밥]` | `AppShell`(shadcn `Sidebar` 위, 메뉴는 `NavSpace` 데이터) | `src/shared/ui/app-shell/AppShell.tsx`. 페이지마다 셸을 새로 만들지 않고 유지합니다. 메뉴 이름을 말줄임 없이 보이기 위해 기본 폭 340px(조절 범위 220~380px)을 씁니다 |
+| 사이드바와 본문 두 영역으로 나누고 본문만 스크롤하는 [셸과 사이드바](/app-shell/shell-and-sidebar/) | `[관례]` `[고래밥]` | `AppShell`(shadcn `Sidebar` 위, 메뉴는 `NavSpace` 데이터) | `src/shared/ui/layout/app-shell/AppShell.tsx`. 페이지마다 셸을 새로 만들지 않고 유지합니다. 공간 전환 셀렉터와 메뉴 구성(`NavSpace`, 맨 아래 관리 진입 `adminEntries`)은 앱의 `widgets/app-shell`이 만들어 넘깁니다. 메뉴와 고른 표시는 이동 중인 주소(`usePendingPathname`, `src/shared/lib/route-location.ts`)로 그립니다. 메뉴 이름을 말줄임 없이 보이기 위해 기본 폭 340px(조절 범위 220~380px)을 씁니다 |
 | 바탕 위에 떠 있는 둥근 페이지 카드(Inset)와 선으로만 나눈 면(Split) | `[선호]` | `AppShell`의 배치 설정 | [선호하는 화면](/app-shell/preferred-screens/)의 기준에 따라 두 배치 중 하나를 고릅니다 |
-| [머리 줄·배너·툴바·적용 줄·FAB](/app-shell/header-and-toolbar/) | `[관례]` `[고래밥]` `[선호]` | `Page`, `PageViews` | `src/shared/ui/page/Page.tsx`. 데스크톱 52px·휴대폰 최소 60px 머리 줄(휴대폰은 앱 바), 44px(휴대폰 최소 60px) 툴바, 적용 줄, 휴대폰의 만들기 FAB(56px), 바닥 실행 줄(`footer`)을 한 틀에서 관리합니다. 페이지의 `h1`은 하나이며 `Page`가 기본으로 냅니다. 본문이 자기 제목을 그리면 `useOwnPageTitle()`로 넘깁니다 |
+| [머리 줄·배너·툴바·적용 줄·칸 머리](/app-shell/header-and-toolbar/) | `[관례]` `[고래밥]` `[선호]` | `Page`, `PageViews`, `PaneFrame`, `PhoneTools` | `src/shared/ui/layout/page/Page.tsx`. 데스크톱 52px·휴대폰 최소 60px 머리 줄(휴대폰은 앱 바와 오른쪽 알약), 44px(휴대폰 최소 52px) 툴바, 적용 줄, 바닥 실행 줄(`footer`)을 한 틀에서 관리합니다. 상세·작성·수정과 List-Detail의 오른쪽 칸은 `src/shared/ui/layout/pane-frame/PaneFrame.tsx`의 칸 머리를 씁니다. 페이지의 `h1`은 하나이며 `Page`가 기본으로 냅니다. 본문이 자기 제목을 그리면 `useOwnPageTitle()`로 넘깁니다 |
 | 데스크톱 팝오버를 휴대폰에서 바텀시트로 여는 [그 자리에서 고르기](/app-shell/choosing-presentation/) | `[관례]` | `AdaptivePopover`, `ActionMenu`(행 메뉴는 `size="row"`), `OptionList` | `src/shared/ui/adaptive-popover.tsx`. 분기점을 기준으로 팝오버와 바텀시트를 바꿉니다 |
-| [적응형](/app-shell/adaptive/) 단일 분기점 판정 | `[관례]` `[고래밥]` | `useIsMobile` (`(width < 64rem)`), CSS의 `max-md:` | `src/shared/lib/use-mobile.ts`. 1024px(`64rem`) 미만을 휴대폰으로 판정하며 사이드바↔하단 탭, 팝오버↔시트, 대화상자↔페이지, 표↔행 목록 전환에 모두 같은 분기점을 씁니다 |
+| [적응형](/app-shell/adaptive/) 단일 분기점 판정 | `[관례]` `[고래밥]` | `useIsMobile` (`(width < 64rem)`), CSS의 `max-md:` | `src/shared/lib/use-mobile.ts`. 1024px(`64rem`) 미만을 휴대폰으로 판정하며 사이드바↔하단 막대, 팝오버↔시트, 대화상자↔페이지, 표↔행 목록 전환에 모두 같은 분기점을 씁니다 |
 | 목록 위 대화상자와 실제 페이지 주소를 잇는 [라우트 마스킹](/app-shell/route-masking/) | `[고래밥]` | TanStack Router `navigate` `mask` + `unmaskOnReload`, `useOpenPanel` / `usePanel` | `src/shared/lib/panel.ts`. 데스크톱 목록에서 열면 `?panel=대상`을 더하고 주소창에는 대상 주소를 보입니다. 새로고침이나 직접 진입 시에는 페이지로 엽니다. 상세는 `DetailSurface`가 페이지와 60rem 대화상자를 오갑니다 |
 | 대화상자에서 크게 보기로 전환할 때의 초안 유지 | `[고래밥]` | `DraftProvider`·`useDraft`, `carryDraft` | `src/shared/lib/draft.tsx`와 `src/shared/lib/panel.ts`. 대화상자·페이지 전환이나 분기점 변경에서도 입력한 제목·본문·속성·첨부가 남도록 라우터 위에 감쌉니다 |
-| 목록 옆에서 항목을 훑는 [미리보기 패널](/app-shell/peek/) | `[고래밥]` | `usePeek` (`?peek=`), `PeekLayout`·`PeekPanel`, `InboxLayout`·`InboxPane`, `usePeekRows` | `src/shared/lib/use-peek.ts`와 `src/shared/ui/peek/`(본문 폭의 45%). 처음 열 때는 방문 기록을 쌓고(`push`), 다른 행으로 옮길 때는 기록을 바꾸며(`replace`), 이 기록에서 열었으면 닫을 때 한 걸음 뒤로 갑니다. 휴대폰에서는 대상 페이지로 바꿔 갑니다(`replace`) |
+| 목록과 오른쪽 칸을 나란히 두는 [List-Detail](/app-shell/resource-patterns/) | `[고래밥]` | `SplitResource`·`SplitScreen`·`SplitLinkRow`, `SplitView`(`SplitList`·`SplitDetail`·`SplitFocusButton`) | `src/shared/ui/layout/split-view/`. 목록은 부모 라우트, 오른쪽 칸은 자식 라우트(`/리소스/{id}`)라 칸을 바꿔도 목록이 다시 그려지지 않습니다. 집중 보기는 `?focus=1`, 빈 칸은 화면이 넘긴 그림과 제목을 보입니다. 휴대폰은 칸 주소를 페이지로 그립니다 |
 | 검색어·필터·표시를 URL에 남기는 [목록 조건 주소](/app-shell/filters-and-display/) | `[고래밥]` | `useAddressFilters`, `useAddressWords`(300ms), `useAddressChoices` | `src/shared/lib/list-address.ts`. 검색어 입력 중에는 방문 기록을 쌓지 않고(`replace`) 300ms 뒤 주소만 갱신합니다 |
 | 필수 값이 비어도 제출 버튼을 막지 않는 작성 양식([상태와 피드백](/app-shell/states-and-feedback/)) | `[관례]` | `ComposeSurface`, `ComposeFields`, `FormDialog`, `focusFirstInvalid` | `src/shared/ui/compose/`와 `src/shared/lib/focus-invalid.ts`. 빠진 값은 알약의 `isInvalid`(`aria-invalid`)로 알리고 `focusFirstInvalid`로 첫 빠진 항목에 초점을 옮깁니다. 쓴 내용이 있으면(`isDirty`) 닫기·취소에서 버릴지 묻습니다 |
 | 먹색 강조와 4단계 면, 휴대폰 크기 조정([시각 위계](/common/visual-hierarchy/)) | `[선호]` `[관례]` | 토큰 CSS, `max-md:` 유틸리티 | `src/app/styles/tailwind.css`. 면 4단계는 `--sidebar`(바닥)·`--background`(페이지)·`--card`(올린 면)·`--popover`(뜬 면)이고, 휴대폰 크기 조정은 같은 파일의 `@media (width < 64rem)`와 부품의 `max-md:`에 둡니다 |
@@ -39,16 +39,9 @@ arc42: "8.8"
 
 ## 주요 상호작용의 구현 세부
 
-### 미리보기 패널과 목록 행 동작
+### List-Detail의 칸과 목록
 
-[미리보기 패널](/app-shell/peek/)은 목록을 유지한 채 항목을 차례로 훑는 비모달 패널입니다(`src/shared/ui/peek/PeekPanel.tsx`). `PeekLayout`의 옆 칸 자리에 들어가며 본문 폭의 45%를 차지합니다. 패널 머리에는 대상 이름, 대상의 자기 주소로 이동하는 "페이지로 열기", 닫기를 둡니다. Esc나 닫기 버튼으로 닫으면 초점을 원래 행으로 돌려보냅니다.
-
-주소와 방문 기록은 `src/shared/lib/use-peek.ts`의 `usePeek`이 맡습니다.
-1. 목록에서 미리보기를 처음 열 때는 목록 주소에 `?peek=대상ID`를 더하며 방문 기록을 하나 쌓습니다(`push`).
-2. 패널이 열린 상태에서 다른 행을 고르면 기록을 쌓지 않고 바꿉니다(`replace`). 여러 항목을 확인한 뒤에도 닫기 한 번이면 패널이 닫히고 목록으로 돌아옵니다.
-3. 휴대폰 폭에서 `?peek=` 주소로 진입하면 패널을 그리지 않고 대상 페이지 주소로 바꿔 갑니다(`replace`).
-
-행을 눌렀을 때 무엇을 열지는 목록의 성격에 따라 나눕니다. 하나를 골라 들어가 일하는 작업 목록은 행 클릭이 대상 페이지로 이동하고, 미리보기는 행의 단추나 Space 키로 엽니다(`usePeekRows`).
+`SplitResource`는 리소스 하나의 분할 화면 진입부입니다. 화면은 줄(`SplitLinkRow`)·도구·칸 내용과 함께 빈 칸 문구, 목록 폭을 저장할 키를 넘깁니다. 목록 폭은 가운데 손잡이로 조절하고 처음에는 최대 너비로 엽니다. 쓰던 내용이 있는 칸을 떠나면 버릴지 묻고, 칸 머리(`PaneFrame`)의 ⤢는 같은 주소에서 목록을 접는 집중 보기, ↗는 페이지로 열기입니다.
 
 ### 제출 버튼 비활성화 제거와 오류 초점
 
@@ -62,7 +55,7 @@ arc42: "8.8"
 
 ### 주소 없는 바텀시트와 뒤로가기
 
-[적응형](/app-shell/adaptive/) 규칙에서 값 고르기·필터·표시·행 메뉴·더보기처럼 주소가 없는 바텀시트는 방문 기록을 건드리지 않고 시트만 닫혀야 합니다. 열림 상태를 URL 쿼리에 두면 짧은 조작마다 방문 기록이 쌓이고 새로고침할 때 시트가 다시 열리므로 쿼리 방식은 쓰지 않습니다.
+[적응형](/app-shell/adaptive/) 규칙에서 값 고르기·필터·표시·행 메뉴·메뉴 시트처럼 주소가 없는 바텀시트는 방문 기록을 건드리지 않고 시트만 닫혀야 합니다. 열림 상태를 URL 쿼리에 두면 짧은 조작마다 방문 기록이 쌓이고 새로고침할 때 시트가 다시 열리므로 쿼리 방식은 쓰지 않습니다.
 
 키트의 시트(Drawer, Base UI)는 Esc와 바깥 누름으로 닫힙니다. 안드로이드 뒤로가기는 주소가 있는 화면(페이지·mask 대화상자)이 맡습니다. 주소가 없는 시트가 안드로이드 하드웨어 뒤로가기로 닫히는지는 확인하지 못했습니다.
 
@@ -74,10 +67,10 @@ arc42: "8.8"
 
 | 위치 | 담는 구현 |
 | --- | --- |
-| `src/shared/ui/*.tsx` | shadcn 부품(Button 변형 `view`·`view-active`·`tool`·`create`, Badge `label` 변형, Input·Textarea·Select와 Field·FieldGroup, Dialog·Drawer 등)과 조합 부품(`FormDialog`·`ConfirmDialog`·`DetailSurface`, `AdaptivePopover`·`ActionMenu`·`OptionList`, `PropertyPill`·`OptionPill`·`DatePill`·`InfoPill`, `SearchTool`, `DisplayMenu`, `DateCalendar`·`DatePicker`, `SegmentedControl`, `ListMore`, `RowLink`·`RouterAnchor`) |
-| `src/shared/ui/<폴더>/` | 앱 셸(`app-shell`), 페이지(`page`), 상세·활동(`reading`: `DetailLayout`·`ActivityFeed`), 옆 패널(`side-panel`), 미리보기(`peek`), 상태 화면(`page-state`), 작성 양식(`compose`), 필터(`filter`), 본문 수정 화면(`body-edit`), 첫 방문 덮개(`boot-cover`), 순서 바꾸기(`reorder`), 본문 칸(`editor`), 문서 편집기(`document`), 아이콘(`icon`) |
-| `src/shared/lib` | `useIsMobile`, 목록 위 대화상자(`panel`), 초안(`draft`), 목록 조건의 주소(`list-address`), 미리보기 주소(`use-peek`), 필수 값 초점 이동(`focus-invalid`) |
-| `src/app/styles/tailwind.css` | 토큰(`:root`·`[data-theme=dark]`), `@theme inline`, 휴대폰 크기 조정 |
+| `src/shared/ui/*.tsx` | shadcn 부품(Button 변형 `view`·`view-active`·`tool`·`create`, Badge `label` 변형, Input·Textarea·Select와 Field·FieldGroup, Dialog·Drawer 등)과 조합 부품(`FormDialog`·`ConfirmDialog`·`DetailSurface`, `AdaptivePopover`·`ActionMenu`·`OptionList`, `PropertyPill`·`OptionPill`·`DatePill`·`InfoPill`, `SearchTool`, `DisplayMenu`, `DateCalendar`·`DatePicker`, `SegmentedControl`, `ListMore`, `SortableHead`, `StepIndicator`, `ToolDot`, `MenuItem`, `RowLink`·`RouterAnchor`) |
+| `src/shared/ui/<폴더>/` | 레이아웃(`layout`: 앱 셸 `app-shell`, 페이지 `page`, 분할 보기 `split-view`, 칸 머리 `pane-frame`, 휴대폰 도구 `phone-tools`), 상세·활동(`reading`: `DetailLayout`·`ActivityFeed`), 설정·관리 면(`settings`), 옆 패널(`side-panel`), 상태 화면(`page-state`), 작성 양식(`compose`), 필터(`filter`), 본문 수정 화면(`body-edit`), 첫 방문 덮개(`boot-cover`), 순서 바꾸기(`reorder`), 본문 칸(`editor`), 문서 편집기(`document`), 아이콘(`icon`) |
+| `src/shared/lib` | `useIsMobile`, 목록 위 대화상자(`panel`), 초안(`draft`), 목록 조건의 주소(`list-address`), 이동 중인 주소(`route-location`), 필수 값 초점 이동(`focus-invalid`) |
+| `src/app/styles/tailwind.css` | 토큰(`:root`·`:root[data-theme=dark]`, 조작 면 `control`), `@theme inline`, 화면 전환(View Transitions), 휴대폰 크기 조정 |
 
 키트 부품은 `render={<Link … />}`나 `RowLink`(`createLink`)로 라우터에 이어지므로 루트에 링크 Provider를 두지 않습니다. 본문(Markdown·MDX)의 앱 링크만 `RouterAnchor`를 씁니다.
 

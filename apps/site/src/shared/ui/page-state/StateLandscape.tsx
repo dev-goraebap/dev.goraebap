@@ -19,7 +19,7 @@ export type StateKind = "empty" | "search" | "not-found" | "error"
 export type StateVariant = 0 | 1 | 2
 
 /**
- * 상태마다 펜 선 풍경 세 장(호호코워크 StateLandscape)과 그림이 끝나는 줄. 그림 아래 종이를 같은 여백으로 잘라
+ * 상태마다 펜 선 풍경 세 장과 그림이 끝나는 줄. 그림 아래 종이를 같은 여백으로 잘라
  * 어느 그림이든 제목이 같은 거리에 놓인다.
  */
 const DRAWINGS: Record<StateKind, readonly [file: string, end: number][]> = {

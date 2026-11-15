@@ -4,7 +4,7 @@ import { Button } from "@/shared/ui/button"
 import { ChevronDownIcon, PlusIcon } from "@/shared/ui/icon"
 
 /**
- * 목록의 그룹 머리(호호코워크 ListGroupHeader): 접기 꺾쇠 · 표식 · 이름 · 개수, 오른쪽 +. 스크롤해도 위에 붙는다.
+ * 목록의 그룹 머리: 접기 꺾쇠 · 표식 · 이름 · 개수, 오른쪽 +. 스크롤해도 위에 붙는다.
  * 데스크톱 36px, 휴대폰 52px. 띠 색(bg-band)은 불투명해 지나가는 줄이 비치지 않는다.
  */
 export function ListGroupHeader({ label, icon, count, isOpen, onToggle, createLabel, onCreate }: {

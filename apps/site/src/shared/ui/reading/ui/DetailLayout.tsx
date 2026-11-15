@@ -1,6 +1,7 @@
 import type { ReactNode } from "react"
+import { useIsInDialogBody } from "@/shared/ui/dialog"
 import { cn } from "cn"
-import { useOwnPageTitle } from "@/shared/ui/page"
+import { useOwnPageTitle } from "@/shared/ui/layout/page"
 
 /** 상세 속성의 한 묶음(속성 · 라벨 · 프로젝트 …): 넓은 옆 칸에서 이 이름 아래에 알약이 줄로 선다. */
 export type DetailSection = { title: string; items: ReactNode }
@@ -31,6 +32,8 @@ const GRID = [
 const MAIN = "min-w-0 @min-[60rem]/detail:col-start-1"
 const SIDE = [
   "flex min-w-0 flex-wrap gap-1.5",
+  // 휴대폰: 속성 알약을 둥근 상자 하나에 모은다(Linear 모바일).
+  "max-md:rounded-3xl max-md:border max-md:border-control-border max-md:bg-control/60 max-md:p-2",
   "@min-[60rem]/detail:sticky @min-[60rem]/detail:top-6 @min-[60rem]/detail:col-start-2 @min-[60rem]/detail:row-span-3 @min-[60rem]/detail:row-start-1",
   "@min-[60rem]/detail:flex-col @min-[60rem]/detail:flex-nowrap @min-[60rem]/detail:gap-6 @min-[60rem]/detail:self-start",
 ].join(" ")
@@ -58,16 +61,18 @@ function DetailProperties({ sections }: { sections: DetailSection[] }) {
 }
 
 /**
- * 본문이 있는 것의 상세(호호코워크 DetailLayout, Linear 이슈 모양): 업무 · 일정 · 회의록 · 공지사항이 같이 쓴다.
+ * 본문이 있는 것의 상세(Linear 이슈 모양): 업무 · 일정 · 회의록 · 공지사항이 같이 쓴다.
  * 위에서 아래로 소속 줄, 제목, 본문과 그 뒤(하위 항목 · 활동)를 45rem 읽기 단에 둔다. 너비는 창이 아니라 자기 폭(컨테이너 쿼리)이다.
  * - 자기 폭이 60rem 이상이면 속성은 오른쪽 16rem 칸에 묶음 이름 아래 줄로 붙어 따라온다.
  * - 좁으면(휴대폰 포함) 제목과 본문 사이에 한 줄 알약으로 놓이고, 넘치면 다음 줄로 넘긴다. 스크롤은 페이지 본문이 맡는다.
  * 페이지의 점 무늬를 자기 바탕으로 가린다(상세 면에는 무늬가 없다).
  */
 export function DetailLayout({ label, head, title, sections, children, after }: DetailLayoutProps) {
+  // 대화상자 안에서는 대화상자 폭을 그대로 쓴다(가운데 단 · 여백 · 바탕 없이).
+  const isInDialog = useIsInDialogBody()
   return (
-    <section aria-label={label} className="@container/detail min-w-0 flex-1 bg-background">
-      <article className={GRID}>
+    <section aria-label={label} className={cn("@container/detail min-w-0 flex-1", !isInDialog && "bg-background")}>
+      <article className={isInDialog ? "grid grid-cols-1 gap-y-4" : GRID}>
         {head && <header className={MAIN}>{head}</header>}
         <header className={MAIN}><DetailTitle>{title}</DetailTitle></header>
         {sections.length > 0 && <DetailProperties sections={sections} />}

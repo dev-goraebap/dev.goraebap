@@ -33,7 +33,7 @@ function ActorAvatar({ name }: { name: string }) {
 }
 
 /*
- * 세로선 하나(호호코워크 activity.module.css): 선은 댓글 카드 아바타의 가운데(카드 테두리 1px + 안쪽 12px + 아바타 반 10px = 23px)를 지난다.
+ * 세로선 하나: 선은 댓글 카드 아바타의 가운데(카드 테두리 1px + 안쪽 12px + 아바타 반 10px = 23px)를 지난다.
  * 칸마다 자기 몫의 선을 위(::before) · 아래(::after) 두 토막으로 그려 표식 둘레를 비우고, 첫 칸 위와 끝 칸 아래는 그리지 않는다.
  */
 const RAIL = "relative before:absolute before:top-0 before:left-[calc(1.4375rem-0.5px)] before:w-px before:bg-input after:absolute after:bottom-0 after:left-[calc(1.4375rem-0.5px)] after:w-px after:bg-input first:before:hidden last:after:hidden"
@@ -119,7 +119,7 @@ function ReplyBox({ onSend }: { onSend: (body: string) => Promise<unknown> }) {
 function CommentCard({ item, replies, tools, onReply }: { item: Comment; replies: Comment[]; tools: CommentTools; onReply?: (body: string) => Promise<unknown> }) {
   return (
     <li className={cn(RAIL, "py-2 before:h-2 after:top-2")}>
-      <article aria-label={`${item.actorName}의 댓글`} className="relative z-1 squircle rounded-xl border bg-card">
+      <article aria-label={`${item.actorName}의 댓글`} className="relative z-1 rounded-xl border bg-card">
         <CommentBody item={item} tools={tools} />
         {replies.map(reply => <CommentBody key={reply.id} item={reply} tools={tools} isReply />)}
         {onReply && <ReplyBox onSend={onReply} />}
@@ -129,7 +129,7 @@ function CommentCard({ item, replies, tools, onReply }: { item: Comment; replies
 }
 
 /**
- * 댓글 입력(호호코워크 ChatComposer): 둥근 칸 안의 글 칸과 동그란 보내기. Enter는 보내기, Shift+Enter는 줄바꿈.
+ * 댓글 입력: 둥근 칸 안의 글 칸과 동그란 보내기. Enter는 보내기, Shift+Enter는 줄바꿈.
  * 보내는 동안 글은 남아 있다가 저장되면 비운다. onCancel이 있으면(고치기 · 답글) 취소 단추와 Esc로 접는다.
  */
 export function CommentComposer({ label = "댓글", placeholder = "의견을 남겨 주세요", initial = "", onSend, onCancel }: {
@@ -155,8 +155,10 @@ export function CommentComposer({ label = "댓글", placeholder = "의견을 남
     send()
   }
   return (
-    <form onSubmit={send}>
-      <InputGroup className="squircle rounded-[0.875rem] bg-card">
+    // 휴대폰 상세: 댓글 칸이 화면 아래에 떠 있다(Linear 모바일처럼, 하단 막대 자리). 고쳐 쓰는 칸(onCancel)은 제자리.
+    <form onSubmit={send} className={onCancel ? undefined : "max-md:sticky max-md:bottom-[calc(0.75rem+env(safe-area-inset-bottom))] max-md:z-20"}>
+      <InputGroup className={cn("rounded-[0.875rem] bg-card",
+        !onCancel && "max-md:rounded-3xl max-md:border-control-border max-md:bg-background/80 max-md:shadow-md max-md:supports-backdrop-filter:backdrop-blur-xl")}>
         <InputGroupTextarea aria-label={label} placeholder={placeholder} rows={1} value={text} disabled={isBusy} autoFocus={Boolean(onCancel)}
           onChange={event => setText(event.target.value)} onKeyDown={sendOnEnter} className="max-h-60 min-h-10 py-2.5" />
         <InputGroupAddon align="inline-end" className="gap-1 self-end">
@@ -171,7 +173,7 @@ export function CommentComposer({ label = "댓글", placeholder = "의견을 남
 }
 
 /**
- * 활동(호호코워크 ActivityFeed): 변경 기록과 댓글을 오래된 것부터 세로선 하나에 잇고, 끝에 댓글 입력을 둔다.
+ * 활동: 변경 기록과 댓글을 오래된 것부터 세로선 하나에 잇고, 끝에 댓글 입력을 둔다.
  * 변경은 선 위의 아이콘과 한 문장, 댓글은 선을 덮는 카드다. onComment가 없으면 읽기만 한다.
  * 답글은 그 댓글 카드 안에 서고(원 댓글이 지워졌으면 홀로 선다), onComment(body, parentId)로 남긴다.
  * meId의 댓글은 고치고(onEdit) 지울(onDelete) 수 있고, canModerate면 남의 댓글도 지운다. 지우기는 먼저 묻는다.
