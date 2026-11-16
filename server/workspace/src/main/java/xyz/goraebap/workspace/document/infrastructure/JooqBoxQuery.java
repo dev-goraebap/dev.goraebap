@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Document.DOCUMENT;
 import static xyz.goraebap.workspace.jooq.tables.DocumentFolder.DOCUMENT_FOLDER;
 import static xyz.goraebap.workspace.jooq.tables.Project.PROJECT;
@@ -26,7 +24,6 @@ import xyz.goraebap.workspace.document.domain.document.Document;
 @Repository
 @RequiredArgsConstructor
 class JooqBoxQuery implements BoxQuery {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

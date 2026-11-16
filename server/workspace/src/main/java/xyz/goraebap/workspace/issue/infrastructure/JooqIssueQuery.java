@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.Tables.ISSUE;
 import static xyz.goraebap.workspace.jooq.Tables.ISSUE_CYCLE;
 import static xyz.goraebap.workspace.jooq.Tables.ISSUE_TIME_ENTRY;
@@ -51,7 +49,6 @@ class JooqIssueQuery implements IssueQuery {
     private static final Pattern NUMBER = Pattern.compile("^#?(\\d{1,12})$");
     private static final xyz.goraebap.workspace.jooq.tables.Issue CHILD = ISSUE.as("child");
 
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

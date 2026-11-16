@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.document.SystemDocument;
 import xyz.goraebap.workspace.document.SystemDocumentFacade;
 import xyz.goraebap.workspace.document.application.DocumentSpaces;
@@ -20,14 +20,14 @@ public class SystemDocuments implements SystemDocumentFacade {
     private final DocumentSpaces documentSpaces;
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void put(SystemDocument document) {
         systemDocumentStore.upsert(document);
         documentSpaces.signal(document.id());
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void remove(UUID id, UUID actor, Instant at) {
         systemDocumentStore.remove(id, actor, at);
         documentSpaces.signal(id);

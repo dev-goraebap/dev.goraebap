@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.file.FileFacade;
 import xyz.goraebap.workspace.activity.ActivityOwner;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
@@ -41,46 +41,46 @@ public class ChapterBodyService {
     private final FileFacade fileFacade;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<RichBodyFacade.Editor> editors(CurrentUser user, UUID id) {
         return richBodyFacade.editors(owner(chapterService.readable(user, id).id()));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void editing(CurrentUser user, UUID id, UUID lease) {
         richBodyFacade.editing(owner(chapterService.writable(user, id).id()), user.id(), lease);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void stopEditing(CurrentUser user, UUID id, UUID lease) {
         richBodyFacade.stopEditing(owner(chapterService.readable(user, id).id()), user.id(), lease);
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public RichBodyState read(CurrentUser user, UUID id) {
         return richBodyFacade.read(owner(chapterService.readable(user, id).id()));
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public RichBodyState.BodyVersion version(CurrentUser user, UUID id, UUID versionId) {
         return richBodyFacade.version(owner(chapterService.readable(user, id).id()), versionId);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState save(CurrentUser user, UUID id, DocumentBodyRequests.Save request) {
         var state = richBodyFacade.save(owner(chapterService.writable(user, id).id()), user.id(), request.edit());
         written(id, state, user);
         return state;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState patch(CurrentUser user, UUID id, RichBodyPatch patch) {
         var state = richBodyFacade.patch(owner(chapterService.writable(user, id).id()), user.id(), patch);
         written(id, state, user);
         return state;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState restore(CurrentUser user, UUID id, UUID revisionId, DocumentBodyRequests.Restore request) {
         var state = richBodyFacade.restore(
                 owner(chapterService.writable(user, id).id()), user.id(), revisionId, request.expectedVersion());
@@ -89,31 +89,31 @@ public class ChapterBodyService {
     }
 
     /** The chapter's timeline, for whoever reads the manual. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<BodyActivityViews.Entry> timeline(CurrentUser user, UUID id) {
         return bodyActivity.timeline(
                 activityOwner(chapterService.readable(user, id).id()));
     }
 
     /** A comment on the chapter's timeline, by whoever may write the manual; its id. */
-    @WorkspaceTransactional
+    @Transactional
     public UUID addComment(CurrentUser user, UUID id, BodyActivityRequests.CommentInput request) {
         return bodyActivity.comment(
                 activityOwner(chapterService.writable(user, id).id()), user, request);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void editComment(CurrentUser user, UUID id, UUID commentId, BodyActivityRequests.CommentEdit request) {
         bodyActivity.edit(activityOwner(chapterService.writable(user, id).id()), user, commentId, request);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void deleteComment(CurrentUser user, UUID id, UUID commentId) {
         bodyActivity.delete(
                 activityOwner(chapterService.writable(user, id).id()), user, commentId, WorkspaceRoles.admin(user));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void resolveComment(CurrentUser user, UUID id, UUID commentId, BodyActivityRequests.Resolution request) {
         bodyActivity.resolve(activityOwner(chapterService.writable(user, id).id()), user, commentId, request);
     }
@@ -123,7 +123,7 @@ public class ChapterBodyService {
     }
 
     /** A short-lived address of one of the chapter's files, for whoever reads the manual. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public URI fileUrl(CurrentUser user, UUID id, UUID fileId, boolean download) {
         return fileFacade
                 .openUrl(TYPE, chapterService.readable(user, id).id(), fileId, download)

@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Issue.ISSUE;
 import static xyz.goraebap.workspace.jooq.tables.IssueLabel.ISSUE_LABEL;
 import static xyz.goraebap.workspace.jooq.tables.IssueLabelLink.ISSUE_LABEL_LINK;
@@ -21,7 +19,6 @@ import xyz.goraebap.workspace.issue.domain.label.IssueLabelRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqIssueLabelRepository implements IssueLabelRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

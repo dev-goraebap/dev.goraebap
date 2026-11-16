@@ -9,7 +9,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.realtime.RealtimeFacade;
 import xyz.goraebap.foundation.realtime.Signal;
 import xyz.goraebap.workspace.issue.application.IssueErrorCode;
@@ -32,7 +32,7 @@ public class LabelService {
     private final RealtimeFacade realtimeFacade;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<LabelViews.LabelView> labels() {
         return issueLabelRepository.findAll().stream()
                 .map(label -> new LabelViews.LabelView(
@@ -44,7 +44,7 @@ public class LabelService {
                 .toList();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, LabelRequests.LabelInput request) {
         requireAdmin(user);
         return make(user.id(), clock.instant(), request);
@@ -54,7 +54,7 @@ public class LabelService {
      * A label an importer brings with the issues, made by actor at the given moment; one of the
      * same name already there is the one it means.
      */
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(UUID actor, Instant at, LabelRequests.LabelInput request) {
         return issueLabelRepository.findAll().stream()
                 .filter(label -> label.name().equalsIgnoreCase(request.name().strip()))
@@ -63,7 +63,7 @@ public class LabelService {
                 .orElseGet(() -> make(actor, at, request));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, UUID labelId, LabelRequests.LabelInput request) {
         requireAdmin(user);
         var label = labelOf(labelId);
@@ -74,7 +74,7 @@ public class LabelService {
     }
 
     /** Puts the labels in the order given; every label must be named once. */
-    @WorkspaceTransactional
+    @Transactional
     public void reorder(CurrentUser user, LabelRequests.Order request) {
         requireAdmin(user);
         var known = issueLabelRepository.findAll().stream().map(IssueLabel::id).toList();
@@ -84,7 +84,7 @@ public class LabelService {
         signal();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, UUID labelId) {
         requireAdmin(user);
         issueLabelRepository.deleteById(labelOf(labelId).id());

@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.IntegrationRule.INTEGRATION_RULE;
 import static xyz.goraebap.workspace.jooq.tables.RepositoryIntegration.REPOSITORY_INTEGRATION;
 
@@ -23,7 +21,6 @@ import xyz.goraebap.workspace.issue.domain.code.RuleEvent;
 @Repository
 @RequiredArgsConstructor
 class JooqIntegrationRepository implements IntegrationRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

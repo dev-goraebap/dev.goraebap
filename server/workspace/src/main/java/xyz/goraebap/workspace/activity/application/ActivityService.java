@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.workspace.activity.ActivityActor;
 import xyz.goraebap.workspace.activity.ActivityEntry;
@@ -27,7 +27,7 @@ public class ActivityService implements ActivityFacade {
     private final UserFacade userFacade;
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<ActivityEntry> timeline(ActivityOwner owner) {
         var entries = activityRepository.findTimeline(owner);
         var profileIds = entries.stream()
@@ -45,14 +45,14 @@ public class ActivityService implements ActivityFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void record(ActivityOwner owner, List<ActivityEvent> events) {
         if (!events.isEmpty())
             activityRepository.saveEvents(owner, events, actor(events.getFirst().actorId()));
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public UUID comment(
             ActivityOwner owner, UUID author, Instant at, String body, String quote, UUID parentId, String blockId) {
         UUID thread = parentId == null ? null : commentOf(owner, parentId).threadId();
@@ -63,7 +63,7 @@ public class ActivityService implements ActivityFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void editComment(ActivityOwner owner, UUID commentId, UUID actor, String body) {
         var comment = commentOf(owner, commentId);
         if (!comment.isWrittenBy(actor)) throw new AccessDeniedException("자신이 쓴 댓글만 고칠 수 있습니다");
@@ -73,7 +73,7 @@ public class ActivityService implements ActivityFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void resolveThread(ActivityOwner owner, UUID commentId, UUID actor, boolean resolved) {
         var comment = commentOf(owner, commentId);
         if (comment.parentId() != null) throw ActivityErrorCode.ACTIVITY_COMMENT_NOT_FOUND.raise();
@@ -87,7 +87,7 @@ public class ActivityService implements ActivityFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void deleteComment(ActivityOwner owner, UUID commentId, UUID actor, boolean moderator) {
         var comment = commentOf(owner, commentId);
         if (!comment.isWrittenBy(actor) && !moderator) throw new AccessDeniedException("자신이 쓴 댓글만 지울 수 있습니다");

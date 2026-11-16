@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.realtime.RealtimeFacade;
 import xyz.goraebap.foundation.realtime.Signal;
 import xyz.goraebap.foundation.user.UserFacade;
@@ -46,7 +46,7 @@ public class ProjectService implements ProjectFacade {
     private final List<ProjectSetupSpi> projectSetupSpis;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<ProjectViews.ProjectView> list(CurrentUser user, ProjectRequests.Listing listing) {
         if (listing.status() == ProjectRequests.Status.DELETED) requireAdmin(user);
         return projectQuery.findAll(listing.status(), reader(user));
@@ -56,7 +56,7 @@ public class ProjectService implements ProjectFacade {
      * The project a key names, its current key or an old one, for who sees it (its members and Workspace administrators);
      * a deleted project only for Workspace administrators. Who does not see it does not find it.
      */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ProjectViews.ProjectView get(CurrentUser user, String key) {
         var view = projectQuery.findById(idOf(key), reader(user));
         if (!view.can().view()) throw ProjectErrorCode.PROJECT_NOT_FOUND.raise();
@@ -64,7 +64,7 @@ public class ProjectService implements ProjectFacade {
         return view;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public String create(CurrentUser user, ProjectRequests.CreateProject request) {
         requireAdmin(user);
         return make(
@@ -76,7 +76,7 @@ public class ProjectService implements ProjectFacade {
     }
 
     /** Changes the key, name, description and mark together; a new key keeps the old one as this project's. */
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, String key, ProjectRequests.EditProject request) {
         var project = live(key, request.expectedVersion());
         requireManager(user, project.id());
@@ -86,7 +86,7 @@ public class ProjectService implements ProjectFacade {
         save(user, project);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void archive(CurrentUser user, String key, ProjectRequests.Versioned request) {
         requireAdmin(user);
         var project = live(key, request.expectedVersion());
@@ -94,7 +94,7 @@ public class ProjectService implements ProjectFacade {
         save(user, project);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void unarchive(CurrentUser user, String key, ProjectRequests.Versioned request) {
         requireAdmin(user);
         var project = live(key, request.expectedVersion());
@@ -103,7 +103,7 @@ public class ProjectService implements ProjectFacade {
     }
 
     /** Deletes the project: it leaves every list but stays for what names it, and can be restored. */
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, String key, long expectedVersion) {
         requireAdmin(user);
         var project = live(key, expectedVersion);
@@ -111,7 +111,7 @@ public class ProjectService implements ProjectFacade {
         save(user, project);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void restore(CurrentUser user, String key, ProjectRequests.Versioned request) {
         requireAdmin(user);
         var project = found(idOf(key), request.expectedVersion());
@@ -120,7 +120,7 @@ public class ProjectService implements ProjectFacade {
     }
 
     /** Puts every live, unarchived project in the given order; the list must be exactly those projects. */
-    @WorkspaceTransactional
+    @Transactional
     public void reorder(CurrentUser user, ProjectRequests.Order request) {
         requireAdmin(user);
         var active = projectRepository.findActiveIds();
@@ -134,12 +134,12 @@ public class ProjectService implements ProjectFacade {
     }
 
     /** Who belongs to which live project with which role: every project for a Workspace administrator, else their own. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<ProjectViews.Membership> memberships(CurrentUser user) {
         return projectQuery.findMemberships(reader(user));
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<ProjectViews.MemberView> members(CurrentUser user, String key) {
         var view = get(user, key);
         var joined = projectQuery.findMembers(view.id());
@@ -159,7 +159,7 @@ public class ProjectService implements ProjectFacade {
      * Adds someone who works here to the project with a role, also when it is archived; adding a member again changes
      * nothing (their role changes with {@link #changeMember}). The project's administrators say who belongs.
      */
-    @WorkspaceTransactional
+    @Transactional
     public void addMember(CurrentUser user, String key, ProjectRequests.AddMember request) {
         var project = live(key, null);
         requireManager(user, project.id());
@@ -171,7 +171,7 @@ public class ProjectService implements ProjectFacade {
     }
 
     /** Gives a member another role; the project keeps at least one administrator. */
-    @WorkspaceTransactional
+    @Transactional
     public void changeMember(CurrentUser user, String key, UUID userId, ProjectRequests.ChangeMember request) {
         var project = live(key, null);
         requireManager(user, project.id());
@@ -185,7 +185,7 @@ public class ProjectService implements ProjectFacade {
     }
 
     /** Takes a member out of the project, who then no longer sees it; the project keeps at least one administrator. */
-    @WorkspaceTransactional
+    @Transactional
     public void removeMember(CurrentUser user, String key, UUID userId) {
         var project = live(key, null);
         requireManager(user, project.id());
@@ -195,13 +195,13 @@ public class ProjectService implements ProjectFacade {
         signal(project.id(), userId);
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<UUID> favorites(CurrentUser user) {
         return projectQuery.findFavorites(reader(user));
     }
 
     /** Marks a project the member sees as one of their own, listed under 프로젝트 in their menu, or not. */
-    @WorkspaceTransactional
+    @Transactional
     public void favorite(CurrentUser user, String key, ProjectRequests.Favorite request) {
         var project = live(key, null);
         if (!projectAccess.roleOf(project.id(), user).atLeast(ProjectRole.VIEWER))
@@ -210,7 +210,7 @@ public class ProjectService implements ProjectFacade {
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Map<UUID, ProjectSummary> summariesOf(Collection<UUID> ids) {
         if (ids.isEmpty()) return Map.of();
         return projectRepository.findAllById(ids).stream()
@@ -219,7 +219,7 @@ public class ProjectService implements ProjectFacade {
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Optional<ProjectSummary> findByKey(String key) {
         String normal;
         try {
@@ -234,13 +234,13 @@ public class ProjectService implements ProjectFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public long takeWorkItemNumber(UUID id) {
         return projectRepository.takeWorkItemNumber(id);
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public boolean exists(UUID id) {
         return projectRepository
                 .findById(id)
@@ -249,13 +249,13 @@ public class ProjectService implements ProjectFacade {
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Optional<String> descriptionOf(UUID id) {
         return projectRepository.findById(id).map(Project::description).filter(text -> !text.isBlank());
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public ProjectSummary findOrCreate(UUID actor, Instant at, NewProject project) {
         return findByKey(project.key()).orElseGet(() -> summary(make(actor, at, project)));
     }

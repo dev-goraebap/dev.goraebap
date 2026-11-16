@@ -659,26 +659,3 @@ INSERT INTO work_item_type (code, name, icon, color, "position", is_default) VAL
     ('EPIC', '에픽', 'epic', '#5e6ad2', 3, 0),
     ('STORY', '스토리', 'document', '#4cb782', 4, 0);
 -- [jooq ignore stop]
-
--- 다른 하위 프로젝트를 바꿀 일을 내 저장과 함께 적어 두는 자리. foundation의 outbox_message와 같은 모양이다.
-CREATE TABLE outbox_message (
-    outbox_id integer,
-    topic varchar(64) NOT NULL,
-    ordering_key varchar(200),
-    payload text NOT NULL,
-    status varchar(16) DEFAULT 'PENDING' NOT NULL,
-    attempts integer DEFAULT 0 NOT NULL,
-    next_attempt_at timestamptz NOT NULL,
-    last_error varchar(500),
-    created_at timestamptz NOT NULL,
-    finished_at timestamptz,
-    CONSTRAINT outbox_message_pkey PRIMARY KEY (outbox_id)
--- [jooq ignore start]
-    , CONSTRAINT outbox_message_status_check CHECK (status IN ('PENDING', 'DONE', 'FAILED'))
--- [jooq ignore stop]
-);
-
--- [jooq ignore start]
-CREATE INDEX ix_outbox_message_due ON outbox_message (status, next_attempt_at);
-CREATE INDEX ix_outbox_message_ordering ON outbox_message (ordering_key, outbox_id);
--- [jooq ignore stop]

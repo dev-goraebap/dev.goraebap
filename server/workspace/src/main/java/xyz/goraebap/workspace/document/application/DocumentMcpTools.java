@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.application;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -12,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.mcp.McpArguments;
 import xyz.goraebap.foundation.mcp.McpChangeSource;
 import xyz.goraebap.foundation.mcp.McpTool;
@@ -52,7 +50,6 @@ public class DocumentMcpTools implements McpToolProvider, McpChangeSource {
     private final DocumentBodyService documentBodyService;
     private final DocumentSpaces documentSpaces;
     private final RichBodyFacade richBodyFacade;
-    @Qualifier(WorkspaceDatabaseConfig.TRANSACTION_MANAGER)
     private final org.springframework.transaction.PlatformTransactionManager transactionManager;
     private final Clock clock;
     private final jakarta.validation.Validator validator;
@@ -343,7 +340,7 @@ public class DocumentMcpTools implements McpToolProvider, McpChangeSource {
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Changes changesSince(
             CurrentUser actor, Instant since, Instant until, String project, int limit, String cursor) {
         String key = project == null || isShared(project) ? null : project;

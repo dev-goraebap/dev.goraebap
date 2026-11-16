@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.ManualChapter.MANUAL_CHAPTER;
 
 import java.util.List;
@@ -15,7 +13,6 @@ import xyz.goraebap.workspace.document.application.chapter.ChapterViews;
 @Repository
 @RequiredArgsConstructor
 class JooqChapterQuery implements ChapterQuery {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

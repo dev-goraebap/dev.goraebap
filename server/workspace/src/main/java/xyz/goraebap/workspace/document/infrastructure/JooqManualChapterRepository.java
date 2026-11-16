@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.ManualChapter.MANUAL_CHAPTER;
 
 import java.time.Instant;
@@ -21,7 +19,6 @@ import xyz.goraebap.workspace.document.domain.chapter.ManualChapterRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqManualChapterRepository implements ManualChapterRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

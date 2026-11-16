@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.issue.application.IssueErrorCode;
 import xyz.goraebap.workspace.issue.application.IssueProjects;
 import xyz.goraebap.workspace.issue.domain.board.IssueColumnRepository;
@@ -33,7 +33,7 @@ public class CodeService {
     private final IssueProjects issueProjects;
     private final CodeHosts codeHosts;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<CodeViews.Integration> list(CurrentUser user, String key) {
         var project = issueProjects.readable(user, key);
         return integrationRepository.findAllByProjectId(project.id()).stream()
@@ -41,7 +41,7 @@ public class CodeService {
                 .toList();
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public CodeViews.Rules rules(CurrentUser user, String key) {
         var project = issueProjects.readable(user, key);
         var columns = issueColumnRepository.findAllByProjectId(project.id());
@@ -59,7 +59,7 @@ public class CodeService {
     }
 
     /** A work item's links into the project's repositories, the latest moved last. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<CodeViews.Link> links(CurrentUser user, String key, long number) {
         var project = issueProjects.readable(user, key);
         var issue = issueRepository

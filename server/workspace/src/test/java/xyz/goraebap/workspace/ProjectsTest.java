@@ -13,8 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import xyz.goraebap.workspace.WorkspaceRoles;
 import jakarta.servlet.http.Cookie;
@@ -58,18 +56,13 @@ class ProjectsTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
     @Autowired
     SessionService sessions;
 
     @BeforeEach
     void prepare() {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(ADMIN, "가관리", "admin@example.test", "ACTIVE", WorkspaceRoles.ADMIN);
         member(MEMBER, "나구성원", "member@example.test", "ACTIVE");
         member(LEFT, "다퇴사", "left@example.test", "TERMINATED");
@@ -153,7 +146,7 @@ class ProjectsTest {
                         .cookie(cookie(ADMIN))
                         .content(edit(1, "P1", "안전 플랫폼")))
                 .andExpect(status().isNoContent());
-        assertThat(ws.queryForList("SELECT prefix FROM project_key WHERE is_current ORDER BY prefix", String.class))
+        assertThat(jdbc.queryForList("SELECT prefix FROM project_key WHERE is_current ORDER BY prefix", String.class))
                 .containsExactly("P1");
     }
 
@@ -268,8 +261,8 @@ class ProjectsTest {
         mvc.perform(get("/api/v1/workspace/projects/SAFE/members").cookie(cookie(MEMBER)))
                 .andExpect(jsonPath("$", hasSize(2)));
 
-        var safe = ws.queryForObject("SELECT project_id FROM project_key WHERE prefix='SAFE'", String.class);
-        var fis = ws.queryForObject("SELECT project_id FROM project_key WHERE prefix='FIS'", String.class);
+        var safe = jdbc.queryForObject("SELECT project_id FROM project_key WHERE prefix='SAFE'", String.class);
+        var fis = jdbc.queryForObject("SELECT project_id FROM project_key WHERE prefix='FIS'", String.class);
         mvc.perform(write(put("/api/v1/workspace/projects/order"))
                         .cookie(cookie(ADMIN))
                         .content("{\"ids\":[\"" + fis + "\"]}"))

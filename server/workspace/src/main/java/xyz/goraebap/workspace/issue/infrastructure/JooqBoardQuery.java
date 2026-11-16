@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.IssueColumn.ISSUE_COLUMN;
 import static xyz.goraebap.workspace.jooq.tables.Project.PROJECT;
 
@@ -16,7 +14,6 @@ import xyz.goraebap.workspace.issue.domain.board.ColumnCategory;
 @Repository
 @RequiredArgsConstructor
 class JooqBoardQuery implements BoardQuery {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

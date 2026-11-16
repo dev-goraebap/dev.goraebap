@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.DocumentLabel.DOCUMENT_LABEL;
 import static xyz.goraebap.workspace.jooq.tables.DocumentLabelLink.DOCUMENT_LABEL_LINK;
 import static xyz.goraebap.workspace.jooq.tables.DocumentLibraryOrder.DOCUMENT_LIBRARY_ORDER;
@@ -28,7 +26,6 @@ import tools.jackson.databind.json.JsonMapper;
 @RequiredArgsConstructor
 class JooqLibraryRepository implements LibraryRepository {
     private static final TypeReference<List<UUID>> IDS = new TypeReference<>() {};
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dsl;
     private final JsonMapper json;
 

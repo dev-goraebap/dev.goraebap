@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 
 /** 문서함's top as every member reads it: a folder for each project, names joined once the rows are read. */
@@ -15,7 +15,7 @@ public class BoxQueryService {
     private final UserFacade userFacade;
 
     /** Every project's folder in the administrators' order, with its last writer's name. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<BoxViews.ProjectFolder> projects() {
         var rows = boxQuery.findProjectFolders();
         var ids = rows.stream()

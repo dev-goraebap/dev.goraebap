@@ -5,7 +5,7 @@ import java.time.Instant;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.activity.ActivityFacade;
 import xyz.goraebap.workspace.activity.ActivityOwner;
 import xyz.goraebap.workspace.issue.application.IssueErrorCode;
@@ -30,7 +30,7 @@ public class IssueCommentService {
     private final IssueProjects issueProjects;
     private final Clock clock;
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID add(CurrentUser user, String key, long number, IssueCommentRequests.CommentInput request) {
         return comment(issueProjects.commentable(user, key), user.id(), clock.instant(), number, request);
     }
@@ -39,7 +39,7 @@ public class IssueCommentService {
      * A comment written by author at the given moment, for importers, which keep when and by whom what they bring was
      * written and need no rights.
      */
-    @WorkspaceTransactional
+    @Transactional
     public UUID add(UUID author, Instant at, String key, long number, IssueCommentRequests.CommentInput request) {
         return comment(issueProjects.open(key), author, at, number, request);
     }
@@ -58,7 +58,7 @@ public class IssueCommentService {
         return id;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void edit(
             CurrentUser user, String key, long number, UUID commentId, IssueCommentRequests.CommentInput request) {
         var project = issueProjects.commentable(user, key);
@@ -66,7 +66,7 @@ public class IssueCommentService {
         issueProjects.signal(project);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void resolve(
             CurrentUser user, String key, long number, UUID commentId, IssueCommentRequests.Resolution request) {
         var project = issueProjects.commentable(user, key);
@@ -74,7 +74,7 @@ public class IssueCommentService {
         issueProjects.signal(project);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, String key, long number, UUID commentId) {
         var project = issueProjects.commentable(user, key);
         activityFacade.deleteComment(

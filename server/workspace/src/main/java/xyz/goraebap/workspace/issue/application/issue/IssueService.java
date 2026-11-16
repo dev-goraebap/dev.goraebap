@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.application.issue;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -22,10 +20,9 @@ import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.notification.Notice;
-import xyz.goraebap.foundation.notification.NotificationOutbox;
-import xyz.goraebap.foundation.outbox.Outbox;
+import xyz.goraebap.foundation.notification.NotificationFacade;
 import xyz.goraebap.foundation.notification.Subject;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.foundation.user.UserSummary;
@@ -87,23 +84,20 @@ public class IssueService {
     /** What a notice about an issue names as its subject. */
     static final String SUBJECT = "ISSUE";
 
-    private final NotificationOutbox notificationOutbox;
-
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    private final Outbox outbox;
+    private final NotificationFacade notificationFacade;
     private final Clock clock;
     private final CycleRepository cycleRepository;
     private final xyz.goraebap.workspace.issue.domain.cycle.CycleSettingsRepository cycleSettingsRepository;
 
     /** A project's issues, by default in board order. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public IssueViews.IssueSlice list(CurrentUser user, String key, IssueRequests.Listing listing) {
         var project = issueProjects.readable(user, key);
         var sort = listing.sort() == null ? IssueRequests.Sort.BOARD : listing.sort();
         return slice(user, List.of(project.id()), listing, sort);
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public IssueQuery.ChangeSlice changes(
             CurrentUser user, String key, Instant since, Instant until, String cursor, int size) {
         var projects = key == null
@@ -114,7 +108,7 @@ public class IssueService {
     }
 
     /** Issues across the live projects the user sees (or those of them named), by default the latest changed first. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public IssueViews.IssueSlice listAll(CurrentUser user, IssueRequests.Listing listing) {
         var projectIds = areaProjects(user, listing.project());
         if (projectIds.isEmpty()) return new IssueViews.IssueSlice(List.of(), null);
@@ -142,7 +136,7 @@ public class IssueService {
         return named.isEmpty() ? Optional.empty() : Optional.of(named);
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<IssueViews.IssueGroup> groups(
             CurrentUser user, String key, IssueRequests.Listing listing, IssueRequests.Grouping grouping) {
         var scope = key != null
@@ -173,14 +167,14 @@ public class IssueService {
                 .toList();
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public IssueViews.IssueView get(CurrentUser user, String key, long number) {
         var project = issueProjects.readable(user, key);
         return view(user, project, issueIdOf(project, number));
     }
 
     /** One issue by its reference, KEY-number, its project's key current or old. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public IssueViews.IssueView getByRef(CurrentUser user, String ref) {
         var matched = REF.matcher(ref == null ? "" : ref.strip());
         if (!matched.matches()) throw IssueErrorCode.ISSUE_NOT_FOUND.raise();
@@ -193,7 +187,7 @@ public class IssueService {
     }
 
     /** The issue's comments and what happened to it, oldest first, each with who did it. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<IssueViews.TimelineEntry> timeline(CurrentUser user, String key, long number) {
         var project = issueProjects.readable(user, key);
         UUID issueId = issueIdOf(project, number);
@@ -353,7 +347,7 @@ public class IssueService {
     }
 
     /** A new issue at the end of its column; its number comes back. */
-    @WorkspaceTransactional
+    @Transactional
     public long create(CurrentUser user, String key, IssueRequests.CreateIssue request) {
         var project = issueProjects.writable(user, key);
         var issue = make(project, user.id(), clock.instant(), request, true);
@@ -366,13 +360,13 @@ public class IssueService {
      * then at the end of its column with the project's next number, as the screens make one, but nobody is told, as
      * nothing new is given to anyone, and nothing is filled in for it (it says what it said there). Its number comes back.
      */
-    @WorkspaceTransactional
+    @Transactional
     public long create(UUID author, Instant at, String key, IssueRequests.CreateIssue request) {
         return make(issueProjects.open(key), author, at, request, false).number();
     }
 
     /** Every property at once over the version read; a new column puts the issue at that column's end. */
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, String key, long number, IssueRequests.EditIssue request) {
         var project = issueProjects.writable(user, key);
         var issue = liveIssue(project, number);
@@ -506,7 +500,7 @@ public class IssueService {
     }
 
     /** Puts the issue on the board right after another in a column, or first; the column may be another one. */
-    @WorkspaceTransactional
+    @Transactional
     public void move(CurrentUser user, String key, long number, IssueRequests.Move request) {
         var project = issueProjects.writable(user, key);
         var issue = liveIssue(project, number);
@@ -555,7 +549,7 @@ public class IssueService {
      * A repository's rule moves the work item (저장소 연동): to the top of the column, by nobody, on its timeline as
      * any move is. The project must be live and not archived; a work item already there stays.
      */
-    @WorkspaceTransactional
+    @Transactional
     public void moveByRule(UUID issueId, UUID columnId) {
         var issue = issueRepository
                 .findById(issueId)
@@ -591,7 +585,7 @@ public class IssueService {
     }
 
     /** Deletes the issue, kept for its number and history; its maker (an editor) or the project's administrators may. */
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, String key, long number, long expectedVersion) {
         var project = issueProjects.writable(user, key);
         var issue = liveIssue(project, number);
@@ -604,7 +598,7 @@ public class IssueService {
         if (!issueRepository.save(issue, user.id(), now)) throw IssueErrorCode.ISSUE_VERSION_CONFLICT.raise();
         record(List.of(new IssueActivity(
                 UUID.randomUUID(), issue.id(), IssueActivity.Field.DELETED, null, null, now, user.id())));
-        notificationOutbox.closed(outbox, Subject.of(SUBJECT, issue.id()));
+        notificationFacade.closed(Subject.of(SUBJECT, issue.id()));
         issueProjects.signal(project);
     }
 
@@ -827,7 +821,7 @@ public class IssueService {
         UUID assignee = issue.details().assigneeId();
         if (assignee == null || assignee.equals(before) || assignee.equals(user.id())) return;
         String ref = IssueProjects.ref(project, issue.number());
-        notificationOutbox.send(outbox, Notice.toSee(
+        notificationFacade.send(Notice.toSee(
                 Subject.of(SUBJECT, issue.id()),
                 "ISSUE_ASSIGNED",
                 user.id(),

@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.IssueView.ISSUE_VIEW;
 import static xyz.goraebap.workspace.jooq.tables.IssueViewOrder.ISSUE_VIEW_ORDER;
 
@@ -29,7 +27,6 @@ class JooqSavedViewRepository implements SavedViewRepository {
     private static final TypeReference<LinkedHashMap<String, String>> FILTERS = new TypeReference<>() {};
     private static final TypeReference<List<String>> KEYS = new TypeReference<>() {};
 
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
     private final JsonMapper jsonMapper;
 

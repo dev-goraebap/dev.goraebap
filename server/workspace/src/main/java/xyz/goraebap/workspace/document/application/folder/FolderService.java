@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
 import xyz.goraebap.workspace.document.application.DocumentSpaces;
 import xyz.goraebap.workspace.document.application.access.DocumentAccess;
@@ -38,7 +38,7 @@ public class FolderService {
     private final Clock clock;
 
     /** Every live folder of a space (a project's key, or none for the shared space), by name. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<FolderViews.FolderRow> list(CurrentUser user, String key) {
         var rows = folderQuery.findAll(documentSpaces.readable(user, key).projectId());
         var hidden = documentAccess.hidden(documentAccess.reader(user)).folderIds();
@@ -48,7 +48,7 @@ public class FolderService {
     }
 
     /** A new folder by the member, now, under a folder they may write in; its id comes back. */
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, FolderRequests.CreateFolder request) {
         documentSpaces.writable(user, request.projectKey());
         if (request.parentId() != null) documentAccess.requireFolder(user, request.parentId(), Grant.Level.WRITE);
@@ -59,7 +59,7 @@ public class FolderService {
      * A new folder made by actor at the given moment, for the screens (now) and for importers, which keep when and by
      * whom what they bring was made. Its id comes back.
      */
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(UUID actor, Instant at, FolderRequests.CreateFolder request) {
         var space = documentSpaces.open(request.projectKey());
         var folders = documentFolderRepository.findAllByProjectId(space.projectId());
@@ -81,7 +81,7 @@ public class FolderService {
      * The folder a slash-separated path of names finds in a space ("설계/화면"), its missing folders made by actor at the
      * given moment; an empty path is the space's top (null). For importers and agents, who name folders by path.
      */
-    @WorkspaceTransactional
+    @Transactional
     public UUID resolve(UUID actor, Instant at, String key, String path) {
         var space = documentSpaces.open(key);
         if (path == null || path.isBlank()) return null;
@@ -107,7 +107,7 @@ public class FolderService {
         return parentId;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void rename(CurrentUser user, UUID id, FolderRequests.RenameFolder request) {
         var folder = writable(user, id, request.expectedVersion());
         requireFreeName(
@@ -120,7 +120,7 @@ public class FolderService {
     }
 
     /** Gives the folder another mark, or none. */
-    @WorkspaceTransactional
+    @Transactional
     public void mark(CurrentUser user, UUID id, FolderRequests.MarkFolder request) {
         var folder = writable(user, id, request.expectedVersion());
         folder.markAs(Mark.of(request.icon(), request.color()));
@@ -128,7 +128,7 @@ public class FolderService {
     }
 
     /** Puts a folder under another of its space, or at its top; never into itself or a folder it holds. */
-    @WorkspaceTransactional
+    @Transactional
     public void move(CurrentUser user, UUID id, FolderRequests.MoveFolder request) {
         var folder = writable(user, id, request.expectedVersion());
         if (Objects.equals(folder.parentId(), request.parentId())) return;
@@ -148,7 +148,7 @@ public class FolderService {
     }
 
     /** Deletes an empty folder; its maker, one who manages it or a Workspace administrator may. */
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, UUID id, long expectedVersion) {
         var folder = writable(user, id, expectedVersion);
         if (!user.id().equals(folder.createdBy())

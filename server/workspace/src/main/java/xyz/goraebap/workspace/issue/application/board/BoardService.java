@@ -9,7 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.issue.application.IssueErrorCode;
 import xyz.goraebap.workspace.issue.application.IssueProjects;
 import xyz.goraebap.workspace.issue.domain.board.IssueColumn;
@@ -32,18 +32,18 @@ public class BoardService {
     private final Clock clock;
     private final BoardQuery boardQuery;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<BoardViews.ColumnView> workspaceColumns() {
         return boardQuery.workspaceColumns();
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<BoardViews.ColumnView> columns(CurrentUser user, String key) {
         return columnsOf(issueProjects.readable(user, key));
     }
 
     /** The board of the project a key names whoever asks, for importers, which need no rights. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<BoardViews.ColumnView> importedColumns(String key) {
         return columnsOf(issueProjects.live(key));
     }
@@ -54,7 +54,7 @@ public class BoardService {
                 .toList();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, String key, BoardRequests.ColumnInput request) {
         var project = issueProjects.administered(user, key);
         var columns = issueColumnRepository.findAllByProjectId(project.id());
@@ -65,7 +65,7 @@ public class BoardService {
         return column.id();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, String key, UUID columnId, BoardRequests.ColumnInput request) {
         var project = issueProjects.administered(user, key);
         var column = columnOf(project.id(), columnId);
@@ -80,7 +80,7 @@ public class BoardService {
     }
 
     /** Removes an empty column; the deleted issues still in it move to the first column left, the rest close up. */
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, String key, UUID columnId) {
         var project = issueProjects.administered(user, key);
         var column = columnOf(project.id(), columnId);
@@ -96,7 +96,7 @@ public class BoardService {
     }
 
     /** Puts every column of the project in the given order; the list must be exactly its columns. */
-    @WorkspaceTransactional
+    @Transactional
     public void reorder(CurrentUser user, String key, BoardRequests.ColumnOrder request) {
         var project = issueProjects.administered(user, key);
         var columns = issueColumnRepository.findAllByProjectId(project.id()).stream()

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.file.FileFacade;
 import xyz.goraebap.workspace.activity.ActivityOwner;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
@@ -41,39 +41,39 @@ public class DocumentBodyService {
     private final FileFacade fileFacade;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<RichBodyFacade.Editor> editors(CurrentUser user, UUID id) {
         return richBodyFacade.editors(DocumentBodyOwner.of(readable(user, id).id()));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void editing(CurrentUser user, UUID id, UUID lease) {
         richBodyFacade.editing(DocumentBodyOwner.of(writable(user, id).id()), user.id(), lease);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void stopEditing(CurrentUser user, UUID id, UUID lease) {
         richBodyFacade.stopEditing(DocumentBodyOwner.of(readable(user, id).id()), user.id(), lease);
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public RichBodyState read(CurrentUser user, UUID id) {
         return richBodyFacade.read(DocumentBodyOwner.of(readable(user, id).id()));
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public RichBodyState.BodyVersion version(CurrentUser user, UUID id, UUID versionId) {
         return richBodyFacade.version(DocumentBodyOwner.of(readable(user, id).id()), versionId);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState save(CurrentUser user, UUID id, DocumentBodyRequests.Save request) {
         var state = richBodyFacade.save(DocumentBodyOwner.of(writable(user, id).id()), user.id(), request.edit());
         written(id, state, user);
         return state;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState patch(CurrentUser user, UUID id, RichBodyPatch patch) {
         var state = richBodyFacade.patch(DocumentBodyOwner.of(writable(user, id).id()), user.id(), patch);
         written(id, state, user);
@@ -84,12 +84,12 @@ public class DocumentBodyService {
      * Writes the whole body at once, as an agent does from Markdown: the body it replaces is
      * kept as a version first, and the new one too, so either can be restored from the versions.
      */
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState replace(CurrentUser user, UUID id, Map<String, Object> body) {
         return replace(user, id, body, List.of());
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState replace(CurrentUser user, UUID id, Map<String, Object> body, List<String> dropBlocks) {
         var owner = DocumentBodyOwner.of(writable(user, id).id());
         var state = richBodyFacade.replace(owner, user.id(), body, dropBlocks);
@@ -98,7 +98,7 @@ public class DocumentBodyService {
     }
 
     /** Replaces a run of the body's top-level blocks (an agent's one section), over the version read for that run only. */
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState replaceBlocks(
             CurrentUser user,
             UUID id,
@@ -114,7 +114,7 @@ public class DocumentBodyService {
         return state;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState restore(CurrentUser user, UUID id, UUID revisionId, DocumentBodyRequests.Restore request) {
         var state = richBodyFacade.restore(
                 DocumentBodyOwner.of(writable(user, id).id()), user.id(), revisionId, request.expectedVersion());
@@ -123,36 +123,36 @@ public class DocumentBodyService {
     }
 
     /** The document's timeline, for whoever reads it. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<BodyActivityViews.Entry> timeline(CurrentUser user, UUID id) {
         return bodyActivity.timeline(activityOwner(readable(user, id).id()));
     }
 
     /** A comment on the document's timeline, by whoever reads it in a project that is not archived (viewers too); its id. */
-    @WorkspaceTransactional
+    @Transactional
     public UUID addComment(CurrentUser user, UUID id, BodyActivityRequests.CommentInput request) {
         return bodyActivity.comment(activityOwner(commentable(user, id).id()), user, request);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void editComment(CurrentUser user, UUID id, UUID commentId, BodyActivityRequests.CommentEdit request) {
         bodyActivity.edit(activityOwner(commentable(user, id).id()), user, commentId, request);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void deleteComment(CurrentUser user, UUID id, UUID commentId) {
         var document = commentable(user, id);
         bodyActivity.delete(
                 activityOwner(document.id()), user, commentId, documentSpaces.administers(user, document.projectId()));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void resolveComment(CurrentUser user, UUID id, UUID commentId, BodyActivityRequests.Resolution request) {
         bodyActivity.resolve(activityOwner(commentable(user, id).id()), user, commentId, request);
     }
 
     /** A short-lived address of one of the document's files, for whoever reads the document. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public URI fileUrl(CurrentUser user, UUID id, UUID fileId, boolean download) {
         return fileFacade
                 .openUrl(DocumentBodyOwner.TYPE, readable(user, id).id(), fileId, download)

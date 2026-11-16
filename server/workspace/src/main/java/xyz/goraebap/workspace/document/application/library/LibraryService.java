@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
 import xyz.goraebap.workspace.document.application.DocumentSpaces;
 import xyz.goraebap.workspace.document.application.document.DocumentRequests;
@@ -55,7 +55,7 @@ public class LibraryService {
         return List.copyOf(rows);
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Library get(CurrentUser user, String key) {
         var project = project(user, key, false);
         var pages = rows(user, key);
@@ -75,7 +75,7 @@ public class LibraryService {
                 spaces.administers(user, project));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void assign(CurrentUser user, String key, UUID id, Labels value) {
         var project = project(user, key, true);
         var doc = documentRepository
@@ -92,7 +92,7 @@ public class LibraryService {
         spaces.signal(id);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID view(CurrentUser user, String key, UUID id, SaveView value) {
         var project = managed(user, key);
         requireLabels(project, value.labels());
@@ -117,14 +117,14 @@ public class LibraryService {
         return target;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void deleteView(CurrentUser user, String key, UUID id, long version) {
         if (!repository.deleteView(managed(user, key), id, version)) conflict();
         spaces.signal(id);
     }
 
     /** Puts the project's views in a new order; the ids must be exactly its views now. */
-    @WorkspaceTransactional
+    @Transactional
     public void orderViews(CurrentUser user, String key, LibraryModels.ViewOrder value) {
         var project = managed(user, key);
         var ids = repository.views(project).stream().map(View::id).collect(java.util.stream.Collectors.toSet());
@@ -134,7 +134,7 @@ public class LibraryService {
         spaces.signal(project);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void parent(CurrentUser user, String key, UUID id, LibraryModels.MovePage value) {
         var project = managed(user, key);
         var pages = documentRepository.findAllIncludingDeleted().stream()
@@ -157,7 +157,7 @@ public class LibraryService {
         spaces.signal(id);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void order(CurrentUser user, String key, SaveOrder value) {
         var project = managed(user, key);
         var documents = rows(user, key);

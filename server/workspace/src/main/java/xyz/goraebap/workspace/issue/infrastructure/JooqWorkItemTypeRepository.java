@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Issue.ISSUE;
 import static xyz.goraebap.workspace.jooq.tables.WorkItemType.WORK_ITEM_TYPE;
 
@@ -20,7 +18,6 @@ import xyz.goraebap.workspace.issue.domain.type.WorkItemTypeRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqWorkItemTypeRepository implements WorkItemTypeRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.application;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,7 +38,6 @@ public class DocumentDeletionMcpTools implements McpToolProvider {
 
     private final DocumentService documentService;
     private final LibraryService libraryService;
-    @Qualifier(WorkspaceDatabaseConfig.TRANSACTION_MANAGER)
     private final PlatformTransactionManager transactionManager;
 
     @Override

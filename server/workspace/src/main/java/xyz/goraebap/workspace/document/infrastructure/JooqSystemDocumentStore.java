@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Document.DOCUMENT;
 
 import java.time.Instant;
@@ -15,7 +13,6 @@ import xyz.goraebap.workspace.document.application.system.SystemDocumentStore;
 @Repository
 @RequiredArgsConstructor
 class JooqSystemDocumentStore implements SystemDocumentStore {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

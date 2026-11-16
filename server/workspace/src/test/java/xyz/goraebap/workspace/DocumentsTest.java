@@ -12,8 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import xyz.goraebap.workspace.WorkspaceRoles;
 import jakarta.servlet.http.Cookie;
@@ -66,11 +64,6 @@ class DocumentsTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
     @Autowired
     SessionService sessions;
 
@@ -83,7 +76,7 @@ class DocumentsTest {
     @BeforeEach
     void prepare() throws Exception {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(ADMIN, "가관리", "admin@example.test", WorkspaceRoles.ADMIN);
         member(MEMBER, "나구성원", "member@example.test");
         member(OTHER, "다동료", "other@example.test");
@@ -91,7 +84,7 @@ class DocumentsTest {
                         .cookie(cookie(ADMIN))
                         .content("{\"key\":\"SAFE\",\"name\":\"안전플랫폼\"}"))
                 .andExpect(status().isCreated());
-        ProjectMembers.editors(ws, "SAFE", MEMBER, OTHER);
+        ProjectMembers.editors(jdbc, "SAFE", MEMBER, OTHER);
     }
 
     @Test
@@ -120,7 +113,7 @@ class DocumentsTest {
     void anotherMembersUploadCannotLeaveAPartiallyCreatedDocumentOrLabelAssignment() throws Exception {
         String upload = upload(OTHER);
         UUID label = UUID.randomUUID();
-        ws.update(
+        jdbc.update(
                 "INSERT INTO document_label(label_id,name,color) VALUES (?,?,?)", label.toString(), "첨부 검증", "#498fdf");
         int documents = count("document");
         int bodies = count("rich_body");
@@ -192,7 +185,7 @@ class DocumentsTest {
         UUID outsider = id(5);
         member(viewer, "라뷰어", "viewer@example.test");
         member(outsider, "마바깥", "outsider@example.test");
-        ProjectMembers.join(ws, "SAFE", viewer, "VIEWER");
+        ProjectMembers.join(jdbc, "SAFE", viewer, "VIEWER");
         UUID page = create(null, null, "설계");
 
         // Who is not a member finds neither the document nor it in a list.
@@ -225,7 +218,7 @@ class DocumentsTest {
         mvc.perform(write(delete("/api/v1/workspace/documents/" + page + "?expectedVersion=0"))
                         .cookie(cookie(OTHER)))
                 .andExpect(status().isForbidden());
-        ProjectMembers.join(ws, "SAFE", OTHER, "ADMIN");
+        ProjectMembers.join(jdbc, "SAFE", OTHER, "ADMIN");
         mvc.perform(get("/api/v1/workspace/documents/" + page).cookie(cookie(OTHER)))
                 .andExpect(jsonPath("$.canDelete").value(true))
                 .andExpect(jsonPath("$.canManage").value(true));
@@ -235,7 +228,7 @@ class DocumentsTest {
     }
 
     private int count(String table) {
-        return Objects.requireNonNull(ws.queryForObject("SELECT COUNT(*) FROM " + table, Integer.class));
+        return Objects.requireNonNull(jdbc.queryForObject("SELECT COUNT(*) FROM " + table, Integer.class));
     }
 
     private Map<String, Object> fileBody(String upload) {
@@ -449,13 +442,13 @@ class DocumentsTest {
                 .andExpect(jsonPath("$.version").value(3))
                 .andExpect(jsonPath("$.body.content[1].content[0].text").value("새 블록"));
         // The body as kept is its blocks in order; a whole save over it still works, and a restore too.
-        assertThat(ws.queryForList(
+        assertThat(jdbc.queryForList(
                         "SELECT block_id FROM rich_block WHERE owner_id=? ORDER BY position", String.class, doc))
                 .containsExactly("a", "n", "c");
         mvc.perform(write(put(body)).cookie(cookie(MEMBER)).content(save(3, "통째로", true)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.version").value(4));
-        assertThat(ws.queryForObject("SELECT count(*) FROM rich_block WHERE owner_id=?", Integer.class, doc))
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM rich_block WHERE owner_id=?", Integer.class, doc))
                 .isEqualTo(1);
         mvc.perform(get("/api/v1/workspace/documents?q=통째로").cookie(cookie(MEMBER)))
                 .andExpect(jsonPath("$.items[*].id").value(contains(doc.toString())));
@@ -472,8 +465,8 @@ class DocumentsTest {
                         .content("{\"expectedVersion\":4}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.version").value(5));
-        assertThat(ws.queryForObject("SELECT body FROM rich_body WHERE owner_id=?", String.class, doc))
-                .isEqualTo(ws.queryForObject(
+        assertThat(jdbc.queryForObject("SELECT body FROM rich_body WHERE owner_id=?", String.class, doc))
+                .isEqualTo(jdbc.queryForObject(
                         "SELECT '{\"content\":[' || group_concat(node, ',') || '],\"type\":\"doc\"}' FROM"
                                 + " (SELECT node FROM rich_block WHERE owner_id=? ORDER BY position)",
                         String.class,
@@ -503,7 +496,7 @@ class DocumentsTest {
         mvc.perform(get(base).cookie(cookie(OTHER))).andExpect(jsonPath("$", hasSize(1)));
         // Independent heartbeat from the remaining window still stands; it is not an edit lock.
         mvc.perform(write(put(base + "/" + second)).cookie(cookie(MEMBER))).andExpect(status().isNoContent());
-        ws.update(
+        jdbc.update(
                 "UPDATE document_editing SET last_seen_at=?",
                 xyz.goraebap.foundation.shared.persistence.InstantTextBinding.text(
                         java.time.Instant.now().minusSeconds(91)));
@@ -616,7 +609,7 @@ class DocumentsTest {
                         .cookie(cookie(ADMIN))
                         .content("{\"key\":\"FOREIGN\",\"name\":\"다른 프로젝트\"}"))
                 .andExpect(status().isCreated());
-        ProjectMembers.editors(ws, "FOREIGN", MEMBER);
+        ProjectMembers.editors(jdbc, "FOREIGN", MEMBER);
         UUID foreign = create("FOREIGN", null, "Other project");
         mvc.perform(write(put(base + "/documents/" + child + "/parent"))
                         .cookie(cookie(ADMIN))
@@ -677,7 +670,7 @@ class DocumentsTest {
                         .cookie(cookie(MEMBER))
                         .content("{\"projectKey\":\"SAFE\",\"title\":\"잘못된 분류\",\"labelIds\":[\"" + workLabel + "\"]}"))
                 .andExpect(status().isBadRequest());
-        assertThat(ws.queryForObject("SELECT count(*) FROM document WHERE title='잘못된 분류'", Integer.class))
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM document WHERE title='잘못된 분류'", Integer.class))
                 .isZero();
         mvc.perform(write(patch(location))
                         .cookie(cookie(ADMIN))

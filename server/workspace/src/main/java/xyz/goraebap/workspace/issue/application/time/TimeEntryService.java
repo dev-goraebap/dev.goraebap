@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.foundation.user.UserSummary;
 import xyz.goraebap.workspace.activity.ActivityEvent;
@@ -43,7 +43,7 @@ public class TimeEntryService {
     private final UserFacade userFacade;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public TimeEntryModels.Entries list(CurrentUser user, String key, long number) {
         var issue = issueOf(issueProjects.readable(user, key), number);
         var entries = timeEntryRepository.findByIssueId(issue.id());
@@ -69,7 +69,7 @@ public class TimeEntryService {
                 estimate == null ? null : hours(estimate));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID log(CurrentUser user, String key, long number, TimeEntryModels.Log request) {
         var project = issueProjects.writable(user, key);
         var issue = issueOf(project, number);
@@ -89,7 +89,7 @@ public class TimeEntryService {
         return entry.id();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, String key, long number, UUID entryId) {
         var project = issueProjects.writable(user, key);
         var issue = issueOf(project, number);

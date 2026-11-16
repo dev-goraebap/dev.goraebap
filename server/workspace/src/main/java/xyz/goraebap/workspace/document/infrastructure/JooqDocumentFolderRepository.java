@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Document.DOCUMENT;
 import static xyz.goraebap.workspace.jooq.tables.DocumentFolder.DOCUMENT_FOLDER;
 
@@ -21,7 +19,6 @@ import xyz.goraebap.workspace.document.domain.folder.DocumentFolderRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqDocumentFolderRepository implements DocumentFolderRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

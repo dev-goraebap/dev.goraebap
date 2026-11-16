@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.ActivityEntry.ACTIVITY_ENTRY;
 import static xyz.goraebap.workspace.jooq.tables.Document.DOCUMENT;
 import static xyz.goraebap.workspace.jooq.tables.DocumentFolder.DOCUMENT_FOLDER;
@@ -52,7 +50,6 @@ class JooqDocumentQuery implements DocumentQuery {
             .where(MANUAL_CHAPTER.DOCUMENT_ID.eq(DOCUMENT.DOCUMENT_ID).and(MANUAL_CHAPTER.DELETED_AT.isNull()))
             .asField("chapter_count");
 
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     /**

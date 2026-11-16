@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.richbody.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.RichBlock.RICH_BLOCK;
 import static xyz.goraebap.workspace.jooq.tables.RichBlockChange.RICH_BLOCK_CHANGE;
 import static xyz.goraebap.workspace.jooq.tables.RichBody.RICH_BODY;
@@ -18,7 +16,6 @@ import xyz.goraebap.workspace.richbody.domain.RichBlockRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqRichBlockRepository implements RichBlockRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

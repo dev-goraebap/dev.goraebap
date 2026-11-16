@@ -2,8 +2,6 @@ package xyz.goraebap.workspace;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -49,11 +47,6 @@ class SeedImportTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
     @Autowired
     SeedImporter seedImporter;
 
@@ -66,7 +59,7 @@ class SeedImportTest {
     @BeforeEach
     void prepare() throws IOException {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(IMPORTER, "가져온이", "importer@example.test", Role.INSTANCE_ADMIN);
         member(JAEBUM, "고재범", "jaebum@example.test");
         member(SEHO, "정세호", "seho@example.test");
@@ -168,17 +161,17 @@ class SeedImportTest {
         assertThat(seedImporter.importAll()).isEqualTo(3);
 
         // The project file came first: docs has its mark, the importer as its member, and its labels.
-        assertThat(ws.queryForMap(
+        assertThat(jdbc.queryForMap(
                         "SELECT icon, color FROM project p JOIN project_key k ON k.project_id = p.project_id"
                                 + " WHERE k.prefix = 'DOCS'"))
                 .containsEntry("icon", "release")
                 .containsEntry("color", "#5e6ad2");
-        assertThat(ws.queryForList(
+        assertThat(jdbc.queryForList(
                         "SELECT user_id FROM project_member m JOIN project_key k ON k.project_id = m.project_id"
                                 + " WHERE k.prefix = 'SAFE'",
                         String.class))
                 .containsExactly(IMPORTER.toString());
-        assertThat(ws.queryForList("SELECT name FROM issue_label ORDER BY position", String.class))
+        assertThat(jdbc.queryForList("SELECT name FROM issue_label ORDER BY position", String.class))
                 .containsExactly("프로젝트", "문서", "운영");
 
         var epic = issue("DOCS", 1);
@@ -188,7 +181,7 @@ class SeedImportTest {
         assertThat(child.get("parent_id")).isEqualTo(epic.get("issue_id"));
         assertThat(child.get("column_name")).isEqualTo("완료");
         assertThat(child.get("closed_at")).isNotNull();
-        assertThat(ws.queryForObject(
+        assertThat(jdbc.queryForObject(
                         "SELECT count(*) FROM issue_label_link WHERE issue_id = ?",
                         Integer.class,
                         child.get("issue_id")))
@@ -212,7 +205,7 @@ class SeedImportTest {
         assertThat(login.get("column_name")).isEqualTo("할 일");
         assertThat(body(login)).contains("원래 담당자: 기획팀").contains("첫 줄").contains("둘째 줄");
         assertThat(issue("SAFE", 3).get("column_name")).isEqualTo("취소");
-        var comments = ws.queryForList(
+        var comments = jdbc.queryForList(
                 "SELECT body, created_by, created_at FROM activity_entry WHERE owner_id = ? AND kind = 'COMMENT' ORDER BY created_at",
                 login.get("issue_id"));
         assertThat(comments).hasSize(2);
@@ -230,7 +223,7 @@ class SeedImportTest {
         var record = document("[DR-3x7ww4ktol] 결정 하나");
         assertThat(labelsFor(record.get("document_id"))).containsExactlyInAnyOrder("결정기록", "2026-09");
         assertThat(Instant.parse((String) record.get("created_at"))).isEqualTo(Instant.parse("2026-09-27T00:00:00Z"));
-        assertThat(ws.queryForObject("SELECT count(*) FROM document_folder", Integer.class))
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM document_folder", Integer.class))
                 .isZero();
 
         // Nobody was told: an assignee given work by someone else hears nothing of an import.
@@ -244,7 +237,7 @@ class SeedImportTest {
                         "SELECT summary FROM seed_import WHERE file_name = 'safety_solution.json'", String.class))
                 .isEqualTo("issues: SAFE 이슈 3 · 댓글 2 · 라벨 0");
         assertThat(seedImporter.importAll()).isZero();
-        assertThat(ws.queryForObject("SELECT count(*) FROM issue", Integer.class))
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM issue", Integer.class))
                 .isEqualTo(5);
 
         // Fixed, the broken file comes in on the next run.
@@ -286,7 +279,7 @@ class SeedImportTest {
     }
 
     private Map<String, Object> issue(String key, long number) {
-        return ws.queryForMap(
+        return jdbc.queryForMap(
                 "SELECT i.*, c.name AS column_name FROM issue i JOIN issue_column c ON c.column_id = i.column_id"
                         + " JOIN project_key k ON k.project_id = i.project_id WHERE k.prefix = ? AND i.number = ?",
                 key,
@@ -294,7 +287,7 @@ class SeedImportTest {
     }
 
     private Map<String, Object> document(String title) {
-        return ws.queryForMap(
+        return jdbc.queryForMap(
                 "SELECT d.* FROM document d JOIN project_key k ON k.project_id = d.project_id"
                         + " WHERE k.prefix = 'DOCS' AND d.title = ?",
                 title);
@@ -305,11 +298,11 @@ class SeedImportTest {
     }
 
     private String body(Object ownerId) {
-        return ws.queryForObject("SELECT body FROM rich_body WHERE owner_id = ?", String.class, ownerId);
+        return jdbc.queryForObject("SELECT body FROM rich_body WHERE owner_id = ?", String.class, ownerId);
     }
 
     private java.util.List<String> labelsFor(Object id) {
-        return ws.queryForList(
+        return jdbc.queryForList(
                 "SELECT l.name FROM document_label l JOIN document_label_link x ON x.label_id=l.label_id WHERE x.document_id=?",
                 String.class,
                 id);

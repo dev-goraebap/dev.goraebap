@@ -10,7 +10,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.realtime.RealtimeFacade;
 import xyz.goraebap.foundation.realtime.Signal;
 import xyz.goraebap.workspace.issue.application.IssueErrorCode;
@@ -36,7 +36,7 @@ public class TypeService {
     private final RealtimeFacade realtimeFacade;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<TypeViews.TypeView> types() {
         return workItemTypeRepository.findAll().stream()
                 .map(type -> new TypeViews.TypeView(
@@ -54,7 +54,7 @@ public class TypeService {
      * The code a work item is given: the one named (its code, or its name whatever the case, as an agent may say it),
      * the default when none is; ISSUE_TYPE_NOT_FOUND when no type is so named.
      */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public String codeOf(String named) {
         var types = workItemTypeRepository.findAll();
         if (named == null || named.isBlank())
@@ -73,12 +73,12 @@ public class TypeService {
     }
 
     /** The type's name, for the timeline; its code when it is gone. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public String nameOf(String code) {
         return workItemTypeRepository.findByCode(code).map(WorkItemType::name).orElse(code);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public String create(CurrentUser user, TypeRequests.TypeInput request) {
         requireAdmin(user);
         var type = WorkItemType.create(
@@ -90,7 +90,7 @@ public class TypeService {
         return type.code();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, String code, TypeRequests.TypeInput request) {
         requireAdmin(user);
         var type = typeOf(code);
@@ -103,7 +103,7 @@ public class TypeService {
     }
 
     /** Puts the types in the order given; every type must be named once. */
-    @WorkspaceTransactional
+    @Transactional
     public void reorder(CurrentUser user, TypeRequests.Order request) {
         requireAdmin(user);
         var known = workItemTypeRepository.findAll().stream()
@@ -115,7 +115,7 @@ public class TypeService {
         signal();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, String code) {
         requireAdmin(user);
         var type = typeOf(code);

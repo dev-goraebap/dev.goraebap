@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.file.AttachedFile;
 import xyz.goraebap.foundation.file.FileFacade;
 import xyz.goraebap.foundation.realtime.RealtimeFacade;
@@ -84,7 +84,7 @@ public class RichBodyService implements RichBodyFacade {
     private final Clock clock;
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<Editor> editors(RichBodyOwner owner) {
         var leases = editingRepository.active(
                 owner.type(), owner.id(), clock.instant().minusSeconds(90));
@@ -101,7 +101,7 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void editing(RichBodyOwner owner, UUID user, UUID lease) {
         var now = clock.instant();
         if (editingRepository.keep(owner.type(), owner.id(), user, lease, now, now.minusSeconds(90)))
@@ -109,13 +109,13 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public void stopEditing(RichBodyOwner owner, UUID user, UUID lease) {
         if (editingRepository.remove(owner.type(), owner.id(), user, lease)) editingSignal(owner.type(), owner.id());
     }
 
     @Scheduled(fixedDelayString = "PT30S")
-    @WorkspaceTransactional
+    @Transactional
     public void expireEditing() {
         for (var owner : editingRepository.expire(clock.instant().minusSeconds(90)))
             editingSignal(owner.type(), owner.id());
@@ -127,7 +127,7 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public RichBodyState read(RichBodyOwner owner) {
         var content = richBodyRepository.findById(owner.id());
         var versions = richBodyRepository.findRevisionHeads(owner.id(), VERSIONS_SHOWN).stream()
@@ -153,7 +153,7 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public RichBodyState.BodyVersion version(RichBodyOwner owner, UUID revisionId) {
         var revision = richBodyRepository
                 .findRevision(owner.id(), revisionId)
@@ -167,7 +167,7 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState save(RichBodyOwner owner, UUID actor, RichBodyEdit edit) {
         if (!"doc".equals(edit.body().get("type"))) throw RichBodyErrorCode.RICH_BODY_INVALID.raise();
         var current = richBodyRepository.findById(owner.id());
@@ -183,7 +183,7 @@ public class RichBodyService implements RichBodyFacade {
      * order the save gives with blocks new elsewhere after the block they follow there.
      */
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState patch(RichBodyOwner owner, UUID actor, RichBodyPatch patch) {
         var current = richBodyRepository.findById(owner.id());
         var blocks = new LinkedHashMap<String, Block>();
@@ -348,7 +348,7 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState replace(RichBodyOwner owner, UUID actor, Map<String, Object> body, List<String> dropBlocks) {
         var current = read(owner);
         var files = withFiles(owner, actor, MarkdownReplacement.restore(body, current.body(), dropBlocks));
@@ -358,7 +358,7 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState replaceBlocks(
             RichBodyOwner owner,
             UUID actor,
@@ -485,7 +485,7 @@ public class RichBodyService implements RichBodyFacade {
     }
 
     @Override
-    @WorkspaceTransactional
+    @Transactional
     public RichBodyState restore(RichBodyOwner owner, UUID actor, UUID revisionId, long expectedVersion) {
         var current = richBodyRepository
                 .findById(owner.id())
@@ -504,13 +504,13 @@ public class RichBodyService implements RichBodyFacade {
 
     // A pure conversion; the rule that a service's public methods declare their transaction holds it to a read.
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Map<String, Object> fromMarkdown(String markdown) {
         return MarkdownBody.toDocument(markdown);
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public String plainText(Map<String, Object> body) {
         var lines = new StringBuilder();
         writeText(body, lines);

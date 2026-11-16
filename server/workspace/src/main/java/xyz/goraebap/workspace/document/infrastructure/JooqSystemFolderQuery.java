@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Document.DOCUMENT;
 
 import java.util.List;
@@ -18,7 +16,6 @@ import xyz.goraebap.workspace.document.application.system.SystemFolderQuery;
 @Repository
 @RequiredArgsConstructor
 class JooqSystemFolderQuery implements SystemFolderQuery {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
 import xyz.goraebap.workspace.document.application.DocumentSpaces;
@@ -47,22 +47,22 @@ public class AccessService {
     private final ProjectFacade projectFacade;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public AccessViews.AccessView document(CurrentUser user, UUID id) {
         return view(user, Target.DOCUMENT, id);
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public AccessViews.AccessView folder(CurrentUser user, UUID id) {
         return view(user, Target.FOLDER, id);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void replaceDocument(CurrentUser user, UUID id, AccessViews.ReplaceGrants request) {
         replace(user, Target.DOCUMENT, id, request);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void replaceFolder(CurrentUser user, UUID id, AccessViews.ReplaceGrants request) {
         replace(user, Target.FOLDER, id, request);
     }

@@ -11,7 +11,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.foundation.user.UserSummary;
 import xyz.goraebap.workspace.document.SystemKind;
@@ -47,7 +47,7 @@ public class SystemFolderService {
     }
 
     /** The system folders at 문서함's top, or a project's (its 회의록 only), with what the member sees in each. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<SystemViews.SystemFolder> folders(CurrentUser user, UUID projectId) {
         var kinds = Stream.of(SystemKind.values())
                 .filter(kind -> reaches.containsKey(kind) && (projectId == null || kind == SystemKind.MEETING))
@@ -69,7 +69,7 @@ public class SystemFolderService {
     }
 
     /** One page of a system folder, narrowed to a project and a facet when given, with its facets. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public SystemViews.SystemSlice items(
             CurrentUser user, SystemKind kind, UUID projectId, UUID facetId, int offset, int size) {
         if (!reaches.containsKey(kind)) return new SystemViews.SystemSlice(List.of(), List.of(), null);

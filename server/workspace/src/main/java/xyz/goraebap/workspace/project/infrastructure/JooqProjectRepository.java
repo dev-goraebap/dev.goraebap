@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.project.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Project.PROJECT;
 import static xyz.goraebap.workspace.jooq.tables.ProjectFavorite.PROJECT_FAVORITE;
 import static xyz.goraebap.workspace.jooq.tables.ProjectKey.PROJECT_KEY;
@@ -26,7 +24,6 @@ import xyz.goraebap.workspace.project.domain.ProjectRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqProjectRepository implements ProjectRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

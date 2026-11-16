@@ -45,7 +45,7 @@ public class GeneratedSecrets implements EnvironmentPostProcessor, Ordered {
         boolean vapid = blank(environment, VAPID_PUBLIC) || blank(environment, VAPID_PRIVATE);
         boolean git = blank(environment, GIT);
         if (!auth && !vapid && !git) return;
-        Path file = Path.of(environment.getProperty("DB_PATH", "./data/foundation.db"))
+        Path file = Path.of(environment.getProperty("DB_PATH", "./data/app.db"))
                 .toAbsolutePath()
                 .resolveSibling(FILE);
         Properties kept = read(file);

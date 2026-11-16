@@ -12,8 +12,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import xyz.goraebap.workspace.WorkspaceRoles;
 import com.sun.net.httpserver.HttpServer;
@@ -66,25 +64,20 @@ class CodeIntegrationTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
     @Autowired
     SessionService sessions;
 
     @BeforeEach
     void prepare() throws Exception {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(ADMIN, "가관리", "admin@example.test", WorkspaceRoles.ADMIN);
         member(MEMBER, "나구성원", "member@example.test");
         mvc.perform(write(post("/api/v1/workspace/projects"))
                         .cookie(cookie(ADMIN))
                         .content("{\"key\":\"SAFE\",\"name\":\"안전플랫폼\"}"))
                 .andExpect(status().isCreated());
-        ProjectMembers.editors(ws, "SAFE", MEMBER);
+        ProjectMembers.editors(jdbc, "SAFE", MEMBER);
         for (String title : new String[] {"로그인", "화면", "배포"})
             mvc.perform(write(post("/api/v1/workspace/projects/SAFE/issues"))
                             .cookie(cookie(MEMBER))
@@ -174,7 +167,7 @@ class CodeIntegrationTest {
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.code").value("INTEGRATION_EXISTS"));
         // The secret is sealed, never kept in the clear.
-        String sealed = ws.queryForObject("SELECT webhook_secret_cipher FROM repository_integration", String.class);
+        String sealed = jdbc.queryForObject("SELECT webhook_secret_cipher FROM repository_integration", String.class);
         org.assertj.core.api.Assertions.assertThat(sealed)
                 .startsWith("v1:")
                 .doesNotContain(connected.path("webhookSecret").asText());
@@ -289,7 +282,7 @@ class CodeIntegrationTest {
                     repository("gitlab", base, "team/frontend").replace("}", ",\"token\":\"front-test-token\"}"));
             var backend =
                     connect(repository("gitlab", base, "team/backend").replace("}", ",\"token\":\"back-test-token\"}"));
-            String before = ws.queryForObject(
+            String before = jdbc.queryForObject(
                     "SELECT token_cipher FROM repository_integration WHERE integration_id=?",
                     String.class,
                     backend.path("id").asText());
@@ -312,7 +305,7 @@ class CodeIntegrationTest {
                     assertThat(row.path("webhookSecret").asText())
                             .isEqualTo(backend.path("webhookSecret").asText());
                 }
-            assertThat(ws.queryForObject(
+            assertThat(jdbc.queryForObject(
                             "SELECT token_cipher FROM repository_integration WHERE integration_id=?",
                             String.class,
                             backend.path("id").asText()))

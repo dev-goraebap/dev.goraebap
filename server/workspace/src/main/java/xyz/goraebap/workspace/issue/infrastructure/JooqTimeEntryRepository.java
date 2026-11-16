@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.IssueTimeEntry.ISSUE_TIME_ENTRY;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import xyz.goraebap.workspace.issue.domain.time.TimeEntryRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqTimeEntryRepository implements TimeEntryRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

@@ -7,7 +7,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
 import xyz.goraebap.workspace.document.application.DocumentSpaces;
 import xyz.goraebap.workspace.document.domain.library.LibraryRepository;
@@ -20,7 +20,7 @@ public class DocumentLabelService {
     private final LibraryRepository repository;
     private final DocumentSpaces spaces;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<DocumentLabelModels.LabelView> list() {
         return repository.labels().stream()
                 .map(l -> new DocumentLabelModels.LabelView(
@@ -28,7 +28,7 @@ public class DocumentLabelService {
                 .toList();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, DocumentLabelModels.Input input) {
         manage(user);
         unique(null, input.name());
@@ -38,7 +38,7 @@ public class DocumentLabelService {
         return id;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, UUID id, DocumentLabelModels.Edit input) {
         manage(user);
         unique(id, input.name());
@@ -47,14 +47,14 @@ public class DocumentLabelService {
         spaces.signal(id);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, UUID id, long version) {
         manage(user);
         if (!repository.deleteLabel(id, version)) throw DocumentErrorCode.DOCUMENT_VERSION_CONFLICT.raise();
         spaces.signal(id);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void order(CurrentUser user, DocumentLabelModels.Order input) {
         manage(user);
         var ids = repository.labels().stream().map(l -> l.id()).collect(java.util.stream.Collectors.toSet());

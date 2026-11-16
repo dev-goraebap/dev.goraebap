@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.activity.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.ActivityEntry.ACTIVITY_ENTRY;
 
 import java.util.List;
@@ -24,7 +22,6 @@ class JooqActivityRepository implements ActivityRepository {
     private static final String EVENT = ActivityEntry.Kind.EVENT.name();
     private static final String COMMENT = ActivityEntry.Kind.COMMENT.name();
 
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

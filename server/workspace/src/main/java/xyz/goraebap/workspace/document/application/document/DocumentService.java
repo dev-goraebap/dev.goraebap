@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.foundation.user.UserSummary;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
@@ -53,7 +53,7 @@ public class DocumentService {
     private final Clock clock;
 
     /** A new document by the member, now, in a folder they may write in; its id comes back. */
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, DocumentRequests.CreateDocument request) {
         requireShape(request);
         documentSpaces.writable(user, request.projectKey());
@@ -73,7 +73,7 @@ public class DocumentService {
      * and by whom what they bring was written: made then, with its first body (JSON or Markdown) as its first version.
      * Its id comes back.
      */
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(UUID author, Instant at, DocumentRequests.CreateDocument request) {
         requireShape(request);
         var space = documentSpaces.open(request.projectKey());
@@ -133,7 +133,7 @@ public class DocumentService {
         return document.id();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void rename(CurrentUser user, UUID id, DocumentRequests.RenameDocument request) {
         var document = writable(user, id, request.expectedVersion());
         document.rename(request.title());
@@ -141,7 +141,7 @@ public class DocumentService {
     }
 
     /** Gives the document another mark, or none. */
-    @WorkspaceTransactional
+    @Transactional
     public void mark(CurrentUser user, UUID id, DocumentRequests.MarkDocument request) {
         var document = writable(user, id, request.expectedVersion());
         document.markAs(Mark.of(request.icon(), request.color()));
@@ -149,7 +149,7 @@ public class DocumentService {
     }
 
     /** Puts the document in another folder of its space, or at its top. */
-    @WorkspaceTransactional
+    @Transactional
     public void move(CurrentUser user, UUID id, DocumentRequests.MoveDocument request) {
         throw new xyz.goraebap.foundation.shared.error.DomainRuleViolation("상위 페이지 변경은 페이지 이동을 사용해 주세요");
     }
@@ -165,7 +165,7 @@ public class DocumentService {
     }
 
     /** Deletes the document, kept out of every list; its maker, one who manages it or the project's administrators may. */
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, UUID id, long expectedVersion) {
         for (var target : deletionTargets(user, id, expectedVersion)) {
             target.delete(clock.instant());
@@ -173,7 +173,7 @@ public class DocumentService {
         }
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<DocumentViews.DeletionTarget> previewDelete(CurrentUser user, UUID id, long expectedVersion) {
         return deletionTargets(user, id, expectedVersion).stream()
                 .map(target -> new DocumentViews.DeletionTarget(target.id(), target.title(), target.version()))
@@ -239,7 +239,7 @@ public class DocumentService {
     /**
      * Documents matching the search the member may see, by default the latest written first (by title, 가나다 first).
      */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public DocumentViews.DocumentSlice list(CurrentUser user, DocumentRequests.Listing listing) {
         var hidden = documentAccess.hidden(documentAccess.reader(user));
         var space = listing.project() == null ? null : documentSpaces.readable(user, listing.project());
@@ -260,7 +260,7 @@ public class DocumentService {
         return new DocumentViews.DocumentSlice(named(slice.rows()), slice.nextCursor());
     }
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public DocumentQuery.ChangeSlice changes(
             CurrentUser user, String project, boolean shared, Instant since, Instant until, String cursor, int size) {
         var hidden = documentAccess.hidden(documentAccess.reader(user));
@@ -283,7 +283,7 @@ public class DocumentService {
      * and its grants allow), delete it (they may write it and made it, manage it or administer Projects) and change its
      * grants. One they may not see is not found.
      */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public DocumentViews.DocumentView get(CurrentUser user, UUID id) {
         var row = documentQuery.findRow(id).orElseThrow(DocumentErrorCode.DOCUMENT_NOT_FOUND::raise);
         var space = documentSpaces.readableOf(user, row.projectId(), DocumentErrorCode.DOCUMENT_NOT_FOUND);

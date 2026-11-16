@@ -10,8 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import xyz.goraebap.workspace.WorkspaceRoles;
 import jakarta.servlet.http.Cookie;
@@ -59,18 +57,13 @@ class IssueViewsTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
     @Autowired
     SessionService sessions;
 
     @BeforeEach
     void prepare() throws Exception {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(ADMIN, "가관리", "admin@example.test", WorkspaceRoles.ADMIN);
         member(MEMBER, "나구성원", "member@example.test");
         member(OTHER, "다동료", "other@example.test");
@@ -78,7 +71,7 @@ class IssueViewsTest {
                         .cookie(cookie(ADMIN))
                         .content("{\"key\":\"SAFE\",\"name\":\"안전플랫폼\"}"))
                 .andExpect(status().isCreated());
-        ProjectMembers.editors(ws, "SAFE", MEMBER, OTHER);
+        ProjectMembers.editors(jdbc, "SAFE", MEMBER, OTHER);
     }
 
     @Test
@@ -232,7 +225,7 @@ class IssueViewsTest {
     }
 
     private String backlogColumn() {
-        return ws.queryForObject("SELECT column_id FROM issue_column WHERE category='BACKLOG'", String.class);
+        return jdbc.queryForObject("SELECT column_id FROM issue_column WHERE category='BACKLOG'", String.class);
     }
 
     private static String view(String name, String layout, String filters, boolean personal) {

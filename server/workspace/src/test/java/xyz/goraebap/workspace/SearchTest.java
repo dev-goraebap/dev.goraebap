@@ -6,8 +6,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import xyz.goraebap.workspace.WorkspaceRoles;
 import xyz.goraebap.foundation.support.TestRoles;
@@ -48,18 +46,13 @@ class SearchTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
     @Autowired
     SessionService sessions;
 
     @BeforeEach
     void prepare() throws Exception {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(ADMIN, "가관리", "admin@example.test", WorkspaceRoles.ADMIN, TestRoles.TEAM_ADMIN);
         member(MEMBER, "나구성원", "member@example.test");
         project("SAFE", "안전관리");

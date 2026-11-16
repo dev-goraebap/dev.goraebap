@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.Issue.ISSUE;
 import static xyz.goraebap.workspace.jooq.tables.IssueColumn.ISSUE_COLUMN;
 import static xyz.goraebap.workspace.jooq.tables.IssueTimeEntry.ISSUE_TIME_ENTRY;
@@ -21,7 +19,6 @@ import xyz.goraebap.workspace.issue.domain.board.ColumnCategory;
 @Repository
 @RequiredArgsConstructor
 class JooqCycleQuery implements CycleQuery {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

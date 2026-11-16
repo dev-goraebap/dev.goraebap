@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.richbody.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.RichBody.RICH_BODY;
 import static xyz.goraebap.workspace.jooq.tables.RichBodyRevision.RICH_BODY_REVISION;
 
@@ -31,7 +29,6 @@ class JooqRichBodyRepository implements RichBodyRepository {
      */
     private static final String NO_ANCHORS = "{}";
 
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

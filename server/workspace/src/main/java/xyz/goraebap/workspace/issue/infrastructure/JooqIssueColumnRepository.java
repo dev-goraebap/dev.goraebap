@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.IssueColumn.ISSUE_COLUMN;
 
 import java.time.Instant;
@@ -21,7 +19,6 @@ import xyz.goraebap.workspace.issue.domain.board.IssueColumnRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqIssueColumnRepository implements IssueColumnRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

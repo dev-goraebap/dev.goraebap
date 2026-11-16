@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.richbody.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.DocumentEditing.DOCUMENT_EDITING;
 
 import java.time.Instant;
@@ -16,7 +14,6 @@ import xyz.goraebap.workspace.richbody.domain.EditingRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqEditingRepository implements EditingRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dsl;
 
     @Override

@@ -11,7 +11,7 @@ import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.realtime.RealtimeFacade;
 import xyz.goraebap.foundation.realtime.Signal;
 import xyz.goraebap.workspace.issue.application.IssueErrorCode;
@@ -41,7 +41,7 @@ public class SavedViewService {
      * The scope's views in the pills' order, the views listed in it too: the shared ones (전체 이슈 among them) as
      * ordered, then the reader's own.
      */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public SavedViewViews.ViewList list(CurrentUser user, String key) {
         UUID projectId = scope(user, key);
         var views = savedViewRepository.findAllVisible(projectId, user.id());
@@ -69,7 +69,7 @@ public class SavedViewService {
                 keepsShared(user, projectId));
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, String key, SavedViewRequests.ViewInput request) {
         UUID projectId = scope(user, key);
         if (!request.isPersonal() && !keepsShared(user, projectId)) throw new AccessDeniedException(NOT_ADMIN);
@@ -81,7 +81,7 @@ public class SavedViewService {
     }
 
     /** Changes a view over the version it was read at; making a personal view shared, or back, is its owner's. */
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, UUID viewId, SavedViewRequests.EditView request) {
         var view = editable(user, viewId);
         if (view.version() != request.expectedVersion()) throw IssueErrorCode.ISSUE_VIEW_VERSION_CONFLICT.raise();
@@ -96,7 +96,7 @@ public class SavedViewService {
         if (wasShared || !view.personal()) signal(view);
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, UUID viewId, long expectedVersion) {
         var view = editable(user, viewId);
         if (view.version() != expectedVersion) throw IssueErrorCode.ISSUE_VIEW_VERSION_CONFLICT.raise();
@@ -108,7 +108,7 @@ public class SavedViewService {
      * Puts the scope's shared views in a new order, its first the default. The keys must be exactly 전체 이슈 and the
      * shared views as they are now, so an order made over an older list is refused rather than half applied.
      */
-    @WorkspaceTransactional
+    @Transactional
     public void order(CurrentUser user, String key, SavedViewRequests.Order request) {
         UUID projectId = scope(user, key);
         if (!keepsShared(user, projectId)) throw new AccessDeniedException(NOT_ADMIN);

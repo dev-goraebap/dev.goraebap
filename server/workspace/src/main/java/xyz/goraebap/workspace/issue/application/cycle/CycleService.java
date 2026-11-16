@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.workspace.activity.ActivityEvent;
 import xyz.goraebap.workspace.activity.ActivityFacade;
 import xyz.goraebap.workspace.activity.ActivityOwner;
@@ -45,7 +45,7 @@ public class CycleService {
     private final Clock clock;
 
     /** The project's cycles; a project that keeps cycles running has the ones due made and the ones over finished first. */
-    @WorkspaceTransactional
+    @Transactional
     public CycleModels.Cycles list(CurrentUser user, String key) {
         var project = issueProjects.readable(user, key);
         var settings = settingsOf(project);
@@ -61,7 +61,7 @@ public class CycleService {
     }
 
     /** Changes how the project runs its cycles (its administrators); turned on, the cycles due are made at once. */
-    @WorkspaceTransactional
+    @Transactional
     public void saveSettings(CurrentUser user, String key, CycleModels.Settings input) {
         var project = issueProjects.administered(user, key);
         var settings = new CycleSettings(
@@ -137,7 +137,7 @@ public class CycleService {
                 settings.addsCompleted());
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, String key, CycleModels.Input input) {
         var project = issueProjects.writable(user, key);
         var cycle = Cycle.create(
@@ -148,7 +148,7 @@ public class CycleService {
         return cycle.id();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void edit(CurrentUser user, String key, UUID id, CycleModels.Input input) {
         var project = issueProjects.writable(user, key);
         var cycle = cycleOf(project, id);
@@ -162,7 +162,7 @@ public class CycleService {
     }
 
     /** Finishes the cycle; its work items not done nor dropped go to moveTo (an unfinished cycle of the project) or none. */
-    @WorkspaceTransactional
+    @Transactional
     public int complete(CurrentUser user, String key, UUID id, CycleModels.Completion completion) {
         var project = issueProjects.writable(user, key);
         var cycle = cycleOf(project, id);
@@ -196,7 +196,7 @@ public class CycleService {
         return moved;
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, String key, UUID id) {
         var project = issueProjects.writable(user, key);
         var cycle = cycleOf(project, id);

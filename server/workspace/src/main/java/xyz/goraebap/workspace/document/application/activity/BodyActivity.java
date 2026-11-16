@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.workspace.activity.ActivityFacade;
 import xyz.goraebap.workspace.activity.ActivityOwner;
@@ -24,7 +24,7 @@ public class BodyActivity {
     private final UserFacade userFacade;
     private final Clock clock;
 
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<BodyActivityViews.Entry> timeline(ActivityOwner owner) {
         var entries = activityFacade.timeline(owner);
         var people = new HashSet<UUID>();
@@ -59,7 +59,7 @@ public class BodyActivity {
                 .toList();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public UUID comment(ActivityOwner owner, CurrentUser user, BodyActivityRequests.CommentInput request) {
         return activityFacade.comment(
                 owner,
@@ -71,18 +71,18 @@ public class BodyActivity {
                 request.blockId());
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void resolve(
             ActivityOwner owner, CurrentUser user, UUID commentId, BodyActivityRequests.Resolution request) {
         activityFacade.resolveThread(owner, commentId, user.id(), request.resolved());
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void edit(ActivityOwner owner, CurrentUser user, UUID commentId, BodyActivityRequests.CommentEdit request) {
         activityFacade.editComment(owner, commentId, user.id(), request.body());
     }
 
-    @WorkspaceTransactional
+    @Transactional
     /** Deletes a comment: its writer's, or anyone's for who moderates the place (its project's administrators). */
     public void delete(ActivityOwner owner, CurrentUser user, UUID commentId, boolean moderates) {
         activityFacade.deleteComment(owner, commentId, user.id(), moderates);

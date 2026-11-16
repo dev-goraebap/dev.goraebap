@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.user.UserFacade;
 import xyz.goraebap.workspace.document.application.DocumentErrorCode;
 import xyz.goraebap.workspace.document.application.DocumentSpaces;
@@ -44,7 +44,7 @@ public class ChapterService {
     private final Clock clock;
 
     /** Every live chapter of the manual by place, with its last writer's name. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public List<ChapterViews.ChapterRow> list(CurrentUser user, UUID documentId) {
         readableManual(user, documentId);
         var rows = chapterQuery.findAll(documentId);
@@ -64,7 +64,7 @@ public class ChapterService {
     }
 
     /** A new chapter, last among its siblings; its id comes back. */
-    @WorkspaceTransactional
+    @Transactional
     public UUID create(CurrentUser user, UUID documentId, ChapterRequests.CreateChapter request) {
         var manual = writableManual(user, documentId);
         var chapters = manualChapterRepository.findAllByDocumentId(manual.id());
@@ -81,7 +81,7 @@ public class ChapterService {
         return chapter.id();
     }
 
-    @WorkspaceTransactional
+    @Transactional
     public void rename(CurrentUser user, UUID id, ChapterRequests.RenameChapter request) {
         var chapter = writable(user, id, request.expectedVersion());
         chapter.rename(request.title());
@@ -90,7 +90,7 @@ public class ChapterService {
     }
 
     /** Puts a chapter under another of its manual at a place, its new siblings numbered again from 0. */
-    @WorkspaceTransactional
+    @Transactional
     public void move(CurrentUser user, UUID id, ChapterRequests.MoveChapter request) {
         var moving = writable(user, id, request.expectedVersion());
         var chapters = manualChapterRepository.findAllByDocumentId(moving.documentId());
@@ -119,7 +119,7 @@ public class ChapterService {
     }
 
     /** Deletes the chapter and the chapters under it; its maker, the manual's maker or a Workspace administrator may. */
-    @WorkspaceTransactional
+    @Transactional
     public void delete(CurrentUser user, UUID id, long expectedVersion) {
         var chapter = writable(user, id, expectedVersion);
         var manual = documentRepository.findById(chapter.documentId()).orElseThrow();
@@ -146,7 +146,7 @@ public class ChapterService {
     }
 
     /** A live chapter of a live 매뉴얼 the member may read. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ManualChapter readable(CurrentUser user, UUID id) {
         var chapter = live(id);
         readableManual(user, chapter.documentId());
@@ -154,7 +154,7 @@ public class ChapterService {
     }
 
     /** A live chapter of a live 매뉴얼 in a space the member may write in. */
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public ManualChapter writable(CurrentUser user, UUID id) {
         var chapter = live(id);
         writableManual(user, chapter.documentId());

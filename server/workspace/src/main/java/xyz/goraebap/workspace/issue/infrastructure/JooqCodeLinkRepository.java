@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.CodeLink.CODE_LINK;
 
 import java.util.List;
@@ -17,7 +15,6 @@ import xyz.goraebap.workspace.issue.domain.code.CodeLinkRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqCodeLinkRepository implements CodeLinkRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

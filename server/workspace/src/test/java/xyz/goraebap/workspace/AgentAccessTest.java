@@ -10,8 +10,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import xyz.goraebap.workspace.WorkspaceRoles;
 import xyz.goraebap.foundation.support.TestRoles;
@@ -71,11 +69,6 @@ class AgentAccessTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
     @Autowired
     SessionService sessions;
 
@@ -94,14 +87,14 @@ class AgentAccessTest {
     @BeforeEach
     void prepare() throws Exception {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(ADMIN, "가관리", "admin@example.test", WorkspaceRoles.ADMIN, TestRoles.TEAM_ADMIN, Role.INSTANCE_ADMIN);
         member(MEMBER, "나구성원", "member@example.test");
         mvc.perform(write(post("/api/v1/workspace/projects"))
                         .cookie(cookie(ADMIN))
                         .content("{\"key\":\"SAFE\",\"name\":\"안전플랫폼\"}"))
                 .andExpect(status().isCreated());
-        ProjectMembers.editors(ws, "SAFE", MEMBER);
+        ProjectMembers.editors(jdbc, "SAFE", MEMBER);
         client = HttpClient.newHttpClient();
     }
 
@@ -673,9 +666,9 @@ class AgentAccessTest {
                 .orElseThrow();
         assertThat(agentComment.path("agent").path("name").asText()).isEqualTo("개발 도우미");
         assertThat(agentComment.path("agent").path("id").asText()).isEqualTo(profile);
-        assertThat(ws.queryForObject("SELECT actor_source FROM activity_entry WHERE body='직접 쓴 댓글'", String.class))
+        assertThat(jdbc.queryForObject("SELECT actor_source FROM activity_entry WHERE body='직접 쓴 댓글'", String.class))
                 .isEqualTo("USER");
-        assertThat(ws.queryForObject(
+        assertThat(jdbc.queryForObject(
                         "SELECT agent_profile_id FROM activity_entry WHERE body='직접 쓴 댓글'", String.class))
                 .isNull();
         mvc.perform(write(delete("/api/v1/me/agent-tokens/"
@@ -689,7 +682,7 @@ class AgentAccessTest {
                         .path("agentName")
                         .asText())
                 .isEqualTo("Claude Code");
-        assertThat(ws.queryForObject("SELECT agent_name FROM activity_entry WHERE body='에이전트 댓글'", String.class))
+        assertThat(jdbc.queryForObject("SELECT agent_name FROM activity_entry WHERE body='에이전트 댓글'", String.class))
                 .isEqualTo("Claude Code");
     }
 
@@ -764,7 +757,7 @@ class AgentAccessTest {
         // A section writes only its own blocks: the rest keep their ids, and a section read before another one changed
         // is still written; the same section read before it changed is refused.
         var owner = java.util.UUID.fromString(id);
-        var before = ws.queryForList(
+        var before = jdbc.queryForList(
                 "SELECT block_id FROM rich_block WHERE owner_id=? ORDER BY position", String.class, owner);
         long read = JSON.readTree(text(call(token, "get_document_outline", Map.of("id", id))))
                 .path("bodyVersion")
@@ -774,7 +767,7 @@ class AgentAccessTest {
                 "update_document_section",
                 Map.of("id", id, "section", "범위", "markdown", "코드 메일 로그인만", "expectedVersion", (int) read));
         assertThat(scope.path("isError").asBoolean()).as(text(scope)).isFalse();
-        var after = ws.queryForList(
+        var after = jdbc.queryForList(
                 "SELECT block_id FROM rich_block WHERE owner_id=? ORDER BY position", String.class, owner);
         assertThat(after).isEqualTo(before);
         var decision = call(
@@ -799,7 +792,7 @@ class AgentAccessTest {
         long moved = JSON.readTree(text(call(token, "get_document_outline", Map.of("id", id))))
                 .path("bodyVersion")
                 .asLong();
-        var order = new java.util.ArrayList<>(ws.queryForList(
+        var order = new java.util.ArrayList<>(jdbc.queryForList(
                 "SELECT block_id FROM rich_block WHERE owner_id=? ORDER BY position", String.class, owner));
         String last = order.removeLast();
         order.add(order.indexOf(after.get(1)) + 1, last);
@@ -817,7 +810,7 @@ class AgentAccessTest {
                 "update_document_section",
                 Map.of("id", id, "section", "범위", "markdown", "옮겨 온 블록을 모르는 글", "expectedVersion", (int) moved));
         assertThat(intoMoved.path("isError").asBoolean()).isTrue();
-        assertThat(ws.queryForList(
+        assertThat(jdbc.queryForList(
                         "SELECT block_id FROM rich_block WHERE owner_id=? ORDER BY position", String.class, owner))
                 .contains(last);
     }
@@ -1164,7 +1157,7 @@ class AgentAccessTest {
                         .path("isError")
                         .asBoolean())
                 .isTrue();
-        assertThat(ws.queryForObject("SELECT count(*) FROM activity_entry WHERE body='몰래'", Integer.class))
+        assertThat(jdbc.queryForObject("SELECT count(*) FROM activity_entry WHERE body='몰래'", Integer.class))
                 .isZero();
         var after = JSON.readTree(text(call(token, "changes_since", Map.of("project", "SAFE", "since", since))));
         assertThat(after.path("documents").findValuesAsString("id")).containsExactly(document);
@@ -1406,12 +1399,12 @@ class AgentAccessTest {
                             .path("isError")
                             .asBoolean())
                     .isTrue();
-            assertThat(ws.queryForObject(
+            assertThat(jdbc.queryForObject(
                             "SELECT count(*) FROM document WHERE document_id=? AND deleted_at IS NOT NULL",
                             Integer.class,
                             id))
                     .isEqualTo(1);
-            assertThat(ws.queryForObject("SELECT count(*) FROM rich_body WHERE owner_id=?", Integer.class, id))
+            assertThat(jdbc.queryForObject("SELECT count(*) FROM rich_body WHERE owner_id=?", Integer.class, id))
                     .isEqualTo(1);
         }
         assertThat(call(token, "get_document", Map.of("id", kept))

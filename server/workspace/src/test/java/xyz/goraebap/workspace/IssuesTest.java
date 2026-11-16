@@ -14,8 +14,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
 import xyz.goraebap.workspace.WorkspaceRoles;
 import jakarta.servlet.http.Cookie;
@@ -62,21 +60,13 @@ class IssuesTest {
     @Autowired
     JdbcTemplate jdbc;
 
-    /** The workspace's own database; jdbc is the foundation's. */
-    @Autowired
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
-    JdbcTemplate ws;
-
-    @Autowired
-    xyz.goraebap.foundation.outbox.application.OutboxProcessor outboxProcessor;
-
     @Autowired
     SessionService sessions;
 
     @BeforeEach
     void prepare() throws Exception {
         TestDatabase.clear(jdbc);
-        WorkspaceTestDatabase.clear(ws);
+        WorkspaceTestDatabase.seed(jdbc);
         member(ADMIN, "가관리", "admin@example.test", WorkspaceRoles.ADMIN);
         member(MEMBER, "나구성원", "member@example.test");
         member(OTHER, "다동료", "other@example.test");
@@ -84,7 +74,7 @@ class IssuesTest {
                         .cookie(cookie(ADMIN))
                         .content("{\"key\":\"SAFE\",\"name\":\"안전플랫폼\"}"))
                 .andExpect(status().isCreated());
-        ProjectMembers.editors(ws, "SAFE", MEMBER, OTHER);
+        ProjectMembers.editors(jdbc, "SAFE", MEMBER, OTHER);
     }
 
     @Test
@@ -120,7 +110,7 @@ class IssuesTest {
         create("세 번째", "SP");
         mvc.perform(get("/api/v1/workspace/issues/sp-3").cookie(cookie(MEMBER))).andExpect(status().isOk());
         mvc.perform(get("/api/v1/workspace/issues/SP-9").cookie(cookie(MEMBER))).andExpect(status().isNotFound());
-        assertThat(ws.queryForObject("SELECT last_work_item_number FROM project", Long.class))
+        assertThat(jdbc.queryForObject("SELECT last_work_item_number FROM project", Long.class))
                 .isEqualTo(3);
     }
 
@@ -145,15 +135,6 @@ class IssuesTest {
                 .andExpect(jsonPath("$.issue.dueDate").value("2026-11-10"))
                 .andExpect(jsonPath("$.issue.version").value(1));
         assertThat(issue).isNotNull();
-        // The notice waits in the workspace's outbox until its command commits, then crosses to the foundation.
-        assertThat(ws.queryForObject(
-                        "SELECT count(*) FROM outbox_message WHERE topic = 'notification.send' AND status = 'PENDING'",
-                        Integer.class))
-                .isEqualTo(1);
-        outboxProcessor.drain();
-        assertThat(ws.queryForObject(
-                        "SELECT count(*) FROM outbox_message WHERE status = 'DONE'", Integer.class))
-                .isEqualTo(1);
         assertThat(jdbc.queryForObject(
                         "SELECT count(*) FROM notification_recipient r JOIN notification_event e ON e.event_id = r.event_id"
                                 + " WHERE e.kind = 'ISSUE_ASSIGNED' AND r.recipient_id = ?",
@@ -228,7 +209,7 @@ class IssuesTest {
                         .cookie(cookie(ADMIN))
                         .content("{\"name\":\"프론트\",\"color\":\"#000000\"}"))
                 .andExpect(status().isConflict());
-        UUID label = uuid(ws.queryForList("SELECT label_id FROM issue_label", String.class)
+        UUID label = uuid(jdbc.queryForList("SELECT label_id FROM issue_label", String.class)
                 .getFirst());
         mvc.perform(write(post("/api/v1/workspace/projects/SAFE/issues"))
                         .cookie(cookie(MEMBER))
@@ -388,7 +369,7 @@ class IssuesTest {
                         .content("{\"body\":\"확인했습니다\"}"))
                 .andExpect(status().isCreated());
         UUID comment =
-                uuid(ws.queryForList("SELECT entry_id FROM activity_entry WHERE kind = 'COMMENT'", String.class)
+                uuid(jdbc.queryForList("SELECT entry_id FROM activity_entry WHERE kind = 'COMMENT'", String.class)
                         .getFirst());
         String at = "/api/v1/workspace/projects/SAFE/issues/1/comments/" + comment;
         mvc.perform(write(patch(at)).cookie(cookie(OTHER)).content("{\"body\":\"남의 것\"}"))
@@ -522,7 +503,7 @@ class IssuesTest {
                         .cookie(cookie(ADMIN))
                         .content("{\"key\":\"NEXT\",\"name\":\"다른 프로젝트\"}"))
                 .andExpect(status().isCreated());
-        ProjectMembers.editors(ws, "NEXT", MEMBER, OTHER);
+        ProjectMembers.editors(jdbc, "NEXT", MEMBER, OTHER);
         create("다른 프로젝트 업무", "NEXT");
         mvc.perform(get("/api/v1/workspace/issues/groups")
                         .param("grouping", "STATUS")
@@ -547,7 +528,7 @@ class IssuesTest {
                         .param("grouping", "INVALID")
                         .cookie(cookie(MEMBER)))
                 .andExpect(status().isBadRequest());
-        ws.update("UPDATE project SET deleted_at='2026-11-05T00:00:00Z' WHERE name='다른 프로젝트'");
+        jdbc.update("UPDATE project SET deleted_at='2026-11-05T00:00:00Z' WHERE name='다른 프로젝트'");
         mvc.perform(get("/api/v1/workspace/issues/groups")
                         .param("grouping", "STATUS")
                         .cookie(cookie(MEMBER)))
@@ -585,7 +566,7 @@ class IssuesTest {
         mvc.perform(get("/api/v1/workspace/projects/SAFE/issues/1").cookie(cookie(MEMBER)))
                 .andExpect(jsonPath("$.issue.dueDate").value(today))
                 .andExpect(jsonPath("$.issue.closedAt").isNotEmpty());
-        assertThat(ws.queryForObject(
+        assertThat(jdbc.queryForObject(
                         "SELECT count(*) FROM activity_entry WHERE owner_id = ? AND field IN ('ASSIGNEE','START_DATE','DUE_DATE')",
                         Integer.class,
                         issue("SAFE", 1).toString()))
@@ -822,7 +803,7 @@ class IssuesTest {
         UUID outsider = id(5);
         member(viewer, "라뷰어", "viewer@example.test");
         member(outsider, "마바깥", "outsider@example.test");
-        ProjectMembers.join(ws, "SAFE", viewer, "VIEWER");
+        ProjectMembers.join(jdbc, "SAFE", viewer, "VIEWER");
         create("로그인 오류");
 
         // Who is not a member does not find the project's issues, alone or across the area.
@@ -863,7 +844,7 @@ class IssuesTest {
         mvc.perform(write(delete("/api/v1/workspace/projects/SAFE/issues/1?expectedVersion=0"))
                         .cookie(cookie(OTHER)))
                 .andExpect(status().isForbidden());
-        ProjectMembers.join(ws, "SAFE", OTHER, "ADMIN");
+        ProjectMembers.join(jdbc, "SAFE", OTHER, "ADMIN");
         mvc.perform(write(post("/api/v1/workspace/projects/SAFE/columns"))
                         .cookie(cookie(OTHER))
                         .content("{\"name\":\"배포 대기\",\"category\":\"STARTED\"}"))
@@ -898,7 +879,7 @@ class IssuesTest {
     }
 
     private UUID issue(String key, long number) {
-        return uuid(ws.queryForList(
+        return uuid(jdbc.queryForList(
                         "SELECT i.issue_id FROM issue i JOIN project_key k ON k.project_id = i.project_id"
                                 + " WHERE k.prefix = ? AND i.number = ?",
                         String.class,
@@ -908,7 +889,7 @@ class IssuesTest {
     }
 
     private UUID column(String key, String name) {
-        return uuid(ws.queryForList(
+        return uuid(jdbc.queryForList(
                         "SELECT c.column_id FROM issue_column c JOIN project_key k ON k.project_id = c.project_id"
                                 + " WHERE k.prefix = ? AND c.name = ?",
                         String.class,

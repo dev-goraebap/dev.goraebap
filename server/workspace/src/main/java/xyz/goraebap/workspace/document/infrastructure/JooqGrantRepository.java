@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import static xyz.goraebap.workspace.jooq.tables.DocumentGrant.DOCUMENT_GRANT;
 
 import java.time.Instant;
@@ -19,7 +17,6 @@ import xyz.goraebap.workspace.document.domain.access.GrantRepository;
 @Repository
 @RequiredArgsConstructor
 class JooqGrantRepository implements GrantRepository {
-    @Qualifier(WorkspaceDatabaseConfig.DSL)
     private final DSLContext dslContext;
 
     @Override

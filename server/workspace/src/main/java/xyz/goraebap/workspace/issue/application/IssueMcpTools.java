@@ -1,7 +1,5 @@
 package xyz.goraebap.workspace.issue.application;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -18,7 +16,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import xyz.goraebap.workspace.WorkspaceTransactional;
+import org.springframework.transaction.annotation.Transactional;
 import xyz.goraebap.foundation.mcp.McpArguments;
 import xyz.goraebap.foundation.mcp.McpChangeSource;
 import xyz.goraebap.foundation.mcp.McpTool;
@@ -79,7 +77,6 @@ public class IssueMcpTools implements McpToolProvider, McpChangeSource {
     private final CycleService cycleService;
     private final IssueProjects issueProjects;
     private final RichBodyFacade richBodyFacade;
-    @Qualifier(WorkspaceDatabaseConfig.TRANSACTION_MANAGER)
     private final org.springframework.transaction.PlatformTransactionManager transactionManager;
     private final UserFacade userFacade;
 
@@ -361,7 +358,7 @@ public class IssueMcpTools implements McpToolProvider, McpChangeSource {
     }
 
     @Override
-    @WorkspaceTransactional(readOnly = true)
+    @Transactional(readOnly = true)
     public Changes changesSince(
             CurrentUser actor, Instant since, Instant until, String project, int limit, String cursor) {
         if (project != null && project.equalsIgnoreCase("shared")) return new Changes(List.of(), null);
