@@ -1,5 +1,7 @@
 package xyz.goraebap.workspace.issue.application.code;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.time.Clock;
 import java.util.EnumMap;
 import java.util.Optional;
@@ -47,7 +49,7 @@ class RepositoryConnections {
             IssueProjects issueProjects,
             CodeHosts codeHosts,
             CodeService codeService,
-            PlatformTransactionManager transactionManager,
+            @Qualifier(WorkspaceDatabaseConfig.TRANSACTION_MANAGER) PlatformTransactionManager transactionManager,
             Clock clock) {
         this.integrationRepository = integrationRepository;
         this.issueColumnRepository = issueColumnRepository;

@@ -1,5 +1,7 @@
 package xyz.goraebap.workspace.issue.application.code;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -59,7 +61,7 @@ public class CodeInbound {
             IssueProjects issueProjects,
             ProjectFacade projectFacade,
             CodeHosts codeHosts,
-            PlatformTransactionManager transactionManager,
+            @Qualifier(WorkspaceDatabaseConfig.TRANSACTION_MANAGER) PlatformTransactionManager transactionManager,
             Clock clock) {
         this.integrationRepository = integrationRepository;
         this.codeLinkRepository = codeLinkRepository;

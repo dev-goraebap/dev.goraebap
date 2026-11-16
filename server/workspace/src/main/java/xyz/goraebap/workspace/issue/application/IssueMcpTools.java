@@ -1,5 +1,7 @@
 package xyz.goraebap.workspace.issue.application;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
@@ -77,6 +79,7 @@ public class IssueMcpTools implements McpToolProvider, McpChangeSource {
     private final CycleService cycleService;
     private final IssueProjects issueProjects;
     private final RichBodyFacade richBodyFacade;
+    @Qualifier(WorkspaceDatabaseConfig.TRANSACTION_MANAGER)
     private final org.springframework.transaction.PlatformTransactionManager transactionManager;
     private final UserFacade userFacade;
 

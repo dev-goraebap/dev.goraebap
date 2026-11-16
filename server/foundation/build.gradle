@@ -1,5 +1,7 @@
 // 어떤 앱이든 쓰는 일반 · 지원 도메인. 다른 하위 프로젝트를 참조하지 않는다.
 apply plugin: 'org.jooq.jooq-codegen-gradle'
+// 테스트 지원 코드(구성원 넣기, DB 비우기)를 다른 하위 프로젝트의 테스트도 쓴다.
+apply plugin: 'java-test-fixtures'
 
 // 런타임 jOOQ 버전을 코드 생성기와 맞춘다. 어긋나면 생성물이 런타임 API와 맞지 않는다.
 ext['jooq.version'] = '3.21.6'
@@ -28,6 +30,8 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.2'
+	testFixturesImplementation 'org.springframework.boot:spring-boot-starter-jooq'
+	testFixturesImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 }
 
 /*

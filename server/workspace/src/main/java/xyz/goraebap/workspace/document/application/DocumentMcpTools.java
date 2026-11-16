@@ -1,5 +1,7 @@
 package xyz.goraebap.workspace.document.application;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import xyz.goraebap.workspace.WorkspaceDatabaseConfig;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -50,6 +52,7 @@ public class DocumentMcpTools implements McpToolProvider, McpChangeSource {
     private final DocumentBodyService documentBodyService;
     private final DocumentSpaces documentSpaces;
     private final RichBodyFacade richBodyFacade;
+    @Qualifier(WorkspaceDatabaseConfig.TRANSACTION_MANAGER)
     private final org.springframework.transaction.PlatformTransactionManager transactionManager;
     private final Clock clock;
     private final jakarta.validation.Validator validator;

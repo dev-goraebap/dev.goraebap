@@ -13,6 +13,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	jooqCodegen 'org.jooq:jooq-meta-extensions:3.21.6'
+	testImplementation testFixtures(project(':foundation'))
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.2'
