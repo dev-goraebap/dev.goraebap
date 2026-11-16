@@ -302,3 +302,26 @@ CREATE TABLE seed_import (
     CONSTRAINT seed_import_pkey PRIMARY KEY (file_name)
 );
 
+
+-- 다른 하위 프로젝트를 바꿀 일을 내 저장과 함께 적어 두는 자리. 커밋 뒤 처리기가 순서대로 처리한다.
+CREATE TABLE outbox_message (
+    outbox_id integer,
+    topic varchar(64) NOT NULL,
+    ordering_key varchar(200),
+    payload text NOT NULL,
+    status varchar(16) DEFAULT 'PENDING' NOT NULL,
+    attempts integer DEFAULT 0 NOT NULL,
+    next_attempt_at timestamptz NOT NULL,
+    last_error varchar(500),
+    created_at timestamptz NOT NULL,
+    finished_at timestamptz,
+    CONSTRAINT outbox_message_pkey PRIMARY KEY (outbox_id)
+-- [jooq ignore start]
+    , CONSTRAINT outbox_message_status_check CHECK (status IN ('PENDING', 'DONE', 'FAILED'))
+-- [jooq ignore stop]
+);
+
+-- [jooq ignore start]
+CREATE INDEX ix_outbox_message_due ON outbox_message (status, next_attempt_at);
+CREATE INDEX ix_outbox_message_ordering ON outbox_message (ordering_key, outbox_id);
+-- [jooq ignore stop]
