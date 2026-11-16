@@ -11,6 +11,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
+@org.springframework.test.context.ActiveProfiles("test")
 @AutoConfigureMockMvc
 class ServerApplicationTest {
 
