@@ -12,7 +12,7 @@ public final class NotificationRequests {
     private NotificationRequests() {}
 
     /** The member opened a subject. Explicit reads may also clear its actionable notices. */
-    public record Seen(@NotNull Subject.Type type, @NotNull UUID id, Boolean includeActionable) {}
+    public record Seen(@NotNull String type, @NotNull UUID id, Boolean includeActionable) {}
 
     /**
      * The member's notices, newest first, searched in their title and message and narrowed by read state and by what

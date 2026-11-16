@@ -37,7 +37,7 @@ class JooqNotificationRepository implements NotificationRepository {
                 .set(NOTIFICATION_EVENT.TITLE, cut(notice.title(), TITLE_MAX))
                 .set(NOTIFICATION_EVENT.MESSAGE, notice.message() == null ? "" : notice.message())
                 .set(NOTIFICATION_EVENT.LINK, notice.link() == null ? null : cut(notice.link(), LINK_MAX))
-                .set(NOTIFICATION_EVENT.SUBJECT_TYPE, notice.subject().type().name())
+                .set(NOTIFICATION_EVENT.SUBJECT_TYPE, notice.subject().type())
                 .set(NOTIFICATION_EVENT.SUBJECT_ID, notice.subject().id())
                 .set(NOTIFICATION_EVENT.ENDS, notice.ends().name())
                 .set(NOTIFICATION_EVENT.EXPIRES_AT, notice.expiresAt())
@@ -92,7 +92,7 @@ class JooqNotificationRepository implements NotificationRepository {
     private static Condition about(Subject subject) {
         return NOTIFICATION_EVENT
                 .SUBJECT_TYPE
-                .eq(subject.type().name())
+                .eq(subject.type())
                 .and(NOTIFICATION_EVENT.SUBJECT_ID.eq(subject.id()));
     }
 

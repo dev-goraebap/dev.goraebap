@@ -7,20 +7,26 @@ import static xyz.goraebap.foundation.jooq.tables.OutboxMessage.OUTBOX_MESSAGE;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
-import org.springframework.stereotype.Repository;
 import xyz.goraebap.foundation.outbox.OutboxMessage;
 import xyz.goraebap.foundation.outbox.domain.OutboxRepository;
 
-@Repository
-@RequiredArgsConstructor
-class JooqOutboxRepository implements OutboxRepository {
+/**
+ * The outbox_message table of one database. Every database that has a channel carries the same table, so the
+ * foundation's generated table class reads any of them through that database's own jOOQ context.
+ */
+public final class JooqOutboxRepository implements OutboxRepository {
     private static final String PENDING = "PENDING";
     private static final String DONE = "DONE";
     private static final String FAILED = "FAILED";
 
+    private final String channel;
     private final DSLContext dslContext;
+
+    public JooqOutboxRepository(String channel, DSLContext dslContext) {
+        this.channel = channel;
+        this.dslContext = dslContext;
+    }
 
     @Override
     public void add(String topic, String orderingKey, String payload, Instant now) {
@@ -59,7 +65,8 @@ class JooqOutboxRepository implements OutboxRepository {
                                 .and(earlier.STATUS.in(PENDING, FAILED)))))
                 .orderBy(OUTBOX_MESSAGE.OUTBOX_ID)
                 .limit(limit)
-                .fetch(row -> new OutboxMessage(row.value1(), row.value2(), row.value3(), row.value4(), row.value5()));
+                .fetch(row -> new OutboxMessage(
+                        channel, row.value1(), row.value2(), row.value3(), row.value4(), row.value5()));
     }
 
     @Override

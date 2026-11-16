@@ -39,6 +39,9 @@ public interface UserFacade {
     /** Whether the member has left, so their records elsewhere become read-only; empty for nobody. */
     Optional<Boolean> hasLeft(UUID userId);
 
+    /** Everyone who holds the role, for a domain that treats its own administrators apart. */
+    java.util.Set<UUID> holdersOf(xyz.goraebap.foundation.shared.web.Role role);
+
     /** Names, with the department the space that keeps one names, for the given people in one batch; unknown ids are left out. */
     Map<UUID, UserSummary> summariesOf(Collection<UUID> userIds);
 

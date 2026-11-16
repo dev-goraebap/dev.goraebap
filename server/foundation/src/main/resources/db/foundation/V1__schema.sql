@@ -325,3 +325,11 @@ CREATE TABLE outbox_message (
 CREATE INDEX ix_outbox_message_due ON outbox_message (status, next_attempt_at);
 CREATE INDEX ix_outbox_message_ordering ON outbox_message (ordering_key, outbox_id);
 -- [jooq ignore stop]
+
+-- 이 DB의 처리자가 이미 처리한 아웃박스 줄. 같은 줄이 다시 넘어와도 한 번만 반영하려고 일과 같은 트랜잭션에서 적는다.
+CREATE TABLE outbox_received (
+    channel varchar(64) NOT NULL,
+    outbox_id integer NOT NULL,
+    received_at timestamptz NOT NULL,
+    CONSTRAINT outbox_received_pkey PRIMARY KEY (channel, outbox_id)
+);

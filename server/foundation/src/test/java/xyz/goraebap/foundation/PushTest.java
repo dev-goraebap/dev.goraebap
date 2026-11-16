@@ -186,7 +186,7 @@ class PushTest {
                         .value(true));
 
         send(Notice.toSee(
-                Subject.approvalRequest(UUID.randomUUID()),
+                Subject.of("TEST_REQUEST", UUID.randomUUID()),
                 "LEAVE_APPROVED",
                 ADMIN,
                 "휴가 신청이 승인되었어요",
@@ -194,7 +194,7 @@ class PushTest {
                 "/me/leaves",
                 List.of(MEMBER, OTHER)));
         send(Notice.toSee(
-                Subject.approvalRequest(UUID.randomUUID()),
+                Subject.of("TEST_REQUEST", UUID.randomUUID()),
                 "LEAVE_CC",
                 ADMIN,
                 "수신참조: 새 휴가 신청",

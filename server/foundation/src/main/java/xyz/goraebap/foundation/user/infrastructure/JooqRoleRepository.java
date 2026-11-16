@@ -54,6 +54,14 @@ class JooqRoleRepository implements RoleRepository {
                 .and(USERS.DELETED_AT.isNull()));
     }
 
+    public java.util.Set<UUID> findHolders(Role role) {
+        return new java.util.HashSet<>(dslContext
+                .select(USER_ROLE.USER_ID)
+                .from(USER_ROLE)
+                .where(USER_ROLE.ROLE.eq(role.name()))
+                .fetch(USER_ROLE.USER_ID));
+    }
+
     public void save(MemberRoles memberRoles, UUID actor) {
         saveAll(List.of(memberRoles), actor);
     }

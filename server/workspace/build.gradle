@@ -1,4 +1,85 @@
 // 프로젝트 · 이슈 · 문서. foundation만 참조한다.
+apply plugin: 'org.jooq.jooq-codegen-gradle'
+
+ext['jooq.version'] = '3.21.6'
+
 dependencies {
 	implementation project(':foundation')
+	// 문서 가져오기: Markdown(CommonMark + GFM 표 · 할 일 · 취소선)을 본문 편집기의 JSON으로 바꾼다.
+	implementation 'org.commonmark:commonmark:0.31.0'
+	implementation 'org.commonmark:commonmark-ext-gfm-tables:0.31.0'
+	implementation 'org.commonmark:commonmark-ext-gfm-strikethrough:0.31.0'
+	implementation 'org.commonmark:commonmark-ext-task-list-items:0.31.0'
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	jooqCodegen 'org.jooq:jooq-meta-extensions:3.21.6'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation 'com.tngtech.archunit:archunit-junit5:1.4.2'
+}
+
+// jOOQ 코드 생성: 이 하위 프로젝트의 마이그레이션에서 자기 표만 생성한다.
+jooq {
+	configuration {
+		generator {
+			database {
+				name = 'org.jooq.meta.extensions.ddl.DDLDatabase'
+				properties {
+					property {
+						key = 'scripts'
+						value = 'src/main/resources/db/workspace/*.sql'
+					}
+					property {
+						key = 'sort'
+						value = 'flyway'
+					}
+					property {
+						key = 'defaultNameCase'
+						value = 'lower'
+					}
+					property {
+						key = 'unqualifiedSchema'
+						value = 'public'
+					}
+					property {
+						key = 'parseIgnoreComments'
+						value = 'true'
+					}
+				}
+				schemata {
+					schema {
+						inputSchema = 'PUBLIC'
+						outputSchemaToDefault = true
+					}
+				}
+				forcedTypes {
+					forcedType {
+						userType = 'java.time.Instant'
+						binding = 'xyz.goraebap.foundation.shared.persistence.InstantTextBinding'
+						includeTypes = 'TIMESTAMP.*WITH.*TIME.*ZONE'
+					}
+				}
+			}
+			target {
+				packageName = 'xyz.goraebap.workspace.jooq'
+				directory = layout.buildDirectory.dir('generated-sources/jooq').get().asFile.absolutePath
+			}
+		}
+	}
+}
+
+tasks.named('jooqCodegen') {
+	inputs.files(fileTree('src/main/resources/db/workspace'))
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir layout.buildDirectory.dir('generated-sources/jooq')
+		}
+	}
+}
+
+tasks.named('compileJava') {
+	dependsOn tasks.named('jooqCodegen')
 }

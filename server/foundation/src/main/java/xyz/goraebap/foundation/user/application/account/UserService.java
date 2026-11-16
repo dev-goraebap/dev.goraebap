@@ -148,6 +148,12 @@ public class UserService implements UserFacade {
 
     @Override
     @Transactional(readOnly = true)
+    public java.util.Set<UUID> holdersOf(Role role) {
+        return roleRepository.findHolders(role);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Map<UUID, String> activeNames() {
         return userQuery.activeNames();
     }

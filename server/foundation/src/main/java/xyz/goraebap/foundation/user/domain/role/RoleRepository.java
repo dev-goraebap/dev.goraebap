@@ -15,6 +15,9 @@ public interface RoleRepository {
     /** Some member who may sign in holds the role. */
     boolean existsActiveHolder(Role role);
 
+    /** Everyone who holds the role, whether or not they may sign in. */
+    java.util.Set<UUID> findHolders(Role role);
+
     /** A role newly held is recorded with the moment and who gave it; one kept keeps its first grant. */
     void save(MemberRoles memberRoles, UUID actor);
 

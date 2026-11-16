@@ -145,7 +145,7 @@ class OutboxTest {
         assertThat(failed.get(0).topic()).isEqualTo("test.refuse");
         assertThat(failed.get(0).orderingKey()).isEqualTo("document:1");
 
-        outboxService.discard(failed.get(0).id());
+        outboxService.discard("foundation", failed.get(0).id());
         processor.drain();
         assertThat(HANDLED).containsExactly("other", "second");
         assertThat(outboxService.failed()).isEmpty();
@@ -160,7 +160,7 @@ class OutboxTest {
         assertThat(status("a")).isEqualTo("FAILED");
 
         FLAKY_FAILURES.set(0);
-        outboxService.retry(outboxService.failed().get(0).id());
+        outboxService.retry("foundation", outboxService.failed().get(0).id());
         assertThat(status("a")).isEqualTo("PENDING");
         assertThat(attempts("a")).isZero();
         processor.drain();
@@ -172,9 +172,9 @@ class OutboxTest {
     void onlyAFailedLineIsTriedAgainOrDropped() {
         add("test.ok", null, "a");
         long id = jdbc.queryForObject("SELECT outbox_id FROM outbox_message WHERE payload = 'a'", Long.class);
-        assertThatThrownBy(() -> outboxService.retry(id)).isInstanceOf(BusinessException.class);
-        assertThatThrownBy(() -> outboxService.discard(id)).isInstanceOf(BusinessException.class);
-        assertThatThrownBy(() -> outboxService.retry(id + 100)).isInstanceOf(BusinessException.class);
+        assertThatThrownBy(() -> outboxService.retry("foundation", id)).isInstanceOf(BusinessException.class);
+        assertThatThrownBy(() -> outboxService.discard("foundation", id)).isInstanceOf(BusinessException.class);
+        assertThatThrownBy(() -> outboxService.retry("foundation", id + 100)).isInstanceOf(BusinessException.class);
         assertThat(count()).isEqualTo(1);
     }
 

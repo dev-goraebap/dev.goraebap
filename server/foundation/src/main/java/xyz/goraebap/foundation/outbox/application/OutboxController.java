@@ -25,15 +25,15 @@ public class OutboxController {
         return outboxService.failed();
     }
 
-    @PostMapping("/failed/{id}/retry")
+    @PostMapping("/failed/{channel}/{id}/retry")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void retry(@PathVariable long id) {
-        outboxService.retry(id);
+    public void retry(@PathVariable String channel, @PathVariable long id) {
+        outboxService.retry(channel, id);
     }
 
-    @DeleteMapping("/failed/{id}")
+    @DeleteMapping("/failed/{channel}/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void discard(@PathVariable long id) {
-        outboxService.discard(id);
+    public void discard(@PathVariable String channel, @PathVariable long id) {
+        outboxService.discard(channel, id);
     }
 }

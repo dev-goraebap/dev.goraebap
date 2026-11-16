@@ -8,18 +8,16 @@ import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.support.TransactionTemplate;
+import xyz.goraebap.foundation.outbox.OutboxChannel;
 import xyz.goraebap.foundation.outbox.OutboxHandlerSpi;
 import xyz.goraebap.foundation.outbox.OutboxMessage;
-import xyz.goraebap.foundation.outbox.domain.OutboxRepository;
 import xyz.goraebap.foundation.shared.error.BusinessException;
 import xyz.goraebap.foundation.shared.error.DomainRuleViolation;
 
 /**
- * Hands the lines that are due to their handlers, one at a time and in order. A handler runs outside the outbox's own
- * transaction, in whatever transaction it opens in its own database; the line is marked afterwards, so a crash in
- * between hands it over again and the handler must not mind.
+ * Hands the lines that are due, in every channel, to their handlers, one at a time and in order. A handler runs
+ * outside the outbox's own transaction, in whatever transaction it opens in its own database; the line is marked
+ * afterwards, so a crash in between hands it over again and the handler must not mind.
  *
  * <p>A business refusal fails the line at once. Anything else is tried again after a growing wait, and fails for good
  * once the waits run out. A failed line stays, holds back the later lines of its ordering key, and waits for an
@@ -41,22 +39,16 @@ public class OutboxProcessor {
     private static final int BATCH = 50;
     private static final int ERROR_MAX = 500;
 
-    private final OutboxRepository outboxRepository;
+    private final List<OutboxChannel> channels;
     private final Map<String, OutboxHandlerSpi> handlers = new HashMap<>();
-    private final TransactionTemplate transactions;
     private final Clock clock;
     private final ReentrantLock draining = new ReentrantLock();
 
-    OutboxProcessor(
-            OutboxRepository outboxRepository,
-            List<OutboxHandlerSpi> handlers,
-            PlatformTransactionManager transactionManager,
-            Clock clock) {
-        this.outboxRepository = outboxRepository;
+    OutboxProcessor(List<OutboxChannel> channels, List<OutboxHandlerSpi> handlers, Clock clock) {
+        this.channels = List.copyOf(channels);
         for (var handler : handlers)
             if (this.handlers.put(handler.topic(), handler) != null)
                 throw new IllegalStateException("Outbox topic handled twice: " + handler.topic());
-        this.transactions = new TransactionTemplate(transactionManager);
         this.clock = clock;
     }
 
@@ -68,57 +60,74 @@ public class OutboxProcessor {
         if (!draining.tryLock()) return 0;
         try {
             int handed = 0;
-            while (true) {
-                List<OutboxMessage> due =
-                        transactions.execute(status -> outboxRepository.findDue(clock.instant(), BATCH));
-                if (due == null || due.isEmpty()) return handed;
-                for (var message : due) handed += handOver(message) ? 1 : 0;
-                // A line that failed or waits keeps its key's later lines out of the next read, so the loop ends.
-            }
+            for (var channel : channels) handed += drain(channel);
+            return handed;
         } finally {
             draining.unlock();
         }
     }
 
+    private int drain(OutboxChannel channel) {
+        int handed = 0;
+        while (true) {
+            List<OutboxMessage> due = due(channel);
+            if (due.isEmpty()) return handed;
+            int before = handed;
+            for (var message : due) handed += handOver(channel, message) ? 1 : 0;
+            // Nothing was handed over: every line read waits behind another, and the next read would be the same.
+            if (handed == before && due.stream().allMatch(message -> handlers.containsKey(message.topic())))
+                return handed;
+        }
+    }
+
+    private List<OutboxMessage> due(OutboxChannel channel) {
+        List<OutboxMessage> due =
+                channel.transactions().execute(status -> channel.repository().findDue(clock.instant(), BATCH));
+        return due == null ? List.of() : due;
+    }
+
     /** True when the handler was called, whatever came of it. */
-    private boolean handOver(OutboxMessage message) {
+    private boolean handOver(OutboxChannel channel, OutboxMessage message) {
         // An earlier line of the same key may have failed or been put off within this batch.
-        if (message.orderingKey() != null && !stillFirst(message)) return false;
+        if (message.orderingKey() != null
+                && due(channel).stream().noneMatch(each -> each.id() == message.id())) return false;
         var handler = handlers.get(message.topic());
         if (handler == null) {
-            fail(message, message.attempts(), "이 주제를 처리하는 곳이 없습니다: " + message.topic());
+            fail(channel, message, message.attempts(), "이 주제를 처리하는 곳이 없습니다: " + message.topic());
             return false;
         }
         int attempts = message.attempts() + 1;
         try {
             handler.handle(message);
         } catch (BusinessException | DomainRuleViolation refused) {
-            fail(message, attempts, refused.getMessage());
+            fail(channel, message, attempts, refused.getMessage());
             return true;
         } catch (RuntimeException failure) {
             if (attempts > WAITS.size()) {
-                log.error("Outbox line {} ({}) failed for good", message.id(), message.topic(), failure);
-                fail(message, attempts, describe(failure));
+                log.error("Outbox line {}:{} ({}) failed for good", message.channel(), message.id(), message.topic(), failure);
+                fail(channel, message, attempts, describe(failure));
             } else {
-                log.warn("Outbox line {} ({}) failed, attempt {}", message.id(), message.topic(), attempts, failure);
+                log.warn(
+                        "Outbox line {}:{} ({}) failed, attempt {}",
+                        message.channel(),
+                        message.id(),
+                        message.topic(),
+                        attempts,
+                        failure);
                 var next = clock.instant().plus(WAITS.get(attempts - 1));
-                transactions.executeWithoutResult(
-                        status -> outboxRepository.markRetry(message.id(), attempts, next, cut(describe(failure))));
+                channel.transactions().executeWithoutResult(status -> channel.repository()
+                        .markRetry(message.id(), attempts, next, cut(describe(failure))));
             }
             return true;
         }
-        transactions.executeWithoutResult(status -> outboxRepository.markDone(message.id(), clock.instant()));
+        channel.transactions()
+                .executeWithoutResult(status -> channel.repository().markDone(message.id(), clock.instant()));
         return true;
     }
 
-    private boolean stillFirst(OutboxMessage message) {
-        List<OutboxMessage> due = transactions.execute(status -> outboxRepository.findDue(clock.instant(), BATCH));
-        return due != null && due.stream().anyMatch(each -> each.id() == message.id());
-    }
-
-    private void fail(OutboxMessage message, int attempts, String error) {
-        transactions.executeWithoutResult(
-                status -> outboxRepository.markFailed(message.id(), attempts, cut(error), clock.instant()));
+    private void fail(OutboxChannel channel, OutboxMessage message, int attempts, String error) {
+        channel.transactions().executeWithoutResult(status -> channel.repository()
+                .markFailed(message.id(), attempts, cut(error), clock.instant()));
     }
 
     private static String describe(RuntimeException failure) {
