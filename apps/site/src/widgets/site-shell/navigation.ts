@@ -47,7 +47,7 @@ const sectionEntry = (section: (typeof architectureSections)[number]): NavEntry 
 export const guideSpace: NavSpace = {
   id: 'webcraft', title: 'Webcraft',
   sections: [
-    { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: HomeIcon }, ...entriesOf(rules(['goraebap-mode', 'manage-workflow']))] },
+    { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: HomeIcon }, ...entriesOf(rules(['goraebap-mode', 'onboarding']))] },
     { title: '아키텍처', entries: [{ path: '/webcraft/architecture/', label: '아키텍처 정의서', icon: EyeIcon }, ...architectureSections.filter(section => !section.id.includes('.')).map(sectionEntry)] },
     { title: 'UI 키트', entries: entriesOf(content(['catalog'])) },
   ],

@@ -43,7 +43,7 @@ export const skillGroups = [
   { skill: 'api', label: 'API', icon: 'link' },
   { skill: 'database', label: '데이터베이스', icon: 'archive' },
   { skill: 'architecture', label: '아키텍처', icon: 'layout-board' },
-  { skill: 'manage-workflow', label: '프로젝트 연결', icon: 'attachment' },
+  { skill: 'onboarding', label: '온보딩', icon: 'attachment' },
 ] as const;
 
 /**

@@ -8,7 +8,7 @@ arc42: "none"
 
 ## 에셋 역할을 고른다
 
-프로젝트 AGENTS.md의 [프로젝트 규칙](../../manage-workflow/references/project-rules.md)에 에셋 모델 줄이 있으면 아래 순서보다 우선합니다. 회사 프로젝트에서 외부 모델을 쓰지 않도록 막을 때 사용합니다.
+프로젝트 AGENTS.md의 [프로젝트 규칙](../../onboarding/references/project-rules.md)에 에셋 모델 줄이 있으면 아래 순서보다 우선합니다. 회사 프로젝트에서 외부 모델을 쓰지 않도록 막을 때 사용합니다.
 
 프로젝트 규칙에 별도 지정이 없으면 다음 순서로 고릅니다.
 

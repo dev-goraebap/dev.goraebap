@@ -41,7 +41,7 @@ for (const agent of ['claude', 'codex']) {
       const isExplicit = agent === 'claude' ? /^---\r?\ndisable-model-invocation: true\r?\n/.test(skill) : policy.includes('allow_implicit_invocation: false');
       assert.equal(isExplicit, explicitOnly.includes(name), name);
     }
-    assert(!explicitOnly.includes('goraebap-mode') && !explicitOnly.includes('manage-workflow'));
+    assert(!explicitOnly.includes('goraebap-mode') && !explicitOnly.includes('onboarding'));
   });
 
   test(`${agent}: 사본·동기화 도구와 문서 밖의 파일을 담지 않는다`, async () => {

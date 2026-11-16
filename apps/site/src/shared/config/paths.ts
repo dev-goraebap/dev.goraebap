@@ -7,5 +7,5 @@ export const paths: Record<SitePath, string> = {
   blog: '/blog/',
   appearance: '/settings/appearance/',
   plugins: '/settings/plugins/',
-  projectLink: '/webcraft/rules/manage-workflow/',
+  projectLink: '/webcraft/rules/onboarding/',
 };
