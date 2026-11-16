@@ -1,0 +1,43 @@
+plugins {
+	id 'org.springframework.boot' version '4.1.1' apply false
+	id 'io.spring.dependency-management' version '1.1.7' apply false
+}
+
+// 하위 프로젝트가 같이 쓰는 빌드 설정. 하위 프로젝트 사이의 참조는 각자의 build.gradle에 적은 방향으로만 컴파일된다.
+subprojects {
+	apply plugin: 'java-library'
+	apply plugin: 'io.spring.dependency-management'
+
+	group = 'xyz.goraebap'
+	version = '0.0.1-SNAPSHOT'
+
+	java {
+		toolchain {
+			languageVersion = JavaLanguageVersion.of(21)
+		}
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
+		}
+	}
+
+	dependencies {
+		testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	}
+
+	tasks.withType(Test).configureEach {
+		useJUnitPlatform()
+		// CI 로그만 보고 원인을 알 수 있게 실패한 테스트의 스택트레이스를 남긴다.
+		testLogging {
+			events 'failed'
+			exceptionFormat = 'full'
+			showStackTraces = true
+		}
+	}
+}

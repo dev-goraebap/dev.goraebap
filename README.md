@@ -24,6 +24,7 @@ Claude Code 설치와 프로젝트 연결·기존 지침 사본 전환은 [플�
 | 위치 | 역할 |
 | --- | --- |
 | `plugins/webcraft/` | 플러그인 지침 원본·패키징 도구·테스트·생성 배포본 |
+| `server/` | 백엔드. Gradle 멀티 프로젝트이며 하위 프로젝트는 `foundation`, `workspace`, `app`입니다 |
 | `client/apps/blog/src/` | 블로그와 Webcraft를 함께 제공하는 React 사이트. FSD 계층으로 구성합니다 |
 | `client/apps/blog/content/blog/posts/` | 블로그 글과 원본 이미지 |
 | `client/apps/blog/content/` | Webcraft 화면 해설과 견본 문서 |

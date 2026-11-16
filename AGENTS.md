@@ -11,6 +11,7 @@
 - 공통 UI는 `client/apps/blog/src/shared/ui/`, 실행 견본은 `client/apps/blog/samples/`에 둡니다. 견본은 별도 사이트가 아니라 같은 빌드의 `sample.html`에서 그립니다.
 - 플러그인은 `plugins/<이름>/` 아래에서 독립적으로 관리합니다. 사이트 소스·견본·글·자산은 플러그인 패키지에 포함하지 않습니다. 기존 제품은 지침 사본 대신 AGENTS.md로 Webcraft를 가리키며, 제품 고유 예외만 프로젝트 규칙에 둡니다.
 - 프론트엔드는 `client/` 아래에 둡니다. `client/package.json`이 npm 워크스페이스이고 앱은 `client/apps/`에 둡니다. `client/apps/blog`는 블로그·가이드 사이트(goraebap.xyz)입니다. 저장소 루트에는 `package.json`을 두지 않습니다. 사이트 명령(`blog:*`)은 `client/`에서, 플러그인 명령은 `plugins/webcraft/`에서 실행합니다.
+- 백엔드는 `server/` 아래에 둡니다. Gradle 멀티 프로젝트 하나이고 실행 jar도 하나이며, 기본 패키지는 `xyz.goraebap`입니다. 하위 프로젝트는 셋입니다. `foundation`은 어떤 앱이든 쓰는 일반·지원 도메인이며 다른 하위 프로젝트를 참조하지 않습니다. `workspace`는 프로젝트·이슈·문서를 다루며 `foundation`만 참조합니다. `app`은 이 저장소의 조립으로, 묶을 하위 프로젝트를 고르고 실행 jar를 만듭니다. `foundation`과 `workspace`는 다른 저장소가 받아 가는 코드이므로 특정 제품이나 회사의 이름·동작·데이터를 넣지 않습니다.
 
 ## 문서와 생성물
 
@@ -23,5 +24,6 @@
 - 도구·패키징 변경 후 `plugins/webcraft/`에서 `npm test`로 Claude·Codex 패키지를 모두 확인합니다.
 - 스킬 변경 후 `plugins/webcraft/`에서 `npm run check`를 실행합니다.
 - 사이트 코드·경로·콘텐츠 변경 후 `client/`에서 `npm run blog:check`, `npm run blog:test`, `npm run blog:build`를 실행합니다.
+- 서버 코드 변경 후 `server/`에서 `./gradlew build`를 실행해 컴파일과 테스트를 함께 돌립니다.
 - UI를 바꾸면 [문구·본문과 검증](plugins/webcraft/skills/design-system/references/content-and-review.md)을 따라 실제 화면에서 데이터 상태·모션·콘텐츠 폭·키보드·데스크톱과 휴대폰·라이트와 다크를 확인합니다. 확인한 것과 못 한 것을 나누어 보고합니다.
 - 커밋·푸시·전역 설치·배포는 사용자가 요청한 범위에서만 합니다. 사이트는 GitHub Pages로 `goraebap.xyz`에 배포합니다. `main` 푸시는 사이트 배포 워크플로를 실행합니다.

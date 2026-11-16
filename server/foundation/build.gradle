@@ -1,0 +1,4 @@
+// 어떤 앱이든 쓰는 일반 · 지원 도메인. 다른 하위 프로젝트를 참조하지 않는다.
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+}

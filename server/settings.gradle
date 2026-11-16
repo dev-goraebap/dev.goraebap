@@ -1,0 +1,9 @@
+plugins {
+	// 맞는 JDK가 없는 환경에서 Gradle이 내려받을 곳.
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
+}
+
+rootProject.name = 'goraebap-server'
+
+// foundation과 workspace는 다른 저장소가 받아 가는 하위 프로젝트다. app은 이 저장소의 조립이다.
+include 'foundation', 'workspace', 'app'
