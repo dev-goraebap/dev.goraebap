@@ -1,5 +1,5 @@
 // 가이드의 문서 목록을 빌드 때 만든다. 지침은 plugins/webcraft/skills의 Markdown을 원본 그대로 읽고(사본을 두지 않는다),
-// 화면 해설·견본 문서는 site/content의 MDX를 읽는다. 결과는 virtual:guide-docs로 앱에 넘긴다.
+// 화면 해설·견본 문서는 content의 MDX를 읽는다. 결과는 virtual:guide-docs로 앱에 넘긴다.
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -7,7 +7,7 @@ import type { Plugin } from 'vite';
 import { visit } from 'unist-util-visit';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-export const skillsRoot = path.resolve(here, '../../plugins/webcraft/skills');
+export const skillsRoot = path.resolve(here, '../../../plugins/webcraft/skills');
 export const contentRoot = path.resolve(here, 'content');
 
 export type GuideDoc = {
@@ -18,7 +18,7 @@ export type GuideDoc = {
   /** 메뉴 묶음 주소. 예: /rules/frontend/ */
   group: string;
   order: number;
-  /** import.meta.glob 키와 맞추는 원본 위치. 예: plugins/webcraft/skills/frontend/SKILL.md, site/content/app-shell/route-masking.mdx */
+  /** import.meta.glob 키와 맞추는 원본 위치. 예: plugins/webcraft/skills/frontend/SKILL.md, content/app-shell/route-masking.mdx */
   source: string;
   /** 본문이 스스로 h1을 가지면 true(지침 Markdown). */
   hasTitle: boolean;
@@ -48,7 +48,7 @@ export const skillGroups = [
 
 /**
  * 아키텍처 메뉴의 절(arc42). 지침 Markdown과 화면 해설은 프론트매터 arc42로 자기 절을 밝히고, 메뉴는 첫 값의 절 아래에
- * 둔다. 8절은 하위 절로 나눈다. 절마다 site/content/architecture/<id>.mdx(점은 하이픈) 개요 페이지가 있다.
+ * 둔다. 8절은 하위 절로 나눈다. 절마다 content/architecture/<id>.mdx(점은 하이픈) 개요 페이지가 있다.
  */
 export const architectureSections = [
   { id: '1', label: '소개와 목표', icon: 'home' }, { id: '2', label: '아키텍처 제약', icon: 'lock' }, { id: '3', label: '맥락과 범위', icon: 'link' },
@@ -61,7 +61,7 @@ export const architectureSections = [
 ] as const;
 export const sectionPath = (id: string) => `/webcraft/architecture/${id.replace('.', '-')}/`;
 
-/** 화면 해설·견본 묶음(site/content의 폴더). */
+/** 화면 해설·견본 묶음(content의 폴더). */
 export const contentGroups = [
   { dir: 'architecture', label: '아키텍처', icon: 'layout-board' },
   { dir: 'common', label: '화면 공통', icon: 'layout-grid' },
@@ -79,7 +79,7 @@ const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => {
   return statSync(file).isDirectory() ? walk(file) : [file];
 });
 const posix = (file: string) => file.split(path.sep).join('/');
-const repoPath = (file: string) => posix(path.relative(path.resolve(here, '../..'), file));
+const repoPath = (file: string) => posix(path.relative(path.resolve(here, '../../..'), file));
 
 /** 본문에서 미리 준비할 것: <Sample id="…">의 id와 ```mermaid 코드 블록의 원문. */
 const assetsOf = (text: string) => {

@@ -1,6 +1,6 @@
 # Webcraft 키트
 
-업무 앱이 같은 화면 구성과 상호작용을 재현할 수 있도록 고른 공통 UI 구현이다. shadcn/ui(Base UI, `base-nova`)와 Tailwind CSS v4로 만들었고, 이 폴더 바로 아래와 `src/shared/lib`에 있다. 사용 기준은 `plugins/webcraft/skills/design-system/references`의 Markdown이 원본이고, 실행 견본은 `apps/site/samples`에 있으며 가이드 사이트(`apps/site`)에서 본다. 이 폴더는 플러그인에 포함하지 않고 shadcn 레지스트리로 배포한다.
+업무 앱이 같은 화면 구성과 상호작용을 재현할 수 있도록 고른 공통 UI 구현이다. shadcn/ui(Base UI, `base-nova`)와 Tailwind CSS v4로 만들었고, 이 폴더 바로 아래와 `src/shared/lib`에 있다. 사용 기준은 `plugins/webcraft/skills/design-system/references`의 Markdown이 원본이고, 실행 견본은 `client/apps/blog/samples`에 있으며 가이드 사이트(`client/apps/blog`)에서 본다. 이 폴더는 플러그인에 포함하지 않고 shadcn 레지스트리로 배포한다.
 
 ## shadcn 키트
 
@@ -24,7 +24,7 @@
 
 ## 레지스트리
 
-`apps/site/registry.json`이 키트를 shadcn 레지스트리 `webcraft`로 내보낸다. `npm run registry:build`가 `public/r/<이름>.json`을 만들고, 사이트 배포가 그대로 `https://goraebap.xyz/r/<이름>.json`으로 올린다. 부품을 더하거나 import를 바꾸면 `registry.json`의 `files` · `dependencies` · `registryDependencies`를 함께 고치고 다시 빌드한다.
+`client/apps/blog/registry.json`이 키트를 shadcn 레지스트리 `webcraft`로 내보낸다. `npm run registry:build`가 `public/r/<이름>.json`을 만들고, 사이트 배포가 그대로 `https://goraebap.xyz/r/<이름>.json`으로 올린다. 부품을 더하거나 import를 바꾸면 `registry.json`의 `files` · `dependencies` · `registryDependencies`를 함께 고치고 다시 빌드한다.
 
 받는 프로젝트는 Webcraft FSD 배치를 쓴다: `@/*` → `src/*`, 공통 UI는 `src/shared/ui`, 도우미는 `src/shared/lib`. 파일은 `target`대로 그 자리에 놓이고, import(`@/shared/ui/...`)는 받는 쪽 별칭에 맞춰 바뀌지 않는다.
 

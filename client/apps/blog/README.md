@@ -4,18 +4,18 @@
 
 ## 실행과 검사
 
-의존성은 `apps/site/package.json`이 따로 관리합니다. 명령은 저장소 루트에서 실행합니다(루트의 `site:*`가 이 폴더의 명령을 부릅니다).
+의존성은 `client/package.json`의 npm 워크스페이스가 관리합니다. 명령은 `client/`에서 실행합니다(`blog:*`가 이 폴더의 명령을 부릅니다).
 
 ```text
-npm ci --prefix apps/site
-npm run site
-npm run site:check
-npm run site:test
-npm run site:build
-npm run site:preview
+npm ci
+npm run blog
+npm run blog:check
+npm run blog:test
+npm run blog:build
+npm run blog:preview
 ```
 
-개발·미리보기 기본 포트는 4451입니다. 실행 중인 서버가 있으면 다른 포트를 지정할 수 있습니다. 빌드 결과는 `site/dist/`이며, 블로그·문서를 직접 열거나 새로고침할 때도 경로를 찾도록 주소별 HTML을 생성합니다. 알 수 없는 주소는 `404.html`로 처리합니다.
+개발·미리보기 기본 포트는 4451입니다. 실행 중인 서버가 있으면 다른 포트를 지정할 수 있습니다. 빌드 결과는 `client/apps/blog/dist/`이며, 블로그·문서를 직접 열거나 새로고침할 때도 경로를 찾도록 주소별 HTML을 생성합니다. 알 수 없는 주소는 `404.html`로 처리합니다.
 
 ## 코드와 콘텐츠
 

@@ -53,7 +53,7 @@ const SOLAR = {
   Link2Icon: "link-minimalistic-2", ArrowRightIcon: "arrow-right", CornerDownLeftIcon: "reply", VideoIcon: "video-frame-play-horizontal",
   MusicIcon: "music-note", ZoomInIcon: "magnifier-zoom-in", Undo2Icon: "undo-left", Redo2Icon: "undo-right", PrinterIcon: "printer-minimalistic",
 
-  // ── 가이드 사이트(apps/site)의 메뉴 · 화면 설정
+  // ── 가이드 사이트(client/apps/blog)의 메뉴 · 화면 설정
   BookIcon: "book", LibraryIcon: "book-bookmark", SunIcon: "sun", MoonIcon: "moon", LockIcon: "lock-keyhole-minimalistic",
 }
 

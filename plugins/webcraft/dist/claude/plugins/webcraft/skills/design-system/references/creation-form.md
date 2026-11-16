@@ -4,7 +4,7 @@ arc42: "8.7"
 
 # 생성 양식
 
-제목과 본문이 있는 것을 만들고 고칠 때는 한 양식([ComposeSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/compose/ComposeSurface.tsx)·ComposeFields)을 대화상자·페이지·휴대폰에서 같이 씁니다. 몇 칸으로 끝나는 변경은 [짧은 양식](dialog.md)을 씁니다.
+제목과 본문이 있는 것을 만들고 고칠 때는 한 양식([ComposeSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/compose/ComposeSurface.tsx)·ComposeFields)을 대화상자·페이지·휴대폰에서 같이 씁니다. 몇 칸으로 끝나는 변경은 [짧은 양식](dialog.md)을 씁니다.
 
 ## 종이와 알약
 
@@ -26,11 +26,11 @@ Ctrl/⌘+Enter는 제출입니다(한글 조합 중 제외). 바닥 줄에는 �
 
 ## 초안과 닫기
 
-초안은 대화상자·페이지 표현보다 오래 사는 경계(라우터 위의 초안 저장소, 키트의 [draft](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/lib/draft.tsx) `DraftProvider`·`useDraft`)에 둡니다. 크게 보기·분기점 전환·대화상자 → 페이지에서 제목·본문·속성·첨부가 그대로 남습니다. 저장 성공과 버리기에서만 지웁니다. 쓴 내용이 있는 채로(`isDirty`) 닫기·Esc·배경·취소·←를 누르면 "작성 중인 내용을 버릴까요?"로 묻고 "버리기"를 고르게 합니다. 저장 실패는 양식 위 배너로 알리고 입력을 지키며, 수정 충돌은 다시 읽기·내 내용으로 다시 저장을 고르게 합니다.
+초안은 대화상자·페이지 표현보다 오래 사는 경계(라우터 위의 초안 저장소, 키트의 [draft](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/lib/draft.tsx) `DraftProvider`·`useDraft`)에 둡니다. 크게 보기·분기점 전환·대화상자 → 페이지에서 제목·본문·속성·첨부가 그대로 남습니다. 저장 성공과 버리기에서만 지웁니다. 쓴 내용이 있는 채로(`isDirty`) 닫기·Esc·배경·취소·←를 누르면 "작성 중인 내용을 버릴까요?"로 묻고 "버리기"를 고르게 합니다. 저장 실패는 양식 위 배너로 알리고 입력을 지키며, 수정 충돌은 다시 읽기·내 내용으로 다시 저장을 고르게 합니다.
 
 ## 단계형
 
-단계는 정말 복잡한 작성(여러 사람의 결정이 필요한 신청 등)에만 씁니다. 단계는 단계 표시 부품([StepIndicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/apps/site/src/shared/ui/step-indicator.tsx): 번호 동그라미·이름·잇는 선, 단계를 넘으면 선이 채워짐)으로 보입니다. 단계 이동 중 값과 본문을 보존하고, 다음 단계로 가는 조건(현재 단계 확인)과 최종 제출(전체 확인)을 구분합니다. 제출 전 확인 단계에서 고칠 단계로 돌아갈 수 있게 합니다. 이전은 다음 바로 앞(취소 · 이전 · 다음)에 둡니다. 임시 저장이 필요하면 바닥 시작에 둡니다.
+단계는 정말 복잡한 작성(여러 사람의 결정이 필요한 신청 등)에만 씁니다. 단계는 단계 표시 부품([StepIndicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/step-indicator.tsx): 번호 동그라미·이름·잇는 선, 단계를 넘으면 선이 채워짐)으로 보입니다. 단계 이동 중 값과 본문을 보존하고, 다음 단계로 가는 조건(현재 단계 확인)과 최종 제출(전체 확인)을 구분합니다. 제출 전 확인 단계에서 고칠 단계로 돌아갈 수 있게 합니다. 이전은 다음 바로 앞(취소 · 이전 · 다음)에 둡니다. 임시 저장이 필요하면 바닥 시작에 둡니다.
 
 ## 확인할 동작
 

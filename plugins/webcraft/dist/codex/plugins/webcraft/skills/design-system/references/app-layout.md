@@ -4,7 +4,7 @@ arc42: "8.6, 5"
 
 # 앱 셸과 모바일 탐색
 
-앱 셸([AppShell](https://github.com/dev-goraebap/dev.goraebap/tree/main/apps/site/src/shared/ui/layout/app-shell))은 shadcn Sidebar 위에 메뉴·페이지·휴대폰 탐색을 조립합니다. 메뉴는 `NavSpace` 데이터로 받습니다. 메뉴·테마·밀도는 페이지마다 새로 만들지 않습니다.
+앱 셸([AppShell](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/layout/app-shell))은 shadcn Sidebar 위에 메뉴·페이지·휴대폰 탐색을 조립합니다. 메뉴는 `NavSpace` 데이터로 받습니다. 메뉴·테마·밀도는 페이지마다 새로 만들지 않습니다.
 
 ## 공간
 

@@ -1,7 +1,7 @@
 // 내용에 맞춰 크는 견본(부품 견본)의 크기를 미리 잰다. 첫 방문에도 견본이 처음부터 제 높이로 자리를 잡아 글이 밀리지
 // 않게 하려는 것이다. 실행 중인 가이드 개발 서버(기본 http://localhost:4451)에서 크는 견본마다 실제 기기 폭으로 띄워,
 // 견본이 알려 온 크기를 site/src/widgets/samples/sample-sizes.json에 쓴다. 견본을 더하거나 모양을 바꾸면
-// `npm run site` 를 띄운 채로 `npm run site:sizes` 를 다시 돌린다.
+// `npm run blog` 를 띄운 채로 `npm run blog:sizes` 를 다시 돌린다.
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

@@ -44,7 +44,7 @@ export default defineConfig({
     alias: { '@samples': local('samples'), '@': local('src') },
     dedupe: ['react', 'react-dom', '@mdx-js/react'],
   },
-  server: { port: 4451, fs: { allow: [local('../..')] } },
+  server: { port: 4451, fs: { allow: [local('../../..')] } },
   preview: { port: 4451 },
   build: {
     outDir: local('dist'),

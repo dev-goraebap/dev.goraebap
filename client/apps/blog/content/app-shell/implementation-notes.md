@@ -8,7 +8,7 @@ arc42: "8.8"
 
 [앱 셸 개요](/app-shell/overview/)부터 정리한 화면 설계 규칙을 현재 기술 스택(shadcn/ui, Tailwind CSS v4, React, TanStack Router·Query)으로 구현할 때 어떤 부품과 훅을 쓰는지 대응합니다. 앞선 문서들은 특정 UI 라이브러리에 묶이지 않도록 셸, 머리 줄, 도구 자리, 본문 열 같은 역할로 규칙을 정의했습니다. shadcn과 TanStack에 맞춘 구현 방법은 이 페이지에만 모아 두며, 기술 스택을 바꾸면 앞선 규칙은 그대로 두고 이 페이지만 다시 씁니다.
 
-공통 UI 구현은 공개 저장소([dev-goraebap/dev.goraebap](https://github.com/dev-goraebap/dev.goraebap))의 `apps/site/src/shared/ui`와 `apps/site/src/shared/lib`에 있습니다. 각 규칙의 성격 표시(`[관례]`, `[고래밥]`, `[선호]`, [읽는 법](/#규칙의-세-가지-표시) 참고)를 함께 적어, 바꿀 수 없는 동작 계약과 취향에 따른 모양 선택을 코드 수준에서도 구분합니다.
+공통 UI 구현은 공개 저장소([dev-goraebap/dev.goraebap](https://github.com/dev-goraebap/dev.goraebap))의 `client/apps/blog/src/shared/ui`와 `client/apps/blog/src/shared/lib`에 있습니다. 각 규칙의 성격 표시(`[관례]`, `[고래밥]`, `[선호]`, [읽는 법](/#규칙의-세-가지-표시) 참고)를 함께 적어, 바꿀 수 없는 동작 계약과 취향에 따른 모양 선택을 코드 수준에서도 구분합니다.
 
 ## 기반: shadcn/ui와 Tailwind CSS v4
 
@@ -18,7 +18,7 @@ arc42: "8.8"
 
 부품 사용법(조합, 폼 `Field`, `render`, 아이콘의 `data-icon`, `gap-*` 간격, `size-*` 등)은 shadcn 공식 스킬과 shadcn MCP가 맡습니다. Webcraft 지침은 면 단계·휴대폰 규칙·로딩 방식·대화상자 ↔ 페이지·문구 같은 우리 규칙을 맡습니다. 둘이 다르면 Webcraft 규칙이 우선이고, 부품 API는 shadcn 문서를 따릅니다.
 
-`apps/site` 폴더의 `npm run check:ui`(`scripts/check-ui.mjs`)가 FSD, 의미 토큰만 쓰는지, 팔레트 색·`dark:` 색·`space-*` 금지, `style={{}}`는 `// check-ui: allow-style <이유>`가 있을 때만, lucide import 금지를 검사합니다.
+`client/apps/blog` 폴더의 `npm run check:ui`(`scripts/check-ui.mjs`)가 FSD, 의미 토큰만 쓰는지, 팔레트 색·`dark:` 색·`space-*` 금지, `style={{}}`는 `// check-ui: allow-style <이유>`가 있을 때만, lucide import 금지를 검사합니다.
 
 ## 역할과 구현 대응
 
@@ -86,4 +86,4 @@ arc42: "8.8"
 
 ## 검증 범위와 미확인 사항
 
-키트는 `npm run site:check`(타입)와 `npm run site:test`(모든 견본을 Chromium에서 그리고 조작)로 검사합니다. 실제 모바일 기기의 터치 끌기(순서 바꾸기·확대), 안드로이드 하드웨어 뒤로가기로 시트가 닫히는지, 화면 낭독기(스크린 리더) 전체 확인, 실제 서버와의 데이터 연동은 키트에서 확인하지 않았으므로 키트를 채택한 프로젝트에서 직접 검증합니다.
+키트는 `npm run blog:check`(타입)와 `npm run blog:test`(모든 견본을 Chromium에서 그리고 조작)로 검사합니다. 실제 모바일 기기의 터치 끌기(순서 바꾸기·확대), 안드로이드 하드웨어 뒤로가기로 시트가 닫히는지, 화면 낭독기(스크린 리더) 전체 확인, 실제 서버와의 데이터 연동은 키트에서 확인하지 않았으므로 키트를 채택한 프로젝트에서 직접 검증합니다.

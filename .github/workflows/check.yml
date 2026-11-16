@@ -14,5 +14,7 @@ jobs:
         with:
           node-version: 22
       - run: npm run check
+        working-directory: plugins/webcraft
       - run: npm test
+        working-directory: plugins/webcraft
       - run: git diff --exit-code -- plugins/webcraft/dist

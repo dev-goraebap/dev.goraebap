@@ -1,7 +1,4 @@
 node_modules/
-.tmp/
-.local/
 __screenshots__/
 .vitest-attachments/
-apps/*/dist/
-apps/*/node_modules/
+client/apps/*/dist/
