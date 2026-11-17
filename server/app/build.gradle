@@ -6,6 +6,13 @@ dependencies {
 	implementation project(':workspace')
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'com.tngtech.archunit:archunit:1.4.2'
+}
+
+// 컨텍스트 맵 검사가 읽을 파일.
+tasks.named('test') {
+	inputs.file(rootProject.file('contexts.json'))
+	systemProperty 'contexts.file', rootProject.file('contexts.json').absolutePath
 }
 
 // 배포 이미지가 버전 없는 한 이름을 복사하게 한다.

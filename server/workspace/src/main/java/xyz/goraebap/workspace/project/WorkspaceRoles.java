@@ -1,4 +1,4 @@
-package xyz.goraebap.workspace;
+package xyz.goraebap.workspace.project;
 
 import java.util.Collection;
 import java.util.List;

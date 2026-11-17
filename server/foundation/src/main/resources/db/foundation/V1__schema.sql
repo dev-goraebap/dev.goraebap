@@ -301,3 +301,10 @@ CREATE TABLE seed_import (
     summary varchar(1000) NOT NULL,
     CONSTRAINT seed_import_pkey PRIMARY KEY (file_name)
 );
+
+-- 공개 뷰. 다른 컨텍스트가 조인해도 되는 계약이다. 표는 주인 컨텍스트만 읽고, 다른 컨텍스트는 이 뷰만 읽는다.
+-- 주인은 표를 바꿔도 뷰의 열을 지킨다.
+
+CREATE VIEW user_public AS
+SELECT user_id, name, status, deleted_at
+FROM users;

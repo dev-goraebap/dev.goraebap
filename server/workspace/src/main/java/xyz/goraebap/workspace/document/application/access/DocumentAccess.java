@@ -1,6 +1,6 @@
 package xyz.goraebap.workspace.document.application.access;
 
-import xyz.goraebap.workspace.WorkspaceRoles;
+import xyz.goraebap.workspace.project.WorkspaceRoles;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

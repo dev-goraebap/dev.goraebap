@@ -1,11 +1,10 @@
 package xyz.goraebap.workspace.document.infrastructure;
 
-import static xyz.goraebap.workspace.jooq.tables.ActivityEntry.ACTIVITY_ENTRY;
+import static xyz.goraebap.workspace.jooq.tables.ActivityEntryPublic.ACTIVITY_ENTRY_PUBLIC;
 import static xyz.goraebap.workspace.jooq.tables.Document.DOCUMENT;
 import static xyz.goraebap.workspace.jooq.tables.DocumentFolder.DOCUMENT_FOLDER;
 import static xyz.goraebap.workspace.jooq.tables.ManualChapter.MANUAL_CHAPTER;
-import static xyz.goraebap.workspace.jooq.tables.Project.PROJECT;
-import static xyz.goraebap.workspace.jooq.tables.ProjectKey.PROJECT_KEY;
+import static xyz.goraebap.workspace.jooq.tables.ProjectPublic.PROJECT_PUBLIC;
 
 import java.time.Instant;
 import java.util.List;
@@ -59,38 +58,36 @@ class JooqDocumentQuery implements DocumentQuery {
      */
     @Override
     public ChangeSlice changes(Filter filter, Instant since, Instant until, String cursor, int size) {
-        Condition comments = ACTIVITY_ENTRY
+        Condition comments = ACTIVITY_ENTRY_PUBLIC
                 .OWNER_TYPE
                 .eq(DocumentBodyOwner.TYPE)
-                .and(ACTIVITY_ENTRY.OWNER_ID.eq(DOCUMENT.DOCUMENT_ID))
-                .and(ACTIVITY_ENTRY.KIND.eq(ActivityEntry.Kind.COMMENT.name()))
-                .and(ACTIVITY_ENTRY.DELETED_AT.isNull())
-                .and(ACTIVITY_ENTRY.CREATED_AT.gt(since))
-                .and(ACTIVITY_ENTRY.CREATED_AT.le(until));
-        var lastComment = DSL.select(DSL.max(ACTIVITY_ENTRY.CREATED_AT))
-                .from(ACTIVITY_ENTRY)
+                .and(ACTIVITY_ENTRY_PUBLIC.OWNER_ID.eq(DOCUMENT.DOCUMENT_ID))
+                .and(ACTIVITY_ENTRY_PUBLIC.KIND.eq(ActivityEntry.Kind.COMMENT.name()))
+                .and(ACTIVITY_ENTRY_PUBLIC.DELETED_AT.isNull())
+                .and(ACTIVITY_ENTRY_PUBLIC.CREATED_AT.gt(since))
+                .and(ACTIVITY_ENTRY_PUBLIC.CREATED_AT.le(until));
+        var lastComment = DSL.select(DSL.max(ACTIVITY_ENTRY_PUBLIC.CREATED_AT))
+                .from(ACTIVITY_ENTRY_PUBLIC)
                 .where(comments)
                 .asField(COMMENTED_AT);
         var bodyChanged = DOCUMENT.UPDATED_AT.gt(since).and(DOCUMENT.UPDATED_AT.le(until));
         var found = dslContext
                 .select(
                         DOCUMENT.DOCUMENT_ID,
-                        PROJECT_KEY.PREFIX,
+                        PROJECT_PUBLIC.PREFIX,
                         DOCUMENT.TITLE,
                         DOCUMENT.CREATED_AT,
                         DOCUMENT.UPDATED_AT,
                         DOCUMENT.DELETED_AT,
                         lastComment)
                 .from(DOCUMENT)
-                .leftJoin(PROJECT)
-                .on(PROJECT.PROJECT_ID.eq(DOCUMENT.PROJECT_ID))
-                .leftJoin(PROJECT_KEY)
-                .on(PROJECT_KEY.PROJECT_ID.eq(DOCUMENT.PROJECT_ID).and(PROJECT_KEY.IS_CURRENT.isTrue()))
+                .leftJoin(PROJECT_PUBLIC)
+                .on(PROJECT_PUBLIC.PROJECT_ID.eq(DOCUMENT.PROJECT_ID))
                 .leftJoin(DOCUMENT_FOLDER)
                 .on(DOCUMENT_FOLDER.FOLDER_ID.eq(DOCUMENT.FOLDER_ID))
                 .where(conditions(filter, true)
                         .and(bodyChanged.or(
-                                DSL.exists(DSL.selectOne().from(ACTIVITY_ENTRY).where(comments)))))
+                                DSL.exists(DSL.selectOne().from(ACTIVITY_ENTRY_PUBLIC).where(comments)))))
                 .asTable("found");
         var updated = column(found.getName(), DOCUMENT.UPDATED_AT);
         var commented = DSL.field(DSL.name(found.getName(), COMMENTED_AT), DOCUMENT.UPDATED_AT.getDataType());
@@ -114,7 +111,7 @@ class JooqDocumentQuery implements DocumentQuery {
                 shown.stream()
                         .map(row -> new Change(
                                 row.get(id),
-                                row.get(column(at, PROJECT_KEY.PREFIX)),
+                                row.get(column(at, PROJECT_PUBLIC.PREFIX)),
                                 row.get(column(at, DOCUMENT.TITLE)),
                                 row.get(column(at, DOCUMENT.CREATED_AT)),
                                 row.get(column(at, DOCUMENT.UPDATED_AT)),
@@ -170,14 +167,12 @@ class JooqDocumentQuery implements DocumentQuery {
                         DOCUMENT.UPDATED_BY,
                         DOCUMENT.VERSION,
                         EXCERPT_TEXT,
-                        PROJECT.NAME,
-                        PROJECT_KEY.PREFIX,
+                        PROJECT_PUBLIC.NAME,
+                        PROJECT_PUBLIC.PREFIX,
                         DOCUMENT_FOLDER.NAME))
                 .from(DOCUMENT)
-                .leftJoin(PROJECT)
-                .on(PROJECT.PROJECT_ID.eq(DOCUMENT.PROJECT_ID))
-                .leftJoin(PROJECT_KEY)
-                .on(PROJECT_KEY.PROJECT_ID.eq(DOCUMENT.PROJECT_ID).and(PROJECT_KEY.IS_CURRENT.isTrue()))
+                .leftJoin(PROJECT_PUBLIC)
+                .on(PROJECT_PUBLIC.PROJECT_ID.eq(DOCUMENT.PROJECT_ID))
                 .leftJoin(DOCUMENT_FOLDER)
                 .on(DOCUMENT_FOLDER.FOLDER_ID.eq(DOCUMENT.FOLDER_ID));
     }
@@ -187,7 +182,7 @@ class JooqDocumentQuery implements DocumentQuery {
         return DOCUMENT.DELETED_AT
                 .isNull()
                 .and(WRITTEN)
-                .and(DOCUMENT.PROJECT_ID.isNull().or(PROJECT.DELETED_AT.isNull()));
+                .and(DOCUMENT.PROJECT_ID.isNull().or(PROJECT_PUBLIC.DELETED_AT.isNull()));
     }
 
     /** Documents written in 문서함: pages and 매뉴얼, not the rows of meetings and weekly reports. */
@@ -199,7 +194,7 @@ class JooqDocumentQuery implements DocumentQuery {
 
     private static Condition conditions(Filter filter, boolean includesDeleted) {
         var condition =
-                includesDeleted ? WRITTEN.and(DOCUMENT.PROJECT_ID.isNull().or(PROJECT.DELETED_AT.isNull())) : live();
+                includesDeleted ? WRITTEN.and(DOCUMENT.PROJECT_ID.isNull().or(PROJECT_PUBLIC.DELETED_AT.isNull())) : live();
         if (filter.projectId() != null) condition = condition.and(DOCUMENT.PROJECT_ID.eq(filter.projectId()));
         else if (filter.shared()) condition = condition.and(DOCUMENT.PROJECT_ID.isNull());
         if (filter.folderId() != null) condition = condition.and(DOCUMENT.FOLDER_ID.eq(filter.folderId()));
@@ -235,8 +230,8 @@ class JooqDocumentQuery implements DocumentQuery {
         return new DocumentViews.DocumentRow(
                 row.get(DOCUMENT.DOCUMENT_ID),
                 row.get(DOCUMENT.PROJECT_ID),
-                row.get(PROJECT_KEY.PREFIX),
-                row.get(PROJECT.NAME),
+                row.get(PROJECT_PUBLIC.PREFIX),
+                row.get(PROJECT_PUBLIC.NAME),
                 row.get(DOCUMENT.FOLDER_ID),
                 row.get(DOCUMENT_FOLDER.NAME),
                 Document.Kind.valueOf(row.get(DOCUMENT.KIND)),

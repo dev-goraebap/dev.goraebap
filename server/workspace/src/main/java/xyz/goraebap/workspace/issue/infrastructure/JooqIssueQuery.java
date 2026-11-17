@@ -7,8 +7,8 @@ import static xyz.goraebap.workspace.jooq.tables.CodeLink.CODE_LINK;
 import static xyz.goraebap.workspace.jooq.tables.IssueColumn.ISSUE_COLUMN;
 import static xyz.goraebap.workspace.jooq.tables.IssueLabel.ISSUE_LABEL;
 import static xyz.goraebap.workspace.jooq.tables.IssueLabelLink.ISSUE_LABEL_LINK;
-import static xyz.goraebap.workspace.jooq.tables.Project.PROJECT;
-import static xyz.goraebap.workspace.jooq.tables.ProjectKey.PROJECT_KEY;
+import static xyz.goraebap.workspace.jooq.tables.ProjectPublic.PROJECT_PUBLIC;
+import static xyz.goraebap.workspace.jooq.tables.ProjectKeyPublic.PROJECT_KEY_PUBLIC;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -55,22 +55,20 @@ class JooqIssueQuery implements IssueQuery {
     public ChangeSlice changes(List<UUID> projectIds, Instant since, Instant until, String cursor, int size) {
         var keys = List.<Field<?>>of(ISSUE.UPDATED_AT, ISSUE.ISSUE_ID);
         var condition =
-                PROJECT.DELETED_AT.isNull().and(ISSUE.UPDATED_AT.gt(since)).and(ISSUE.UPDATED_AT.le(until));
+                PROJECT_PUBLIC.DELETED_AT.isNull().and(ISSUE.UPDATED_AT.gt(since)).and(ISSUE.UPDATED_AT.le(until));
         if (!projectIds.isEmpty()) condition = condition.and(ISSUE.PROJECT_ID.in(projectIds));
         var ordered = dslContext
                 .select(
                         ISSUE.ISSUE_ID,
-                        PROJECT_KEY.PREFIX,
+                        PROJECT_PUBLIC.PREFIX,
                         ISSUE.NUMBER,
                         ISSUE.TITLE,
                         ISSUE.CREATED_AT,
                         ISSUE.UPDATED_AT,
                         ISSUE.DELETED_AT)
                 .from(ISSUE)
-                .join(PROJECT)
-                .on(PROJECT.PROJECT_ID.eq(ISSUE.PROJECT_ID))
-                .join(PROJECT_KEY)
-                .on(PROJECT_KEY.PROJECT_ID.eq(ISSUE.PROJECT_ID).and(PROJECT_KEY.IS_CURRENT.isTrue()))
+                .join(PROJECT_PUBLIC)
+                .on(PROJECT_PUBLIC.PROJECT_ID.eq(ISSUE.PROJECT_ID))
                 .where(condition)
                 .orderBy(List.of(ISSUE.UPDATED_AT.desc(), ISSUE.ISSUE_ID.desc()));
         var fetched = cursor == null
@@ -83,7 +81,7 @@ class JooqIssueQuery implements IssueQuery {
                 shown.stream()
                         .map(row -> new Change(
                                 row.get(ISSUE.ISSUE_ID),
-                                row.get(PROJECT_KEY.PREFIX),
+                                row.get(PROJECT_PUBLIC.PREFIX),
                                 row.get(ISSUE.NUMBER),
                                 row.get(ISSUE.TITLE),
                                 row.get(ISSUE.CREATED_AT),
@@ -116,8 +114,8 @@ class JooqIssueQuery implements IssueQuery {
                     .from(ISSUE)
                     .join(ISSUE_COLUMN)
                     .on(ISSUE_COLUMN.COLUMN_ID.eq(ISSUE.COLUMN_ID))
-                    .join(PROJECT)
-                    .on(PROJECT.PROJECT_ID.eq(ISSUE.PROJECT_ID))
+                    .join(PROJECT_PUBLIC)
+                    .on(PROJECT_PUBLIC.PROJECT_ID.eq(ISSUE.PROJECT_ID))
                     .where(conditions(filter))
                     .groupBy(ISSUE_COLUMN.COLUMN_ID, ISSUE_COLUMN.NAME, ISSUE_COLUMN.CATEGORY, ISSUE_COLUMN.POSITION)
                     .orderBy(ISSUE_COLUMN.POSITION, ISSUE_COLUMN.NAME)
@@ -149,19 +147,17 @@ class JooqIssueQuery implements IssueQuery {
                     case ASSIGNEE -> DSL.coalesce(ISSUE.ASSIGNEE_ID.cast(String.class), DSL.inline("none"));
                     case PRIORITY -> ISSUE.PRIORITY;
                     case TYPE -> ISSUE.TYPE;
-                    case PROJECT -> PROJECT_KEY.PREFIX;
+                    case PROJECT -> PROJECT_PUBLIC.PREFIX;
                     default -> DSL.inline("all");
                 };
-        Field<String> name = grouping == IssueRequests.Grouping.PROJECT ? PROJECT.NAME : key;
+        Field<String> name = grouping == IssueRequests.Grouping.PROJECT ? PROJECT_PUBLIC.NAME : key;
         return dslContext
                 .select(key, name, count)
                 .from(ISSUE)
                 .join(ISSUE_COLUMN)
                 .on(ISSUE_COLUMN.COLUMN_ID.eq(ISSUE.COLUMN_ID))
-                .join(PROJECT)
-                .on(PROJECT.PROJECT_ID.eq(ISSUE.PROJECT_ID))
-                .join(PROJECT_KEY)
-                .on(PROJECT_KEY.PROJECT_ID.eq(ISSUE.PROJECT_ID).and(PROJECT_KEY.IS_CURRENT.isTrue()))
+                .join(PROJECT_PUBLIC)
+                .on(PROJECT_PUBLIC.PROJECT_ID.eq(ISSUE.PROJECT_ID))
                 .where(conditions(filter))
                 .groupBy(key, name)
                 .orderBy(name)
@@ -211,23 +207,21 @@ class JooqIssueQuery implements IssueQuery {
                         ISSUE_COLUMN.NAME,
                         ISSUE_COLUMN.CATEGORY,
                         ISSUE_COLUMN.POSITION,
-                        PROJECT.NAME,
-                        PROJECT.POSITION,
-                        PROJECT_KEY.PREFIX,
+                        PROJECT_PUBLIC.NAME,
+                        PROJECT_PUBLIC.POSITION,
+                        PROJECT_PUBLIC.PREFIX,
                         spent,
                         cycleName,
                         children)
                 .from(ISSUE)
                 .join(ISSUE_COLUMN)
                 .on(ISSUE_COLUMN.COLUMN_ID.eq(ISSUE.COLUMN_ID))
-                .join(PROJECT)
-                .on(PROJECT.PROJECT_ID.eq(ISSUE.PROJECT_ID))
-                .join(PROJECT_KEY)
-                .on(PROJECT_KEY.PROJECT_ID.eq(ISSUE.PROJECT_ID).and(PROJECT_KEY.IS_CURRENT.isTrue()));
+                .join(PROJECT_PUBLIC)
+                .on(PROJECT_PUBLIC.PROJECT_ID.eq(ISSUE.PROJECT_ID));
     }
 
     private static Condition live() {
-        return ISSUE.DELETED_AT.isNull().and(PROJECT.DELETED_AT.isNull());
+        return ISSUE.DELETED_AT.isNull().and(PROJECT_PUBLIC.DELETED_AT.isNull());
     }
 
     private static Condition conditions(Filter filter) {
@@ -271,9 +265,9 @@ class JooqIssueQuery implements IssueQuery {
             return title.or(ISSUE.NUMBER
                     .eq(Long.parseLong(ref.group(2)))
                     .and(DSL.exists(DSL.selectOne()
-                            .from(PROJECT_KEY)
-                            .where(PROJECT_KEY.PROJECT_ID.eq(ISSUE.PROJECT_ID))
-                            .and(PROJECT_KEY.PREFIX.eq(ref.group(1).toUpperCase(Locale.ROOT))))));
+                            .from(PROJECT_KEY_PUBLIC)
+                            .where(PROJECT_KEY_PUBLIC.PROJECT_ID.eq(ISSUE.PROJECT_ID))
+                            .and(PROJECT_KEY_PUBLIC.PREFIX.eq(ref.group(1).toUpperCase(Locale.ROOT))))));
         var number = NUMBER.matcher(q);
         if (number.matches()) return title.or(ISSUE.NUMBER.eq(Long.parseLong(number.group(1))));
         return title;
@@ -282,7 +276,7 @@ class JooqIssueQuery implements IssueQuery {
     private static List<Field<?>> keys(IssueRequests.Sort sort) {
         return switch (sort) {
             case BOARD ->
-                List.of(PROJECT.POSITION, ISSUE.PROJECT_ID, ISSUE_COLUMN.POSITION, ISSUE.POSITION, ISSUE.ISSUE_ID);
+                List.of(PROJECT_PUBLIC.POSITION, ISSUE.PROJECT_ID, ISSUE_COLUMN.POSITION, ISSUE.POSITION, ISSUE.ISSUE_ID);
             case UPDATED -> List.of(ISSUE.UPDATED_AT, ISSUE.ISSUE_ID);
             case CREATED -> List.of(ISSUE.CREATED_AT, ISSUE.ISSUE_ID);
         };
@@ -300,13 +294,13 @@ class JooqIssueQuery implements IssueQuery {
                 found.stream().map(row -> row.get(ISSUE.ISSUE_ID)).toList());
         var rows = new ArrayList<IssueViews.IssueRow>();
         for (var row : found) {
-            String key = row.get(PROJECT_KEY.PREFIX);
+            String key = row.get(PROJECT_PUBLIC.PREFIX);
             long number = row.get(ISSUE.NUMBER);
             rows.add(new IssueViews.IssueRow(
                     row.get(ISSUE.ISSUE_ID),
                     row.get(ISSUE.PROJECT_ID),
                     key,
-                    row.get(PROJECT.NAME),
+                    row.get(PROJECT_PUBLIC.NAME),
                     key + "-" + number,
                     number,
                     row.get(ISSUE.TITLE),

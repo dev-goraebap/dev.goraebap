@@ -2,8 +2,7 @@ package xyz.goraebap.workspace.document.infrastructure;
 
 import static xyz.goraebap.workspace.jooq.tables.Document.DOCUMENT;
 import static xyz.goraebap.workspace.jooq.tables.DocumentFolder.DOCUMENT_FOLDER;
-import static xyz.goraebap.workspace.jooq.tables.Project.PROJECT;
-import static xyz.goraebap.workspace.jooq.tables.ProjectKey.PROJECT_KEY;
+import static xyz.goraebap.workspace.jooq.tables.ProjectPublic.PROJECT_PUBLIC;
 
 import java.time.Instant;
 import java.util.List;
@@ -32,14 +31,14 @@ class JooqBoxQuery implements BoxQuery {
                 .from(DOCUMENT_FOLDER)
                 .where(DOCUMENT_FOLDER
                         .PROJECT_ID
-                        .eq(PROJECT.PROJECT_ID)
+                        .eq(PROJECT_PUBLIC.PROJECT_ID)
                         .and(DOCUMENT_FOLDER.PARENT_ID.isNull())
                         .and(DOCUMENT_FOLDER.DELETED_AT.isNull()))
                 .asField("folder_count");
         Field<Integer> documents = DSL.selectCount()
                 .from(DOCUMENT)
                 .where(DOCUMENT.PROJECT_ID
-                        .eq(PROJECT.PROJECT_ID)
+                        .eq(PROJECT_PUBLIC.PROJECT_ID)
                         .and(DOCUMENT.FOLDER_ID.isNull())
                         .and(DOCUMENT.DELETED_AT.isNull())
                         .and(JooqDocumentQuery.WRITTEN))
@@ -47,20 +46,18 @@ class JooqBoxQuery implements BoxQuery {
         Field<UUID> lastBy = latest(DOCUMENT.as("latest_by").UPDATED_BY, "latest_by", "last_by");
         Field<Instant> lastAt = latest(DOCUMENT.as("latest_at").UPDATED_AT, "latest_at", "last_at");
         return dslContext
-                .select(PROJECT.PROJECT_ID, PROJECT_KEY.PREFIX, PROJECT.NAME, PROJECT.ICON, PROJECT.COLOR)
-                .select(PROJECT.ARCHIVED_AT, folders, documents, lastBy, lastAt)
-                .from(PROJECT)
-                .leftJoin(PROJECT_KEY)
-                .on(PROJECT_KEY.PROJECT_ID.eq(PROJECT.PROJECT_ID).and(PROJECT_KEY.IS_CURRENT.isTrue()))
-                .where(PROJECT.DELETED_AT.isNull())
-                .orderBy(PROJECT.POSITION, PROJECT.NAME, PROJECT.PROJECT_ID)
+                .select(PROJECT_PUBLIC.PROJECT_ID, PROJECT_PUBLIC.PREFIX, PROJECT_PUBLIC.NAME, PROJECT_PUBLIC.ICON, PROJECT_PUBLIC.COLOR)
+                .select(PROJECT_PUBLIC.ARCHIVED_AT, folders, documents, lastBy, lastAt)
+                .from(PROJECT_PUBLIC)
+                .where(PROJECT_PUBLIC.DELETED_AT.isNull())
+                .orderBy(PROJECT_PUBLIC.POSITION, PROJECT_PUBLIC.NAME, PROJECT_PUBLIC.PROJECT_ID)
                 .fetch(row -> new BoxViews.ProjectFolder(
-                        row.get(PROJECT.PROJECT_ID),
-                        row.get(PROJECT_KEY.PREFIX),
-                        row.get(PROJECT.NAME),
-                        row.get(PROJECT.ICON),
-                        row.get(PROJECT.COLOR),
-                        row.get(PROJECT.ARCHIVED_AT) != null,
+                        row.get(PROJECT_PUBLIC.PROJECT_ID),
+                        row.get(PROJECT_PUBLIC.PREFIX),
+                        row.get(PROJECT_PUBLIC.NAME),
+                        row.get(PROJECT_PUBLIC.ICON),
+                        row.get(PROJECT_PUBLIC.COLOR),
+                        row.get(PROJECT_PUBLIC.ARCHIVED_AT) != null,
                         row.get(folders) + row.get(documents),
                         row.get(lastBy),
                         null,
@@ -73,7 +70,7 @@ class JooqBoxQuery implements BoxQuery {
         return DSL.select(field)
                 .from(latest)
                 .where(latest.PROJECT_ID
-                        .eq(PROJECT.PROJECT_ID)
+                        .eq(PROJECT_PUBLIC.PROJECT_ID)
                         .and(latest.DELETED_AT.isNull())
                         .and(latest.KIND.in(Document.Kind.PAGE.name(), Document.Kind.MANUAL.name())))
                 .orderBy(latest.UPDATED_AT.desc(), latest.DOCUMENT_ID.desc())

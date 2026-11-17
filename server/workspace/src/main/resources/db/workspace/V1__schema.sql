@@ -659,3 +659,26 @@ INSERT INTO work_item_type (code, name, icon, color, "position", is_default) VAL
     ('EPIC', '에픽', 'epic', '#5e6ad2', 3, 0),
     ('STORY', '스토리', 'document', '#4cb782', 4, 0);
 -- [jooq ignore stop]
+
+-- 공개 뷰. 다른 컨텍스트가 조인해도 되는 계약이다. 표는 주인 컨텍스트만 읽고, 다른 컨텍스트는 이 뷰만 읽는다.
+-- 주인은 표를 바꿔도 뷰의 열을 지킨다.
+
+CREATE VIEW project_public AS
+SELECT
+    p.project_id,
+    p.name,
+    p.icon,
+    p.color,
+    p."position",
+    p.archived_at,
+    p.deleted_at,
+    (SELECT k.prefix FROM project_key k WHERE k.project_id = p.project_id AND k.is_current) AS prefix
+FROM project p;
+
+CREATE VIEW project_key_public AS
+SELECT prefix, project_id, is_current
+FROM project_key;
+
+CREATE VIEW activity_entry_public AS
+SELECT entry_id, owner_type, owner_id, kind, created_at, deleted_at
+FROM activity_entry;

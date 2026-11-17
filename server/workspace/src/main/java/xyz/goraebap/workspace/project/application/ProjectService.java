@@ -1,6 +1,6 @@
 package xyz.goraebap.workspace.project.application;
 
-import xyz.goraebap.workspace.WorkspaceRoles;
+import xyz.goraebap.workspace.project.WorkspaceRoles;
 import java.time.Clock;
 import java.time.Instant;
 import java.util.Collection;

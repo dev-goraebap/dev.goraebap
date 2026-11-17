@@ -1,6 +1,6 @@
 package xyz.goraebap.workspace.issue.application.type;
 
-import xyz.goraebap.workspace.WorkspaceRoles;
+import xyz.goraebap.workspace.project.WorkspaceRoles;
 import java.security.SecureRandom;
 import java.time.Clock;
 import java.util.HashSet;

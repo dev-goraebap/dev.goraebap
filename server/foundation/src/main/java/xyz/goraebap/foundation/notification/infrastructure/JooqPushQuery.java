@@ -4,7 +4,7 @@ import static xyz.goraebap.foundation.jooq.tables.NotificationEvent.NOTIFICATION
 import static xyz.goraebap.foundation.jooq.tables.NotificationRecipient.NOTIFICATION_RECIPIENT;
 import static xyz.goraebap.foundation.jooq.tables.PushDelivery.PUSH_DELIVERY;
 import static xyz.goraebap.foundation.jooq.tables.PushSubscription.PUSH_SUBSCRIPTION;
-import static xyz.goraebap.foundation.jooq.tables.Users.USERS;
+import static xyz.goraebap.foundation.jooq.tables.UserPublic.USER_PUBLIC;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -198,30 +198,30 @@ class JooqPushQuery implements PushQuery {
         var counts = dslContext
                 .select(PUSH_DELIVERY.STATUS, DSL.count())
                 .from(PUSH_DELIVERY)
-                .join(USERS)
-                .on(USERS.USER_ID.eq(PUSH_DELIVERY.RECIPIENT_ID))
+                .join(USER_PUBLIC)
+                .on(USER_PUBLIC.USER_ID.eq(PUSH_DELIVERY.RECIPIENT_ID))
                 .where(PUSH_DELIVERY.CREATED_AT.ge(since))
                 .groupBy(PUSH_DELIVERY.STATUS)
                 .fetchMap(PUSH_DELIVERY.STATUS, row -> row.value2().longValue());
         Function<PushDelivery.Status, Long> count = status -> counts.getOrDefault(status.name(), 0L);
-        var working = USERS.STATUS.eq(WORKING).and(USERS.DELETED_AT.isNull());
+        var working = USER_PUBLIC.STATUS.eq(WORKING).and(USER_PUBLIC.DELETED_AT.isNull());
         long devices = dslContext.fetchCount(DSL.selectOne()
                 .from(PUSH_SUBSCRIPTION)
-                .join(USERS)
-                .on(USERS.USER_ID.eq(PUSH_SUBSCRIPTION.USER_ACCOUNT_ID))
+                .join(USER_PUBLIC)
+                .on(USER_PUBLIC.USER_ID.eq(PUSH_SUBSCRIPTION.USER_ACCOUNT_ID))
                 .where(working)
                 .and(PUSH_SUBSCRIPTION.EXPIRED_AT.isNull()));
         long withDevice = dslContext.fetchCount(DSL.selectDistinct(PUSH_SUBSCRIPTION.USER_ACCOUNT_ID)
                 .from(PUSH_SUBSCRIPTION)
-                .join(USERS)
-                .on(USERS.USER_ID.eq(PUSH_SUBSCRIPTION.USER_ACCOUNT_ID))
+                .join(USER_PUBLIC)
+                .on(USER_PUBLIC.USER_ID.eq(PUSH_SUBSCRIPTION.USER_ACCOUNT_ID))
                 .where(working)
                 .and(PUSH_SUBSCRIPTION.EXPIRED_AT.isNull()));
         return new PushViews.PushSummary(
                 configured,
                 devices,
                 withDevice,
-                dslContext.fetchCount(USERS, working),
+                dslContext.fetchCount(USER_PUBLIC, working),
                 count.apply(PushDelivery.Status.SENT),
                 count.apply(PushDelivery.Status.FAILED),
                 count.apply(PushDelivery.Status.GONE),
@@ -234,33 +234,33 @@ class JooqPushQuery implements PushQuery {
     public List<PushViews.PushMemberRow> members(PushRequests.PushMemberListing listing, Instant since) {
         Field<Integer> devices = DSL.field(DSL.selectCount()
                 .from(PUSH_SUBSCRIPTION)
-                .where(PUSH_SUBSCRIPTION.USER_ACCOUNT_ID.eq(USERS.USER_ID))
+                .where(PUSH_SUBSCRIPTION.USER_ACCOUNT_ID.eq(USER_PUBLIC.USER_ID))
                 .and(PUSH_SUBSCRIPTION.EXPIRED_AT.isNull()));
-        var recent = PUSH_DELIVERY.RECIPIENT_ID.eq(USERS.USER_ID).and(PUSH_DELIVERY.CREATED_AT.ge(since));
+        var recent = PUSH_DELIVERY.RECIPIENT_ID.eq(USER_PUBLIC.USER_ID).and(PUSH_DELIVERY.CREATED_AT.ge(since));
         Field<Integer> sent = counted(recent.and(PUSH_DELIVERY.STATUS.eq(PushDelivery.Status.SENT.name())));
         Field<Integer> failed = counted(recent.and(
                 PUSH_DELIVERY.STATUS.in(PushDelivery.Status.FAILED.name(), PushDelivery.Status.GONE.name())));
         Field<Integer> noDevice = counted(recent.and(PUSH_DELIVERY.STATUS.eq(PushDelivery.Status.NO_DEVICE.name())));
         var latest = PUSH_DELIVERY.as("latest");
         Field<Instant> lastAt = DSL.field(
-                DSL.select(DSL.max(latest.CREATED_AT)).from(latest).where(latest.RECIPIENT_ID.eq(USERS.USER_ID)));
+                DSL.select(DSL.max(latest.CREATED_AT)).from(latest).where(latest.RECIPIENT_ID.eq(USER_PUBLIC.USER_ID)));
         Field<String> lastStatus = DSL.field(DSL.select(latest.STATUS)
                 .from(latest)
-                .where(latest.RECIPIENT_ID.eq(USERS.USER_ID))
+                .where(latest.RECIPIENT_ID.eq(USER_PUBLIC.USER_ID))
                 .orderBy(latest.CREATED_AT.desc(), latest.DELIVERY_ID.desc())
                 .limit(1));
-        Condition where = USERS.STATUS.eq(WORKING).and(USERS.DELETED_AT.isNull());
-        if (listing.q() != null) where = where.and(USERS.NAME.containsIgnoreCase(listing.q()));
+        Condition where = USER_PUBLIC.STATUS.eq(WORKING).and(USER_PUBLIC.DELETED_AT.isNull());
+        if (listing.q() != null) where = where.and(USER_PUBLIC.NAME.containsIgnoreCase(listing.q()));
         where = switch (listing.state()) {
             case ALL -> where;
             case FAILED -> where.and(failed.gt(0));
             case NO_DEVICE -> where.and(devices.eq(0));
         };
         return dslContext
-                .select(USERS.USER_ID, USERS.NAME, devices, lastAt, lastStatus, sent, failed, noDevice)
-                .from(USERS)
+                .select(USER_PUBLIC.USER_ID, USER_PUBLIC.NAME, devices, lastAt, lastStatus, sent, failed, noDevice)
+                .from(USER_PUBLIC)
                 .where(where)
-                .orderBy(USERS.NAME, USERS.USER_ID)
+                .orderBy(USER_PUBLIC.NAME, USER_PUBLIC.USER_ID)
                 .limit(MEMBERS_MAX)
                 .fetch(row -> new PushViews.PushMemberRow(
                         row.value1(),
@@ -281,10 +281,10 @@ class JooqPushQuery implements PushQuery {
     @Override
     public Optional<UUID> findUser(UUID userId) {
         return dslContext
-                .select(USERS.USER_ID)
-                .from(USERS)
-                .where(USERS.USER_ID.eq(userId))
-                .and(USERS.DELETED_AT.isNull())
-                .fetchOptional(USERS.USER_ID);
+                .select(USER_PUBLIC.USER_ID)
+                .from(USER_PUBLIC)
+                .where(USER_PUBLIC.USER_ID.eq(userId))
+                .and(USER_PUBLIC.DELETED_AT.isNull())
+                .fetchOptional(USER_PUBLIC.USER_ID);
     }
 }

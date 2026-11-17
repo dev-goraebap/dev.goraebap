@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import xyz.goraebap.workspace.support.WorkspaceTestDatabase;
-import xyz.goraebap.workspace.WorkspaceRoles;
+import xyz.goraebap.workspace.project.WorkspaceRoles;
 import jakarta.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.util.UUID;

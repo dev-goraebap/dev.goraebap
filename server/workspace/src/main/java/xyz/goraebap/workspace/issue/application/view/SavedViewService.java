@@ -1,6 +1,6 @@
 package xyz.goraebap.workspace.issue.application.view;
 
-import xyz.goraebap.workspace.WorkspaceRoles;
+import xyz.goraebap.workspace.project.WorkspaceRoles;
 import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Comparator;
