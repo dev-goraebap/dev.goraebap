@@ -11,7 +11,7 @@
 - 공통 UI는 `client/apps/blog/src/shared/ui/`, 실행 견본은 `client/apps/blog/samples/`에 둡니다. 견본은 별도 사이트가 아니라 같은 빌드의 `sample.html`에서 그립니다.
 - 플러그인은 `plugins/<이름>/` 아래에서 독립적으로 관리합니다. 사이트 소스·견본·글·자산은 플러그인 패키지에 포함하지 않습니다. 기존 제품은 지침 사본 대신 AGENTS.md로 Webcraft를 가리키며, 제품 고유 예외만 프로젝트 규칙에 둡니다.
 - 프론트엔드는 `client/` 아래에 둡니다. `client/package.json`이 npm 워크스페이스이고 앱은 `client/apps/`에 둡니다. `client/apps/blog`는 블로그·가이드 사이트(goraebap.xyz)입니다. 저장소 루트에는 `package.json`을 두지 않습니다. 사이트 명령(`blog:*`)은 `client/`에서, 플러그인 명령은 `plugins/webcraft/`에서 실행합니다.
-- 백엔드는 `server/` 아래에 둡니다. Gradle 멀티 프로젝트 하나이고 실행 jar도 하나이며, 기본 패키지는 `xyz.goraebap`입니다. 하위 프로젝트는 셋입니다. `foundation`은 어떤 앱이든 쓰는 일반·지원 도메인이며 다른 하위 프로젝트를 참조하지 않습니다. `workspace`는 프로젝트·이슈·문서를 다루며 `foundation`만 참조합니다. `app`은 이 저장소의 조립으로, 묶을 하위 프로젝트를 고르고 실행 jar를 만듭니다. `foundation`과 `workspace`는 다른 저장소가 받아 가는 코드이므로 특정 제품이나 회사의 이름·동작·데이터를 넣지 않습니다.
+- 백엔드는 `server/` 아래에 둡니다. Gradle 프로젝트 하나이고 실행 jar도 하나이며, 기본 패키지는 `xyz.goraebap`입니다. 소스는 기술 기반을 두는 `shared`와 컨텍스트를 두는 `module`로 나눕니다. 모듈은 필요하면 그룹 폴더로 묶으며, 이 저장소는 `module/foundation`과 `module/workspace`로 묶습니다. 컨텍스트 구성은 `server/contexts.json`에 적고 `ContextMapTest`가 지키므로, 컨텍스트를 더하거나 표·공개 뷰·참조를 바꾸면 이 파일을 함께 고칩니다. 다른 컨텍스트의 표는 조인하지 않고 Facade나 주인이 내놓은 공개 뷰로 읽습니다. `foundation`과 `workspace` 그룹은 다른 저장소가 받아 가는 코드이므로 특정 제품이나 회사의 이름·동작·데이터를 넣지 않습니다.
 
 ## 문서와 생성물
 
