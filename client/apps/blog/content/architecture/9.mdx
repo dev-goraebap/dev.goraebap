@@ -78,6 +78,7 @@ sidebar:
 | CLAUDE.md를 둠 (2026-11-16) | 프로젝트 루트에 `CLAUDE.md`를 두고 내용은 `@AGENTS.md` 한 줄로 합니다. 에이전트용 지침의 원본은 `AGENTS.md` 하나이고 `CLAUDE.md`는 불러오기만 합니다. Claude Code 데스크톱 앱 세션에 `CLAUDE.md`만 들어오고 `AGENTS.md`는 들어오지 않아 `AGENTS.md`가 연결하는 지침이 쓰이지 않는 경우를 확인했기 때문입니다. 이전까지 따르던 `CLAUDE.md` 없이 `AGENTS.md`만 두는 안은 기각했습니다. 사용자가 결정했습니다. |
 | 임시 문서는 저장소 밖에 (2026-11-16) | Git으로 관리하지 않는 임시 문서는 저장소 밖 `~/tmp/<프로젝트 폴더 이름>/`에 둡니다. 저장소를 더럽히지 않고 커밋에 섞이지 않게 하려고 저장소 안에 `.local/`이나 `.tmp/` 같은 Git 제외 폴더를 만들지 않습니다. 사용자가 결정했습니다. |
 | manage-workflow를 onboarding으로 (2026-11-16) | 스킬 `manage-workflow`의 이름을 `onboarding`으로 바꿨습니다. 이미 있는 프로젝트를 지침에 연결하는 일뿐 아니라 새 프로젝트를 시작하는 절차까지 이 스킬이 맡게 하려는 것이며, 가이드의 옛 주소 `/rules/manage-workflow/`는 `/rules/onboarding/`으로 돌려보냅니다. 온보딩 스킬을 새로 만드는 안은 `AGENTS.md`에 개발 지침 블록을 넣는 절차가 기존 연결 절차와 겹쳐 기각했습니다. 사용자가 결정했습니다. |
+| 사이트를 홈서버에서 내보냄 (2026-11-17) | 사이트 `goraebap.xyz`는 홈서버가 내보내며 저장소 루트에서 `deploy/blog.sh`를 실행해 배포합니다. `deploy/blog.sh`는 인자 없이 실행하면 `main`을, `deploy/blog.sh <ref>`는 그 브랜치나 커밋을 임시 worktree에 꺼내 빌드하고 홈서버에 올리므로 지금 작업 폴더는 건드리지 않습니다. 홈서버에는 최근 배포 5개가 남고 `deploy/blog.sh --rollback`은 바로 전 배포로 되돌립니다. 저장소를 홈서버의 비공개 Gitea로 옮기는 중인데, GitHub Pages는 공개 GitHub 저장소에 묶여 있어 저장소를 닫으면 사이트도 멈춥니다. Webcraft 디자인 지침이 안내하는 화면 부품 레지스트리(`https://goraebap.xyz/r/{name}.json`)도 이 사이트가 내보내므로 주소를 그대로 두고 서버만 옮겼습니다. 사이트를 바로 내리는 안은 레지스트리가 멈춰 새 프로젝트가 Webcraft 부품을 받지 못해 기각했고, GitHub Pages를 그대로 두는 안은 저장소를 닫을 수 없어 기각했습니다. 사용자가 결정했습니다. |
 
 ## 이 절의 지침
 

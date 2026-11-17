@@ -26,4 +26,4 @@
 - 사이트 코드·경로·콘텐츠 변경 후 `client/`에서 `npm run blog:check`, `npm run blog:test`, `npm run blog:build`를 실행합니다.
 - 서버 코드 변경 후 `server/`에서 `./gradlew build`를 실행해 컴파일과 테스트를 함께 돌립니다.
 - UI를 바꾸면 [문구·본문과 검증](plugins/webcraft/skills/design-system/references/content-and-review.md)을 따라 실제 화면에서 데이터 상태·모션·콘텐츠 폭·키보드·데스크톱과 휴대폰·라이트와 다크를 확인합니다. 확인한 것과 못 한 것을 나누어 보고합니다.
-- 커밋·푸시·전역 설치·배포는 사용자가 요청한 범위에서만 합니다. 사이트는 GitHub Pages로 `goraebap.xyz`에 배포합니다. `main` 푸시는 사이트 배포 워크플로를 실행합니다.
+- 커밋·푸시·전역 설치·배포는 사용자가 요청한 범위에서만 합니다. 사이트 `goraebap.xyz`는 홈서버가 내보내며 저장소 루트에서 `deploy/blog.sh`를 실행해 배포합니다. `deploy/blog.sh`는 인자 없이 실행하면 `main`을, `deploy/blog.sh <ref>`는 그 브랜치나 커밋을 임시 worktree에 꺼내 빌드하고 홈서버에 올리므로 지금 작업 폴더는 건드리지 않습니다. 홈서버에는 최근 배포 5개가 남고 `deploy/blog.sh --rollback`은 바로 전 배포로 되돌립니다. `main` 푸시는 사이트를 배포하지 않으며 검사 워크플로(`check.yml`, `server.yml`)만 둡니다.
