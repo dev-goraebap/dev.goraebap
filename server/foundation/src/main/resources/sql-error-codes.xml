@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN 2.0//EN" "https://www.springframework.org/dtd/spring-beans-2.0.dtd">
-<!-- Spring JDBC (JdbcTemplate) has no entry for SQLite; this one hands its errors to the same translator jOOQ uses. -->
-<beans>
-	<bean id="SQLite" class="org.springframework.jdbc.support.SQLErrorCodes">
-		<property name="databaseProductName" value="SQLite"/>
-		<property name="customSqlExceptionTranslatorClass" value="xyz.goraebap.foundation.shared.persistence.SqliteExceptionTranslator"/>
-	</bean>
-</beans>

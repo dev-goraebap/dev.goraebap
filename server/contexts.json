@@ -1,12 +1,12 @@
 {
   "about": "서버의 컨텍스트 맵. 테스트(ContextMapTest)가 이 파일을 읽어 경계를 지키고, 그림도 이 파일에서 만든다. subdomain과 group은 판단이므로 틀렸다고 보이면 고친다. tables, views, uses는 코드와 다르면 테스트가 실패한다.",
   "base": "xyz.goraebap",
-  "assembly": ["xyz.goraebap.app", "xyz.goraebap.workspace"],
-  "shared": ["xyz.goraebap.foundation.shared"],
-  "jooq": ["xyz.goraebap.foundation.jooq", "xyz.goraebap.foundation.jooq.logs", "xyz.goraebap.workspace.jooq"],
+  "assembly": ["xyz.goraebap"],
+  "shared": ["xyz.goraebap.shared"],
+  "jooq": ["xyz.goraebap.jooq", "xyz.goraebap.jooq.logs"],
   "contexts": {
     "user": {
-      "package": "xyz.goraebap.foundation.user",
+      "package": "xyz.goraebap.module.foundation.user",
       "group": "foundation",
       "subdomain": "generic",
       "summary": "사용자, 로그인, 역할, 에이전트 토큰",
@@ -15,7 +15,7 @@
       "uses": ["file", "mcp"]
     },
     "file": {
-      "package": "xyz.goraebap.foundation.file",
+      "package": "xyz.goraebap.module.foundation.file",
       "group": "foundation",
       "subdomain": "generic",
       "summary": "파일 저장, 올리기, 첨부",
@@ -24,7 +24,7 @@
       "uses": ["mcp"]
     },
     "notification": {
-      "package": "xyz.goraebap.foundation.notification",
+      "package": "xyz.goraebap.module.foundation.notification",
       "group": "foundation",
       "subdomain": "generic",
       "summary": "알림함과 웹 푸시",
@@ -33,7 +33,7 @@
       "uses": ["user", "realtime"]
     },
     "system": {
-      "package": "xyz.goraebap.foundation.system",
+      "package": "xyz.goraebap.module.foundation.system",
       "group": "foundation",
       "subdomain": "generic",
       "summary": "활동 기록, 요청 통계, 서버 오류, 로그 백업",
@@ -42,7 +42,7 @@
       "uses": ["user"]
     },
     "seed": {
-      "package": "xyz.goraebap.foundation.seed",
+      "package": "xyz.goraebap.module.foundation.seed",
       "group": "foundation",
       "subdomain": "supporting",
       "summary": "초기 자료 들이기",
@@ -51,7 +51,7 @@
       "uses": ["user"]
     },
     "realtime": {
-      "package": "xyz.goraebap.foundation.realtime",
+      "package": "xyz.goraebap.module.foundation.realtime",
       "group": "foundation",
       "subdomain": "generic",
       "summary": "화면에 변경을 알리는 신호",
@@ -60,7 +60,7 @@
       "uses": []
     },
     "search": {
-      "package": "xyz.goraebap.foundation.search",
+      "package": "xyz.goraebap.module.foundation.search",
       "group": "foundation",
       "subdomain": "generic",
       "summary": "통합 검색의 확장점",
@@ -69,7 +69,7 @@
       "uses": []
     },
     "mcp": {
-      "package": "xyz.goraebap.foundation.mcp",
+      "package": "xyz.goraebap.module.foundation.mcp",
       "group": "foundation",
       "subdomain": "generic",
       "summary": "에이전트 도구의 확장점",
@@ -78,7 +78,7 @@
       "uses": []
     },
     "project": {
-      "package": "xyz.goraebap.workspace.project",
+      "package": "xyz.goraebap.module.workspace.project",
       "group": "workspace",
       "subdomain": "core",
       "summary": "프로젝트, 구성원, 키",
@@ -87,7 +87,7 @@
       "uses": ["user", "realtime", "mcp"]
     },
     "issue": {
-      "package": "xyz.goraebap.workspace.issue",
+      "package": "xyz.goraebap.module.workspace.issue",
       "group": "workspace",
       "subdomain": "core",
       "summary": "이슈, 보드, 주기, 저장한 보기, 코드 연동",
@@ -96,7 +96,7 @@
       "uses": ["project", "activity", "richbody", "user", "file", "notification", "realtime", "search", "mcp", "seed"]
     },
     "document": {
-      "package": "xyz.goraebap.workspace.document",
+      "package": "xyz.goraebap.module.workspace.document",
       "group": "workspace",
       "subdomain": "core",
       "summary": "문서, 폴더, 라벨, 매뉴얼, 권한",
@@ -105,7 +105,7 @@
       "uses": ["project", "activity", "richbody", "user", "file", "realtime", "search", "mcp", "seed"]
     },
     "richbody": {
-      "package": "xyz.goraebap.workspace.richbody",
+      "package": "xyz.goraebap.module.workspace.richbody",
       "group": "workspace",
       "subdomain": "supporting",
       "summary": "본문 블록, 버전, 함께 편집",
@@ -114,7 +114,7 @@
       "uses": ["activity", "user", "file", "realtime"]
     },
     "activity": {
-      "package": "xyz.goraebap.workspace.activity",
+      "package": "xyz.goraebap.module.workspace.activity",
       "group": "workspace",
       "subdomain": "supporting",
       "summary": "댓글과 변경 이력",

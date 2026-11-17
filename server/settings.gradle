@@ -4,6 +4,3 @@ plugins {
 }
 
 rootProject.name = 'goraebap-server'
-
-// foundation과 workspace는 다른 저장소가 받아 가는 하위 프로젝트다. app은 이 저장소의 조립이다.
-include 'foundation', 'workspace', 'app'
