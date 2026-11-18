@@ -1,1 +1,0 @@
-export { SectionDocs } from './SectionDocs';

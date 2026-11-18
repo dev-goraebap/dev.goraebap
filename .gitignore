@@ -1,3 +1,4 @@
 node_modules/
 __screenshots__/
-client/apps/*/dist/
+site/dist/
+site/.astro/

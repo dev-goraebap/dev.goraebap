@@ -1,0 +1,52 @@
+---
+title: "시작하기"
+description: "Claude Code나 Codex에 Webcraft 설치하기"
+---
+
+한 번 설치하면 모든 프로젝트에서 쓸 수 있어요.
+
+## 에이전트에게 부탁하기
+
+가장 쉬운 방법이에요. 아래 문장을 복사해서 Claude Code나 Codex에 붙여 넣으세요.
+
+```text
+Webcraft 플러그인(webcraft@dev-goraebap)을 설치해 줘.
+마켓플레이스 주소는 https://github.com/dev-goraebap/dev.goraebap 이야.
+```
+
+## 직접 설치하기
+
+**Claude Code**
+
+```text
+/plugin marketplace add dev-goraebap/dev.goraebap --scope user
+/plugin install webcraft@dev-goraebap --scope user
+```
+
+**Codex**
+
+```text
+codex plugin marketplace add https://github.com/dev-goraebap/dev.goraebap.git --ref main
+codex plugin add webcraft@dev-goraebap
+```
+
+설치가 끝나면 새 세션을 열어 주세요.
+
+## 업데이트
+
+Claude Code는 새 판이 나오면 세션을 시작할 때 알려 줘요. "Webcraft 업데이트해 줘"라고 하면 돼요.
+
+직접 하려면 아래를 실행한 뒤 새 세션을 여세요.
+
+```text
+claude plugin marketplace update dev-goraebap
+claude plugin update webcraft@dev-goraebap
+```
+
+Codex는 다음 명령으로 업데이트해요.
+
+```text
+codex plugin marketplace upgrade dev-goraebap
+```
+
+설치했다면 [새 프로젝트 만들기](/new-project/)로 넘어가세요.

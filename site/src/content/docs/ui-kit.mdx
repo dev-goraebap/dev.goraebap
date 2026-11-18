@@ -1,0 +1,33 @@
+---
+title: "UI 키트"
+description: "Webcraft 화면 부품을 프로젝트에 받아 쓰기"
+---
+
+Webcraft 키트는 업무 앱에 자주 쓰는 화면 부품 모음이에요. 앱의 틀(사이드바, 휴대폰 하단 탭), 페이지 머리와 툴바, 필터, 빈 화면, 편집기 같은 것들이 들어 있어요.
+
+Webcraft로 만든 프로젝트에는 처음부터 들어 있어요. 기존 프로젝트에서 쓰고 싶다면 에이전트에게 부탁하세요.
+
+```text
+Webcraft 키트에서 필터 부품 받아 줘.
+```
+
+## 직접 받기
+
+shadcn/ui를 쓰는 프로젝트라면 직접 받을 수도 있어요. `components.json`에 Webcraft 레지스트리를 더하세요.
+
+```json
+{
+  "registries": {
+    "@webcraft": "https://goraebap.xyz/r/{name}.json"
+  }
+}
+```
+
+테마를 먼저 받고, 필요한 부품을 받아요.
+
+```bash
+npx shadcn@latest add @webcraft/theme
+npx shadcn@latest add @webcraft/filter
+```
+
+받은 부품은 `src/shared/ui/kit/`에 들어가요. 받은 코드는 프로젝트 것이니 마음대로 고쳐도 돼요.
