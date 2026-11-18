@@ -1,11 +1,11 @@
 import { useDraft } from '@/shared/lib/draft';
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
-import { ComposeSurface } from '@/shared/ui/compose';
-import { CalendarIcon, ClockIcon, TagIcon } from '@/shared/ui/icon';
-import { Input } from '@/shared/ui/input';
-import { PageState } from '@/shared/ui/page-state';
-import { DatePill, OptionPill } from '@/shared/ui/property-pill';
-import { Spinner } from '@/shared/ui/spinner';
+import { ComposeSurface } from '@/shared/ui/kit/compose';
+import { CalendarIcon, ClockIcon, TagIcon } from '@/shared/ui/kit/icon';
+import { Input } from '@/shared/ui/kit/input';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { DatePill, OptionPill } from '@/shared/ui/kit/property-pill';
+import { Spinner } from '@/shared/ui/kit/spinner';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { colors, dayText, eventKeys, eventQueries, eventTone, TODAY, useEventApi, type CalendarEvent, type DateKey, type NewEvent } from '../../entities/event';

@@ -1,6 +1,6 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Button } from "@/shared/ui/button";
-import { LayoutGridIcon, ListFilterIcon, ListIcon } from "@/shared/ui/icon";
+import { Button } from "@/shared/ui/kit/button";
+import { LayoutGridIcon, ListFilterIcon, ListIcon } from "@/shared/ui/kit/icon";
 import { Comparison } from "../catalog/Comparison";
 
 /**

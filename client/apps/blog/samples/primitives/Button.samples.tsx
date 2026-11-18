@@ -1,8 +1,8 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Button } from "@/shared/ui/button";
-import { ListIcon, MoreHorizontalIcon, PlusIcon, SearchIcon, TableIcon } from "@/shared/ui/icon";
-import { Spinner } from "@/shared/ui/spinner";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/tooltip";
+import { Button } from "@/shared/ui/kit/button";
+import { ListIcon, MoreHorizontalIcon, PlusIcon, SearchIcon, TableIcon } from "@/shared/ui/kit/icon";
+import { Spinner } from "@/shared/ui/kit/spinner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/shared/ui/kit/tooltip";
 import { Comparison } from "../catalog/Comparison";
 
 const meta = {

@@ -1,9 +1,9 @@
 import type { Meta, SampleOf } from "../catalog/types";
 import type { JSONContent } from "@tiptap/react";
-import { Button } from "@/shared/ui/button";
-import { Dialog as DialogRoot, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/dialog";
-import { RichBody, RichDraft } from "@/shared/ui/editor";
-import { XIcon } from "@/shared/ui/icon";
+import { Button } from "@/shared/ui/kit/button";
+import { Dialog as DialogRoot, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/kit/dialog";
+import { RichBody, RichDraft } from "@/shared/ui/kit/editor";
+import { XIcon } from "@/shared/ui/kit/icon";
 import { useState } from "react";
 import { fakePreview, fakeUpload, fileSample, richSample, sampleLinks } from "./editor-fixtures";
 

@@ -1,6 +1,6 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import * as icons from "@/shared/ui/icon";
-import { FolderIcon, LibraryIcon, ListFilterIcon, ListIcon, MoreHorizontalIcon, StarIcon, type Icon } from "@/shared/ui/icon";
+import * as icons from "@/shared/ui/kit/icon";
+import { FolderIcon, LibraryIcon, ListFilterIcon, ListIcon, MoreHorizontalIcon, StarIcon, type Icon } from "@/shared/ui/kit/icon";
 import { Comparison } from "../catalog/Comparison";
 
 const meta = { title: "Foundations (디자인 기초)/아이콘", id: "foundations-icons", layout: "centered" } satisfies Meta;

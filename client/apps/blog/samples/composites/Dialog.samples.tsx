@@ -1,13 +1,13 @@
 import type { Meta, SampleOf } from "../catalog/types";
 import { focusFirstInvalid } from "@/shared/lib/focus-invalid";
 import { cn } from "cn";
-import { Button } from "@/shared/ui/button";
-import { ConfirmDialog } from "@/shared/ui/confirm-dialog";
-import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/dialog";
-import { Field, FieldError, FieldLabel } from "@/shared/ui/field";
-import { FormDialog } from "@/shared/ui/form-dialog";
-import { XIcon } from "@/shared/ui/icon";
-import { Input } from "@/shared/ui/input";
+import { Button } from "@/shared/ui/kit/button";
+import { ConfirmDialog } from "@/shared/ui/kit/confirm-dialog";
+import { Dialog, DialogClose, DialogContent, DialogTitle } from "@/shared/ui/kit/dialog";
+import { Field, FieldError, FieldLabel } from "@/shared/ui/kit/field";
+import { FormDialog } from "@/shared/ui/kit/form-dialog";
+import { XIcon } from "@/shared/ui/kit/icon";
+import { Input } from "@/shared/ui/kit/input";
 import { useId, useRef, useState } from "react";
 
 const paragraphs = ["자료를 정리할 때 다시 볼 기준을 남깁니다.", "긴 본문은 대화상자 안에서만 스크롤하고 제목과 닫기, 바닥의 동작은 그대로 보입니다.",

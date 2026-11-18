@@ -2,24 +2,24 @@ import { useState, type ReactNode } from "react";
 import type { Meta, SampleOf } from "../catalog/types";
 import { useIsMobile } from "@/shared/lib/use-mobile";
 import { cn } from "cn";
-import { ActionMenu } from "@/shared/ui/action-menu";
-import { Alert, AlertTitle } from "@/shared/ui/alert";
-import { Badge } from "@/shared/ui/badge";
-import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterState } from "@/shared/ui/filter";
-import { ArchiveIcon, FileTextIcon, FolderIcon, InboxIcon, InfoIcon, LinkIcon, PencilIcon, TriangleAlertIcon, UserIcon } from "@/shared/ui/icon";
-import { Page, PageViews } from "@/shared/ui/layout/page";
-import { PersonAvatar } from "@/shared/ui/person-avatar";
-import { OptionPill } from "@/shared/ui/property-pill";
-import { DetailLayout } from "@/shared/ui/reading";
-import { RowLink } from "@/shared/ui/row-link";
-import { SearchTool } from "@/shared/ui/search-tool";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
-import { SettingsPage, SettingsRow, SettingsSection } from "@/shared/ui/settings";
-import { Facts, WithPanel } from "@/shared/ui/side-panel";
-import { Switch } from "@/shared/ui/switch";
-import { Table as DataTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
+import { ActionMenu } from "@/shared/ui/kit/action-menu";
+import { Alert, AlertTitle } from "@/shared/ui/kit/alert";
+import { Badge } from "@/shared/ui/kit/badge";
+import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterState } from "@/shared/ui/kit/filter";
+import { ArchiveIcon, FileTextIcon, FolderIcon, InboxIcon, InfoIcon, LinkIcon, PencilIcon, TriangleAlertIcon, UserIcon } from "@/shared/ui/kit/icon";
+import { Page, PageViews } from "@/shared/ui/kit/layout/page";
+import { PersonAvatar } from "@/shared/ui/kit/person-avatar";
+import { OptionPill } from "@/shared/ui/kit/property-pill";
+import { DetailLayout } from "@/shared/ui/kit/reading";
+import { RowLink } from "@/shared/ui/kit/row-link";
+import { SearchTool } from "@/shared/ui/kit/search-tool";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/kit/select";
+import { SettingsPage, SettingsRow, SettingsSection } from "@/shared/ui/kit/settings";
+import { Facts, WithPanel } from "@/shared/ui/kit/side-panel";
+import { Switch } from "@/shared/ui/kit/switch";
+import { Table as DataTable, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/shared/ui/kit/table";
 import { rows } from "./demo";
-import { ListMore } from "@/shared/ui/list-more"
+import { ListMore } from "@/shared/ui/kit/list-more"
 
 /** 줄 링크의 주소. 견본 틀의 메모리 라우터는 어떤 주소든 이 견본을 그린다(사이트 라우터의 주소 타입과 무관해 글자로 둔다). */
 const ITEMS: string = "/items";

@@ -1,10 +1,10 @@
 import { Link } from '@tanstack/react-router';
 import { cn } from 'cn';
-import { Badge } from '@/shared/ui/badge';
-import { Button } from '@/shared/ui/button';
-import { CalendarIcon, StarIcon } from '@/shared/ui/icon';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
-import { RowLink } from '@/shared/ui/row-link';
+import { Badge } from '@/shared/ui/kit/badge';
+import { Button } from '@/shared/ui/kit/button';
+import { CalendarIcon, StarIcon } from '@/shared/ui/kit/icon';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
+import { RowLink } from '@/shared/ui/kit/row-link';
 import { collectionName, dateText, kindOf, type Resource, type ResourceKind } from './model';
 
 /** 종류 표시: 옅은 칸 안의 종류 아이콘. 이름은 곁의 글이나 title이 전한다. */

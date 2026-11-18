@@ -1,7 +1,7 @@
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/button';
-import { ArrowUpIcon } from '@/shared/ui/icon';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
+import { Button } from '@/shared/ui/kit/button';
+import { ArrowUpIcon } from '@/shared/ui/kit/icon';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
 import { useEffect, useId, useRef, useState, type KeyboardEvent, type ReactNode, type RefObject } from 'react';
 
 /** 키보드가 올라온 만큼(보이는 영역이 줄어든 만큼)을 CSS 변수로 알린다. 입력 칸이 키보드 위로 올라오게 한다. */

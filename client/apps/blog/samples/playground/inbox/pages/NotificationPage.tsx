@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
-import { Alert, AlertTitle } from '@/shared/ui/alert';
-import { Button, buttonVariants } from '@/shared/ui/button';
-import { TriangleAlertIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
-import { Spinner } from '@/shared/ui/spinner';
+import { Alert, AlertTitle } from '@/shared/ui/kit/alert';
+import { Button, buttonVariants } from '@/shared/ui/kit/button';
+import { TriangleAlertIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { Spinner } from '@/shared/ui/kit/spinner';
 import { notificationQueries, useNotificationApi, useNotificationRead } from '../entities/notification';
 import { useArchiveToggle } from './archive';
 import { NotificationView } from './NotificationView';

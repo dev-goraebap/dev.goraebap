@@ -1,9 +1,9 @@
 import { useId, type ComponentProps, type ReactNode } from 'react';
 import logo from '@/shared/brand/logo.svg?raw';
-import { Button } from '@/shared/ui/button';
-import { Field, FieldError, FieldLabel } from '@/shared/ui/field';
-import { Input } from '@/shared/ui/input';
-import { Spinner } from '@/shared/ui/spinner';
+import { Button } from '@/shared/ui/kit/button';
+import { Field, FieldError, FieldLabel } from '@/shared/ui/kit/field';
+import { Input } from '@/shared/ui/kit/input';
+import { Spinner } from '@/shared/ui/kit/spinner';
 
 /** 제품 표시: 로고와 이름. 셸 없는 화면이라 사이드바 대신 카드 맨 위에 둔다. */
 function Brand() {

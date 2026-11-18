@@ -1,6 +1,6 @@
-import { SegmentedControl } from '@/shared/ui/segmented-control';
-import { SettingsPage, SettingsRow, SettingsSection } from '@/shared/ui/settings';
-import { SettingsIcon } from '@/shared/ui/icon';
+import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
+import { SettingsPage, SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
+import { SettingsIcon } from '@/shared/ui/kit/icon';
 import { useAppearance, type Density } from '../../app/appearance';
 
 /**

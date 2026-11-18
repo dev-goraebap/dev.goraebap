@@ -10,7 +10,7 @@ import remarkGfm from 'remark-gfm';
 import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import { defineConfig } from 'vite';
 import { THEME_KEY } from './src/shared/config/preferences';
-import { bootCover } from './src/shared/ui/boot-cover/plugin';
+import { bootCover } from './src/shared/ui/kit/boot-cover/plugin';
 import { guideContent, rehypeSkillLinks, rehypeDiagrams } from './content-plugin';
 
 const local = (path: string) => fileURLToPath(new URL(path, import.meta.url));

@@ -4,7 +4,7 @@ arc42: "8.7"
 
 # 생성 양식
 
-제목과 본문이 있는 것을 만들고 고칠 때는 한 양식([ComposeSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/compose/ComposeSurface.tsx)·ComposeFields)을 대화상자·페이지·휴대폰에서 같이 씁니다. 몇 칸으로 끝나는 변경은 [짧은 양식](dialog.md)을 씁니다.
+제목과 본문이 있는 것을 만들고 고칠 때는 한 양식([ComposeSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/compose/ComposeSurface.tsx)·ComposeFields)을 대화상자·페이지·휴대폰에서 같이 씁니다. 몇 칸으로 끝나는 변경은 [짧은 양식](dialog.md)을 씁니다.
 
 ## 종이와 알약
 
@@ -30,7 +30,7 @@ Ctrl/⌘+Enter는 제출입니다(한글 조합 중 제외). 바닥 줄에는 �
 
 ## 단계형
 
-단계는 정말 복잡한 작성(여러 사람의 결정이 필요한 신청 등)에만 씁니다. 단계는 단계 표시 부품([StepIndicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/step-indicator.tsx): 번호 동그라미·이름·잇는 선, 단계를 넘으면 선이 채워짐)으로 보입니다. 단계 이동 중 값과 본문을 보존하고, 다음 단계로 가는 조건(현재 단계 확인)과 최종 제출(전체 확인)을 구분합니다. 제출 전 확인 단계에서 고칠 단계로 돌아갈 수 있게 합니다. 이전은 다음 바로 앞(취소 · 이전 · 다음)에 둡니다. 임시 저장이 필요하면 바닥 시작에 둡니다.
+단계는 정말 복잡한 작성(여러 사람의 결정이 필요한 신청 등)에만 씁니다. 단계는 단계 표시 부품([StepIndicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/step-indicator.tsx): 번호 동그라미·이름·잇는 선, 단계를 넘으면 선이 채워짐)으로 보입니다. 단계 이동 중 값과 본문을 보존하고, 다음 단계로 가는 조건(현재 단계 확인)과 최종 제출(전체 확인)을 구분합니다. 제출 전 확인 단계에서 고칠 단계로 돌아갈 수 있게 합니다. 이전은 다음 바로 앞(취소 · 이전 · 다음)에 둡니다. 임시 저장이 필요하면 바닥 시작에 둡니다.
 
 ## 확인할 동작
 

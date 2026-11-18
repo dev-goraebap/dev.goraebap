@@ -1,5 +1,5 @@
 import type { JSONContent } from '@tiptap/react';
-import { FileTextIcon, ImageIcon, LinkIcon, type Icon } from '@/shared/ui/icon';
+import { FileTextIcon, ImageIcon, LinkIcon, type Icon } from '@/shared/ui/kit/icon';
 
 export type ResourceKind = 'link' | 'document' | 'image';
 export type Resource = {

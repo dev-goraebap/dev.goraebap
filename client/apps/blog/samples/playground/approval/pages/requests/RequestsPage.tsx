@@ -1,12 +1,12 @@
 import { useAddressFilters } from '@/shared/lib/list-address';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/button';
-import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterDef } from '@/shared/ui/filter';
-import { ClockIcon, FileTextIcon, PlusIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
-import { RowLink } from '@/shared/ui/row-link';
-import { Spinner } from '@/shared/ui/spinner';
+import { Button } from '@/shared/ui/kit/button';
+import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterDef } from '@/shared/ui/kit/filter';
+import { ClockIcon, FileTextIcon, PlusIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { RowLink } from '@/shared/ui/kit/row-link';
+import { Spinner } from '@/shared/ui/kit/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { approvalQueries, currentOf, dayText, me, ResultMark, resultLabel, resultOf, titleOf, useApprovalApi } from '../../entities/approval';
 

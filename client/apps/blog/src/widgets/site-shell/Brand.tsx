@@ -1,7 +1,7 @@
 import { Link, useRouter } from '@tanstack/react-router';
 import logo from '@/shared/brand/logo.svg?raw';
 import { paths } from '@/shared/config/paths';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/kit/select';
 
 export type Area = 'blog' | 'webcraft' | 'settings';
 const areas = [{ value: 'blog', label: 'Blog' }, { value: 'webcraft', label: 'Webcraft' }];

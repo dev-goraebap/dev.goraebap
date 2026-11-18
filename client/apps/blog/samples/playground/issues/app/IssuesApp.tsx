@@ -3,11 +3,11 @@ import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, 
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useState } from 'react';
 import { DraftProvider } from '@/shared/lib/draft';
-import type { NavSpace } from '@/shared/ui/layout/app-shell';
-import { Button, buttonVariants } from '@/shared/ui/button';
-import { TagIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
+import type { NavSpace } from '@/shared/ui/kit/layout/app-shell';
+import { Button, buttonVariants } from '@/shared/ui/kit/button';
+import { TagIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';
 import { IssueApiContext, type IssueApi } from '../entities/issue';

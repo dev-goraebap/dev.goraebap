@@ -1,7 +1,7 @@
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/button';
-import { RefreshCwIcon } from '@/shared/ui/icon';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
+import { Button } from '@/shared/ui/kit/button';
+import { RefreshCwIcon } from '@/shared/ui/kit/icon';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
 import { Fragment, type Ref } from 'react';
 import { clockText, groupMessages, splitMentions, type Message, type Outgoing } from '../entities/thread';
 

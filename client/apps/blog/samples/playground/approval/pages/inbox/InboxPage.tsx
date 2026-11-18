@@ -1,11 +1,11 @@
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/button';
-import { FileTextIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
-import { RowLink } from '@/shared/ui/row-link';
-import { Spinner } from '@/shared/ui/spinner';
+import { Button } from '@/shared/ui/kit/button';
+import { FileTextIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
+import { RowLink } from '@/shared/ui/kit/row-link';
+import { Spinner } from '@/shared/ui/kit/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { approvalQueries, currentOf, dayText, me, rangeText, titleOf, useApprovalApi } from '../../entities/approval';
 

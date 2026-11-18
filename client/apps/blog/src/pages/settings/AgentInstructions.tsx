@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { Button } from '@/shared/ui/button';
-import { CopyIcon } from '@/shared/ui/icon';
-import { SettingsSection } from '@/shared/ui/settings';
+import { Button } from '@/shared/ui/kit/button';
+import { CopyIcon } from '@/shared/ui/kit/icon';
+import { SettingsSection } from '@/shared/ui/kit/settings';
 
 export const agentInstructions = `Webcraft 플러그인(webcraft@dev-goraebap)을 현재 에이전트의 사용자 범위에 설치해 주세요.
 

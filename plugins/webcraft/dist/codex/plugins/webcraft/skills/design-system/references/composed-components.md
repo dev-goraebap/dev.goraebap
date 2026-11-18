@@ -8,21 +8,21 @@ arc42: "8.8"
 
 | 조합 | 소유하는 책임 | 코드 |
 | --- | --- | --- |
-| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [form-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/form-dialog.tsx), [confirm-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/confirm-dialog.tsx), [detail-surface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/detail-surface.tsx), [기준](dialog.md) |
-| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [adaptive-popover](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/adaptive-popover.tsx) |
-| 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | [action-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/action-menu.tsx)(행 메뉴는 `size="row"`), [option-list](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/option-list.tsx) |
-| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search-tool](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/search-tool.tsx), [filter](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/filter), [display-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/display-menu.tsx), [기준](search-filter.md) |
-| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/property-pill.tsx), [info-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/info-pill.tsx) |
-| 활동·댓글 피드 | 이벤트 한 줄 기록, 댓글 카드·한 단계 답글·수정·삭제·인용, 입력 칸 | [ActivityFeed](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/reading/ui/ActivityFeed.tsx) |
-| 행 순서 바꾸기 | 드래그 손잡이·`Alt`+방향키 이동·`Esc` 취소·위치 음성 안내 | [reorder](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/reorder) |
-| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [FileDropzone](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/compose/FileDropzone.tsx) |
-| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [page-state](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/page-state), [기준](data-states.md) |
-| 본문 칸 | 종이 위의 리치 본문: 블록 메뉴·선택 서식 도구·표·미디어 | [editor](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/editor) |
-| 문서 편집기 | 종이(A4)로 나가는 문서: 상단 서식 막대·페이지 나누기·페이지 설정·머리말·바닥글·내보내기 | [document](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/document) |
-| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group-header](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/list-group-header.tsx) |
-| 목록 끝 줄 | 수·더 보기·페이지 자리의 세 자리 줄, 수의 음성 안내 | [list-more](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/list-more.tsx), [기준](layout-patterns.md#목록-끝-줄) |
-| 표 머리 정렬 | 머리 칸을 눌러 정렬, 방향 표시 | [sortable-head](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/sortable-head.tsx), [기준](layout-patterns.md#표) |
-| 단계 표시 | 번호 동그라미·이름·잇는 선 | [step-indicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/step-indicator.tsx), [기준](creation-form.md#단계형) |
+| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [form-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/form-dialog.tsx), [confirm-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/confirm-dialog.tsx), [detail-surface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/detail-surface.tsx), [기준](dialog.md) |
+| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [adaptive-popover](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/adaptive-popover.tsx) |
+| 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | [action-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/action-menu.tsx)(행 메뉴는 `size="row"`), [option-list](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/option-list.tsx) |
+| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search-tool](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/search-tool.tsx), [filter](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/filter), [display-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/display-menu.tsx), [기준](search-filter.md) |
+| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/property-pill.tsx), [info-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/info-pill.tsx) |
+| 활동·댓글 피드 | 이벤트 한 줄 기록, 댓글 카드·한 단계 답글·수정·삭제·인용, 입력 칸 | [ActivityFeed](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/reading/ui/ActivityFeed.tsx) |
+| 행 순서 바꾸기 | 드래그 손잡이·`Alt`+방향키 이동·`Esc` 취소·위치 음성 안내 | [reorder](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/reorder) |
+| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [FileDropzone](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/compose/FileDropzone.tsx) |
+| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [page-state](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/page-state), [기준](data-states.md) |
+| 본문 칸 | 종이 위의 리치 본문: 블록 메뉴·선택 서식 도구·표·미디어 | [editor](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/editor) |
+| 문서 편집기 | 종이(A4)로 나가는 문서: 상단 서식 막대·페이지 나누기·페이지 설정·머리말·바닥글·내보내기 | [document](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/document) |
+| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group-header](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/list-group-header.tsx) |
+| 목록 끝 줄 | 수·더 보기·페이지 자리의 세 자리 줄, 수의 음성 안내 | [list-more](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/list-more.tsx), [기준](layout-patterns.md#목록-끝-줄) |
+| 표 머리 정렬 | 머리 칸을 눌러 정렬, 방향 표시 | [sortable-head](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/sortable-head.tsx), [기준](layout-patterns.md#표) |
+| 단계 표시 | 번호 동그라미·이름·잇는 선 | [step-indicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/step-indicator.tsx), [기준](creation-form.md#단계형) |
 
 구현이 없는 조합을 메뉴에 빈 항목으로 만들지 않습니다. 제품 고유 조합(아이콘 표시 고르기, 전역 검색 팔레트, 프로필 패널)은 프로젝트가 소유합니다.
 

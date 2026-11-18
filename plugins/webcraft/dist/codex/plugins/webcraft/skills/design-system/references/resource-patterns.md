@@ -20,7 +20,7 @@ arc42: "8.6, 6"
 
 ## List-Detail
 
-데스크톱에서 목록과 오른쪽 칸을 [SplitView](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/layout/split-view)로 나란히 둡니다. 오른쪽 칸의 상세·생성·수정은 칸 머리 틀([PaneFrame](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/layout/pane-frame))을 씁니다.
+데스크톱에서 목록과 오른쪽 칸을 [SplitView](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/layout/split-view)로 나란히 둡니다. 오른쪽 칸의 상세·생성·수정은 칸 머리 틀([PaneFrame](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/layout/pane-frame))을 씁니다.
 
 - 고르기 전의 오른쪽 칸은 빈칸으로 두지 않고 고르기를 권하는 상태(리소스별 그림과 제목)를 보입니다. 점 무늬는 이 빈 칸에만 씁니다.
 - 목록을 접고 상세만 크게 보는 집중 보기를 둡니다. 주소에 `?focus=1`을 더하고 Esc로 풉니다.
@@ -33,7 +33,7 @@ arc42: "8.6, 6"
 
 ## Drill-down
 
-목록은 작업 영역 전체 폭을 쓰고, 상세·생성·수정은 [Page](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/layout/page) 안의 자기 화면입니다. 데스크톱의 상세·작성·수정 페이지는 List-Detail의 오른쪽 칸과 같은 칸 머리 틀(`PaneFrame`)을 씁니다. 관리 화면의 상세도 같습니다.
+목록은 작업 영역 전체 폭을 쓰고, 상세·생성·수정은 [Page](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/layout/page) 안의 자기 화면입니다. 데스크톱의 상세·작성·수정 페이지는 List-Detail의 오른쪽 칸과 같은 칸 머리 틀(`PaneFrame`)을 씁니다. 관리 화면의 상세도 같습니다.
 
 - 상세의 뒤로는 경로의 위 단계(목록)로 갑니다. 브라우저 기록을 되짚지 않습니다.
 - 수정은 끝내거나 취소하면 원래 상세로, 생성은 저장하면 만든 대상의 상세로 갑니다.

@@ -1,5 +1,5 @@
-import type { NavSpace } from '@/shared/ui/layout/app-shell';
-import { FileTextIcon } from '@/shared/ui/icon';
+import type { NavSpace } from '@/shared/ui/kit/layout/app-shell';
+import { FileTextIcon } from '@/shared/ui/kit/icon';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider, useLocation } from '@tanstack/react-router';
 import { useState } from 'react';

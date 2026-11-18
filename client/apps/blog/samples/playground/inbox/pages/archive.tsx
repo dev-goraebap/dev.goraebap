@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from '@/shared/ui/toast';
+import { toast } from '@/shared/ui/kit/toast';
 import { notificationKeys, useNotificationApi, type Notification } from '../entities/notification';
 
 /**

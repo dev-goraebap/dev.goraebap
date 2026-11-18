@@ -1,5 +1,5 @@
-import type { FilterDef } from '@/shared/ui/filter';
-import { ShieldCheckIcon, UserIcon } from '@/shared/ui/icon';
+import type { FilterDef } from '@/shared/ui/kit/filter';
+import { ShieldCheckIcon, UserIcon } from '@/shared/ui/kit/icon';
 import { roles, statuses, type User } from '../../entities/admin';
 
 /** 사용자 목록 주소의 검증. 필터와 표시는 키트의 useAddressFilters · useAddressChoices가 읽고, 여기서는 검색어와 초대 양식 열림을 본다. */

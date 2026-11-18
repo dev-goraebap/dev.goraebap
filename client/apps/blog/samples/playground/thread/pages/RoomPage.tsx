@@ -1,9 +1,9 @@
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
-import { Button } from '@/shared/ui/button';
-import { ChevronDownIcon, MessageCircleIcon, TriangleAlertIcon } from '@/shared/ui/icon';
-import { Page, type Crumb } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
-import { Spinner } from '@/shared/ui/spinner';
+import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/kit/alert';
+import { Button } from '@/shared/ui/kit/button';
+import { ChevronDownIcon, MessageCircleIcon, TriangleAlertIcon } from '@/shared/ui/kit/icon';
+import { Page, type Crumb } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { Spinner } from '@/shared/ui/kit/spinner';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react';

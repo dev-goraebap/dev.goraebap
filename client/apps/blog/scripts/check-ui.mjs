@@ -6,9 +6,9 @@ import { fileURLToPath } from "node:url"
 // - FSD: 아래 계층이 위 계층을, 같은 계층의 다른 슬라이스를 가져오지 않는다. 슬라이스 밖에서는 index.ts로만 가져온다.
 // - 스타일: 팔레트 색 클래스(bg-red-500 …), space-x/y-*, 수동 dark: 색, style={{}}를 쓰지 않는다.
 //   style={{}}는 데이터 값일 때만 윗줄이나 같은 줄에 // check-ui: allow-style <사유>를 달고 쓴다.
-// - 아이콘: lucide-react를 직접 가져오지 않는다(shared/ui/icon의 Solar).
+// - 아이콘: lucide-react를 직접 가져오지 않는다(shared/ui/kit/icon의 Solar).
 // shadcn add로 만든 부품(SHADCN)은 FSD와 아이콘 규칙만 본다(스타일은 생성물의 관례를 따른다). 생성물은 이름으로 골라,
-// shared/ui 바로 아래의 우리가 쓴 부품(action-menu · segmented-control …)은 스타일도 검사한다.
+// shared/ui/kit 바로 아래의 우리가 쓴 부품(action-menu · segmented-control …)은 스타일도 검사한다.
 // - pages는 공간별 폴더로 묶을 수 있다(pages/<공간>/<슬라이스>): 공간 폴더에 index.ts가 없으면 슬라이스를 두 마디로 본다.
 //
 // 사이트 전체(src와 견본 samples)를 검사한다. 견본은 FSD 계층 밖(앱처럼 어느 계층이든 가져온다)이라 스타일 · 아이콘 규칙만 본다.
@@ -55,11 +55,11 @@ for (const file of files) {
   const source = fs.readFileSync(file, "utf8")
   const lines = source.split("\n")
   const from = where(file)
-  const isGenerated = SHADCN.has(/^shared\/ui\/([^/]+)\.tsx$/.exec(inSrc(file) ?? "")?.[1] ?? "")
+  const isGenerated = SHADCN.has(/^shared\/ui\/kit\/([^/]+)\.tsx$/.exec(inSrc(file) ?? "")?.[1] ?? "")
   lines.forEach((text, index) => {
     const line = index + 1
     const imported = /from\s+["']([^"']+)["']/.exec(text)?.[1]
-    if (imported === "lucide-react") report(file, line, "lucide-react 대신 @/shared/ui/icon")
+    if (imported === "lucide-react") report(file, line, "lucide-react 대신 @/shared/ui/kit/icon")
     if (imported?.startsWith("@/")) {
       const { layer, slice, rest } = sliceOf(imported.slice(2).split("/"))
       if (LAYERS.includes(layer) && LAYERS.includes(from.layer)) {

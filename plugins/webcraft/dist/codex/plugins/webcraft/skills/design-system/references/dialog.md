@@ -4,7 +4,7 @@ arc42: "8.6"
 
 # 공통 다이얼로그
 
-대화상자는 shadcn Dialog 위에 만든 키트의 틀을 씁니다. 짧은 양식은 [FormDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/form-dialog.tsx), 확인은 [ConfirmDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/confirm-dialog.tsx), 상세는 [DetailSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/detail-surface.tsx)(상세 페이지 ↔ 60rem 대화상자)입니다. 머리·스크롤 본문·선택적 바닥이며 긴 본문에서도 본문만 스크롤하고 제목·닫기·마지막 동작은 보입니다. 제품 화면은 shadcn Dialog를 직접 조립하지 않습니다.
+대화상자는 shadcn Dialog 위에 만든 키트의 틀을 씁니다. 짧은 양식은 [FormDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/form-dialog.tsx), 확인은 [ConfirmDialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/confirm-dialog.tsx), 상세는 [DetailSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/detail-surface.tsx)(상세 페이지 ↔ 60rem 대화상자)입니다. 머리·스크롤 본문·선택적 바닥이며 긴 본문에서도 본문만 스크롤하고 제목·닫기·마지막 동작은 보입니다. 제품 화면은 shadcn Dialog를 직접 조립하지 않습니다.
 
 | 항목 | 기준 |
 | --- | --- |

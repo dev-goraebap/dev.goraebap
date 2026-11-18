@@ -2,11 +2,11 @@ import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-quer
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation, useParams,
   type ErrorComponentProps } from '@tanstack/react-router';
 import { useCallback, useMemo, useState } from 'react';
-import type { NavSpace } from '@/shared/ui/layout/app-shell';
-import { Button, buttonVariants } from '@/shared/ui/button';
-import { ArchiveIcon, BellIcon, InboxIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
+import type { NavSpace } from '@/shared/ui/kit/layout/app-shell';
+import { Button, buttonVariants } from '@/shared/ui/kit/button';
+import { ArchiveIcon, BellIcon, InboxIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { useShellLayout } from '../../../catalog/shell-layout';
 import { initiallyRead, NotificationApiContext, NotificationReadContext, notificationQueries, seedNotifications, useNotificationApi, useNotificationRead,

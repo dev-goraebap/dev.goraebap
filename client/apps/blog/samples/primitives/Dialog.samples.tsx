@@ -1,6 +1,6 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Button } from "@/shared/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/shared/ui/dialog";
+import { Button } from "@/shared/ui/kit/button";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/shared/ui/kit/dialog";
 
 /** shadcn Dialog(Base UI) 그대로. 제품 화면은 이 부품을 직접 쓰지 않고 공통 다이얼로그(짧은 양식 · 확인 창 · 상세 면)를 쓴다. */
 function Primitive() {

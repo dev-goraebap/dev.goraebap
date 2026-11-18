@@ -1,10 +1,10 @@
 import { cn } from 'cn';
-import { AdaptivePopover } from '@/shared/ui/adaptive-popover';
-import { Button } from '@/shared/ui/button';
-import { PlusIcon, UserIcon, XIcon } from '@/shared/ui/icon';
-import { OptionList } from '@/shared/ui/option-list';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
-import { ReorderAnnouncer, ReorderGrip, reorderRowClass, useRowReorder } from '@/shared/ui/reorder';
+import { AdaptivePopover } from '@/shared/ui/kit/adaptive-popover';
+import { Button } from '@/shared/ui/kit/button';
+import { PlusIcon, UserIcon, XIcon } from '@/shared/ui/kit/icon';
+import { OptionList } from '@/shared/ui/kit/option-list';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
+import { ReorderAnnouncer, ReorderGrip, reorderRowClass, useRowReorder } from '@/shared/ui/kit/reorder';
 import { useState } from 'react';
 import { directory, me, type LinePerson } from '../../entities/approval';
 

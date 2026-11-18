@@ -1,6 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { createContext, useContext } from 'react';
-import { BellIcon, MessageCircleIcon, ShieldCheckIcon, UserIcon, type Icon } from '@/shared/ui/icon';
+import { BellIcon, MessageCircleIcon, ShieldCheckIcon, UserIcon, type Icon } from '@/shared/ui/kit/icon';
 
 /** 알림: 다른 사람이나 시스템이 나에게 보낸 것. 처리 목록이라 하나씩 열어 확인하고 보관한다. */
 export type NotificationKind = 'mention' | 'assign' | 'approval' | 'system';

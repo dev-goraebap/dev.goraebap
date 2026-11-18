@@ -2,8 +2,8 @@ import { test } from 'vitest';
 import { page as browserPage } from 'vitest/browser';
 import { expect, userEvent, waitFor, within } from '../catalog/testing';
 import { runSample } from '../catalog/run-sample';
-import { ActionMenu } from '@/shared/ui/action-menu';
-import { ArrowUpDownIcon, CalendarIcon, FileTextIcon } from '@/shared/ui/icon';
+import { ActionMenu } from '@/shared/ui/kit/action-menu';
+import { ArrowUpDownIcon, CalendarIcon, FileTextIcon } from '@/shared/ui/kit/icon';
 import pageMeta, { HeaderAndToolbar } from './Page.samples';
 
 /*

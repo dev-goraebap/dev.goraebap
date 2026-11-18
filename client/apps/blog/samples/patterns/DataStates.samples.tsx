@@ -1,8 +1,8 @@
 import type { Meta, SampleOf } from "../catalog/types";
 import { LibraryApp } from "../playground/library/app/LibraryApp";
 import { createResourceApi } from "../playground/library/mocks/resource-api";
-import { BootCover } from "@/shared/ui/boot-cover";
-import { Button } from "@/shared/ui/button";
+import { BootCover } from "@/shared/ui/kit/boot-cover";
+import { Button } from "@/shared/ui/kit/button";
 import { useEffect, useState } from "react";
 
 /** 첫 방문: 덮개가 앱 위에 있다가 첫 화면이 준비되면(여기서는 1.2초 뒤) 걷힌다. 다시 보기로 처음부터 본다. */

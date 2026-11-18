@@ -1,5 +1,5 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { PersonAvatar as Avatar } from "@/shared/ui/person-avatar";
+import { PersonAvatar as Avatar } from "@/shared/ui/kit/person-avatar";
 import { Comparison } from "../catalog/Comparison";
 
 /** 키트 아바타는 원형 하나이고 크기는 className의 size-*로 정한다(기본 20px: 목록 줄 · 활동). 그림이 없으면 이름 첫 글자. */

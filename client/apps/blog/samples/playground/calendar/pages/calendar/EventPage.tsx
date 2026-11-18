@@ -1,10 +1,10 @@
-import { Button } from '@/shared/ui/button';
-import { CalendarIcon, ClockIcon, MapPinIcon, PencilIcon, Trash2Icon } from '@/shared/ui/icon';
-import { DetailSurface } from '@/shared/ui/detail-surface';
-import { InfoPill } from '@/shared/ui/info-pill';
-import { PageState } from '@/shared/ui/page-state';
-import { DetailLayout } from '@/shared/ui/reading';
-import { Spinner } from '@/shared/ui/spinner';
+import { Button } from '@/shared/ui/kit/button';
+import { CalendarIcon, ClockIcon, MapPinIcon, PencilIcon, Trash2Icon } from '@/shared/ui/kit/icon';
+import { DetailSurface } from '@/shared/ui/kit/detail-surface';
+import { InfoPill } from '@/shared/ui/kit/info-pill';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { DetailLayout } from '@/shared/ui/kit/reading';
+import { Spinner } from '@/shared/ui/kit/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { dayText, eventQueries, useEventApi, type CalendarEvent } from '../../entities/event';

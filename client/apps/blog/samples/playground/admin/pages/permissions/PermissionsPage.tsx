@@ -1,16 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useBlocker } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Alert, AlertTitle } from '@/shared/ui/alert';
-import { Button } from '@/shared/ui/button';
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
-import { ShieldCheckIcon, TriangleAlertIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
-import { SegmentedControl } from '@/shared/ui/segmented-control';
-import { SettingsRow, SettingsSection } from '@/shared/ui/settings';
-import { Spinner } from '@/shared/ui/spinner';
-import { Switch } from '@/shared/ui/switch';
+import { Alert, AlertTitle } from '@/shared/ui/kit/alert';
+import { Button } from '@/shared/ui/kit/button';
+import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
+import { ShieldCheckIcon, TriangleAlertIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
+import { SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
+import { Spinner } from '@/shared/ui/kit/spinner';
+import { Switch } from '@/shared/ui/kit/switch';
 import { usePreset } from '../../app/preset';
 import { adminKeys, adminQueries, cellKey, featureGroups, roles, useAdminApi, type Matrix, type Role } from '../../entities/admin';
 

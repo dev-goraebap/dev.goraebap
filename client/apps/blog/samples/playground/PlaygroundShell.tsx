@@ -1,6 +1,6 @@
 import { useRef } from "react"
-import { AppShell, type AppShellProps, type NavEntry } from "@/shared/ui/layout/app-shell"
-import { FileTextIcon, FolderIcon, UserIcon } from "@/shared/ui/icon"
+import { AppShell, type AppShellProps, type NavEntry } from "@/shared/ui/kit/layout/app-shell"
+import { FileTextIcon, FolderIcon, UserIcon } from "@/shared/ui/kit/icon"
 
 /**
  * Playground 견본의 앱 셸(shadcn 키트). 견본 하나는 앱의 한 구역만 보이므로, 처음 연 구역 밖의 메뉴는 누를 수 없게 하고

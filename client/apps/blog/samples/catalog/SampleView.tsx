@@ -8,8 +8,8 @@
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, RouterProvider } from "@tanstack/react-router";
 import { createContext, createElement, useContext, useLayoutEffect, useState, type ReactNode } from "react";
 import { cn } from "cn";
-import { Toaster } from "@/shared/ui/toast";
-import { TooltipProvider } from "@/shared/ui/tooltip";
+import { Toaster } from "@/shared/ui/kit/toast";
+import { TooltipProvider } from "@/shared/ui/kit/tooltip";
 import type { Layout, Meta, Sample } from "./types";
 
 /** 견본 하나를 그린다. 인자는 묶음 기본값 위에 견본 값을 덮는다. */

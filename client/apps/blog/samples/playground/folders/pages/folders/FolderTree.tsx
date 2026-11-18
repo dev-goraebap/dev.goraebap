@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { ChevronDownIcon, ChevronRightIcon, FolderIcon } from '@/shared/ui/icon';
+import { ChevronDownIcon, ChevronRightIcon, FolderIcon } from '@/shared/ui/kit/icon';
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { pathTo, ROOT, type FolderNode } from '../../entities/node';
 import type { FolderDnd } from './dnd';

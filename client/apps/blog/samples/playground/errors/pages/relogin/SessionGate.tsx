@@ -1,8 +1,8 @@
 import { useMutation } from '@tanstack/react-query';
 import { useCallback, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
-import { Alert, AlertTitle } from '@/shared/ui/alert';
-import { TriangleAlertIcon } from '@/shared/ui/icon';
+import { Alert, AlertTitle } from '@/shared/ui/kit/alert';
+import { TriangleAlertIcon } from '@/shared/ui/kit/icon';
 import { AuthButton, AuthCard, AuthField } from '../../../login/pages/auth-card/AuthCard';
 import { GuardContext, SessionExpired, useSessionApi, WrongPassword, type Guard } from '../../entities/session';
 

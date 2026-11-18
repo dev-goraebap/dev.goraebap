@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, keepPreviousData } from '@tanstack/react-query';
 import { createContext, useContext } from 'react';
-import type { FilterDef, FilterState } from '@/shared/ui/filter';
-import { CalendarIcon, TagIcon, UserIcon } from '@/shared/ui/icon';
+import type { FilterDef, FilterState } from '@/shared/ui/kit/filter';
+import { CalendarIcon, TagIcon, UserIcon } from '@/shared/ui/kit/icon';
 
 /** 활동: 누가·무엇을·언제. 읽기만 하는 기록이라 고치거나 지우는 동작이 없다. */
 export type ActivityKind = 'create' | 'edit' | 'comment' | 'approve' | 'delete';

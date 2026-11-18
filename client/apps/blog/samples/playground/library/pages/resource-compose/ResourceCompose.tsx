@@ -3,11 +3,11 @@ import type { JSONContent } from '@tiptap/react';
 import { useState } from 'react';
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
 import { carryDraft, useCarriedDraft } from '@/shared/lib/panel';
-import { ComposeSurface, FileDropzone, FileList, MB } from '@/shared/ui/compose';
-import { RichDraft } from '@/shared/ui/editor';
-import { FileTextIcon, FolderIcon, LibraryIcon, LinkIcon, PaperclipIcon } from '@/shared/ui/icon';
-import { Input } from '@/shared/ui/input';
-import { OptionPill, PropertyPill } from '@/shared/ui/property-pill';
+import { ComposeSurface, FileDropzone, FileList, MB } from '@/shared/ui/kit/compose';
+import { RichDraft } from '@/shared/ui/kit/editor';
+import { FileTextIcon, FolderIcon, LibraryIcon, LinkIcon, PaperclipIcon } from '@/shared/ui/kit/icon';
+import { Input } from '@/shared/ui/kit/input';
+import { OptionPill, PropertyPill } from '@/shared/ui/kit/property-pill';
 import { collections, kinds, plainText, resourceKeys, useResourceApi, type Resource } from '../../entities/resource';
 
 type Draft = { title: string; body?: JSONContent; kind: Resource['kind']; collection?: string; url: string; files: File[] };

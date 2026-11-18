@@ -1,9 +1,9 @@
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/button';
-import { ConfirmDialog } from '@/shared/ui/confirm-dialog';
-import { DocumentEditor, PageLookMenu, type DocumentMode, type PageLayout } from '@/shared/ui/document';
-import { FileTextIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
+import { Button } from '@/shared/ui/kit/button';
+import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
+import { DocumentEditor, PageLookMenu, type DocumentMode, type PageLayout } from '@/shared/ui/kit/document';
+import { FileTextIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
 import type { JSONContent } from '@tiptap/react';
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';

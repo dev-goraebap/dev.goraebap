@@ -2,18 +2,18 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { useAddressFilters } from '@/shared/lib/list-address';
 import { cn } from 'cn';
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/alert';
-import { Button } from '@/shared/ui/button';
-import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/filter';
-import { CircleCheckIcon, HistoryIcon, MessageCircleIcon, PencilIcon, PlusIcon, TrashIcon, TriangleAlertIcon, type Icon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
-import { Skeleton } from '@/shared/ui/skeleton';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/kit/alert';
+import { Button } from '@/shared/ui/kit/button';
+import { FilterBar, FilterChips, FilterMenu, useFilters } from '@/shared/ui/kit/filter';
+import { CircleCheckIcon, HistoryIcon, MessageCircleIcon, PencilIcon, PlusIcon, TrashIcon, TriangleAlertIcon, type Icon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
+import { Skeleton } from '@/shared/ui/kit/skeleton';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
 import { activityQueries, conditionsOf, exactText, filterKeys, filters, groupByDay, kinds, onePeriod, relativeText, useActivityApi,
   type Activity, type ActivityKind } from '../entities/activity';
-import { ListMore } from '@/shared/ui/list-more';
+import { ListMore } from '@/shared/ui/kit/list-more';
 
 /** 종류의 표식. */
 const marks: Record<ActivityKind, Icon> = { create: PlusIcon, edit: PencilIcon, comment: MessageCircleIcon, approve: CircleCheckIcon, delete: TrashIcon };

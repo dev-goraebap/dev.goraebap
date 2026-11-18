@@ -1,6 +1,6 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Button } from "@/shared/ui/button";
-import { PageState } from "@/shared/ui/page-state";
+import { Button } from "@/shared/ui/kit/button";
+import { PageState } from "@/shared/ui/kit/page-state";
 import { useState } from "react";
 
 const meta = { title: "Foundations (디자인 기초)/모션", id: "foundations-motion", layout: "centered" } satisfies Meta;

@@ -1,8 +1,8 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Field, FieldLabel } from "@/shared/ui/field";
-import { Input } from "@/shared/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
-import { Textarea } from "@/shared/ui/textarea";
+import { Field, FieldLabel } from "@/shared/ui/kit/field";
+import { Input } from "@/shared/ui/kit/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/kit/select";
+import { Textarea } from "@/shared/ui/kit/textarea";
 import { useId, useState, type ReactNode } from "react";
 import { Comparison } from "../catalog/Comparison";
 

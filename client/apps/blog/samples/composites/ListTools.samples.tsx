@@ -1,9 +1,9 @@
 import type { Meta, SampleOf } from "../catalog/types";
 import { useIsMobile } from "@/shared/lib/use-mobile";
-import { DisplayChoice, DisplayMenu } from "@/shared/ui/display-menu";
-import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterDef, type FilterState } from "@/shared/ui/filter";
-import { FileTextIcon, UserIcon } from "@/shared/ui/icon";
-import { SearchTool } from "@/shared/ui/search-tool";
+import { DisplayChoice, DisplayMenu } from "@/shared/ui/kit/display-menu";
+import { FilterBar, FilterChips, FilterMenu, useFilters, type FilterDef, type FilterState } from "@/shared/ui/kit/filter";
+import { FileTextIcon, UserIcon } from "@/shared/ui/kit/icon";
+import { SearchTool } from "@/shared/ui/kit/search-tool";
 import { useState } from "react";
 
 type Key = "kind" | "author";

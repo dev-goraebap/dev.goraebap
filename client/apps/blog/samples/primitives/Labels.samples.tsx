@@ -1,6 +1,6 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Badge } from "@/shared/ui/badge";
-import { FileTextIcon } from "@/shared/ui/icon";
+import { Badge } from "@/shared/ui/kit/badge";
+import { FileTextIcon } from "@/shared/ui/kit/icon";
 import { Comparison } from "../catalog/Comparison";
 
 const meta = { title: "Primitives (기본 부품)/라벨·상태·개수", id: "primitives-labels", layout: "centered" } satisfies Meta;

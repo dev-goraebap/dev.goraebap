@@ -34,7 +34,7 @@ arc42: "8.5"
 
 상태와 선택 여부를 색 하나로만 전달하지 않습니다. 모양(채움 아이콘), 이름, 접근 가능한 상태 속성을 함께 둡니다. 모든 상태를 라이트·다크에서 확인합니다.
 
-눌림은 `aria-pressed`와 버튼 변형 `view-active`로 표현합니다. 키트의 [Button](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/button.tsx) 변형은 `default`·`outline`·`secondary`·`ghost`·`destructive`·`link`와 `view`(옅은 알약)·`view-active`(고른 것)·`tool`(둥근 도구)·`create`(페이지의 만들기)입니다. 분류·라벨은 [Badge](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/badge.tsx)의 `label` 변형으로 그립니다.
+눌림은 `aria-pressed`와 버튼 변형 `view-active`로 표현합니다. 키트의 [Button](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/button.tsx) 변형은 `default`·`outline`·`secondary`·`ghost`·`destructive`·`link`와 `view`(옅은 알약)·`view-active`(고른 것)·`tool`(둥근 도구)·`create`(페이지의 만들기)입니다. 분류·라벨은 [Badge](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/badge.tsx)의 `label` 변형으로 그립니다.
 
 ## 휴대폰 크기와 라이트·다크
 

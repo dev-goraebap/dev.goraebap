@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { loadSample, type SampleEntry } from '@samples/catalog/registry';
 import type { Device } from '@samples/catalog/types';
-import { SegmentedControl } from '@/shared/ui/segmented-control';
+import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
 import measured from './sample-sizes.json';
 
 /** 견본을 그리는 기기 폭. 데스크톱은 키트가 데스크톱으로 판정하는 최소 폭, 휴대폰은 390px. */

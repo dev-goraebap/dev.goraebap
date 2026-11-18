@@ -1,12 +1,12 @@
 import type { Meta, SampleOf } from "../catalog/types";
 import type { JSONContent } from "@tiptap/react";
-import { FileDropzone, MB } from "@/shared/ui/compose";
-import { RichDraft } from "@/shared/ui/editor";
-import { FileTextIcon, FolderIcon, TagIcon, UserIcon } from "@/shared/ui/icon";
-import { InfoPill } from "@/shared/ui/info-pill";
-import { ListGroupHeader } from "@/shared/ui/list-group-header";
-import { PageState, type StateKind } from "@/shared/ui/page-state";
-import { DatePill, OptionPill } from "@/shared/ui/property-pill";
+import { FileDropzone, MB } from "@/shared/ui/kit/compose";
+import { RichDraft } from "@/shared/ui/kit/editor";
+import { FileTextIcon, FolderIcon, TagIcon, UserIcon } from "@/shared/ui/kit/icon";
+import { InfoPill } from "@/shared/ui/kit/info-pill";
+import { ListGroupHeader } from "@/shared/ui/kit/list-group-header";
+import { PageState, type StateKind } from "@/shared/ui/kit/page-state";
+import { DatePill, OptionPill } from "@/shared/ui/kit/property-pill";
 import { useState } from "react";
 import { Comparison } from "../catalog/Comparison";
 

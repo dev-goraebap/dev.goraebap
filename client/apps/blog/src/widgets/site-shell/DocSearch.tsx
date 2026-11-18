@@ -1,10 +1,10 @@
 import { useRouter } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { searchEntries } from '@/entities/document';
-import { Button } from '@/shared/ui/button';
-import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/shared/ui/command';
-import { SearchIcon } from '@/shared/ui/icon';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/tooltip';
+import { Button } from '@/shared/ui/kit/button';
+import { Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/shared/ui/kit/command';
+import { SearchIcon } from '@/shared/ui/kit/icon';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
 
 /** 묶음 이름 순서대로 모은 찾기 목록. 묶음이 없는 글(블로그)은 'Blog'로 온다. */
 const grouped = () => {

@@ -4,7 +4,7 @@ arc42: "8.6"
 
 # 페이지 배치
 
-페이지([Page](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/layout/page))는 머리 줄·배너 자리·툴바·적용 줄·본문의 순서를 고정합니다. 머리와 툴바는 고정하고 본문만 스크롤합니다. 이 문서는 머리 줄·칸 머리·목록·상세·설정의 모양을 정합니다. 목록·상세·양식을 어디에 띄우고 어떻게 오가는지는 [리소스 화면 패턴](resource-patterns.md)을 따릅니다. 구현 전에 기존 Page와 같은 역할의 화면을 읽고 각 조작을 보기·조건·표시·주 동작으로 나눕니다.
+페이지([Page](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/layout/page))는 머리 줄·배너 자리·툴바·적용 줄·본문의 순서를 고정합니다. 머리와 툴바는 고정하고 본문만 스크롤합니다. 이 문서는 머리 줄·칸 머리·목록·상세·설정의 모양을 정합니다. 목록·상세·양식을 어디에 띄우고 어떻게 오가는지는 [리소스 화면 패턴](resource-patterns.md)을 따릅니다. 구현 전에 기존 Page와 같은 역할의 화면을 읽고 각 조작을 보기·조건·표시·주 동작으로 나눕니다.
 
 ## 머리 줄과 툴바
 
@@ -14,13 +14,13 @@ arc42: "8.6"
 
 휴대폰 머리 줄과 툴바는 버튼 위아래 여백을 확보하며 [간격과 크기](spacing.md)를 따릅니다.
 
-뷰나 탭이 있으면 그 아래 44px(휴대폰 최소 52px) 툴바를 둡니다. 왼쪽 보기는 자기 안에서 가로로 넘기며 넘친 쪽을 흐리게 하고, 오른쪽 도구는 고정합니다. 보기 탭이 없는 데스크톱 페이지는 검색·필터·정렬을 머리 줄 오른쪽으로 올리고 툴바를 두지 않습니다. 휴대폰 앱 바의 도구는 [PhoneTools](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/layout/phone-tools) 자리에 그리고, 필터는 고른 보기 탭 뒤에 둡니다. 도구는 자기가 놓이는 레이아웃을 모릅니다. 만들기는 데스크톱 머리 줄의 마지막 버튼이며, 선택지가 여럿이면 같은 버튼이 메뉴를 엽니다.
+뷰나 탭이 있으면 그 아래 44px(휴대폰 최소 52px) 툴바를 둡니다. 왼쪽 보기는 자기 안에서 가로로 넘기며 넘친 쪽을 흐리게 하고, 오른쪽 도구는 고정합니다. 보기 탭이 없는 데스크톱 페이지는 검색·필터·정렬을 머리 줄 오른쪽으로 올리고 툴바를 두지 않습니다. 휴대폰 앱 바의 도구는 [PhoneTools](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/layout/phone-tools) 자리에 그리고, 필터는 고른 보기 탭 뒤에 둡니다. 도구는 자기가 놓이는 레이아웃을 모릅니다. 만들기는 데스크톱 머리 줄의 마지막 버튼이며, 선택지가 여럿이면 같은 버튼이 메뉴를 엽니다.
 
 페이지 전체의 상태·오류·성공은 머리 아래 툴바 위의 배너 줄에 둡니다. 안내가 없으면 줄도 없습니다. 필드 오류는 입력 곁에, 대화상자의 오류는 그 안에, 화면에 결과가 보이지 않는 짧은 완료(주소 복사 등)만 토스트로 합니다([데이터 상태](data-states.md#오류-알림의-자리)).
 
 ## 칸 머리
 
-데스크톱의 상세·작성·수정 페이지, List-Detail의 오른쪽 칸, 관리 화면의 상세는 같은 칸 머리 틀([PaneFrame](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/layout/pane-frame))을 씁니다. 머리는 52px이고 아래 구분선이 없습니다. 왼쪽에 둥근 뒤로, 오른쪽에 둥근 도구를 둡니다.
+데스크톱의 상세·작성·수정 페이지, List-Detail의 오른쪽 칸, 관리 화면의 상세는 같은 칸 머리 틀([PaneFrame](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/layout/pane-frame))을 씁니다. 머리는 52px이고 아래 구분선이 없습니다. 왼쪽에 둥근 뒤로, 오른쪽에 둥근 도구를 둡니다.
 
 - 처음에는 뒤로 옆에 이름이 없습니다. 스크롤해 본문 제목이 머리 아래로 들어가면 뒤로 옆에 종류(작게)와 이름이 나타납니다. 이름은 대상의 제목이고, 번호는 종류 옆의 작은 줄이 맡습니다. 둘 다 번호를 쓰면 같은 말이 두 번 섭니다.
 - 머리 아래의 서서히 사라지는 그늘은 본문이 머리 아래로 들어갔을 때만 보입니다. 서식 도구 줄이 머리 아래에 붙어 있는 동안은 숨깁니다.
@@ -48,13 +48,13 @@ arc42: "8.6"
 
 ### 표
 
-[Table](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/table.tsx)은 본문 폭을 다 쓰되 열들이 펼쳐지는 폭의 상한을 1920px로 둡니다. 그보다 넓은 화면에서는 끝의 빈 열이 남는 폭을 받습니다. 이 상한은 rem이 아니라 px로 적습니다. 큰 화면에서 루트 글자 크기를 키우는 앱([간격과 크기](spacing.md#큰-화면과-확대))에서는 rem 값도 함께 커져 상한의 뜻이 사라지기 때문입니다. 표 자신은 스크롤 칸이 되지 않고 페이지 본문이 스크롤합니다.
+[Table](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/table.tsx)은 본문 폭을 다 쓰되 열들이 펼쳐지는 폭의 상한을 1920px로 둡니다. 그보다 넓은 화면에서는 끝의 빈 열이 남는 폭을 받습니다. 이 상한은 rem이 아니라 px로 적습니다. 큰 화면에서 루트 글자 크기를 키우는 앱([간격과 크기](spacing.md#큰-화면과-확대))에서는 rem 값도 함께 커져 상한의 뜻이 사라지기 때문입니다. 표 자신은 스크롤 칸이 되지 않고 페이지 본문이 스크롤합니다.
 
-데스크톱 표는 정렬 메뉴 대신 머리 칸을 눌러 정렬합니다([SortableHead](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/sortable-head.tsx)). 지금 정렬한 칸은 ↑ 또는 ↓를 보이고, 다른 칸은 포인터를 올렸을 때 ⇅를 보입니다. 표 머리는 44px, 줄은 48px(촘촘하게 40px)입니다.
+데스크톱 표는 정렬 메뉴 대신 머리 칸을 눌러 정렬합니다([SortableHead](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/sortable-head.tsx)). 지금 정렬한 칸은 ↑ 또는 ↓를 보이고, 다른 칸은 포인터를 올렸을 때 ⇅를 보입니다. 표 머리는 44px, 줄은 48px(촘촘하게 40px)입니다.
 
 ### 목록 끝 줄
 
-모든 목록·표는 같은 끝 줄([ListMore](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/list-more.tsx))을 씁니다. 줄은 세 자리입니다.
+모든 목록·표는 같은 끝 줄([ListMore](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/list-more.tsx))을 씁니다. 줄은 세 자리입니다.
 
 | 자리 | 내용 |
 | --- | --- |
@@ -66,7 +66,7 @@ arc42: "8.6"
 
 ## 상세
 
-본문이 있는 대상의 상세([DetailLayout](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/reading/ui/DetailLayout.tsx))는 최대 45rem 읽기 열에 제목 위 줄·제목·본문·이어지는 것(하위 항목·활동)을 둡니다. 속성은 넓으면 오른쪽 16rem 열에 묶음 이름과 함께(스크롤해도 보입니다), 좁으면 제목과 본문 사이의 줄바꿈되는 알약으로 옮깁니다. 같은 요소를 옮기므로 속성을 두 벌 렌더링하지 않습니다. 창 폭이 아니라 컨테이너 폭(60rem)으로 판단해 대화상자·칸에서도 맞게 바뀝니다. 긴 제목·주소는 줄을 넘겨 가로로 넘치지 않습니다. 상세와 작성 면은 점 무늬 없이 평평합니다.
+본문이 있는 대상의 상세([DetailLayout](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/reading/ui/DetailLayout.tsx))는 최대 45rem 읽기 열에 제목 위 줄·제목·본문·이어지는 것(하위 항목·활동)을 둡니다. 속성은 넓으면 오른쪽 16rem 열에 묶음 이름과 함께(스크롤해도 보입니다), 좁으면 제목과 본문 사이의 줄바꿈되는 알약으로 옮깁니다. 같은 요소를 옮기므로 속성을 두 벌 렌더링하지 않습니다. 창 폭이 아니라 컨테이너 폭(60rem)으로 판단해 대화상자·칸에서도 맞게 바뀝니다. 긴 제목·주소는 줄을 넘겨 가로로 넘치지 않습니다. 상세와 작성 면은 점 무늬 없이 평평합니다.
 
 제목 위 줄에는 다른 곳에 없는 것(상위 항목 링크 등)만 둡니다. 속성 열이나 머리 줄의 경로에 이미 있는 값(소속 프로젝트, 번호)을 제목 위에 다시 쓰지 않습니다. 둘 것이 없으면 줄 자체를 두지 않습니다. 같은 데이터가 한 화면에 두 번 나오면 어느 쪽이 원본인지 읽는 사람이 다시 확인하게 됩니다.
 
@@ -84,10 +84,10 @@ arc42: "8.6"
 
 값과 정책을 정하는 화면은 같은 머리 줄 아래 최대 45rem 가운데 열(위아래 40px)입니다. 제목, 필요할 때의 설명, 구역들 순입니다. 구역은 작은 이름과 구역 동작, 올린 면 안의 값 목록, 필요할 때의 안내입니다. 항목은 이름(·설명)과 끝의 값/컨트롤이며 좁은 열(32rem 이하)에서는 이름 아래로 값을 내립니다. 같은 45rem 열을 쓰는 작성 페이지는 위아래 32px로 조금 좁습니다.
 
-표가 들어가는 관리 화면(구성원·권한·기록 목록)은 45rem 열에 넣지 않고 목록처럼 본문 폭을 씁니다. 표를 45rem 열에 넣으면 열이 빠지거나 가로로 넘칩니다. 관리 항목 하나의 상세·양식은 관리 면([AdminSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/settings/AdminSurface.tsx))에 둡니다. 데스크톱 페이지는 칸 머리(`PaneFrame`), 목록 위에서 열면 대화상자, 휴대폰은 `Page`로 그립니다.
+표가 들어가는 관리 화면(구성원·권한·기록 목록)은 45rem 열에 넣지 않고 목록처럼 본문 폭을 씁니다. 표를 45rem 열에 넣으면 열이 빠지거나 가로로 넘칩니다. 관리 항목 하나의 상세·양식은 관리 면([AdminSurface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/settings/AdminSurface.tsx))에 둡니다. 데스크톱 페이지는 칸 머리(`PaneFrame`), 목록 위에서 열면 대화상자, 휴대폰은 `Page`로 그립니다.
 
 바닥에 고정 동작 줄을 둘 때는 `Page`의 `footer`에 동작만 넣습니다. 줄은 본문 스크롤 밖 맨 아래에 붙어 늘 보입니다. 선택 값인 `footerLabel`을 주면 접근 가능한 `region` 이름을 붙입니다.
 
 ## 옆 패널
 
-주소가 필요 없는 짧은 조회(기록 한 줄의 사실, 표·그림 위에서 잠깐 보는 대상)는 옆 패널([WithPanel](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/side-panel/WithPanel.tsx))로 엽니다. 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트입니다. 옆 패널은 리소스 패턴이 아닙니다. 자기 주소가 있는 대상, 편집, 긴 내용은 [리소스 화면 패턴](resource-patterns.md)으로 엽니다.
+주소가 필요 없는 짧은 조회(기록 한 줄의 사실, 표·그림 위에서 잠깐 보는 대상)는 옆 패널([WithPanel](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/side-panel/WithPanel.tsx))로 엽니다. 데스크톱은 오른쪽 26rem 패널, 휴대폰은 바텀시트입니다. 옆 패널은 리소스 패턴이 아닙니다. 자기 주소가 있는 대상, 편집, 긴 내용은 [리소스 화면 패턴](resource-patterns.md)으로 엽니다.

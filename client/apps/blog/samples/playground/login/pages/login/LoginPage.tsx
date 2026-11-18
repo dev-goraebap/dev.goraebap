@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useId, useState, type FormEvent } from 'react';
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
-import { Checkbox } from '@/shared/ui/checkbox';
+import { Checkbox } from '@/shared/ui/kit/checkbox';
 import { InvalidCredentials, useAuthApi } from '../../entities/auth';
 import { AuthButton, AuthCard, AuthError, AuthField, textLink } from '../auth-card/AuthCard';
 

@@ -1,9 +1,9 @@
 import { useRouter, useRouterState } from '@tanstack/react-router';
 import { postSearchHref, postTags, readPostSearch } from '@/entities/post';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { FilterBar, FilterMenu, useFilters } from '@/shared/ui/filter';
-import { TagIcon } from '@/shared/ui/icon';
-import { SearchTool } from '@/shared/ui/search-tool';
+import { FilterBar, FilterMenu, useFilters } from '@/shared/ui/kit/filter';
+import { TagIcon } from '@/shared/ui/kit/icon';
+import { SearchTool } from '@/shared/ui/kit/search-tool';
 
 const tagFilter = [{ key: 'tag' as const, label: '태그', icon: TagIcon, isSearchable: true, options: postTags.map(value => ({ value, label: value })) }];
 

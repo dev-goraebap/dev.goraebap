@@ -1,6 +1,6 @@
 import { Link, useRouterState } from '@tanstack/react-router';
 import { posts, readPostSearch } from '@/entities/post';
-import { Badge } from '@/shared/ui/badge';
+import { Badge } from '@/shared/ui/kit/badge';
 
 /**
  * 블로그 목록: 가운데 열(최대 62rem)에 글 카드 두 줄(휴대폰은 한 줄). 찾는 말과 태그는 주소에서 읽는다(툴바는 셸이 그린다).

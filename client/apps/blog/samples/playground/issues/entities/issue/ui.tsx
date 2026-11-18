@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router';
 import { cn } from 'cn';
-import { CalendarIcon, CircleCheckIcon, ClockIcon, EyeIcon, RefreshCwIcon, SirenIcon, type Icon } from '@/shared/ui/icon';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
-import { RowLink } from '@/shared/ui/row-link';
+import { CalendarIcon, CircleCheckIcon, ClockIcon, EyeIcon, RefreshCwIcon, SirenIcon, type Icon } from '@/shared/ui/kit/icon';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
+import { RowLink } from '@/shared/ui/kit/row-link';
 import { dateText, dueText, isOverdue, NONE, people, priorities, priorityOf, statusOf, statuses, type Issue, type IssuePriority, type IssueStatus } from './model';
 
 /*

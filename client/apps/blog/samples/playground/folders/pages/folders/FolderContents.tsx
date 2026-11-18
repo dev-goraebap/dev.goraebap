@@ -1,10 +1,10 @@
 import { cn } from 'cn';
-import { ActionMenu } from '@/shared/ui/action-menu';
-import { Button } from '@/shared/ui/button';
-import { FileTextIcon, FolderIcon, FolderInputIcon, ImageIcon, PencilIcon, PlusIcon } from '@/shared/ui/icon';
-import { PageState } from '@/shared/ui/page-state';
-import { RowLink } from '@/shared/ui/row-link';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/table';
+import { ActionMenu } from '@/shared/ui/kit/action-menu';
+import { Button } from '@/shared/ui/kit/button';
+import { FileTextIcon, FolderIcon, FolderInputIcon, ImageIcon, PencilIcon, PlusIcon } from '@/shared/ui/kit/icon';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { RowLink } from '@/shared/ui/kit/row-link';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/kit/table';
 import { childrenOf, folderHref, sizeText, type FolderNode } from '../../entities/node';
 import type { FolderDnd } from './dnd';
 

@@ -1,8 +1,8 @@
 import type { CSSProperties, ReactNode } from 'react';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/button';
-import { PlusIcon } from '@/shared/ui/icon';
-import { PageState } from '@/shared/ui/page-state';
+import { Button } from '@/shared/ui/kit/button';
+import { PlusIcon } from '@/shared/ui/kit/icon';
+import { PageState } from '@/shared/ui/kit/page-state';
 import { dayText, eventsOn, fromKey, layoutWeek, monthText, monthWeeks, TODAY, weekdayNames, weekOf, type CalendarEvent, type DateKey } from '../../entities/event';
 import { EventDot, EventPopover, MoreEvents } from './EventParts';
 

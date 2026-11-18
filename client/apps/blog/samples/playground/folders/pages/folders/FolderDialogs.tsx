@@ -1,8 +1,8 @@
 import { focusFirstInvalid } from '@/shared/lib/focus-invalid';
-import { FormDialog } from '@/shared/ui/form-dialog';
-import { Input } from '@/shared/ui/input';
-import { Label } from '@/shared/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select';
+import { FormDialog } from '@/shared/ui/kit/form-dialog';
+import { Input } from '@/shared/ui/kit/input';
+import { Label } from '@/shared/ui/kit/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/kit/select';
 import { useId, useState } from 'react';
 import { canMove, hasName, pathTo, type FolderNode } from '../../entities/node';
 

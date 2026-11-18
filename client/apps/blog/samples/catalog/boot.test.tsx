@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { BOOT_COLORS, bootCover } from "@/shared/ui/boot-cover/plugin";
+import { BOOT_COLORS, bootCover } from "@/shared/ui/kit/boot-cover/plugin";
 
 /**
  * 토큰(tailwind.css)을 그 모드로 읽어 rgb 글자로 돌려준다. 검사 문서는 test-setup에서 tailwind.css를 읽는다. 다크 토큰은

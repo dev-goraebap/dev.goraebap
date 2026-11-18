@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore, type ComponentPropsWithRef } from 'react';
-import { Button } from '@/shared/ui/button';
+import { Button } from '@/shared/ui/kit/button';
 import type { DiagramSlide } from './ZoomViewer';
 
 type Scheme = 'light' | 'dark';

@@ -1,8 +1,8 @@
-import type { NavSpace } from '@/shared/ui/layout/app-shell';
-import { Button } from '@/shared/ui/button';
-import { MessageCircleIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
+import type { NavSpace } from '@/shared/ui/kit/layout/app-shell';
+import { Button } from '@/shared/ui/kit/button';
+import { MessageCircleIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
 import { PlaygroundShell } from '@samples/playground/PlaygroundShell';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Link, Outlet, RouterProvider, useLocation, useParams,

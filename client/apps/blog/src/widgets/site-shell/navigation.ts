@@ -1,10 +1,10 @@
 import { architectureSections, contentGroups, skillGroups } from 'virtual:guide-docs';
 import { docs } from '@/entities/document';
-import type { NavEntry, NavSpace } from '@/shared/ui/layout/app-shell';
+import type { NavEntry, NavSpace } from '@/shared/ui/kit/layout/app-shell';
 import {
   ArchiveIcon, BookIcon, ClockIcon, CopyIcon, EyeIcon, FileTextIcon, GripIcon, HomeIcon, KanbanSquareIcon, LayoutGridIcon, LibraryIcon,
   LinkIcon, ListIcon, LockIcon, PaperclipIcon, PanelLeftIcon, PenSquareIcon, SettingsIcon, SunIcon, type Icon,
-} from '@/shared/ui/icon';
+} from '@/shared/ui/kit/icon';
 
 /**
  * 문서 목록(content-plugin)이 이름으로 적은 아이콘을 키트 아이콘 부품으로 바꾼다. 목록에 새 이름을 쓰면 여기에 더한다(없으면 문서 아이콘).

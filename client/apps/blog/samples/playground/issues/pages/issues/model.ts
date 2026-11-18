@@ -1,5 +1,5 @@
-import type { FilterDef, FilterState } from '@/shared/ui/filter';
-import { ChartNoAxesColumnIcon, SquareCheckIcon, UserIcon } from '@/shared/ui/icon';
+import type { FilterDef, FilterState } from '@/shared/ui/kit/filter';
+import { ChartNoAxesColumnIcon, SquareCheckIcon, UserIcon } from '@/shared/ui/kit/icon';
 import { NONE, people, priorities, priorityOf, statuses, type Issue } from '../../entities/issue';
 
 /** 목록 주소의 검증. 표시 · 필터 값은 useAddressChoices · useAddressFilters가 읽고, 여기서는 검색어와 열려 있는 패널만 검증한다. */

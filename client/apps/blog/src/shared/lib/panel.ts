@@ -6,7 +6,7 @@ import { useIsMobile } from "@/shared/lib/use-mobile"
  * 목록 위 대화상자로 여는 페이지. 데스크톱은 지금 페이지 주소에 ?panel=<페이지 주소>를 달고
  * 주소창에는 TanStack Router의 mask로 그 페이지의 주소를 보인다(unmaskOnReload: 새로고침 · 복사한 주소는 페이지로 연다).
  * 휴대폰에는 대화상자가 없어 늘 그 페이지로 간다.
- * 목록 위 대화상자(Routed Modal) 패턴의 주소 계약이다. 대화상자의 바꿔 끼우기는 shared/ui/dialog의 swapDialog가 맡는다.
+ * 목록 위 대화상자(Routed Modal) 패턴의 주소 계약이다. 대화상자의 바꿔 끼우기는 shared/ui/kit/dialog의 swapDialog가 맡는다.
  */
 const KEY = "panel"
 

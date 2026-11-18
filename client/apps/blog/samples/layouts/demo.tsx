@@ -1,6 +1,6 @@
-import type { NavSpace } from "@/shared/ui/layout/app-shell";
-import { BellIcon, CalendarIcon, FileTextIcon, FolderIcon, InboxIcon, LibraryIcon, ListIcon, ProjectsIcon, SearchIcon, SettingsIcon, UserIcon, UsersIcon, type Icon } from "@/shared/ui/icon";
-import type { NavSection } from "@/shared/ui/layout/app-shell";
+import type { NavSpace } from "@/shared/ui/kit/layout/app-shell";
+import { BellIcon, CalendarIcon, FileTextIcon, FolderIcon, InboxIcon, LibraryIcon, ListIcon, ProjectsIcon, SearchIcon, SettingsIcon, UserIcon, UsersIcon, type Icon } from "@/shared/ui/kit/icon";
+import type { NavSection } from "@/shared/ui/kit/layout/app-shell";
 
 /** 레이아웃 견본이 쓰는 중립 메뉴. 지금 항목은 셸이 라우터의 주소로 정한다(견본은 메모리 라우터를 쓴다). */
 export const demoSpace: NavSpace = {

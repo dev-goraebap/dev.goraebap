@@ -1,11 +1,11 @@
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/button';
-import { DocumentView, ExportMenu, PageLookMenu, PagesPill, scrollToPage, type DocumentMode, type PageLayout } from '@/shared/ui/document';
-import { FileIcon, FileTextIcon, PencilIcon, UserIcon } from '@/shared/ui/icon';
-import { InfoPill } from '@/shared/ui/info-pill';
-import { Page } from '@/shared/ui/layout/page';
-import { DetailLayout } from '@/shared/ui/reading';
-import { SegmentedControl } from '@/shared/ui/segmented-control';
+import { Button } from '@/shared/ui/kit/button';
+import { DocumentView, ExportMenu, PageLookMenu, PagesPill, scrollToPage, type DocumentMode, type PageLayout } from '@/shared/ui/kit/document';
+import { FileIcon, FileTextIcon, PencilIcon, UserIcon } from '@/shared/ui/kit/icon';
+import { InfoPill } from '@/shared/ui/kit/info-pill';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { DetailLayout } from '@/shared/ui/kit/reading';
+import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
 import { useNavigate } from '@tanstack/react-router';
 import { useRef, useState } from 'react';
 import { useDocumentValue, usePageLook } from '../app/store';

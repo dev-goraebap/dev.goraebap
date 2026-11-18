@@ -7,7 +7,7 @@
       "name": "theme",
       "type": "registry:theme",
       "title": "Webcraft 토큰",
-      "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티, 조작 면 토큰(control · control-hover · control-on · control-border), 화면 전환(콘텐츠 영역 .route-content · 휴대폰 유리 막대 · 대화상자 바꿔 끼우기 · 페이지로 열기). 다크 모드는 html(:root)의 data-theme=dark(dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui · components → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지))을 쓴다.",
+      "description": "면 네 단계(sidebar < background < card < popover) · 글자색 강조 · 업무 표식 · 일정 분류 색, Pretendard · JetBrains Mono, 64rem 분기점과 휴대폰 글자 크기, bg-dots · squircle 유틸리티, 조작 면 토큰(control · control-hover · control-on · control-border), 화면 전환(콘텐츠 영역 .route-content · 휴대폰 유리 막대 · 대화상자 바꿔 끼우기 · 페이지로 열기). 다크 모드는 html(:root)의 data-theme=dark(dark: 변형도 같다). 다른 키트 항목이 모두 이것에 기댄다. 받는 프로젝트는 Webcraft FSD 별칭(components.json의 ui → @/shared/ui/kit, components → @/shared/ui, lib · hooks → @/shared/lib, utils → cn(패키지))을 쓴다.",
       "docs": "다크 모드는 html(:root)의 data-theme=dark입니다. 라우터가 그리는 자리(Outlet을 감싼 요소)에 route-content 클래스를 달면 화면 전환이 그 영역만 잡습니다. shadcn init이 남긴 .dark { … } 블록과 @custom-variant dark (&:is(.dark *)) 줄은 지웁니다(뒤에 더한 data-theme 변형과 겹칩니다). 모드는 @webcraft/appearance가 data-theme에 반영합니다.",
       "dependencies": [
         "pretendard",
@@ -470,19 +470,19 @@
       "description": "lucide와 같은 이름(XIcon …)으로 부르는 Solar 아이콘. 기본은 Linear, chosen이면 Bold Duotone. shadcn add로 받은 부품의 lucide-react import를 이것으로 바꾼다.",
       "files": [
         {
-          "path": "src/shared/ui/icon/index.ts",
+          "path": "src/shared/ui/kit/icon/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/icon/index.ts"
+          "target": "src/shared/ui/kit/icon/index.ts"
         },
         {
-          "path": "src/shared/ui/icon/solar.ts",
+          "path": "src/shared/ui/kit/icon/solar.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/icon/solar.ts"
+          "target": "src/shared/ui/kit/icon/solar.ts"
         },
         {
-          "path": "src/shared/ui/icon/icons.generated.ts",
+          "path": "src/shared/ui/kit/icon/icons.generated.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/icon/icons.generated.ts"
+          "target": "src/shared/ui/kit/icon/icons.generated.ts"
         }
       ]
     },
@@ -502,9 +502,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/action-menu.tsx",
+          "path": "src/shared/ui/kit/action-menu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/action-menu.tsx"
+          "target": "src/shared/ui/kit/action-menu.tsx"
         }
       ]
     },
@@ -523,9 +523,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/adaptive-popover.tsx",
+          "path": "src/shared/ui/kit/adaptive-popover.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/adaptive-popover.tsx"
+          "target": "src/shared/ui/kit/adaptive-popover.tsx"
         }
       ]
     },
@@ -544,9 +544,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/confirm-dialog.tsx",
+          "path": "src/shared/ui/kit/confirm-dialog.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/confirm-dialog.tsx"
+          "target": "src/shared/ui/kit/confirm-dialog.tsx"
         }
       ]
     },
@@ -568,9 +568,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/date-picker.tsx",
+          "path": "src/shared/ui/kit/date-picker.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/date-picker.tsx"
+          "target": "src/shared/ui/kit/date-picker.tsx"
         }
       ]
     },
@@ -591,9 +591,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/detail-surface.tsx",
+          "path": "src/shared/ui/kit/detail-surface.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/detail-surface.tsx"
+          "target": "src/shared/ui/kit/detail-surface.tsx"
         }
       ],
       "dependencies": [
@@ -616,9 +616,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/display-menu.tsx",
+          "path": "src/shared/ui/kit/display-menu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/display-menu.tsx"
+          "target": "src/shared/ui/kit/display-menu.tsx"
         }
       ]
     },
@@ -637,9 +637,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/form-dialog.tsx",
+          "path": "src/shared/ui/kit/form-dialog.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/form-dialog.tsx"
+          "target": "src/shared/ui/kit/form-dialog.tsx"
         }
       ]
     },
@@ -654,9 +654,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/info-pill.tsx",
+          "path": "src/shared/ui/kit/info-pill.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/info-pill.tsx"
+          "target": "src/shared/ui/kit/info-pill.tsx"
         }
       ]
     },
@@ -672,9 +672,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/list-group-header.tsx",
+          "path": "src/shared/ui/kit/list-group-header.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/list-group-header.tsx"
+          "target": "src/shared/ui/kit/list-group-header.tsx"
         }
       ],
       "dependencies": [
@@ -693,9 +693,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/option-list.tsx",
+          "path": "src/shared/ui/kit/option-list.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/option-list.tsx"
+          "target": "src/shared/ui/kit/option-list.tsx"
         }
       ]
     },
@@ -709,9 +709,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/pane-resize-handle.tsx",
+          "path": "src/shared/ui/kit/pane-resize-handle.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/pane-resize-handle.tsx"
+          "target": "src/shared/ui/kit/pane-resize-handle.tsx"
         }
       ]
     },
@@ -726,9 +726,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/person-avatar.tsx",
+          "path": "src/shared/ui/kit/person-avatar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/person-avatar.tsx"
+          "target": "src/shared/ui/kit/person-avatar.tsx"
         }
       ],
       "dependencies": [
@@ -756,9 +756,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/property-pill.tsx",
+          "path": "src/shared/ui/kit/property-pill.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/property-pill.tsx"
+          "target": "src/shared/ui/kit/property-pill.tsx"
         }
       ]
     },
@@ -776,9 +776,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/row-link.tsx",
+          "path": "src/shared/ui/kit/row-link.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/row-link.tsx"
+          "target": "src/shared/ui/kit/row-link.tsx"
         }
       ]
     },
@@ -795,9 +795,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/list-more.tsx",
+          "path": "src/shared/ui/kit/list-more.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/list-more.tsx"
+          "target": "src/shared/ui/kit/list-more.tsx"
         }
       ],
       "dependencies": [
@@ -820,9 +820,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/search-tool.tsx",
+          "path": "src/shared/ui/kit/search-tool.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/search-tool.tsx"
+          "target": "src/shared/ui/kit/search-tool.tsx"
         }
       ]
     },
@@ -840,9 +840,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/segmented-control.tsx",
+          "path": "src/shared/ui/kit/segmented-control.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/segmented-control.tsx"
+          "target": "src/shared/ui/kit/segmented-control.tsx"
         }
       ]
     },
@@ -853,9 +853,9 @@
       "description": "툴바 도구(필터 · 표시 · 검색) 귀퉁이의 점: 걸렸거나 처음과 다를 때.",
       "files": [
         {
-          "path": "src/shared/ui/tool-dot.tsx",
+          "path": "src/shared/ui/kit/tool-dot.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/tool-dot.tsx"
+          "target": "src/shared/ui/kit/tool-dot.tsx"
         }
       ],
       "registryDependencies": [
@@ -869,9 +869,9 @@
       "description": "팝오버 · 시트 · 메뉴 안의 한 줄(menuItemClass · MenuItem): 데스크톱 36px · 14px · 16px 아이콘, 휴대폰 48px · 15px · 20px 아이콘.",
       "files": [
         {
-          "path": "src/shared/ui/menu-item.tsx",
+          "path": "src/shared/ui/kit/menu-item.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/menu-item.tsx"
+          "target": "src/shared/ui/kit/menu-item.tsx"
         }
       ],
       "registryDependencies": [
@@ -888,9 +888,9 @@
       "description": "표 머리 칸을 눌러 정렬한다(SortableHead): 지금 칸은 ↑↓, 다른 칸은 가리킬 때 ⇅, aria-sort.",
       "files": [
         {
-          "path": "src/shared/ui/sortable-head.tsx",
+          "path": "src/shared/ui/kit/sortable-head.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/sortable-head.tsx"
+          "target": "src/shared/ui/kit/sortable-head.tsx"
         }
       ],
       "registryDependencies": [
@@ -909,9 +909,9 @@
       "description": "단계가 있는 양식의 단계(StepIndicator): 번호 동그라미 · 이름 · 잇는 선, 넘으면 선이 채워진다.",
       "files": [
         {
-          "path": "src/shared/ui/step-indicator.tsx",
+          "path": "src/shared/ui/kit/step-indicator.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/step-indicator.tsx"
+          "target": "src/shared/ui/kit/step-indicator.tsx"
         }
       ],
       "registryDependencies": [
@@ -941,24 +941,24 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/layout/page/Page.tsx",
+          "path": "src/shared/ui/kit/layout/page/Page.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/page/Page.tsx"
+          "target": "src/shared/ui/kit/layout/page/Page.tsx"
         },
         {
-          "path": "src/shared/ui/layout/page/PageViews.tsx",
+          "path": "src/shared/ui/kit/layout/page/PageViews.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/page/PageViews.tsx"
+          "target": "src/shared/ui/kit/layout/page/PageViews.tsx"
         },
         {
-          "path": "src/shared/ui/layout/page/chrome.tsx",
+          "path": "src/shared/ui/kit/layout/page/chrome.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/page/chrome.tsx"
+          "target": "src/shared/ui/kit/layout/page/chrome.tsx"
         },
         {
-          "path": "src/shared/ui/layout/page/index.ts",
+          "path": "src/shared/ui/kit/layout/page/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/page/index.ts"
+          "target": "src/shared/ui/kit/layout/page/index.ts"
         }
       ]
     },
@@ -969,14 +969,14 @@
       "description": "휴대폰 앱 바의 도구 자리(PhoneToolsProvider · usePhoneTool · ViewFilterSlot): 검색 · 필터 · 표시가 보기 탭 알약과 … 메뉴로 옮겨 간다. 도구는 레이아웃을 모른다.",
       "files": [
         {
-          "path": "src/shared/ui/layout/phone-tools/index.ts",
+          "path": "src/shared/ui/kit/layout/phone-tools/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/phone-tools/index.ts"
+          "target": "src/shared/ui/kit/layout/phone-tools/index.ts"
         },
         {
-          "path": "src/shared/ui/layout/phone-tools/phone-tools.tsx",
+          "path": "src/shared/ui/kit/layout/phone-tools/phone-tools.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/phone-tools/phone-tools.tsx"
+          "target": "src/shared/ui/kit/layout/phone-tools/phone-tools.tsx"
         }
       ],
       "registryDependencies": [
@@ -991,14 +991,14 @@
       "description": "PaneFrame: 구분선 없는 52px 머리(왼쪽 둥근 뒤로, 오른쪽 둥근 도구), 스크롤해 본문 제목이 가려지면 이름이 나타나고, 본문이 머리 아래로 들어갔을 때만 그늘이 보인다. 상세 · 작성 · 수정 페이지와 목록 오른쪽 칸이 함께 쓴다.",
       "files": [
         {
-          "path": "src/shared/ui/layout/pane-frame/PaneFrame.tsx",
+          "path": "src/shared/ui/kit/layout/pane-frame/PaneFrame.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/pane-frame/PaneFrame.tsx"
+          "target": "src/shared/ui/kit/layout/pane-frame/PaneFrame.tsx"
         },
         {
-          "path": "src/shared/ui/layout/pane-frame/index.ts",
+          "path": "src/shared/ui/kit/layout/pane-frame/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/pane-frame/index.ts"
+          "target": "src/shared/ui/kit/layout/pane-frame/index.ts"
         }
       ],
       "registryDependencies": [
@@ -1018,24 +1018,24 @@
       "description": "List-Detail 패턴의 틀: SplitView(SplitDetail · SplitColumn · SplitFocusButton · OpenPageButton), SplitList · SplitRow, 진입부 SplitResource, 목록 화면 SplitScreen, 줄 SplitLinkRow. 열린 칸은 주소가 정하고, ?focus=1로 목록을 접는다. 화면마다 빈 칸 문구(placeholder)와 폭 저장 키(widthKey)를 넘긴다.",
       "files": [
         {
-          "path": "src/shared/ui/layout/split-view/SplitRows.tsx",
+          "path": "src/shared/ui/kit/layout/split-view/SplitRows.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/split-view/SplitRows.tsx"
+          "target": "src/shared/ui/kit/layout/split-view/SplitRows.tsx"
         },
         {
-          "path": "src/shared/ui/layout/split-view/SplitScreen.tsx",
+          "path": "src/shared/ui/kit/layout/split-view/SplitScreen.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/split-view/SplitScreen.tsx"
+          "target": "src/shared/ui/kit/layout/split-view/SplitScreen.tsx"
         },
         {
-          "path": "src/shared/ui/layout/split-view/SplitView.tsx",
+          "path": "src/shared/ui/kit/layout/split-view/SplitView.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/split-view/SplitView.tsx"
+          "target": "src/shared/ui/kit/layout/split-view/SplitView.tsx"
         },
         {
-          "path": "src/shared/ui/layout/split-view/index.ts",
+          "path": "src/shared/ui/kit/layout/split-view/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/split-view/index.ts"
+          "target": "src/shared/ui/kit/layout/split-view/index.ts"
         }
       ],
       "registryDependencies": [
@@ -1072,29 +1072,29 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/settings/AdminSurface.tsx",
+          "path": "src/shared/ui/kit/settings/AdminSurface.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/settings/AdminSurface.tsx"
+          "target": "src/shared/ui/kit/settings/AdminSurface.tsx"
         },
         {
-          "path": "src/shared/ui/settings/SettingsPage.tsx",
+          "path": "src/shared/ui/kit/settings/SettingsPage.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/settings/SettingsPage.tsx"
+          "target": "src/shared/ui/kit/settings/SettingsPage.tsx"
         },
         {
-          "path": "src/shared/ui/settings/SettingsRow.tsx",
+          "path": "src/shared/ui/kit/settings/SettingsRow.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/settings/SettingsRow.tsx"
+          "target": "src/shared/ui/kit/settings/SettingsRow.tsx"
         },
         {
-          "path": "src/shared/ui/settings/SettingsSection.tsx",
+          "path": "src/shared/ui/kit/settings/SettingsSection.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/settings/SettingsSection.tsx"
+          "target": "src/shared/ui/kit/settings/SettingsSection.tsx"
         },
         {
-          "path": "src/shared/ui/settings/index.ts",
+          "path": "src/shared/ui/kit/settings/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/settings/index.ts"
+          "target": "src/shared/ui/kit/settings/index.ts"
         }
       ]
     },
@@ -1117,34 +1117,34 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/compose/index.ts",
+          "path": "src/shared/ui/kit/compose/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/compose/index.ts"
+          "target": "src/shared/ui/kit/compose/index.ts"
         },
         {
-          "path": "src/shared/ui/compose/ComposeSurface.tsx",
+          "path": "src/shared/ui/kit/compose/ComposeSurface.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/compose/ComposeSurface.tsx"
+          "target": "src/shared/ui/kit/compose/ComposeSurface.tsx"
         },
         {
-          "path": "src/shared/ui/compose/ComposeFields.tsx",
+          "path": "src/shared/ui/kit/compose/ComposeFields.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/compose/ComposeFields.tsx"
+          "target": "src/shared/ui/kit/compose/ComposeFields.tsx"
         },
         {
-          "path": "src/shared/ui/compose/FileDropzone.tsx",
+          "path": "src/shared/ui/kit/compose/FileDropzone.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/compose/FileDropzone.tsx"
+          "target": "src/shared/ui/kit/compose/FileDropzone.tsx"
         },
         {
-          "path": "src/shared/ui/compose/FileList.tsx",
+          "path": "src/shared/ui/kit/compose/FileList.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/compose/FileList.tsx"
+          "target": "src/shared/ui/kit/compose/FileList.tsx"
         },
         {
-          "path": "src/shared/ui/compose/files.ts",
+          "path": "src/shared/ui/kit/compose/files.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/compose/files.ts"
+          "target": "src/shared/ui/kit/compose/files.ts"
         }
       ],
       "dependencies": [
@@ -1171,24 +1171,24 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/filter/index.ts",
+          "path": "src/shared/ui/kit/filter/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/filter/index.ts"
+          "target": "src/shared/ui/kit/filter/index.ts"
         },
         {
-          "path": "src/shared/ui/filter/use-filters.ts",
+          "path": "src/shared/ui/kit/filter/use-filters.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/filter/use-filters.ts"
+          "target": "src/shared/ui/kit/filter/use-filters.ts"
         },
         {
-          "path": "src/shared/ui/filter/FilterMenu.tsx",
+          "path": "src/shared/ui/kit/filter/FilterMenu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/filter/FilterMenu.tsx"
+          "target": "src/shared/ui/kit/filter/FilterMenu.tsx"
         },
         {
-          "path": "src/shared/ui/filter/FilterBar.tsx",
+          "path": "src/shared/ui/kit/filter/FilterBar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/filter/FilterBar.tsx"
+          "target": "src/shared/ui/kit/filter/FilterBar.tsx"
         }
       ]
     },
@@ -1200,27 +1200,27 @@
       "registryDependencies": [
         "@webcraft/theme"
       ],
-      "docs": "풍경 그림 12장(webp)은 레지스트리 JSON에 담기지 않습니다(글자 파일만 옮겨짐). 프로젝트 루트에서 받아 src/shared/ui/page-state/landscapes/에 둡니다: for n in empty search error-404 error-500; do for i in 01 02 03; do curl -fsSLo src/shared/ui/page-state/landscapes/$n-$i.webp --create-dirs https://goraebap.xyz/r/assets/page-state/landscapes/$n-$i.webp; done; done",
+      "docs": "풍경 그림 12장(webp)은 레지스트리 JSON에 담기지 않습니다(글자 파일만 옮겨짐). 프로젝트 루트에서 받아 src/shared/ui/kit/page-state/landscapes/에 둡니다: for n in empty search error-404 error-500; do for i in 01 02 03; do curl -fsSLo src/shared/ui/kit/page-state/landscapes/$n-$i.webp --create-dirs https://goraebap.xyz/r/assets/page-state/landscapes/$n-$i.webp; done; done",
       "files": [
         {
-          "path": "src/shared/ui/page-state/index.ts",
+          "path": "src/shared/ui/kit/page-state/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/page-state/index.ts"
+          "target": "src/shared/ui/kit/page-state/index.ts"
         },
         {
-          "path": "src/shared/ui/page-state/PageState.tsx",
+          "path": "src/shared/ui/kit/page-state/PageState.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/page-state/PageState.tsx"
+          "target": "src/shared/ui/kit/page-state/PageState.tsx"
         },
         {
-          "path": "src/shared/ui/page-state/StateLandscape.tsx",
+          "path": "src/shared/ui/kit/page-state/StateLandscape.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/page-state/StateLandscape.tsx"
+          "target": "src/shared/ui/kit/page-state/StateLandscape.tsx"
         },
         {
-          "path": "src/shared/ui/page-state/InboxIllustration.tsx",
+          "path": "src/shared/ui/kit/page-state/InboxIllustration.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/page-state/InboxIllustration.tsx"
+          "target": "src/shared/ui/kit/page-state/InboxIllustration.tsx"
         }
       ],
       "dependencies": [
@@ -1244,29 +1244,29 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/reading/index.ts",
+          "path": "src/shared/ui/kit/reading/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/reading/index.ts"
+          "target": "src/shared/ui/kit/reading/index.ts"
         },
         {
-          "path": "src/shared/ui/reading/model/markdown.ts",
+          "path": "src/shared/ui/kit/reading/model/markdown.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/reading/model/markdown.ts"
+          "target": "src/shared/ui/kit/reading/model/markdown.ts"
         },
         {
-          "path": "src/shared/ui/reading/ui/MarkdownBody.tsx",
+          "path": "src/shared/ui/kit/reading/ui/MarkdownBody.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/reading/ui/MarkdownBody.tsx"
+          "target": "src/shared/ui/kit/reading/ui/MarkdownBody.tsx"
         },
         {
-          "path": "src/shared/ui/reading/ui/DetailLayout.tsx",
+          "path": "src/shared/ui/kit/reading/ui/DetailLayout.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/reading/ui/DetailLayout.tsx"
+          "target": "src/shared/ui/kit/reading/ui/DetailLayout.tsx"
         },
         {
-          "path": "src/shared/ui/reading/ui/ActivityFeed.tsx",
+          "path": "src/shared/ui/kit/reading/ui/ActivityFeed.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/reading/ui/ActivityFeed.tsx"
+          "target": "src/shared/ui/kit/reading/ui/ActivityFeed.tsx"
         }
       ],
       "dependencies": [
@@ -1288,9 +1288,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/alert-dialog.tsx",
+          "path": "src/shared/ui/kit/alert-dialog.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/alert-dialog.tsx"
+          "target": "src/shared/ui/kit/alert-dialog.tsx"
         }
       ]
     },
@@ -1308,9 +1308,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/alert.tsx",
+          "path": "src/shared/ui/kit/alert.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/alert.tsx"
+          "target": "src/shared/ui/kit/alert.tsx"
         }
       ]
     },
@@ -1328,9 +1328,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/avatar.tsx",
+          "path": "src/shared/ui/kit/avatar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/avatar.tsx"
+          "target": "src/shared/ui/kit/avatar.tsx"
         }
       ]
     },
@@ -1349,9 +1349,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/badge.tsx",
+          "path": "src/shared/ui/kit/badge.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/badge.tsx"
+          "target": "src/shared/ui/kit/badge.tsx"
         }
       ]
     },
@@ -1370,9 +1370,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/breadcrumb.tsx",
+          "path": "src/shared/ui/kit/breadcrumb.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/breadcrumb.tsx"
+          "target": "src/shared/ui/kit/breadcrumb.tsx"
         }
       ]
     },
@@ -1391,9 +1391,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/button.tsx",
+          "path": "src/shared/ui/kit/button.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/button.tsx"
+          "target": "src/shared/ui/kit/button.tsx"
         }
       ]
     },
@@ -1413,9 +1413,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/calendar.tsx",
+          "path": "src/shared/ui/kit/calendar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/calendar.tsx"
+          "target": "src/shared/ui/kit/calendar.tsx"
         }
       ]
     },
@@ -1432,9 +1432,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/card.tsx",
+          "path": "src/shared/ui/kit/card.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/card.tsx"
+          "target": "src/shared/ui/kit/card.tsx"
         }
       ]
     },
@@ -1453,9 +1453,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/checkbox.tsx",
+          "path": "src/shared/ui/kit/checkbox.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/checkbox.tsx"
+          "target": "src/shared/ui/kit/checkbox.tsx"
         }
       ]
     },
@@ -1476,9 +1476,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/command.tsx",
+          "path": "src/shared/ui/kit/command.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/command.tsx"
+          "target": "src/shared/ui/kit/command.tsx"
         }
       ]
     },
@@ -1498,9 +1498,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/dialog.tsx",
+          "path": "src/shared/ui/kit/dialog.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/dialog.tsx"
+          "target": "src/shared/ui/kit/dialog.tsx"
         }
       ]
     },
@@ -1519,9 +1519,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/drawer.tsx",
+          "path": "src/shared/ui/kit/drawer.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/drawer.tsx"
+          "target": "src/shared/ui/kit/drawer.tsx"
         }
       ]
     },
@@ -1541,9 +1541,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/dropdown-menu.tsx",
+          "path": "src/shared/ui/kit/dropdown-menu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/dropdown-menu.tsx"
+          "target": "src/shared/ui/kit/dropdown-menu.tsx"
         }
       ]
     },
@@ -1561,9 +1561,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/empty.tsx",
+          "path": "src/shared/ui/kit/empty.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/empty.tsx"
+          "target": "src/shared/ui/kit/empty.tsx"
         }
       ]
     },
@@ -1583,9 +1583,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/field.tsx",
+          "path": "src/shared/ui/kit/field.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/field.tsx"
+          "target": "src/shared/ui/kit/field.tsx"
         }
       ]
     },
@@ -1606,9 +1606,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/input-group.tsx",
+          "path": "src/shared/ui/kit/input-group.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/input-group.tsx"
+          "target": "src/shared/ui/kit/input-group.tsx"
         }
       ]
     },
@@ -1626,9 +1626,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/input.tsx",
+          "path": "src/shared/ui/kit/input.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/input.tsx"
+          "target": "src/shared/ui/kit/input.tsx"
         }
       ]
     },
@@ -1648,9 +1648,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/item.tsx",
+          "path": "src/shared/ui/kit/item.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/item.tsx"
+          "target": "src/shared/ui/kit/item.tsx"
         }
       ]
     },
@@ -1667,9 +1667,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/label.tsx",
+          "path": "src/shared/ui/kit/label.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/label.tsx"
+          "target": "src/shared/ui/kit/label.tsx"
         }
       ]
     },
@@ -1688,9 +1688,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/popover.tsx",
+          "path": "src/shared/ui/kit/popover.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/popover.tsx"
+          "target": "src/shared/ui/kit/popover.tsx"
         }
       ]
     },
@@ -1708,9 +1708,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/progress.tsx",
+          "path": "src/shared/ui/kit/progress.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/progress.tsx"
+          "target": "src/shared/ui/kit/progress.tsx"
         }
       ]
     },
@@ -1728,9 +1728,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/scroll-area.tsx",
+          "path": "src/shared/ui/kit/scroll-area.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/scroll-area.tsx"
+          "target": "src/shared/ui/kit/scroll-area.tsx"
         }
       ]
     },
@@ -1750,9 +1750,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/select.tsx",
+          "path": "src/shared/ui/kit/select.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/select.tsx"
+          "target": "src/shared/ui/kit/select.tsx"
         }
       ]
     },
@@ -1770,9 +1770,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/separator.tsx",
+          "path": "src/shared/ui/kit/separator.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/separator.tsx"
+          "target": "src/shared/ui/kit/separator.tsx"
         }
       ]
     },
@@ -1792,9 +1792,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/sheet.tsx",
+          "path": "src/shared/ui/kit/sheet.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/sheet.tsx"
+          "target": "src/shared/ui/kit/sheet.tsx"
         }
       ]
     },
@@ -1821,9 +1821,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/sidebar.tsx",
+          "path": "src/shared/ui/kit/sidebar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/sidebar.tsx"
+          "target": "src/shared/ui/kit/sidebar.tsx"
         }
       ]
     },
@@ -1840,9 +1840,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/skeleton.tsx",
+          "path": "src/shared/ui/kit/skeleton.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/skeleton.tsx"
+          "target": "src/shared/ui/kit/skeleton.tsx"
         }
       ]
     },
@@ -1859,9 +1859,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/spinner.tsx",
+          "path": "src/shared/ui/kit/spinner.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/spinner.tsx"
+          "target": "src/shared/ui/kit/spinner.tsx"
         }
       ]
     },
@@ -1879,9 +1879,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/switch.tsx",
+          "path": "src/shared/ui/kit/switch.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/switch.tsx"
+          "target": "src/shared/ui/kit/switch.tsx"
         }
       ]
     },
@@ -1898,9 +1898,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/table.tsx",
+          "path": "src/shared/ui/kit/table.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/table.tsx"
+          "target": "src/shared/ui/kit/table.tsx"
         }
       ]
     },
@@ -1919,9 +1919,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/tabs.tsx",
+          "path": "src/shared/ui/kit/tabs.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/tabs.tsx"
+          "target": "src/shared/ui/kit/tabs.tsx"
         }
       ]
     },
@@ -1938,9 +1938,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/textarea.tsx",
+          "path": "src/shared/ui/kit/textarea.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/textarea.tsx"
+          "target": "src/shared/ui/kit/textarea.tsx"
         }
       ]
     },
@@ -1960,9 +1960,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/toast.tsx",
+          "path": "src/shared/ui/kit/toast.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/toast.tsx"
+          "target": "src/shared/ui/kit/toast.tsx"
         }
       ]
     },
@@ -1982,9 +1982,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/toggle-group.tsx",
+          "path": "src/shared/ui/kit/toggle-group.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/toggle-group.tsx"
+          "target": "src/shared/ui/kit/toggle-group.tsx"
         }
       ]
     },
@@ -2003,9 +2003,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/toggle.tsx",
+          "path": "src/shared/ui/kit/toggle.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/toggle.tsx"
+          "target": "src/shared/ui/kit/toggle.tsx"
         }
       ]
     },
@@ -2023,9 +2023,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/tooltip.tsx",
+          "path": "src/shared/ui/kit/tooltip.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/tooltip.tsx"
+          "target": "src/shared/ui/kit/tooltip.tsx"
         }
       ]
     },
@@ -2055,49 +2055,49 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/layout/app-shell/AgentBar.tsx",
+          "path": "src/shared/ui/kit/layout/app-shell/AgentBar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/AgentBar.tsx"
+          "target": "src/shared/ui/kit/layout/app-shell/AgentBar.tsx"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/AppShell.tsx",
+          "path": "src/shared/ui/kit/layout/app-shell/AppShell.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/AppShell.tsx"
+          "target": "src/shared/ui/kit/layout/app-shell/AppShell.tsx"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/MeMenu.tsx",
+          "path": "src/shared/ui/kit/layout/app-shell/MeMenu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/MeMenu.tsx"
+          "target": "src/shared/ui/kit/layout/app-shell/MeMenu.tsx"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/MobileTabBar.tsx",
+          "path": "src/shared/ui/kit/layout/app-shell/MobileTabBar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/MobileTabBar.tsx"
+          "target": "src/shared/ui/kit/layout/app-shell/MobileTabBar.tsx"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/PhoneBar.tsx",
+          "path": "src/shared/ui/kit/layout/app-shell/PhoneBar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/PhoneBar.tsx"
+          "target": "src/shared/ui/kit/layout/app-shell/PhoneBar.tsx"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/ShellSidebar.tsx",
+          "path": "src/shared/ui/kit/layout/app-shell/ShellSidebar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/ShellSidebar.tsx"
+          "target": "src/shared/ui/kit/layout/app-shell/ShellSidebar.tsx"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/SidebarResizeHandle.tsx",
+          "path": "src/shared/ui/kit/layout/app-shell/SidebarResizeHandle.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/SidebarResizeHandle.tsx"
+          "target": "src/shared/ui/kit/layout/app-shell/SidebarResizeHandle.tsx"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/index.ts",
+          "path": "src/shared/ui/kit/layout/app-shell/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/index.ts"
+          "target": "src/shared/ui/kit/layout/app-shell/index.ts"
         },
         {
-          "path": "src/shared/ui/layout/app-shell/nav.ts",
+          "path": "src/shared/ui/kit/layout/app-shell/nav.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/layout/app-shell/nav.ts"
+          "target": "src/shared/ui/kit/layout/app-shell/nav.ts"
         }
       ]
     },
@@ -2115,14 +2115,14 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/side-panel/WithPanel.tsx",
+          "path": "src/shared/ui/kit/side-panel/WithPanel.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/side-panel/WithPanel.tsx"
+          "target": "src/shared/ui/kit/side-panel/WithPanel.tsx"
         },
         {
-          "path": "src/shared/ui/side-panel/index.ts",
+          "path": "src/shared/ui/kit/side-panel/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/side-panel/index.ts"
+          "target": "src/shared/ui/kit/side-panel/index.ts"
         }
       ],
       "dependencies": [
@@ -2140,24 +2140,24 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/reorder/Reorder.tsx",
+          "path": "src/shared/ui/kit/reorder/Reorder.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/reorder/Reorder.tsx"
+          "target": "src/shared/ui/kit/reorder/Reorder.tsx"
         },
         {
-          "path": "src/shared/ui/reorder/index.ts",
+          "path": "src/shared/ui/kit/reorder/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/reorder/index.ts"
+          "target": "src/shared/ui/kit/reorder/index.ts"
         },
         {
-          "path": "src/shared/ui/reorder/order.ts",
+          "path": "src/shared/ui/kit/reorder/order.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/reorder/order.ts"
+          "target": "src/shared/ui/kit/reorder/order.ts"
         },
         {
-          "path": "src/shared/ui/reorder/use-row-reorder.ts",
+          "path": "src/shared/ui/kit/reorder/use-row-reorder.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/reorder/use-row-reorder.ts"
+          "target": "src/shared/ui/kit/reorder/use-row-reorder.ts"
         }
       ],
       "dependencies": [
@@ -2223,14 +2223,14 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/body-edit/BodyEditPage.tsx",
+          "path": "src/shared/ui/kit/body-edit/BodyEditPage.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/body-edit/BodyEditPage.tsx"
+          "target": "src/shared/ui/kit/body-edit/BodyEditPage.tsx"
         },
         {
-          "path": "src/shared/ui/body-edit/index.ts",
+          "path": "src/shared/ui/kit/body-edit/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/body-edit/index.ts"
+          "target": "src/shared/ui/kit/body-edit/index.ts"
         }
       ]
     },
@@ -2244,9 +2244,9 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/router-anchor.tsx",
+          "path": "src/shared/ui/kit/router-anchor.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/router-anchor.tsx"
+          "target": "src/shared/ui/kit/router-anchor.tsx"
         }
       ]
     },
@@ -2255,30 +2255,30 @@
       "type": "registry:ui",
       "title": "첫 방문 덮개",
       "description": "BootCover와 index.html에 같은 덮개를 미리 넣는 Vite 플러그인(boot-cover/plugin의 bootCover). 앱 스크립트 전에도 토큰과 같은 색(라이트 · 다크)으로 그림과 '불러오는 중입니다'를 보이고, 첫 경로가 준비되면 걷는다.",
-      "docs": "vite.config.ts에 bootCover()를 더합니다: import { bootCover } from './src/shared/ui/boot-cover/plugin'. 앱 루트에 <BootCover isReady={…} />를 두고 첫 경로가 풀리면 isReady를 켭니다. 토큰 색을 바꾸면 plugin.ts의 BOOT_COLORS도 맞춥니다.",
+      "docs": "vite.config.ts에 bootCover()를 더합니다: import { bootCover } from './src/shared/ui/kit/boot-cover/plugin'. 앱 루트에 <BootCover isReady={…} />를 두고 첫 경로가 풀리면 isReady를 켭니다. 토큰 색을 바꾸면 plugin.ts의 BOOT_COLORS도 맞춥니다.",
       "registryDependencies": [
         "@webcraft/theme"
       ],
       "files": [
         {
-          "path": "src/shared/ui/boot-cover/BootCover.tsx",
+          "path": "src/shared/ui/kit/boot-cover/BootCover.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/boot-cover/BootCover.tsx"
+          "target": "src/shared/ui/kit/boot-cover/BootCover.tsx"
         },
         {
-          "path": "src/shared/ui/boot-cover/boot-mark.ts",
+          "path": "src/shared/ui/kit/boot-cover/boot-mark.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/boot-cover/boot-mark.ts"
+          "target": "src/shared/ui/kit/boot-cover/boot-mark.ts"
         },
         {
-          "path": "src/shared/ui/boot-cover/index.ts",
+          "path": "src/shared/ui/kit/boot-cover/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/boot-cover/index.ts"
+          "target": "src/shared/ui/kit/boot-cover/index.ts"
         },
         {
-          "path": "src/shared/ui/boot-cover/plugin.ts",
+          "path": "src/shared/ui/kit/boot-cover/plugin.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/boot-cover/plugin.ts"
+          "target": "src/shared/ui/kit/boot-cover/plugin.ts"
         }
       ],
       "dependencies": [
@@ -2324,134 +2324,134 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/editor/BlockMenu.tsx",
+          "path": "src/shared/ui/kit/editor/BlockMenu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/BlockMenu.tsx"
+          "target": "src/shared/ui/kit/editor/BlockMenu.tsx"
         },
         {
-          "path": "src/shared/ui/editor/EditorToolbar.tsx",
+          "path": "src/shared/ui/kit/editor/EditorToolbar.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/EditorToolbar.tsx"
+          "target": "src/shared/ui/kit/editor/EditorToolbar.tsx"
         },
         {
-          "path": "src/shared/ui/editor/LinkCard.tsx",
+          "path": "src/shared/ui/kit/editor/LinkCard.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/LinkCard.tsx"
+          "target": "src/shared/ui/kit/editor/LinkCard.tsx"
         },
         {
-          "path": "src/shared/ui/editor/LinkPanel.tsx",
+          "path": "src/shared/ui/kit/editor/LinkPanel.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/LinkPanel.tsx"
+          "target": "src/shared/ui/kit/editor/LinkPanel.tsx"
         },
         {
-          "path": "src/shared/ui/editor/MediaView.tsx",
+          "path": "src/shared/ui/kit/editor/MediaView.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/MediaView.tsx"
+          "target": "src/shared/ui/kit/editor/MediaView.tsx"
         },
         {
-          "path": "src/shared/ui/editor/RichBody.tsx",
+          "path": "src/shared/ui/kit/editor/RichBody.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/RichBody.tsx"
+          "target": "src/shared/ui/kit/editor/RichBody.tsx"
         },
         {
-          "path": "src/shared/ui/editor/RichDraft.tsx",
+          "path": "src/shared/ui/kit/editor/RichDraft.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/RichDraft.tsx"
+          "target": "src/shared/ui/kit/editor/RichDraft.tsx"
         },
         {
-          "path": "src/shared/ui/editor/RichEditor.tsx",
+          "path": "src/shared/ui/kit/editor/RichEditor.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/RichEditor.tsx"
+          "target": "src/shared/ui/kit/editor/RichEditor.tsx"
         },
         {
-          "path": "src/shared/ui/editor/SelectionMenu.tsx",
+          "path": "src/shared/ui/kit/editor/SelectionMenu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/SelectionMenu.tsx"
+          "target": "src/shared/ui/kit/editor/SelectionMenu.tsx"
         },
         {
-          "path": "src/shared/ui/editor/SourceView.tsx",
+          "path": "src/shared/ui/kit/editor/SourceView.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/SourceView.tsx"
+          "target": "src/shared/ui/kit/editor/SourceView.tsx"
         },
         {
-          "path": "src/shared/ui/editor/TableControls.tsx",
+          "path": "src/shared/ui/kit/editor/TableControls.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/TableControls.tsx"
+          "target": "src/shared/ui/kit/editor/TableControls.tsx"
         },
         {
-          "path": "src/shared/ui/editor/ZoomViewer.tsx",
+          "path": "src/shared/ui/kit/editor/ZoomViewer.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/ZoomViewer.tsx"
+          "target": "src/shared/ui/kit/editor/ZoomViewer.tsx"
         },
         {
-          "path": "src/shared/ui/editor/block-tree.ts",
+          "path": "src/shared/ui/kit/editor/block-tree.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/block-tree.ts"
+          "target": "src/shared/ui/kit/editor/block-tree.ts"
         },
         {
-          "path": "src/shared/ui/editor/colors.ts",
+          "path": "src/shared/ui/kit/editor/colors.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/colors.ts"
+          "target": "src/shared/ui/kit/editor/colors.ts"
         },
         {
-          "path": "src/shared/ui/editor/diagram.ts",
+          "path": "src/shared/ui/kit/editor/diagram.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/diagram.ts"
+          "target": "src/shared/ui/kit/editor/diagram.ts"
         },
         {
-          "path": "src/shared/ui/editor/file-kinds.ts",
+          "path": "src/shared/ui/kit/editor/file-kinds.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/file-kinds.ts"
+          "target": "src/shared/ui/kit/editor/file-kinds.ts"
         },
         {
-          "path": "src/shared/ui/editor/format.tsx",
+          "path": "src/shared/ui/kit/editor/format.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/format.tsx"
+          "target": "src/shared/ui/kit/editor/format.tsx"
         },
         {
-          "path": "src/shared/ui/editor/index.ts",
+          "path": "src/shared/ui/kit/editor/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/index.ts"
+          "target": "src/shared/ui/kit/editor/index.ts"
         },
         {
-          "path": "src/shared/ui/editor/menu.tsx",
+          "path": "src/shared/ui/kit/editor/menu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/menu.tsx"
+          "target": "src/shared/ui/kit/editor/menu.tsx"
         },
         {
-          "path": "src/shared/ui/editor/prose.ts",
+          "path": "src/shared/ui/kit/editor/prose.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/prose.ts"
+          "target": "src/shared/ui/kit/editor/prose.ts"
         },
         {
-          "path": "src/shared/ui/editor/schema.ts",
+          "path": "src/shared/ui/kit/editor/schema.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/schema.ts"
+          "target": "src/shared/ui/kit/editor/schema.ts"
         },
         {
-          "path": "src/shared/ui/editor/tool.tsx",
+          "path": "src/shared/ui/kit/editor/tool.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/tool.tsx"
+          "target": "src/shared/ui/kit/editor/tool.tsx"
         },
         {
-          "path": "src/shared/ui/editor/types.ts",
+          "path": "src/shared/ui/kit/editor/types.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/types.ts"
+          "target": "src/shared/ui/kit/editor/types.ts"
         },
         {
-          "path": "src/shared/ui/editor/upload-zone.tsx",
+          "path": "src/shared/ui/kit/editor/upload-zone.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/upload-zone.tsx"
+          "target": "src/shared/ui/kit/editor/upload-zone.tsx"
         },
         {
-          "path": "src/shared/ui/editor/uploads.tsx",
+          "path": "src/shared/ui/kit/editor/uploads.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/uploads.tsx"
+          "target": "src/shared/ui/kit/editor/uploads.tsx"
         },
         {
-          "path": "src/shared/ui/editor/zoom.tsx",
+          "path": "src/shared/ui/kit/editor/zoom.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/editor/zoom.tsx"
+          "target": "src/shared/ui/kit/editor/zoom.tsx"
         }
       ]
     },
@@ -2486,74 +2486,74 @@
       ],
       "files": [
         {
-          "path": "src/shared/ui/document/DocumentEditor.tsx",
+          "path": "src/shared/ui/kit/document/DocumentEditor.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/DocumentEditor.tsx"
+          "target": "src/shared/ui/kit/document/DocumentEditor.tsx"
         },
         {
-          "path": "src/shared/ui/document/DocumentSettings.tsx",
+          "path": "src/shared/ui/kit/document/DocumentSettings.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/DocumentSettings.tsx"
+          "target": "src/shared/ui/kit/document/DocumentSettings.tsx"
         },
         {
-          "path": "src/shared/ui/document/DocumentView.tsx",
+          "path": "src/shared/ui/kit/document/DocumentView.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/DocumentView.tsx"
+          "target": "src/shared/ui/kit/document/DocumentView.tsx"
         },
         {
-          "path": "src/shared/ui/document/ExportMenu.tsx",
+          "path": "src/shared/ui/kit/document/ExportMenu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/ExportMenu.tsx"
+          "target": "src/shared/ui/kit/document/ExportMenu.tsx"
         },
         {
-          "path": "src/shared/ui/document/PageCanvas.tsx",
+          "path": "src/shared/ui/kit/document/PageCanvas.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/PageCanvas.tsx"
+          "target": "src/shared/ui/kit/document/PageCanvas.tsx"
         },
         {
-          "path": "src/shared/ui/document/PageLookMenu.tsx",
+          "path": "src/shared/ui/kit/document/PageLookMenu.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/PageLookMenu.tsx"
+          "target": "src/shared/ui/kit/document/PageLookMenu.tsx"
         },
         {
-          "path": "src/shared/ui/document/PagesPill.tsx",
+          "path": "src/shared/ui/kit/document/PagesPill.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/PagesPill.tsx"
+          "target": "src/shared/ui/kit/document/PagesPill.tsx"
         },
         {
-          "path": "src/shared/ui/document/ZoomControl.tsx",
+          "path": "src/shared/ui/kit/document/ZoomControl.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/ZoomControl.tsx"
+          "target": "src/shared/ui/kit/document/ZoomControl.tsx"
         },
         {
-          "path": "src/shared/ui/document/hooks.ts",
+          "path": "src/shared/ui/kit/document/hooks.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/hooks.ts"
+          "target": "src/shared/ui/kit/document/hooks.ts"
         },
         {
-          "path": "src/shared/ui/document/index.ts",
+          "path": "src/shared/ui/kit/document/index.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/index.ts"
+          "target": "src/shared/ui/kit/document/index.ts"
         },
         {
-          "path": "src/shared/ui/document/model.ts",
+          "path": "src/shared/ui/kit/document/model.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/model.ts"
+          "target": "src/shared/ui/kit/document/model.ts"
         },
         {
-          "path": "src/shared/ui/document/pagination.ts",
+          "path": "src/shared/ui/kit/document/pagination.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/pagination.ts"
+          "target": "src/shared/ui/kit/document/pagination.ts"
         },
         {
-          "path": "src/shared/ui/document/print.ts",
+          "path": "src/shared/ui/kit/document/print.ts",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/print.ts"
+          "target": "src/shared/ui/kit/document/print.ts"
         },
         {
-          "path": "src/shared/ui/document/usePagedFrame.tsx",
+          "path": "src/shared/ui/kit/document/usePagedFrame.tsx",
           "type": "registry:ui",
-          "target": "src/shared/ui/document/usePagedFrame.tsx"
+          "target": "src/shared/ui/kit/document/usePagedFrame.tsx"
         }
       ]
     }

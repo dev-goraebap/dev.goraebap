@@ -1,9 +1,9 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { ActionMenu } from "@/shared/ui/action-menu";
-import { AdaptivePopover } from "@/shared/ui/adaptive-popover";
-import { Button } from "@/shared/ui/button";
-import { ClockIcon, FileTextIcon, PencilIcon, SortIcon, Trash2Icon } from "@/shared/ui/icon";
-import { OptionList } from "@/shared/ui/option-list";
+import { ActionMenu } from "@/shared/ui/kit/action-menu";
+import { AdaptivePopover } from "@/shared/ui/kit/adaptive-popover";
+import { Button } from "@/shared/ui/kit/button";
+import { ClockIcon, FileTextIcon, PencilIcon, SortIcon, Trash2Icon } from "@/shared/ui/kit/icon";
+import { OptionList } from "@/shared/ui/kit/option-list";
 import { useState } from "react";
 import { Comparison } from "../catalog/Comparison";
 

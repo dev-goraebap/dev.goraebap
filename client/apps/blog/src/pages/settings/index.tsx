@@ -2,8 +2,8 @@ import { Link, useRouterState } from '@tanstack/react-router';
 import { usePreferences } from '@/entities/preferences';
 import { paths } from '@/shared/config/paths';
 import { pluginVersion } from '@/shared/config/site';
-import { SegmentedControl } from '@/shared/ui/segmented-control';
-import { SettingsBody, SettingsRow, SettingsSection } from '@/shared/ui/settings';
+import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
+import { SettingsBody, SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
 import { AgentInstructions } from './AgentInstructions';
 
 const modes = [{ value: 'light' as const, label: '라이트' }, { value: 'dark' as const, label: '다크' }];

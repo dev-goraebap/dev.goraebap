@@ -1,6 +1,6 @@
-import type { FilterDef } from '@/shared/ui/filter';
-import { FileTextIcon, UserIcon } from '@/shared/ui/icon';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
+import type { FilterDef } from '@/shared/ui/kit/filter';
+import { FileTextIcon, UserIcon } from '@/shared/ui/kit/icon';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
 import { authors, collections, kinds, type Resource } from '../../entities/resource';
 
 /** 목록 주소의 검증. 표시 외의 조건(검색 · 필터 · 컬렉션)은 여기서, 필터 · 표시 값은 키트의 useAddressFilters · useAddressChoices가 읽는다. */

@@ -1,9 +1,9 @@
-import { Button } from '@/shared/ui/button';
-import { MessageCircleIcon } from '@/shared/ui/icon';
-import { Page } from '@/shared/ui/layout/page';
-import { PageState } from '@/shared/ui/page-state';
-import { RowLink } from '@/shared/ui/row-link';
-import { Spinner } from '@/shared/ui/spinner';
+import { Button } from '@/shared/ui/kit/button';
+import { MessageCircleIcon } from '@/shared/ui/kit/icon';
+import { Page } from '@/shared/ui/kit/layout/page';
+import { PageState } from '@/shared/ui/kit/page-state';
+import { RowLink } from '@/shared/ui/kit/row-link';
+import { Spinner } from '@/shared/ui/kit/spinner';
 import { useQuery } from '@tanstack/react-query';
 import { threadQueries, useThreadApi } from '../entities/thread';
 

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { cn } from 'cn';
-import { CheckIcon, XIcon } from '@/shared/ui/icon';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
+import { CheckIcon, XIcon } from '@/shared/ui/kit/icon';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
 import { resultLabel, resultOf, stepStateOf, timeText, type Approval, type Result } from './model';
 
 const dots: Record<Result, string> = { progress: 'bg-mark-progress', approved: 'bg-mark-done', rejected: 'bg-destructive' };

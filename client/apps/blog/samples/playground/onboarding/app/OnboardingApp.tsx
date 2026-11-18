@@ -2,12 +2,12 @@ import { createMemoryHistory, createRootRoute, createRoute, createRouter, Router
 import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import logo from '@/shared/brand/logo.svg?raw';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/button';
-import { Field, FieldError, FieldLabel } from '@/shared/ui/field';
-import { CheckIcon } from '@/shared/ui/icon';
-import { Input } from '@/shared/ui/input';
-import { PersonAvatar } from '@/shared/ui/person-avatar';
-import { Switch } from '@/shared/ui/switch';
+import { Button } from '@/shared/ui/kit/button';
+import { Field, FieldError, FieldLabel } from '@/shared/ui/kit/field';
+import { CheckIcon } from '@/shared/ui/kit/icon';
+import { Input } from '@/shared/ui/kit/input';
+import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
+import { Switch } from '@/shared/ui/kit/switch';
 import { celebrate } from './celebrate';
 import { DRAWN_AVATARS, drawnAvatarSource } from './drawn-avatars';
 

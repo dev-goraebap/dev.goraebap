@@ -1,7 +1,7 @@
 import { cn } from 'cn';
-import { AdaptivePopover } from '@/shared/ui/adaptive-popover';
+import { AdaptivePopover } from '@/shared/ui/kit/adaptive-popover';
 import { useOpenPanel } from '@/shared/lib/panel';
-import { MenuItem } from '@/shared/ui/menu-item';
+import { MenuItem } from '@/shared/ui/kit/menu-item';
 import { useState, type CSSProperties } from 'react';
 import { dayText, eventsOn, eventTone, whenText, type CalendarEvent, type DateKey } from '../../entities/event';
 

@@ -1,9 +1,9 @@
 import type { Meta, SampleOf } from "../catalog/types";
-import { Badge } from "@/shared/ui/badge";
-import { Button } from "@/shared/ui/button";
-import { PlusIcon } from "@/shared/ui/icon";
-import { Input } from "@/shared/ui/input";
-import { PersonAvatar as Avatar } from "@/shared/ui/person-avatar";
+import { Badge } from "@/shared/ui/kit/badge";
+import { Button } from "@/shared/ui/kit/button";
+import { PlusIcon } from "@/shared/ui/kit/icon";
+import { Input } from "@/shared/ui/kit/input";
+import { PersonAvatar as Avatar } from "@/shared/ui/kit/person-avatar";
 import { Comparison } from "../catalog/Comparison";
 
 const meta = { title: "Primitives (기본 부품)/사용 기준", id: "primitives-overview", layout: "centered" } satisfies Meta;

@@ -1,0 +1,235 @@
+import { Link } from "@tanstack/react-router"
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react"
+import { useIsMobile } from "@/shared/lib/use-mobile"
+import { cn } from "cn"
+import { ActionMenu } from "@/shared/ui/kit/action-menu"
+import { Button, ButtonStyleProvider, type ButtonStyle } from "@/shared/ui/kit/button"
+import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, PlusIcon, type Icon } from "@/shared/ui/kit/icon"
+import { PageTitleProvider, useFullScreen, usePageChrome } from "./chrome"
+import { InAppBarProvider, PhoneToolsProvider, usePhoneTools } from "@/shared/ui/kit/layout/phone-tools"
+
+/** 경로의 한 단계. 마지막 단계가 이 페이지다. */
+export type Crumb = { label: string; href?: string; icon?: Icon }
+export type CreateAction = { label: string; onClick: () => void }
+
+/** 경로에서 돌아갈 위 단계: 마지막(이 페이지)을 뺀 것 중 링크가 있는 가장 가까운 단계. */
+export const parentCrumb = (crumbs: Crumb[]) => crumbs.slice(0, -1).reverse().find(crumb => crumb.href)
+
+type PageProps = {
+  crumbs: Crumb[]
+  /** 머리 줄 오른쪽: 페이지 메뉴(…) 같은 이 페이지 자체의 동작. */
+  actions?: ReactNode
+  /** 만들기. 데스크톱은 머리 줄 끝 버튼, 휴대폰은 앱 바 알약의 +. */
+  create?: CreateAction
+  /** 툴바 왼쪽: 뷰 · 탭(PageViews). */
+  views?: ReactNode
+  /** 툴바 오른쪽: 필터 · 표시 · 검색 도구. */
+  tools?: ReactNode
+  /** 툴바 아래, 본문 위: 걸린 필터 줄 같은 것. */
+  below?: ReactNode
+  /** 상세 · 양식 페이지: 휴대폰에서 전체 화면(하단 막대 없이, 앱 바는 ← · 제목 · 페이지 메뉴만). */
+  isFullScreen?: boolean
+  /** 휴대폰 앱 바 ←를 위 단계 링크 대신 이 함수로 둔다(고친 것을 버릴지 먼저 묻는 수정 화면). */
+  onBack?: () => void
+  /**
+   * 바닥에 고정한 동작 줄(상세의 반려 · 승인, 양식 · 설정의 저장). 본문 스크롤 밖 맨 아래에 붙어 늘 보인다. 동작만 둔다.
+   * 데스크톱은 오른쪽 끝에 모으고, 휴대폰은 44px 단추(짧은 이름도 88px 이상)에 마지막 단추가 남은 폭을 채운다.
+   */
+  footer?: ReactNode
+  /** 동작 줄의 이름("변경 사항 저장"). 주면 이름 붙은 구역(region)이 된다. */
+  footerLabel?: string
+  children: ReactNode
+}
+
+/**
+ * 목록 같은 상위 페이지의 틀. 데스크톱: 52px 머리 줄(경로 · 동작 · 만들기) + 44px 툴바(뷰 · 도구).
+ * 휴대폰: 앱 바(큰 제목 또는 둥근 뒤로, 만들기 · 메뉴 알약) + 보기 탭 줄. 본문은 남은 높이를 채우고 스스로 스크롤한다.
+ */
+/**
+ * 보기 탭 줄. 넘치면 가로로 밀리고, 왼쪽 여백(-ml-4 pl-4)까지 차지해 칩이 화면 끝까지 흘러간다. 더 밀 내용이 있는 쪽 끝은
+ * 툭 끊기지 않고 서서히 사라진다(tailwind.css의 fade-strip).
+ */
+function ViewStrip({ children }: { children: ReactNode }) {
+  const ref = useRef<HTMLDivElement>(null)
+  // 더 밀 내용이 있는 쪽 끝만 흐리게(fade-strip). 렌더마다 재지 않고 크기 · 스크롤 · 탭이 늘고 줄 때만 잰다.
+  // (휴대폰 필터 자리는 보기 탭 부품이 고른 탭 뒤에 그린다: phone-tools의 ViewFilterSlot.)
+  useEffect(() => {
+    const strip = ref.current
+    if (!strip) return
+    const mark = () => {
+      const end = strip.scrollWidth - strip.clientWidth
+      strip.toggleAttribute("data-start", strip.scrollLeft <= 1)
+      strip.toggleAttribute("data-end", strip.scrollLeft >= end - 1)
+    }
+    mark()
+    const change = new MutationObserver(mark)
+    change.observe(strip, { childList: true, subtree: true, characterData: true })
+    const resize = new ResizeObserver(mark)
+    resize.observe(strip)
+    strip.addEventListener("scroll", mark, { passive: true })
+    return () => {
+      change.disconnect()
+      resize.disconnect()
+      strip.removeEventListener("scroll", mark)
+    }
+  }, [])
+  return (
+    <div ref={ref} data-start data-end
+      className={cn("fade-strip -ml-4 flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto py-1 pl-4 [scrollbar-width:none]",
+        // 휴대폰 보기 탭(Linear 모바일처럼): 글자만, 고른 탭만 알약. 다른 탭은 면 · 테두리 없이 흐린 글자다.
+        "max-md:gap-1 max-md:[&_[data-variant^=view]]:h-10 max-md:[&_[data-variant^=view]]:px-4 max-md:[&_[data-variant^=view]]:text-base",
+        "max-md:[&_[data-variant^=view]:not([aria-label])_svg]:hidden max-md:[&_[data-variant=view]]:border-transparent max-md:[&_[data-variant=view]]:bg-transparent",
+        // 필터 자리가 붙은 고른 탭은 오른쪽 둥근 끝을 그 자리에 넘긴다.
+        "max-md:[&_[data-variant=view-active]:has(+[data-slot=view-filter]:not(:empty))]:rounded-r-none max-md:[&_[data-variant=view-active]:has(+[data-slot=view-filter]:not(:empty))]:pr-3")}>
+      {children}
+    </div>
+  )
+}
+
+/** 휴대폰 알약(앱 바의 만들기 · 메뉴, 도구 줄) 안의 단추: 테두리 · 면 없는 36px 원, 가리키면 조작 면. */
+const PILL_BUTTONS: ButtonStyle = { variant: variant => (variant === "tool" ? "ghost" : variant), size: "icon-lg", className: "size-9 max-md:size-9" }
+
+export function Page({ crumbs, actions, create, views, tools, below, isFullScreen = false, onBack, footer, footerLabel, children }: PageProps) {
+  const isMobile = useIsMobile()
+  useFullScreen(isMobile && isFullScreen)
+  // 보기 탭이 없는 데스크톱 페이지는 도구(검색 · 필터 · 정렬)를 머리 줄의 동작 앞에 두고 도구 줄을 따로 두지 않는다.
+  // 보기 탭이 있으면 탭과 도구가 한 줄에 선다. 휴대폰은 도구 줄을 그대로 둔다.
+  const toolsInHeader = !isMobile && !views && Boolean(tools)
+  const hasToolbar = Boolean(views || (tools && !toolsInHeader))
+  // 본문이 h1을 그리겠다고 알린 수. 하나라도 있으면 머리 줄은 h1을 두지 않는다(chrome.tsx의 useOwnPageTitle).
+  const [titleClaims, setTitleClaims] = useState(0)
+  const claim = useCallback(() => {
+    setTitleClaims(count => count + 1)
+    return () => setTitleClaims(count => count - 1)
+  }, [])
+  const title = useMemo(() => ({ claim }), [claim])
+  const hasOwnTitle = titleClaims > 0
+  const page = (
+    <div data-slot="page" className="flex min-h-0 flex-1 flex-col">
+      {isMobile
+        ? <PageAppBar crumbs={crumbs} actions={actions} create={create} isFullScreen={isFullScreen} onBack={onBack} hasOwnTitle={hasOwnTitle} />
+        : <PageHeader crumbs={crumbs} create={create} hasOwnTitle={hasOwnTitle}
+          actions={toolsInHeader ? <div className="flex shrink-0 items-center gap-1.5">{tools}{actions}</div> : actions} />}
+      {hasToolbar && (
+        <div data-slot="page-toolbar" className={cn("flex min-h-13 shrink-0 items-center gap-2 px-4 md:h-11 md:min-h-0 md:border-b",
+          // 휴대폰에서 보기 탭이 없고 도구가 모두 … 메뉴로 갔으면 이 줄을 두지 않는다.
+          !views && "max-md:hidden max-md:has-[[data-slot=page-tools]>*]:flex")}>
+          {views ? <ViewStrip>{views}</ViewStrip> : null}
+          {/* 휴대폰은 도구(검색 · 필터 · 정렬)를 만들기 알약과 같은 알약 하나에 모은다. */}
+          {/* 휴대폰은 검색 · 필터 · 표시가 탭 알약과 … 메뉴로 옮겨 간다(phone-tools). 남는 도구(찾기 칸이 열렸을 때 등)만 알약에 선다. */}
+          {tools && <div data-slot="page-tools" className="ml-auto flex shrink-0 items-center gap-1.5 max-md:hidden max-md:has-[input]:flex-1 max-md:has-[input]:border-0 max-md:has-[input]:bg-transparent max-md:has-[input]:px-0 max-md:h-11 max-md:gap-0.5 max-md:rounded-full max-md:border max-md:border-control-border max-md:bg-control max-md:px-1 max-md:has-[>*]:flex">
+            {isMobile ? <ButtonStyleProvider value={PILL_BUTTONS}>{tools}</ButtonStyleProvider> : tools}
+          </div>}
+        </div>
+      )}
+      {below}
+      <div data-slot="page-body" className={cn("relative flex min-h-0 flex-1 flex-col overflow-y-auto",
+        // 휴대폰 유리 막대(AppShell)가 덮는 몫을 비운다. 바닥 줄이 있으면 그 줄이 진다.
+        // 휴대폰: 머리와 구분선 대신 목록이 위 끝에서 서서히 사라지고, 끝까지 내리면 마지막 줄이 막대 위로 한 뼘 더 올라온다.
+        "max-md:[mask-image:linear-gradient(to_bottom,transparent,black_1rem)]",
+        !footer && "max-md:pb-[calc(var(--phone-bar-space)+1rem)]")}>
+        <PageTitleProvider value={title}>{children}</PageTitleProvider>
+      </div>
+      {footer && (
+        <div data-slot="page-footer" role={footerLabel ? "region" : undefined} aria-label={footerLabel}
+          className={cn(
+            "flex shrink-0 items-center justify-end gap-2 border-t bg-background px-4 py-2 max-md:mb-(--phone-bar-space)",
+            "max-md:min-h-15 max-md:[&_[data-slot=button]]:h-11 max-md:[&_[data-slot=button]]:min-w-22 max-md:[&>[data-slot=button]:last-child]:flex-1",
+            // 하단 탭이 없는 전체 화면이면 홈 표시줄 몫을 이 줄이 진다(하단 탭이 있으면 탭이 진다).
+            isMobile && isFullScreen && "pb-[calc(0.5rem+env(safe-area-inset-bottom))]",
+          )}>
+          {footer}
+        </div>
+      )}
+    </div>
+  )
+  return isMobile ? <PhoneToolsProvider>{page}</PhoneToolsProvider> : page
+}
+
+/** 경로의 위 단계: 보조 글자색 · 500, 아이콘이 있으면 이름 앞에(프로젝트처럼). */
+const MIDDLE_CRUMB = "flex shrink-0 items-center gap-1.5 font-medium text-muted-foreground hover:text-foreground [&_svg]:shrink-0"
+
+/**
+ * 위 단계 링크는 정확히 같은 주소일 때만 현재로 친다. 기본(접두 일치)이면 지금 페이지의 위 단계마다 aria-current="page"가 붙는다.
+ */
+const PARENT_CRUMB = { exact: true, includeSearch: true } as const
+
+/** 데스크톱 머리 줄: 왼쪽 경로(마지막은 아이콘과 이름, 위 단계도 아이콘이 있으면 함께), 오른쪽 동작과 만들기. */
+function PageHeader({ crumbs, actions, create, hasOwnTitle }: Pick<PageProps, "crumbs" | "actions" | "create"> & { hasOwnTitle: boolean }) {
+  const { sidebarToggle } = usePageChrome()
+  return (
+    <header data-slot="page-header" className="flex h-13 shrink-0 items-center gap-2 border-b px-4">
+      {/* 사이드바 접기(셸이 넘긴다): 머리 줄 맨 왼쪽 고정. */}
+      {sidebarToggle}
+      {/* 경로는 이동만 맡고, 제목(h1)은 따로 둔다. 본문이 제목을 그리면 그것이 h1이다. */}
+      {!hasOwnTitle && <h1 className="sr-only">{crumbs[crumbs.length - 1].label}</h1>}
+      <nav aria-label="경로" className="flex min-w-0 flex-1 items-center gap-1 text-sm">
+        {crumbs.map((crumb, index) => {
+          const isLast = index === crumbs.length - 1
+          return (
+            <span key={`${crumb.label}-${index}`} className="flex min-w-0 items-center gap-1">
+              {index > 0 && <ChevronRightIcon className="size-3.5 shrink-0 text-icon-muted" />}
+              {isLast ? (
+                <span aria-current="page" className="flex min-w-0 items-center gap-1.5 font-semibold">
+                  {crumb.icon && <crumb.icon className="shrink-0" />}
+                  <span className="truncate">{crumb.label}</span>
+                </span>
+              ) : crumb.href ? (
+                <Link to={crumb.href} activeOptions={PARENT_CRUMB} className={MIDDLE_CRUMB}>{crumb.icon && <crumb.icon className="text-icon-muted" />}{crumb.label}</Link>
+              ) : (
+                <span className={MIDDLE_CRUMB}>{crumb.icon && <crumb.icon className="text-icon-muted" />}{crumb.label}</span>
+              )}
+            </span>
+          )
+        })}
+      </nav>
+      {actions}
+      {create && (
+        <Button variant="create" onClick={create.onClick}>
+          <PlusIcon data-icon="inline-start" />
+          {create.label}
+        </Button>
+      )}
+    </header>
+  )
+}
+
+/**
+ * 휴대폰 앱 바(Linear 모바일처럼): 구분선 없이 지금 어디인지만 보인다. 맨 위 화면은 왼쪽에 큰 제목, 안쪽 화면은 둥근
+ * 뒤로 단추(본문이 큰 제목을 그리면 머리에는 이름을 두지 않는다). 오른쪽에는 만들기(+)와 화면의 메뉴(…)를 한 알약 안에 모은다.
+ */
+function PageAppBar({ crumbs, actions, create, isFullScreen, onBack, hasOwnTitle }: Pick<PageProps, "crumbs" | "actions" | "create" | "isFullScreen" | "onBack"> & { hasOwnTitle: boolean }) {
+  const { tools: chrome } = usePageChrome()
+  const current = crumbs[crumbs.length - 1]
+  const parent = parentCrumb(crumbs)
+  const backLabel = parent ? `${parent.label}(으)로` : "뒤로"
+  const back = onBack
+    ? <Button variant="tool" size="icon" className="size-11 shrink-0" aria-label={backLabel} onClick={onBack}><ChevronLeftIcon className="size-5" /></Button>
+    : parent?.href
+      ? <Button variant="tool" size="icon" className="size-11 shrink-0" aria-label={backLabel} nativeButton={false} render={<Link to={parent.href} />}><ChevronLeftIcon className="size-5" /></Button>
+      : null
+  const tools = !isFullScreen ? chrome : null
+  // 화면의 … 메뉴가 없으면 휴대폰 도구(검색 · 표시 …)를 담을 … 메뉴를 따로 둔다.
+  const phone = usePhoneTools()
+  const needsToolsMenu = Boolean(phone && phone.tools.length > 0 && !phone.isMenuClaimed)
+  const hasPill = Boolean(create || actions || tools || needsToolsMenu)
+  return (
+    <header data-slot="page-app-bar" className="flex min-h-15 shrink-0 items-center gap-2 px-4 pt-2 pb-1">
+      {back}
+      {hasOwnTitle
+        ? <p className="sr-only">{current.label}</p>
+        : <h1 className={cn("min-w-0 truncate font-bold", back ? "text-base" : "text-[1.75rem] leading-tight tracking-[-0.02em]")}>{current.label}</h1>}
+      {hasPill && (
+        // 만들기와 메뉴를 한 알약 안에: 조작 면 하나에 테두리 없는 둥근 단추들.
+        <div className="ml-auto flex h-11 shrink-0 items-center gap-0.5 rounded-full border border-control-border bg-control px-1">
+          <ButtonStyleProvider value={PILL_BUTTONS}>
+            {create && <Button variant="ghost" size="icon" aria-label={create.label} title={create.label} onClick={create.onClick}><PlusIcon className="size-5" /></Button>}
+            <InAppBarProvider value>{actions}</InAppBarProvider>
+            {needsToolsMenu && <ActionMenu label="화면 메뉴" title={current.label} actions={[]} isToolsMenu />}
+            {tools}
+          </ButtonStyleProvider>
+        </div>
+      )}
+    </header>
+  )
+}

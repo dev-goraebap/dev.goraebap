@@ -2,14 +2,14 @@ import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import type { Meta, SampleOf } from "../catalog/types";
 import { useShellLayout } from "../catalog/shell-layout";
-import { AppShell, MeButton, type NavEntry, type NavSpace, type OpenGroups, type ShellLayout, type ShellMe } from "@/shared/ui/layout/app-shell";
-import { Button } from "@/shared/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/dropdown-menu";
-import { Field, FieldLabel } from "@/shared/ui/field";
-import { CheckIcon, ChevronDownIcon, ChevronUpIcon, FileTextIcon, LibraryIcon, LogoutIcon, SearchIcon, SettingsIcon, UserIcon } from "@/shared/ui/icon";
-import { Page } from "@/shared/ui/layout/page";
-import { RowLink } from "@/shared/ui/row-link";
-import { Textarea } from "@/shared/ui/textarea";
+import { AppShell, MeButton, type NavEntry, type NavSpace, type OpenGroups, type ShellLayout, type ShellMe } from "@/shared/ui/kit/layout/app-shell";
+import { Button } from "@/shared/ui/kit/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/kit/dropdown-menu";
+import { Field, FieldLabel } from "@/shared/ui/kit/field";
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon, FileTextIcon, LibraryIcon, LogoutIcon, SearchIcon, SettingsIcon, UserIcon } from "@/shared/ui/kit/icon";
+import { Page } from "@/shared/ui/kit/layout/page";
+import { RowLink } from "@/shared/ui/kit/row-link";
+import { Textarea } from "@/shared/ui/kit/textarea";
 import { DemoBrand, demoSpace, demoSpaces, globalSection, rows, type DemoSpace } from "./demo";
 
 /** 줄 링크의 주소. 견본 틀의 메모리 라우터는 어떤 주소든 이 견본을 그린다(사이트 라우터의 주소 타입과 무관해 글자로 둔다). */
