@@ -40,22 +40,7 @@ npx shadcn@latest add @webcraft/filter
 
 키트 부품은 Webcraft의 폴더 별칭(`@/shared/ui/kit`, `@/shared/lib`)을 그대로 가져와요. shadcn이 다른 별칭으로 바꿔 주지 않으므로, `components.json`의 `aliases`를 아래처럼 맞춰요. `cn`은 `cn` 패키지에서 가져오고, `shared/lib/utils.ts`는 만들지 않아요.
 
-```jsonc title="web/components.json" {4-8,13}
-{
-  "$schema": "https://ui.shadcn.com/schema.json",
-  // …
-  "aliases": {
-    "components": "@/shared/ui/kit",
-    "utils": "cn",
-    "ui": "@/shared/ui/kit",
-    "lib": "@/shared/lib",
-    "hooks": "@/shared/lib"
-  },
-  // …
-  "registries": {
-    "@webcraft": "https://goraebap.xyz/r/{name}.json"
-  }
-}
+```jsonc cowork="web/components.json" lines="1-2,…,15-21,…,24-27" {4-8,13}
 ```
 
 ## 키트와 앱의 부품을 나눠 둬요

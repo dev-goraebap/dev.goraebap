@@ -9,8 +9,7 @@ import { Steps } from '@astrojs/starlight/components';
 
 화면 코드를 바꾸면 `web/`에서 `npm run check`를 실행해요. 다섯 가지 검사를 차례로 돌리고, 하나라도 실패하면 거기서 멈춰요.
 
-```json title="web/package.json"
-    "check": "npm run lint:ui && npm run lint && npm run knip && npm test && npm run build",
+```json cowork="web/package.json" lines="14-14"
 ```
 
 <Steps>
@@ -38,24 +37,7 @@ ESLint로 표현하기 어려운 화면 규칙은 `web/scripts/check-ui.mjs`가 
 
 `web/eslint.config.js`는 ESLint와 typescript-eslint의 권장 규칙 위에 몇 가지를 더해요. 생성한 파일(`routeTree.gen.ts`, `schema.d.ts`)과 `dist`는 검사하지 않아요.
 
-```js title="web/eslint.config.js" {10-11,13,15}
-  {
-    files: ['src/**/*.{ts,tsx}'],
-    languageOptions: {
-      globals: globals.browser,
-      parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname },
-    },
-    plugins: { 'react-hooks': reactHooks },
-    rules: {
-      // 훅 규칙만 쓴다. React Compiler용 규칙(refs · set-state-in-effect …)은 컴파일러를 쓰지 않아 켜지 않는다.
-      'react-hooks/rules-of-hooks': 'error',
-      'react-hooks/exhaustive-deps': 'warn',
-      // 사용 중단으로 표시된 API를 부르면 알린다(라이브러리가 다음 판에서 지울 것).
-      '@typescript-eslint/no-deprecated': 'error',
-      // 구조 없는 문서 JSON(ProseMirror 노드 · 속성)을 다루는 곳에 남아 있다. 새로 쓰지 않도록 알린다.
-      '@typescript-eslint/no-explicit-any': 'warn',
-    },
-  },
+```js cowork="web/eslint.config.js" lines="24-40" {10-11,13,15}
 ```
 
 | 규칙 | 수준 | 뜻 |

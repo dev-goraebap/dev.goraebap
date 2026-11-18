@@ -13,42 +13,14 @@ import { Steps } from '@astrojs/starlight/components';
 
 `build.gradle`의 `jooq` 블록이 jOOQ의 `DDLDatabase`로 마이그레이션 SQL을 읽어 표 모델을 만들어요. 생성물은 `build/generated-sources/jooq/`에만 두고 커밋하지 않아요. 원본을 두 벌로 만들지 않기 위해서예요.
 
-```groovy title="server/build.gradle" {10,19-20}
-/*
- * jOOQ 코드 생성: 실행 중인 데이터베이스 없이 마이그레이션 SQL 에서 직접 생성한다.
- * 빌드가 외부 상태에 의존하지 않으며, 스키마와 코드가 어긋나면 컴파일이 실패한다.
- * 생성물은 build/ 아래에만 두고 커밋하지 않는다 — 단일 원본을 두 벌로 만들지 않기 위해서다.
- */
-jooq {
-	configuration {
-		generator {
-			database {
-				name = 'org.jooq.meta.extensions.ddl.DDLDatabase'
-				// …
-	executions {
-		main {
-			configuration {
-				generator {
-					database {
-						properties {
-							property {
-								key = 'scripts'
-								value = 'src/main/resources/db/migration/*.sql'
-							// …
+```groovy cowork="server/build.gradle" lines="75-84,…,148-156,…" {10,19-20}
 ```
 
 `compileJava`가 jOOQ 생성에 기대므로, 서버를 빌드하면 생성이 먼저 돌아요. 생성은 마이그레이션 폴더가 바뀔 때만 다시 해요. 생성한 파일은 손으로 고치지 않아요.
 
 jOOQ의 파서가 읽지 못하거나 표 모델에 필요 없는 것(외래 키, 색인, 처음 넣는 행)은 SQL 안에서 `[jooq ignore]` 표시 사이에 둬요. Flyway는 이 부분도 실행하고, jOOQ 생성만 건너뛰어요.
 
-```sql title="server/src/main/resources/db/migration/V1__schema.sql"
--- …
- , legacy_shared boolean DEFAULT false NOT NULL
--- [jooq ignore start]
- , FOREIGN KEY(user_id) REFERENCES users(user_id)
- , CHECK(length(trim(name)) BETWEEN 1 AND 64)
--- [jooq ignore stop]
-);
+```sql cowork="server/src/main/resources/db/migration/V1__schema.sql" lines="…,43-48"
 ```
 
 ## 열 하나 더하기

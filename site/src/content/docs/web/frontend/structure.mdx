@@ -65,16 +65,7 @@ cowork의 `web/src`는 이렇게 생겼어요.
 
 TanStack Router의 파일 라우팅이 `src/pages`를 읽어요. 폴더 하나가 주소 한 단계이고, 슬라이스 하나예요. 라우트 목록을 따로 관리하지 않고, 폴더를 만들면 주소가 생겨요.
 
-```ts title="web/vite.config.ts" {5,7}
-    // 파일 라우팅: src/pages의 폴더가 곧 주소다. page.tsx가 그 주소의 화면, route.tsx가 그 아래에 걸리는 틀이다.
-    // 슬라이스 안의 세그먼트(ui · api · model · lib · config)와 공개 진입점(index.ts)은 라우트로 치지 않는다.
-    tanstackRouter({
-      target: 'react',
-      routesDirectory: './src/pages',
-      generatedRouteTree: './src/app/router/routeTree.gen.ts',
-      autoCodeSplitting: true, indexToken: 'page', routeFileIgnorePattern: '^(ui|api|model|lib|config|index\\.ts)$',
-      quoteStyle: 'single',
-    }),
+```ts cowork="web/vite.config.ts" lines="58-66" {5,7}
 ```
 
 `indexToken: 'page'` 때문에 `page.tsx`가 그 주소의 화면이 되고, `routeFileIgnorePattern` 때문에 `ui/` · `api/` · `model/` · `lib/` · `config/` · `index.ts`는 주소로 치지 않아요.
@@ -132,20 +123,7 @@ TanStack Router의 파일 라우팅이 `src/pages`를 읽어요. 폴더 하나�
 
 아래 `members/page.tsx`는 조상 주소(`$key/`)의 `ui/`에 있는 화면을 가져와요.
 
-```tsx title="web/src/pages/_app/workspace/projects/$key/members/page.tsx" {5}
-import { createFileRoute } from '@tanstack/react-router';
-import { projectMembersOptions } from '@/entities/project';
-import { prepare } from '@/shared/lib/prepare';
-import { useCrumbs } from '@/shared/lib/page-crumbs';
-import { ProjectMembersPage } from '@/pages/_app/workspace/projects/$key/ui/ProjectMembersPage';
-
-/** /workspace/projects/{key}/members: 프로젝트 멤버(설정의 멤버와 같은 화면). */
-export const Route = createFileRoute('/_app/workspace/projects/$key/members/')({
-  loader: ({ context, params }) => prepare(context.queryClient, `project-members:${params.key}`, ({ prime }) => prime(projectMembersOptions(params.key))),
-  component: function ProjectMembersPageRoute() {
-    return <ProjectMembersPage crumbs={useCrumbs()} />;
-  },
-});
+```tsx cowork="web/src/pages/_app/workspace/projects/$key/members/page.tsx" lines="1-13" {5}
 ```
 
 층 방향, 같은 층의 다른 슬라이스, 옆 주소 가져오기는 `npm run lint:ui`(`web/scripts/check-ui.mjs`)가 검사해요. 검사 전체는 [린트와 코딩 스타일](/web/frontend/lint/)에 있어요.

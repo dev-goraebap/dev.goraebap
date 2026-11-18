@@ -26,10 +26,7 @@ flowchart LR
 
 브라우저는 화면 개발 서버(4420)만 열어요. 화면이 보낸 `/api` 요청은 Vite가 8080의 서버로 넘겨요. 웹소켓도 같은 길로 넘어가요(`ws: true`).
 
-```ts title="web/vite.config.ts" {3}
-  // The API is the local server's (server/, dev profile on 8080) unless DEV_API_TARGET names another.
-  server: { port: 4420, strictPort: true,
-    proxy: { '/api': { target: process.env.DEV_API_TARGET ?? 'http://localhost:8080', changeOrigin: true, ws: true } } },
+```ts cowork="web/vite.config.ts" lines="75-77" {3}
 ```
 
 다른 곳에 떠 있는 서버를 쓰려면 환경 변수 `DEV_API_TARGET`에 그 주소를 넣어요.
@@ -51,23 +48,7 @@ flowchart LR
 
 배포할 때는 Docker 이미지 하나에 서버 jar와 빌드한 화면을 함께 넣어요. 서버가 `/api` 요청에 답하고, 그 밖의 주소에는 빌드한 화면을 내보내요. 파일 이름이 아닌 주소에는 `index.html`을 돌려줘서 화면의 라우터가 주소를 처리해요.
 
-```dockerfile title="Dockerfile"
-FROM node:24-alpine AS screens
-WORKDIR /src/web
-# …
-RUN npm run build
-
-FROM eclipse-temurin:21-jdk-alpine AS server
-WORKDIR /src/server
-# …
-RUN --mount=type=cache,target=/root/.gradle sh ./gradlew --no-daemon --console=plain -q bootJar
-
-FROM eclipse-temurin:21-jre-alpine
-# …
-COPY --from=server /src/server/build/libs/app.jar app.jar
-COPY --from=screens /src/web/dist screens/
-# …
-ENV APP_SCREENS=file:/app/screens/
+```dockerfile cowork="Dockerfile" lines="11-12,…,18-21,…,27-29,…,33-34,…,41-41"
 ```
 
 이미지는 하나지만 빌드 단계(`screens`, `server`)는 따로예요. 화면만 바꾸면 서버 단계는 캐시를 그대로 쓰고, 서버만 바꾸면 화면 단계가 캐시돼요.

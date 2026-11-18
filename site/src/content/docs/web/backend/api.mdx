@@ -58,50 +58,19 @@ cowork는 브라우저가 사전 서명 주소로 저장소에 바로 올리고,
 
 도메인은 HTTP 상태나 Spring 예외를 모르고, 공통 처리기가 도메인 규칙 위반을 400으로 바꿔요. 서비스의 오류는 모듈마다 `application` 루트에 둔 오류 코드 열거형 하나로 표현해요.
 
-```java title="server/src/main/java/xyz/goraebap/cowork/module/file/application/FileErrorCode.java"
-@Getter
-@RequiredArgsConstructor
-public enum FileErrorCode implements ErrorCode {
-    FILE_UPLOAD_MISSING(HttpStatus.BAD_REQUEST, "올린 파일을 찾을 수 없습니다. 파일을 다시 올려 주세요"),
-    FILE_NOT_STORED(HttpStatus.BAD_REQUEST, "파일 업로드가 끝나지 않았습니다. 파일을 다시 올려 주세요"),
-    FILE_PICTURE_INVALID(HttpStatus.BAD_REQUEST, "사진을 읽을 수 없습니다. 다른 사진을 골라 주세요"),
-    FILE_TOTAL_EXCEEDED(HttpStatus.BAD_REQUEST, "파일은 모두 합쳐 10MB까지 올릴 수 있습니다");
-    private final HttpStatus status;
-    private final String message;
-}
+```java cowork="server/src/main/java/xyz/goraebap/cowork/module/file/application/FileErrorCode.java" lines="8-17"
 ```
 
 서비스는 판정한 자리에서 코드의 `raise()`로 예외를 만들어 던져요.
 
-```java title="server/src/main/java/xyz/goraebap/cowork/module/file/application/FileService.java"
-            if (upload == null || !upload.uploadedBy(uploaderId) || upload.expired(now))
-                throw FileErrorCode.FILE_UPLOAD_MISSING.raise();
+```java cowork="server/src/main/java/xyz/goraebap/cowork/module/file/application/FileService.java" lines="89-90"
 ```
 
 ## 오류 응답의 모양
 
 오류 응답은 `application/problem+json`이에요. 공통 예외 처리기(`GlobalExceptionHandler`)가 예외를 `ProblemDetail`로 바꾸면서 오류 코드와 추적 번호를 더해요.
 
-```java title="server/src/main/java/xyz/goraebap/cowork/shared/web/GlobalExceptionHandler.java" {9,16-17}
-    @ExceptionHandler(BusinessException.class)
-    ProblemDetail handleBusiness(BusinessException businessException, HttpServletRequest httpServletRequest) {
-        return toProblemDetail(businessException.errorCode(), businessException.getMessage(), httpServletRequest);
-    }
-
-    @ExceptionHandler(DomainRuleViolation.class)
-    ProblemDetail handleDomainRule(DomainRuleViolation domainRuleViolation, HttpServletRequest httpServletRequest) {
-        return toProblemDetail(
-                CommonErrorCode.COMMON_INVALID_REQUEST, domainRuleViolation.getMessage(), httpServletRequest);
-    }
-    // …
-    private static ProblemDetail toProblemDetail(
-            ErrorCode errorCode, String detail, HttpServletRequest httpServletRequest) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(errorCode.status(), detail);
-        problemDetail.setInstance(URI.create(httpServletRequest.getRequestURI()));
-        problemDetail.setProperty("code", errorCode.code());
-        problemDetail.setProperty("traceId", MDC.get(TraceIdFilter.MDC_KEY));
-        return problemDetail;
-    }
+```java cowork="server/src/main/java/xyz/goraebap/cowork/shared/web/GlobalExceptionHandler.java" lines="66-75,…,242-249" {9,16-17}
 ```
 
 | 필드 | 내용 |

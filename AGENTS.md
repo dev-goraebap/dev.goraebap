@@ -6,7 +6,7 @@ Webcraft 개발 지침 플러그인과 공식 문서 사이트(goraebap.xyz, 이
 
 - `plugins/webcraft/skills/`는 배포할 개발 지침의 원본입니다. 특정 회사 제품의 동작·업무 데이터·접속 정보는 넣지 않습니다.
 - 공식 문서 사이트는 Starlight(Astro) 문서 사이트이고 테마는 `starlight-theme-rapide`입니다. 원문은 `site/src/content/docs/`의 MDX이며, 사이트 첫 화면은 `index.mdx`, 제품 문서는 제품 칸 폴더(`web/`) 아래에 둡니다. 칸과 메뉴는 `site/astro.config.mjs`의 `starlight-sidebar-topics` 설정에서 정합니다. 사이트 코드는 설정(`site/astro.config.mjs`)만 둡니다. 사이트에 디자인 시스템이나 앱 코드를 두지 않습니다. 대표 프론트엔드 코드는 cowork 하나입니다.
-- 문서의 코드 조각은 cowork의 특정 커밋에서 그대로 옮기고 코드 블록 제목에 저장소 기준 경로를 적습니다. 옮긴 커밋은 [결정 기록](docs/decisions.md)에 둡니다. 코드를 지어내거나 고쳐 옮기지 않습니다.
+- 문서의 코드 조각은 서브모듈 `examples/cowork`에서 읽습니다. 코드 블록에는 본문 대신 파일과 줄을 적습니다(```` ```ts cowork="web/src/shared/lib/prepare.ts" lines="5-16,…,45-45" ````). `lines`의 `…`는 건너뛴 자리로 언어에 맞는 주석이 되고, 제목은 파일 경로가 됩니다. 이 처리는 `site/astro.config.mjs`의 `coworkCode`가 합니다. 코드를 문서에 복사하거나 지어내지 않습니다. 서브모듈은 읽기 전용이며 cowork는 cowork 저장소에서 고칩니다. 서브모듈 커밋을 올리면 줄이 밀릴 수 있으므로, 올린 뒤 바뀐 페이지의 코드 블록을 열어 `lines`를 확인합니다. 저장소를 받을 때는 `git clone --recurse-submodules`로 받거나 받은 뒤 `git submodule update --init`을 실행합니다. 이 방식을 고른 이유는 [결정 기록](docs/decisions.md)에 둡니다.
 - `site/public/r/`는 shadcn 레지스트리 `@webcraft`의 JSON입니다. 직접 고치지 않습니다. 키트 원본은 cowork에 있습니다.
 - 플러그인은 `plugins/<이름>/` 아래에서 독립적으로 관리합니다. 사이트 원문·자산은 플러그인 패키지에 포함하지 않습니다. 기존 제품은 지침 사본 대신 AGENTS.md로 Webcraft를 가리키며, 제품 고유 예외만 프로젝트 규칙에 둡니다.
 - 되돌리기 어려운 결정과 기각한 대안은 [결정 기록](docs/decisions.md)에 남깁니다.

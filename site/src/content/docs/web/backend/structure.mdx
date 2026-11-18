@@ -107,23 +107,7 @@ flowchart LR
 
 jOOQ에는 변경 감지가 없어서, 쓰기 메서드는 `save`를 빠뜨리지 않아요. 아래는 업로드를 준비하는 쓰기 메서드예요. 도메인 객체를 만들고(`PendingUpload.create`), 저장소에 저장하고, 응답 타입으로 돌려줘요.
 
-```java title="server/src/main/java/xyz/goraebap/cowork/module/file/application/FileService.java" {4,11}
-    /** Records the upload and hands out where to send it; nothing is stored until the browser sends the bytes. */
-    @Transactional
-    public FileViews.UploadTicket prepare(CurrentUser user, FileRequests.Upload request) {
-        var upload = PendingUpload.create(
-                request.filename(),
-                request.size(),
-                user.id(),
-                clock.instant(),
-                request.purpose(),
-                ImageTraits.of(request.dominantColor(), request.width(), request.height()));
-        pendingUploadRepository.save(upload);
-        var presigned = objectStorage.presignUpload(
-                upload.storageKey(), upload.format().contentType(), upload.size(), UPLOAD_TTL);
-        return new FileViews.UploadTicket(
-                upload.id(), presigned.url(), presigned.method(), presigned.headers(), presigned.expiresAt());
-    }
+```java cowork="server/src/main/java/xyz/goraebap/cowork/module/file/application/FileService.java" lines="61-76" {4,11}
 ```
 
 현재 시각은 주입한 `Clock`에서 받아요(`clock.instant()`).

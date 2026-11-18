@@ -31,15 +31,7 @@ sidebar:
 
 `src` 아래 모든 Java 파일에 palantir-java-format을 적용하고, 안 쓰는 import를 지우고, 애너테이션 자리를 맞춰요.
 
-```groovy title="server/build.gradle"
-spotless {
-	java {
-		target fileTree('src') { include '**/*.java' }
-		palantirJavaFormat()
-		removeUnusedImports()
-		formatAnnotations()
-	}
-}
+```groovy cowork="server/build.gradle" lines="214-221"
 ```
 
 ## Checkstyle: 이름과 관례

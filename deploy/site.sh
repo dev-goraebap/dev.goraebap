@@ -29,6 +29,8 @@ trap 'git worktree remove --force "$WORK" >/dev/null 2>&1 || true; rm -rf "$WORK
 
 echo "빌드: $REF ($SHA)"
 git worktree add --detach "$WORK" "$REF" >/dev/null
+# 문서의 코드 조각은 서브모듈 examples/cowork에서 읽는다(site/astro.config.mjs의 coworkCode).
+git -C "$WORK" submodule update --init --quiet examples/cowork
 (cd "$WORK/site" && npm ci --no-audit --no-fund >/dev/null && npm run build >/dev/null)
 DIST="$WORK/site/dist"
 [ -f "$DIST/index.html" ] || { echo "빌드 결과에 index.html이 없습니다"; exit 1; }
