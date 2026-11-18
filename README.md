@@ -4,7 +4,7 @@
 
 - [사이트](https://goraebap.xyz/)
 - [블로그](https://goraebap.xyz/blog/)
-- [Webcraft 가이드와 실행 견본](https://goraebap.xyz/webcraft/)
+- [Webcraft 가이드](https://goraebap.xyz/webcraft/)
 
 ## Webcraft
 
@@ -27,7 +27,6 @@ Claude Code 설치와 프로젝트 연결·기존 지침 사본 전환은 [플�
 | `server/` | 백엔드. Gradle 멀티 프로젝트이며 하위 프로젝트는 `foundation`, `workspace`, `app`입니다 |
 | `client/apps/blog/src/` | 블로그와 Webcraft를 함께 제공하는 React 사이트. FSD 계층으로 구성합니다 |
 | `client/apps/blog/content/blog/posts/` | 블로그 글과 원본 이미지 |
-| `client/apps/blog/content/` | Webcraft 화면 해설과 견본 문서 |
-| `client/apps/blog/samples/` | 실제 동작을 검증하는 실행 견본 |
+| `client/apps/blog/content/` | Webcraft 화면 해설 |
 
 사이트 실행·글 추가·배포 방법은 [사이트 개발 안내](client/apps/blog/README.md), 플러그인 개발은 [플러그인 개발 안내](plugins/webcraft/README.md)를 따릅니다. 에이전트 작업 규칙은 [AGENTS.md](AGENTS.md)에 있습니다.

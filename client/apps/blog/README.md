@@ -1,6 +1,6 @@
 # dev-goraebap 사이트
 
-블로그와 Webcraft 가이드를 하나의 Vite·React·TanStack Router·MDX 앱으로 제공합니다. 상단의 영역 선택에서 Blog와 Webcraft를 전환합니다. `/`는 `/blog/`로 연결하고, Webcraft 지침과 실행 견본은 `/webcraft/` 아래에서 제공합니다.
+블로그와 Webcraft 가이드를 하나의 Vite·React·TanStack Router·MDX 앱으로 제공합니다. 상단의 영역 선택에서 Blog와 Webcraft를 전환합니다. `/`는 `/blog/`로 연결하고, Webcraft 지침과 화면 해설은 `/webcraft/` 아래에서 제공합니다.
 
 ## 실행과 검사
 
@@ -10,7 +10,6 @@
 npm ci
 npm run blog
 npm run blog:check
-npm run blog:test
 npm run blog:build
 npm run blog:preview
 ```
@@ -23,18 +22,17 @@ npm run blog:preview
 | --- | --- |
 | `src/app/` | 앱 시작·라우터·MDX 제공자 |
 | `src/pages/` | 블로그 목록과 문서 읽기 화면 |
-| `src/widgets/` | 사이트 셸·영역별 탐색·견본 표시 |
+| `src/widgets/` | 사이트 셸·영역별 탐색 |
 | `src/entities/` | 글과 문서의 목록·본문 조회 |
 | `src/shared/` | 공통 UI·스타일·브랜드·도표·로딩 |
-| `samples/` | 실제 메모리 라우터와 모의 데이터를 가진 실행 견본·테스트 |
 | `content/blog/posts/` | 게시글 Markdown과 원본 이미지 |
 | `content/` | Webcraft 화면 해설 MDX |
 | `content-plugin.ts` | 스킬 원본과 사이트 콘텐츠에서 문서 목록·주소를 생성하는 빌드 도구 |
 | `scripts/` | 아이콘 생성과 정적 배포 주소 생성 |
 
-`features`는 독립된 사용자 기능이 생길 때 추가합니다. 상위 계층은 하위 계층을 사용하며 슬라이스 간 참조는 공개 진입점을 통합니다. 견본의 실행 진입점은 `sample.html`이고, 블로그·가이드의 실제 사이트 진입점은 `index.html` 하나입니다.
+`features`는 독립된 사용자 기능이 생길 때 추가합니다. 상위 계층은 하위 계층을 사용하며 슬라이스 간 참조는 공개 진입점을 통합니다. 사이트 진입점은 `index.html` 하나입니다.
 
-Webcraft의 규칙 원본은 `plugins/webcraft/skills/`입니다. 사이트에는 지침 사본을 두지 않습니다. 공통 UI의 사용 기준은 [UI 안내](src/shared/ui/README.md)를 확인합니다.
+Webcraft의 규칙 원본은 `plugins/webcraft/skills/`입니다. 사이트에는 지침 사본을 두지 않습니다. 공통 UI의 사용 기준은 [키트 안내](src/shared/ui/kit/README.md)를 확인합니다.
 
 ## 블로그 글 추가
 

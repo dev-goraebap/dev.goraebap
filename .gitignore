@@ -1,4 +1,3 @@
 node_modules/
 __screenshots__/
-.vitest-attachments/
 client/apps/*/dist/

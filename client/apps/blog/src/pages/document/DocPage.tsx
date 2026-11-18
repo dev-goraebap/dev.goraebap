@@ -28,7 +28,7 @@ export function DocPage({ doc, Content }: { doc: GuideDoc | null; Content: Compo
     const read = () => setHeadings([...node.querySelectorAll<HTMLElement>('h2[id], h3[id]')]
       .map(heading => ({ id: heading.id, label: heading.textContent ?? '', level: Number(heading.tagName[1]) })));
     read();
-    // 견본 묶음처럼 제목이 나중에 그려지는 문서도 목차에 잡는다.
+    // 제목이 나중에 그려지는 문서도 목차에 잡는다.
     const observer = new MutationObserver(read);
     observer.observe(node, { childList: true, subtree: true });
     return () => observer.disconnect();

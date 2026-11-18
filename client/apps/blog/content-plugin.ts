@@ -1,5 +1,5 @@
 // 가이드의 문서 목록을 빌드 때 만든다. 지침은 plugins/webcraft/skills의 Markdown을 원본 그대로 읽고(사본을 두지 않는다),
-// 화면 해설·견본 문서는 content의 MDX를 읽는다. 결과는 virtual:guide-docs로 앱에 넘긴다.
+// 화면 해설 문서는 content의 MDX를 읽는다. 결과는 virtual:guide-docs로 앱에 넘긴다.
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,8 +24,7 @@ export type GuideDoc = {
   hasTitle: boolean;
   /** 아키텍처 정의서(arc42)에서 이 문서가 맡는 절. 첫 값이 메뉴에서 놓일 절이다. 해당 없으면 비운다. */
   arc42?: string[];
-  /** 본문이 띄우는 견본 id와 도표(Mermaid) 원문. 문서로 옮기기 전에 미리 준비해 빈 자리로 그렸다가 채우지 않게 한다. */
-  samples?: string[];
+  /** 본문의 도표(Mermaid) 원문. 문서로 옮기기 전에 미리 준비해 빈 자리로 그렸다가 채우지 않게 한다. */
   diagrams?: string[];
   kind?: 'post';
   date?: string;
@@ -61,17 +60,11 @@ export const architectureSections = [
 ] as const;
 export const sectionPath = (id: string) => `/webcraft/architecture/${id.replace('.', '-')}/`;
 
-/** 화면 해설·견본 묶음(content의 폴더). */
+/** 화면 해설 묶음(content의 폴더). */
 export const contentGroups = [
   { dir: 'architecture', label: '아키텍처', icon: 'layout-board' },
   { dir: 'common', label: '화면 공통', icon: 'layout-grid' },
   { dir: 'app-shell', label: '앱 셸', icon: 'sidebar' },
-  { dir: 'catalog/foundations', label: 'Foundations (디자인 기초)', icon: 'sun' },
-  { dir: 'catalog/primitives', label: 'Primitives (기본 부품)', icon: 'edit' },
-  { dir: 'catalog/composites', label: 'Composites (조합 부품)', icon: 'copy' },
-  { dir: 'catalog/layouts', label: 'Layouts (레이아웃)', icon: 'layout-board' },
-  { dir: 'catalog/patterns', label: 'Patterns (사용 패턴)', icon: 'grip' },
-  { dir: 'catalog/playground', label: 'Playground (플레이그라운드)', icon: 'library' },
 ] as const;
 
 const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => {
@@ -81,11 +74,10 @@ const walk = (dir: string): string[] => readdirSync(dir).flatMap(name => {
 const posix = (file: string) => file.split(path.sep).join('/');
 const repoPath = (file: string) => posix(path.relative(path.resolve(here, '../../..'), file));
 
-/** 본문에서 미리 준비할 것: <Sample id="…">의 id와 ```mermaid 코드 블록의 원문. */
+/** 본문에서 미리 준비할 것: ```mermaid 코드 블록의 원문. */
 const assetsOf = (text: string) => {
-  const samples = [...new Set([...text.matchAll(/<Sample\s+id="([^"]+)"/g)].map(match => match[1]))];
   const diagrams = [...text.matchAll(/^```mermaid\r?\n([\s\S]*?)\r?\n```/gm)].map(match => match[1].replace(/\r\n/g, '\n'));
-  return { ...(samples.length ? { samples } : {}), ...(diagrams.length ? { diagrams } : {}) };
+  return { ...(diagrams.length ? { diagrams } : {}) };
 };
 
 /** 지침 Markdown 파일의 사이트 주소. SKILL.md는 지침 첫 장, 나머지는 하위 경로. */

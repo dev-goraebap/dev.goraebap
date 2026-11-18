@@ -6,7 +6,6 @@ sidebar:
 arc42: "8.7, 6"
 ---
 
-
 데이터를 불러오는 중이거나 목록이 비어 있을 때, 오류가 나거나 양식을 저장·제출할 때 화면이 어떻게 반응할지 정합니다. 사용자가 지금 무슨 일이 일어나는지 알고 다음 행동을 고를 수 있게 하되, 불필요한 깜빡임이나 알림으로 흐름을 끊지 않습니다.
 
 규칙 앞에는 성격을 표시합니다(`[관례]`, `[고래밥]`, `[선호]`). 구분 기준은 [읽는 법](/#규칙의-세-가지-표시)에 있습니다.
@@ -25,9 +24,6 @@ arc42: "8.7, 6"
 - `[관례]` 스켈레톤은 실제 데이터 화면의 배치와 같을 때만 씁니다([Primer: Loading](https://primer.style/product/ui-patterns/loading/)). 실제 배치와 다른 스켈레톤은 내용이 나타날 때 화면이 다시 튀게 만듭니다.
 - `[고래밥]` 앱 첫 진입만 스플래시로 덮고, 그 뒤의 화면 이동에는 본문을 가리는 막을 두지 않습니다. 캐시가 있으면 오래됐어도 바로 그리고 뒤에서 조용히 갱신하며, 링크에 포인터나 초점이 오면 그 화면을 미리 준비합니다. 캐시가 없을 때는 이전 화면을 그대로 두고 150ms 뒤에 콘텐츠 카드 위 테두리에 흐르는 진행 표시만 띄우며, 준비된 화면끼리는 콘텐츠 영역만 200ms 교차 페이드합니다. 막은 상세 안 사이드바까지 덮고 다시 방문할 때도 떠서 답답합니다. 이 방식에서는 다시 방문할 때 대기가 없고 레이아웃 이동이 0입니다.
 
-<Sample id="patterns-data-states/boot" />
-<Sample id="patterns-data-states/waiting" />
-
 ## 빈 상태
 
 `[관례]` 목록이나 영역에 보일 항목이 없을 때는 왜 비어 있는지에 따라 세 가지로 나누고, 각 상태에서 사용자가 바로 할 수 있는 다음 행동을 하나만 둡니다([Carbon: Empty states](https://carbondesignsystem.com/patterns/empty-states-pattern/), [NN/g: Empty states](https://www.nngroup.com/articles/empty-state-interface-design/), [Atlassian: Empty state](https://atlassian.design/components/empty-state/usage), Primer Blankslate).
@@ -41,9 +37,6 @@ arc42: "8.7, 6"
 - `[고래밥]` 빈 화면과 결과 없음에는 사용법 안내("등록하면 여기에 보입니다", "검색어나 필터를 바꿔 보세요")를 쓰지 않습니다. 할 수 있는 행동은 문장이 아니라 단추로 둡니다. 외부 지침은 처음 상태에 안내 문장을 권하는 경우가 많지만, 업무 앱에서 같은 안내가 화면마다 반복되면 읽히지 않는 글이 쌓입니다. 쓰지 않는 문구의 여섯 유형은 [문구·본문과 검증](/rules/design-system/references/content-and-review/)에 있습니다.
 
 - `[선호]` 빈 상태 그림을 넣을 때는 테마 색으로 칠한 펜 선 풍경 그림을 씁니다([선호 화면](/app-shell/preferred-screens/)).
-
-<Sample id="patterns-data-states/empty" />
-<Sample id="patterns-data-states/no-results" />
 
 ## 알림과 토스트
 
@@ -84,4 +77,3 @@ arc42: "8.7, 6"
 
 비활성화된 버튼은 키보드 초점이 닿지 않고, 왜 누를 수 없는지(어느 칸이 빠졌는지) 알려 주지 못합니다. 버튼을 열어 두고 누른 시점에 빠진 칸으로 안내하는 편이 키보드·보조기기 사용자와 긴 양식을 작성하는 사용자 모두에게 원인을 분명히 전달합니다.
 
-<Sample id="playground-issues/compose-page" />

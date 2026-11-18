@@ -52,7 +52,7 @@ function useProgress() {
 const TAB_PATHS: Record<Area, string[]> = {
   settings: ['/settings/appearance/', '/settings/plugins/'],
   blog: ['/blog/', '/settings/appearance/'],
-  webcraft: ['/webcraft/', '/webcraft/rules/goraebap-mode/', '/webcraft/rules/design-system/', '/webcraft/catalog/playground/'],
+  webcraft: ['/webcraft/', '/webcraft/rules/goraebap-mode/', '/webcraft/architecture/'],
 };
 const settingsTab: NavEntry = { path: '/settings/appearance/', label: '설정', icon: SettingsIcon };
 

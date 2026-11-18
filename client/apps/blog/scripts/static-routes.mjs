@@ -36,5 +36,5 @@ for (const doc of docs.filter(doc => doc.path.includes('/rules/goraebap-mode/'))
 await writeFile(path.join(output, '404.html'), template);
 await writeFile(path.join(output, '.nojekyll'), '');
 await writeFile(path.join(output, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map(doc => `<url><loc>https://goraebap.xyz${escape(doc.path)}</loc></url>`).join('')}</urlset>\n`);
-await writeFile(path.join(output, 'robots.txt'), 'User-agent: *\nAllow: /\nDisallow: /sample.html\nSitemap: https://goraebap.xyz/sitemap.xml\n');
+await writeFile(path.join(output, 'robots.txt'), 'User-agent: *\nAllow: /\nSitemap: https://goraebap.xyz/sitemap.xml\n');
 console.log(`${routes.length}개 사이트 주소와 호환 주소 생성`);

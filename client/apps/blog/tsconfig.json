@@ -14,14 +14,10 @@
     ],
     "types": [
       "vite/client",
-      "node",
-      "@vitest/browser-playwright"
+      "node"
     ],
     "resolveJsonModule": true,
     "paths": {
-      "@samples/*": [
-        "./samples/*"
-      ],
       "@/*": [
         "./src/*"
       ]
@@ -29,10 +25,8 @@
   },
   "include": [
     "src",
-    "samples",
     "content-plugin.ts",
-    "vite.config.ts",
-    "vitest.config.ts"
+    "vite.config.ts"
   ],
   "exclude": [
     "dist"

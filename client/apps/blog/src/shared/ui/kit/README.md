@@ -1,6 +1,6 @@
 # Webcraft 키트
 
-업무 앱이 같은 화면 구성과 상호작용을 재현할 수 있도록 고른 공통 UI 구현이다. shadcn/ui(Base UI, `base-nova`)와 Tailwind CSS v4로 만들었고, 이 폴더(`src/shared/ui/kit`)와 `src/shared/lib`에 있다. 키트가 아닌, 제품이 직접 만든 공통 부품은 `src/shared/ui` 바로 아래에 두어 키트와 섞지 않는다. 사용 기준은 `plugins/webcraft/skills/design-system/references`의 Markdown이 원본이고, 실행 견본은 `client/apps/blog/samples`에 있으며 가이드 사이트(`client/apps/blog`)에서 본다. 이 폴더는 플러그인에 포함하지 않고 shadcn 레지스트리로 배포한다.
+업무 앱이 같은 화면 구성과 상호작용을 재현할 수 있도록 고른 공통 UI 구현이다. shadcn/ui(Base UI, `base-nova`)와 Tailwind CSS v4로 만들었고, 이 폴더(`src/shared/ui/kit`)와 `src/shared/lib`에 있다. 키트가 아닌, 제품이 직접 만든 공통 부품은 `src/shared/ui` 바로 아래에 두어 키트와 섞지 않는다. 사용 기준은 `plugins/webcraft/skills/design-system/references`의 Markdown이 원본이다. 이 폴더는 플러그인에 포함하지 않고 shadcn 레지스트리로 배포한다.
 
 ## shadcn 키트
 
@@ -20,7 +20,7 @@
 - 리소스 패턴의 부품: List-Detail은 `layout/split-view`, Drill-down은 `layout/page`와 `detail-surface`(`surface="page"`), Routed Modal은 `lib/panel`과 `detail-surface`(`surface="dialog"`) · `dialog`의 `DialogPanel` · `swapDialog`다. 상세 · 작성 · 수정 페이지와 목록 오른쪽 칸은 같은 칸 머리 틀(`PaneFrame`)을 쓴다.
 - 화면 전환(`@webcraft/theme`): 앱은 라우터가 그리는 자리(Outlet을 감싼 요소)에 `route-content` 클래스를 단다. 메뉴의 고른 표시는 `usePendingPathname() ?? pathname`으로 넘겨 이동 중인 주소를 따른다.
 - `components.json`의 `ui` 별칭이 `@/shared/ui/kit`, `lib` · `hooks` 별칭이 `@/shared/lib`이므로 `npx shadcn@latest add <부품>`은 이 폴더에 만든다. 받은 뒤 `lucide-react` import를 `@/shared/ui/kit/icon`으로 바꾸고, 없는 이름은 `generate-ui-icons.mjs`에 더한다.
-- `npm run check:ui`가 사이트 전체(`src` · `samples`)에 화면 규칙(FSD, 의미 토큰, 팔레트 색 · `dark:` 색 · `space-*` 금지, `style={{}}`은 `// check-ui: allow-style <사유>`가 있을 때만, lucide 금지)을 건다. 견본은 FSD 계층 밖이라 FSD 규칙은 보지 않는다. `pages/<공간>/<슬라이스>`처럼 공간으로 묶은 페이지는 슬라이스를 두 마디로 본다.
+- `npm run check:ui`가 사이트 전체(`src`)에 화면 규칙(FSD, 의미 토큰, 팔레트 색 · `dark:` 색 · `space-*` 금지, `style={{}}`은 `// check-ui: allow-style <사유>`가 있을 때만, lucide 금지)을 건다. `pages/<공간>/<슬라이스>`처럼 공간으로 묶은 페이지는 슬라이스를 두 마디로 본다.
 
 ## 레지스트리
 

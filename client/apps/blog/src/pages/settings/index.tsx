@@ -35,7 +35,7 @@ export function SettingsPage() {
     </SettingsBody>;
   }
   return <SettingsBody title="화면" description="가이드의 색과 셸 배치를 정합니다.">
-    <SettingsSection title="화면 설정" note="이 브라우저에만 저장됩니다. 견본 화면도 같은 모드와 배치를 따릅니다.">
+    <SettingsSection title="화면 설정" note="이 브라우저에만 저장됩니다.">
       <SettingsRow wide label="테마" description="라이트와 다크 중에서 고릅니다.">
         <SegmentedControl label="테마" options={modes} value={mode} onChange={setMode} />
       </SettingsRow>

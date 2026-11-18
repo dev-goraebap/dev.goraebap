@@ -8,8 +8,8 @@
 - 화면 규칙의 원본은 `plugins/webcraft/skills/design-system`의 Markdown입니다. 사이트의 규칙 문서는 이 원본을 그대로 읽고, `client/apps/blog/content/`의 화면 해설은 그 규칙을 풀어 씁니다. 규칙을 바꾸면 스킬을 먼저 고치고 해설을 맞춥니다.
 - 블로그 원본은 `client/apps/blog/content/blog/posts/<slug>/index.md`와 옆의 `assets/`입니다. 외부 아키텍처 저장소의 문서는 소유 관계를 바꾸거나 복사하지 않습니다. 글의 뜻과 문체는 별도 요청 없이 고쳐 쓰지 않습니다.
 - 사이트는 하나의 React 앱입니다. `client/apps/blog/src/`를 FSD의 `app → pages → widgets → features → entities → shared` 순서로 나누며 필요한 계층만 둡니다. 상위 계층을 하위 계층에서 가져오거나 같은 계층의 다른 슬라이스를 직접 가져오지 않습니다. 슬라이스 외부에서는 공개 진입점을 사용합니다.
-- 공통 UI는 `client/apps/blog/src/shared/ui/`, 실행 견본은 `client/apps/blog/samples/`에 둡니다. 견본은 별도 사이트가 아니라 같은 빌드의 `sample.html`에서 그립니다.
-- 플러그인은 `plugins/<이름>/` 아래에서 독립적으로 관리합니다. 사이트 소스·견본·글·자산은 플러그인 패키지에 포함하지 않습니다. 기존 제품은 지침 사본 대신 AGENTS.md로 Webcraft를 가리키며, 제품 고유 예외만 프로젝트 규칙에 둡니다.
+- Webcraft 키트(레지스트리 `@webcraft`로 내보내는 부품)는 `client/apps/blog/src/shared/ui/kit/`에 두고, 사이트가 직접 만든 공통 UI는 `client/apps/blog/src/shared/ui/` 바로 아래에 둡니다. 실행 견본은 두지 않습니다.
+- 플러그인은 `plugins/<이름>/` 아래에서 독립적으로 관리합니다. 사이트 소스·글·자산은 플러그인 패키지에 포함하지 않습니다. 기존 제품은 지침 사본 대신 AGENTS.md로 Webcraft를 가리키며, 제품 고유 예외만 프로젝트 규칙에 둡니다.
 - 프론트엔드는 `client/` 아래에 둡니다. `client/package.json`이 npm 워크스페이스이고 앱은 `client/apps/`에 둡니다. `client/apps/blog`는 블로그·가이드 사이트(goraebap.xyz)입니다. 저장소 루트에는 `package.json`을 두지 않습니다. 사이트 명령(`blog:*`)은 `client/`에서, 플러그인 명령은 `plugins/webcraft/`에서 실행합니다.
 - 백엔드는 `server/` 아래에 둡니다. Gradle 프로젝트 하나이고 실행 jar도 하나이며, 기본 패키지는 `xyz.goraebap`입니다. 소스는 기술 기반을 두는 `shared`와 컨텍스트를 두는 `module`로 나눕니다. 모듈은 필요하면 그룹 폴더로 묶으며, 이 저장소는 `module/foundation`과 `module/workspace`로 묶습니다. 컨텍스트 구성은 `server/contexts.json`에 적고 `ContextMapTest`가 지키므로, 컨텍스트를 더하거나 표·공개 뷰·참조를 바꾸면 이 파일을 함께 고칩니다. 다른 컨텍스트의 표는 조인하지 않고 Facade나 주인이 내놓은 공개 뷰로 읽습니다. `foundation`과 `workspace` 그룹은 다른 저장소가 받아 가는 코드이므로 특정 제품이나 회사의 이름·동작·데이터를 넣지 않습니다.
 
@@ -23,7 +23,7 @@
 
 - 도구·패키징 변경 후 `plugins/webcraft/`에서 `npm test`로 Claude·Codex 패키지를 모두 확인합니다.
 - 스킬 변경 후 `plugins/webcraft/`에서 `npm run check`를 실행합니다.
-- 사이트 코드·경로·콘텐츠 변경 후 `client/`에서 `npm run blog:check`, `npm run blog:test`, `npm run blog:build`를 실행합니다.
+- 사이트 코드·경로·콘텐츠 변경 후 `client/`에서 `npm run blog:check`, `npm run blog:build`를 실행하고, `client/apps/blog`에서 `npm run check:ui`를 실행합니다.
 - 서버 코드 변경 후 `server/`에서 `./gradlew build`를 실행해 컴파일과 테스트를 함께 돌립니다.
 - UI를 바꾸면 [문구·본문과 검증](plugins/webcraft/skills/design-system/references/content-and-review.md)을 따라 실제 화면에서 데이터 상태·모션·콘텐츠 폭·키보드·데스크톱과 휴대폰·라이트와 다크를 확인합니다. 확인한 것과 못 한 것을 나누어 보고합니다.
 - 커밋·푸시·전역 설치·배포는 사용자가 요청한 범위에서만 합니다. 사이트 `goraebap.xyz`는 홈서버가 내보내며 저장소 루트에서 `deploy/blog.sh`를 실행해 배포합니다. `deploy/blog.sh`는 인자 없이 실행하면 `main`을, `deploy/blog.sh <ref>`는 그 브랜치나 커밋을 임시 worktree에 꺼내 빌드하고 홈서버에 올리므로 지금 작업 폴더는 건드리지 않습니다. 홈서버에는 최근 배포 5개가 남고 `deploy/blog.sh --rollback`은 바로 전 배포로 되돌립니다. `main` 푸시는 사이트를 배포하지 않으며 검사 워크플로(`check.yml`, `server.yml`)만 둡니다.

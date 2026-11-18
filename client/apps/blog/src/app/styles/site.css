@@ -79,7 +79,7 @@ html, body, #root { block-size: 100%; margin: 0; }
   .prose tr:last-child td { border-block-end: 0; }
   .prose th { font-weight: 600; background: var(--muted); white-space: nowrap; }
 
-  /* 견본 묶음 페이지의 구현 코드 접기(widgets/samples의 Source). */
+  /* 본문의 접기(details). */
   .prose details { margin-block: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); }
   .prose details > summary { padding: 0.5rem 0.75rem; cursor: pointer; font-size: var(--prose-size); font-weight: 500; }
   .prose details > :is(pre, div > pre) { margin: 0; border: 0; border-block-start: 1px solid var(--border); border-radius: 0; }

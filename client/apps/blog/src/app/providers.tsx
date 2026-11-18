@@ -6,7 +6,6 @@ import { ZoomImage } from '@/shared/markdown/ZoomImage';
 import { RouterAnchor } from '@/shared/ui/kit/router-anchor';
 import { Toaster } from '@/shared/ui/kit/toast';
 import { SectionDocs } from '@/widgets/architecture';
-import { Sample, SampleGroup, Source } from '@/widgets/samples';
 import { GuideShell } from '@/widgets/site-shell';
 
 /** 문서 안의 링크: 가이드 주소는 라우터로 옮기고, 다른 사이트는 새 창으로 연다. */
@@ -20,7 +19,7 @@ function Table(props: ComponentPropsWithRef<'table'>) {
   return <div className="mb-4 max-w-full overflow-x-auto rounded-lg border"><table {...props} /></div>;
 }
 
-const mdxComponents = { a: DocLink, table: Table, div: Diagram, img: ZoomImage, Sample, SampleGroup, Source, SectionDocs };
+const mdxComponents = { a: DocLink, table: Table, div: Diagram, img: ZoomImage, SectionDocs };
 
 /**
  * 사이트 루트(라우터의 루트 라우트 부품): 화면 설정, 알림(Toaster), MDX 본문 부품. 툴팁 제공자는 키트 AppShell이 둔다.

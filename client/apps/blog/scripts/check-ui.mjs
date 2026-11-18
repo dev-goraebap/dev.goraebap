@@ -11,10 +11,10 @@ import { fileURLToPath } from "node:url"
 // shared/ui/kit 바로 아래의 우리가 쓴 부품(action-menu · segmented-control …)은 스타일도 검사한다.
 // - pages는 공간별 폴더로 묶을 수 있다(pages/<공간>/<슬라이스>): 공간 폴더에 index.ts가 없으면 슬라이스를 두 마디로 본다.
 //
-// 사이트 전체(src와 견본 samples)를 검사한다. 견본은 FSD 계층 밖(앱처럼 어느 계층이든 가져온다)이라 스타일 · 아이콘 규칙만 본다.
+// 사이트 전체(src)를 검사한다.
 
 const site = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..")
-const TARGETS = ["src", "samples"]
+const TARGETS = ["src"]
 const LAYERS = ["app", "pages", "widgets", "features", "entities", "shared"]
 const PALETTE = /\b(?:bg|text|border|ring|fill|stroke|from|to|via|outline|decoration|shadow)-(?:red|orange|amber|yellow|lime|green|emerald|teal|cyan|sky|blue|indigo|violet|purple|fuchsia|pink|rose|slate|gray|zinc|neutral|stone)-\d{2,3}\b/
 const SPACE = /\bspace-[xy]-/

@@ -41,15 +41,14 @@ const sectionEntry = (section: (typeof architectureSections)[number]): NavEntry 
 };
 
 /**
- * 메뉴: 소개(작업 방식·프로젝트 연결) → 아키텍처(arc42 절, 지침과 해설을 절마다) → UI 키트(부품과 견본). 규칙은 아키텍처의
- * 절에서 찾고, 규칙대로 만든 부품과 견본은 UI 키트에서 본다. 백엔드·프론트를 따로 나누지 않고 8절의 하위 절로 가른다.
+ * 메뉴: 소개(작업 방식·프로젝트 연결) → 아키텍처(arc42 절, 지침과 해설을 절마다). 규칙은 아키텍처의 절에서 찾는다.
+ * 백엔드·프론트를 따로 나누지 않고 8절의 하위 절로 가른다.
  */
 export const guideSpace: NavSpace = {
   id: 'webcraft', title: 'Webcraft',
   sections: [
     { title: '소개', isHeaderHidden: true, entries: [{ path: '/webcraft/', label: '소개', icon: HomeIcon }, ...entriesOf(rules(['goraebap-mode', 'onboarding']))] },
     { title: '아키텍처', entries: [{ path: '/webcraft/architecture/', label: '아키텍처 정의서', icon: EyeIcon }, ...architectureSections.filter(section => !section.id.includes('.')).map(sectionEntry)] },
-    { title: 'UI 키트', entries: entriesOf(content(['catalog'])) },
   ],
 };
 

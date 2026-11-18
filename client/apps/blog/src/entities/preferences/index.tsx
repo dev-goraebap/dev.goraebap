@@ -5,8 +5,7 @@ import type { ShellLayout } from '@/shared/ui/kit/layout/app-shell';
 /**
  * 사이트의 화면 설정: 모드(라이트 · 다크)와 셸 배치(Inset · Split). 이 브라우저에만 남는다.
  * 키트의 lib/appearance(키 'appearance', 시스템 모드 · 목록 높이)는 쓰지 않고 이것 하나가 html의 data-theme을 정한다.
- * 첫 방문 덮개와 견본 iframe이 'guide-theme'의 글자 값을 읽고, 이미 고른 방문자의 설정도 이 키에 있기 때문이다.
- * 셸 배치는 html의 data-shell-layout에도 두어 견본 iframe이 바깥 문서에서 읽는다(samples/catalog/shell-layout).
+ * 첫 방문 덮개가 'guide-theme'의 글자 값을 읽고, 이미 고른 방문자의 설정도 이 키에 있기 때문이다.
  */
 type Mode = 'light' | 'dark';
 type Preferences = { mode: Mode; setMode: (mode: Mode) => void; layout: ShellLayout; setLayout: (layout: ShellLayout) => void };

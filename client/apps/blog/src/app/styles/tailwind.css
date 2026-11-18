@@ -1,6 +1,6 @@
 /*
  * shadcn/ui(Base UI) + Tailwind CSS v4의 토큰과 유틸리티(레지스트리 @webcraft/theme).
- * 레이어 순서(theme · base · components · utilities)는 Tailwind가 정한다. 사이트와 견본 모두 이 파일을 가장 먼저 읽는다.
+ * 레이어 순서(theme · base · components · utilities)는 Tailwind가 정한다. 사이트는 이 파일을 가장 먼저 읽는다.
  */
 @import "tailwindcss";
 @import "tw-animate-css";

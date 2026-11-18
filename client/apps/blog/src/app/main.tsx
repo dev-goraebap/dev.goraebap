@@ -7,7 +7,6 @@ import { BlogPage } from '@/pages/blog';
 import { DocPage } from '@/pages/document';
 import { SettingsPage } from '@/pages/settings';
 import { prepareDiagrams } from '@/shared/markdown/Diagram';
-import { prepareSamples } from '@/widgets/samples';
 import { SiteApp } from './providers';
 
 /** 주소의 문서를 찾아 본문을 불러온다. 묶음 주소(/app-shell/ 등)는 그 묶음의 첫 문서로 보낸다. */
@@ -34,8 +33,8 @@ async function load(pathname: string) {
     if (first) throw redirect({ href: first, replace: true } as never);
     return { doc: null, Content: null };
   }
-  // 본문 코드와 함께 견본 정보와 도표 그림을 준비한다. 새 문서는 처음부터 제 높이로 그려지고 뒤늦게 밀리지 않는다.
-  const [Content] = await Promise.all([loadDoc(doc), prepareSamples(doc.samples ?? []), prepareDiagrams(doc.diagrams ?? [])]);
+  // 본문 코드와 함께 도표 그림을 준비한다. 새 문서는 처음부터 제 높이로 그려지고 뒤늦게 밀리지 않는다.
+  const [Content] = await Promise.all([loadDoc(doc), prepareDiagrams(doc.diagrams ?? [])]);
   return { doc, Content };
 }
 

@@ -40,7 +40,7 @@ arc42: "8.5"
 
 휴대폰 크기는 [토큰 CSS](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/app/styles/tailwind.css)의 `@media (width < 64rem)`와 부품의 `max-md:` 유틸리티로 정합니다.
 
-라이트·다크는 `html[data-theme=dark|light]` 하나가 정하며, Tailwind `dark:` 변형도 이 속성을 봅니다. 색은 토큰에서만 바꾸고 `dark:`로 색을 덮어쓰지 않습니다. 견본과 화면 안에 별도 테마 전환을 두지 않습니다. 아이콘을 고르는 기준은 [아이콘](icons.md), 면의 단계는 [면과 경계](surfaces.md)가 소유합니다.
+라이트·다크는 `html[data-theme=dark|light]` 하나가 정하며, Tailwind `dark:` 변형도 이 속성을 봅니다. 색은 토큰에서만 바꾸고 `dark:`로 색을 덮어쓰지 않습니다. 화면 안에 별도 테마 전환을 두지 않습니다. 아이콘을 고르는 기준은 [아이콘](icons.md), 면의 단계는 [면과 경계](surfaces.md)가 소유합니다.
 
 ## 모바일 주변 영역과 테마
 
