@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
+import { unified } from '@astrojs/markdown-remark';
 import starlight from '@astrojs/starlight';
 import mermaid from 'astro-mermaid';
 import starlightThemeRapide from 'starlight-theme-rapide';
@@ -48,7 +49,7 @@ function coworkCode() {
 
 export default defineConfig({
   site: 'https://goraebap.xyz',
-  markdown: { remarkPlugins: [coworkCode] },
+  markdown: { processor: unified({ remarkPlugins: [coworkCode] }) },
   server: { port: 4451, host: true },
   redirects: {
     '/start/install': '/web/start/install/',
