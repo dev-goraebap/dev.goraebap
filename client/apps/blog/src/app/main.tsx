@@ -21,6 +21,7 @@ async function load(pathname: string) {
     throw redirect({ href: next, replace: true } as never);
   }
   if (path === '/blog/') return { doc: null, Content: BlogPage };
+  if (path === '/webcraft/') throw redirect({ href: '/webcraft/manual/1-introduction/', replace: true } as never);
   if (path.includes('/rules/webcraft-mode/')) throw redirect({ href: path.replace('/webcraft-mode/', '/goraebap-mode/'), replace: true } as never);
   if (path.includes('/rules/manage-workflow/')) throw redirect({ href: path.replace('/manage-workflow/', '/onboarding/'), replace: true } as never);
   // 미리보기 패널 문서는 리소스 화면 패턴 문서가 이어받는다. 북마크가 죽지 않게 돌려보낸다.

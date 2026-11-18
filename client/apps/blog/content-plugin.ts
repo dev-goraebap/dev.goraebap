@@ -62,6 +62,7 @@ export const sectionPath = (id: string) => `/webcraft/architecture/${id.replace(
 
 /** 화면 해설 묶음(content의 폴더). */
 export const contentGroups = [
+  { dir: 'manual', label: '매뉴얼', icon: 'book' },
   { dir: 'architecture', label: '아키텍처', icon: 'layout-board' },
   { dir: 'common', label: '화면 공통', icon: 'layout-grid' },
   { dir: 'app-shell', label: '앱 셸', icon: 'sidebar' },
