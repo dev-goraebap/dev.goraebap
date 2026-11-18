@@ -1,6 +1,0 @@
-plugins {
-	// 맞는 JDK가 없는 환경에서 Gradle이 내려받을 곳.
-	id 'org.gradle.toolchains.foojay-resolver-convention' version '1.0.0'
-}
-
-rootProject.name = 'goraebap-server'
