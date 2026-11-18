@@ -1,0 +1,46 @@
+---
+title: "Webcraft"
+description: "Claude Code와 Codex가 웹 앱을 같은 규칙과 같은 구조로 만들게 하는 플러그인"
+template: splash
+hero:
+  tagline: "Claude Code와 Codex가 웹 앱을 같은 규칙과 같은 구조로 만들게 해요."
+  actions:
+    - text: "설치하기"
+      link: /web/start/install/
+      icon: right-arrow
+    - text: "새 프로젝트 만들기"
+      link: /web/start/new-project/
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <LinkCard title="시작하기" description="설치하고 첫 프로젝트를 만들어요." href="/web/start/install/" />
+  <LinkCard title="프로젝트 구성" description="화면과 서버를 나누고, 한 저장소에 담고, 계약으로 잇는 방식을 알아봐요." href="/web/project/separation/" />
+  <LinkCard title="프론트엔드" description="React 화면의 기술 스택, 코드 구조, 데이터 흐름, 부품을 알아봐요." href="/web/frontend/stack/" />
+  <LinkCard title="백엔드" description="Spring Boot 서버의 기술 스택, 모듈 구조, DB, API 계약을 알아봐요." href="/web/backend/stack/" />
+  <LinkCard title="작업 방식" description="작업을 맡기고, 프로젝트를 진단하고, 도움을 받아요." href="/web/working/delegate/" />
+  <LinkCard title="레퍼런스" description="규칙과 명령어를 한곳에서 찾아봐요." href="/web/reference/rules/" />
+</CardGrid>
+
+
+Webcraft는 Claude Code나 Codex로 웹 앱을 만들 때 쓰는 플러그인이에요. 설치해 두면 에이전트가 화면을 만들든 API를 고치든 같은 규칙과 같은 구조로 작업해요. 프로젝트마다 규칙을 다시 설명하지 않아도 돼요.
+
+## 이런 프로젝트에 맞아요
+
+- 로그인한 사람이 목록을 보고, 상세를 읽고, 양식으로 무언가를 만드는 업무용 웹 앱
+- 프론트엔드와 백엔드를 한 저장소에서 함께 관리하는 프로젝트
+- 데스크톱과 휴대폰 브라우저를 모두 지원해야 하는 화면
+
+무엇을 만들지는 직접 정해야 해요. Webcraft는 만들 것이 정해진 다음부터 도와줘요.
+
+## 쓰는 기술
+
+| 영역 | 기술 |
+| :--- | :--- |
+| 프론트엔드 | React, TypeScript, Vite, TanStack Router, TanStack Query |
+| 화면 부품 | shadcn/ui, Tailwind CSS |
+| 백엔드 | Java, Spring Boot, jOOQ, Flyway |
+
+제품 하나를 저장소 하나에 담고, 화면은 `web/`, 서버는 `server/`에 둬요. 폴더 모양은 [저장소 모양](/web/project/repository/)에서 볼 수 있어요.

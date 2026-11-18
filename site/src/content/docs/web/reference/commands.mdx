@@ -1,0 +1,46 @@
+---
+title: "명령어"
+description: "저장소 루트, web/, server/에서 쓰는 개발·검사·생성 명령"
+sidebar:
+  order: 2
+---
+
+cowork 저장소에 실제로 있는 명령이에요. 어느 폴더에서 실행하는지에 따라 나눴어요.
+
+## 저장소 루트
+
+| 명령 | 하는 일 |
+| :--- | :--- |
+| `sh dev.sh` | 서버(8080)와 화면(4420)을 함께 띄워요. 화면은 서버가 상태 확인에 답한 뒤에 떠요 |
+| `sh dev.sh server` | 서버만 띄워요 |
+| `sh dev.sh web` | 화면만 띄워요. `web/node_modules`가 없으면 먼저 `web/`에서 `npm ci`를 실행해요 |
+
+## web/
+
+| 명령 | 하는 일 |
+| :--- | :--- |
+| `npm run dev` | 화면 개발 서버(Vite, 4420). `/api` 요청은 서버로 넘겨요 |
+| `npm run check` | 아래 `lint:ui` → `lint` → `knip` → `test` → `build`를 차례로 실행해요. 화면 코드를 바꾸면 돌려요 |
+| `npm run lint:ui` | 층 규칙과 화면 규칙 검사(`scripts/check-ui.mjs`) |
+| `npm run lint` | ESLint |
+| `npm run knip` | 안 쓰는 파일·내보내기·패키지 찾기 |
+| `npm test` | `scripts/*.test.mjs` 테스트 |
+| `npm run build` | 타입 검사(`tsc --noEmit`)와 빌드(`vite build`) |
+| `npm run kit:check` | 키트 부품을 레지스트리 원본과 비교해 `kit.lock.json`의 고침 표시가 맞는지 확인 |
+| `npm run kit:check -- --write` | 비교 결과로 `kit.lock.json`의 고침 표시를 고쳐 써요 |
+| `npm run api:generate` | `../server/openapi.json`에서 `src/shared/api/schema.d.ts`를 생성 |
+
+## server/
+
+| 명령 | 하는 일 |
+| :--- | :--- |
+| `./gradlew bootRun --console=plain --args=--spring.profiles.active=dev` | 서버를 개발 프로필로 띄워요. `sh dev.sh server`가 이 명령을 실행해요 |
+| `./gradlew test` | `integration` 태그가 없는 테스트 |
+| `./gradlew integrationTest` | `integration` 태그가 붙은 테스트 |
+| `./gradlew test integrationTest` | 서버 코드를 바꾸면 돌리는 검사 |
+| `./gradlew check` | 테스트와 Spotless·Checkstyle·SpotBugs 검사를 모두 돌려요 |
+| `./gradlew spotlessApply` | 서식을 고쳐 써요 |
+| `./gradlew exportOpenApi` | HTTP 계약을 `openapi.json`에 써요. 화면은 이 파일에서 타입을 생성해요 |
+| `./gradlew bootJar` | 배포용 `build/libs/app.jar`를 만들어요 |
+
+Windows에서 Git Bash가 아닌 셸을 쓰면 `./gradlew` 대신 `gradlew.bat`을 써요.

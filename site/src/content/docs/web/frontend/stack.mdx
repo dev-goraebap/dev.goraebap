@@ -1,0 +1,58 @@
+---
+title: "기술 스택"
+description: "화면(web/)이 쓰는 라이브러리와, 바꾸면 지침이 맞지 않는 것과 바꿔도 되는 것"
+sidebar:
+  order: 1
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+화면은 React SPA예요. 아래 표는 cowork `web/package.json` 기준이고, 버전은 그 파일에 적힌 값이에요. 라이브러리는 둘로 나눠요. **핵심**은 Webcraft 지침이 전제로 삼는 것이고, **교체 가능**은 앱 기능에 따라 넣거나 빼는 것이에요.
+
+## 핵심
+
+이것을 다른 것으로 바꾸면 그 영역의 지침이 맞지 않아요.
+
+| 라이브러리 | 버전 | 하는 일 |
+| :--- | :--- | :--- |
+| React | 19.2.8 | 화면 그리기 |
+| TypeScript | 6.0.2 | 타입 검사 |
+| Vite | 8.1.5 | 개발 서버와 빌드 |
+| TanStack Router | ^1.170.32 | 주소와 화면 연결. `src/pages` 폴더로 주소를 정하는 파일 라우팅 |
+| TanStack Query | ^5.102.8 | 서버 데이터 조회·캐시·변경 |
+| Tailwind CSS | 4.3.5 | 스타일. 색·간격은 테마 토큰으로 |
+| shadcn/ui | CLI ^4.23.0 | 화면 부품. Base UI(`@base-ui/react` 1.9.0) 위에서 동작하는 `base-nova` 스타일 |
+
+## 교체 가능
+
+지침이 이 라이브러리에 기대지 않아요. cowork의 기능을 위해 들어 있어요.
+
+| 라이브러리 | 버전 | 하는 일 |
+| :--- | :--- | :--- |
+| Tiptap | 3.32.0 | 본문 편집기. 본문을 쓰는 앱만 필요해요 |
+| mermaid | 12.2.0 | 본문 안의 도표 표시 |
+| KaTeX | 0.19.1 | 본문 안의 수식 표시 |
+| lowlight | 3.3.0 | 본문 안의 코드 강조 |
+| lottie-web | 5.13.0 | 애니메이션 그림 |
+| react-easy-crop | 6.2.3 | 사진 자르기 |
+| yet-another-react-lightbox | 3.33.0 | 사진 크게 보기 |
+| Pretendard | ^1.3.9 | 글꼴 |
+| Iconify Solar | ^1.2.13 | 아이콘 세트. 스크립트(`npm run icons:ui` 등)로 쓰는 아이콘만 코드로 생성해요 |
+
+표에 없는 패키지는 `web/package.json`에서 확인해요.
+
+## 개발 도구
+
+| 도구 | 하는 일 |
+| :--- | :--- |
+| ESLint 10, typescript-eslint, eslint-plugin-react-hooks, eslint-plugin-unused-imports | 일반 린트 |
+| knip | 안 쓰는 파일·내보내기·패키지 찾기 |
+| openapi-typescript | 서버 계약(`server/openapi.json`)에서 타입 생성 |
+| Playwright | 화면 점검 스크립트(`web/scripts/`) |
+| shadcn CLI | 키트 부품 받기 |
+
+검사를 어떤 순서로 돌리는지는 [린트와 코딩 스타일](/web/frontend/lint/)에 있어요.
+
+<Aside type="caution" title="핵심 라이브러리를 바꾸면">
+층을 나누는 방식, 데이터의 원본은 서버가 가진다는 원칙, 확정한 조건은 주소에 둔다는 원칙은 다른 라이브러리에서도 그대로 쓸 수 있어요. 하지만 그 라이브러리를 전제로 한 구체 규칙, 예를 들어 라우트 파일 이름(`route.tsx`, `page.tsx`)이나 Query 캐시를 준비하고 무효화하는 방법은 맞지 않아요.
+</Aside>

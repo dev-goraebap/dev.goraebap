@@ -1,0 +1,57 @@
+---
+title: "기술 스택"
+description: "서버(server/)가 쓰는 라이브러리와 데이터베이스, 바꿔도 되는 것"
+sidebar:
+  order: 1
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+서버는 Spring Boot API예요. 아래 표는 cowork `server/build.gradle` 기준이고, 버전은 그 파일에 적힌 값이에요. 버전을 적지 않은 것은 Spring Boot가 버전을 정해요.
+
+## 핵심
+
+Webcraft 백엔드 지침이 전제로 삼는 것이에요.
+
+| 라이브러리 | 버전 | 하는 일 |
+| :--- | :--- | :--- |
+| Java | 21 | 언어(Gradle 툴체인) |
+| Spring Boot | 4.1.1 | Web MVC, Security, Validation, WebSocket 스타터 |
+| jOOQ | 3.21.6 | SQL을 타입 있는 Java 코드로 쓰기. 코드 생성기와 런타임 버전을 같게 맞춰요 |
+| Flyway | Spring Boot가 정함 | 스키마 마이그레이션 |
+
+## 데이터베이스
+
+기본은 SQLite 파일 하나예요(`org.xerial:sqlite-jdbc`). 개발할 때는 `server/data/`에, 배포 이미지에서는 `/var/lib/cowork/`에 파일이 생겨요. 업무 DB와 따로, 시스템 현황의 활동·오류 기록을 담는 로그 DB 파일을 하나 더 둬요.
+
+테스트도 SQLite를 써요. 서버를 띄우는 테스트는 테스트 프로필(`src/test/resources/application-test.properties`)로 컨텍스트마다 `build/test-db/` 아래에 새 DB 파일을 만들어요. `./gradlew integrationTest`는 `integration` 태그가 붙은 테스트를, `./gradlew test`는 그 밖의 테스트를 돌려요.
+
+<Aside type="note">
+DB 엔진은 프로젝트가 정해요. Webcraft 지침은 SQLite를 모든 프로젝트에 강제하지 않아요. 엔진을 바꾸면 그 엔진의 트랜잭션·DDL·잠금 동작에 맞춰 마이그레이션을 써요.
+</Aside>
+
+## 교체 가능
+
+앱 기능에 따라 넣거나 빼는 것이에요. 아래는 cowork의 기능을 위해 들어 있어요.
+
+| 라이브러리 | 버전 | cowork에서 하는 일 |
+| :--- | :--- | :--- |
+| AWS SDK for Java(S3) | BOM 2.46.7 | 파일 저장. 사전 서명 주소로 브라우저가 바로 올리고, 로컬에서는 컴퓨터 폴더에 저장해요 |
+| Apache POI(`poi-ooxml`) | 5.4.1 | 보고서를 엑셀 파일로 내보내기 |
+| commonmark(GFM 확장 포함) | 0.31.0 | Markdown 문서를 본문 편집기의 JSON으로 가져오기 |
+| MCP Java SDK | 2.1.0 | 에이전트가 붙는 MCP 서버(`/api/mcp`) |
+| Spring Boot Mail 스타터 | Spring Boot가 정함 | 로그인 인증 코드 메일 |
+
+## 개발 도구
+
+| 도구 | 버전 | 하는 일 |
+| :--- | :--- | :--- |
+| Lombok | Spring Boot가 정함 | 생성자·접근자 코드 줄이기 |
+| springdoc-openapi | 3.1.1 | OpenAPI 문서(`/api/openapi`) 만들기 |
+| Spotless | 플러그인 8.8.0 | 서식 고치기(palantir-java-format) |
+| Checkstyle | 13.8.0 | 이름·import·결함 패턴 규칙 |
+| SpotBugs | 플러그인 6.5.9 | 바이트코드의 결함 패턴 찾기 |
+| ArchUnit | 1.4.2 | 테스트 의존성으로 들어 있어요 |
+| JUnit | Spring Boot가 정함 | 테스트 |
+
+검사를 어떻게 돌리는지는 [린트와 코딩 스타일](/web/backend/lint/)에 있어요.

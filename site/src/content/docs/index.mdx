@@ -1,36 +1,20 @@
 ---
-title: "소개"
-description: "Webcraft가 무엇이고, 어떤 프로젝트에 맞는지"
+title: "dev.goraebap"
+description: "Claude Code와 Codex에서 쓰는 개발 지침 플러그인과 그 문서"
+template: splash
+hero:
+  title: "dev.goraebap"
+  tagline: "에이전트가 제품을 같은 규칙과 같은 구조로 만들게 하는 개발 지침 플러그인과 그 문서예요."
+  actions:
+    - text: "Web 문서 보기"
+      link: /web/
+      icon: right-arrow
 ---
 
-Webcraft는 Claude Code나 Codex로 웹 앱을 만들 때 쓰는 플러그인이에요. 설치해 두면 에이전트가 화면을 만들든 API를 고치든 같은 규칙과 같은 구조로 작업해요. 프로젝트마다 규칙을 다시 설명하지 않아도 돼요.
+import { LinkCard } from '@astrojs/starlight/components';
 
-## 이런 프로젝트에 맞아요
+dev.goraebap은 Claude Code와 Codex에서 쓰는 개발 지침 플러그인을 만들어요. 플러그인은 마켓플레이스 `dev-goraebap`으로 설치해요. 이 사이트에는 제품마다 그 플러그인으로 프로젝트를 짜고 일하는 방법을 정리해 뒀어요.
 
-- 로그인한 사람이 목록을 보고, 상세를 읽고, 양식으로 무언가를 만드는 업무용 웹 앱
-- 프론트엔드와 백엔드를 한 저장소에서 함께 관리하는 프로젝트
-- 데스크톱과 휴대폰 브라우저를 모두 지원해야 하는 화면
+## 제품
 
-무엇을 만들지는 직접 정해야 해요. Webcraft는 만들 것이 정해진 다음부터 도와줘요.
-
-## 쓰는 기술
-
-| 영역 | 기술 |
-| :--- | :--- |
-| 프론트엔드 | React, TypeScript, Vite, TanStack Router, TanStack Query |
-| 화면 부품 | shadcn/ui, Tailwind CSS |
-| 백엔드 | Java, Spring Boot, jOOQ, Flyway |
-
-## 프로젝트 모양
-
-제품 하나를 저장소 하나에 담아요.
-
-```text
-my-product/
-├─ web/         프론트엔드
-├─ server/      백엔드
-├─ AGENTS.md    에이전트가 읽는 프로젝트 안내
-└─ CLAUDE.md
-```
-
-다음 장에서 Webcraft를 설치해요.
+<LinkCard title="Web" description="React 화면과 Spring Boot 서버로 된 업무용 웹 앱" href="/web/" />
