@@ -25,7 +25,7 @@ arc42: "none"
 
 문서를 남긴 뒤 사용자에게 할 일을 짧게 안내합니다.
 
-1. 플러그인 갱신 명령(Claude Code는 `claude plugin marketplace update dev-goraebap`과 `claude plugin update webapp@dev-goraebap`, Codex는 `codex plugin marketplace upgrade dev-goraebap`)을 안내하거나, 사용자가 `"Webapp 업데이트해 줘"`라고 요청하면 에이전트가 직접 실행합니다.
+1. 플러그인 갱신 방법(Claude Code는 `claude plugin marketplace update dev-goraebap`과 `claude plugin update webapp@dev-goraebap`, Codex는 `codex plugin marketplace upgrade dev-goraebap`, Antigravity는 최신 `plugins/webapp/dist/antigravity/plugins/webapp`을 `~/.gemini/config/plugins/webapp`에 다시 복사하거나 연결 갱신)을 안내하거나, 사용자가 `"Webapp 업데이트해 줘"`라고 요청하면 에이전트가 직접 실행합니다.
 2. 새 판을 적용하는 `/reload-plugins` 입력 또는 새 세션 시작을 안내합니다.
 3. 새 세션에 붙여 넣을 한 문장(`"~/.goraebap/handoff/<파일 이름>.md를 읽고 이어서 진행해 줘"`)을 함께 전달합니다.
 

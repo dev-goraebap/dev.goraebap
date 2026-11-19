@@ -57,4 +57,8 @@ Codex:
 codex plugin marketplace upgrade dev-goraebap
 ```
 
-지침 제안은 Webapp 원본 저장소(`dev-goraebap/dev.goraebap`)의 이슈로 받습니다. 역할별 모델 설정 `~/.claude/rules/goraebap-models.md`는 기존 경로를 유지하며, `~/.goraebap/`에는 최신 버전 확인 캐시(`cache/`), 이어받기 문서(`handoff/`), 직접 올리지 못한 이슈 문서(`issues/`)가 남습니다.
+Antigravity:
+
+최신 `plugins/webapp/dist/antigravity/plugins/webapp` 폴더를 `~/.gemini/config/plugins/webapp`에 다시 복사하거나 연결을 갱신하면 다음 턴부터 적용됩니다.
+
+지침과 어댑터 개선 제안은 Webapp 원본 저장소(`dev-goraebap/dev.goraebap`)의 이슈로 받으며, 중복 확인과 타당성·보안 검토를 거쳐 반영합니다. 역할별 모델 설정 `~/.claude/rules/goraebap-models.md`는 기존 경로를 유지하며, `~/.goraebap/`에는 최신 버전 확인 캐시(`cache/`), 이어받기 문서(`handoff/`), 직접 올리지 못한 이슈 문서(`issues/`)가 남습니다.

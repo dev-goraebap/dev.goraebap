@@ -10,16 +10,18 @@ arc42: "none"
 
 프로젝트 AGENTS.md의 [프로젝트 규칙](../../onboarding/references/project-rules.md)에 글쓰기 모델 줄이 있으면 아래 순서보다 우선합니다. 회사 프로젝트에서 외부 모델(`agy`)을 쓰지 않도록 막을 때 사용합니다.
 
+현재 실행 중인 에이전트가 아래에서 고른 위임 대상 도구와 같으면(예: Antigravity 세션에서 `agy`가 지정된 경우), 외부 CLI를 다시 부르지 않고 현재 세션 모델이 [글쓰기 기준](writing.md)에 따라 직접 씁니다.
+
 프로젝트 규칙에 별도 지정이 없으면 다음 순서로 고릅니다.
 
 1. 사용자 설정 파일 `~/.claude/rules/goraebap-models.md`에 `writer:` 줄이 있으면 그 값을 씁니다. Claude Code가 아닌 에이전트(Codex 등)는 이 파일을 직접 읽습니다.
-2. 설정 줄이 없고 `agy`가 있으면(`command -v agy`) `agy --model gemini-4-argon-high`로 부릅니다.
+2. 설정 줄이 없고 `agy`가 있으면(`command -v agy`) `agy --model gemini-4-neon-medium`로 부릅니다.
 3. 둘 다 없으면 Claude 하위 에이전트를 `opus` 모델로 부릅니다. 하위 에이전트의 모델을 고를 수 없는 환경(Codex 등)은 세션 모델이 직접 씁니다.
 
 설정 파일에는 한 줄에 역할 하나를 적습니다.
 
 ```text
-writer: agy gemini-4-argon-high
+writer: agy gemini-4-neon-medium
 ```
 
 값의 첫 단어가 `agy`면 Antigravity CLI와 그 모델을 쓰고, `claude`면 Claude 하위 에이전트와 그 모델을 씁니다(예: `writer: claude opus`). 같은 파일에 에셋 역할(`asset:`)도 적으며 [에셋 맡기기](assets.md)를 따릅니다.
@@ -32,7 +34,7 @@ writer: agy gemini-4-argon-high
 2. 글쓰기 역할을 한 번 부릅니다. `agy`는 상대경로를 셸 위치가 아니라 자기 프로젝트 맥락으로 해석하므로 인계 문서와 대상 파일은 절대경로로 넘깁니다.
 
 ```bash
-agy --model gemini-4-argon-high --mode accept-edits --add-dir <저장소 절대경로> --print='<인계 문서 절대경로>를 읽고 그대로 수행하세요. 적힌 파일만 고칩니다.'
+agy --model gemini-4-neon-medium --mode accept-edits --add-dir <저장소 절대경로> --print='<인계 문서 절대경로>를 읽고 그대로 수행하세요. 적힌 파일만 고칩니다.'
 ```
 
 3. 에이전트는 결과를 원문과 대조합니다. 백틱 코드·링크·제목·수치·코드 블록·표 열 수가 그대로인지, 길이가 크게 줄거나 늘지 않았는지, 문체가 [글쓰기 기준](writing.md)대로인지, 인계 문서에 없는 사실이 들어갔는지 확인합니다.
