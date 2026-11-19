@@ -4,7 +4,7 @@ arc42: "8.6, 6"
 
 # 라우트 마스킹
 
-자기 주소가 있는 상세·작성·수정을 데스크톱 목록 위 대화상자로 엽니다. 목록은 그대로 두고 주소창에는 대상의 실제 주소를 보입니다. 어떤 리소스를 이렇게 여는지는 [리소스 화면 패턴](resource-patterns.md)의 Routed Modal이 정하고, 이 문서는 주소 계약을 정합니다. 상태·복귀와 직접 링크의 코드 계약은 frontend의 [화면 전환](../../frontend/references/navigation.md)이 소유하고, 키트의 [panel](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/lib/panel.ts)(`useOpenPanel`·`usePanel`, 대화상자 바꿔 끼우기 `swapDialog`, 크게 보기의 초안을 넘기는 `carryDraft`)이 구현합니다.
+자기 주소가 있는 상세·작성·수정을 데스크톱 목록 위 대화상자로 엽니다. 목록은 그대로 두고 주소창에는 대상의 실제 주소를 보입니다. 어떤 리소스를 이렇게 여는지는 [리소스 화면 패턴](resource-patterns.md)의 Routed Modal이 정하고, 이 문서는 주소 계약을 정합니다. 상태·복귀와 직접 링크의 코드 계약은 frontend의 [화면 전환](../../frontend/references/navigation.md)이 소유하고, 키트의 [panel](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/lib/panel.ts)(`useOpenPanel`·`usePanel`, 대화상자 바꿔 끼우기 `swapDialog`, 크게 보기의 초안을 넘기는 `carryDraft`)이 구현합니다.
 
 | 진입 | 결과 |
 | --- | --- |

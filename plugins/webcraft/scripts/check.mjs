@@ -2,11 +2,29 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 let skills = 0;
 let links = 0;
 let sections = 0;
+let examples = 0;
+// 예제 링크는 cowork GitHub의 고정 커밋을 가리킨다. 저장소 루트의 서브모듈 examples/cowork가 같은 커밋에 고정돼 있어야 하고,
+// 링크가 가리키는 파일·폴더가 그 커밋에 있어야 한다(cowork 커밋을 올리면 이 검사가 어긋난 링크를 찾는다).
+const COWORK = path.resolve(root, '../../examples/cowork');
+const COWORK_LINK = /^https:\/\/github\.com\/dev-goraebap\/cowork\/(?:blob|tree)\/([^/]+)\/([^#?]+)/;
+let coworkCommit;
+function checkCoworkLink(file, href) {
+  coworkCommit ??= (() => {
+    try { return execFileSync('git', ['-C', COWORK, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(); }
+    catch { throw new Error('examples/cowork 서브모듈이 없습니다. 저장소 루트에서 git submodule update --init을 실행하세요.'); }
+  })();
+  const [, ref, target] = COWORK_LINK.exec(href);
+  assert.equal(ref, coworkCommit, `cowork 링크는 서브모듈 커밋(${coworkCommit})을 가리켜야 합니다: ${file} (${href})`);
+  try { execFileSync('git', ['-C', COWORK, 'cat-file', '-e', `${ref}:${decodeURIComponent(target)}`], { stdio: 'ignore' }); }
+  catch { throw new Error(`cowork ${ref.slice(0, 7)}에 없는 경로입니다: ${file} (${target})`); }
+  examples++;
+}
 // 아키텍처 정의서(arc42)의 절: 1~9와 8절의 하위 절. 결정 기록(docs/decisions.md)과 같은 절 구성이다.
 const ARC42 = /^([1-79]|8\.[1-9])$/;
 // 꼬리 구획은 이 이름과 순서로 파일 맨 끝에만 둔다(글쓰기 기준의 「참고 문서의 구획」).
@@ -40,6 +58,8 @@ async function check(directory) {
       skills++;
     }
     for (const [, href] of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
+      if (COWORK_LINK.test(href)) { checkCoworkLink(file, href); continue; }
+      assert(!href.includes('github.com/dev-goraebap/dev.goraebap/'), `이 저장소에는 예제 코드가 없습니다. cowork 링크로 겁니다: ${file} (${href})`);
       if (/^(https?:|#)/.test(href)) continue;
       const target = path.resolve(directory, href.split('#')[0]);
       assert(!path.relative(root, target).startsWith('..'), `외부 로컬 링크: ${file}`);
@@ -50,4 +70,4 @@ async function check(directory) {
   }
 }
 await check(path.join(root, 'skills'));
-process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, ${sections}개 문서의 arc42·구획 확인\n`);
+process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, ${examples}개 cowork 링크, ${sections}개 문서의 arc42·구획 확인\n`);

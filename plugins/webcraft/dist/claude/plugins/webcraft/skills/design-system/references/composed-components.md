@@ -4,25 +4,25 @@ arc42: "8.8"
 
 # Composites (조합 부품)
 
-여러 기본 부품을 묶어 반복해 쓰는 단위입니다. 조합은 값과 동작을 props로 받고 제품의 API·라우트·업무 정책을 직접 소유하지 않습니다. 화면은 같은 조합을 import하며 그 안에 같은 UI를 다시 만들지 않습니다. FSD의 widgets와 같은 분류가 아닙니다.
+여러 기본 부품을 묶어 반복해 쓰는 단위입니다. 조합은 값과 동작을 props로 받고 제품의 API·라우트·업무 정책을 직접 소유하지 않습니다. 화면은 같은 조합을 import하며 그 안에 같은 UI를 다시 만들지 않습니다. FSD 층에는 widgets를 두지 않습니다. 업무를 모르는 조합은 `shared`에 두고, 앱 셸처럼 업무를 아는 틀은 `app/layout`에 둡니다.
 
 | 조합 | 소유하는 책임 | 코드 |
 | --- | --- | --- |
-| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [form-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/form-dialog.tsx), [confirm-dialog](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/confirm-dialog.tsx), [detail-surface](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/detail-surface.tsx), [기준](dialog.md) |
-| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [adaptive-popover](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/adaptive-popover.tsx) |
-| 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | [action-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/action-menu.tsx)(행 메뉴는 `size="row"`), [option-list](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/option-list.tsx) |
-| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search-tool](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/search-tool.tsx), [filter](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/filter), [display-menu](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/display-menu.tsx), [기준](search-filter.md) |
-| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/property-pill.tsx), [info-pill](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/info-pill.tsx) |
-| 활동·댓글 피드 | 이벤트 한 줄 기록, 댓글 카드·한 단계 답글·수정·삭제·인용, 입력 칸 | [ActivityFeed](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/reading/ui/ActivityFeed.tsx) |
-| 행 순서 바꾸기 | 드래그 손잡이·`Alt`+방향키 이동·`Esc` 취소·위치 음성 안내 | [reorder](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/reorder) |
-| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [FileDropzone](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/compose/FileDropzone.tsx) |
-| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [page-state](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/page-state), [기준](data-states.md) |
-| 본문 칸 | 종이 위의 리치 본문: 블록 메뉴·선택 서식 도구·표·미디어 | [editor](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/editor) |
-| 문서 편집기 | 종이(A4)로 나가는 문서: 상단 서식 막대·페이지 나누기·페이지 설정·머리말·바닥글·내보내기 | [document](https://github.com/dev-goraebap/dev.goraebap/tree/main/client/apps/blog/src/shared/ui/kit/document) |
-| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group-header](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/list-group-header.tsx) |
-| 목록 끝 줄 | 수·더 보기·페이지 자리의 세 자리 줄, 수의 음성 안내 | [list-more](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/list-more.tsx), [기준](layout-patterns.md#목록-끝-줄) |
-| 표 머리 정렬 | 머리 칸을 눌러 정렬, 방향 표시 | [sortable-head](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/sortable-head.tsx), [기준](layout-patterns.md#표) |
-| 단계 표시 | 번호 동그라미·이름·잇는 선 | [step-indicator](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/step-indicator.tsx), [기준](creation-form.md#단계형) |
+| 공통 다이얼로그·확인 창·짧은 양식 | 위치·여백·스크롤·닫기·초점 | [form-dialog](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/form-dialog.tsx), [confirm-dialog](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/confirm-dialog.tsx), [detail-surface](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/detail-surface.tsx), [기준](dialog.md) |
+| 곁에 여는 내용 | 데스크톱 팝오버 ↔ 휴대폰 바텀시트, 시트 손잡이 여백 | [adaptive-popover](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/adaptive-popover.tsx) |
+| 동작 메뉴·행 메뉴 | 아이콘·이름·고른 표시, 고른 뒤 닫기 | [action-menu](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/action-menu.tsx)(행 메뉴는 `size="row"`), [option-list](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/option-list.tsx) |
+| 검색·필터·표시 도구 | 열기·닫기·지우기, 적용 줄, 기본과 다른 표시 | [search-tool](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/search-tool.tsx), [filter](https://github.com/dev-goraebap/cowork/tree/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/filter), [display-menu](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/display-menu.tsx), [기준](search-filter.md) |
+| 속성 알약 | 빈 값·필수·값 고르기, 상세 열에서 행 모양 | [property-pill](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/property-pill.tsx), [info-pill](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/info-pill.tsx) |
+| 활동·댓글 피드 | 이벤트 한 줄 기록, 댓글 카드·한 단계 답글·수정·삭제·인용, 입력 칸 | [ActivityFeed](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/reading/ui/ActivityFeed.tsx) |
+| 행 순서 바꾸기 | 드래그 손잡이·`Alt`+방향키 이동·`Esc` 취소·위치 음성 안내 | [reorder](https://github.com/dev-goraebap/cowork/tree/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/reorder) |
+| 파일 올리기 칸 | 고르기·끌어 놓기·형식과 크기 확인 | [FileDropzone](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/compose/FileDropzone.tsx) |
+| 상태 화면 | 빈 목록·결과 없음·없는 대상·실패의 그림과 문구 | [page-state](https://github.com/dev-goraebap/cowork/tree/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/page-state), [기준](data-states.md) |
+| 본문 칸 | 종이 위의 리치 본문: 블록 메뉴·선택 서식 도구·표·미디어 | [rich-document](https://github.com/dev-goraebap/cowork/tree/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/lib/rich-document) |
+| 문서 편집기 | 종이(A4)로 나가는 문서: 상단 서식 막대·페이지 나누기·페이지 설정·머리말·바닥글·내보내기 | [paged-document](https://github.com/dev-goraebap/cowork/tree/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/paged-document) |
+| 그룹 머리 | 그룹 이름·개수·접기, 스크롤에 붙는 띠 | [list-group-header](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/list-group-header.tsx) |
+| 목록 끝 줄 | 수·더 보기·페이지 자리의 세 자리 줄, 수의 음성 안내 | [list-more](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/list-more.tsx), [기준](layout-patterns.md#목록-끝-줄) |
+| 표 머리 정렬 | 머리 칸을 눌러 정렬, 방향 표시 | [sortable-head](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/sortable-head.tsx), [기준](layout-patterns.md#표) |
+| 단계 표시 | 번호 동그라미·이름·잇는 선 | [기준](creation-form.md#단계형) |
 
 구현이 없는 조합을 메뉴에 빈 항목으로 만들지 않습니다. 제품 고유 조합(아이콘 표시 고르기, 전역 검색 팔레트, 프로필 패널)은 프로젝트가 소유합니다.
 
@@ -121,4 +121,4 @@ HTML 임베드는 올린 HTML을 본문 안의 격리된 틀로 미리 봅니다
 
 읽기(상세) 화면은 다른 상세와 같은 `DetailLayout`입니다. 오른쪽 정보 칸에 페이지 항목(`PagesPill`, "N페이지")을 두고, 누르면 페이지 목록(번호와 대표 제목, 새 제목 없이 이어지는 페이지는 "이어짐")이 열려 고른 페이지로 갑니다. 왼쪽 페이지 목록 사이드바는 두지 않습니다. 내보내기(`ExportMenu`)는 내려받기 아이콘과 묶음 메뉴로, 내보내기 묶음(PDF로 저장, 인쇄)과 공유 묶음(링크 복사)을 둡니다. 서버에서 PDF를 만드는 앱은 `onSavePdf`를 넘기고, 주지 않으면 브라우저 인쇄 창을 엽니다. DOCX는 다루지 않습니다. 인쇄의 한계는 [인쇄와 PDF](print.md)를 따릅니다.
 
-부품은 `DocumentEditor`(편집), `DocumentView`(읽기), `model.ts`(모드·페이지 설정·페이지 모양), `pagination.ts`(Tiptap 확장 `Pagination`), `PageCanvas`(종이 틀·머리말·바닥글), `DocumentSettings`, `PageLookMenu`, `ZoomControl`, `ExportMenu`, `PagesPill`, `usePagedFrame`(편집과 읽기가 함께 쓰는 연결)입니다. 상단 막대는 키트 editor의 `EditorToolbar`입니다. 레지스트리에서 `@webcraft/document`를 받으면 필요한 항목이 함께 옵니다.
+부품은 `DocumentEditor`(편집), `DocumentView`(읽기), `model.ts`(모드·페이지 설정·페이지 모양), `pagination.ts`(Tiptap 확장 `Pagination`), `PageCanvas`(종이 틀·머리말·바닥글), `DocumentSettings`, `PageLookMenu`, `ZoomControl`, `ExportMenu`, `PagesPill`, `usePagedFrame`(편집과 읽기가 함께 쓰는 연결)입니다. 상단 막대는 키트 editor의 `EditorToolbar`입니다. cowork에서 가져올 때는 이 부품들이 가져오는 파일도 함께 복사합니다([레퍼런스 사용과 갱신](reference-kit.md)).

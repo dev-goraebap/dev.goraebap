@@ -4,7 +4,7 @@ arc42: "8.5"
 
 # 아이콘
 
-아이콘은 명령·상태·대상을 구분하는 시각 언어입니다. 아이콘은 Solar를 씁니다. 화면은 lucide 대신 생성 모듈(`@/shared/ui/kit/icon`)에서 lucide 식 이름(`SearchIcon`, `ArrowLeftIcon`, `CalendarIcon`)으로 아이콘을 부르고, 이름에서 Solar 아이콘으로 가는 매핑은 [생성 스크립트](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/scripts/generate-ui-icons.mjs) 한 곳에 둡니다. 사용하는 이름만 생성하며, 이름을 더하면 매핑에 Solar 이름을 더하고 `npm run icons:ui`로 다시 만듭니다.
+아이콘은 명령·상태·대상을 구분하는 시각 언어입니다. 아이콘은 Solar를 씁니다. 화면은 lucide 대신 생성 모듈(`@/shared/ui/kit/icon`)에서 lucide 식 이름(`SearchIcon`, `ArrowLeftIcon`, `CalendarIcon`)으로 아이콘을 부르고, 이름에서 Solar 아이콘으로 가는 매핑은 [생성 스크립트](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/scripts/generate-ui-icons.mjs) 한 곳에 둡니다. 사용하는 이름만 생성하며, 이름을 더하면 매핑에 Solar 이름을 더하고 `npm run icons:ui`로 다시 만듭니다.
 
 ## 기본과 선택
 

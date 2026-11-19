@@ -33,6 +33,6 @@ secondary 단추, `tool`, 보기 탭, 속성 알약, 셀렉트, 필터는 같은
 
 역할·권한(보기·편집·관리)은 글자만이 아니라 아이콘과 함께 보입니다. 같은 이름의 역할이 화면마다 같은 아이콘을 씁니다.
 
-제목·본문을 쓰는 양식의 입력은 이 표가 아니라 [생성 양식](creation-form.md)을 따릅니다. 날짜는 키트의 [DateCalendar·DatePicker](https://github.com/dev-goraebap/dev.goraebap/blob/main/client/apps/blog/src/shared/ui/kit/date-picker.tsx)(react-day-picker)를 공통으로 쓰고(브라우저 기본 날짜 선택기를 섞지 않습니다), 시간은 직접 입력과 목록을 함께 제공하는 공통 입력으로 받습니다.
+제목·본문을 쓰는 양식의 입력은 이 표가 아니라 [생성 양식](creation-form.md)을 따릅니다. 날짜는 키트의 [DateCalendar·DatePicker](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/shared/ui/kit/date-picker.tsx)(react-day-picker)를 공통으로 쓰고(브라우저 기본 날짜 선택기를 섞지 않습니다), 시간은 직접 입력과 목록을 함께 제공하는 공통 입력으로 받습니다.
 
 모바일 실행 버튼의 최소 너비와 줄 여백은 [간격과 크기](spacing.md)를 따릅니다. 프로필 그림은 28~32px로 두고 누르는 영역을 별도로 최소 44px 확보합니다. 입력의 날짜 열기 버튼, 분할 선택 버튼의 각 항목, 순서 변경 손잡이도 누르는 영역을 확인합니다. 컨트롤 바깥 상자만 커지고 실제 선택 항목은 작게 남지 않게 합니다.
