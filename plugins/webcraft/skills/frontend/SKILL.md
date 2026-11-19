@@ -1,12 +1,18 @@
 ---
 name: frontend
-description: React·TypeScript 웹 앱의 TanStack Router/Query 데이터 흐름, 폼 초안과 화면 전환을 구현합니다. 페이지·컴포넌트·프론트 상태를 만들거나 고칠 때 사용합니다.
+description: 웹 앱의 라우트·서버 데이터 캐시 흐름, 폼 초안과 화면 전환을 구현합니다. 페이지·컴포넌트·프론트 상태를 만들거나 고칠 때 사용합니다.
 arc42: "8.4, 2"
 ---
 
 # 프론트엔드
 
-기본 조합은 React·TypeScript·Vite·TanStack Router/Query입니다. 파일 구조는 공식 `feature-sliced-design` 스킬을 따릅니다. 프로젝트가 다른 스택을 채택했다면 기존 선택을 따르며 전환을 작업에 끼워 넣지 않습니다.
+웹 앱은 컴포넌트 기반 화면, 검증한 URL을 다루는 라우터, 서버 데이터 캐시를 맡는 조회 도구로 짭니다. 파일 구조는 공식 `feature-sliced-design` 스킬을 따릅니다. 어떤 라이브러리와 판을 쓰는지는 프로젝트에서 정하며, 프로젝트가 채택한 스택을 다른 것으로 바꾸는 일을 작업에 끼워 넣지 않습니다.
+
+## 예제
+
+이 지침은 판단 기준만 담고 구현은 담지 않습니다. 프로젝트 AGENTS.md의 `Webcraft 예제:` 줄이 가리키는 예제에서 같은 영역 파일(`frontend.md`)을 함께 읽습니다. 예제 목록은 [예제](../goraebap-mode/examples/README.md)에 있습니다. 지금 있는 예제는 cowork이며 이 영역 파일은 [cowork: 프론트엔드](../goraebap-mode/examples/cowork/frontend.md)입니다. 예제와 프로젝트 AGENTS.md가 다르면 AGENTS.md를 따릅니다.
+
+## 읽을 자료
 
 - [코드 작성](references/structure.md): 컴포넌트·훅·Effect를 다룰 때 읽습니다.
 - [상태와 데이터 흐름](references/data-flow.md): 조회·변경·폼·라우트를 다룰 때 읽습니다.

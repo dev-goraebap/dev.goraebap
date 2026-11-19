@@ -5,7 +5,7 @@ Webcraft 개발 지침 플러그인을 관리합니다. 지침과 문서는 한�
 ## 원본과 작업 범위
 
 - `plugins/webcraft/skills/`는 배포할 개발 지침의 원본입니다. 특정 회사 제품의 동작·업무 데이터·접속 정보는 넣지 않습니다.
-- 대표 코드는 cowork 하나이며 키트 원본도 cowork(`web/src/shared/ui/kit`)입니다. 스킬의 코드 링크는 cowork GitHub의 고정 커밋 주소(`https://github.com/dev-goraebap/cowork/blob/<커밋>/web/...`)로 겁니다. 서브모듈 `examples/cowork`는 그 커밋에 고정하며 읽기 전용입니다. cowork는 cowork 저장소에서 고칩니다. 링크 커밋을 올릴 때는 서브모듈을 같은 커밋으로 올리고, `plugins/webcraft/`에서 `npm run check`로 링크가 가리키는 파일이 있는지 확인합니다. 저장소를 받을 때는 `git clone --recurse-submodules`로 받거나 받은 뒤 `git submodule update --init`을 실행해 서브모듈도 받습니다. 이 방식을 고른 이유는 [결정 기록](docs/decisions.md)에 둡니다.
+- 대표 코드는 cowork 하나이며 키트 원본도 cowork(`web/src/shared/ui/kit`)입니다. 지침은 스택·라이브러리·프로젝트 코드 없이 판단 기준과 이유만 쓰며 `plugins/webcraft/`의 `npm run check`가 이를 검사합니다. 스택과 구현은 프로젝트별 예제 `plugins/webcraft/skills/goraebap-mode/examples/<프로젝트>/`에 두고, 새 예제를 더하는 법은 [예제 안내](plugins/webcraft/skills/goraebap-mode/examples/README.md)를 따릅니다. 예제의 cowork 링크는 cowork GitHub의 고정 커밋 주소(`https://github.com/dev-goraebap/cowork/blob/<커밋>/web/...`)로 겁니다. 서브모듈 `examples/cowork`는 그 커밋에 고정하며 읽기 전용입니다. cowork는 cowork 저장소에서 고칩니다. 링크 커밋을 올릴 때는 서브모듈을 같은 커밋으로 올리고, `plugins/webcraft/`에서 `npm run check`로 링크가 가리키는 파일이 있는지 확인합니다. 저장소를 받을 때는 `git clone --recurse-submodules`로 받거나 받은 뒤 `git submodule update --init`을 실행해 서브모듈도 받습니다. 이 방식을 고른 이유는 [결정 기록](docs/decisions.md)에 둡니다.
 - 플러그인은 `plugins/<이름>/` 아래에서 독립적으로 관리합니다. 기존 제품은 지침 사본 대신 AGENTS.md로 Webcraft를 가리키며, 제품 고유 예외만 프로젝트 규칙에 둡니다.
 - 되돌리기 어려운 결정과 기각한 대안은 [결정 기록](docs/decisions.md)에 남깁니다.
 

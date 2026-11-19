@@ -14,6 +14,17 @@ let examples = 0;
 const COWORK = path.resolve(root, '../../examples/cowork');
 const COWORK_LINK = /^https:\/\/github\.com\/dev-goraebap\/cowork\/(?:blob|tree)\/([^/]+)\/([^#?]+)/;
 let coworkCommit;
+// 지침은 스택·프로젝트 없이 판단 기준만 담는다. 스택 이름과 프로젝트 코드 링크는 예제(goraebap-mode/examples/<프로젝트>)에만 둔다.
+const EXAMPLES = path.join(root, 'skills', 'goraebap-mode', 'examples');
+const STACK = /\b(React|TanStack|Vite|Spring|jOOQ|Flyway|shadcn|Tailwind|Base UI|Tiptap|Lombok|SQLite|PostgreSQL|TypeScript|Java|Gradle|Storybook)\b/;
+let pure = 0;
+function checkPure(file, content) {
+  if (!path.relative(EXAMPLES, file).startsWith('..')) return;
+  const lines = content.split('\n');
+  const line = lines.findIndex(each => STACK.test(each) || each.includes('github.com/dev-goraebap/cowork'));
+  assert(line < 0, `지침에는 스택 이름·프로젝트 코드 링크를 두지 않습니다(예제로 옮김): ${file}:${line + 1} ${lines[line]?.trim().slice(0, 80)}`);
+  pure++;
+}
 function checkCoworkLink(file, href) {
   coworkCommit ??= (() => {
     try { return execFileSync('git', ['-C', COWORK, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(); }
@@ -49,6 +60,7 @@ async function check(directory) {
     if (!file.endsWith('.md')) continue;
     const content = await fs.readFile(file, 'utf8');
     checkSections(file, content);
+    checkPure(file, content);
     if (entry.name === 'SKILL.md') {
       const frontmatter = /^---\r?\nname: ([a-z0-9]+(?:-[a-z0-9]+)*)\r?\ndescription: ([^\r\n]+)\r?\n(?:arc42: "[^"]+"\r?\n)?---/.exec(content);
       assert(frontmatter, `스킬 frontmatter가 잘못됐습니다: ${file}`);
@@ -70,4 +82,4 @@ async function check(directory) {
   }
 }
 await check(path.join(root, 'skills'));
-process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, ${examples}개 cowork 링크, ${sections}개 문서의 arc42·구획 확인\n`);
+process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, ${examples}개 cowork 링크, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택 없음 확인\n`);

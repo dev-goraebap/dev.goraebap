@@ -8,11 +8,11 @@ arc42: "8.2"
 
 | 주체 | 판정 | 표현 |
 | --- | --- | --- |
-| 도메인 | 자기 업무 규칙 위반 | 메시지를 담은 순수 Java DomainRuleViolation |
-| 서비스 | 부재·권한·충돌 등 유스케이스 오류 | 모듈 ErrorCode를 가진 BusinessException |
-| HTTP 경계 | 예외를 응답으로 변환 | 공통 예외 처리기에서 ProblemDetail과 상태 코드 매핑 |
+| 도메인 | 자기 업무 규칙 위반 | 메시지만 담은, 프레임워크에 기대지 않는 규칙 위반 예외 |
+| 서비스 | 부재·권한·충돌 등 유스케이스 오류 | 모듈 ErrorCode를 가진 업무 예외 |
+| HTTP 경계 | 예외를 응답으로 변환 | 공통 예외 처리기에서 문제 상세(`application/problem+json`) 본문과 상태 코드 매핑 |
 
-도메인은 HTTP 상태·Spring 예외·응답 DTO·모듈의 application ErrorCode를 참조하지 않습니다. DomainRuleViolation에도 HTTP 상태나 application 코드를 넣지 않습니다. 공통 HTTP 처리기는 이 규칙 위반을 400으로 매핑합니다.
+도메인은 HTTP 상태·프레임워크 예외·응답 DTO·모듈의 application ErrorCode를 참조하지 않습니다. 규칙 위반 예외에도 HTTP 상태나 application 코드를 넣지 않습니다. 공통 HTTP 처리기는 이 규칙 위반을 400으로 매핑합니다.
 
 모듈별 `XxxErrorCode`는 application 루트에 하나씩 두고 애그리거트별로 나누지 않습니다. 서비스가 판정하는 오류는 안정된 코드로 구별하며 권한 없는 자원의 존재 노출 정책과 충돌 응답을 유지합니다. 도메인 위반의 메시지는 사용자에게 전달 가능한 업무 언어로 쓰고 내부 상태·비밀값을 넣지 않습니다.
 

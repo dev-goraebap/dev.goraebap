@@ -12,15 +12,15 @@ arc42: "8.2"
 
 | 항목 | 기준 |
 | --- | --- |
-| 서명 | 서버 비밀키로 HMAC-SHA256을 계산하고, 서명 대상에 용도 문자열(예: `html-embed`)·만료 시각·키를 함께 넣습니다. 용도 문자열이 있어 다른 서명과 섞여 쓰이지 않습니다. 비교는 시간이 일정한 비교(`MessageDigest.isEqual`)로 합니다 |
+| 서명 | 서버 비밀키로 HMAC-SHA256을 계산하고, 서명 대상에 용도 문자열(예: `html-embed`)·만료 시각·키를 함께 넣습니다. 용도 문자열이 있어 다른 서명과 섞여 쓰이지 않습니다. 비교는 걸리는 시간이 입력에 따라 달라지지 않는 비교로 합니다 |
 | 만료 | 1시간. 만료 시각을 10분 단위로 올려 가까운 시각에 만든 주소가 같아지게 하여 브라우저가 캐시할 수 있게 합니다. 본문을 다시 읽으면 새 주소를 받습니다 |
 | 권한 | 서명한 주소가 곧 권한입니다(서명 주소와 같음). 권한 확인은 기존 파일 열기 주소(예: 모듈의 `…/files/{id}`)가 하고, HTML을 제자리에서 열 때만 전용 주소로 돌려보냅니다. 내려받기는 기존 경로를 씁니다 |
 | 응답 | `Content-Type: text/html;charset=UTF-8`, `Cache-Control: private, max-age=300`. 서명이 틀리거나 만료됐거나 객체가 없으면 404입니다. 이 주소는 브라우저가 돌려보내기로만 오므로 OpenAPI 문서에서 뺍니다 |
 
-보안 체인(Spring Security)은 그 주소만의 `SecurityFilterChain`을 다른 체인보다 앞(`@Order(0)`, `securityMatcher("/api/embeds/**")`)에 둡니다.
+서버의 보안 설정은 그 주소에만 걸리는 보안 규칙 묶음을 따로 두고, 다른 규칙보다 먼저 맞춰 보게 합니다.
 
-- GET·HEAD만 허용하고 나머지는 `denyAll`입니다.
-- 세션 없음(`STATELESS`), CSRF·폼 로그인·HTTP Basic·로그아웃·요청 캐시를 끕니다.
+- GET·HEAD만 허용하고 나머지 요청은 모두 거부합니다.
+- 세션을 만들지 않고, CSRF·폼 로그인·HTTP Basic·로그아웃·요청 캐시를 끕니다.
 - `X-Frame-Options`를 끕니다.
 - `Content-Security-Policy: sandbox allow-scripts allow-modals allow-forms allow-popups; frame-ancestors 'self'`, `Referrer-Policy: no-referrer`를 붙입니다.
 
@@ -38,7 +38,7 @@ arc42: "8.2"
 
 호스트의 모든 IP가 공개 주소일 때만 부릅니다. 막는 대역은 미지정(`0.0.0.0/8`, `::`), 루프백, 링크 로컬, 사설(site local), 멀티캐스트, CGNAT 공유 대역 `100.64.0.0/10`, 벤치마크 `198.18.0.0/15`, 예약 `240.0.0.0/4`, IPv6 고유 로컬 `fc00::/7`입니다. IPv4를 품은 IPv6(IPv4-mapped `::ffff:a.b.c.d`, IPv4-compatible)와 NAT64 `64:ff9b::/96`은 안의 IPv4로 다시 판정합니다.
 
-리다이렉트는 자동으로 따르지 않습니다(`HttpClient.Redirect.NEVER`). `Location`을 직접 풀어 다음 주소에도 같은 검사를 하고 최대 3번까지 따릅니다.
+HTTP 클라이언트가 리다이렉트를 자동으로 따르지 않게 합니다. `Location`을 직접 풀어 다음 주소에도 같은 검사를 하고 최대 3번까지 따릅니다.
 
 연결·응답은 각 5초이고, 상태 200이고 `Content-Type`이 HTML일 때만 읽습니다. 본문은 앞 512KB만 읽습니다(메타데이터는 `head`에 있음). 쿠키·토큰 등 우리 쪽 인증을 보내지 않습니다.
 

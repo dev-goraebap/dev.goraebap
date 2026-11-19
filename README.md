@@ -43,13 +43,13 @@ codex plugin marketplace upgrade dev-goraebap
 
 ## 대표 예제
 
-지침을 적용한 대표 프로젝트는 [cowork](https://github.com/dev-goraebap/cowork)입니다. 지침의 코드 링크는 cowork의 고정 커밋을 가리킵니다.
+지침은 스택과 무관하게 판단 기준과 이유만 담고, 스택과 구현은 프로젝트별 예제가 보여 줍니다. 지금 예제는 [cowork](https://github.com/dev-goraebap/cowork) 하나이며, 예제의 코드 링크는 cowork의 고정 커밋을 가리킵니다. 프로젝트는 AGENTS.md의 `Webcraft 예제:` 줄로 따를 예제를 정합니다.
 
 ## 저장소 구성
 
 | 위치 | 역할 |
 | --- | --- |
-| `plugins/webcraft/` | 플러그인 지침 원본·패키징 도구·테스트·생성 배포본 |
+| `plugins/webcraft/` | 플러그인 지침 원본·프로젝트별 예제(`skills/goraebap-mode/examples/`)·패키징 도구·테스트·생성 배포본 |
 | `examples/cowork/` | cowork 서브모듈. 읽기 전용이며 지침 링크 검사에 씁니다 |
 | `docs/decisions.md` | 결정 기록 |
 

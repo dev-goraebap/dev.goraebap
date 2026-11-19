@@ -10,7 +10,7 @@ arc42: "8.1, 5"
 
 피처가 제공하는 계약은 `XxxFacade` 하나로 모읍니다. 같은 피처의 조회·쓰기·표시를 QueryFacade·CommandFacade·ViewFacade로 나누지 않습니다. 계약은 여러 소비자가 쓰는 업무 기능을 표현하고 내부 엔티티를 그대로 공개하지 않습니다.
 
-전용 입력·결과는 Facade 안의 `Param`·`Result` 묶음이 소유합니다. 예를 들어 `ProductFacade.Param.Create`, `ProductFacade.Result.Detail`처럼 부릅니다. 전용 record는 해당 묶음에 중첩하며 묶음 클래스의 생성자는 감춥니다. Spi도 같은 방식으로 자기 전달 타입을 소유합니다.
+전용 입력·결과는 Facade 안의 `Param`·`Result` 묶음이 소유합니다. 예를 들어 `ProductFacade.Param.Create`, `ProductFacade.Result.Detail`처럼 부릅니다. 전용 레코드 타입은 해당 묶음에 중첩하며 묶음 클래스의 생성자는 감춥니다. Spi도 같은 방식으로 자기 전달 타입을 소유합니다.
 
 - 단순 인자 하나를 억지로 Param으로 감싸지 않습니다.
 - 여러 계약이 실제로 함께 쓰는 업무 enum·값 타입은 모듈 루트에 별도로 둘 수 있습니다.
