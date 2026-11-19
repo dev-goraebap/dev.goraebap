@@ -5,10 +5,10 @@
   },
   "plugins": [
     {
-      "name": "webcraft",
+      "name": "webapp",
       "source": {
         "source": "local",
-        "path": "./plugins/webcraft/dist/codex/plugins/webcraft"
+        "path": "./plugins/webapp/dist/codex/plugins/webapp"
       },
       "policy": {
         "installation": "AVAILABLE",
