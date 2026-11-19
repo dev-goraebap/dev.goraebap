@@ -4,6 +4,7 @@ import { adapterName, context } from '../hooks/adapter-context.mjs';
 
 test('AGENTS.md의 Webapp 어댑터 줄에서 어댑터 이름을 읽는다', () => {
   assert.equal(adapterName('# 제품\n\n- Webapp 어댑터: cowork\n'), 'cowork');
+  assert.equal(adapterName('<!-- webapp@dev-goraebap:start -->\n## 개발 지침\n\n- Webapp 어댑터: cowork\n<!-- webapp@dev-goraebap:end -->\n'), 'cowork');
   assert.equal(adapterName('Webapp 어댑터: `cowork`'), 'cowork');
   assert.equal(adapterName('- Webapp 예제: cowork'), 'cowork');
   assert.equal(adapterName('# 제품\n지침을 따릅니다.'), null);

@@ -51,7 +51,7 @@ arc42: "none"
 - [검증](references/verification.md)에 따라 바뀐 부분을 확인합니다. 수행한 검증과 남은 제한을 구분해 답합니다.
 - 작업 보고에 읽은 지침과 어댑터 파일을 적습니다.
 - 작업 중 MCP·플러그인 도구의 기능 부족이나 반복 호출을 실제 스키마로 확인하면 우회만 설명하고 끝내지 않고 [도구의 부족을 발견했을 때](references/tool-improvements.md)를 따릅니다.
-- 브랜치를 만들 때는 [브랜치 이름](references/branches.md)을 따릅니다.
+- 브랜치·커밋·PR을 다룰 때는 [Git 작업](references/git.md)을 따릅니다.
 - 커밋·푸시·게시·배포는 사용자가 허용한 범위에서만 합니다.
 
 스킬 자체가 틀렸으면 [지침 개선](playbooks/evolve.md)으로 원인을 고칩니다.
