@@ -1,0 +1,5 @@
+dist/
+.vite/
+.tanstack/
+*.tsbuildinfo
+**/routeTree.gen.ts

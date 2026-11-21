@@ -1,0 +1,12 @@
+{
+  "name": "@goraebap/web",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "dev:blog": "pnpm --filter @goraebap/blog dev",
+    "build:blog": "pnpm --filter @goraebap/blog build",
+    "build:registry": "pnpm --filter @goraebap/ui build:registry",
+    "typecheck": "pnpm -r typecheck",
+    "build": "pnpm -r build"
+  }
+}
