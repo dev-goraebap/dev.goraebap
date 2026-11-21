@@ -1,0 +1,394 @@
+---
+title: "일관성과 유연성 사이의 백엔드 구조 — 모듈형 모놀리스와 계층 규칙"
+summary: "AI 코딩 시대에 규칙의 테두리가 더 중요해진 이유부터, 모듈형 모놀리스의 공개 계약(Facade·Spi), 피처별 서비스의 읽기·쓰기 경로 분리, 조회 포트, 풍부한·빈약한 컨텍스트, 오류와 권한 판정까지 제 백엔드 규칙 전체를 예제로 풀어 씁니다."
+date: "2026-11-21"
+readingTime: "15분"
+category: "아키텍처"
+status: "원칙"
+tags: ["backend", "architecture", "modular-monolith", "ddd", "spring-boot", "jooq"]
+---
+
+## AI 시대에 규칙의 테두리가 더 중요해진 이유
+
+AI가 코드를 대신 작성해 주고, 생성 비용이 극도로 낮아졌으며, 기존 코드를 고치는 속도도 예전과 비교할 수 없이 빨라졌습니다. 하지만 코드가 빨리 만들어지는 만큼 프로젝트가 순식간에 비대해지기도 쉬워졌습니다.
+
+명확한 제약이 없으면 AI는 매번 그럴듯하지만 서로 다른 패턴으로 코드를 쌓아 올립니다. 한 피처에서는 서비스가 저장소를 직접 부르고, 옆 피처에서는 다른 모듈의 테이블을 조인해 오며, 또 다른 곳에서는 컨트롤러 안에 업무 규칙이 섞입니다. 사람이 일일이 맥락을 붙잡고 정리하기 전에 구조가 먼저 무너집니다.
+
+저는 클린 아키텍처가 말하는 **업무 규칙을 외부 기술에서 떼어내는 생각**을 좋아합니다. 반면 모든 모듈에 입력 포트·출력 포트·어댑터를 기계적으로 두르는 헥사고날 아키텍처는 대부분의 프로젝트 규모에서 과하다고 봅니다. 구현체가 하나뿐인 인터페이스와 값만 옮겨 담는 중계 어댑터가 늘어나면, 정작 업무 흐름을 따라가기 위해 열어야 할 파일만 배로 늘어납니다.
+
+그래서 저는 여전히 OOP 기반 언어와 프레임워크의 IoC 컨테이너가 주는 이점을 적극적으로 활용합니다. 추상화는 "나중에 바뀔지도 몰라서" 미리 만드는 것이 아니라, **경계를 지켜야 할 분명한 이유가 있을 때**만 둡니다.
+
+---
+
+## 최상위 구조: 기술 기반(`shared`)과 업무 모듈(`module`)
+
+백엔드는 하나의 배포 단위인 모듈형 모놀리스에서 출발합니다. 서비스 분리, 메시지 큐, 별도 캐시 같은 분산 장치는 구체적인 부하와 운영 비용이 확인되기 전에는 들이지 않습니다. 대신 단일 프로젝트 안에서 패키지 경계를 엄격하게 나눕니다.
+
+최상위는 기술 기반을 두는 `shared`와 하위 도메인에 대응하는 업무 컨텍스트를 두는 `module`로 나눕니다. 모듈 이름은 단수 명사를 쓰고, 모듈 내부는 `application`·`domain`·`infrastructure` 세 계층으로 나눕니다.
+
+```text
+server/src/main/java/xyz/goraebap/app/
+├── shared/                      # 기술 기반 (업무 컨텍스트를 모름)
+│   ├── config/                  # Clock, 보안, 직렬화 설정
+│   ├── domain/                  # 공통 ValueObject 기반 타입
+│   ├── error/                   # DomainRuleViolation, BusinessException, ErrorCode
+│   └── web/                     # GlobalExceptionHandler (ProblemDetail 변환)
+└── module/                      # 하위 도메인별 업무 컨텍스트
+    ├── user/                    # 일반·지원 도메인
+    ├── notification/
+    ├── project/                 # 핵심 도메인
+    │   ├── ProjectFacade.java   # 외부 공개 계약 (모듈 루트)
+    │   ├── ProjectSetupSpi.java # 외부 구현을 요구하는 확장점
+    │   ├── ProjectAccess.java   # 접근 권한 검사기
+    │   ├── application/
+    │   ├── domain/
+    │   └── infrastructure/
+    └── issue/
+        ├── IssueFacade.java
+        ├── application/
+        ├── domain/
+        └── infrastructure/
+```
+
+이 구조에서 가장 먼저 지키는 두 가지 규칙이 있습니다.
+
+1. **`shared`는 업무를 모릅니다.** 기술 기반만 두고 어떤 업무 모듈도 참조하지 않으며, 업무 테이블을 직접 읽지 않습니다.
+2. **모듈 밖에서는 모듈 루트만 봅니다.** 다른 모듈의 `application`·`domain`·`infrastructure` 패키지를 직접 import하지 않습니다. 순환 참조도 허용하지 않습니다.
+
+---
+
+## 모듈 간 계약: `Facade`, `Spi`, `Event`
+
+모듈 루트에는 다른 모듈이 참조할 공개 계약과 공개 값 타입만 둡니다. 내부 엔티티나 영속성 모델은 절대 모듈 밖으로 내보내지 않습니다.
+
+### 피처별 `Facade` 하나와 `Param`·`Result` 중첩
+
+피처가 외부 모듈에 제공하는 계약은 `XxxFacade` 하나로 모읍니다. 같은 피처를 `QueryFacade`·`CommandFacade`·`ViewFacade`로 쪼개지 않습니다. 전용 입력과 결과는 `Facade` 안의 `Param`·`Result` 묶음에 중첩해 소유권을 분명히 합니다.
+
+```java
+public interface IssueFacade {
+
+    Optional<Result.Summary> findSummary(long issueId);
+
+    List<Result.Summary> findSummaries(Collection<Long> issueIds);
+
+    Result.Created create(Param.Create param);
+
+    final class Param {
+        private Param() {}
+
+        public record Create(
+            long projectId,
+            String title,
+            long authorId
+        ) {}
+    }
+
+    final class Result {
+        private Result() {}
+
+        public record Summary(
+            long id,
+            String key,
+            String title,
+            String status
+        ) {}
+
+        public record Created(long id, String key) {}
+    }
+}
+```
+
+단순 인자 하나(`long issueId`)까지 억지로 `Param`으로 감싸지는 않습니다. `Facade` 구현은 그 계약을 선언한 모듈의 `application`에 두고, 소비하는 쪽 서비스는 상대 `Facade`를 직접 주입받아 호출합니다. 소비 서비스와 상대 `Facade` 사이에 의미 없는 중계 포트·어댑터를 끼워 넣지 않습니다.
+
+### `Spi`는 세 조건을 모두 만족할 때만 둡니다
+
+`Spi`는 소유 모듈이 외부 모듈에 구현을 요구하는 역방향 계약입니다. 편의 조회를 위해 `Spi`를 만들거나, 양방향 참조를 숨기려고 인터페이스를 늘리지 않습니다. 다음 세 조건을 모두 충족할 때만 도입합니다.
+
+1. 소유 모듈이 자기 불변식을 검증하거나 트랜잭션 안에서 완결해야 할 일에 그 정보가 필요합니다.
+2. 소유 모듈의 데이터와 규칙만으로는 판정하거나 처리할 수 없습니다.
+3. 호출 인자로 전달받아 해결할 수 없습니다.
+
+예를 들어 프로젝트를 생성할 때 `issue` 모듈의 기본 보드도 같은 트랜잭션 안에서 함께 만들어져야 한다면, `project` 모듈 루트에 `ProjectSetupSpi`를 두고 `issue` 모듈의 `BoardSetup`이 이를 구현합니다.
+
+```java
+// module/project/ProjectSetupSpi.java (선언은 소유 모듈 루트)
+public interface ProjectSetupSpi {
+    void onCreated(long projectId, long actorId);
+}
+
+// module/issue/application/board/BoardSetup.java (구현은 외부 모듈)
+@Component
+@RequiredArgsConstructor
+class BoardSetup implements ProjectSetupSpi {
+
+    private final BoardRepository boardRepository;
+
+    @Override
+    public void onCreated(long projectId, long actorId) {
+        boardRepository.save(Board.createDefault(projectId, actorId));
+    }
+}
+```
+
+이렇게 하면 `project`는 `issue`를 알지 못한 채 단방향 의존을 유지하고, `Event`는 알림 발송이나 활동 기록처럼 동기 결과가 필요 없는 업무 사건을 전달하는 데만 씁니다.
+
+---
+
+## 모듈 내부 계층과 피처별 서비스
+
+모듈 내부의 네 역할은 책임이 분명합니다.
+
+| 역할               | 책임                                                                 |
+| ------------------ | -------------------------------------------------------------------- |
+| **Controller**     | 요청 형식 검증, 인증 주체 전달, HTTP 상태·응답 변환                  |
+| **Service**        | 피처의 읽기·쓰기 유스케이스, 트랜잭션 경계, 도메인·외부 계약 조율    |
+| **Domain**         | 업무 불변식, 의미 있는 상태 전이, 프레임워크에 기대지 않는 순수 코드 |
+| **Infrastructure** | 영속성 저장소 구현, 화면 조회 SQL 구현, 외부 API 연동                |
+
+### `QueryService`를 따로 나누지 않는 이유
+
+저는 피처마다 `XxxService` 하나에 읽기 메서드와 쓰기 메서드를 함께 둡니다. `IssueQueryService`와 `IssueCommandService`로 클래스를 쪼개지 않습니다. 대신 **읽기와 쓰기의 분리는 처리 경로로 지킵니다.**
+
+| 구분     | 처리 경로                                                                                                     |
+| -------- | ------------------------------------------------------------------------------------------------------------- |
+| **읽기** | `Controller` → `Service` → 같은 피처의 조회 포트(`XxxQuery`) → `infrastructure` 조회 구현 → 화면 DTO(`Views`) |
+| **쓰기** | `Controller` → `Service` → 도메인 저장소(`XxxRepository`) → 애그리거트 업무 메서드 → 명시적 `save`            |
+
+읽기만 있는 서비스는 클래스 전체에 `@Transactional(readOnly = true)`를 붙입니다. 읽기와 쓰기가 함께 있는 서비스는 클래스에 기본 트랜잭션을 달지 않고, **모든 public 메서드마다** `@Transactional(readOnly = true)` 또는 `@Transactional`을 명시합니다. 쓰기 메서드에 재정의를 빠뜨려 읽기 전용으로 실행되는 실수를 원천 차단하기 위해서입니다.
+
+```java
+@Service
+@RequiredArgsConstructor
+public class IssueService {
+
+    private final IssueQuery issueQuery;
+    private final IssueRepository issueRepository;
+    private final ProjectAccess projectAccess;
+    private final Clock clock;
+
+    @Transactional(readOnly = true)
+    public IssueViews.Detail getDetail(long issueId, long actorId) {
+        IssueViews.Detail detail = issueQuery.findDetail(issueId)
+            .orElseThrow(() -> new BusinessException(IssueErrorCode.ISSUE_NOT_FOUND));
+        projectAccess.requireView(detail.projectId(), actorId);
+        return detail;
+    }
+
+    @Transactional
+    public void close(long issueId, long actorId) {
+        Issue issue = issueRepository.findById(issueId)
+            .orElseThrow(() -> new BusinessException(IssueErrorCode.ISSUE_NOT_FOUND));
+        projectAccess.requireEdit(issue.projectId(), actorId);
+
+        issue.close(actorId, clock.instant());
+        issueRepository.save(issue);
+    }
+}
+```
+
+### 도메인 모델: `create`와 `fromPersistence` 구분, 명시적 `save`
+
+도메인 엔티티는 프레임워크 어노테이션이나 HTTP 개념에 기대지 않는 순수 코드로 둡니다. Setter로 필드를 열어 두지 않고, 모든 상태 변경은 검증을 거친 업무 메서드로만 허용합니다.
+
+또한 신규 생성(`create`)과 저장소 복원(`fromPersistence`)을 분리합니다. 정책이 바뀌어 신규 이슈 제목의 최소 길이가 늘어나더라도, 이미 저장된 과거 데이터를 불러올 때 현재 생성 규칙을 다시 적용해 깨지면 안 되기 때문입니다.
+
+```java
+public class Issue {
+
+    private final long id;
+    private final long projectId;
+    private String title;
+    private IssueStatus status;
+    private Instant closedAt;
+
+    public static Issue create(long projectId, String title, Instant now) {
+        String normalized = normalizeTitle(title);
+        return new Issue(0L, projectId, normalized, IssueStatus.OPEN, null, now);
+    }
+
+    public static Issue fromPersistence(
+        long id,
+        long projectId,
+        String title,
+        IssueStatus status,
+        Instant closedAt
+    ) {
+        return new Issue(id, projectId, title, status, closedAt);
+    }
+
+    public void close(long actorId, Instant now) {
+        if (this.status == IssueStatus.CLOSED) {
+            throw new DomainRuleViolation("이미 닫힌 이슈입니다.");
+        }
+        this.status = IssueStatus.CLOSED;
+        this.closedAt = now;
+    }
+}
+```
+
+현재 시각은 `Instant.now()`를 직접 부르지 않고 주입한 `Clock`에서 받아 테스트 가능성을 유지합니다. 그리고 ORM의 변경 감지에 기대지 않고 업무 메서드 호출 뒤 반드시 `repository.save(...)`를 명시적으로 부릅니다. 코드를 읽는 사람과 AI 모두가 "여기서 저장이 일어난다"는 사실을 한눈에 볼 수 있습니다.
+
+---
+
+## 조회 포트(`XxxQuery`)와 모듈 간 조회의 현실적인 타협
+
+화면 조회를 위해 도메인 애그리거트를 통째로 복원하지 않습니다. 화면 조회 포트 `XxxQuery`는 소유 서비스와 같은 피처의 `application`에 1:1로 두고, 구현은 `infrastructure`에 모듈 밖으로 공개하지 않는 package-private 클래스(`JooqIssueQuery`)로 둡니다. 도메인 저장소(`JooqIssueRepository`)와 합치지 않습니다.
+
+### 불필요한 중간 DTO를 만들지 않습니다
+
+조회 결과가 그대로 화면에 나가면 `Views` 타입을 직접 반환합니다. 포트 전용 `Row`와 화면 `Dto` 사이에 필드만 복사하는 중간 타입은 두지 않습니다. 서비스에서 추가 가공이나 조립이 필요할 때만 조회 포트 안에 전용 행 타입(`Filter`, `Slice` 등)을 불변 `record`로 중첩합니다.
+
+```java
+// module/issue/application/issue/IssueQuery.java
+public interface IssueQuery {
+
+    Optional<IssueViews.Detail> findDetail(long issueId);
+
+    Slice findPage(Filter filter);
+
+    record Filter(long projectId, String keyword, int page, int size) {}
+
+    record Slice(List<IssueViews.Summary> items, long totalCount) {}
+}
+
+// module/issue/infrastructure/JooqIssueQuery.java
+@Repository
+@RequiredArgsConstructor
+class JooqIssueQuery implements IssueQuery {
+    // jOOQ 타입과 SQL은 infrastructure 안에만 머뭅니다.
+}
+```
+
+### 다른 모듈 데이터가 필요한 조회는 요구에 따라 나눕니다
+
+명령은 반드시 공개 `Facade`로 처리하지만, 화면 조회는 **표시값 조립**과 **결과 집합 결정(검색·정렬·건수)**을 구분해 현실적으로 타협합니다.
+
+| 필요한 것                              | 기본 선택                                                      |
+| -------------------------------------- | -------------------------------------------------------------- |
+| 다른 모듈의 표시 정보 (작성자 이름 등) | 부모 페이지를 먼저 확정한 뒤 상대 `Facade`로 ID 묶음 배치 조회 |
+| 다른 모듈 값으로 검색·정렬·건수 결정   | 그 화면의 SQL 조회(또는 주인이 연 공개 뷰)에서 직접 읽기 허용  |
+| 조건에 맞는 자식 존재 여부             | `EXISTS`                                                       |
+| 자식 개수 기준 정렬                    | 부모당 한 값인 집계                                            |
+| 여러 자식 목록 표시                    | 확정한 부모 ID로 각각 배치 조회                                |
+| 업무 당시 값 보존                      | 당시 시점의 스냅샷 저장                                        |
+
+페이지를 확정한 뒤 애플리케이션 메모리에서 필터링하면 페이지 크기와 전체 건수가 틀어지고, `to-many` 조인으로 부모 행이 중복되면 `LIMIT` 대상이 어긋납니다. 필터·정렬·페이징·건수는 DB가 결정하고, 확정된 부모 ID 목록에 표시값을 붙이는 조립만 서비스가 맡습니다.
+
+---
+
+## 풍부한 컨텍스트와 빈약한 컨텍스트를 다루는 법
+
+모든 모듈에 똑같은 깊이의 패키지 구조와 추상화를 강요하면 단순한 설정·참조 기능이 괴로워집니다. 반대로 아무 기준도 없으면 핵심 도메인이 금세 무너집니다. 저는 **외부 계약과 계층 방향은 일관되게 유지하되, 내부 패키지와 도메인 모델의 두께는 컨텍스트의 풍부함에 맞춰 유연하게 조절**합니다.
+
+### 1. 기능이 풍부한 컨텍스트 (예: `issue`, `document`)
+
+여러 피처와 여러 애그리거트가 함께 움직이고 상태 전이·불변식이 복잡한 컨텍스트입니다. `application`은 피처별로, `domain`은 애그리거트별로 하위 패키지를 나눕니다. 두 축은 독립적이어서 서비스 하나가 여러 애그리거트를 조율할 수 있습니다.
+
+```text
+module/issue/
+├── IssueFacade.java
+├── application/
+│   ├── IssueErrorCode.java      # 모듈당 ErrorCode 하나 (application 루트)
+│   ├── issue/
+│   │   ├── IssueController.java
+│   │   ├── IssueService.java
+│   │   ├── IssueQuery.java
+│   │   ├── IssueRequests.java
+│   │   └── IssueViews.java
+│   ├── board/
+│   │   ├── BoardController.java
+│   │   ├── BoardService.java
+│   │   ├── BoardQuery.java
+│   │   └── BoardSetup.java      # ProjectSetupSpi 구현
+│   └── label/
+├── domain/
+│   ├── issue/
+│   │   ├── Issue.java
+│   │   ├── IssueRepository.java
+│   │   └── IssueStatus.java
+│   └── board/
+└── infrastructure/
+    ├── JooqIssueRepository.java
+    ├── JooqIssueQuery.java
+    └── JooqBoardQuery.java
+```
+
+### 2. 기능이 빈약한 컨텍스트 (예: `system`, 단순 설정·마스터)
+
+업무 불변식이 거의 없고 단순 조회·저장 위주인 컨텍스트입니다. 처음부터 하위 패키지를 잘게 쪼개지 않고 계층 루트에 평평하게 둡니다.
+
+```text
+module/system/
+├── SystemFacade.java
+├── application/
+│   ├── SystemErrorCode.java
+│   ├── SystemController.java
+│   ├── SystemService.java
+│   ├── SystemRequests.java
+│   └── SystemViews.java
+└── infrastructure/
+    └── JooqSystemSettingStore.java
+```
+
+억지로 필드를 그대로 옮겨 담는 빈 도메인 클래스를 만들지 않습니다. 그러다 나중에 설정 변경 이력이나 검증 규칙처럼 진짜 업무 불변식이 자라나면, 그때 `domain/`을 추가해 규칙을 올립니다. 외부에서 보는 `SystemFacade`와 계층 방향은 처음부터 같기 때문에 주변 코드를 흔들지 않고 자연스럽게 성장시킬 수 있습니다.
+
+### 두 피처에 같은 코드가 필요할 때의 판단 순서
+
+계층 내부에서 공유하는 코드는 `application/shared`나 `common` 같은 별도 폴더를 만들지 않고 **그 계층의 루트**에 둡니다. 추출 여부는 아래 네 단계로 판단합니다.
+
+1. **도메인 규칙이 중복되는가?** `domain`으로 옮깁니다. 여러 애그리거트에 걸친 불변식은 `domain` 루트의 도메인 서비스가 맡습니다.
+2. **조율 로직을 함께 쓰는가?** 소유 피처를 정하고 그 피처의 공유 서비스로 추출합니다.
+3. **어느 피처에도 속하지 않는 공용인가?** 실제로 두 피처 이상이 쓸 때만 `application` 루트에 둡니다. 미래에 쓸 것 같다는 이유로 미리 공용화하지 않습니다.
+4. **DTO나 계약의 모양만 비슷한가?** 변경 이유가 다르면 각각 유지합니다.
+
+---
+
+## 오류와 접근 권한: 판정 주체별로 책임을 나눕니다
+
+오류는 누가 판정하는지에 따라 세 층으로 나눕니다.
+
+| 주체          | 판정 대상                         | 표현 방식                                                     |
+| ------------- | --------------------------------- | ------------------------------------------------------------- |
+| **도메인**    | 자기 업무 불변식 위반             | `DomainRuleViolation` (메시지만 담은 순수 `RuntimeException`) |
+| **서비스**    | 부재·권한·충돌 등 유스케이스 오류 | `BusinessException` + 모듈 루트의 `XxxErrorCode`              |
+| **HTTP 경계** | 예외를 HTTP 응답으로 변환         | `GlobalExceptionHandler` → `application/problem+json`         |
+
+도메인은 HTTP 상태 코드도, `IssueErrorCode`도 알지 못합니다. 도메인 규칙 위반 예외가 경계까지 올라오면 `GlobalExceptionHandler`가 일괄 `400 Bad Request`의 `ProblemDetail`로 변환합니다. 반면 서비스가 판정하는 부재(`404`)·권한(`403`)·충돌(`409`)은 안정된 `ErrorCode`로 구별해 호출자가 분기할 수 있게 합니다.
+
+```java
+// 도메인: HTTP와 ErrorCode를 모릅니다.
+if (title.isBlank()) {
+    throw new DomainRuleViolation("제목은 비워 둘 수 없습니다.");
+}
+
+// 서비스: 부재·권한·충돌을 모듈 ErrorCode로 판정합니다.
+Issue issue = issueRepository.findById(issueId)
+    .orElseThrow(() -> new BusinessException(IssueErrorCode.ISSUE_NOT_FOUND));
+```
+
+### 접근 권한 검사기는 한 곳에 둡니다
+
+대상에 접근할 수 있는지는 모듈의 접근 권한 검사기(`ProjectAccess` 등) 한 곳에서만 판정합니다. 컨트롤러, 조회, 알림, 실시간 신호가 각자 권한 조건을 다시 쓰면 한 경로만 고쳐져 화면에서는 안 보이는 대상이 알림으로 새어 나갑니다.
+
+- **볼 수 없는 대상**: `404`를 내려 존재 자체를 알리지 않습니다.
+- **볼 수는 있지만 이 동작의 권한이 부족함**: `403`을 내립니다.
+- **닫히거나 보관된 대상을 고치려 함**: `409`를 내립니다.
+
+같은 권한 검사기가 화면 응답의 `can: { view, edit, manage }`도 함께 만들어 주므로, 프론트엔드는 권한 규칙을 중복 계산하지 않고 내려온 값 그대로 버튼을 보이거나 숨깁니다.
+
+---
+
+## 이름 규칙과 경계를 지키는 자동화
+
+마지막으로 코드를 읽을 때 추측을 줄이기 위해 몇 가지 작은 이름 규칙을 지킵니다.
+
+- 없을 수 있는 조회는 `find`로 시작해 `Optional`을 돌려주고, 반드시 있어야 하는 조회는 `get`으로 시작해 없으면 예외를 던집니다.
+- 불변 값과 전달 타입은 Java `record`를 기본으로 쓰고, 접근자는 `get` 접두사 없이 속성 이름으로 씁니다.
+- HTTP DTO는 피처의 `Requests`·`Views`로 묶고, 의존성은 생성자로만 주입합니다. 필드 이름은 선언 타입의 `lowerCamelCase`를 그대로 써서 `Repository`·`Service` 접미사를 생략하지 않습니다.
+
+무엇보다 중요한 것은 이 모든 규칙을 사람의 기억력에만 맡기지 않는 것입니다. 포맷터·린터·결함 검사(Spotless·Checkstyle·SpotBugs)와 더불어, **컨텍스트 간 참조 방향과 테이블 소유권을 검증하는 아키텍처 테스트**를 빌드에 걸어 둡니다.
+
+> 규칙이 문서에만 있으면 AI가 코드를 빠르게 만들수록 구조가 흐트러지지만, 규칙이 테스트로 잠겨 있으면 AI의 속도가 그대로 일관된 코드베이스의 자산이 됩니다.
+
+과도한 추상화 없이도 경계는 단단하게 지키고, 도메인의 복잡도에 따라 내부의 무게를 조절할 수 있는 구조. 이것이 지금 제가 백엔드를 설계할 때 가장 신뢰하는 균형점입니다.
