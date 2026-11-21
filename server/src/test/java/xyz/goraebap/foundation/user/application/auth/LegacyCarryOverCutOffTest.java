@@ -56,6 +56,7 @@ class LegacyCarryOverCutOffTest {
         var settings = new AuthSettings(
                 "test-only-secret-00000000000000000000000000000000",
                 "cowork_session",
+                "",
                 true,
                 Duration.ofMinutes(5),
                 5,

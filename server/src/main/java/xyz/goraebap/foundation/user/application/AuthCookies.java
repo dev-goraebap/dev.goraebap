@@ -32,7 +32,12 @@ public class AuthCookies {
 
     public void write(HttpServletResponse response, String token, Instant expiresAt) {
         Duration left = Duration.between(clock.instant(), expiresAt);
-        add(response, authSettings.cookieName(), token, left.isNegative() ? Duration.ZERO : left);
+        add(
+                response,
+                authSettings.cookieName(),
+                token,
+                left.isNegative() ? Duration.ZERO : left,
+                authSettings.cookieDomain());
     }
 
     public void clear(HttpServletResponse response) {
@@ -50,7 +55,7 @@ public class AuthCookies {
 
     /** Drops both of the old app's cookies, whatever became of the carry-over. */
     public void clearLegacy(HttpServletResponse response) {
-        for (String name : List.of(LEGACY_ACCESS, LEGACY_REFRESH)) add(response, name, "", Duration.ZERO);
+        for (String name : List.of(LEGACY_ACCESS, LEGACY_REFRESH)) add(response, name, "", Duration.ZERO, "");
     }
 
     private static String read(HttpServletRequest request, String name) {
@@ -59,16 +64,16 @@ public class AuthCookies {
         return null;
     }
 
-    private void add(HttpServletResponse response, String name, String value, Duration maxAge) {
-        response.addHeader(
-                HttpHeaders.SET_COOKIE,
-                ResponseCookie.from(name, value)
-                        .httpOnly(true)
-                        .secure(authSettings.cookieSecure())
-                        .sameSite("Lax")
-                        .path("/")
-                        .maxAge(maxAge)
-                        .build()
-                        .toString());
+    private void add(HttpServletResponse response, String name, String value, Duration maxAge, String domain) {
+        var builder = ResponseCookie.from(name, value)
+                .httpOnly(true)
+                .secure(authSettings.cookieSecure())
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(maxAge);
+        if (domain != null && !domain.isBlank()) {
+            builder.domain(domain);
+        }
+        response.addHeader(HttpHeaders.SET_COOKIE, builder.build().toString());
     }
 }

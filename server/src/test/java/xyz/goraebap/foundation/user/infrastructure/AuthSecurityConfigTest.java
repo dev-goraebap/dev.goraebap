@@ -35,6 +35,7 @@ class AuthSecurityConfigTest {
         return new AuthSettings(
                 "test-only-secret-00000000000000000000000000000000",
                 "cowork_session",
+                "",
                 secure,
                 Duration.ofMinutes(5),
                 5,

@@ -10,6 +10,7 @@ import org.springframework.boot.context.properties.bind.DefaultValue;
 public record AuthSettings(
         String secret,
         @DefaultValue("cowork_session") String cookieName,
+        @DefaultValue("") String cookieDomain,
         @DefaultValue("true") boolean cookieSecure,
         @DefaultValue("PT5M") Duration otpTtl,
         @DefaultValue("5") int maxAttempts,
