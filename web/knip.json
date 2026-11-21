@@ -1,6 +1,10 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
+    "apps/accounts": {
+      "entry": ["src/routes/**/*.{ts,tsx}"],
+      "ignoreDependencies": ["tailwindcss"]
+    },
     "apps/blog": {
       "entry": ["src/routes/**/*.{ts,tsx}"],
       "ignoreDependencies": ["tailwindcss"]
