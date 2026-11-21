@@ -1,0 +1,67 @@
+@import "@goraebap/ui/globals.css";
+@source "../../../../packages/ui/src";
+
+/*
+ * Webapp 4단계 면 위계:
+ *   바닥 --sidebar < 인셋 페이지 --background < 올린 면 --card < 뜬 면 --popover
+ * 분기점은 단일 기준(64rem)으로 데스크톱 사이드바와 휴대폰 하단 바를 나눕니다.
+ */
+:root {
+  --sidebar: #efeff0;
+  --background: #f9f9fa;
+  --foreground: #1b1b1b;
+  --card: color-mix(in srgb, var(--background) 25%, #ffffff);
+  --card-foreground: var(--foreground);
+  --popover: color-mix(in srgb, var(--background) 15%, #ffffff);
+  --popover-foreground: var(--foreground);
+  --primary: var(--foreground);
+  --primary-foreground: #ffffff;
+  --secondary: color-mix(in srgb, var(--foreground) 8%, var(--background));
+  --secondary-foreground: var(--foreground);
+  --muted: #ececed;
+  --muted-foreground: #5c5c5e;
+  --accent: color-mix(in srgb, var(--foreground) 5%, transparent);
+  --accent-foreground: var(--foreground);
+  --border: color-mix(in srgb, var(--foreground) 9%, var(--background));
+  --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
+  --ring: color-mix(in srgb, var(--foreground) 72%, var(--background));
+  --radius: 0.5rem;
+}
+
+.dark {
+  --sidebar: #141416;
+  --background: #1b1b1e;
+  --foreground: #f2f2f3;
+  --card: #222226;
+  --card-foreground: var(--foreground);
+  --popover: #26262b;
+  --popover-foreground: var(--foreground);
+  --primary: #f2f2f3;
+  --primary-foreground: #161618;
+  --secondary: #2a2a2f;
+  --secondary-foreground: var(--foreground);
+  --muted: #242428;
+  --muted-foreground: #a1a1a8;
+  --accent: color-mix(in srgb, var(--foreground) 7%, transparent);
+  --accent-foreground: var(--foreground);
+  --border: color-mix(in srgb, var(--foreground) 10%, var(--background));
+  --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
+  --ring: color-mix(in srgb, var(--foreground) 65%, var(--background));
+}
+
+@theme inline {
+  --breakpoint-md: 64rem;
+  --color-sidebar: var(--sidebar);
+  --font-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    background-color: var(--sidebar);
+  }
+}

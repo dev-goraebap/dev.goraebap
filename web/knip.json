@@ -2,7 +2,7 @@
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
     "apps/accounts": {
-      "entry": ["src/routes/**/*.{ts,tsx}"],
+      "entry": ["src/pages/**/{__root,route,page}.tsx"],
       "ignoreDependencies": ["tailwindcss"]
     },
     "apps/blog": {
