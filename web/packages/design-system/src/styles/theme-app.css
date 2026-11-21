@@ -21,6 +21,9 @@
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: #ffffff;
+  --success: oklch(0.52 0.14 152);
+  --warning: oklch(0.66 0.16 70);
+  --info: oklch(0.52 0.14 250);
   --border: color-mix(in srgb, var(--foreground) 9%, var(--background));
   --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
   --ring: color-mix(in srgb, var(--foreground) 72%, var(--background));
@@ -46,6 +49,9 @@
   --accent-foreground: var(--foreground);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: #ffffff;
+  --success: oklch(0.68 0.14 152);
+  --warning: oklch(0.76 0.14 75);
+  --info: oklch(0.68 0.14 245);
   --border: color-mix(in srgb, var(--foreground) 10%, var(--background));
   --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
   --ring: color-mix(in srgb, var(--foreground) 65%, var(--background));
