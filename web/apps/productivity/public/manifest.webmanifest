@@ -1,0 +1,14 @@
+{
+  "name": "cowork",
+  "short_name": "cowork",
+  "description": "프로젝트 · 업무 · 문서를 함께 다루는 작업 공간",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f9f9fa",
+  "theme_color": "#f9f9fa",
+  "lang": "ko",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

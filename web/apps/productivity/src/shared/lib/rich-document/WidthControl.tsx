@@ -1,0 +1,2 @@
+import {DocumentSelect} from './DocumentSelect';
+export function WidthControl({value,onChange,label='미디어 너비'}:{value:number;onChange:(value:number)=>void;label?:string}){return <DocumentSelect className="media-width" label={label} value={String(value)} onChange={value=>onChange(Number(value))} options={[...(![25,50,75,100].includes(value)?[value]:[]),25,50,75,100].map(n=>({value:String(n),label:`${n}%`}))}/>;}

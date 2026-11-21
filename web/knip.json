@@ -5,6 +5,9 @@
       "entry": ["src/routes/**/*.{ts,tsx}"],
       "ignoreDependencies": ["tailwindcss"]
     },
+    "apps/productivity": {
+      "ignore": ["**/*"]
+    },
     "packages/ui": {
       "entry": ["src/components/*.tsx", "src/lib/*.ts"],
       "ignoreDependencies": ["lucide-react"]

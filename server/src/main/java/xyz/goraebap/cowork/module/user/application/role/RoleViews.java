@@ -1,0 +1,20 @@
+package xyz.goraebap.cowork.module.user.application.role;
+
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.UUID;
+import xyz.goraebap.cowork.shared.web.Role;
+
+public final class RoleViews {
+    private RoleViews() {}
+
+    /** A member who has not left, with the roles they hold in the roles' own order; empty for an ordinary member. */
+    public record RoleMember(UUID id, String name, String email, Set<Role> roles) {
+        public RoleMember {
+            var sorted = EnumSet.noneOf(Role.class);
+            sorted.addAll(roles);
+            roles = Collections.unmodifiableSet(sorted);
+        }
+    }
+}

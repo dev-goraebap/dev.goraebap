@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+    "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+    "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+  <!--
+    테스트 이름은 "무엇을 검증하는가" 를 사람이 읽는 문장이므로 한국어를 허용한다.
+    프로덕션 코드에는 적용하지 않는다.
+  -->
+  <suppress files="[\\/]src[\\/]test[\\/]" checks="MethodName|ConstantName"/>
+  <!-- Flyway Java 마이그레이션은 클래스 이름이 버전·설명(V55__Split_rich_body_blocks)이어야 한다. -->
+  <suppress files="[\\/]src[\\/]main[\\/]java[\\/]db[\\/]migration[\\/]" checks="TypeName"/>
+</suppressions>
