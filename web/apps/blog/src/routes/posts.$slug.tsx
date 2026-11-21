@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui/components/button";
-import { getPostBySlug, serializePostToMarkdown } from "@/data/posts";
+import { mdxComponents } from "@/components/mdx-components";
+import { getPostBySlug } from "@/lib/posts";
 
 export const Route = createFileRoute("/posts/$slug")({
   component: PostDetailPage,
@@ -24,11 +25,11 @@ function PostDetailPage() {
     );
   }
 
-  const rawMarkdown = serializePostToMarkdown(post);
+  const { Content, raw } = post;
 
   async function handleCopyMarkdown() {
     try {
-      await navigator.clipboard.writeText(rawMarkdown);
+      await navigator.clipboard.writeText(raw);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1600);
     } catch {
@@ -46,7 +47,6 @@ function PostDetailPage() {
           ← 글 목록
         </Link>
 
-        {/* Signature: Human reading view <-> Agent Markdown view */}
         <div className="flex items-center gap-2">
           <div
             role="tablist"
@@ -77,7 +77,7 @@ function PostDetailPage() {
                   : "text-muted-foreground hover:text-foreground cursor-pointer rounded px-2.5 py-1 font-mono"
               }
             >
-              Markdown
+              MDX 원문
             </button>
           </div>
           <button
@@ -85,7 +85,7 @@ function PostDetailPage() {
             onClick={handleCopyMarkdown}
             className="border-border text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded-md border px-2.5 py-1 text-xs font-medium transition-colors"
           >
-            {copied ? "복사됨" : "MD 복사"}
+            {copied ? "복사됨" : "MDX 복사"}
           </button>
         </div>
       </div>
@@ -107,42 +107,21 @@ function PostDetailPage() {
       </header>
 
       {viewMode === "agent" ? (
-        <section aria-label="에이전트용 마크다운 원문" className="space-y-3">
+        <section aria-label="에이전트용 MDX 원문" className="space-y-3">
           <p className="text-muted-foreground text-xs">
-            에이전트가 맥락으로 참조하는 원문 형식입니다. frontmatter의 상태와 요약으로 관련 글을
-            선별합니다.
+            실제{" "}
+            <code className="bg-secondary rounded px-1 py-0.5 font-mono text-[11px]">
+              content/posts/{post.slug}.mdx
+            </code>{" "}
+            파일 원문입니다. 사람과 에이전트가 동일한 파일을 읽습니다.
           </p>
           <pre className="border-border bg-secondary/50 text-foreground overflow-x-auto rounded-lg border p-5 font-mono text-xs leading-6">
-            <code>{rawMarkdown}</code>
+            <code>{raw}</code>
           </pre>
         </section>
       ) : (
-        <div className="space-y-10">
-          {post.sections.map((section) => (
-            <section key={section.heading} className="space-y-4">
-              <h2 className="text-lg font-semibold tracking-tight">{section.heading}</h2>
-              {section.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="text-foreground/90 text-base leading-[1.75]">
-                  {paragraph}
-                </p>
-              ))}
-              {section.quote ? (
-                <blockquote className="border-blog-accent text-muted-foreground border-l-2 pl-4 text-[15px] leading-7 italic">
-                  {section.quote}
-                </blockquote>
-              ) : null}
-              {section.code ? (
-                <div className="border-border bg-secondary/40 overflow-hidden rounded-lg border">
-                  <div className="border-border/80 text-muted-foreground border-b px-4 py-2 font-mono text-[11px]">
-                    {section.code.filename}
-                  </div>
-                  <pre className="text-foreground overflow-x-auto p-4 font-mono text-xs leading-6">
-                    <code>{section.code.content}</code>
-                  </pre>
-                </div>
-              ) : null}
-            </section>
-          ))}
+        <div>
+          <Content components={mdxComponents} />
         </div>
       )}
     </article>

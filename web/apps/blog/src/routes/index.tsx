@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui/components/button";
-import { posts, type PostCategory } from "@/data/posts";
+import { posts, type PostCategory } from "@/lib/posts";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
