@@ -144,6 +144,9 @@ importers:
 
   apps/blog:
     dependencies:
+      '@goraebap/design-system':
+        specifier: workspace:*
+        version: link:../../packages/design-system
       '@goraebap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
@@ -366,17 +369,36 @@ importers:
         specifier: 8.1.5
         version: 8.1.5(@types/node@22.20.2)(jiti@2.7.0)(yaml@2.9.1)
 
-  packages/ui:
+  packages/design-system:
     dependencies:
-      '@base-ui/react':
-        specifier: 'catalog:'
-        version: 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       class-variance-authority:
         specifier: 'catalog:'
         version: 0.7.1
       clsx:
         specifier: 'catalog:'
         version: 2.1.1
+      tailwind-merge:
+        specifier: 'catalog:'
+        version: 3.7.1
+    devDependencies:
+      tailwindcss:
+        specifier: 'catalog:'
+        version: 4.3.5
+      tw-animate-css:
+        specifier: 'catalog:'
+        version: 1.4.0
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
+
+  packages/ui:
+    dependencies:
+      '@base-ui/react':
+        specifier: 'catalog:'
+        version: 1.9.0(@date-fns/tz@1.5.0)(@types/react@19.3.0)(date-fns@4.4.0)(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
+      '@goraebap/design-system':
+        specifier: workspace:*
+        version: link:../design-system
       lucide-react:
         specifier: 'catalog:'
         version: 1.77.0(@types/react@19.3.0)(react@19.3.1)
@@ -386,9 +408,6 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 19.3.1(react@19.3.1)
-      tailwind-merge:
-        specifier: 'catalog:'
-        version: 3.7.1
     devDependencies:
       '@types/react':
         specifier: 'catalog:'
@@ -399,12 +418,6 @@ importers:
       shadcn:
         specifier: 'catalog:'
         version: 4.23.0
-      tailwindcss:
-        specifier: 'catalog:'
-        version: 4.3.5
-      tw-animate-css:
-        specifier: 'catalog:'
-        version: 1.4.0
       typescript:
         specifier: 'catalog:'
         version: 6.0.3

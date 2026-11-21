@@ -12,6 +12,9 @@
     "apps/productivity": {
       "ignore": ["**/*"]
     },
+    "packages/design-system": {
+      "entry": ["src/lib/*.ts", "src/recipes/*.ts"]
+    },
     "packages/ui": {
       "entry": ["src/components/*.tsx", "src/lib/*.ts"],
       "ignoreDependencies": ["lucide-react"]

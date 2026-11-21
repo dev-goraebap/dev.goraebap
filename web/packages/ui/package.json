@@ -14,17 +14,13 @@
   },
   "dependencies": {
     "@base-ui/react": "catalog:",
-    "class-variance-authority": "catalog:",
-    "clsx": "catalog:",
-    "lucide-react": "catalog:",
-    "tailwind-merge": "catalog:"
+    "@goraebap/design-system": "workspace:*",
+    "lucide-react": "catalog:"
   },
   "devDependencies": {
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "shadcn": "catalog:",
-    "tailwindcss": "catalog:",
-    "tw-animate-css": "catalog:",
     "typescript": "catalog:"
   },
   "peerDependencies": {

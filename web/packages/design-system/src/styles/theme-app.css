@@ -1,0 +1,52 @@
+/*
+ * App 테마 (accounts · productivity 공유)
+ * 4단계 면 위계: 바닥 --sidebar < 인셋 페이지 --background < 올린 면 --card < 뜬 면 --popover
+ */
+:root,
+[data-ds-theme="app"] {
+  --sidebar: #efeff0;
+  --background: #f9f9fa;
+  --foreground: #1b1b1b;
+  --card: color-mix(in srgb, var(--background) 25%, #ffffff);
+  --card-foreground: var(--foreground);
+  --popover: color-mix(in srgb, var(--background) 15%, #ffffff);
+  --popover-foreground: var(--foreground);
+  --primary: var(--foreground);
+  --primary-foreground: #ffffff;
+  --secondary: color-mix(in srgb, var(--foreground) 8%, var(--background));
+  --secondary-foreground: var(--foreground);
+  --muted: #ececed;
+  --muted-foreground: #5c5c5e;
+  --accent: color-mix(in srgb, var(--foreground) 5%, transparent);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: #ffffff;
+  --border: color-mix(in srgb, var(--foreground) 9%, var(--background));
+  --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
+  --ring: color-mix(in srgb, var(--foreground) 72%, var(--background));
+  --radius: 0.5rem;
+}
+
+.dark,
+.dark [data-ds-theme="app"] {
+  --sidebar: #141416;
+  --background: #1b1b1e;
+  --foreground: #f2f2f3;
+  --card: #222226;
+  --card-foreground: var(--foreground);
+  --popover: #26262b;
+  --popover-foreground: var(--foreground);
+  --primary: #f2f2f3;
+  --primary-foreground: #161618;
+  --secondary: #2a2a2f;
+  --secondary-foreground: var(--foreground);
+  --muted: #242428;
+  --muted-foreground: #a1a1a8;
+  --accent: color-mix(in srgb, var(--foreground) 7%, transparent);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: #ffffff;
+  --border: color-mix(in srgb, var(--foreground) 10%, var(--background));
+  --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
+  --ring: color-mix(in srgb, var(--foreground) 65%, var(--background));
+}

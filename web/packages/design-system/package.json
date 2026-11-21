@@ -1,0 +1,26 @@
+{
+  "name": "@goraebap/design-system",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./styles/base.css": "./src/styles/base.css",
+    "./styles/theme-app.css": "./src/styles/theme-app.css",
+    "./styles/theme-editorial.css": "./src/styles/theme-editorial.css",
+    "./cn": "./src/lib/cn.ts",
+    "./recipes/*": "./src/recipes/*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "class-variance-authority": "catalog:",
+    "clsx": "catalog:",
+    "tailwind-merge": "catalog:"
+  },
+  "devDependencies": {
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:",
+    "typescript": "catalog:"
+  }
+}
