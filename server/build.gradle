@@ -8,7 +8,7 @@ plugins {
 	id 'org.jooq.jooq-codegen-gradle' version '3.21.6'
 }
 
-group = 'xyz.goraebap.cowork'
+group = 'xyz.goraebap'
 version = '0.0.1-SNAPSHOT'
 
 // 런타임 jOOQ 버전을 코드 생성기와 맞춘다. 어긋나면 생성물이 런타임 API 와 맞지 않는다.
@@ -133,7 +133,7 @@ jooq {
 					forcedType {
 						// SQLite keeps moments as text; the binding writes one fixed UTC form that sorts like time.
 						userType = 'java.time.Instant'
-						binding = 'xyz.goraebap.cowork.shared.persistence.InstantTextBinding'
+						binding = 'xyz.goraebap.shared.persistence.InstantTextBinding'
 						includeTypes = 'TIMESTAMP.*WITH.*TIME.*ZONE'
 					}
 				}
@@ -157,7 +157,7 @@ jooq {
 						}
 					}
 					target {
-						packageName = 'xyz.goraebap.cowork.jooq'
+						packageName = 'xyz.goraebap.jooq'
 						directory = layout.buildDirectory.dir('generated-sources/jooq').get().asFile.absolutePath
 					}
 				}
@@ -175,7 +175,7 @@ jooq {
 						}
 					}
 					target {
-						packageName = 'xyz.goraebap.cowork.jooq.logs'
+						packageName = 'xyz.goraebap.jooq.logs'
 						directory = layout.buildDirectory.dir('generated-sources/jooq-logs').get().asFile.absolutePath
 					}
 				}
@@ -245,7 +245,7 @@ tasks.register('exportOpenApi', Test) {
     testClassesDirs = sourceSets.test.output.classesDirs
     classpath = sourceSets.test.runtimeClasspath
     useJUnitPlatform()
-    filter { includeTestsMatching 'xyz.goraebap.cowork.FoundationApiTest.openApiDescribesThePublicHealthContract' }
+    filter { includeTestsMatching 'xyz.goraebap.FoundationApiTest.openApiDescribesThePublicHealthContract' }
     systemProperty 'exportOpenApi', 'true'
     outputs.upToDateWhen { false }
 }

@@ -4,6 +4,6 @@
 <beans>
 	<bean id="SQLite" class="org.springframework.jdbc.support.SQLErrorCodes">
 		<property name="databaseProductName" value="SQLite"/>
-		<property name="customSqlExceptionTranslatorClass" value="xyz.goraebap.cowork.shared.persistence.SqliteExceptionTranslator"/>
+		<property name="customSqlExceptionTranslatorClass" value="xyz.goraebap.shared.persistence.SqliteExceptionTranslator"/>
 	</bean>
 </beans>

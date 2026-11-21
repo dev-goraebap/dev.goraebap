@@ -4,7 +4,7 @@
 
   <!-- jOOQ 코드 생성 산출물은 우리 코딩 표준의 대상이 아니다. -->
   <Match>
-    <Package name="~xyz.goraebap.cowork.jooq.*"/>
+    <Package name="~xyz.goraebap.jooq.*"/>
   </Match>
 
   <!--
@@ -47,7 +47,7 @@
     결함이 아니므로 이 클래스에서만 제외한다.
   -->
   <Match>
-    <Class name="xyz.goraebap.cowork.module.office.calendar.domain.event.EventException"/>
+    <Class name="xyz.goraebap.foundation.office.calendar.domain.event.EventException"/>
     <Bug pattern="NM_CLASS_NOT_EXCEPTION"/>
   </Match>
 </FindBugsFilter>
