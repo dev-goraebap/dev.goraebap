@@ -12,7 +12,6 @@
   "dependencies": {
     "@goraebap/ui": "workspace:*",
     "@tanstack/react-router": "catalog:",
-    "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
