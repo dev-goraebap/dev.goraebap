@@ -4,6 +4,8 @@ import { routeTree } from "./routeTree.gen";
 export const router = createRouter({
   routeTree,
   scrollRestoration: true,
+  defaultViewTransition: true,
+  defaultPendingMs: 180,
 });
 
 declare module "@tanstack/react-router" {

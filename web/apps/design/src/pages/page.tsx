@@ -27,7 +27,7 @@ const LIBRARY_SECTIONS = [
   { title: "스타일 레시피", to: "/foundations/recipes" as const },
   { title: "Pure HTML & Primitives", to: "/adapters/primitives" as const },
   { title: "컴포넌트", to: "/components" as const },
-  { title: "템플릿", to: "/templates" as const },
+  { title: "레이아웃", to: "/layouts" as const },
 ];
 
 function LandingPage() {
@@ -241,18 +241,18 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             </Link>
 
             <Link
-              to="/templates"
+              to="/layouts"
               className="border-border bg-card hover:border-foreground/30 flex flex-1 flex-col justify-between gap-4 rounded-2xl border p-6 transition-colors"
             >
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold tracking-tight">반응형 레이아웃 템플릿</h3>
+                <h3 className="text-lg font-semibold tracking-tight">레이아웃 패턴</h3>
                 <p className="text-muted-foreground text-sm">
-                  Inset AppShell과 Responsive Dialog를 통해 데스크톱과 모바일 화면의 전환 구조를
-                  정의합니다.
+                  앱 쉘, 3열, 사이드바·본문, 단일 열 배치 패턴과 화면 폭에 따른 전환 구조를
+                  정리합니다.
                 </p>
               </div>
               <span className="text-foreground inline-flex items-center gap-1 text-xs font-medium">
-                템플릿 보기 <ArrowRight className="size-3.5" />
+                레이아웃 보기 <ArrowRight className="size-3.5" />
               </span>
             </Link>
           </div>

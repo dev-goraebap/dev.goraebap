@@ -1,5 +1,6 @@
 import type { MDXComponents } from "mdx/types";
 import { Button } from "@goraebap/ui-react/components/button";
+import { Separator } from "@goraebap/ui-react/components/separator";
 import { CopyCommand } from "./CopyCommand";
 import { LivePreview } from "./LivePreview";
 
@@ -51,7 +52,7 @@ export const mdxComponents: MDXComponents = {
       {...props}
     />
   ),
-  hr: () => <hr className="border-border my-10" />,
+  hr: () => <Separator variant="wave" className="my-10" />,
   table: (props) => (
     <div className="my-6 overflow-x-auto">
       <table className="w-full border-collapse text-sm" {...props} />

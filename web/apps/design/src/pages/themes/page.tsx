@@ -351,14 +351,14 @@ function ThemesPage() {
                 <Alert variant="info">
                   <AlertTitle>전역 실시간 반영</AlertTitle>
                   <AlertDescription>
-                    여기서 고른 설정은 컴포넌트·템플릿 페이지에도 그대로 적용됩니다.
+                    여기서 고른 설정은 컴포넌트·레이아웃 페이지에도 그대로 적용됩니다.
                   </AlertDescription>
                 </Alert>
               </div>
             </div>
           </div>
 
-          <CopyCodeBlock label="적용 스니펫" language="html" code={generatedCode} />
+          <CopyCodeBlock label="theme-config.html" language="html" code={generatedCode} />
         </div>
       </section>
 

@@ -8,9 +8,12 @@ export const Route = createFileRoute("/_library/components/")({
 function ComponentsOverviewPage() {
   return (
     <div className="space-y-12">
-      {/* Centered Astryx-style Header */}
-      <header className="border-border space-y-4 border-b pb-10 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">컴포넌트</h1>
+      <header className="border-border space-y-3 border-b pb-8">
+        <h1 className="text-3xl font-semibold tracking-tight">컴포넌트</h1>
+        <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
+          Pure HTML 레시피와 React(Base UI), Angular(Spartan) 예시를 함께 제공하는 UI 컴포넌트
+          라이브러리입니다.
+        </p>
       </header>
 
       {/* Categorized 3-column Live Miniature Preview Grid */}

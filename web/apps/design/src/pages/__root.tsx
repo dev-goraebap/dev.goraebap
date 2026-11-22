@@ -1,24 +1,64 @@
+import { useEffect, useState } from "react";
 import { Link, Outlet, createRootRoute, useRouterState } from "@tanstack/react-router";
+import Lenis from "lenis";
 import { Button } from "@goraebap/ui-react/components/button";
+import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
 import { DesignConfigProvider } from "@/shared/lib/design-config";
-import { BrandMark, ModeToggle } from "@/shared/ui";
+import { BrandMark, ModeToggle, SiteFooter } from "@/shared/ui";
+
+const PENDING_BAR_DELAY_MS = 180;
+
+function useSmoothScroll(enabled: boolean) {
+  useEffect(() => {
+    if (!enabled) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const lenis = new Lenis({ autoRaf: true });
+    return () => lenis.destroy();
+  }, [enabled]);
+}
+
+function RoutePendingBar() {
+  const isLoading = useRouterState({ select: (state) => state.isLoading });
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading) {
+      setVisible(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setVisible(true), PENDING_BAR_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [isLoading]);
+
+  if (!visible) return null;
+  return (
+    <div
+      aria-hidden="true"
+      className="bg-primary fixed inset-x-0 top-0 z-50 h-0.5 animate-pulse"
+    />
+  );
+}
 
 export const Route = createRootRoute({
   component: RootLayout,
 });
 
-const LIBRARY_PATHS = ["/components", "/getting-started", "/foundations", "/adapters"];
+const LIBRARY_PATHS = ["/components", "/overview", "/getting-started", "/foundations", "/adapters"];
+const DOCS_SHELL_PATHS = [...LIBRARY_PATHS, "/layouts", "/details"];
 
-const TOP_NAV = [
-  { label: "컴포넌트", to: "/components" as const },
-  { label: "템플릿", to: "/templates" as const },
-  { label: "테마", to: "/themes" as const },
+const TOP_NAV: { label: string; to: "/components" | "/layouts" | "/details" | "/themes"; icon: SystemIconName }[] = [
+  { label: "컴포넌트", to: "/components", icon: "components" },
+  { label: "레이아웃", to: "/layouts", icon: "layouts" },
+  { label: "디테일", to: "/details", icon: "details" },
+  { label: "테마", to: "/themes", icon: "palette" },
 ];
 
 function RootLayout() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isPreview = pathname.startsWith("/preview");
+  useSmoothScroll(!isPreview);
 
-  if (pathname.startsWith("/preview")) {
+  if (isPreview) {
     return (
       <DesignConfigProvider>
         <Outlet />
@@ -31,8 +71,11 @@ function RootLayout() {
       ? LIBRARY_PATHS.some((path) => pathname.startsWith(path))
       : pathname.startsWith(to);
 
+  const hasDocsShell = DOCS_SHELL_PATHS.some((path) => pathname.startsWith(path));
+
   return (
     <DesignConfigProvider>
+      <RoutePendingBar />
       <div className="bg-background text-foreground flex min-h-screen flex-col">
         <header className="border-border/80 bg-background/85 sticky top-0 z-30 border-b backdrop-blur-md">
           <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-5 sm:px-6">
@@ -56,11 +99,12 @@ function RootLayout() {
                   aria-current={isNavActive(item.to) ? "page" : undefined}
                   className={
                     isNavActive(item.to)
-                      ? "bg-secondary text-foreground rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
-                      : "text-muted-foreground hover:bg-accent/70 hover:text-foreground rounded-full px-3.5 py-1.5 text-sm transition-colors"
+                      ? "bg-secondary text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
+                      : "text-muted-foreground hover:bg-accent/70 hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors"
                   }
                 >
-                  {item.label}
+                  <SystemIcon name={item.icon} className="size-4" />
+                  <span>{item.label}</span>
                 </Link>
               ))}
             </nav>
@@ -91,11 +135,12 @@ function RootLayout() {
                 aria-current={isNavActive(item.to) ? "page" : undefined}
                 className={
                   isNavActive(item.to)
-                    ? "bg-secondary text-foreground shrink-0 rounded-full px-3 py-1 text-xs font-medium"
-                    : "text-muted-foreground hover:text-foreground shrink-0 rounded-full px-3 py-1 text-xs"
+                    ? "bg-secondary text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+                    : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
                 }
               >
-                {item.label}
+                <SystemIcon name={item.icon} className="size-3.5" />
+                <span>{item.label}</span>
               </Link>
             ))}
           </nav>
@@ -105,22 +150,7 @@ function RootLayout() {
           <Outlet />
         </div>
 
-        <footer className="border-border/80 border-t">
-          <div className="text-muted-foreground mx-auto flex max-w-7xl flex-col gap-3 px-6 py-8 text-xs sm:flex-row sm:items-center sm:justify-between">
-            <span className="text-foreground font-medium">goraebap/design</span>
-            <div className="flex flex-wrap items-center gap-4 font-mono">
-              <Link to="/components" className="hover:text-foreground transition-colors">
-                컴포넌트
-              </Link>
-              <Link to="/templates" className="hover:text-foreground transition-colors">
-                템플릿
-              </Link>
-              <Link to="/themes" className="hover:text-foreground transition-colors">
-                테마
-              </Link>
-            </div>
-          </div>
-        </footer>
+        {!hasDocsShell && <SiteFooter />}
       </div>
     </DesignConfigProvider>
   );

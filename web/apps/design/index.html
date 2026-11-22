@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>goraebap/design — 디자인 시스템</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
       as="style"
@@ -15,13 +18,33 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Noto+Serif+KR:wght@600;700&display=swap"
     />
+    <style>
+      html.fonts-loading {
+        opacity: 0;
+      }
+      html {
+        transition: opacity 120ms ease-out;
+      }
+    </style>
     <script>
       (() => {
+        const root = document.documentElement;
         const stored = localStorage.getItem("goraebap-design-mode");
         if (stored === "light") {
-          document.documentElement.classList.remove("dark");
+          root.classList.remove("dark");
         } else {
-          document.documentElement.classList.add("dark");
+          root.classList.add("dark");
+        }
+        root.classList.add("fonts-loading");
+        const reveal = () => root.classList.remove("fonts-loading");
+        const timer = setTimeout(reveal, 180);
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => {
+            clearTimeout(timer);
+            reveal();
+          });
+        } else {
+          reveal();
         }
       })();
     </script>

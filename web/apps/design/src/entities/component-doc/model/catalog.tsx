@@ -816,6 +816,51 @@ export function Example() {
         </div>
       </div>
     ),
+    examples: [
+      {
+        id: "wave",
+        title: "Wave Divider",
+        description: "블로그나 문서 본문에서 섹션을 부드럽게 나눌 때 variant='wave'를 씁니다.",
+        htmlCode: `<div role="separator" aria-orientation="horizontal" class="text-border flex w-full justify-center py-2">
+  <svg viewBox="0 0 120 10" fill="none" class="h-2.5 w-28">
+    <path d="M2 5c4-4 8-4 12 0s8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+  </svg>
+</div>`,
+        reactCode: `import { Separator } from "@goraebap/ui-react/components/separator";
+
+export function WaveDividerExample() {
+  return <Separator variant="wave" />;
+}`,
+        angularCode: `<div role="separator" class="text-border flex w-full justify-center py-2">...</div>`,
+        renderHtmlDemo: () => (
+          <div className="border-border bg-card mx-auto max-w-sm space-y-3 rounded-xl border p-5 text-xs">
+            <p className="text-muted-foreground">첫 번째 섹션 본문입니다.</p>
+            <div
+              role="separator"
+              aria-orientation="horizontal"
+              className="text-border flex w-full items-center justify-center py-2"
+            >
+              <svg viewBox="0 0 120 10" fill="none" aria-hidden="true" className="h-2.5 w-28">
+                <path
+                  d="M2 5c4-4 8-4 12 0s8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+            </div>
+            <p className="text-muted-foreground">두 번째 섹션 본문입니다.</p>
+          </div>
+        ),
+        renderReactDemo: () => (
+          <div className="border-border bg-card mx-auto max-w-sm space-y-3 rounded-xl border p-5 text-xs">
+            <p className="text-muted-foreground">첫 번째 섹션 본문입니다.</p>
+            <Separator variant="wave" />
+            <p className="text-muted-foreground">두 번째 섹션 본문입니다.</p>
+          </div>
+        ),
+      },
+    ],
   },
   {
     slug: "skeleton",

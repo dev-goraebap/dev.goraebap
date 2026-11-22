@@ -27,9 +27,9 @@ const NEXT_STEPS = [
     to: "/components" as const,
   },
   {
-    title: "템플릿",
+    title: "레이아웃",
     summary: "Inset AppShell과 Responsive Dialog의 화면 구성과 반응형 전환을 확인합니다.",
-    to: "/templates" as const,
+    to: "/layouts" as const,
   },
 ];
 

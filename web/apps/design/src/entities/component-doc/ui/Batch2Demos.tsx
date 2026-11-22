@@ -280,7 +280,7 @@ export function NativeDrawerDemo({ isMobile }: { isMobile: boolean }) {
       </button>
       <dialog
         ref={ref}
-        data-surface={isMobile ? "sheet" : "dialog"}
+        data-surface={`drawer-${side}`}
         onClick={(e) => {
           if (e.target === e.currentTarget) ref.current?.close();
         }}

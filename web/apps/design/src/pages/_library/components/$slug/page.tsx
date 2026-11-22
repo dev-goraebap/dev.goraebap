@@ -31,7 +31,7 @@ function ComponentDetailPage() {
     <article className="space-y-8">
       <header className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-muted-foreground font-mono text-xs">{doc.category}</span>
+          <span className="text-muted-foreground text-xs font-medium">{doc.category}</span>
           <span className={badgeVariants({ variant: "outline" })}>{doc.pureHtmlLevel}</span>
         </div>
         <h1 className="text-3xl font-semibold tracking-tight">{doc.name}</h1>

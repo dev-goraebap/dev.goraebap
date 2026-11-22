@@ -12,18 +12,21 @@ export const Route = createFileRoute("/_library")({
 const GUIDE_GROUPS: DocsNavGroup[] = [
   {
     title: "가이드",
-    items: [{ label: "시작하기", href: "/getting-started" }],
+    items: [
+      { label: "개요", href: "/overview", icon: "book" },
+      { label: "시작하기", href: "/getting-started", icon: "rocket" },
+    ],
   },
   {
     title: "파운데이션",
     items: [
-      { label: "디자인 토큰", href: "/foundations/tokens" },
-      { label: "스타일 레시피", href: "/foundations/recipes" },
+      { label: "디자인 토큰", href: "/foundations/tokens", icon: "swatch" },
+      { label: "스타일 레시피", href: "/foundations/recipes", icon: "code" },
     ],
   },
   {
     title: "어댑터",
-    items: [{ label: "Pure HTML & Primitives", href: "/adapters/primitives" }],
+    items: [{ label: "Pure HTML & Primitives", href: "/adapters/primitives", icon: "components" }],
   },
 ];
 
@@ -43,7 +46,7 @@ function LibraryLayout() {
   const componentGroup: DocsNavGroup = {
     title: "컴포넌트",
     items: [
-      ...(normalized ? [] : [{ label: "개요", href: "/components" }]),
+      ...(normalized ? [] : [{ label: "개요", href: "/components", icon: "overview" as const }]),
       ...filtered.map((item) => ({ label: item.name, href: `/components/${item.slug}` })),
     ],
   };
