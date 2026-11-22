@@ -22,7 +22,7 @@ function ComponentMobilePreviewPage() {
 
   return (
     <div
-      data-theme={theme}
+      data-ds-theme={theme}
       className="bg-background text-foreground flex min-h-screen flex-col transition-colors"
     >
       {/* Mobile App Top Bar (respects Dynamic Island safe area) */}

@@ -5,21 +5,25 @@ export const Route = createRootRoute({
   component: RootLayout,
 });
 
+const LIBRARY_PATHS = ["/components", "/getting-started", "/foundations", "/adapters"];
+
 const TOP_NAV = [
-  { label: "Docs", to: "/docs" as const },
   { label: "Components", to: "/components" as const },
   { label: "Templates", to: "/templates" as const },
   { label: "Themes", to: "/themes" as const },
 ];
 
 function RootLayout() {
-  const isPreviewRoute = useRouterState({
-    select: (state) => state.location.pathname.startsWith("/preview"),
-  });
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
 
-  if (isPreviewRoute) {
+  if (pathname.startsWith("/preview")) {
     return <Outlet />;
   }
+
+  const isNavActive = (to: string) =>
+    to === "/components"
+      ? LIBRARY_PATHS.some((path) => pathname.startsWith(path))
+      : pathname.startsWith(to);
 
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
@@ -31,7 +35,7 @@ function RootLayout() {
             className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight"
           >
             <span className="bg-primary text-primary-foreground inline-flex size-7 items-center justify-center rounded-lg transition-transform group-hover:scale-105">
-              <BrandMark className="size-5" />
+              <BrandMark className="size-5.5" />
             </span>
             <span>goraebap/design</span>
           </Link>
@@ -42,10 +46,12 @@ function RootLayout() {
               <Link
                 key={item.to}
                 to={item.to}
-                className="text-muted-foreground hover:bg-accent/70 hover:text-foreground rounded-full px-3.5 py-1.5 text-sm transition-colors"
-                activeProps={{
-                  className: "bg-secondary text-foreground font-medium",
-                }}
+                aria-current={isNavActive(item.to) ? "page" : undefined}
+                className={
+                  isNavActive(item.to)
+                    ? "bg-secondary text-foreground rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
+                    : "text-muted-foreground hover:bg-accent/70 hover:text-foreground rounded-full px-3.5 py-1.5 text-sm transition-colors"
+                }
               >
                 {item.label}
               </Link>
@@ -56,7 +62,7 @@ function RootLayout() {
           <div className="flex items-center gap-2.5">
             <ModeToggle />
             <Link
-              to="/docs"
+              to="/getting-started"
               className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-8 items-center rounded-full px-4 text-xs font-medium transition-colors"
             >
               Get started
@@ -73,8 +79,12 @@ function RootLayout() {
             <Link
               key={item.to}
               to={item.to}
-              className="text-muted-foreground hover:text-foreground shrink-0 rounded-full px-3 py-1 text-xs"
-              activeProps={{ className: "bg-secondary text-foreground font-medium" }}
+              aria-current={isNavActive(item.to) ? "page" : undefined}
+              className={
+                isNavActive(item.to)
+                  ? "bg-secondary text-foreground shrink-0 rounded-full px-3 py-1 text-xs font-medium"
+                  : "text-muted-foreground hover:text-foreground shrink-0 rounded-full px-3 py-1 text-xs"
+              }
             >
               {item.label}
             </Link>
@@ -90,9 +100,6 @@ function RootLayout() {
         <div className="text-muted-foreground mx-auto flex max-w-7xl flex-col gap-3 px-6 py-8 text-xs sm:flex-row sm:items-center sm:justify-between">
           <span className="text-foreground font-medium">goraebap/design</span>
           <div className="flex flex-wrap items-center gap-4 font-mono">
-            <Link to="/docs" className="hover:text-foreground transition-colors">
-              Docs
-            </Link>
             <Link to="/components" className="hover:text-foreground transition-colors">
               Components
             </Link>

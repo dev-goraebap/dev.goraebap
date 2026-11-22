@@ -48,9 +48,6 @@ function MobileAppShellPreview() {
           <h1 className="text-base font-semibold tracking-tight">
             {SHELL_NAV.find((n) => n.id === activeNav)?.label}
           </h1>
-          <p className="text-muted-foreground text-xs leading-relaxed">
-            64rem 미만에서는 좌측 사이드바가 상단 햄버거 드로어로 접히고 본문이 전체 폭을 씁니다.
-          </p>
         </div>
 
         {activeNav === "security" && (
@@ -170,7 +167,6 @@ function MobileAppShellPreview() {
                 })}
               </nav>
             </div>
-            <p className="text-muted-foreground px-2 font-mono text-[10px]">--sidebar drawer</p>
           </aside>
         </div>
       )}
@@ -183,19 +179,13 @@ function MobileResponsiveDialogPreview() {
     <div className="bg-background text-foreground flex min-h-screen flex-col">
       <header className="border-border bg-background/90 sticky top-0 z-10 flex items-center justify-between border-b px-4 pt-13 pb-3 backdrop-blur-md">
         <div>
-          <p className="text-muted-foreground font-mono text-[10px] leading-none">TEMPLATE 02</p>
-          <h1 className="mt-1 text-sm font-semibold tracking-tight">프로젝트 설정</h1>
+          <h1 className="text-sm font-semibold tracking-tight">프로젝트 설정</h1>
         </div>
-        <Badge variant="outline">Bottom Sheet</Badge>
       </header>
 
       <main className="flex flex-1 flex-col justify-center gap-4 px-4 pt-6 pb-12">
         <div className="border-border bg-card space-y-2 rounded-xl border p-4 text-xs">
           <p className="font-medium">현재 프로젝트: dev.goraebap</p>
-          <p className="text-muted-foreground leading-relaxed">
-            아래 버튼을 누르면 이 모바일 화면 하단에서 바텀시트가 열리고 상단 상태바 뒤까지 백드롭이
-            덮입니다.
-          </p>
         </div>
         <ReactDialogDemo isMobile={true} />
       </main>
@@ -208,7 +198,7 @@ function TemplateMobilePreviewPage() {
   const { theme } = usePreviewSync();
 
   return (
-    <div data-theme={theme} className="min-h-screen">
+    <div data-ds-theme={theme} className="min-h-screen">
       {id === "app-shell" ? (
         <MobileAppShellPreview />
       ) : id === "responsive-dialog" ? (

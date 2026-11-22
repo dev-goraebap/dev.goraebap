@@ -83,9 +83,6 @@ export function ReactDialogDemo({ isMobile }: { isMobile: boolean }) {
           </div>
         </DialogContent>
       </Dialog>
-      <p className="text-muted-foreground text-xs">
-        현재 모드: {isMobile ? "Mobile (Bottom Sheet)" : "Desktop (Centered Dialog)"}
-      </p>
     </div>
   );
 }
@@ -104,10 +101,6 @@ export function NativeDialogDemo({ isMobile }: { isMobile: boolean }) {
       >
         {isMobile ? "네이티브 바텀시트 열기" : "네이티브 <dialog> 열기"}
       </button>
-      <p className="text-muted-foreground text-center text-xs">
-        프레임워크 없이 브라우저 기본 <code>&lt;dialog&gt;.showModal()</code> +{" "}
-        <code>dialogPopupVariants()</code>로 동작합니다. (ESC 닫기 지원)
-      </p>
       <dialog
         ref={dialogRef}
         className={`goraebap-native-dialog m-0 max-w-none backdrop:bg-black/55 ${

@@ -19,14 +19,14 @@ const THEMES = [
   {
     id: "app" as const,
     name: "App Theme",
-    token: 'data-theme="app"',
+    token: 'data-ds-theme="app"',
     target: "apps/accounts · apps/productivity",
     desc: "중립 무채색 캔버스와 4단계 면 위계를 쓰는 작업 화면용 테마입니다.",
   },
   {
     id: "editorial" as const,
     name: "Editorial Theme",
-    token: 'data-theme="editorial"',
+    token: 'data-ds-theme="editorial"',
     target: "apps/blog",
     desc: "따뜻한 배경 톤으로 긴 기술 글과 문서에 맞춘 테마입니다.",
   },
@@ -38,7 +38,7 @@ function ThemesPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Themes</h1>
         <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-          같은 컴포넌트와 레시피에 <code>data-theme</code> 속성을 바꿔 제품과 블로그 테마를
+          같은 컴포넌트와 레시피에 <code>data-ds-theme</code> 속성을 바꿔 제품과 블로그 테마를
           전환합니다.
         </p>
       </header>
@@ -47,7 +47,7 @@ function ThemesPage() {
         {THEMES.map((t) => (
           <section
             key={t.id}
-            data-theme={t.id}
+            data-ds-theme={t.id}
             className="border-border bg-background text-foreground space-y-5 rounded-3xl border p-6"
           >
             <div className="flex flex-wrap items-center justify-between gap-2">

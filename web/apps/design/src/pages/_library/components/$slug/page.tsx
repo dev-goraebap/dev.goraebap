@@ -4,7 +4,7 @@ import { badgeVariants } from "@goraebap/design-system/recipes/badge";
 import { COMPONENT_DOCS, getComponentDoc } from "@/entities/component-doc";
 import { AdapterPreviewStage } from "@/shared/ui";
 
-export const Route = createFileRoute("/components/$slug/")({
+export const Route = createFileRoute("/_library/components/$slug/")({
   component: ComponentDetailPage,
 });
 

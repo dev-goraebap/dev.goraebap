@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { COMPONENT_CATEGORIES, COMPONENT_DOCS } from "@/entities/component-doc";
 
-export const Route = createFileRoute("/components/")({
+export const Route = createFileRoute("/_library/components/")({
   component: ComponentsOverviewPage,
 });
 

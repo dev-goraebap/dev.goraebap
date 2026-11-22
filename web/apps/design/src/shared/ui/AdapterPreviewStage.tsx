@@ -178,7 +178,7 @@ export function AdapterPreviewStage({
       {/* Stage Body */}
       {view === "preview" ? (
         <div
-          data-theme={theme}
+          data-ds-theme={theme}
           className={`bg-dots bg-background/70 flex min-h-72 flex-col items-center justify-center transition-colors ${
             isMobile && adapter !== "angular" ? "px-4 py-10 sm:px-8" : "p-6"
           }`}

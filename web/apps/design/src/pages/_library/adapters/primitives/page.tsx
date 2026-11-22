@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CopyCodeBlock } from "@/shared/ui";
 
-export const Route = createFileRoute("/docs/primitives/")({
+export const Route = createFileRoute("/_library/adapters/primitives/")({
   component: DocsPrimitivesPage,
 });
 
 const BOUNDARY_ROWS = [
   {
     ui: "Button / Input / Badge / Card / Alert / Table",
-    html: "네이티브 태그와 CVA 레시피로 구현",
-    primitive: "불필요 (라우터 링크 합성 시에만 어댑터 사용)",
+    html: "네이티브 요소와 레시피 함수로 구성",
+    primitive: "불필요 (라우터 링크를 합성할 때만 사용)",
   },
   {
     ui: "Dialog / Modal",
@@ -36,9 +36,9 @@ function DocsPrimitivesPage() {
           Pure HTML &amp; Headless Primitives
         </h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          UI 컴포넌트를 감싸기 전에도 토큰과 레시피를 네이티브 HTML에 입혀 외형을 확인할 수
-          있습니다. 3단계 헤드리스 프리미티브는 네이티브 HTML만으로 처리하기 어려운 키보드 탐색,
-          포커스 관리, 오버레이 동작을 맡습니다.
+          토큰과 레시피는 네이티브 HTML 요소에 바로 적용할 수 있습니다. 네이티브 HTML만으로 처리하기
+          어려운 키보드 탐색, 포커스 관리, 오버레이 동작이 필요할 때 헤드리스 프리미티브를
+          결합합니다.
         </p>
       </header>
 
@@ -73,12 +73,12 @@ function DocsPrimitivesPage() {
         <CopyCodeBlock
           label="adapter-mapping.txt"
           language="text"
-          code={`Layer 1 (Tokens)   : @goraebap/design-system/styles
-Layer 2 (Recipes)  : @goraebap/design-system/recipes/*
+          code={`Tokens             : @goraebap/design-system/styles
+Recipes            : @goraebap/design-system/recipes/*
 ──────────────────────────────────────────────────────────
 Pure HTML Adapter  : Native HTML (<button>, <dialog>, <details>, <table>)
 React Adapter      : @base-ui/react  → @goraebap/ui
-Angular Adapter    : @spartan-ng/brain → @goraebap/ui-angular (apps/accounts 예정)`}
+Angular Adapter    : @spartan-ng/brain + @goraebap/design-system/recipes/*`}
         />
       </section>
     </article>

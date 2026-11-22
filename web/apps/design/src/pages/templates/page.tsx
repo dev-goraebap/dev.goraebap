@@ -1,129 +1,32 @@
-import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { Monitor, Smartphone } from "lucide-react";
-import { Badge } from "@goraebap/ui/components/badge";
-import { Button } from "@goraebap/ui/components/button";
-import { ReactDialogDemo } from "@/entities/component-doc/ui/InteractiveDemos";
-import { MobileDeviceFrame } from "@/shared/ui";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { TEMPLATE_DOCS } from "@/entities/template-doc";
 
 export const Route = createFileRoute("/templates/")({
-  component: TemplatesPage,
+  component: TemplatesOverviewPage,
 });
 
-function TemplatesPage() {
-  const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
-  const isMobile = viewport === "mobile";
-
+function TemplatesOverviewPage() {
   return (
-    <main className="mx-auto max-w-7xl space-y-12 px-6 py-12">
-      <header className="border-border flex flex-col justify-between gap-4 border-b pb-8 sm:flex-row sm:items-end">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Templates &amp; Responsive Patterns
-          </h1>
-          <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-            단일 기준선(<code className="font-mono">64rem / 1024px</code>) 아래에서 데스크톱 패턴이
-            모바일(390px)로 어떻게 자연스럽게 전환되는지 격리된 뷰포트에서 확인합니다.
-          </p>
-        </div>
-
-        <div className="border-border bg-card inline-flex shrink-0 items-center rounded-full border p-0.5 text-xs">
-          <button
-            type="button"
-            onClick={() => setViewport("desktop")}
-            className={
-              !isMobile
-                ? "bg-primary text-primary-foreground inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5 font-medium"
-                : "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5"
-            }
-          >
-            <Monitor className="size-3.5" />
-            <span>Desktop</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewport("mobile")}
-            className={
-              isMobile
-                ? "bg-primary text-primary-foreground inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5 font-medium"
-                : "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3.5 py-1.5"
-            }
-          >
-            <Smartphone className="size-3.5" />
-            <span>Mobile 390px</span>
-          </button>
-        </div>
+    <div className="space-y-10">
+      <header className="border-border border-b pb-8">
+        <h1 className="text-3xl font-semibold tracking-tight">Templates</h1>
       </header>
 
-      {/* Pattern 1: Inset AppShell */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-semibold">01. Inset AppShell</h2>
-          <Badge variant="outline">{isMobile ? "Mobile Topbar + Drawer" : "Desktop Inset"}</Badge>
-        </div>
-
-        <div
-          className={`bg-dots border-border flex justify-center rounded-2xl border ${
-            isMobile ? "px-4 py-10 sm:px-8" : "p-6"
-          }`}
-        >
-          {isMobile ? (
-            <MobileDeviceFrame path="/preview/templates/app-shell" title="Inset AppShell" />
-          ) : (
-            <div className="border-border bg-sidebar flex h-80 w-full overflow-hidden rounded-2xl border p-2.5">
-              <div className="flex w-44 shrink-0 flex-col p-3 text-xs">
-                <div className="space-y-2">
-                  <p className="font-semibold">goraebap</p>
-                  <div className="bg-accent text-foreground rounded-md px-2.5 py-1.5 font-medium">
-                    개요
-                  </div>
-                  <div className="text-muted-foreground px-2.5 py-1.5">프로필</div>
-                  <div className="text-muted-foreground px-2.5 py-1.5">보안 · 토큰</div>
-                </div>
-              </div>
-              <div className="border-border bg-background flex-1 rounded-xl border p-5">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold">보안 및 토큰</p>
-                  <Button size="sm">새 토큰 발급</Button>
-                </div>
-                <ul className="border-border bg-card divide-border mt-4 divide-y rounded-xl border text-xs">
-                  <li className="flex items-center justify-between px-4 py-3">
-                    <span className="font-medium">배포 자동화</span>
-                    <span className="text-muted-foreground">3일 전 사용</span>
-                  </li>
-                  <li className="flex items-center justify-between px-4 py-3">
-                    <span className="font-medium">로컬 개발</span>
-                    <span className="text-muted-foreground">오늘 사용</span>
-                  </li>
-                </ul>
-              </div>
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {TEMPLATE_DOCS.map((item) => (
+          <Link
+            key={item.id}
+            to="/templates/$id"
+            params={{ id: item.id }}
+            className="group space-y-2.5"
+          >
+            <div className="border-border bg-card group-hover:border-foreground/35 flex h-44 items-center justify-center overflow-hidden rounded-2xl border p-4 transition-colors">
+              {item.renderThumbnail()}
             </div>
-          )}
-        </div>
-      </section>
-
-      {/* Pattern 2: Dialog <-> Bottom Sheet */}
-      <section className="space-y-4">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="text-lg font-semibold">02. Responsive Dialog ↔ Bottom Sheet</h2>
-          <Badge variant="outline">{isMobile ? "Bottom Sheet (390px)" : "Centered Dialog"}</Badge>
-        </div>
-
-        <div
-          className={`bg-dots border-border flex justify-center rounded-2xl border ${
-            isMobile ? "px-4 py-10 sm:px-8" : "p-8"
-          }`}
-        >
-          {isMobile ? (
-            <MobileDeviceFrame
-              path="/preview/templates/responsive-dialog"
-              title="Responsive Bottom Sheet"
-            />
-          ) : (
-            <ReactDialogDemo isMobile={false} />
-          )}
-        </div>
-      </section>
-    </main>
+            <p className="text-foreground px-1 text-sm font-medium">{item.name}</p>
+          </Link>
+        ))}
+      </div>
+    </div>
   );
 }

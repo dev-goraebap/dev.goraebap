@@ -21,32 +21,12 @@ const HERO_THEMES = [
   },
 ];
 
-const FIVE_LAYERS = [
-  {
-    step: "01",
-    title: "Design Tokens",
-    to: "/docs/tokens" as const,
-  },
-  {
-    step: "02",
-    title: "Style Recipes",
-    to: "/docs/recipes" as const,
-  },
-  {
-    step: "03",
-    title: "Primitives",
-    to: "/docs/primitives" as const,
-  },
-  {
-    step: "04",
-    title: "UI Components",
-    to: "/components" as const,
-  },
-  {
-    step: "05",
-    title: "Templates",
-    to: "/templates" as const,
-  },
+const LIBRARY_SECTIONS = [
+  { title: "Design Tokens", to: "/foundations/tokens" as const },
+  { title: "Style Recipes", to: "/foundations/recipes" as const },
+  { title: "Primitives", to: "/adapters/primitives" as const },
+  { title: "UI Components", to: "/components" as const },
+  { title: "Templates", to: "/templates" as const },
 ];
 
 function LandingPage() {
@@ -85,7 +65,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link
-              to="/docs"
+              to="/getting-started"
               className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-11 items-center gap-2 rounded-full px-6 text-sm font-medium transition-colors"
             >
               <span>Get started</span>
@@ -102,7 +82,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
 
         {/* Interactive Hero Preview Canvas */}
         <div
-          data-theme={heroTheme}
+          data-ds-theme={heroTheme}
           className="border-border bg-card mx-auto max-w-5xl overflow-hidden rounded-3xl border text-left shadow-sm transition-colors"
         >
           <div className="border-border bg-muted/35 flex flex-wrap items-center justify-between gap-3 border-b px-5 py-3">
@@ -246,7 +226,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
                 <h3 className="text-lg font-semibold tracking-tight">App & Editorial 멀티 테마</h3>
                 <p className="text-muted-foreground text-sm">
                   4단계 면 위계(--sidebar → --background → --card → --popover)를 유지한 채
-                  data-theme 속성으로 제품과 블로그 테마를 바꿉니다.
+                  data-ds-theme 속성으로 제품과 블로그 테마를 바꿉니다.
                 </p>
               </div>
               <span className="text-foreground inline-flex items-center gap-1 text-xs font-medium">
@@ -275,29 +255,26 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
         </div>
       </section>
 
-      {/* 3. 5-Layer Architecture Strip */}
+      {/* 3. Library Sections */}
       <section className="space-y-6">
         <div className="flex items-end justify-between gap-4">
-          <h2 className="text-2xl font-semibold tracking-tight">5단계 계층 구조</h2>
+          <h2 className="text-2xl font-semibold tracking-tight">라이브러리 구성</h2>
           <Link
-            to="/docs"
+            to="/getting-started"
             className="text-muted-foreground hover:text-foreground text-xs font-medium"
           >
-            전체 문서 보기 →
+            시작하기 →
           </Link>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          {FIVE_LAYERS.map((layer) => (
+          {LIBRARY_SECTIONS.map((section) => (
             <Link
-              key={layer.step}
-              to={layer.to}
+              key={section.to}
+              to={section.to}
               className="border-border bg-card hover:border-foreground/30 flex flex-col justify-between gap-4 rounded-2xl border p-5 transition-colors"
             >
-              <div className="space-y-2">
-                <span className="text-muted-foreground font-mono text-xs">{layer.step}</span>
-                <h3 className="text-sm font-semibold">{layer.title}</h3>
-              </div>
+              <h3 className="text-sm font-semibold">{section.title}</h3>
               <Layers className="text-muted-foreground/60 size-4" />
             </Link>
           ))}
@@ -318,7 +295,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               Browse components
             </Link>
             <Link
-              to="/docs"
+              to="/getting-started"
               className="border-border bg-secondary text-secondary-foreground hover:bg-accent inline-flex h-10 items-center rounded-full border px-5 text-sm font-medium transition-colors"
             >
               Read docs
