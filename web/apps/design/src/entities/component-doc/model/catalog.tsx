@@ -54,6 +54,24 @@ import {
   ReactTooltipDemo,
 } from "../ui/Batch1Demos";
 import {
+  NativeAccordionDemo,
+  NativeAvatarDemo,
+  NativeCollapsibleDemo,
+  NativeDrawerDemo,
+  NativeProgressDemo,
+  NativeRadioGroupDemo,
+  NativeSliderDemo,
+  NativeToastDemo,
+  ReactAccordionDemo,
+  ReactAvatarDemo,
+  ReactCollapsibleDemo,
+  ReactDrawerDemo,
+  ReactProgressDemo,
+  ReactRadioGroupDemo,
+  ReactSliderDemo,
+  ReactToastDemo,
+} from "../ui/Batch2Demos";
+import {
   NativeCheckboxDemo,
   NativeDialogDemo,
   NativeSwitchDemo,
@@ -1393,6 +1411,310 @@ export function Example() {
     ),
     renderHtmlDemo: () => <NativeAlertDialogDemo />,
     renderReactDemo: () => <ReactAlertDialogDemo />,
+  },
+  {
+    slug: "radio-group",
+    name: "Radio Group",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/radio-group",
+    primitiveAngular: "@spartan-ng/brain/radio-group",
+    recipePath: "@goraebap/design-system/recipes/radio-group",
+    pureHtmlLevel: "100% Native HTML",
+    summary: "서로 배타적인 여러 선택지 중 하나를 고르는 라디오 그룹입니다.",
+    pureHtmlNote:
+      "네이티브 <input type='radio'>와 radioItemVariants()로 동일한 외형을 구성할 수 있습니다. 화살표 키 순환과 폼 통합은 Base UI나 Spartan Brain을 씁니다.",
+    mobileGuideline: "라벨 전체를 클릭 영역으로 묶고 항목 간 간격을 충분히 둡니다.",
+    htmlCode: `<div role="radiogroup" class="\${radioGroupVariants()}">
+  <label><input type="radio" name="theme" class="\${radioItemVariants()}" checked /> App Theme</label>
+</div>`,
+    reactCode: `import { RadioGroup, RadioGroupItem } from "@goraebap/ui-react/components/radio-group";
+
+export function Example() {
+  return (
+    <RadioGroup defaultValue="app">
+      <label className="flex items-center gap-2"><RadioGroupItem value="app" />App Theme</label>
+      <label className="flex items-center gap-2"><RadioGroupItem value="editorial" />Editorial Theme</label>
+    </RadioGroup>
+  );
+}`,
+    angularCode: `<brn-radio-group [class]="radioGroupVariants()">
+  <brn-radio value="app" [class]="radioItemVariants()">App Theme</brn-radio>
+</brn-radio-group>`,
+    renderThumbnail: () => (
+      <div className="space-y-1.5 text-left text-xs">
+        <div className="flex items-center gap-2">
+          <span className="border-primary flex size-3.5 items-center justify-center rounded-full border">
+            <span className="bg-primary size-1.5 rounded-full" />
+          </span>
+          <span>App</span>
+        </div>
+        <div className="text-muted-foreground flex items-center gap-2">
+          <span className="border-input size-3.5 rounded-full border" />
+          <span>Editorial</span>
+        </div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeRadioGroupDemo />,
+    renderReactDemo: () => <ReactRadioGroupDemo />,
+  },
+  {
+    slug: "slider",
+    name: "Slider",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/slider",
+    primitiveAngular: "@spartan-ng/brain/slider",
+    recipePath: "@goraebap/design-system/recipes/slider",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "정해진 범위 안에서 연속된 값을 드래그로 조절하는 슬라이더입니다.",
+    pureHtmlNote:
+      "네이티브 <input type='range'>는 브라우저마다 트랙·손잡이 스타일이 다릅니다. 일관된 커스텀 트랙과 범위 선택은 Base UI나 Spartan Brain을 씁니다.",
+    mobileGuideline: "손잡이 터치 영역을 넉넉히 확보하고 현재 값을 숫자로 함께 표시합니다.",
+    htmlCode: `<input type="range" min="0" max="100" value="60" />`,
+    reactCode: `import { Slider } from "@goraebap/ui-react/components/slider";
+
+export function Example() {
+  return <Slider defaultValue={60} aria-label="불투명도" />;
+}`,
+    angularCode: `<brn-slider [value]="60" />`,
+    renderThumbnail: () => (
+      <div className="flex w-40 items-center">
+        <div className="bg-secondary relative h-1.5 w-full rounded-full">
+          <div className="bg-primary h-full w-3/5 rounded-full" />
+          <div className="border-primary bg-background absolute top-1/2 left-3/5 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2" />
+        </div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeSliderDemo />,
+    renderReactDemo: () => <ReactSliderDemo />,
+  },
+  {
+    slug: "accordion",
+    name: "Accordion",
+    category: "표시와 구조",
+    primitiveReact: "@base-ui/react/accordion",
+    primitiveAngular: "@spartan-ng/brain/accordion",
+    recipePath: "@goraebap/design-system/recipes/accordion",
+    pureHtmlLevel: "100% Native HTML",
+    summary: "여러 항목을 접고 펼치며 긴 정보를 단계적으로 보여 주는 아코디언입니다.",
+    pureHtmlNote:
+      "네이티브 <details>/<summary>로 기본 접기·펼치기가 동작합니다. 단일 열림 제어와 키보드 탐색은 Base UI나 Spartan Brain이 처리합니다.",
+    mobileGuideline: "제목이 두 줄을 넘지 않게 간결하게 쓰고, 펼침 아이콘을 오른쪽에 고정합니다.",
+    htmlCode: `<details class="\${accordionItemVariants()}">
+  <summary class="\${accordionTriggerVariants()}">토큰은 어떻게 적용하나요?</summary>
+  <div class="\${accordionPanelVariants()}">base.css와 테마 CSS를 불러옵니다.</div>
+</details>`,
+    reactCode: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@goraebap/ui-react/components/accordion";
+
+export function Example() {
+  return (
+    <Accordion defaultValue={["tokens"]}>
+      <AccordionItem value="tokens">
+        <AccordionTrigger>토큰은 어떻게 적용하나요?</AccordionTrigger>
+        <AccordionContent>base.css와 테마 CSS를 불러옵니다.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  );
+}`,
+    angularCode: `<div brnAccordion>
+  <div brnAccordionItem [class]="accordionItemVariants()">...</div>
+</div>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-card w-44 divide-y rounded-lg border px-2.5 text-left text-[10px]">
+        <div className="flex items-center justify-between py-1.5 font-medium">
+          <span>토큰 적용</span>
+          <span>▾</span>
+        </div>
+        <div className="text-muted-foreground flex items-center justify-between py-1.5">
+          <span>아이콘 설정</span>
+          <span>▸</span>
+        </div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeAccordionDemo />,
+    renderReactDemo: () => <ReactAccordionDemo />,
+  },
+  {
+    slug: "collapsible",
+    name: "Collapsible",
+    category: "표시와 구조",
+    primitiveReact: "@base-ui/react/collapsible",
+    primitiveAngular: "@spartan-ng/brain/collapsible",
+    recipePath: "@goraebap/design-system/recipes/collapsible",
+    pureHtmlLevel: "100% Native HTML",
+    summary: "단일 보조 영역을 필요할 때만 펼치거나 접는 컨테이너입니다.",
+    pureHtmlNote:
+      "단순 접기·펼치기는 <details>로 충분하며, 외부 상태로 열림을 제어할 때 헤드리스 프리미티브를 씁니다.",
+    mobileGuideline: "핵심 입력 항목은 접어 두지 않고 보조 설정만 Collapsible로 숨깁니다.",
+    htmlCode: `<details open>
+  <summary class="\${collapsibleTriggerVariants()}">고급 설정 보기</summary>
+  <div class="\${collapsiblePanelVariants()}">보조 설정 내용</div>
+</details>`,
+    reactCode: `import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@goraebap/ui-react/components/collapsible";
+
+export function Example() {
+  return (
+    <Collapsible defaultOpen>
+      <CollapsibleTrigger>고급 설정 보기</CollapsibleTrigger>
+      <CollapsibleContent>보조 설정 내용</CollapsibleContent>
+    </Collapsible>
+  );
+}`,
+    angularCode: `<brn-collapsible>
+  <button brnCollapsibleTrigger>고급 설정 보기</button>
+  <brn-collapsible-content>보조 설정 내용</brn-collapsible-content>
+</brn-collapsible>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-card w-40 rounded-lg border p-2 text-left text-[10px]">
+        <div className="font-medium">고급 설정 ▾</div>
+        <div className="text-muted-foreground mt-1">캐시 · 재시도 정책</div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeCollapsibleDemo />,
+    renderReactDemo: () => <ReactCollapsibleDemo />,
+  },
+  {
+    slug: "avatar",
+    name: "Avatar",
+    category: "표시와 구조",
+    primitiveReact: "@base-ui/react/avatar",
+    primitiveAngular: "@spartan-ng/brain/avatar",
+    recipePath: "@goraebap/design-system/recipes/avatar",
+    pureHtmlLevel: "100% Native HTML",
+    summary: "사용자 프로필 이미지와 이미지 로드 실패 시 이니셜 대체 표시를 제공합니다.",
+    pureHtmlNote:
+      "이미지 로드 실패 감지와 지연 대체 표시는 Base UI나 Spartan Brain의 Avatar 프리미티브가 처리합니다.",
+    mobileGuideline: "목록에서는 sm(32px), 프로필 헤더에서는 lg(48px) 크기를 씁니다.",
+    htmlCode: `<span class="\${avatarVariants()}"><span class="\${avatarFallbackVariants()}">고래</span></span>`,
+    reactCode: `import { Avatar, AvatarFallback } from "@goraebap/ui-react/components/avatar";
+
+export function Example() {
+  return (
+    <Avatar>
+      <AvatarFallback>고래</AvatarFallback>
+    </Avatar>
+  );
+}`,
+    angularCode: `<brn-avatar [class]="avatarVariants()">
+  <span brnAvatarFallback [class]="avatarFallbackVariants()">고래</span>
+</brn-avatar>`,
+    renderThumbnail: () => (
+      <div className="flex items-center gap-2">
+        <span className="border-border bg-secondary flex size-7 items-center justify-center rounded-full border text-[10px] font-medium">
+          GB
+        </span>
+        <span className="border-border bg-secondary flex size-9 items-center justify-center rounded-full border text-xs font-medium">
+          고래
+        </span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeAvatarDemo />,
+    renderReactDemo: () => <ReactAvatarDemo />,
+  },
+  {
+    slug: "progress",
+    name: "Progress",
+    category: "표시와 구조",
+    primitiveReact: "@base-ui/react/progress",
+    primitiveAngular: "@spartan-ng/brain/progress",
+    recipePath: "@goraebap/design-system/recipes/progress",
+    pureHtmlLevel: "100% Native HTML",
+    summary: "작업 완료율이나 업로드 진행 상태를 막대로 표시합니다.",
+    pureHtmlNote:
+      "role='progressbar'와 aria-valuenow로 접근성을 맞출 수 있으며, Base UI와 Spartan Brain은 이를 자동 관리합니다.",
+    mobileGuideline: "진행 막대 위에 작업 이름과 퍼센트 수치를 함께 표시합니다.",
+    htmlCode: `<div role="progressbar" aria-valuenow="68" class="\${progressTrackVariants()}">
+  <div class="\${progressIndicatorVariants()}" style="width: 68%"></div>
+</div>`,
+    reactCode: `import { Progress } from "@goraebap/ui-react/components/progress";
+
+export function Example() {
+  return <Progress value={68} />;
+}`,
+    angularCode: `<brn-progress [value]="68" [class]="progressTrackVariants()">
+  <brn-progress-indicator [class]="progressIndicatorVariants()" />
+</brn-progress>`,
+    renderThumbnail: () => (
+      <div className="w-40 space-y-1.5">
+        <div className="bg-secondary h-2 w-full overflow-hidden rounded-full">
+          <div className="bg-primary h-full w-2/3 rounded-full" />
+        </div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeProgressDemo />,
+    renderReactDemo: () => <ReactProgressDemo />,
+  },
+  {
+    slug: "drawer",
+    name: "Drawer",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/drawer",
+    primitiveAngular: "@spartan-ng/brain/sheet",
+    recipePath: "@goraebap/design-system/recipes/drawer",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "화면 좌우 또는 하단에서 슬라이드되어 보조 탐색이나 필터 패널을 엽니다.",
+    pureHtmlNote:
+      "스와이프 닫기, 스크롤 잠금, 포커스 트랩은 Base UI Drawer나 Spartan Sheet에서 처리합니다.",
+    mobileGuideline: "모바일에서는 side='bottom'으로 열어 한 손으로 닫을 수 있게 합니다.",
+    htmlCode: `<dialog class="\${drawerPopupVariants({ side: 'right' })}">
+  <h3>필터 설정</h3>
+</dialog>`,
+    reactCode: `import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from "@goraebap/ui-react/components/drawer";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger render={<Button variant="outline" size="sm" />}>드로어 열기</DrawerTrigger>
+      <DrawerContent side="right">
+        <DrawerTitle>필터 설정</DrawerTitle>
+        <DrawerDescription>화면 가장자리에서 보조 패널을 엽니다.</DrawerDescription>
+      </DrawerContent>
+    </Drawer>
+  );
+}`,
+    angularCode: `<brn-sheet side="right">
+  <button brnSheetTrigger>드로어 열기</button>
+  <div *brnSheetContent [class]="drawerPopupVariants({ side: 'right' })">...</div>
+</brn-sheet>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-background relative h-20 w-40 overflow-hidden rounded-lg border">
+        <div className="border-border bg-popover absolute inset-y-0 right-0 w-16 border-l p-2 shadow-sm">
+          <div className="bg-foreground/20 h-1.5 w-8 rounded" />
+          <div className="bg-muted mt-1.5 h-1.5 w-10 rounded" />
+        </div>
+      </div>
+    ),
+    renderHtmlDemo: ({ isMobile }) => <NativeDrawerDemo isMobile={isMobile} />,
+    renderReactDemo: ({ isMobile }) => <ReactDrawerDemo isMobile={isMobile} />,
+  },
+  {
+    slug: "toast",
+    name: "Toast",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/toast",
+    primitiveAngular: "ngx-sonner (Spartan)",
+    recipePath: "@goraebap/design-system/recipes/toast",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "저장 완료나 복사 같은 짧은 처리 결과를 화면 모서리에 잠시 알립니다.",
+    pureHtmlNote:
+      "여러 알림의 큐 관리, 자동 닫힘 타이머, 호버 시 일시 정지는 Base UI Toast나 Sonner에서 처리합니다.",
+    mobileGuideline: "오류 복구처럼 사용자가 꼭 읽어야 하는 메시지는 Toast 대신 인라인 Alert로 씁니다.",
+    htmlCode: `<div role="status" class="\${toastRootVariants()}">
+  <p class="text-sm font-medium">설정이 저장되었습니다</p>
+</div>`,
+    reactCode: `import { ToastProvider, useToastManager } from "@goraebap/ui-react/components/toast";
+
+// 앱 루트에 <ToastProvider>를 두고, 내부에서 useToastManager().add(...) 호출`,
+    angularCode: `import { toast } from "ngx-sonner";
+toast("설정이 저장되었습니다");`,
+    renderThumbnail: () => (
+      <div className="border-border bg-popover w-44 rounded-lg border p-2.5 text-left shadow-sm">
+        <div className="text-[11px] font-medium">설정이 저장되었습니다</div>
+        <div className="text-muted-foreground text-[9px]">변경 사항이 즉시 반영됩니다.</div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeToastDemo />,
+    renderReactDemo: () => <ReactToastDemo />,
   },
 ];
 
