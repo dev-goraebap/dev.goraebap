@@ -48,6 +48,7 @@ function ComponentDetailPage() {
 
       {/* Live Adapter + Viewport + Theme Preview Stage */}
       <AdapterPreviewStage
+        slug={doc.slug}
         title={doc.name}
         htmlCode={doc.htmlCode}
         reactCode={doc.reactCode}

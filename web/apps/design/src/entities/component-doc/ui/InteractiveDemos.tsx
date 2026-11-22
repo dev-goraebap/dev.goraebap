@@ -57,7 +57,14 @@ export function ReactDialogDemo({ isMobile }: { isMobile: boolean }) {
   return (
     <div className="flex flex-col items-center gap-3 py-4">
       <Dialog>
-        <DialogTrigger render={<Button />}>
+        <DialogTrigger
+          render={
+            <Button
+              className={isMobile ? "w-full" : undefined}
+              size={isMobile ? "lg" : "default"}
+            />
+          }
+        >
           {isMobile ? "모바일 바텀시트 열기" : "대화상자 열기"}
         </DialogTrigger>
         <DialogContent surface={isMobile ? "sheet" : "dialog"}>
@@ -92,10 +99,10 @@ export function NativeDialogDemo({ isMobile }: { isMobile: boolean }) {
     <div className="flex flex-col items-center gap-3 py-4">
       <button
         type="button"
-        className={buttonVariants({ size: isMobile ? "lg" : "default" })}
+        className={`${buttonVariants({ size: isMobile ? "lg" : "default" })} ${isMobile ? "w-full" : ""}`}
         onClick={() => dialogRef.current?.showModal()}
       >
-        네이티브 &lt;dialog&gt; 열기
+        {isMobile ? "네이티브 바텀시트 열기" : "네이티브 <dialog> 열기"}
       </button>
       <p className="text-muted-foreground text-center text-xs">
         프레임워크 없이 브라우저 기본 <code>&lt;dialog&gt;.showModal()</code> +{" "}
@@ -103,7 +110,9 @@ export function NativeDialogDemo({ isMobile }: { isMobile: boolean }) {
       </p>
       <dialog
         ref={dialogRef}
-        className={`goraebap-native-dialog m-0 p-6 backdrop:bg-black/55 ${dialogPopupVariants({
+        className={`goraebap-native-dialog m-0 max-w-none backdrop:bg-black/55 ${
+          isMobile ? "top-auto" : ""
+        } ${dialogPopupVariants({
           surface: isMobile ? "sheet" : "dialog",
         })}`}
       >

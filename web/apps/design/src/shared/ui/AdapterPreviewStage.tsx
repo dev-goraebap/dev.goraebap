@@ -2,10 +2,12 @@ import { useState, type ReactNode } from "react";
 import { Check, Code2, Copy, Eye, Monitor, Smartphone } from "lucide-react";
 import { detectAngularLanguage } from "../lib/highlight";
 import { CodeView } from "./CodeView";
+import { MobileDeviceFrame } from "./MobileDeviceFrame";
 
 export type AdapterTarget = "html" | "react" | "angular";
 
 interface AdapterPreviewStageProps {
+  slug?: string;
   title?: string;
   htmlCode: string;
   reactCode: string;
@@ -17,6 +19,7 @@ interface AdapterPreviewStageProps {
 }
 
 export function AdapterPreviewStage({
+  slug,
   title,
   htmlCode,
   reactCode,
@@ -176,7 +179,9 @@ export function AdapterPreviewStage({
       {view === "preview" ? (
         <div
           data-theme={theme}
-          className="bg-dots bg-background/70 flex min-h-72 flex-col items-center justify-center p-6 transition-colors"
+          className={`bg-dots bg-background/70 flex min-h-72 flex-col items-center justify-center transition-colors ${
+            isMobile && adapter !== "angular" ? "px-4 py-10 sm:px-8" : "p-6"
+          }`}
         >
           {adapter === "angular" ? (
             <div className="border-border bg-card w-full max-w-2xl space-y-4 rounded-xl border p-6">
@@ -208,24 +213,16 @@ export function AdapterPreviewStage({
                 className="border-border bg-background text-foreground overflow-x-auto rounded-lg border p-4 font-mono text-xs leading-relaxed"
               />
             </div>
-          ) : isMobile ? (
-            <div className="border-border bg-background w-[390px] max-w-full overflow-hidden rounded-[2rem] border-2 shadow-xl">
-              <div className="border-border/80 bg-muted/40 text-muted-foreground flex items-center justify-between border-b px-5 py-2 font-mono text-[10px]">
-                <span>9:41</span>
-                <span>{title ?? "390 × 844"} · Mobile</span>
-                <span>5G</span>
-              </div>
-              <div className="bg-background text-foreground min-h-[260px] p-4">
-                {adapter === "html"
-                  ? renderHtml({ isMobile: true })
-                  : renderReact({ isMobile: true })}
-              </div>
-            </div>
+          ) : isMobile && slug ? (
+            <MobileDeviceFrame
+              path={`/preview/components/${slug}`}
+              title={title}
+              adapter={adapter}
+              theme={theme}
+            />
           ) : (
             <div className="text-foreground w-full max-w-2xl">
-              {adapter === "html"
-                ? renderHtml({ isMobile: false })
-                : renderReact({ isMobile: false })}
+              {adapter === "html" ? renderHtml({ isMobile }) : renderReact({ isMobile })}
             </div>
           )}
         </div>

@@ -1,4 +1,4 @@
-import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
+import { Link, Outlet, createRootRoute, useRouterState } from "@tanstack/react-router";
 import { Layers } from "lucide-react";
 import { ModeToggle } from "@/shared/ui";
 
@@ -14,6 +14,14 @@ const TOP_NAV = [
 ];
 
 function RootLayout() {
+  const isPreviewRoute = useRouterState({
+    select: (state) => state.location.pathname.startsWith("/preview"),
+  });
+
+  if (isPreviewRoute) {
+    return <Outlet />;
+  }
+
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
       <header className="border-border/80 bg-background/85 sticky top-0 z-30 border-b backdrop-blur-md">
