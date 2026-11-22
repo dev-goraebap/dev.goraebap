@@ -92,6 +92,16 @@ import {
   NativeToastDemo,
 } from "../ui/NativeInteractiveDemos";
 import {
+  NativeAvatarShapeDemo,
+  NativeProgressShapeDemo,
+  NativeSliderShapeDemo,
+  NativeSwitchShapeDemo,
+  ReactAvatarShapeDemo,
+  ReactProgressShapeDemo,
+  ReactSliderShapeDemo,
+  ReactSwitchShapeDemo,
+} from "../ui/ShapeDemos";
+import {
   NativeCheckboxDemo,
   NativeDialogDemo,
   NativeSwitchDemo,
@@ -501,6 +511,19 @@ export function Example() {
     angularCode: `<brn-switch [class]="switchTrackVariants()" [(checked)]="enabled">
   <brn-switch-thumb [class]="switchThumbVariants()" />
 </brn-switch>`,
+    examples: [
+      {
+        id: "shape",
+        title: "Shape",
+        htmlCode: `<button role="switch" class="\${switchTrackVariants({ shape: 'pill' })}">
+  <span class="\${switchThumbVariants({ shape: 'pill' })}"></span>
+</button>`,
+        reactCode: `<Switch shape="pill" aria-label="알림" />`,
+        angularCode: `<button brnSwitch [class]="switchTrackVariants({ shape: 'pill' })"></button>`,
+        renderHtmlDemo: () => <NativeSwitchShapeDemo />,
+        renderReactDemo: () => <ReactSwitchShapeDemo />,
+      },
+    ],
     renderThumbnail: () => (
       <div className="flex items-center gap-3">
         <div className="bg-primary flex h-5 w-9 items-center rounded-full p-0.5">
@@ -1544,6 +1567,17 @@ export function Example() {
   return <Slider defaultValue={60} aria-label="불투명도" />;
 }`,
     angularCode: `<brn-slider [value]="60" />`,
+    examples: [
+      {
+        id: "shape",
+        title: "Shape",
+        htmlCode: `<input type="range" class="\${sliderNativeVariants({ shape: 'pill' })}" />`,
+        reactCode: `<Slider shape="pill" defaultValue={60} aria-label="불투명도" />`,
+        angularCode: `<brn-slider [class]="sliderTrackVariants({ shape: 'pill' })" />`,
+        renderHtmlDemo: () => <NativeSliderShapeDemo />,
+        renderReactDemo: () => <ReactSliderShapeDemo />,
+      },
+    ],
     renderThumbnail: () => (
       <div className="flex w-40 items-center">
         <div className="bg-secondary relative h-1.5 w-full rounded-full">
@@ -1665,6 +1699,17 @@ export function Example() {
     angularCode: `<brn-avatar [class]="avatarVariants()">
   <span brnAvatarFallback [class]="avatarFallbackVariants()">고래</span>
 </brn-avatar>`,
+    examples: [
+      {
+        id: "shape",
+        title: "Shape",
+        htmlCode: `<span class="\${avatarVariants({ shape: 'pill' })}">...</span>`,
+        reactCode: `<Avatar shape="pill">...</Avatar>`,
+        angularCode: `<span [class]="avatarVariants({ shape: 'pill' })">...</span>`,
+        renderHtmlDemo: () => <NativeAvatarShapeDemo />,
+        renderReactDemo: () => <ReactAvatarShapeDemo />,
+      },
+    ],
     renderThumbnail: () => (
       <div className="flex items-center gap-2">
         <span className="border-border bg-secondary flex size-7 items-center justify-center rounded-full border text-[10px] font-medium">
@@ -1701,6 +1746,19 @@ export function Example() {
     angularCode: `<brn-progress [value]="68" [class]="progressTrackVariants()">
   <brn-progress-indicator [class]="progressIndicatorVariants()" />
 </brn-progress>`,
+    examples: [
+      {
+        id: "shape",
+        title: "Shape",
+        htmlCode: `<div role="progressbar" class="\${progressTrackVariants({ shape: 'pill' })}">
+  <div class="\${progressIndicatorVariants({ shape: 'pill' })}" style="width: 68%"></div>
+</div>`,
+        reactCode: `<Progress shape="pill" value={68} />`,
+        angularCode: `<brn-progress [class]="progressTrackVariants({ shape: 'pill' })" />`,
+        renderHtmlDemo: () => <NativeProgressShapeDemo />,
+        renderReactDemo: () => <ReactProgressShapeDemo />,
+      },
+    ],
     renderThumbnail: () => (
       <div className="w-40 space-y-1.5">
         <div className="bg-secondary h-2 w-full overflow-hidden rounded-full">

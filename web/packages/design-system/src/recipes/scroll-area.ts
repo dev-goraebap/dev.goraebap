@@ -11,5 +11,5 @@ export const scrollAreaScrollbarVariants = cva(
 );
 
 export const scrollAreaThumbVariants = cva(
-  "relative flex-1 rounded-full bg-border hover:bg-muted-foreground/50",
+  "relative flex-1 rounded-sm bg-border hover:bg-muted-foreground/50",
 );

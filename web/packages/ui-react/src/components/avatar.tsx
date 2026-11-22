@@ -10,11 +10,11 @@ import type { ComponentProps } from "react";
 
 export type AvatarProps = ComponentProps<typeof BaseAvatar.Root> & AvatarRecipeProps;
 
-export function Avatar({ className, size, ...props }: AvatarProps) {
+export function Avatar({ className, size, shape, ...props }: AvatarProps) {
   return (
     <BaseAvatar.Root
       data-slot="avatar"
-      className={cn(avatarVariants({ size, className }))}
+      className={cn(avatarVariants({ size, shape, className }))}
       {...props}
     />
   );
