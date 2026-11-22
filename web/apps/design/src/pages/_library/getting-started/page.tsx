@@ -23,7 +23,7 @@ const NEXT_STEPS = [
   },
   {
     title: "컴포넌트",
-    summary: "Base UI 기반 React 컴포넌트 13종의 동작과 사용 예제를 확인합니다.",
+    summary: "Base UI 기반 React 컴포넌트 36종의 동작과 사용 예제를 확인합니다.",
     to: "/components" as const,
   },
   {

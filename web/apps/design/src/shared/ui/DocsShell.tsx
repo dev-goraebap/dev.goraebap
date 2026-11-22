@@ -29,9 +29,12 @@ export function DocsShell({ label, groups, navHeader, navFooter, children }: Doc
   const current = groups.flatMap((group) => group.items).find((item) => item.href === pathname);
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-6 lg:flex-row lg:gap-10 lg:py-10">
-      <aside aria-label={label} className="w-full shrink-0 lg:w-60">
-        <div className="space-y-5 lg:sticky lg:top-20 lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pb-4">
+    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 py-6 lg:flex-row lg:items-start lg:gap-10 lg:py-0">
+      <aside
+        aria-label={label}
+        className="w-full shrink-0 lg:sticky lg:top-14 lg:flex lg:h-[calc(100vh-3.5rem)] lg:w-60 lg:flex-col lg:pt-10 lg:pb-6"
+      >
+        <div className="flex min-h-0 flex-1 flex-col space-y-5">
           <button
             type="button"
             aria-expanded={isOpen}
@@ -45,9 +48,12 @@ export function DocsShell({ label, groups, navHeader, navFooter, children }: Doc
             />
           </button>
 
-          <div id="docs-nav" className={`space-y-5 lg:block ${isOpen ? "block" : "hidden"}`}>
-            {navHeader}
-            <nav className="space-y-5">
+          <div
+            id="docs-nav"
+            className={`min-h-0 flex-1 flex-col space-y-5 lg:flex ${isOpen ? "flex" : "hidden"}`}
+          >
+            {navHeader && <div className="shrink-0">{navHeader}</div>}
+            <nav className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain pr-1 pb-4">
               {groups.map((group, index) => (
                 <div key={group.title ?? index} className="space-y-1">
                   {group.title && (
@@ -83,7 +89,7 @@ export function DocsShell({ label, groups, navHeader, navFooter, children }: Doc
         </div>
       </aside>
 
-      <main className="min-w-0 flex-1">{children}</main>
+      <main className="min-w-0 flex-1 lg:py-10">{children}</main>
     </div>
   );
 }

@@ -72,6 +72,24 @@ import {
   ReactToastDemo,
 } from "../ui/Batch2Demos";
 import {
+  NativeAutocompleteDemo,
+  NativeComboboxDemo,
+  NativeContextMenuDemo,
+  NativeMenubarDemo,
+  NativeNavigationMenuDemo,
+  NativeOTPFieldDemo,
+  NativePreviewCardDemo,
+  NativeScrollAreaDemo,
+  ReactAutocompleteDemo,
+  ReactComboboxDemo,
+  ReactContextMenuDemo,
+  ReactMenubarDemo,
+  ReactNavigationMenuDemo,
+  ReactOTPFieldDemo,
+  ReactPreviewCardDemo,
+  ReactScrollAreaDemo,
+} from "../ui/Batch3Demos";
+import {
   NativeCheckboxDemo,
   NativeDialogDemo,
   NativeSwitchDemo,
@@ -1715,6 +1733,240 @@ toast("설정이 저장되었습니다");`,
     ),
     renderHtmlDemo: () => <NativeToastDemo />,
     renderReactDemo: () => <ReactToastDemo />,
+  },
+  {
+    slug: "combobox",
+    name: "Combobox",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/combobox",
+    primitiveAngular: "@spartan-ng/brain/combobox",
+    recipePath: "@goraebap/design-system/recipes/combobox",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "텍스트 입력으로 후보 목록을 실시간 필터링하고 값을 고르는 콤보박스입니다.",
+    pureHtmlNote:
+      "네이티브 <datalist>는 드롭다운 모양을 꾸밀 수 없습니다. 커스텀 필터링·선택 표시·키보드 이동은 Base UI나 Spartan Brain을 씁니다.",
+    mobileGuideline: "후보가 많을 때 Select 대신 Combobox로 검색 선택을 제공합니다.",
+    htmlCode: `<input list="frameworks" class="\${comboboxInputVariants()}" placeholder="프레임워크 검색..." />`,
+    reactCode: `import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@goraebap/ui-react/components/combobox";`,
+    angularCode: `<brn-combobox>...</brn-combobox>`,
+    renderThumbnail: () => (
+      <div className="border-input bg-background flex w-44 items-center justify-between rounded-md border px-2.5 py-1.5 text-xs">
+        <span className="text-muted-foreground">검색...</span>
+        <span className="text-muted-foreground text-[10px]">▾</span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeComboboxDemo />,
+    renderReactDemo: () => <ReactComboboxDemo />,
+  },
+  {
+    slug: "autocomplete",
+    name: "Autocomplete",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/autocomplete",
+    primitiveAngular: "@spartan-ng/brain/autocomplete",
+    recipePath: "@goraebap/design-system/recipes/autocomplete",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "자유 입력을 허용하면서 추천 검색어나 후보를 제안하는 자동완성 입력 칸입니다.",
+    pureHtmlNote:
+      "Combobox와 달리 목록에 없는 자유 문자열도 그대로 입력할 수 있습니다.",
+    mobileGuideline: "추천 목록은 최대 5~6개 이내로 제한해 화면을 가리지 않게 합니다.",
+    htmlCode: `<input list="suggestions" class="\${autocompleteInputVariants()}" placeholder="컴포넌트 검색..." />`,
+    reactCode: `import { Autocomplete, AutocompleteContent, AutocompleteInput, AutocompleteItem, AutocompleteList } from "@goraebap/ui-react/components/autocomplete";`,
+    angularCode: `<brn-autocomplete>...</brn-autocomplete>`,
+    renderThumbnail: () => (
+      <div className="w-44 space-y-1 text-left">
+        <div className="border-input bg-background rounded-md border px-2.5 py-1 text-[11px]">
+          Rea|
+        </div>
+        <div className="border-border bg-popover rounded-md border px-2 py-1 text-[10px]">React</div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeAutocompleteDemo />,
+    renderReactDemo: () => <ReactAutocompleteDemo />,
+  },
+  {
+    slug: "otp-field",
+    name: "OTP Field",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/otp-field",
+    primitiveAngular: "@spartan-ng/brain/input-otp",
+    recipePath: "@goraebap/design-system/recipes/otp-field",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "이메일·문자 인증번호처럼 고정 길이 코드를 한 자리씩 입력하는 칸입니다.",
+    pureHtmlNote:
+      "붙여넣기 자동 분배, Backspace 이전 칸 이동, 화살표 탐색은 Base UI나 Spartan Brain에서 처리합니다.",
+    mobileGuideline: "inputMode='numeric'을 지정해 모바일 숫자 키패드가 바로 열리게 합니다.",
+    htmlCode: `<div class="\${otpFieldRootVariants()}">
+  <input maxlength="1" class="\${otpFieldInputVariants()}" />
+</div>`,
+    reactCode: `import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@goraebap/ui-react/components/otp-field";
+
+export function Example() {
+  return (
+    <OTPField length={6}>
+      <OTPFieldInput /><OTPFieldInput /><OTPFieldInput />
+      <OTPFieldSeparator />
+      <OTPFieldInput /><OTPFieldInput /><OTPFieldInput />
+    </OTPField>
+  );
+}`,
+    angularCode: `<brn-input-otp [maxLength]="6">...</brn-input-otp>`,
+    renderThumbnail: () => (
+      <div className="flex items-center gap-1 font-mono text-xs">
+        {["4", "8", "2", "1"].map((n, i) => (
+          <span
+            key={i}
+            className="border-input bg-background flex size-7 items-center justify-center rounded border"
+          >
+            {n}
+          </span>
+        ))}
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeOTPFieldDemo />,
+    renderReactDemo: () => <ReactOTPFieldDemo />,
+  },
+  {
+    slug: "scroll-area",
+    name: "Scroll Area",
+    category: "표시와 구조",
+    primitiveReact: "@base-ui/react/scroll-area",
+    primitiveAngular: "@spartan-ng/brain/scroll-area",
+    recipePath: "@goraebap/design-system/recipes/scroll-area",
+    pureHtmlLevel: "100% Native HTML",
+    summary: "고정 높이 영역 안에서 일관된 커스텀 스크롤바를 제공하는 스크롤 컨테이너입니다.",
+    pureHtmlNote:
+      "기본 스크롤은 overflow-auto로 충분하며, OS별 스크롤바 차이를 통일할 때 Scroll Area를 씁니다.",
+    mobileGuideline: "모바일 터치 스크롤 관성을 해치지 않도록 네이티브 뷰포트 스크롤을 유지합니다.",
+    htmlCode: `<div class="\${scrollAreaRootVariants()} h-40">
+  <div class="\${scrollAreaViewportVariants()} p-3">...</div>
+</div>`,
+    reactCode: `import { ScrollArea } from "@goraebap/ui-react/components/scroll-area";
+
+export function Example() {
+  return <ScrollArea className="h-40">...</ScrollArea>;
+}`,
+    angularCode: `<ng-scrollbar [class]="scrollAreaRootVariants()">...</ng-scrollbar>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-card relative h-16 w-40 rounded-lg border p-2 text-left text-[10px]">
+        <div className="space-y-1">
+          <div className="bg-muted h-2 w-24 rounded" />
+          <div className="bg-muted h-2 w-20 rounded" />
+          <div className="bg-muted h-2 w-28 rounded" />
+        </div>
+        <div className="bg-border absolute top-2 right-1.5 h-8 w-1 rounded-full" />
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeScrollAreaDemo />,
+    renderReactDemo: () => <ReactScrollAreaDemo />,
+  },
+  {
+    slug: "context-menu",
+    name: "Context Menu",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/context-menu",
+    primitiveAngular: "@spartan-ng/brain/context-menu",
+    recipePath: "@goraebap/design-system/recipes/context-menu",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "대상 영역을 우클릭했을 때 포인터 위치에 열리는 컨텍스트 메뉴입니다.",
+    pureHtmlNote:
+      "포인터 좌표 배치, 화면 경계 회피, 키보드 탐색은 Base UI나 Spartan Brain에서 처리합니다.",
+    mobileGuideline: "터치 기기에서는 우클릭이 없으므로 별도 더보기(Menu) 버튼을 함께 둡니다.",
+    htmlCode: `<div role="menu" class="\${contextMenuPopupVariants()}">
+  <button role="menuitem" class="\${contextMenuItemVariants()}">복사</button>
+</div>`,
+    reactCode: `import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@goraebap/ui-react/components/context-menu";`,
+    angularCode: `<div [brnContextMenuTriggerFor]="menu">우클릭 영역</div>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-card text-muted-foreground flex h-16 w-40 items-center justify-center rounded-lg border border-dashed text-[10px]">
+        우클릭 메뉴
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeContextMenuDemo />,
+    renderReactDemo: () => <ReactContextMenuDemo />,
+  },
+  {
+    slug: "preview-card",
+    name: "Preview Card",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/preview-card",
+    primitiveAngular: "@spartan-ng/brain/hover-card",
+    recipePath: "@goraebap/design-system/recipes/preview-card",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "링크나 사용자 이름에 마우스를 올렸을 때 요약 정보를 미리 보여 주는 호버 카드입니다.",
+    pureHtmlNote:
+      "열림·닫힘 지연과 포인터 이동 허용 영역(safe polygon) 처리는 Base UI나 Spartan Brain이 맡습니다.",
+    mobileGuideline: "핵심 동작은 미리보기 카드 안에 두지 않고 링크 대상 페이지에서 제공합니다.",
+    htmlCode: `<div class="\${previewCardPopupVariants()}">
+  <p class="text-sm font-semibold">@goraebap/design-system</p>
+</div>`,
+    reactCode: `import { PreviewCard, PreviewCardContent, PreviewCardTrigger } from "@goraebap/ui-react/components/preview-card";`,
+    angularCode: `<brn-hover-card>
+  <a brnHoverCardTrigger>@goraebap/design-system</a>
+  <div *brnHoverCardContent [class]="previewCardPopupVariants()">...</div>
+</brn-hover-card>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-popover w-40 rounded-lg border p-2.5 text-left shadow-sm">
+        <div className="text-[10px] font-semibold">@goraebap/design-system</div>
+        <div className="text-muted-foreground mt-0.5 text-[9px]">CSS 토큰 · CVA 레시피</div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativePreviewCardDemo />,
+    renderReactDemo: () => <ReactPreviewCardDemo />,
+  },
+  {
+    slug: "menubar",
+    name: "Menubar",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/menubar",
+    primitiveAngular: "@spartan-ng/brain/menu",
+    recipePath: "@goraebap/design-system/recipes/menubar",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "파일·편집·보기처럼 상단 메뉴 항목을 가로로 묶어 탐색하는 데스크톱 메뉴바입니다.",
+    pureHtmlNote:
+      "메뉴 간 좌우 화살표 이동과 열린 상태 호버 전환은 Base UI Menubar나 Spartan Menubar가 처리합니다.",
+    mobileGuideline: "좁은 화면에서는 Menubar 대신 Drawer나 단일 Menu로 접어 둡니다.",
+    htmlCode: `<div role="menubar" class="\${menubarVariants()}">
+  <button role="menuitem" class="\${menubarTriggerVariants()}">파일</button>
+</div>`,
+    reactCode: `import { Menubar, menubarTriggerVariants } from "@goraebap/ui-react/components/menubar";
+import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/components/menu";`,
+    angularCode: `<div brnMenuBar [class]="menubarVariants()">...</div>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-card inline-flex gap-1 rounded-lg border p-1 text-[10px]">
+        <span className="bg-accent rounded px-2 py-0.5 font-medium">파일</span>
+        <span className="text-muted-foreground px-2 py-0.5">편집</span>
+        <span className="text-muted-foreground px-2 py-0.5">보기</span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeMenubarDemo />,
+    renderReactDemo: () => <ReactMenubarDemo />,
+  },
+  {
+    slug: "navigation-menu",
+    name: "Navigation Menu",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/navigation-menu",
+    primitiveAngular: "@spartan-ng/brain/navigation-menu",
+    recipePath: "@goraebap/design-system/recipes/navigation-menu",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "사이트 상단에서 하위 링크 패널을 부드럽게 전환하는 내비게이션 메뉴입니다.",
+    pureHtmlNote:
+      "뷰포트 크기 전환 애니메이션과 키보드 탐색은 Base UI나 Spartan Brain에서 처리합니다.",
+    mobileGuideline: "모바일 헤더에서는 Drawer 내부 세로 목록으로 전환합니다.",
+    htmlCode: `<nav class="\${navigationMenuListVariants()}">
+  <a class="\${navigationMenuTriggerVariants()}">파운데이션</a>
+</nav>`,
+    reactCode: `import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "@goraebap/ui-react/components/navigation-menu";`,
+    angularCode: `<nav brnNavigationMenu>...</nav>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-card inline-flex gap-1.5 rounded-lg border px-2 py-1 text-[10px]">
+        <span className="font-medium">파운데이션 ▾</span>
+        <span className="text-muted-foreground">컴포넌트</span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeNavigationMenuDemo />,
+    renderReactDemo: () => <ReactNavigationMenuDemo />,
   },
 ];
 
