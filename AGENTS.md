@@ -21,3 +21,15 @@
 - 도구·패키징 변경 후 `plugins/webapp/`에서 `npm test`로 Claude·Codex·Antigravity 패키지를 모두 확인합니다.
 - 스킬·어댑터 변경 후 `plugins/webapp/`에서 `npm run check`를 실행합니다. 어댑터 링크를 온라인으로 점검할 때는 `npm run check:links`를 실행합니다.
 - 커밋·푸시·전역 설치는 사용자가 요청한 범위에서만 합니다. `main` 푸시는 검사 워크플로(`check.yml`)만 돌립니다.
+
+<!-- webapp@dev-goraebap:start -->
+## 개발 지침
+
+이 프로젝트는 Webapp 플러그인(0.15.3 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(frontend·ui-ux·backend·api·database·architecture)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webapp 지침을 읽을 수 없거나 설치된 버전이 위 버전보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
+
+- Webapp 어댑터: cowork
+<!-- webapp@dev-goraebap:end -->
+
+## 프로젝트 규칙
+
+지침과 다르게 하는 것은 없습니다.
