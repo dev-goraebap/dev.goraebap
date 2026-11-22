@@ -39,8 +39,8 @@ function RootLayout() {
             to="/"
             className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight"
           >
-            <span className="bg-primary text-primary-foreground inline-flex size-7 items-center justify-center rounded-lg transition-transform group-hover:scale-105">
-              <BrandMark className="size-5.5" />
+            <span className="bg-primary text-primary-foreground inline-flex size-9 items-center justify-center rounded-md transition-transform group-hover:scale-105">
+              <BrandMark className="size-7" />
             </span>
             <span>goraebap/design</span>
           </Link>
