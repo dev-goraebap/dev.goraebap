@@ -27,7 +27,6 @@
   --border: color-mix(in srgb, var(--foreground) 9%, var(--background));
   --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
   --ring: color-mix(in srgb, var(--foreground) 72%, var(--background));
-  --radius: 0.5rem;
 }
 
 .dark,

@@ -38,6 +38,22 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 import { Textarea } from "@goraebap/ui-react/components/textarea";
 import {
+  NativeAlertDialogDemo,
+  NativeMenuDemo,
+  NativePopoverDemo,
+  NativeSelectDemo,
+  NativeToggleDemo,
+  NativeToggleGroupDemo,
+  NativeTooltipDemo,
+  ReactAlertDialogDemo,
+  ReactMenuDemo,
+  ReactPopoverDemo,
+  ReactSelectDemo,
+  ReactToggleDemo,
+  ReactToggleGroupDemo,
+  ReactTooltipDemo,
+} from "../ui/Batch1Demos";
+import {
   NativeCheckboxDemo,
   NativeDialogDemo,
   NativeSwitchDemo,
@@ -1078,6 +1094,305 @@ export function Example() {
     ),
     renderHtmlDemo: ({ isMobile }) => <NativeDialogDemo isMobile={isMobile} />,
     renderReactDemo: ({ isMobile }) => <ReactDialogDemo isMobile={isMobile} />,
+  },
+  {
+    slug: "toggle",
+    name: "Toggle",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/toggle",
+    primitiveAngular: "@spartan-ng/brain/toggle",
+    recipePath: "@goraebap/design-system/recipes/toggle",
+    pureHtmlLevel: "100% Native HTML",
+    summary: "켜짐과 꺼짐 두 상태를 전환하는 토글 버튼입니다.",
+    pureHtmlNote:
+      "네이티브 <button aria-pressed>와 data-pressed 속성만으로 동작합니다. 제어·비제어 상태 관리는 헤드리스 프리미티브가 맡습니다.",
+    mobileGuideline: "모바일에서는 최소 36px 이상의 터치 영역을 확보합니다.",
+    htmlCode: `<button type="button" aria-pressed="true" data-pressed class="\${toggleVariants({ variant: 'outline' })}">
+  고정됨
+</button>`,
+    reactCode: `import { Toggle } from "@goraebap/ui-react/components/toggle";
+
+export function Example() {
+  return <Toggle variant="outline" defaultPressed>고정됨</Toggle>;
+}`,
+    angularCode: `<button brnToggle [class]="toggleVariants({ variant: 'outline' })">고정됨</button>`,
+    renderThumbnail: () => (
+      <div className="flex items-center gap-1.5">
+        <span className="bg-primary text-primary-foreground rounded-md px-2.5 py-1 text-[11px] font-medium">
+          고정됨
+        </span>
+        <span className="border-border text-muted-foreground rounded-md border px-2.5 py-1 text-[11px]">
+          고정
+        </span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeToggleDemo />,
+    renderReactDemo: () => <ReactToggleDemo />,
+  },
+  {
+    slug: "toggle-group",
+    name: "Toggle Group",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/toggle-group",
+    primitiveAngular: "@spartan-ng/brain/toggle-group",
+    recipePath: "@goraebap/design-system/recipes/toggle-group",
+    pureHtmlLevel: "Native HTML + CSS",
+    summary: "여러 옵션 중 하나 또는 복수를 고르는 세그먼트 토글 그룹입니다.",
+    pureHtmlNote:
+      "버튼 묶음과 aria-pressed로 기본 동작을 만들 수 있습니다. 화살표 키 이동과 단일·다중 선택 상태 관리는 Base UI나 Spartan Brain이 처리합니다.",
+    mobileGuideline: "항목이 3개 이하일 때 한 줄 세그먼트로 유지합니다.",
+    htmlCode: `<div role="group" class="\${toggleGroupVariants({ shape: 'pill' })}">
+  <button data-pressed class="\${toggleVariants({ shape: 'pill' })}">App</button>
+  <button class="\${toggleVariants({ shape: 'pill' })}">Editorial</button>
+</div>`,
+    reactCode: `import { ToggleGroup, ToggleGroupItem } from "@goraebap/ui-react/components/toggle-group";
+
+export function Example() {
+  return (
+    <ToggleGroup shape="pill" defaultValue={["app"]}>
+      <ToggleGroupItem value="app" shape="pill">App</ToggleGroupItem>
+      <ToggleGroupItem value="editorial" shape="pill">Editorial</ToggleGroupItem>
+    </ToggleGroup>
+  );
+}`,
+    angularCode: `<brn-toggle-group [class]="toggleGroupVariants({ shape: 'pill' })">
+  <button brnToggle value="app" [class]="toggleVariants({ shape: 'pill' })">App</button>
+</brn-toggle-group>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-background inline-flex rounded-full border p-0.5 text-[11px]">
+        <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-0.5 font-medium">
+          App
+        </span>
+        <span className="text-muted-foreground px-2.5 py-0.5">Editorial</span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeToggleGroupDemo />,
+    renderReactDemo: () => <ReactToggleGroupDemo />,
+  },
+  {
+    slug: "select",
+    name: "Select",
+    category: "동작과 입력",
+    primitiveReact: "@base-ui/react/select",
+    primitiveAngular: "@spartan-ng/brain/select",
+    recipePath: "@goraebap/design-system/recipes/select",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "미리 정해진 목록에서 하나의 값을 고르는 선택 컨트롤입니다.",
+    pureHtmlNote:
+      "네이티브 <select>는 드롭다운 메뉴 스타일을 자유롭게 꾸미기 어렵습니다. 커스텀 팝업, 체크 표시, 키보드 탐색은 Base UI나 Spartan Brain을 씁니다.",
+    mobileGuideline: "선택지가 10개 이하일 때 Select를 쓰고, 검색이 필요하면 Combobox를 씁니다.",
+    htmlCode: `<select class="\${selectTriggerVariants()}">
+  <option value="app">App Theme</option>
+  <option value="editorial">Editorial Theme</option>
+</select>`,
+    reactCode: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@goraebap/ui-react/components/select";
+
+export function Example() {
+  return (
+    <Select defaultValue="app">
+      <SelectTrigger><SelectValue /></SelectTrigger>
+      <SelectContent>
+        <SelectItem value="app">App Theme</SelectItem>
+        <SelectItem value="editorial">Editorial Theme</SelectItem>
+      </SelectContent>
+    </Select>
+  );
+}`,
+    angularCode: `<brn-select placeholder="테마 선택">
+  <button brnSelectTrigger [class]="selectTriggerVariants()">...</button>
+</brn-select>`,
+    renderThumbnail: () => (
+      <div className="border-input bg-background flex w-44 items-center justify-between rounded-md border px-2.5 py-1.5 text-xs">
+        <span>App Theme</span>
+        <span className="text-muted-foreground text-[10px]">▾</span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeSelectDemo />,
+    renderReactDemo: () => <ReactSelectDemo />,
+  },
+  {
+    slug: "tooltip",
+    name: "Tooltip",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/tooltip",
+    primitiveAngular: "@spartan-ng/brain/tooltip",
+    recipePath: "@goraebap/design-system/recipes/tooltip",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "아이콘 버튼이나 컨트롤에 마우스를 올렸을 때 짧은 보조 설명을 띄웁니다.",
+    pureHtmlNote:
+      "CSS hover만으로 기본 말풍선은 띄울 수 있지만, 화면 끝 충돌 회피·지연 시간·포커스 접근성은 헤드리스 프리미티브가 처리합니다.",
+    mobileGuideline: "터치 환경에는 호버가 없으므로 필수 정보는 Tooltip 안에 숨기지 않습니다.",
+    htmlCode: `<span role="tooltip" class="\${tooltipPopupVariants()}">단축키: Ctrl + K</span>`,
+    reactCode: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@goraebap/ui-react/components/tooltip";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger render={<Button variant="outline" size="sm" />}>도움말</TooltipTrigger>
+        <TooltipContent>단축키: Ctrl + K</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}`,
+    angularCode: `<brn-tooltip>
+  <button brnTooltipTrigger>도움말</button>
+  <span *brnTooltipContent [class]="tooltipPopupVariants()">단축키: Ctrl + K</span>
+</brn-tooltip>`,
+    renderThumbnail: () => (
+      <div className="flex flex-col items-center gap-1.5">
+        <span className="bg-foreground text-background rounded-md px-2 py-0.5 text-[10px]">
+          Ctrl + K
+        </span>
+        <span className="border-border bg-background rounded-md border px-2.5 py-1 text-[11px]">
+          도움말
+        </span>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeTooltipDemo />,
+    renderReactDemo: () => <ReactTooltipDemo />,
+  },
+  {
+    slug: "popover",
+    name: "Popover",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/popover",
+    primitiveAngular: "@spartan-ng/brain/popover",
+    recipePath: "@goraebap/design-system/recipes/popover",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "트리거 요소 근처에 짧은 설정이나 보조 콘텐츠 패널을 띄웁니다.",
+    pureHtmlNote:
+      "HTML popover 속성으로 기본 토글은 가능하지만, 앵커 위치 계산·화면 경계 회피·포커스 복원은 Base UI나 Spartan Brain이 처리합니다.",
+    mobileGuideline: "내용이 길어지면 Popover 대신 바텀시트 Dialog로 전환합니다.",
+    htmlCode: `<div class="\${popoverPopupVariants()}">
+  <h4 class="text-sm font-semibold">표시 범위</h4>
+</div>`,
+    reactCode: `import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@goraebap/ui-react/components/popover";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <Popover>
+      <PopoverTrigger render={<Button variant="outline" size="sm" />}>필터 옵션</PopoverTrigger>
+      <PopoverContent>
+        <PopoverTitle>표시 범위</PopoverTitle>
+        <PopoverDescription>트리거 근처에 보조 설정을 띄웁니다.</PopoverDescription>
+      </PopoverContent>
+    </Popover>
+  );
+}`,
+    angularCode: `<brn-popover>
+  <button brnPopoverTrigger>필터 옵션</button>
+  <div *brnPopoverContent [class]="popoverPopupVariants()">...</div>
+</brn-popover>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-popover w-40 rounded-lg border p-2.5 text-left shadow-sm">
+        <div className="text-[11px] font-medium">표시 범위</div>
+        <div className="text-muted-foreground mt-0.5 text-[10px]">필터 옵션 패널</div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativePopoverDemo />,
+    renderReactDemo: () => <ReactPopoverDemo />,
+  },
+  {
+    slug: "menu",
+    name: "Menu",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/menu",
+    primitiveAngular: "@spartan-ng/brain/menu",
+    recipePath: "@goraebap/design-system/recipes/menu",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "버튼을 눌러 실행 가능한 작업 목록을 펼치는 드롭다운 메뉴입니다.",
+    pureHtmlNote:
+      "화살표 키 탐색, 타이핑 검색, 바깥 클릭 닫기, 포커스 복원은 Base UI나 Spartan Brain을 통해 처리합니다.",
+    mobileGuideline: "파괴적 동작(삭제 등)은 구분선 아래 마지막 항목에 둡니다.",
+    htmlCode: `<div role="menu" class="\${menuPopupVariants()}">
+  <button role="menuitem" class="\${menuItemVariants()}">복제</button>
+  <button role="menuitem" class="\${menuItemVariants({ variant: 'destructive' })}">삭제</button>
+</div>`,
+    reactCode: `import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@goraebap/ui-react/components/menu";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <Menu>
+      <MenuTrigger render={<Button variant="outline" size="sm" />}>작업 메뉴</MenuTrigger>
+      <MenuContent>
+        <MenuItem>복제</MenuItem>
+        <MenuItem>이름 바꾸기</MenuItem>
+        <MenuSeparator />
+        <MenuItem variant="destructive">삭제</MenuItem>
+      </MenuContent>
+    </Menu>
+  );
+}`,
+    angularCode: `<button [brnMenuTriggerFor]="menu">작업 메뉴</button>
+<ng-template #menu>
+  <div brnMenu [class]="menuPopupVariants()">
+    <button brnMenuItem [class]="menuItemVariants()">복제</button>
+  </div>
+</ng-template>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-popover w-36 space-y-0.5 rounded-lg border p-1.5 text-left text-[11px] shadow-sm">
+        <div className="bg-accent rounded px-2 py-1">복제</div>
+        <div className="text-muted-foreground px-2 py-1">이름 바꾸기</div>
+        <div className="text-destructive px-2 py-1">삭제</div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeMenuDemo />,
+    renderReactDemo: () => <ReactMenuDemo />,
+  },
+  {
+    slug: "alert-dialog",
+    name: "Alert Dialog",
+    category: "오버레이와 탐색",
+    primitiveReact: "@base-ui/react/alert-dialog",
+    primitiveAngular: "@spartan-ng/brain/alert-dialog",
+    recipePath: "@goraebap/design-system/recipes/alert-dialog",
+    pureHtmlLevel: "Native HTML (한계 있음)",
+    summary: "삭제·초기화처럼 되돌리기 어려운 동작 전 사용자의 명시적 확인을 받는 대화상자입니다.",
+    pureHtmlNote:
+      "일반 Dialog와 달리 바깥 클릭으로 실수로 닫히지 않아야 합니다. role='alertdialog'와 포커스 잠금은 Base UI나 Spartan Brain에서 처리합니다.",
+    mobileGuideline: "취소와 파괴적 실행 버튼을 명확히 구분하고, 실행 버튼에 구체적 동사를 씁니다.",
+    htmlCode: `<dialog class="\${alertDialogPopupVariants()}">
+  <h3>프로젝트를 삭제할까요?</h3>
+</dialog>`,
+    reactCode: `import { AlertDialog, AlertDialogClose, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "@goraebap/ui-react/components/alert-dialog";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger render={<Button variant="destructive" size="sm" />}>프로젝트 삭제</AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogTitle>프로젝트를 삭제할까요?</AlertDialogTitle>
+        <AlertDialogDescription>삭제한 프로젝트는 복구할 수 없습니다.</AlertDialogDescription>
+        <AlertDialogFooter>
+          <AlertDialogClose render={<Button variant="ghost" size="sm" />}>취소</AlertDialogClose>
+          <AlertDialogClose render={<Button variant="destructive" size="sm" />}>삭제</AlertDialogClose>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}`,
+    angularCode: `<brn-alert-dialog>
+  <button brnAlertDialogTrigger>프로젝트 삭제</button>
+  <div *brnAlertDialogContent [class]="alertDialogPopupVariants()">...</div>
+</brn-alert-dialog>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-popover w-44 rounded-lg border p-2.5 text-left shadow-sm">
+        <div className="text-[11px] font-medium">프로젝트를 삭제할까요?</div>
+        <div className="mt-2 flex justify-end gap-1">
+          <span className="text-muted-foreground rounded px-1.5 py-0.5 text-[9px]">취소</span>
+          <span className="bg-destructive text-destructive-foreground rounded px-1.5 py-0.5 text-[9px]">
+            삭제
+          </span>
+        </div>
+      </div>
+    ),
+    renderHtmlDemo: () => <NativeAlertDialogDemo />,
+    renderReactDemo: () => <ReactAlertDialogDemo />,
   },
 ];
 
