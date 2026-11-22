@@ -6,7 +6,12 @@ import { cardVariants } from "@goraebap/design-system/recipes/card";
 import { inputVariants } from "@goraebap/design-system/recipes/input";
 import { separatorVariants } from "@goraebap/design-system/recipes/separator";
 import { skeletonVariants } from "@goraebap/design-system/recipes/skeleton";
-import { tableRowVariants, tableVariants } from "@goraebap/design-system/recipes/table";
+import {
+  tableCellVariants,
+  tableHeadVariants,
+  tableRowVariants,
+  tableVariants,
+} from "@goraebap/design-system/recipes/table";
 import { textareaVariants } from "@goraebap/design-system/recipes/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui/components/alert";
 import { Badge } from "@goraebap/ui/components/badge";
@@ -44,6 +49,17 @@ import {
 
 export type ComponentCategory = "동작과 입력" | "표시와 구조" | "오버레이와 탐색";
 
+export interface ComponentExample {
+  id: string;
+  title: string;
+  description?: string;
+  htmlCode: string;
+  reactCode: string;
+  angularCode: string;
+  renderHtmlDemo: (ctx: { isMobile: boolean }) => ReactNode;
+  renderReactDemo: (ctx: { isMobile: boolean }) => ReactNode;
+}
+
 export interface ComponentDocSpec {
   slug: string;
   name: string;
@@ -61,6 +77,7 @@ export interface ComponentDocSpec {
   renderThumbnail: () => ReactNode;
   renderHtmlDemo: (ctx: { isMobile: boolean }) => ReactNode;
   renderReactDemo: (ctx: { isMobile: boolean }) => ReactNode;
+  examples?: ComponentExample[];
 }
 
 export const COMPONENT_CATEGORIES: ComponentCategory[] = [
@@ -87,6 +104,7 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     htmlCode: `<button class="\${buttonVariants({ variant: 'default' })}">저장</button>
 <button class="\${buttonVariants({ variant: 'secondary' })}">임시 저장</button>
 <button class="\${buttonVariants({ variant: 'outline' })}">미리보기</button>
+<button class="\${buttonVariants({ variant: 'ghost' })}">취소</button>
 <button class="\${buttonVariants({ variant: 'destructive' })}">삭제</button>`,
     reactCode: `import { Button } from "@goraebap/ui/components/button";
 
@@ -111,7 +129,10 @@ import { buttonVariants, type ButtonRecipeProps } from "@goraebap/design-system/
 export class GbButtonDirective {
   variant = input<ButtonRecipeProps["variant"]>("default");
   size = input<ButtonRecipeProps["size"]>("default");
-  computedClass = computed(() => buttonVariants({ variant: this.variant(), size: this.size() }));
+  shape = input<ButtonRecipeProps["shape"]>("default");
+  computedClass = computed(() =>
+    buttonVariants({ variant: this.variant(), size: this.size(), shape: this.shape() }),
+  );
 }`,
     renderThumbnail: () => (
       <div className="flex items-center gap-1.5">
@@ -180,6 +201,127 @@ export class GbButtonDirective {
         </Button>
       </div>
     ),
+    examples: [
+      {
+        id: "pill",
+        title: "Shape (Pill)",
+        description: "랜딩 CTA, 헤더 액션, 필터 버튼처럼 둥근 형태가 필요할 때 shape='pill'을 씁니다.",
+        htmlCode: `<button class="\${buttonVariants({ shape: 'pill' })}">시작하기</button>
+<button class="\${buttonVariants({ variant: 'secondary', shape: 'pill' })}">컴포넌트 보기</button>
+<button class="\${buttonVariants({ variant: 'outline', shape: 'pill' })}">문서 보기</button>`,
+        reactCode: `import { Button } from "@goraebap/ui/components/button";
+
+export function PillButtonExample() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button shape="pill">시작하기</Button>
+      <Button variant="secondary" shape="pill">컴포넌트 보기</Button>
+      <Button variant="outline" shape="pill">문서 보기</Button>
+    </div>
+  );
+}`,
+        angularCode: `<button gbButton shape="pill">시작하기</button>
+<button gbButton variant="secondary" shape="pill">컴포넌트 보기</button>
+<button gbButton variant="outline" shape="pill">문서 보기</button>`,
+        renderHtmlDemo: ({ isMobile }) => (
+          <div
+            className={
+              isMobile
+                ? "flex flex-col gap-2"
+                : "flex flex-wrap items-center justify-center gap-2.5 py-4"
+            }
+          >
+            <button
+              type="button"
+              className={buttonVariants({ shape: "pill", size: isMobile ? "lg" : "default" })}
+            >
+              시작하기
+            </button>
+            <button
+              type="button"
+              className={buttonVariants({
+                variant: "secondary",
+                shape: "pill",
+                size: isMobile ? "lg" : "default",
+              })}
+            >
+              컴포넌트 보기
+            </button>
+            <button
+              type="button"
+              className={buttonVariants({
+                variant: "outline",
+                shape: "pill",
+                size: isMobile ? "lg" : "default",
+              })}
+            >
+              문서 보기
+            </button>
+          </div>
+        ),
+        renderReactDemo: ({ isMobile }) => (
+          <div
+            className={
+              isMobile
+                ? "flex flex-col gap-2"
+                : "flex flex-wrap items-center justify-center gap-2.5 py-4"
+            }
+          >
+            <Button shape="pill" size={isMobile ? "lg" : "default"}>
+              시작하기
+            </Button>
+            <Button variant="secondary" shape="pill" size={isMobile ? "lg" : "default"}>
+              컴포넌트 보기
+            </Button>
+            <Button variant="outline" shape="pill" size={isMobile ? "lg" : "default"}>
+              문서 보기
+            </Button>
+          </div>
+        ),
+      },
+      {
+        id: "size",
+        title: "Size",
+        description: "툴바와 보조 동작은 sm, 일반 동작은 default, 모바일 주요 버튼은 lg를 씁니다.",
+        htmlCode: `<button class="\${buttonVariants({ size: 'sm' })}">Small</button>
+<button class="\${buttonVariants({ size: 'default' })}">Default</button>
+<button class="\${buttonVariants({ size: 'lg' })}">Large</button>`,
+        reactCode: `import { Button } from "@goraebap/ui/components/button";
+
+export function SizeButtonExample() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button size="sm">Small</Button>
+      <Button size="default">Default</Button>
+      <Button size="lg">Large</Button>
+    </div>
+  );
+}`,
+        angularCode: `<button gbButton size="sm">Small</button>
+<button gbButton size="default">Default</button>
+<button gbButton size="lg">Large</button>`,
+        renderHtmlDemo: () => (
+          <div className="flex flex-wrap items-center justify-center gap-2.5 py-4">
+            <button type="button" className={buttonVariants({ size: "sm" })}>
+              Small
+            </button>
+            <button type="button" className={buttonVariants({ size: "default" })}>
+              Default
+            </button>
+            <button type="button" className={buttonVariants({ size: "lg" })}>
+              Large
+            </button>
+          </div>
+        ),
+        renderReactDemo: () => (
+          <div className="flex flex-wrap items-center justify-center gap-2.5 py-4">
+            <Button size="sm">Small</Button>
+            <Button size="default">Default</Button>
+            <Button size="lg">Large</Button>
+          </div>
+        ),
+      },
+    ],
   },
   {
     slug: "input",
@@ -451,18 +593,18 @@ export function Example() {
     ),
     renderHtmlDemo: () => (
       <article className={`mx-auto max-w-sm ${cardVariants()}`}>
-        <div className="space-y-1 p-5 pb-3">
-          <h3 className="text-sm font-semibold">에이전트 토큰</h3>
-          <p className="text-muted-foreground text-xs">
+        <div className="space-y-1.5">
+          <h3 className="text-sm font-semibold tracking-tight">에이전트 토큰</h3>
+          <p className="text-muted-foreground text-xs leading-relaxed">
             MCP 서버 접근을 위한 개인 토큰을 관리합니다.
           </p>
         </div>
-        <div className="px-5 pb-4">
+        <div className="pt-4">
           <p className="text-muted-foreground font-mono text-xs">
             활성 토큰 2개 · 마지막 사용 10분 전
           </p>
         </div>
-        <div className="border-border flex items-center gap-2 border-t px-5 py-3">
+        <div className="flex items-center gap-2 pt-4">
           <button type="button" className={buttonVariants({ size: "sm" })}>
             새 토큰 발급
           </button>
@@ -529,14 +671,16 @@ export function Example() {
     renderHtmlDemo: () => (
       <div className="mx-auto max-w-md space-y-3">
         <div role="alert" className={alertVariants({ variant: "info" })}>
-          <h5 className="font-medium">서브도메인 SSO 활성화</h5>
-          <p className="mt-1 text-xs opacity-90">로그인 세션이 *.goraebap.xyz 전체에 공유됩니다.</p>
+          <h5>서브도메인 SSO 활성화</h5>
+          <p>로그인 세션이 *.goraebap.xyz 전체에 공유됩니다.</p>
         </div>
         <div role="alert" className={alertVariants({ variant: "success" })}>
-          <h5 className="font-medium">저장 완료</h5>
-          <p className="mt-1 text-xs opacity-90">
-            변경한 프로필 이름이 모든 서비스에 반영되었습니다.
-          </p>
+          <h5>저장 완료</h5>
+          <p>변경한 프로필 이름이 모든 서비스에 반영되었습니다.</p>
+        </div>
+        <div role="alert" className={alertVariants({ variant: "destructive" })}>
+          <h5>인증 코드 만료</h5>
+          <p>5분이 지나 코드가 만료되었습니다. 다시 요청해 주세요.</p>
         </div>
       </div>
     ),
@@ -730,39 +874,45 @@ export function Example() {
       </div>
     ),
     renderHtmlDemo: () => (
-      <div className="border-border bg-card w-full overflow-x-auto rounded-xl border">
-        <table className={tableVariants()}>
-          <thead className="border-border border-b">
-            <tr className={tableRowVariants()}>
-              <th className="text-muted-foreground h-10 px-4 text-left text-xs font-medium">
-                서비스
-              </th>
-              <th className="text-muted-foreground h-10 px-4 text-left text-xs font-medium">
-                어댑터
-              </th>
-              <th className="text-muted-foreground h-10 px-4 text-left text-xs font-medium">
-                테마
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr className={tableRowVariants()}>
-              <td className="px-4 py-3 font-medium">apps/design</td>
-              <td className="px-4 py-3 font-mono text-xs">HTML + React</td>
-              <td className="px-4 py-3">App / Editorial</td>
-            </tr>
-            <tr className={tableRowVariants()}>
-              <td className="px-4 py-3 font-medium">apps/productivity</td>
-              <td className="px-4 py-3 font-mono text-xs">React (Base UI)</td>
-              <td className="px-4 py-3">App</td>
-            </tr>
-            <tr className={tableRowVariants()}>
-              <td className="px-4 py-3 font-medium">apps/accounts</td>
-              <td className="px-4 py-3 font-mono text-xs">Angular 예정</td>
-              <td className="px-4 py-3">App</td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="border-border bg-card rounded-xl border">
+        <div className="w-full overflow-x-auto">
+          <table className={tableVariants()}>
+            <thead className="[&_tr]:border-b">
+              <tr className={tableRowVariants()}>
+                <th className={tableHeadVariants()}>서비스</th>
+                <th className={tableHeadVariants()}>어댑터</th>
+                <th className={tableHeadVariants()}>테마</th>
+                <th className={tableHeadVariants()}>상태</th>
+              </tr>
+            </thead>
+            <tbody className="[&_tr:last-child]:border-0">
+              <tr className={tableRowVariants()}>
+                <td className={`${tableCellVariants()} font-medium`}>apps/design</td>
+                <td className={`${tableCellVariants()} font-mono`}>HTML + React</td>
+                <td className={tableCellVariants()}>Multi</td>
+                <td className={tableCellVariants()}>
+                  <span className={badgeVariants({ variant: "outline" })}>운영</span>
+                </td>
+              </tr>
+              <tr className={tableRowVariants()}>
+                <td className={`${tableCellVariants()} font-medium`}>apps/productivity</td>
+                <td className={`${tableCellVariants()} font-mono`}>React</td>
+                <td className={tableCellVariants()}>App</td>
+                <td className={tableCellVariants()}>
+                  <span className={badgeVariants({ variant: "secondary" })}>통합</span>
+                </td>
+              </tr>
+              <tr className={tableRowVariants()}>
+                <td className={`${tableCellVariants()} font-medium`}>apps/accounts</td>
+                <td className={`${tableCellVariants()} font-mono`}>Angular</td>
+                <td className={tableCellVariants()}>App</td>
+                <td className={tableCellVariants()}>
+                  <span className={badgeVariants({ variant: "muted" })}>SSO</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     ),
     renderReactDemo: () => (
@@ -795,7 +945,7 @@ export function Example() {
             </TableRow>
             <TableRow>
               <TableCell className="font-medium">apps/accounts</TableCell>
-              <TableCell className="font-mono">Angular 예정</TableCell>
+              <TableCell className="font-mono">Angular</TableCell>
               <TableCell>App</TableCell>
               <TableCell>
                 <Badge variant="muted">SSO</Badge>

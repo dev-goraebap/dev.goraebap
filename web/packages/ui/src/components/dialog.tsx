@@ -2,18 +2,30 @@ import { Dialog as BaseDialog } from "@base-ui/react/dialog";
 import { cn } from "@goraebap/design-system/cn";
 import {
   dialogBackdropVariants,
+  dialogCloseButtonVariants,
   dialogPopupVariants,
+  dialogSheetHandleVariants,
   type DialogPopupRecipeProps,
 } from "@goraebap/design-system/recipes/dialog";
+import { X } from "lucide-react";
 import type { ComponentProps } from "react";
 
 export const Dialog = BaseDialog.Root;
 export const DialogTrigger = BaseDialog.Trigger;
 export const DialogClose = BaseDialog.Close;
 
-export type DialogContentProps = ComponentProps<typeof BaseDialog.Popup> & DialogPopupRecipeProps;
+export type DialogContentProps = ComponentProps<typeof BaseDialog.Popup> &
+  DialogPopupRecipeProps & {
+    showCloseButton?: boolean;
+  };
 
-export function DialogContent({ className, surface, children, ...props }: DialogContentProps) {
+export function DialogContent({
+  className,
+  surface,
+  showCloseButton = true,
+  children,
+  ...props
+}: DialogContentProps) {
   return (
     <BaseDialog.Portal>
       <BaseDialog.Backdrop className={dialogBackdropVariants()} />
@@ -22,9 +34,31 @@ export function DialogContent({ className, surface, children, ...props }: Dialog
         className={cn(dialogPopupVariants({ surface, className }))}
         {...props}
       >
+        {surface === "sheet" && (
+          <div aria-hidden="true" className={dialogSheetHandleVariants()} />
+        )}
         {children}
+        {showCloseButton && (
+          <BaseDialog.Close aria-label="닫기" className={dialogCloseButtonVariants()}>
+            <X className="size-4" />
+          </BaseDialog.Close>
+        )}
       </BaseDialog.Popup>
     </BaseDialog.Portal>
+  );
+}
+
+export function DialogHeader({ className, ...props }: ComponentProps<"div">) {
+  return <div data-slot="dialog-header" className={cn("space-y-1.5 pr-7", className)} {...props} />;
+}
+
+export function DialogFooter({ className, ...props }: ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-footer"
+      className={cn("mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+      {...props}
+    />
   );
 }
 
@@ -32,7 +66,7 @@ export function DialogTitle({ className, ...props }: ComponentProps<typeof BaseD
   return (
     <BaseDialog.Title
       data-slot="dialog-title"
-      className={cn("text-base font-semibold tracking-tight", className)}
+      className={cn("text-base font-semibold tracking-tight pr-7", className)}
       {...props}
     />
   );

@@ -31,6 +31,32 @@
 }
 
 dialog.goraebap-native-dialog::backdrop {
-  background: rgb(0 0 0 / 0.55);
-  backdrop-filter: blur(3px);
+  background: color-mix(in oklch, var(--foreground) 25%, transparent);
+  backdrop-filter: blur(2px);
+  transition: opacity 200ms ease-out;
+}
+
+dialog.goraebap-native-dialog[open] {
+  opacity: 1;
+  transition:
+    opacity 200ms ease-out,
+    transform 200ms ease-out;
+}
+
+@starting-style {
+  dialog.goraebap-native-dialog[open] {
+    opacity: 0;
+  }
+
+  dialog.goraebap-native-dialog[data-surface="dialog"][open] {
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+
+  dialog.goraebap-native-dialog[data-surface="sheet"][open] {
+    transform: translateY(100%);
+  }
+
+  dialog.goraebap-native-dialog[open]::backdrop {
+    opacity: 0;
+  }
 }

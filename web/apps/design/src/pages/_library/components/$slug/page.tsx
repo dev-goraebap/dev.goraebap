@@ -54,6 +54,31 @@ function ComponentDetailPage() {
         renderReact={doc.renderReactDemo}
       />
 
+      {/* Additional Examples */}
+      {doc.examples && doc.examples.length > 0 && (
+        <section className="space-y-8">
+          <h2 className="text-xl font-semibold tracking-tight">Examples</h2>
+          {doc.examples.map((example) => (
+            <div key={example.id} className="space-y-3">
+              <div className="space-y-1">
+                <h3 className="text-base font-semibold tracking-tight">{example.title}</h3>
+                {example.description && (
+                  <p className="text-muted-foreground text-sm">{example.description}</p>
+                )}
+              </div>
+              <AdapterPreviewStage
+                title={`${doc.name} — ${example.title}`}
+                htmlCode={example.htmlCode}
+                reactCode={example.reactCode}
+                angularCode={example.angularCode}
+                renderHtml={example.renderHtmlDemo}
+                renderReact={example.renderReactDemo}
+              />
+            </div>
+          ))}
+        </section>
+      )}
+
       {/* Boundary & Mobile Guidelines */}
       <div className="grid gap-4 md:grid-cols-2">
         <section className="border-border bg-card space-y-2 rounded-2xl border p-5">

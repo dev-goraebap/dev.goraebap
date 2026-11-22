@@ -1,5 +1,10 @@
 import { cn } from "@goraebap/design-system/cn";
-import { tableRowVariants, tableVariants } from "@goraebap/design-system/recipes/table";
+import {
+  tableCellVariants,
+  tableHeadVariants,
+  tableRowVariants,
+  tableVariants,
+} from "@goraebap/design-system/recipes/table";
 import type { ComponentProps } from "react";
 
 export function Table({ className, ...props }: ComponentProps<"table">) {
@@ -30,23 +35,12 @@ export function TableRow({ className, ...props }: ComponentProps<"tr">) {
 
 export function TableHead({ className, ...props }: ComponentProps<"th">) {
   return (
-    <th
-      data-slot="table-head"
-      className={cn(
-        "text-muted-foreground h-9 px-3 text-left align-middle text-xs font-medium whitespace-nowrap",
-        className,
-      )}
-      {...props}
-    />
+    <th data-slot="table-head" className={cn(tableHeadVariants(), className)} {...props} />
   );
 }
 
 export function TableCell({ className, ...props }: ComponentProps<"td">) {
   return (
-    <td
-      data-slot="table-cell"
-      className={cn("px-3 py-2.5 align-middle text-xs", className)}
-      {...props}
-    />
+    <td data-slot="table-cell" className={cn(tableCellVariants(), className)} {...props} />
   );
 }
