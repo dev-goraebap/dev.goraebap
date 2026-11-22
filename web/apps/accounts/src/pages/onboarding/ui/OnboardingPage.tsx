@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import { completeOnboarding, getCurrentUser, updateMyName } from "@/entities/session";
 import { resolveSafeNextUrl } from "@/shared/lib";
 

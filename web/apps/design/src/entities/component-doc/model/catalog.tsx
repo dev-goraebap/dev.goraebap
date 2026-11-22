@@ -13,9 +13,9 @@ import {
   tableVariants,
 } from "@goraebap/design-system/recipes/table";
 import { textareaVariants } from "@goraebap/design-system/recipes/textarea";
-import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui/components/alert";
-import { Badge } from "@goraebap/ui/components/badge";
-import { Button } from "@goraebap/ui/components/button";
+import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
+import { Badge } from "@goraebap/ui-react/components/badge";
+import { Button } from "@goraebap/ui-react/components/button";
 import {
   Card,
   CardContent,
@@ -23,10 +23,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@goraebap/ui/components/card";
-import { Input } from "@goraebap/ui/components/input";
-import { Separator } from "@goraebap/ui/components/separator";
-import { Skeleton } from "@goraebap/ui/components/skeleton";
+} from "@goraebap/ui-react/components/card";
+import { Input } from "@goraebap/ui-react/components/input";
+import { Separator } from "@goraebap/ui-react/components/separator";
+import { Skeleton } from "@goraebap/ui-react/components/skeleton";
 import {
   Table,
   TableBody,
@@ -34,9 +34,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@goraebap/ui/components/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui/components/tabs";
-import { Textarea } from "@goraebap/ui/components/textarea";
+} from "@goraebap/ui-react/components/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
+import { Textarea } from "@goraebap/ui-react/components/textarea";
 import {
   NativeCheckboxDemo,
   NativeDialogDemo,
@@ -106,7 +106,7 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
 <button class="\${buttonVariants({ variant: 'outline' })}">미리보기</button>
 <button class="\${buttonVariants({ variant: 'ghost' })}">취소</button>
 <button class="\${buttonVariants({ variant: 'destructive' })}">삭제</button>`,
-    reactCode: `import { Button } from "@goraebap/ui/components/button";
+    reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function Example() {
   return (
@@ -209,7 +209,7 @@ export class GbButtonDirective {
         htmlCode: `<button class="\${buttonVariants({ shape: 'pill' })}">시작하기</button>
 <button class="\${buttonVariants({ variant: 'secondary', shape: 'pill' })}">컴포넌트 보기</button>
 <button class="\${buttonVariants({ variant: 'outline', shape: 'pill' })}">문서 보기</button>`,
-        reactCode: `import { Button } from "@goraebap/ui/components/button";
+        reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function PillButtonExample() {
   return (
@@ -286,7 +286,7 @@ export function PillButtonExample() {
         htmlCode: `<button class="\${buttonVariants({ size: 'sm' })}">Small</button>
 <button class="\${buttonVariants({ size: 'default' })}">Default</button>
 <button class="\${buttonVariants({ size: 'lg' })}">Large</button>`,
-        reactCode: `import { Button } from "@goraebap/ui/components/button";
+        reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function SizeButtonExample() {
   return (
@@ -339,7 +339,7 @@ export function SizeButtonExample() {
       "모바일 Safari 자동 확대를 막기 위해 14px~16px 글자 크기와 충분한 터치 높이를 유지합니다.",
     htmlCode: `<input class="\${inputVariants()}" placeholder="name@goraebap.xyz" />
 <input class="\${inputVariants({ invalid: true })}" aria-invalid="true" value="invalid-email" />`,
-    reactCode: `import { Input } from "@goraebap/ui/components/input";
+    reactCode: `import { Input } from "@goraebap/ui-react/components/input";
 
 export function Example() {
   return (
@@ -398,7 +398,7 @@ export function Example() {
     mobileGuideline:
       "긴 글 입력은 대화상자 대신 전용 페이지에서 전체 폭으로 열어야 가상 키보드에 가리지 않습니다.",
     htmlCode: `<textarea class="\${textareaVariants()}" placeholder="변경 이유나 맥락을 적어 주세요."></textarea>`,
-    reactCode: `import { Textarea } from "@goraebap/ui/components/textarea";
+    reactCode: `import { Textarea } from "@goraebap/ui-react/components/textarea";
 
 export function Example() {
   return <Textarea placeholder="변경 이유나 맥락을 적어 주세요." />;
@@ -438,7 +438,7 @@ export function Example() {
     htmlCode: `<button role="switch" aria-checked="true" data-checked class="\${switchTrackVariants()}">
   <span data-checked class="\${switchThumbVariants()}"></span>
 </button>`,
-    reactCode: `import { Switch } from "@goraebap/ui/components/switch";
+    reactCode: `import { Switch } from "@goraebap/ui-react/components/switch";
 
 export function Example() {
   return <Switch defaultChecked aria-label="이메일 알림 받기" />;
@@ -475,7 +475,7 @@ export function Example() {
   <input type="checkbox" checked class="\${checkboxVariants()}" />
   <span>모든 기기 세션 유지</span>
 </label>`,
-    reactCode: `import { Checkbox } from "@goraebap/ui/components/checkbox";
+    reactCode: `import { Checkbox } from "@goraebap/ui-react/components/checkbox";
 
 export function Example() {
   return <Checkbox defaultChecked aria-label="세션 유지" />;
@@ -506,7 +506,7 @@ export function Example() {
     htmlCode: `<span class="\${badgeVariants({ variant: 'default' })}">원칙</span>
 <span class="\${badgeVariants({ variant: 'secondary' })}">진행 중</span>
 <span class="\${badgeVariants({ variant: 'outline' })}">Pure HTML</span>`,
-    reactCode: `import { Badge } from "@goraebap/ui/components/badge";
+    reactCode: `import { Badge } from "@goraebap/ui-react/components/badge";
 
 export function Example() {
   return (
@@ -565,8 +565,8 @@ export function Example() {
   </header>
   <div class="px-5 pb-5 text-xs">활성 토큰 2개</div>
 </article>`,
-    reactCode: `import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@goraebap/ui/components/card";
-import { Button } from "@goraebap/ui/components/button";
+    reactCode: `import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@goraebap/ui-react/components/card";
+import { Button } from "@goraebap/ui-react/components/button";
 
 export function Example() {
   return (
@@ -649,7 +649,7 @@ export function Example() {
   <h5 class="font-medium">서브도메인 SSO 활성화</h5>
   <p class="mt-1 text-xs opacity-90">*.goraebap.xyz 전체에 세션이 공유됩니다.</p>
 </div>`,
-    reactCode: `import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui/components/alert";
+    reactCode: `import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 
 export function Example() {
   return (
@@ -714,7 +714,7 @@ export function Example() {
       "가로 구분선은 <hr>, 세로 구분선은 role='separator' aria-orientation='vertical'로 충분합니다.",
     mobileGuideline: "구분선 대신 여백으로 묶음이 충분하면 선을 생략해 화면 밀도를 낮춥니다.",
     htmlCode: `<hr class="\${separatorVariants({ orientation: 'horizontal' })}" />`,
-    reactCode: `import { Separator } from "@goraebap/ui/components/separator";
+    reactCode: `import { Separator } from "@goraebap/ui-react/components/separator";
 
 export function Example() {
   return <Separator />;
@@ -776,7 +776,7 @@ export function Example() {
       "화면 전체 스켈레톤 대신 실제 카드/줄 높이에 맞춘 최소한의 자리 표시만 씁니다.",
     htmlCode: `<div class="\${skeletonVariants({ shape: 'circle' })} size-10"></div>
 <div class="\${skeletonVariants({ shape: 'line' })} w-1/2"></div>`,
-    reactCode: `import { Skeleton } from "@goraebap/ui/components/skeleton";
+    reactCode: `import { Skeleton } from "@goraebap/ui-react/components/skeleton";
 
 export function Example() {
   return (
@@ -836,7 +836,7 @@ export function Example() {
     <tbody><tr class="\${tableRowVariants()}"><td class="px-3 py-2">apps/design</td></tr></tbody>
   </table>
 </div>`,
-    reactCode: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@goraebap/ui/components/table";
+    reactCode: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@goraebap/ui-react/components/table";
 
 export function Example() {
   return (
@@ -972,7 +972,7 @@ export function Example() {
   <button role="tab" aria-selected="true" data-selected class="\${tabsTriggerVariants()}">Tokens</button>
   <button role="tab" aria-selected="false" class="\${tabsTriggerVariants()}">Recipes</button>
 </div>`,
-    reactCode: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui/components/tabs";
+    reactCode: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 
 export function Example() {
   return (
@@ -1045,8 +1045,8 @@ export function Example() {
   <h3 class="text-base font-semibold">네이티브 HTML 대화상자</h3>
   <button onclick="this.closest('dialog').close()">닫기</button>
 </dialog>`,
-    reactCode: `import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@goraebap/ui/components/dialog";
-import { Button } from "@goraebap/ui/components/button";
+    reactCode: `import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@goraebap/ui-react/components/dialog";
+import { Button } from "@goraebap/ui-react/components/button";
 
 export function Example() {
   return (

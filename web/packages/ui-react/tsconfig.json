@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "@goraebap/ui/*": ["./src/*"]
+      "@goraebap/ui-react/*": ["./src/*"]
     }
   },
   "include": ["src"]

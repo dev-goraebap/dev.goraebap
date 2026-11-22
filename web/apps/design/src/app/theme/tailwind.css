@@ -1,10 +1,10 @@
 @import "tailwindcss";
 @import "@goraebap/design-system/styles/base.css";
-@import "@goraebap/design-system/styles/theme-app.css";
 @import "@goraebap/design-system/styles/theme-editorial.css";
+@import "@goraebap/design-system/styles/theme-app.css";
 
 @source "../../../../../packages/design-system/src";
-@source "../../../../../packages/ui/src";
+@source "../../../../../packages/ui-react/src";
 
 @layer utilities {
   .bg-dots {

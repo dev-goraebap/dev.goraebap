@@ -1,4 +1,4 @@
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 
 export function AppShellDesktopPreview() {
   return (

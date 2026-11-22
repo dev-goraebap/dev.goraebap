@@ -18,7 +18,7 @@
     "packages/design-system": {
       "entry": ["src/lib/*.ts", "src/recipes/*.ts"]
     },
-    "packages/ui": {
+    "packages/ui-react": {
       "entry": ["src/components/*.tsx", "src/lib/*.ts"],
       "ignoreDependencies": ["lucide-react"]
     }

@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import {
   createAgentToken,
   listAgentTokens,

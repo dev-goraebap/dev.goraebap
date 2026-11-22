@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import { posts, type PostCategory } from "@/entities/post";
 
 export const Route = createFileRoute("/")({
@@ -30,7 +30,7 @@ function HomePage() {
           아키텍처 판단과 UI/UX 기준을 마크다운으로 기록해 사람과 에이전트가 같은 맥락을 읽도록
           만듭니다. 모든 예제는{" "}
           <code className="bg-secondary text-foreground rounded px-1.5 py-0.5 font-mono text-xs">
-            @goraebap/ui
+            @goraebap/ui-react
           </code>
           에서 바로 실행됩니다.
         </p>

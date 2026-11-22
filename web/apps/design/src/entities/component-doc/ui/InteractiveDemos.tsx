@@ -10,8 +10,8 @@ import {
 import { inputVariants } from "@goraebap/design-system/recipes/input";
 import { switchThumbVariants, switchTrackVariants } from "@goraebap/design-system/recipes/switch";
 import { tabsListVariants, tabsTriggerVariants } from "@goraebap/design-system/recipes/tabs";
-import { Button } from "@goraebap/ui/components/button";
-import { Checkbox } from "@goraebap/ui/components/checkbox";
+import { Button } from "@goraebap/ui-react/components/button";
+import { Checkbox } from "@goraebap/ui-react/components/checkbox";
 import {
   Dialog,
   DialogClose,
@@ -19,9 +19,9 @@ import {
   DialogDescription,
   DialogTitle,
   DialogTrigger,
-} from "@goraebap/ui/components/dialog";
-import { Input } from "@goraebap/ui/components/input";
-import { Switch } from "@goraebap/ui/components/switch";
+} from "@goraebap/ui-react/components/dialog";
+import { Input } from "@goraebap/ui-react/components/input";
+import { Switch } from "@goraebap/ui-react/components/switch";
 
 /* ── React (Base UI) Interactive Demos ─────────────────────────── */
 

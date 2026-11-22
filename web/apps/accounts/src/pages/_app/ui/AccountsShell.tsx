@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import { logoutCurrentSession, type AuthMe } from "@/entities/session";
 import { ACCOUNT_NAV_ITEMS, CONNECTED_SERVICES } from "@/shared/config";
 import { AppShell } from "@/shared/ui";

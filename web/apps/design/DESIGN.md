@@ -31,7 +31,7 @@
 
 - **Adapter Switching (`Pure HTML` | `React` | `Angular`)**:
   - `Pure HTML`: Renders real native HTML elements (`<button>`, `<input>`, `<dialog>`, `<details>`, `<input type="checkbox" role="switch">`, `<table>`) styled solely with `@goraebap/design-system` CVA recipe classes — proving visual parity without any UI framework.
-  - `React`: Renders live `@goraebap/ui` (`@base-ui/react`) interactive components.
+  - `React`: Renders live `@goraebap/ui-react` (`@base-ui/react`) interactive components.
   - `Angular`: Shows `@spartan-ng/brain` template + identical CVA recipe usage (prepared for live Angular iframe embed once `apps/accounts` migrates).
 - **Viewport Switching (`Desktop` | `Mobile 390px`)**: Constrains stage width to `390px` and passes `isMobile: true` so responsive components (`Dialog` → `Bottom Sheet`, full-width mobile buttons) demonstrate actual behavioral adaptation.
 - **Component Search**: Typing in the `/components` sidebar filters the component list immediately without losing focus.

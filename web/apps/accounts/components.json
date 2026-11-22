@@ -5,7 +5,7 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "../../packages/ui/src/styles/globals.css",
+    "css": "../../packages/ui-react/src/styles/globals.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
@@ -13,8 +13,8 @@
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@/components",
-    "utils": "@goraebap/ui/lib/utils",
-    "ui": "@goraebap/ui/components",
+    "utils": "@goraebap/ui-react/lib/utils",
+    "ui": "@goraebap/ui-react/components",
     "lib": "@/lib",
     "hooks": "@/hooks"
   }

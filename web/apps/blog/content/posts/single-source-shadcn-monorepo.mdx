@@ -1,6 +1,6 @@
 ---
 title: "shadcn 커스텀 레지스트리를 모노레포 단일 원본으로 관리하기"
-summary: "앱이 직접 import하는 packages/ui를 곧바로 shadcn build의 원본으로 삼아, 사본과 어긋남 없이 디자인 시스템을 운영하는 방법."
+summary: "앱이 직접 import하는 packages/ui-react를 곧바로 shadcn build의 원본으로 삼아, 사본과 어긋남 없이 디자인 시스템을 운영하는 방법."
 date: "2026-11-20"
 readingTime: "5분"
 category: "UI/UX"
@@ -12,11 +12,11 @@ tags: ["shadcn", "monorepo", "design-system"]
 
 블로그처럼 여백과 타이포가 중요한 에디토리얼 사이트와, 업무 도구처럼 정보 밀도와 빠른 조작이 중요한 앱은 겉모습이 달라야 합니다. 모든 앱을 똑같은 테마로 묶으면 결국 예외 코드가 쌓입니다.
 
-`packages/ui`에는 접근성과 동작이 검증된 기본 부품과 CSS 변수 이름표만 두고, 색상·폰트·모서리 반경 같은 피부는 각 앱의 `index.css`에서 덮어씁니다. 앱 전용 조합은 그 앱 안에 두고, 두 번 이상 쓰일 때만 공통 패키지로 올립니다.
+`packages/ui-react`에는 접근성과 동작이 검증된 기본 부품과 CSS 변수 이름표만 두고, 색상·폰트·모서리 반경 같은 피부는 각 앱의 `index.css`에서 덮어씁니다. 앱 전용 조합은 그 앱 안에 두고, 두 번 이상 쓰일 때만 공통 패키지로 올립니다.
 
-MDX로 글을 쓰면 아래처럼 실제 `@goraebap/ui` 컴포넌트를 본문 중간에 바로 띄워 보여 줄 수 있습니다.
+MDX로 글을 쓰면 아래처럼 실제 `@goraebap/ui-react` 컴포넌트를 본문 중간에 바로 띄워 보여 줄 수 있습니다.
 
-<LivePreview title="MDX 본문 안의 라이브 @goraebap/ui Button">
+<LivePreview title="MDX 본문 안의 라이브 @goraebap/ui-react Button">
   <Button size="sm">저장</Button>
   <Button size="sm" variant="secondary">
     임시 저장
@@ -31,6 +31,6 @@ MDX로 글을 쓰면 아래처럼 실제 `@goraebap/ui` 컴포넌트를 본문 �
 
 ## 별도 빌드 없는 JIT 패키지 + 정적 레지스트리 출력
 
-내부 앱들은 `packages/ui`의 소스를 직접 import해 즉시 HMR을 누리고, 외부 프로젝트가 필요할 때는 `registry.json`에서 정적 JSON을 생성해 블로그의 `/r` 경로로 바로 서빙합니다.
+내부 앱들은 `packages/ui-react`의 소스를 직접 import해 즉시 HMR을 누리고, 외부 프로젝트가 필요할 때는 `registry.json`에서 정적 JSON을 생성해 블로그의 `/r` 경로로 바로 서빙합니다.
 
 <CopyCommand label="CLI" command="pnpm dlx shadcn@latest add https://goraebap.xyz/r/button.json" />

@@ -1,5 +1,5 @@
-@import "@goraebap/ui/globals.css";
-@source "../../../../packages/ui/src";
+@import "@goraebap/ui-react/globals.css";
+@source "../../../../packages/ui-react/src";
 
 /*
  * Webapp 4단계 면 위계:

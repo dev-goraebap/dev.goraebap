@@ -14,7 +14,7 @@ export const CONNECTED_SERVICES: ConnectedService[] = [
   },
   {
     name: "Blog & UI",
-    description: "개발 기록 · @goraebap/ui 레지스트리",
+    description: "개발 기록 · @goraebap/ui-react 레지스트리",
     href: "https://blog.goraebap.xyz",
     devHint: "localhost:5173",
   },

@@ -39,7 +39,7 @@ function GettingStartedPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">시작하기</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          워크스페이스 앱에 @goraebap/design-system과 @goraebap/ui를 연결해 스타일, 테마, 컴포넌트를
+          워크스페이스 앱에 @goraebap/design-system과 @goraebap/ui-react를 연결해 스타일, 테마, 컴포넌트를
           적용합니다.
         </p>
       </header>
@@ -47,7 +47,7 @@ function GettingStartedPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">패키지 연결</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          @goraebap/design-system과 @goraebap/ui는 저장소 내부의 pnpm 워크스페이스 패키지입니다. 앱의
+          @goraebap/design-system과 @goraebap/ui-react는 저장소 내부의 pnpm 워크스페이스 패키지입니다. 앱의
           package.json에 workspace:* 의존성으로 추가합니다.
         </p>
         <CopyCodeBlock
@@ -56,7 +56,7 @@ function GettingStartedPage() {
           code={`{
   "dependencies": {
     "@goraebap/design-system": "workspace:*",
-    "@goraebap/ui": "workspace:*"
+    "@goraebap/ui-react": "workspace:*"
   }
 }`}
         />
@@ -79,7 +79,7 @@ function GettingStartedPage() {
 @import "@goraebap/design-system/styles/theme-editorial.css";
 
 @source "../../../../../packages/design-system/src";
-@source "../../../../../packages/ui/src";`}
+@source "../../../../../packages/ui-react/src";`}
         />
       </section>
 
@@ -104,14 +104,14 @@ function GettingStartedPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">첫 컴포넌트 쓰기</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          React 앱에서는 Base UI 위에 구성한 @goraebap/ui/components/&lt;이름&gt; 컴포넌트를
+          React 앱에서는 Base UI 위에 구성한 @goraebap/ui-react/components/&lt;이름&gt; 컴포넌트를
           사용합니다. 프레임워크가 없는 페이지나 Angular에서는 스타일 레시피 함수를 직접 호출해
           클래스를 적용합니다.
         </p>
         <CopyCodeBlock
           label="SaveButton.tsx"
           language="tsx"
-          code={`import { Button } from "@goraebap/ui/components/button";
+          code={`import { Button } from "@goraebap/ui-react/components/button";
 
 export function SaveButton() {
   return <Button size="sm">저장</Button>;

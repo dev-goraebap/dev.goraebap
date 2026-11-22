@@ -3,6 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Layers } from "lucide-react";
 import { badgeVariants } from "@goraebap/design-system/recipes/badge";
 import { buttonVariants } from "@goraebap/design-system/recipes/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { CodeView } from "@/shared/ui";
 
@@ -40,7 +41,7 @@ function LandingPage() {
   저장
 </button>`
       : heroAdapter === "react"
-        ? `import { Button } from "@goraebap/ui/components/button";
+        ? `import { Button } from "@goraebap/ui-react/components/button";
 
 <Button variant="default" size="sm">저장</Button>`
         : `import { buttonVariants } from "@goraebap/design-system/recipes/button";
@@ -65,19 +66,18 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             다룹니다.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Link
-              to="/getting-started"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-11 items-center gap-2 rounded-full px-6 text-sm font-medium transition-colors"
-            >
+            <Button size="lg" shape="pill" render={<Link to="/getting-started" />}>
               <span>시작하기</span>
               <ArrowRight className="size-4" />
-            </Link>
-            <Link
-              to="/components"
-              className="border-border bg-secondary text-secondary-foreground hover:bg-accent inline-flex h-11 items-center rounded-full border px-6 text-sm font-medium transition-colors"
+            </Button>
+            <Button
+              size="lg"
+              variant="secondary"
+              shape="pill"
+              render={<Link to="/components" />}
             >
               컴포넌트 보기
-            </Link>
+            </Button>
           </div>
         </div>
 
@@ -169,7 +169,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
                   {heroAdapter === "html"
                     ? "index.html (Pure HTML)"
                     : heroAdapter === "react"
-                      ? "Button.tsx (@goraebap/ui)"
+                      ? "Button.tsx (@goraebap/ui-react)"
                       : "gb-button.directive.ts (@spartan-ng/brain)"}
                 </span>
                 <span className={badgeVariants({ variant: "secondary" })}>
@@ -287,18 +287,17 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             컴포넌트를 둘러보고 프로젝트에 적용해 보세요
           </h2>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/components"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center rounded-full px-5 text-sm font-medium transition-colors"
-            >
+            <Button size="lg" shape="pill" render={<Link to="/components" />}>
               컴포넌트 보기
-            </Link>
-            <Link
-              to="/getting-started"
-              className="border-border bg-secondary text-secondary-foreground hover:bg-accent inline-flex h-10 items-center rounded-full border px-5 text-sm font-medium transition-colors"
+            </Button>
+            <Button
+              size="lg"
+              variant="secondary"
+              shape="pill"
+              render={<Link to="/getting-started" />}
             >
               문서 보기
-            </Link>
+            </Button>
           </div>
         </div>
       </section>

@@ -61,12 +61,9 @@ function RootLayout() {
           {/* Right Utilities */}
           <div className="flex items-center gap-2.5">
             <ModeToggle />
-            <Link
-              to="/getting-started"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-8 items-center rounded-full px-4 text-xs font-medium transition-colors"
-            >
+            <Button size="sm" shape="pill" render={<Link to="/getting-started" />}>
               시작하기
-            </Link>
+            </Button>
           </div>
         </div>
 

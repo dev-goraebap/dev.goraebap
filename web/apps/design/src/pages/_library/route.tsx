@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { Search } from "lucide-react";
+import { Input } from "@goraebap/ui-react/components/input";
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
 
@@ -54,13 +55,13 @@ function LibraryLayout() {
       navHeader={
         <div className="relative">
           <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2" />
-          <input
+          <Input
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="컴포넌트 검색"
             aria-label="컴포넌트 검색"
-            className="border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-ring h-9 w-full rounded-full border pr-3 pl-9 text-xs outline-none focus-visible:ring-2"
+            className="bg-card rounded-full pl-9 text-xs"
           />
         </div>
       }

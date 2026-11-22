@@ -1,5 +1,5 @@
 import type { MDXComponents } from "mdx/types";
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import { CopyCommand } from "./CopyCommand";
 import { LivePreview } from "./LivePreview";
 

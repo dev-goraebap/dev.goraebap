@@ -12,10 +12,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@goraebap/ui/components",
-    "utils": "@goraebap/ui/lib/utils",
-    "ui": "@goraebap/ui/components",
-    "lib": "@goraebap/ui/lib",
-    "hooks": "@goraebap/ui/hooks"
+    "components": "@goraebap/ui-react/components",
+    "utils": "@goraebap/ui-react/lib/utils",
+    "ui": "@goraebap/ui-react/components",
+    "lib": "@goraebap/ui-react/lib",
+    "hooks": "@goraebap/ui-react/hooks"
   }
 }

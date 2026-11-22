@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Badge } from "@goraebap/ui/components/badge";
-import { Button } from "@goraebap/ui/components/button";
+import { Badge } from "@goraebap/ui-react/components/badge";
+import { Button } from "@goraebap/ui-react/components/button";
 import {
   Card,
   CardContent,
@@ -8,8 +8,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@goraebap/ui/components/card";
-import { Input } from "@goraebap/ui/components/input";
+} from "@goraebap/ui-react/components/card";
+import { Input } from "@goraebap/ui-react/components/input";
 
 export const Route = createFileRoute("/themes/")({
   component: ThemesPage,

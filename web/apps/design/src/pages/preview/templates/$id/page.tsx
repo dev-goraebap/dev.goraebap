@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { KeyRound, Menu, ShieldCheck, User, X } from "lucide-react";
-import { Badge } from "@goraebap/ui/components/badge";
-import { Button } from "@goraebap/ui/components/button";
-import { Input } from "@goraebap/ui/components/input";
+import { Badge } from "@goraebap/ui-react/components/badge";
+import { Button } from "@goraebap/ui-react/components/button";
+import { Input } from "@goraebap/ui-react/components/input";
 import { ReactDialogDemo } from "@/entities/component-doc/ui/InteractiveDemos";
 import { usePreviewSync } from "@/shared/lib/preview-sync";
 

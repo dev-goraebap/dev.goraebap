@@ -1,4 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@goraebap/ui-react/components/table";
 import { CopyCodeBlock } from "@/shared/ui";
 
 export const Route = createFileRoute("/_library/adapters/primitives/")({
@@ -46,25 +54,25 @@ function DocsPrimitivesPage() {
         <h2 className="text-lg font-semibold tracking-tight">
           Pure HTML과 헤드리스 프리미티브의 경계
         </h2>
-        <div className="border-border bg-card overflow-x-auto rounded-2xl border">
-          <table className="w-full text-left text-xs">
-            <thead className="border-border bg-muted/40 border-b">
-              <tr>
-                <th className="px-4 py-3 font-medium">컴포넌트</th>
-                <th className="px-4 py-3 font-medium">Pure HTML + Recipe</th>
-                <th className="px-4 py-3 font-medium">헤드리스 프리미티브의 역할</th>
-              </tr>
-            </thead>
-            <tbody className="divide-border divide-y">
+        <div className="border-border bg-card overflow-hidden rounded-2xl border">
+          <Table>
+            <TableHeader className="bg-muted/40">
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="px-4 py-3">컴포넌트</TableHead>
+                <TableHead className="px-4 py-3">Pure HTML + Recipe</TableHead>
+                <TableHead className="px-4 py-3">헤드리스 프리미티브의 역할</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
               {BOUNDARY_ROWS.map((row) => (
-                <tr key={row.ui}>
-                  <td className="px-4 py-3 font-medium">{row.ui}</td>
-                  <td className="text-muted-foreground px-4 py-3">{row.html}</td>
-                  <td className="text-muted-foreground px-4 py-3">{row.primitive}</td>
-                </tr>
+                <TableRow key={row.ui}>
+                  <TableCell className="px-4 py-3 font-medium">{row.ui}</TableCell>
+                  <TableCell className="text-muted-foreground px-4 py-3">{row.html}</TableCell>
+                  <TableCell className="text-muted-foreground px-4 py-3">{row.primitive}</TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
+            </TableBody>
+          </Table>
         </div>
       </section>
 
@@ -77,7 +85,7 @@ function DocsPrimitivesPage() {
 Recipes            : @goraebap/design-system/recipes/*
 ──────────────────────────────────────────────────────────
 Pure HTML Adapter  : Native HTML (<button>, <dialog>, <details>, <table>)
-React Adapter      : @base-ui/react  → @goraebap/ui
+React Adapter      : @base-ui/react  → @goraebap/ui-react
 Angular Adapter    : @spartan-ng/brain + @goraebap/design-system/recipes/*`}
         />
       </section>

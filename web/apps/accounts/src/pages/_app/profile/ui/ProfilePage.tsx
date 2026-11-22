@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import { updateMyName, type AuthMe } from "@/entities/session";
 import { PageHeader } from "@/shared/ui";
 

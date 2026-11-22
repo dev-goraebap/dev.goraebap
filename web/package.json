@@ -12,7 +12,7 @@
     "build:design": "pnpm --filter @goraebap/design build",
     "build:accounts": "pnpm --filter @goraebap/accounts build",
     "build:productivity": "pnpm --filter @goraebap/productivity build",
-    "build:registry": "pnpm --filter @goraebap/ui build:registry",
+    "build:registry": "pnpm --filter @goraebap/ui-react build:registry",
     "check:productivity": "pnpm --filter @goraebap/productivity check",
     "lint": "eslint .",
     "format": "prettier --write .",

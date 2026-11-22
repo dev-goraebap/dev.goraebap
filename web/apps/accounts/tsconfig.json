@@ -3,7 +3,7 @@
   "compilerOptions": {
     "paths": {
       "@/*": ["./src/*"],
-      "@goraebap/ui/*": ["../../packages/ui/src/*"]
+      "@goraebap/ui-react/*": ["../../packages/ui-react/src/*"]
     }
   },
   "include": ["src", "vite.config.ts"]

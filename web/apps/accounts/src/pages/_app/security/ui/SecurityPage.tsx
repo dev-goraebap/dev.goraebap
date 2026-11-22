@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui/components/button";
+import { Button } from "@goraebap/ui-react/components/button";
 import { logoutAllSessions, logoutCurrentSession, type AuthMe } from "@/entities/session";
 import { AgentTokenSection } from "@/features/agent-token";
 import { PageHeader } from "@/shared/ui";
