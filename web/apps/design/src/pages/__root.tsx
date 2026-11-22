@@ -8,9 +8,9 @@ export const Route = createRootRoute({
 const LIBRARY_PATHS = ["/components", "/getting-started", "/foundations", "/adapters"];
 
 const TOP_NAV = [
-  { label: "Components", to: "/components" as const },
-  { label: "Templates", to: "/templates" as const },
-  { label: "Themes", to: "/themes" as const },
+  { label: "컴포넌트", to: "/components" as const },
+  { label: "템플릿", to: "/templates" as const },
+  { label: "테마", to: "/themes" as const },
 ];
 
 function RootLayout() {
@@ -65,7 +65,7 @@ function RootLayout() {
               to="/getting-started"
               className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-8 items-center rounded-full px-4 text-xs font-medium transition-colors"
             >
-              Get started
+              시작하기
             </Link>
           </div>
         </div>
@@ -101,13 +101,13 @@ function RootLayout() {
           <span className="text-foreground font-medium">goraebap/design</span>
           <div className="flex flex-wrap items-center gap-4 font-mono">
             <Link to="/components" className="hover:text-foreground transition-colors">
-              Components
+              컴포넌트
             </Link>
             <Link to="/templates" className="hover:text-foreground transition-colors">
-              Templates
+              템플릿
             </Link>
             <Link to="/themes" className="hover:text-foreground transition-colors">
-              Themes
+              테마
             </Link>
           </div>
         </div>

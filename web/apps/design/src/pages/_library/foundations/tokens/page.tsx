@@ -86,9 +86,9 @@ function DesignTokensPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Design Tokens</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          패키지의 CSS에서 읽어 온 App(작업 화면용)과 Editorial(긴 글용) 토큰 세트의 Light·Dark 값을
-          보여 줍니다. 면 위계는 --sidebar, --background, --card, --popover 순서로 올라가며, 색상
-          카드를 누르면 var(--토큰) 형식으로 복사됩니다.
+          디자인 토큰은 색상, 반경, 타이포그래피 같은 시각적 결정을 CSS 변수로 정의한 공통
+          기준입니다. 작업 화면용 App과 긴 글용 Editorial 두 세트로 구성하며, 각 세트는 Light와 Dark
+          모드를 지원합니다.
         </p>
       </header>
 
@@ -198,8 +198,8 @@ function DesignTokensPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">토큰 세트 적용</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          특정 영역에만 다른 토큰 세트를 쓰려면 요소에 data-ds-theme="app" 또는
-          data-ds-theme="editorial"을 지정합니다. 다크 모드는 html 같은 상위 요소의 dark 클래스로
+          특정 영역에 토큰 세트를 지정하려면 요소에 data-ds-theme="app" 또는
+          data-ds-theme="editorial"을 추가합니다. 다크 모드는 html 같은 상위 요소의 dark 클래스로
           전환합니다.
         </p>
         <CopyCodeBlock

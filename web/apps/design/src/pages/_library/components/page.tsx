@@ -10,7 +10,7 @@ function ComponentsOverviewPage() {
     <div className="space-y-12">
       {/* Centered Astryx-style Header */}
       <header className="border-border space-y-4 border-b pb-10 text-center">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Browse the library</h1>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">컴포넌트</h1>
       </header>
 
       {/* Categorized 3-column Live Miniature Preview Grid */}

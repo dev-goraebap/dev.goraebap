@@ -36,9 +36,9 @@ function DocsPrimitivesPage() {
           Pure HTML &amp; Headless Primitives
         </h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          토큰과 레시피는 네이티브 HTML 요소에 바로 적용할 수 있습니다. 네이티브 HTML만으로 처리하기
-          어려운 키보드 탐색, 포커스 관리, 오버레이 동작이 필요할 때 헤드리스 프리미티브를
-          결합합니다.
+          스타일 계층과 상호작용 계층을 분리해 필요한 만큼만 조합합니다. 단순한 UI는 네이티브 HTML에
+          레시피를 바로 적용하고, 키보드 탐색·포커스 관리·오버레이 제어가 필요한 컴포넌트에만
+          헤드리스 프리미티브를 결합합니다.
         </p>
       </header>
 
@@ -50,9 +50,9 @@ function DocsPrimitivesPage() {
           <table className="w-full text-left text-xs">
             <thead className="border-border bg-muted/40 border-b">
               <tr>
-                <th className="px-4 py-3 font-medium">UI 요소</th>
-                <th className="px-4 py-3 font-medium">Pure HTML + Recipe만으로</th>
-                <th className="px-4 py-3 font-medium">Base UI / Spartan Brain이 채우는 영역</th>
+                <th className="px-4 py-3 font-medium">컴포넌트</th>
+                <th className="px-4 py-3 font-medium">Pure HTML + Recipe</th>
+                <th className="px-4 py-3 font-medium">헤드리스 프리미티브의 역할</th>
               </tr>
             </thead>
             <tbody className="divide-border divide-y">
@@ -69,7 +69,7 @@ function DocsPrimitivesPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold tracking-tight">프레임워크별 어댑터 매핑</h2>
+        <h2 className="text-lg font-semibold tracking-tight">환경별 구성</h2>
         <CopyCodeBlock
           label="adapter-mapping.txt"
           language="text"

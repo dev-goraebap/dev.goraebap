@@ -42,7 +42,7 @@ import {
   ReactSwitchDemo,
 } from "../ui/InteractiveDemos";
 
-export type ComponentCategory = "Action & Input" | "Display & Structure" | "Overlay & Navigation";
+export type ComponentCategory = "동작과 입력" | "표시와 구조" | "오버레이와 탐색";
 
 export interface ComponentDocSpec {
   slug: string;
@@ -64,16 +64,16 @@ export interface ComponentDocSpec {
 }
 
 export const COMPONENT_CATEGORIES: ComponentCategory[] = [
-  "Action & Input",
-  "Display & Structure",
-  "Overlay & Navigation",
+  "동작과 입력",
+  "표시와 구조",
+  "오버레이와 탐색",
 ];
 
 export const COMPONENT_DOCS: ComponentDocSpec[] = [
   {
     slug: "button",
     name: "Button",
-    category: "Action & Input",
+    category: "동작과 입력",
     primitiveReact: "@base-ui/react/button",
     primitiveAngular: "HTML <button> / hlmBtn",
     recipePath: "@goraebap/design-system/recipes/button",
@@ -184,7 +184,7 @@ export class GbButtonDirective {
   {
     slug: "input",
     name: "Input",
-    category: "Action & Input",
+    category: "동작과 입력",
     primitiveReact: "HTML <input>",
     primitiveAngular: "HTML <input>",
     recipePath: "@goraebap/design-system/recipes/input",
@@ -245,7 +245,7 @@ export function Example() {
   {
     slug: "textarea",
     name: "Textarea",
-    category: "Action & Input",
+    category: "동작과 입력",
     primitiveReact: "HTML <textarea>",
     primitiveAngular: "HTML <textarea>",
     recipePath: "@goraebap/design-system/recipes/textarea",
@@ -284,7 +284,7 @@ export function Example() {
   {
     slug: "switch",
     name: "Switch",
-    category: "Action & Input",
+    category: "동작과 입력",
     primitiveReact: "@base-ui/react/switch",
     primitiveAngular: "@spartan-ng/brain/switch",
     recipePath: "@goraebap/design-system/recipes/switch",
@@ -320,7 +320,7 @@ export function Example() {
   {
     slug: "checkbox",
     name: "Checkbox",
-    category: "Action & Input",
+    category: "동작과 입력",
     primitiveReact: "@base-ui/react/checkbox",
     primitiveAngular: "@spartan-ng/brain/checkbox",
     recipePath: "@goraebap/design-system/recipes/checkbox",
@@ -353,7 +353,7 @@ export function Example() {
   {
     slug: "badge",
     name: "Badge",
-    category: "Display & Structure",
+    category: "표시와 구조",
     primitiveReact: "HTML <span>",
     primitiveAngular: "HTML <span>",
     recipePath: "@goraebap/design-system/recipes/badge",
@@ -407,7 +407,7 @@ export function Example() {
   {
     slug: "card",
     name: "Card",
-    category: "Display & Structure",
+    category: "표시와 구조",
     primitiveReact: "HTML <div>",
     primitiveAngular: "HTML <article>",
     recipePath: "@goraebap/design-system/recipes/card",
@@ -495,7 +495,7 @@ export function Example() {
   {
     slug: "alert",
     name: "Alert",
-    category: "Display & Structure",
+    category: "표시와 구조",
     primitiveReact: "HTML <div role='alert'>",
     primitiveAngular: "HTML <div role='alert'>",
     recipePath: "@goraebap/design-system/recipes/alert",
@@ -560,7 +560,7 @@ export function Example() {
   {
     slug: "separator",
     name: "Separator",
-    category: "Display & Structure",
+    category: "표시와 구조",
     primitiveReact: "@base-ui/react/separator",
     primitiveAngular: "@spartan-ng/brain/separator",
     recipePath: "@goraebap/design-system/recipes/separator",
@@ -621,7 +621,7 @@ export function Example() {
   {
     slug: "skeleton",
     name: "Skeleton",
-    category: "Display & Structure",
+    category: "표시와 구조",
     primitiveReact: "HTML <div>",
     primitiveAngular: "HTML <div>",
     recipePath: "@goraebap/design-system/recipes/skeleton",
@@ -677,7 +677,7 @@ export function Example() {
   {
     slug: "table",
     name: "Table",
-    category: "Display & Structure",
+    category: "표시와 구조",
     primitiveReact: "HTML <table>",
     primitiveAngular: "HTML <table>",
     recipePath: "@goraebap/design-system/recipes/table",
@@ -809,7 +809,7 @@ export function Example() {
   {
     slug: "tabs",
     name: "Tabs",
-    category: "Overlay & Navigation",
+    category: "오버레이와 탐색",
     primitiveReact: "@base-ui/react/tabs",
     primitiveAngular: "@spartan-ng/brain/tabs",
     recipePath: "@goraebap/design-system/recipes/tabs",
@@ -877,7 +877,7 @@ export function Example() {
   {
     slug: "dialog",
     name: "Dialog",
-    category: "Overlay & Navigation",
+    category: "오버레이와 탐색",
     primitiveReact: "@base-ui/react/dialog",
     primitiveAngular: "@spartan-ng/brain/dialog",
     recipePath: "@goraebap/design-system/recipes/dialog",

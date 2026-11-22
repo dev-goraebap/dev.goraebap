@@ -10,18 +10,18 @@ export const Route = createFileRoute("/_library")({
 
 const GUIDE_GROUPS: DocsNavGroup[] = [
   {
-    title: "Getting Started",
+    title: "가이드",
     items: [{ label: "시작하기", href: "/getting-started" }],
   },
   {
-    title: "Foundations",
+    title: "파운데이션",
     items: [
-      { label: "Design Tokens", href: "/foundations/tokens" },
-      { label: "Style Recipes", href: "/foundations/recipes" },
+      { label: "디자인 토큰", href: "/foundations/tokens" },
+      { label: "스타일 레시피", href: "/foundations/recipes" },
     ],
   },
   {
-    title: "Adapters",
+    title: "어댑터",
     items: [{ label: "Pure HTML & Primitives", href: "/adapters/primitives" }],
   },
 ];
@@ -40,9 +40,9 @@ function LibraryLayout() {
     : COMPONENT_DOCS;
 
   const componentGroup: DocsNavGroup = {
-    title: "Components",
+    title: "컴포넌트",
     items: [
-      ...(normalized ? [] : [{ label: "Overview", href: "/components" }]),
+      ...(normalized ? [] : [{ label: "개요", href: "/components" }]),
       ...filtered.map((item) => ({ label: item.name, href: `/components/${item.slug}` })),
     ],
   };
@@ -58,7 +58,7 @@ function LibraryLayout() {
             type="search"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search components..."
+            placeholder="컴포넌트 검색"
             aria-label="컴포넌트 검색"
             className="border-border bg-card text-foreground placeholder:text-muted-foreground focus-visible:ring-ring h-9 w-full rounded-full border pr-3 pl-9 text-xs outline-none focus-visible:ring-2"
           />

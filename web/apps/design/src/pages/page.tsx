@@ -22,11 +22,11 @@ const HERO_THEMES = [
 ];
 
 const LIBRARY_SECTIONS = [
-  { title: "Design Tokens", to: "/foundations/tokens" as const },
-  { title: "Style Recipes", to: "/foundations/recipes" as const },
-  { title: "Primitives", to: "/adapters/primitives" as const },
-  { title: "UI Components", to: "/components" as const },
-  { title: "Templates", to: "/templates" as const },
+  { title: "디자인 토큰", to: "/foundations/tokens" as const },
+  { title: "스타일 레시피", to: "/foundations/recipes" as const },
+  { title: "Pure HTML & Primitives", to: "/adapters/primitives" as const },
+  { title: "컴포넌트", to: "/components" as const },
+  { title: "템플릿", to: "/templates" as const },
 ];
 
 function LandingPage() {
@@ -60,22 +60,23 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             디자인 시스템
           </h1>
           <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-7 sm:text-lg">
-            CSS 토큰과 CVA 스타일 레시피를 한곳에서 관리합니다. Pure HTML과 React(Base UI)에서 같은
-            스타일을 쓰고, Angular(Spartan Brain) 예시 코드와 모바일(390px) 패턴을 함께 제공합니다.
+            색상 토큰과 스타일 레시피를 한곳에서 정의하고, 네이티브 HTML과 React 컴포넌트에서 같은
+            시각 기준을 공유합니다. Angular 레시피 조합 예시와 모바일 반응형 패턴까지 함께
+            다룹니다.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link
               to="/getting-started"
               className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-11 items-center gap-2 rounded-full px-6 text-sm font-medium transition-colors"
             >
-              <span>Get started</span>
+              <span>시작하기</span>
               <ArrowRight className="size-4" />
             </Link>
             <Link
               to="/components"
               className="border-border bg-secondary text-secondary-foreground hover:bg-accent inline-flex h-11 items-center rounded-full border px-6 text-sm font-medium transition-colors"
             >
-              Browse components
+              컴포넌트 보기
             </Link>
           </div>
         </div>
@@ -166,7 +167,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               <div className="flex flex-wrap items-center justify-between gap-2 pb-3">
                 <span className="text-muted-foreground font-mono text-xs">
                   {heroAdapter === "html"
-                    ? "index.html (프레임워크 0)"
+                    ? "index.html (Pure HTML)"
                     : heroAdapter === "react"
                       ? "Button.tsx (@goraebap/ui)"
                       : "gb-button.directive.ts (@spartan-ng/brain)"}
@@ -188,7 +189,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
       {/* 2. Bento Feature Grid */}
       <section className="space-y-8">
         <h2 className="max-w-2xl text-2xl font-semibold tracking-tight sm:text-3xl">
-          하나의 원본. 여러 어댑터. 데스크톱과 모바일 모두.
+          하나의 스타일 기준을 여러 환경에서 공유합니다
         </h2>
 
         <div className="grid gap-4 lg:grid-cols-12">
@@ -198,11 +199,11 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
           >
             <div className="space-y-2">
               <h3 className="text-lg font-semibold tracking-tight">
-                {COMPONENT_DOCS.length}종 컴포넌트 라이브러리
+                {COMPONENT_DOCS.length}종 컴포넌트
               </h3>
               <p className="text-muted-foreground text-sm">
-                Pure HTML만으로 되는 범위와 Base UI, Spartan Brain이 필요한 범위를 프리뷰와 코드로
-                비교합니다.
+                네이티브 HTML과 레시피만으로 구현할 수 있는 요소와 헤드리스 프리미티브가 필요한
+                컴포넌트를 함께 정리합니다.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -223,10 +224,10 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               className="border-border bg-card hover:border-foreground/30 flex flex-1 flex-col justify-between gap-4 rounded-2xl border p-6 transition-colors"
             >
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold tracking-tight">App & Editorial 멀티 테마</h3>
+                <h3 className="text-lg font-semibold tracking-tight">App &amp; Editorial 테마</h3>
                 <p className="text-muted-foreground text-sm">
-                  4단계 면 위계(--sidebar → --background → --card → --popover)를 유지한 채
-                  data-ds-theme 속성으로 제품과 블로그 테마를 바꿉니다.
+                  동일한 면 위계와 컴포넌트를 유지한 채 작업 화면용 App과 긴 글용 Editorial 테마를
+                  전환합니다.
                 </p>
               </div>
               <span className="text-foreground inline-flex items-center gap-1 text-xs font-medium">
@@ -239,12 +240,10 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               className="border-border bg-card hover:border-foreground/30 flex flex-1 flex-col justify-between gap-4 rounded-2xl border p-6 transition-colors"
             >
               <div className="space-y-2">
-                <h3 className="text-lg font-semibold tracking-tight">
-                  데스크톱 ↔ 모바일(390px) 패턴
-                </h3>
+                <h3 className="text-lg font-semibold tracking-tight">반응형 레이아웃 템플릿</h3>
                 <p className="text-muted-foreground text-sm">
-                  Inset AppShell과 Dialog에서 Bottom Sheet로의 전환을 데스크톱과 390px 프레임에서
-                  비교합니다.
+                  Inset AppShell과 Responsive Dialog를 통해 데스크톱과 모바일 화면의 전환 구조를
+                  정의합니다.
                 </p>
               </div>
               <span className="text-foreground inline-flex items-center gap-1 text-xs font-medium">
@@ -285,20 +284,20 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
       <section className="border-border bg-card rounded-3xl border px-6 py-14 text-center">
         <div className="mx-auto max-w-xl space-y-5">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            직접 눌러보고 코드를 복사해 보세요
+            컴포넌트를 둘러보고 프로젝트에 적용해 보세요
           </h2>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/components"
               className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-10 items-center rounded-full px-5 text-sm font-medium transition-colors"
             >
-              Browse components
+              컴포넌트 보기
             </Link>
             <Link
               to="/getting-started"
               className="border-border bg-secondary text-secondary-foreground hover:bg-accent inline-flex h-10 items-center rounded-full border px-5 text-sm font-medium transition-colors"
             >
-              Read docs
+              문서 보기
             </Link>
           </div>
         </div>

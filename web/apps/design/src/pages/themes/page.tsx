@@ -20,15 +20,15 @@ const THEMES = [
     id: "app" as const,
     name: "App Theme",
     token: 'data-ds-theme="app"',
-    target: "apps/accounts · apps/productivity",
-    desc: "중립 무채색 캔버스와 4단계 면 위계를 쓰는 작업 화면용 테마입니다.",
+    target: "작업 화면 · 대시보드 · 설정",
+    desc: "중립 무채색과 뚜렷한 면 위계로 정보 밀도가 높은 작업 화면에 맞춘 테마입니다.",
   },
   {
     id: "editorial" as const,
     name: "Editorial Theme",
     token: 'data-ds-theme="editorial"',
-    target: "apps/blog",
-    desc: "따뜻한 배경 톤으로 긴 기술 글과 문서에 맞춘 테마입니다.",
+    target: "블로그 · 기술 문서 · 아티클",
+    desc: "따뜻한 종이 톤으로 긴 글과 문서를 편안하게 읽도록 맞춘 테마입니다.",
   },
 ];
 
@@ -38,8 +38,9 @@ function ThemesPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">Themes</h1>
         <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-          같은 컴포넌트와 레시피에 <code>data-ds-theme</code> 속성을 바꿔 제품과 블로그 테마를
-          전환합니다.
+          테마는 동일한 컴포넌트와 면 위계를 유지하면서 화면의 성격에 맞는 색상과 분위기를
+          결정합니다. 요소의 <code>data-ds-theme</code> 속성으로 작업 화면용 App과 읽기 중심의
+          Editorial 테마를 전환합니다.
         </p>
       </header>
 
@@ -62,8 +63,8 @@ function ThemesPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle>샘플 워크스페이스 카드</CardTitle>
-                <CardDescription>적용 대상: {t.target}</CardDescription>
+                <CardTitle>워크스페이스 설정</CardTitle>
+                <CardDescription>{t.target}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Input defaultValue="hello@goraebap.xyz" readOnly />
