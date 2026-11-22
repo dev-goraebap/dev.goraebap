@@ -7,6 +7,7 @@ import {
   navigationMenuTriggerVariants,
 } from "@goraebap/design-system/recipes/navigation-menu";
 import { SystemIcon } from "../icons";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const NavigationMenu = BaseNavigationMenu.Root;
@@ -66,8 +67,12 @@ export function NavigationMenuViewport({
   sideOffset?: number;
 }) {
   return (
-    <BaseNavigationMenu.Portal>
-      <BaseNavigationMenu.Positioner sideOffset={sideOffset} className="z-50">
+    <BaseNavigationMenu.Portal container={usePortalContainer()}>
+      <BaseNavigationMenu.Positioner
+        sideOffset={sideOffset}
+        collisionPadding={8}
+        className="z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width)"
+      >
         <BaseNavigationMenu.Popup
           data-slot="navigation-menu-popup"
           className={cn(navigationMenuPopupVariants(), className)}

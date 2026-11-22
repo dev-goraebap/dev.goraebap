@@ -16,7 +16,7 @@ export interface DesignConfig {
   iconSet: IconSetId;
 }
 
-export const DEFAULT_DESIGN_CONFIG: DesignConfig = {
+const DEFAULT_DESIGN_CONFIG: DesignConfig = {
   base: "app",
   accent: "default",
   radius: "0.5rem",
@@ -113,7 +113,8 @@ export function DesignConfigProvider({ children }: { children: ReactNode }) {
     }
     root.style.setProperty("--radius", config.radius);
 
-    const fontStack = FONT_OPTIONS.find((f) => f.id === config.font)?.stack ?? FONT_OPTIONS[0].stack;
+    const fontStack =
+      FONT_OPTIONS.find((f) => f.id === config.font)?.stack ?? FONT_OPTIONS[0].stack;
     root.style.setProperty("--font-sans", fontStack);
 
     const headingStack =

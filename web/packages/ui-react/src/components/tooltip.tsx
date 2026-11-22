@@ -1,6 +1,7 @@
 import { Tooltip as BaseTooltip } from "@base-ui/react/tooltip";
 import { cn } from "@goraebap/design-system/cn";
 import { tooltipPopupVariants } from "@goraebap/design-system/recipes/tooltip";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const TooltipProvider = BaseTooltip.Provider;
@@ -20,7 +21,7 @@ export function TooltipContent({
   ...props
 }: TooltipContentProps) {
   return (
-    <BaseTooltip.Portal>
+    <BaseTooltip.Portal container={usePortalContainer()}>
       <BaseTooltip.Positioner side={side} sideOffset={sideOffset} className="z-50">
         <BaseTooltip.Popup
           data-slot="tooltip-content"

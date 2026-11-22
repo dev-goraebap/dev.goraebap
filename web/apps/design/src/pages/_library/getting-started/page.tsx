@@ -39,16 +39,16 @@ function GettingStartedPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">시작하기</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          워크스페이스 앱에 @goraebap/design-system과 @goraebap/ui-react를 연결해 스타일, 테마, 컴포넌트를
-          적용합니다.
+          워크스페이스 앱에 @goraebap/design-system과 @goraebap/ui-react를 연결해 스타일, 테마,
+          컴포넌트를 적용합니다.
         </p>
       </header>
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">패키지 연결</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          @goraebap/design-system과 @goraebap/ui-react는 저장소 내부의 pnpm 워크스페이스 패키지입니다. 앱의
-          package.json에 workspace:* 의존성으로 추가합니다.
+          @goraebap/design-system과 @goraebap/ui-react는 저장소 내부의 pnpm 워크스페이스
+          패키지입니다. 앱의 package.json에 workspace:* 의존성으로 추가합니다.
         </p>
         <CopyCodeBlock
           label="package.json"
@@ -66,9 +66,9 @@ function GettingStartedPage() {
         <h2 className="text-lg font-semibold tracking-tight">스타일 연결</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
           앱의 엔트리 CSS에서 base.css와 테마 파일을 불러오고, @source로 디자인 시스템 패키지의 소스
-          경로를 지정합니다. base.css가 tailwindcss와 기본 유틸리티를 포함하므로 앱에서 tailwindcss를
-          따로 불러오지 않습니다. 두 테마 파일 모두 :root를 선언하므로 나중에 불러온 파일이 기본
-          세트가 되며, @source 경로는 CSS 파일 위치(아래 예시는
+          경로를 지정합니다. base.css가 tailwindcss와 기본 유틸리티를 포함하므로 앱에서
+          tailwindcss를 따로 불러오지 않습니다. 두 테마 파일 모두 :root를 선언하므로 나중에 불러온
+          파일이 기본 세트가 되며, @source 경로는 CSS 파일 위치(아래 예시는
           web/apps/&lt;앱&gt;/src/app/theme/tailwind.css)에 맞춰 조정합니다.
         </p>
         <CopyCodeBlock

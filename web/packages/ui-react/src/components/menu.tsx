@@ -7,6 +7,7 @@ import {
   menuSeparatorVariants,
   type MenuItemRecipeProps,
 } from "@goraebap/design-system/recipes/menu";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const Menu = BaseMenu.Root;
@@ -28,7 +29,7 @@ export function MenuContent({
   ...props
 }: MenuContentProps) {
   return (
-    <BaseMenu.Portal>
+    <BaseMenu.Portal container={usePortalContainer()}>
       <BaseMenu.Positioner side={side} align={align} sideOffset={sideOffset} className="z-50">
         <BaseMenu.Popup
           data-slot="menu-content"
@@ -64,10 +65,7 @@ export function MenuLabel({ className, ...props }: ComponentProps<typeof BaseMen
   );
 }
 
-export function MenuSeparator({
-  className,
-  ...props
-}: ComponentProps<typeof BaseMenu.Separator>) {
+export function MenuSeparator({ className, ...props }: ComponentProps<typeof BaseMenu.Separator>) {
   return (
     <BaseMenu.Separator
       data-slot="menu-separator"

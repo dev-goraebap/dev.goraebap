@@ -6,6 +6,7 @@ import {
   contextMenuSeparatorVariants,
   type ContextMenuItemRecipeProps,
 } from "@goraebap/design-system/recipes/context-menu";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const ContextMenu = BaseContextMenu.Root;
@@ -17,7 +18,7 @@ export function ContextMenuContent({
   ...props
 }: ComponentProps<typeof BaseContextMenu.Popup>) {
   return (
-    <BaseContextMenu.Portal>
+    <BaseContextMenu.Portal container={usePortalContainer()}>
       <BaseContextMenu.Positioner className="z-50">
         <BaseContextMenu.Popup
           data-slot="context-menu-content"

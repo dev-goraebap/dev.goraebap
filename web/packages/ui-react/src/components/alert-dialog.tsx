@@ -4,6 +4,7 @@ import {
   alertDialogBackdropVariants,
   alertDialogPopupVariants,
 } from "@goraebap/design-system/recipes/alert-dialog";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const AlertDialog = BaseAlertDialog.Root;
@@ -16,7 +17,7 @@ export function AlertDialogContent({
   ...props
 }: ComponentProps<typeof BaseAlertDialog.Popup>) {
   return (
-    <BaseAlertDialog.Portal>
+    <BaseAlertDialog.Portal container={usePortalContainer()}>
       <BaseAlertDialog.Backdrop className={alertDialogBackdropVariants()} />
       <BaseAlertDialog.Popup
         data-slot="alert-dialog-content"

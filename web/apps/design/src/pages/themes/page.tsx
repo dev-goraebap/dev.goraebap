@@ -267,17 +267,15 @@ function ThemesPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>프로젝트 설정</CardTitle>
-                  <CardDescription>변경한 토큰이 버튼·입력·모서리에 즉시 반영됩니다.</CardDescription>
+                  <CardDescription>
+                    변경한 토큰이 버튼·입력·모서리에 즉시 반영됩니다.
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <Input defaultValue="dev.goraebap" aria-label="프로젝트 이름" />
                   <div className="flex items-center justify-between pt-1">
                     <span className="text-xs font-medium">알림 받기</span>
-                    <Switch
-                      checked={notify}
-                      onCheckedChange={setNotify}
-                      aria-label="알림 받기"
-                    />
+                    <Switch checked={notify} onCheckedChange={setNotify} aria-label="알림 받기" />
                   </div>
                   <div className="flex items-center gap-2">
                     <Checkbox

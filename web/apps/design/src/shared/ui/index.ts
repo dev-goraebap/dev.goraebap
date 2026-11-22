@@ -5,3 +5,4 @@ export { CopyCodeBlock } from "./CopyCodeBlock";
 export { DocsShell, type DocsNavGroup } from "./DocsShell";
 export { MobileDeviceFrame } from "./MobileDeviceFrame";
 export { ModeToggle } from "./ModeToggle";
+export { ThemedPortalScope } from "./ThemedPortalScope";

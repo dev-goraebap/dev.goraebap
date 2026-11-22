@@ -1,9 +1,6 @@
 import { useRef, useState } from "react";
 import { alertDialogPopupVariants } from "@goraebap/design-system/recipes/alert-dialog";
 import { buttonVariants } from "@goraebap/design-system/recipes/button";
-import { menuItemVariants, menuPopupVariants, menuSeparatorVariants } from "@goraebap/design-system/recipes/menu";
-import { popoverPopupVariants } from "@goraebap/design-system/recipes/popover";
-import { selectTriggerVariants } from "@goraebap/design-system/recipes/select";
 import { toggleVariants } from "@goraebap/design-system/recipes/toggle";
 import { toggleGroupVariants } from "@goraebap/design-system/recipes/toggle-group";
 import { tooltipPopupVariants } from "@goraebap/design-system/recipes/tooltip";
@@ -17,7 +14,13 @@ import {
   AlertDialogTrigger,
 } from "@goraebap/ui-react/components/alert-dialog";
 import { Button } from "@goraebap/ui-react/components/button";
-import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@goraebap/ui-react/components/menu";
+import {
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuSeparator,
+  MenuTrigger,
+} from "@goraebap/ui-react/components/menu";
 import {
   Popover,
   PopoverContent,
@@ -25,10 +28,21 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@goraebap/ui-react/components/popover";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@goraebap/ui-react/components/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@goraebap/ui-react/components/select";
 import { Toggle } from "@goraebap/ui-react/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@goraebap/ui-react/components/toggle-group";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@goraebap/ui-react/components/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@goraebap/ui-react/components/tooltip";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 
 /* ── Toggle ───────────────────────────────────────────────────── */
@@ -126,7 +140,7 @@ export function NativeTooltipDemo() {
         </button>
         <span
           role="tooltip"
-          className={`pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 ${tooltipPopupVariants()}`}
+          className={`pointer-events-none invisible absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 ${tooltipPopupVariants()}`}
         >
           단축키: Ctrl + K
         </span>
@@ -152,29 +166,6 @@ export function ReactTooltipDemo() {
 
 /* ── Popover ──────────────────────────────────────────────────── */
 
-export function NativePopoverDemo() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="relative flex items-center justify-center py-6">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className={buttonVariants({ variant: "outline", size: "sm" })}
-      >
-        필터 옵션
-      </button>
-      {open && (
-        <div className={`absolute top-full mt-2 ${popoverPopupVariants()}`}>
-          <h4 className="text-sm font-semibold tracking-tight">표시 범위</h4>
-          <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-            트리거 근처에 짧은 보조 정보나 필터 옵션을 띄웁니다.
-          </p>
-        </div>
-      )}
-    </div>
-  );
-}
-
 export function ReactPopoverDemo() {
   return (
     <div className="flex items-center justify-center py-6">
@@ -199,26 +190,6 @@ const SELECT_ITEMS = [
   { value: "system", label: "시스템 기본값" },
 ];
 
-export function NativeSelectDemo() {
-  const [value, setValue] = useState("app");
-  return (
-    <div className="mx-auto max-w-xs py-4">
-      <select
-        aria-label="테마 선택"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        className={selectTriggerVariants()}
-      >
-        {SELECT_ITEMS.map((item) => (
-          <option key={item.value} value={item.value}>
-            {item.label}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
 export function ReactSelectDemo() {
   const [value, setValue] = useState<string | null>("app");
   const currentLabel = SELECT_ITEMS.find((i) => i.value === value)?.label ?? "선택하세요";
@@ -241,50 +212,6 @@ export function ReactSelectDemo() {
 }
 
 /* ── Menu ─────────────────────────────────────────────────────── */
-
-export function NativeMenuDemo() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="relative flex items-center justify-center py-6">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className={buttonVariants({ variant: "outline", size: "sm" })}
-      >
-        작업 메뉴
-      </button>
-      {open && (
-        <div role="menu" className={`absolute top-full mt-2 ${menuPopupVariants()}`}>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => setOpen(false)}
-            className={menuItemVariants()}
-          >
-            복제
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => setOpen(false)}
-            className={menuItemVariants()}
-          >
-            이름 바꾸기
-          </button>
-          <div className={menuSeparatorVariants()} />
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => setOpen(false)}
-            className={menuItemVariants({ variant: "destructive" })}
-          >
-            삭제
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
 
 export function ReactMenuDemo() {
   return (

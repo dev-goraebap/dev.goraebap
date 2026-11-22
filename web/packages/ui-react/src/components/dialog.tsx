@@ -8,6 +8,7 @@ import {
   type DialogPopupRecipeProps,
 } from "@goraebap/design-system/recipes/dialog";
 import { SystemIcon } from "../icons";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const Dialog = BaseDialog.Root;
@@ -27,16 +28,14 @@ export function DialogContent({
   ...props
 }: DialogContentProps) {
   return (
-    <BaseDialog.Portal>
+    <BaseDialog.Portal container={usePortalContainer()}>
       <BaseDialog.Backdrop className={dialogBackdropVariants()} />
       <BaseDialog.Popup
         data-slot="dialog-content"
         className={cn(dialogPopupVariants({ surface, className }))}
         {...props}
       >
-        {surface === "sheet" && (
-          <div aria-hidden="true" className={dialogSheetHandleVariants()} />
-        )}
+        {surface === "sheet" && <div aria-hidden="true" className={dialogSheetHandleVariants()} />}
         {children}
         {showCloseButton && (
           <BaseDialog.Close aria-label="닫기" className={dialogCloseButtonVariants()}>
@@ -66,7 +65,7 @@ export function DialogTitle({ className, ...props }: ComponentProps<typeof BaseD
   return (
     <BaseDialog.Title
       data-slot="dialog-title"
-      className={cn("text-base font-semibold tracking-tight pr-7", className)}
+      className={cn("pr-7 text-base font-semibold tracking-tight", className)}
       {...props}
     />
   );

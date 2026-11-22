@@ -60,3 +60,15 @@ dialog.goraebap-native-dialog[open] {
     opacity: 0;
   }
 }
+
+.goraebap-native-popup:popover-open {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  .goraebap-native-popup:popover-open {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}

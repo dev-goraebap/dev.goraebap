@@ -1,6 +1,7 @@
 import { PreviewCard as BasePreviewCard } from "@base-ui/react/preview-card";
 import { cn } from "@goraebap/design-system/cn";
 import { previewCardPopupVariants } from "@goraebap/design-system/recipes/preview-card";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const PreviewCard = BasePreviewCard.Root;
@@ -13,7 +14,7 @@ export function PreviewCardContent({
   ...props
 }: ComponentProps<typeof BasePreviewCard.Popup> & { sideOffset?: number }) {
   return (
-    <BasePreviewCard.Portal>
+    <BasePreviewCard.Portal container={usePortalContainer()}>
       <BasePreviewCard.Positioner sideOffset={sideOffset} className="z-50">
         <BasePreviewCard.Popup
           data-slot="preview-card-content"

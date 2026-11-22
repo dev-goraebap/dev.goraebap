@@ -7,6 +7,7 @@ import {
   type SelectTriggerRecipeProps,
 } from "@goraebap/design-system/recipes/select";
 import { SystemIcon } from "../icons";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const Select = BaseSelect.Root;
@@ -42,7 +43,7 @@ export function SelectContent({
   ...props
 }: SelectContentProps) {
   return (
-    <BaseSelect.Portal>
+    <BaseSelect.Portal container={usePortalContainer()}>
       <BaseSelect.Positioner sideOffset={sideOffset} className="z-50">
         <BaseSelect.Popup
           data-slot="select-content"

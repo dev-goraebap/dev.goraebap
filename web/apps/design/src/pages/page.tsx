@@ -62,11 +62,15 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
           </h1>
           <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-7 sm:text-lg">
             색상 토큰과 스타일 레시피를 한곳에서 정의하고, 네이티브 HTML과 React 컴포넌트에서 같은
-            시각 기준을 공유합니다. Angular 레시피 조합 예시와 모바일 반응형 패턴까지 함께
-            다룹니다.
+            시각 기준을 공유합니다. Angular 레시피 조합 예시와 모바일 반응형 패턴까지 함께 다룹니다.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Button size="lg" shape="pill" render={<Link to="/getting-started" />}>
+            <Button
+              size="lg"
+              shape="pill"
+              nativeButton={false}
+              render={<Link to="/getting-started" />}
+            >
               <span>시작하기</span>
               <ArrowRight className="size-4" />
             </Button>
@@ -74,6 +78,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               size="lg"
               variant="secondary"
               shape="pill"
+              nativeButton={false}
               render={<Link to="/components" />}
             >
               컴포넌트 보기
@@ -287,13 +292,14 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             컴포넌트를 둘러보고 프로젝트에 적용해 보세요
           </h2>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button size="lg" shape="pill" render={<Link to="/components" />}>
+            <Button size="lg" shape="pill" nativeButton={false} render={<Link to="/components" />}>
               컴포넌트 보기
             </Button>
             <Button
               size="lg"
               variant="secondary"
               shape="pill"
+              nativeButton={false}
               render={<Link to="/getting-started" />}
             >
               문서 보기

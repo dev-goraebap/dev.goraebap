@@ -16,11 +16,7 @@ import {
   progressIndicatorVariants,
   progressTrackVariants,
 } from "@goraebap/design-system/recipes/progress";
-import {
-  radioGroupVariants,
-  radioItemVariants,
-} from "@goraebap/design-system/recipes/radio-group";
-import { toastCloseVariants, toastRootVariants } from "@goraebap/design-system/recipes/toast";
+import { radioGroupVariants, radioItemVariants } from "@goraebap/design-system/recipes/radio-group";
 import {
   Accordion,
   AccordionContent,
@@ -118,7 +114,12 @@ export function NativeAccordionDemo() {
   return (
     <div className="border-border bg-card mx-auto max-w-md rounded-xl border px-4">
       {FAQ_ITEMS.map((item, idx) => (
-        <details key={item.id} open={idx === 0} className={`group ${accordionItemVariants()}`}>
+        <details
+          key={item.id}
+          name="native-accordion"
+          open={idx === 0}
+          className={`group ${accordionItemVariants()}`}
+        >
           <summary className={`list-none ${accordionTriggerVariants()}`}>
             <span>{item.title}</span>
             <SystemIcon name="chevronDown" className="size-4 group-open:rotate-180" />
@@ -246,27 +247,6 @@ export function ReactProgressDemo() {
 
 /* ── Slider ───────────────────────────────────────────────────── */
 
-export function NativeSliderDemo() {
-  const [val, setVal] = useState(60);
-  return (
-    <div className="mx-auto max-w-sm space-y-2 py-4">
-      <div className="flex justify-between text-xs">
-        <span className="font-medium">불투명도</span>
-        <span className="text-muted-foreground font-mono">{val}%</span>
-      </div>
-      <input
-        type="range"
-        min={0}
-        max={100}
-        value={val}
-        onChange={(e) => setVal(Number(e.target.value))}
-        aria-label="불투명도"
-        className="accent-primary w-full cursor-pointer"
-      />
-    </div>
-  );
-}
-
 export function ReactSliderDemo() {
   const [val, setVal] = useState(60);
   return (
@@ -352,37 +332,6 @@ export function ReactDrawerDemo({ isMobile }: { isMobile: boolean }) {
 }
 
 /* ── Toast ────────────────────────────────────────────────────── */
-
-export function NativeToastDemo() {
-  const [visible, setVisible] = useState(false);
-  return (
-    <div className="flex flex-col items-center gap-3 py-4">
-      <button
-        type="button"
-        className={buttonVariants({ variant: "outline", size: "sm" })}
-        onClick={() => setVisible(true)}
-      >
-        알림 띄우기
-      </button>
-      {visible && (
-        <div role="status" className={`max-w-xs ${toastRootVariants()}`}>
-          <div className="space-y-0.5">
-            <p className="text-sm font-medium">설정이 저장되었습니다</p>
-            <p className="text-muted-foreground text-xs">변경 사항이 즉시 반영됩니다.</p>
-          </div>
-          <button
-            type="button"
-            aria-label="닫기"
-            className={toastCloseVariants()}
-            onClick={() => setVisible(false)}
-          >
-            <SystemIcon name="close" className="size-3.5" />
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
 
 function ReactToastTrigger() {
   const toastManager = useToastManager();

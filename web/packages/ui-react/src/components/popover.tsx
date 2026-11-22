@@ -1,6 +1,7 @@
 import { Popover as BasePopover } from "@base-ui/react/popover";
 import { cn } from "@goraebap/design-system/cn";
 import { popoverPopupVariants } from "@goraebap/design-system/recipes/popover";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const Popover = BasePopover.Root;
@@ -22,7 +23,7 @@ export function PopoverContent({
   ...props
 }: PopoverContentProps) {
   return (
-    <BasePopover.Portal>
+    <BasePopover.Portal container={usePortalContainer()}>
       <BasePopover.Positioner side={side} align={align} sideOffset={sideOffset} className="z-50">
         <BasePopover.Popup
           data-slot="popover-content"

@@ -34,13 +34,9 @@ export function TableRow({ className, ...props }: ComponentProps<"tr">) {
 }
 
 export function TableHead({ className, ...props }: ComponentProps<"th">) {
-  return (
-    <th data-slot="table-head" className={cn(tableHeadVariants(), className)} {...props} />
-  );
+  return <th data-slot="table-head" className={cn(tableHeadVariants(), className)} {...props} />;
 }
 
 export function TableCell({ className, ...props }: ComponentProps<"td">) {
-  return (
-    <td data-slot="table-cell" className={cn(tableCellVariants(), className)} {...props} />
-  );
+  return <td data-slot="table-cell" className={cn(tableCellVariants(), className)} {...props} />;
 }

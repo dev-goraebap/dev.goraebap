@@ -7,6 +7,7 @@ import {
   type ToastRootRecipeProps,
 } from "@goraebap/design-system/recipes/toast";
 import { SystemIcon } from "../icons";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ReactNode } from "react";
 
 export const useToastManager = BaseToast.useToastManager;
@@ -15,7 +16,7 @@ export const createToastManager = BaseToast.createToastManager;
 function ToastList() {
   const { toasts } = BaseToast.useToastManager();
   return (
-    <BaseToast.Portal>
+    <BaseToast.Portal container={usePortalContainer()}>
       <BaseToast.Viewport className={toastViewportVariants()}>
         {toasts.map((toast) => {
           const variant = (toast.type as ToastRootRecipeProps["variant"]) ?? "default";

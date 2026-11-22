@@ -5,14 +5,14 @@ export const dialogBackdropVariants = cva(
 );
 
 export const dialogPopupVariants = cva(
-  "fixed z-50 w-full border border-border bg-popover text-popover-foreground shadow-xl outline-none transition-all duration-200 ease-out",
+  "fixed z-50 border border-border bg-popover text-popover-foreground shadow-xl outline-none transition-all duration-200 ease-out",
   {
     variants: {
       surface: {
         dialog:
-          "left-1/2 top-1/2 max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0",
+          "left-1/2 top-1/2 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 -translate-y-1/2 rounded-xl p-6 data-[starting-style]:scale-95 data-[starting-style]:opacity-0 data-[ending-style]:scale-95 data-[ending-style]:opacity-0",
         sheet:
-          "inset-x-0 bottom-0 rounded-t-2xl p-6 pt-3 pb-8 data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0",
+          "inset-x-0 bottom-0 w-full rounded-t-2xl p-6 pt-3 pb-8 data-[starting-style]:translate-y-full data-[starting-style]:opacity-0 data-[ending-style]:translate-y-full data-[ending-style]:opacity-0",
       },
     },
     defaultVariants: {

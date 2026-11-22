@@ -1,21 +1,5 @@
-import { useState } from "react";
-import { autocompleteInputVariants } from "@goraebap/design-system/recipes/autocomplete";
-import { comboboxInputVariants } from "@goraebap/design-system/recipes/combobox";
-import {
-  contextMenuItemVariants,
-  contextMenuPopupVariants,
-  contextMenuSeparatorVariants,
-} from "@goraebap/design-system/recipes/context-menu";
-import { menubarTriggerVariants, menubarVariants } from "@goraebap/design-system/recipes/menubar";
-import {
-  navigationMenuListVariants,
-  navigationMenuTriggerVariants,
-} from "@goraebap/design-system/recipes/navigation-menu";
-import {
-  otpFieldInputVariants,
-  otpFieldRootVariants,
-  otpFieldSeparatorVariants,
-} from "@goraebap/design-system/recipes/otp-field";
+import { menubarTriggerVariants } from "@goraebap/design-system/recipes/menubar";
+import { navigationMenuTriggerVariants } from "@goraebap/design-system/recipes/navigation-menu";
 import { previewCardPopupVariants } from "@goraebap/design-system/recipes/preview-card";
 import {
   scrollAreaRootVariants,
@@ -71,24 +55,6 @@ const FRAMEWORK_ITEMS = ["React", "Angular", "Pure HTML", "Tailwind CSS", "Base 
 
 /* ── Combobox ─────────────────────────────────────────────────── */
 
-export function NativeComboboxDemo() {
-  return (
-    <div className="mx-auto max-w-xs py-4">
-      <input
-        list="native-combobox-list"
-        placeholder="프레임워크 검색..."
-        aria-label="프레임워크 선택"
-        className={comboboxInputVariants()}
-      />
-      <datalist id="native-combobox-list">
-        {FRAMEWORK_ITEMS.map((item) => (
-          <option key={item} value={item} />
-        ))}
-      </datalist>
-    </div>
-  );
-}
-
 export function ReactComboboxDemo() {
   return (
     <div className="mx-auto max-w-xs py-4">
@@ -112,24 +78,6 @@ export function ReactComboboxDemo() {
 }
 
 /* ── Autocomplete ─────────────────────────────────────────────── */
-
-export function NativeAutocompleteDemo() {
-  return (
-    <div className="mx-auto max-w-xs py-4">
-      <input
-        list="native-autocomplete-list"
-        placeholder="컴포넌트 검색..."
-        aria-label="자동완성 입력"
-        className={autocompleteInputVariants()}
-      />
-      <datalist id="native-autocomplete-list">
-        {FRAMEWORK_ITEMS.map((item) => (
-          <option key={item} value={item} />
-        ))}
-      </datalist>
-    </div>
-  );
-}
 
 export function ReactAutocompleteDemo() {
   return (
@@ -155,36 +103,6 @@ export function ReactAutocompleteDemo() {
 
 /* ── OTP Field ────────────────────────────────────────────────── */
 
-export function NativeOTPFieldDemo() {
-  return (
-    <div className="flex items-center justify-center py-4">
-      <div className={otpFieldRootVariants()}>
-        {[0, 1, 2].map((i) => (
-          <input
-            key={i}
-            type="text"
-            inputMode="numeric"
-            maxLength={1}
-            aria-label={`인증번호 ${i + 1}번째 자리`}
-            className={otpFieldInputVariants()}
-          />
-        ))}
-        <span className={otpFieldSeparatorVariants()}>-</span>
-        {[3, 4, 5].map((i) => (
-          <input
-            key={i}
-            type="text"
-            inputMode="numeric"
-            maxLength={1}
-            aria-label={`인증번호 ${i + 1}번째 자리`}
-            className={otpFieldInputVariants()}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function ReactOTPFieldDemo() {
   return (
     <div className="flex items-center justify-center py-4">
@@ -202,52 +120,6 @@ export function ReactOTPFieldDemo() {
 }
 
 /* ── Context Menu ─────────────────────────────────────────────── */
-
-export function NativeContextMenuDemo() {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="relative flex items-center justify-center py-4">
-      <div
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setOpen(true);
-        }}
-        className="border-border bg-card text-muted-foreground flex h-24 w-64 items-center justify-center rounded-xl border border-dashed text-xs"
-      >
-        이 영역에서 우클릭하세요
-      </div>
-      {open && (
-        <div role="menu" className={`absolute top-full mt-2 ${contextMenuPopupVariants()}`}>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => setOpen(false)}
-            className={contextMenuItemVariants()}
-          >
-            복사
-          </button>
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => setOpen(false)}
-            className={contextMenuItemVariants()}
-          >
-            이름 바꾸기
-          </button>
-          <div className={contextMenuSeparatorVariants()} />
-          <button
-            type="button"
-            role="menuitem"
-            onClick={() => setOpen(false)}
-            className={contextMenuItemVariants({ variant: "destructive" })}
-          >
-            삭제
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
 
 export function ReactContextMenuDemo() {
   return (
@@ -281,7 +153,7 @@ export function NativePreviewCardDemo() {
           @goraebap/design-system
         </a>
         <div
-          className={`pointer-events-none absolute top-full left-1/2 mt-2 -translate-x-1/2 opacity-0 group-hover:opacity-100 ${previewCardPopupVariants()}`}
+          className={`pointer-events-none invisible absolute top-full left-1/2 mt-2 -translate-x-1/2 opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 ${previewCardPopupVariants()}`}
         >
           <p className="text-sm font-semibold">@goraebap/design-system</p>
           <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
@@ -317,24 +189,6 @@ export function ReactPreviewCardDemo() {
 
 /* ── Menubar ──────────────────────────────────────────────────── */
 
-export function NativeMenubarDemo() {
-  return (
-    <div className="flex items-center justify-center py-4">
-      <div role="menubar" className={menubarVariants()}>
-        <button type="button" role="menuitem" className={menubarTriggerVariants()}>
-          파일
-        </button>
-        <button type="button" role="menuitem" className={menubarTriggerVariants()}>
-          편집
-        </button>
-        <button type="button" role="menuitem" className={menubarTriggerVariants()}>
-          보기
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export function ReactMenubarDemo() {
   return (
     <div className="flex items-center justify-center py-4">
@@ -367,24 +221,6 @@ export function ReactMenubarDemo() {
 
 /* ── Navigation Menu ──────────────────────────────────────────── */
 
-export function NativeNavigationMenuDemo() {
-  return (
-    <div className="flex items-center justify-center py-4">
-      <nav aria-label="예제 메뉴" className={navigationMenuListVariants()}>
-        <a href="#nav-demo" onClick={(e) => e.preventDefault()} className={navigationMenuTriggerVariants()}>
-          파운데이션
-        </a>
-        <a href="#nav-demo" onClick={(e) => e.preventDefault()} className={navigationMenuTriggerVariants()}>
-          컴포넌트
-        </a>
-        <a href="#nav-demo" onClick={(e) => e.preventDefault()} className={navigationMenuTriggerVariants()}>
-          테마
-        </a>
-      </nav>
-    </div>
-  );
-}
-
 export function ReactNavigationMenuDemo() {
   return (
     <div className="flex items-center justify-center py-4">
@@ -412,6 +248,15 @@ export function ReactNavigationMenuDemo() {
               컴포넌트
             </NavigationMenuLink>
           </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              href="#nav-themes"
+              onClick={(e) => e.preventDefault()}
+              className={navigationMenuTriggerVariants()}
+            >
+              테마
+            </NavigationMenuLink>
+          </NavigationMenuItem>
         </NavigationMenuList>
         <NavigationMenuViewport />
       </NavigationMenu>
@@ -426,7 +271,9 @@ const SCROLL_ITEMS = Array.from({ length: 12 }, (_, i) => `토큰 프리셋 항�
 export function NativeScrollAreaDemo() {
   return (
     <div className={`mx-auto h-40 max-w-xs ${scrollAreaRootVariants()}`}>
-      <div className={`p-3 ${scrollAreaViewportVariants()}`}>
+      <div
+        className={`[scrollbar-width:thin] [scrollbar-color:var(--border)_transparent] p-3 ${scrollAreaViewportVariants()}`}
+      >
         <div className="divide-border divide-y text-xs">
           {SCROLL_ITEMS.map((item) => (
             <div key={item} className="py-2">

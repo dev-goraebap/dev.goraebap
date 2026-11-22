@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import { X } from "lucide-react";
+import { useRef, useState, type KeyboardEvent } from "react";
 import { buttonVariants } from "@goraebap/design-system/recipes/button";
 import { checkboxVariants } from "@goraebap/design-system/recipes/checkbox";
 import {
@@ -22,6 +21,7 @@ import {
 } from "@goraebap/ui-react/components/dialog";
 import { Input } from "@goraebap/ui-react/components/input";
 import { Switch } from "@goraebap/ui-react/components/switch";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 
 /* ── React (Base UI) Interactive Demos ─────────────────────────── */
 
@@ -154,7 +154,7 @@ export function NativeDialogDemo({ isMobile }: { isMobile: boolean }) {
           className={dialogCloseButtonVariants()}
           onClick={() => dialogRef.current?.close()}
         >
-          <X className="size-4" />
+          <SystemIcon name="close" className="size-4" />
         </button>
       </dialog>
     </div>
@@ -205,6 +205,22 @@ export function NativeCheckboxDemo() {
   );
 }
 
+function handleTabKeys(event: KeyboardEvent<HTMLButtonElement>) {
+  const tabs = [
+    ...(event.currentTarget.parentElement?.querySelectorAll<HTMLElement>('[role="tab"]') ?? []),
+  ];
+  const index = tabs.indexOf(event.currentTarget);
+  const nextIndex = {
+    ArrowRight: (index + 1) % tabs.length,
+    ArrowLeft: (index - 1 + tabs.length) % tabs.length,
+    Home: 0,
+    End: tabs.length - 1,
+  }[event.key];
+  if (nextIndex === undefined) return;
+  event.preventDefault();
+  tabs[nextIndex].focus();
+}
+
 export function NativeTabsDemo() {
   const [tab, setTab] = useState<"react" | "angular" | "tokens">("react");
   return (
@@ -222,8 +238,10 @@ export function NativeTabsDemo() {
             type="button"
             role="tab"
             aria-selected={tab === item.id}
-            data-selected={tab === item.id ? "" : undefined}
+            tabIndex={tab === item.id ? 0 : -1}
+            data-active={tab === item.id ? "" : undefined}
             onClick={() => setTab(item.id)}
+            onKeyDown={handleTabKeys}
             className={tabsTriggerVariants()}
           >
             {item.label}

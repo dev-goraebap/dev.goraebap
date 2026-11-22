@@ -13,8 +13,7 @@ export const drawerPopupVariants = cva(
           "inset-x-0 bottom-0 w-full rounded-t-2xl border-t pt-3 pb-8 data-[starting-style]:translate-y-full data-[ending-style]:translate-y-full",
         right:
           "inset-y-0 right-0 h-full w-full max-w-sm border-l data-[starting-style]:translate-x-full data-[ending-style]:translate-x-full",
-        left:
-          "inset-y-0 left-0 h-full w-full max-w-sm border-r data-[starting-style]:-translate-x-full data-[ending-style]:-translate-x-full",
+        left: "inset-y-0 left-0 h-full w-full max-w-sm border-r data-[starting-style]:-translate-x-full data-[ending-style]:-translate-x-full",
       },
     },
     defaultVariants: {

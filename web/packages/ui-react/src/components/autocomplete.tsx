@@ -5,6 +5,7 @@ import {
   autocompleteItemVariants,
   autocompletePopupVariants,
 } from "@goraebap/design-system/recipes/autocomplete";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const Autocomplete = BaseAutocomplete.Root;
@@ -31,7 +32,7 @@ export function AutocompleteContent({
   ...props
 }: ComponentProps<typeof BaseAutocomplete.Popup> & { sideOffset?: number }) {
   return (
-    <BaseAutocomplete.Portal>
+    <BaseAutocomplete.Portal container={usePortalContainer()}>
       <BaseAutocomplete.Positioner sideOffset={sideOffset} className="z-50">
         <BaseAutocomplete.Popup
           data-slot="autocomplete-content"

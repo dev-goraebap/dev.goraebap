@@ -10,6 +10,7 @@ import {
   type DrawerPopupRecipeProps,
 } from "@goraebap/design-system/recipes/drawer";
 import { SystemIcon } from "../icons";
+import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
 
 export const Drawer = BaseDrawer.Root;
@@ -29,7 +30,7 @@ export function DrawerContent({
   ...props
 }: DrawerContentProps) {
   return (
-    <BaseDrawer.Portal>
+    <BaseDrawer.Portal container={usePortalContainer()}>
       <BaseDrawer.Backdrop className={drawerBackdropVariants()} />
       <BaseDrawer.Popup
         data-slot="drawer-content"

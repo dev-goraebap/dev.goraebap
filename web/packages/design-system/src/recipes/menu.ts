@@ -9,8 +9,10 @@ export const menuItemVariants = cva(
   {
     variants: {
       variant: {
-        default: "text-popover-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground",
-        destructive: "text-destructive data-[highlighted]:bg-destructive/10 data-[highlighted]:text-destructive",
+        default:
+          "text-popover-foreground hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground",
+        destructive:
+          "text-destructive hover:bg-destructive/10 focus-visible:bg-destructive/10 data-[highlighted]:bg-destructive/10 data-[highlighted]:text-destructive",
       },
     },
     defaultVariants: {

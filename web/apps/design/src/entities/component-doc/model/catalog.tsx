@@ -39,9 +39,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/com
 import { Textarea } from "@goraebap/ui-react/components/textarea";
 import {
   NativeAlertDialogDemo,
-  NativeMenuDemo,
-  NativePopoverDemo,
-  NativeSelectDemo,
   NativeToggleDemo,
   NativeToggleGroupDemo,
   NativeTooltipDemo,
@@ -60,8 +57,6 @@ import {
   NativeDrawerDemo,
   NativeProgressDemo,
   NativeRadioGroupDemo,
-  NativeSliderDemo,
-  NativeToastDemo,
   ReactAccordionDemo,
   ReactAvatarDemo,
   ReactCollapsibleDemo,
@@ -72,12 +67,6 @@ import {
   ReactToastDemo,
 } from "../ui/Batch2Demos";
 import {
-  NativeAutocompleteDemo,
-  NativeComboboxDemo,
-  NativeContextMenuDemo,
-  NativeMenubarDemo,
-  NativeNavigationMenuDemo,
-  NativeOTPFieldDemo,
   NativePreviewCardDemo,
   NativeScrollAreaDemo,
   ReactAutocompleteDemo,
@@ -90,6 +79,19 @@ import {
   ReactScrollAreaDemo,
 } from "../ui/Batch3Demos";
 import {
+  NativeAutocompleteDemo,
+  NativeComboboxDemo,
+  NativeContextMenuDemo,
+  NativeMenuDemo,
+  NativeMenubarDemo,
+  NativeNavigationMenuDemo,
+  NativeOTPFieldDemo,
+  NativePopoverDemo,
+  NativeSelectDemo,
+  NativeSliderDemo,
+  NativeToastDemo,
+} from "../ui/NativeInteractiveDemos";
+import {
   NativeCheckboxDemo,
   NativeDialogDemo,
   NativeSwitchDemo,
@@ -101,7 +103,7 @@ import {
 
 export type ComponentCategory = "동작과 입력" | "표시와 구조" | "오버레이와 탐색";
 
-export interface ComponentExample {
+interface ComponentExample {
   id: string;
   title: string;
   description?: string;
@@ -257,7 +259,8 @@ export class GbButtonDirective {
       {
         id: "pill",
         title: "Shape (Pill)",
-        description: "랜딩 CTA, 헤더 액션, 필터 버튼처럼 둥근 형태가 필요할 때 shape='pill'을 씁니다.",
+        description:
+          "랜딩 CTA, 헤더 액션, 필터 버튼처럼 둥근 형태가 필요할 때 shape='pill'을 씁니다.",
         htmlCode: `<button class="\${buttonVariants({ shape: 'pill' })}">시작하기</button>
 <button class="\${buttonVariants({ variant: 'secondary', shape: 'pill' })}">컴포넌트 보기</button>
 <button class="\${buttonVariants({ variant: 'outline', shape: 'pill' })}">문서 보기</button>`,
@@ -1021,7 +1024,7 @@ export function Example() {
       "Pure HTML <button role='tab'>로 외형은 구성할 수 있습니다. 좌우 화살표 키보드 이동(Roving Focus)과 aria-controls 연결은 Base UI나 Spartan Brain에서 처리합니다.",
     mobileGuideline: "탭 개수는 모바일 폭(390px)에서 잘리지 않게 2~4개 이내로 유지합니다.",
     htmlCode: `<div role="tablist" class="\${tabsListVariants()}">
-  <button role="tab" aria-selected="true" data-selected class="\${tabsTriggerVariants()}">Tokens</button>
+  <button role="tab" aria-selected="true" data-active class="\${tabsTriggerVariants()}">Tokens</button>
   <button role="tab" aria-selected="false" class="\${tabsTriggerVariants()}">Recipes</button>
 </div>`,
     reactCode: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
@@ -1217,7 +1220,7 @@ export function Example() {
     pureHtmlNote:
       "네이티브 <select>는 드롭다운 메뉴 스타일을 자유롭게 꾸미기 어렵습니다. 커스텀 팝업, 체크 표시, 키보드 탐색은 Base UI나 Spartan Brain을 씁니다.",
     mobileGuideline: "선택지가 10개 이하일 때 Select를 쓰고, 검색이 필요하면 Combobox를 씁니다.",
-    htmlCode: `<select class="\${selectTriggerVariants()}">
+    htmlCode: `<select class="\${selectTriggerVariants()} appearance-none pr-8">
   <option value="app">App Theme</option>
   <option value="editorial">Editorial Theme</option>
 </select>`,
@@ -1301,7 +1304,8 @@ export function Example() {
     pureHtmlNote:
       "HTML popover 속성으로 기본 토글은 가능하지만, 앵커 위치 계산·화면 경계 회피·포커스 복원은 Base UI나 Spartan Brain이 처리합니다.",
     mobileGuideline: "내용이 길어지면 Popover 대신 바텀시트 Dialog로 전환합니다.",
-    htmlCode: `<div class="\${popoverPopupVariants()}">
+    htmlCode: `<button popovertarget="filter" class="\${buttonVariants({ variant: 'outline', size: 'sm' })}">필터 옵션</button>
+<div id="filter" popover="auto" class="m-0 \${popoverPopupVariants()}">
   <h4 class="text-sm font-semibold">표시 범위</h4>
 </div>`,
     reactCode: `import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@goraebap/ui-react/components/popover";
@@ -1343,7 +1347,8 @@ export function Example() {
     pureHtmlNote:
       "화살표 키 탐색, 타이핑 검색, 바깥 클릭 닫기, 포커스 복원은 Base UI나 Spartan Brain을 통해 처리합니다.",
     mobileGuideline: "파괴적 동작(삭제 등)은 구분선 아래 마지막 항목에 둡니다.",
-    htmlCode: `<div role="menu" class="\${menuPopupVariants()}">
+    htmlCode: `<button popovertarget="actions" aria-haspopup="menu" class="\${buttonVariants({ variant: 'outline', size: 'sm' })}">작업 메뉴</button>
+<div id="actions" popover="auto" role="menu" class="m-0 \${menuPopupVariants()}">
   <button role="menuitem" class="\${menuItemVariants()}">복제</button>
   <button role="menuitem" class="\${menuItemVariants({ variant: 'destructive' })}">삭제</button>
 </div>`,
@@ -1487,7 +1492,7 @@ export function Example() {
     pureHtmlNote:
       "네이티브 <input type='range'>는 브라우저마다 트랙·손잡이 스타일이 다릅니다. 일관된 커스텀 트랙과 범위 선택은 Base UI나 Spartan Brain을 씁니다.",
     mobileGuideline: "손잡이 터치 영역을 넉넉히 확보하고 현재 값을 숫자로 함께 표시합니다.",
-    htmlCode: `<input type="range" min="0" max="100" value="60" />`,
+    htmlCode: `<input type="range" min="0" max="100" value="60" style="--slider-value: 60%" class="\${sliderNativeVariants()}" />`,
     reactCode: `import { Slider } from "@goraebap/ui-react/components/slider";
 
 export function Example() {
@@ -1716,7 +1721,8 @@ export function Example() {
     summary: "저장 완료나 복사 같은 짧은 처리 결과를 화면 모서리에 잠시 알립니다.",
     pureHtmlNote:
       "여러 알림의 큐 관리, 자동 닫힘 타이머, 호버 시 일시 정지는 Base UI Toast나 Sonner에서 처리합니다.",
-    mobileGuideline: "오류 복구처럼 사용자가 꼭 읽어야 하는 메시지는 Toast 대신 인라인 Alert로 씁니다.",
+    mobileGuideline:
+      "오류 복구처럼 사용자가 꼭 읽어야 하는 메시지는 Toast 대신 인라인 Alert로 씁니다.",
     htmlCode: `<div role="status" class="\${toastRootVariants()}">
   <p class="text-sm font-medium">설정이 저장되었습니다</p>
 </div>`,
@@ -1767,8 +1773,7 @@ toast("설정이 저장되었습니다");`,
     recipePath: "@goraebap/design-system/recipes/autocomplete",
     pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "자유 입력을 허용하면서 추천 검색어나 후보를 제안하는 자동완성 입력 칸입니다.",
-    pureHtmlNote:
-      "Combobox와 달리 목록에 없는 자유 문자열도 그대로 입력할 수 있습니다.",
+    pureHtmlNote: "Combobox와 달리 목록에 없는 자유 문자열도 그대로 입력할 수 있습니다.",
     mobileGuideline: "추천 목록은 최대 5~6개 이내로 제한해 화면을 가리지 않게 합니다.",
     htmlCode: `<input list="suggestions" class="\${autocompleteInputVariants()}" placeholder="컴포넌트 검색..." />`,
     reactCode: `import { Autocomplete, AutocompleteContent, AutocompleteInput, AutocompleteItem, AutocompleteList } from "@goraebap/ui-react/components/autocomplete";`,
@@ -1778,7 +1783,9 @@ toast("설정이 저장되었습니다");`,
         <div className="border-input bg-background rounded-md border px-2.5 py-1 text-[11px]">
           Rea|
         </div>
-        <div className="border-border bg-popover rounded-md border px-2 py-1 text-[10px]">React</div>
+        <div className="border-border bg-popover rounded-md border px-2 py-1 text-[10px]">
+          React
+        </div>
       </div>
     ),
     renderHtmlDemo: () => <NativeAutocompleteDemo />,

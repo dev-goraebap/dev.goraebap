@@ -6,6 +6,7 @@ import { Button } from "@goraebap/ui-react/components/button";
 import { Input } from "@goraebap/ui-react/components/input";
 import { ReactDialogDemo } from "@/entities/component-doc/ui/InteractiveDemos";
 import { usePreviewSync } from "@/shared/lib/preview-sync";
+import { ThemedPortalScope } from "@/shared/ui";
 
 export const Route = createFileRoute("/preview/templates/$id/")({
   component: TemplateMobilePreviewPage,
@@ -198,16 +199,18 @@ function TemplateMobilePreviewPage() {
   const { theme } = usePreviewSync();
 
   return (
-    <div data-ds-theme={theme} className="min-h-screen">
-      {id === "app-shell" ? (
-        <MobileAppShellPreview />
-      ) : id === "responsive-dialog" ? (
-        <MobileResponsiveDialogPreview />
-      ) : (
-        <div className="bg-background text-foreground flex min-h-screen items-center justify-center p-6 text-sm">
-          템플릿을 찾을 수 없습니다: {id}
-        </div>
-      )}
-    </div>
+    <ThemedPortalScope theme={theme}>
+      <div data-ds-theme={theme} className="min-h-screen">
+        {id === "app-shell" ? (
+          <MobileAppShellPreview />
+        ) : id === "responsive-dialog" ? (
+          <MobileResponsiveDialogPreview />
+        ) : (
+          <div className="bg-background text-foreground flex min-h-screen items-center justify-center p-6 text-sm">
+            템플릿을 찾을 수 없습니다: {id}
+          </div>
+        )}
+      </div>
+    </ThemedPortalScope>
   );
 }

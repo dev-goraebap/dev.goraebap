@@ -1,10 +1,7 @@
 import { Radio as BaseRadio } from "@base-ui/react/radio";
 import { RadioGroup as BaseRadioGroup } from "@base-ui/react/radio-group";
 import { cn } from "@goraebap/design-system/cn";
-import {
-  radioGroupVariants,
-  radioItemVariants,
-} from "@goraebap/design-system/recipes/radio-group";
+import { radioGroupVariants, radioItemVariants } from "@goraebap/design-system/recipes/radio-group";
 import type { ComponentProps } from "react";
 
 export function RadioGroup({ className, ...props }: ComponentProps<typeof BaseRadioGroup>) {
