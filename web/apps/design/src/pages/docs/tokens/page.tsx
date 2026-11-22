@@ -26,11 +26,10 @@ function DocsTokensPage() {
   return (
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
-        <p className="text-muted-foreground font-mono text-xs">LAYER 01 · FOUNDATIONS</p>
         <h1 className="text-3xl font-semibold tracking-tight">Design Tokens</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          색상·면 위계·반경·타이포그래피는 프레임워크와 무관한 순수 CSS 변수(OKLCH)로 정의합니다.
-          라이트·다크 모드와 App·Editorial 테마 모두 같은 변수 이름만 재정의합니다.
+          색상, 면 위계, 반경, 타이포그래피를 프레임워크에 묶이지 않은 OKLCH CSS 변수로 정의합니다.
+          라이트와 다크 모드, App과 Editorial 테마는 같은 변수 이름의 값만 바꿉니다.
         </p>
       </header>
 

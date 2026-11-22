@@ -18,7 +18,6 @@ function TemplatesPage() {
     <main className="mx-auto max-w-7xl space-y-12 px-6 py-12">
       <header className="border-border flex flex-col justify-between gap-4 border-b pb-8 sm:flex-row sm:items-end">
         <div className="space-y-2">
-          <p className="text-muted-foreground font-mono text-xs">LAYER 05 · TEMPLATES & PATTERNS</p>
           <h1 className="text-3xl font-semibold tracking-tight">
             Templates &amp; Responsive Patterns
           </h1>
@@ -59,13 +58,7 @@ function TemplatesPage() {
       {/* Pattern 1: Inset AppShell */}
       <section className="space-y-4">
         <div className="flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-semibold">01. Inset AppShell</h2>
-            <p className="text-muted-foreground text-xs">
-              --sidebar 외곽 셸 위에 --background 인셋 작업 영역을 얹는 accounts · productivity 공통
-              레이아웃
-            </p>
-          </div>
+          <h2 className="text-lg font-semibold">01. Inset AppShell</h2>
           <Badge variant="outline">{isMobile ? "Mobile Topbar + Drawer" : "Desktop Inset"}</Badge>
         </div>
 
@@ -78,7 +71,7 @@ function TemplatesPage() {
             <MobileDeviceFrame path="/preview/templates/app-shell" title="Inset AppShell" />
           ) : (
             <div className="border-border bg-sidebar flex h-80 w-full overflow-hidden rounded-2xl border p-2.5">
-              <div className="flex w-44 shrink-0 flex-col justify-between p-3 text-xs">
+              <div className="flex w-44 shrink-0 flex-col p-3 text-xs">
                 <div className="space-y-2">
                   <p className="font-semibold">goraebap</p>
                   <div className="bg-accent text-foreground rounded-md px-2.5 py-1.5 font-medium">
@@ -87,19 +80,22 @@ function TemplatesPage() {
                   <div className="text-muted-foreground px-2.5 py-1.5">프로필</div>
                   <div className="text-muted-foreground px-2.5 py-1.5">보안 · 토큰</div>
                 </div>
-                <span className="text-muted-foreground font-mono text-[10px]">--sidebar</span>
               </div>
               <div className="border-border bg-background flex-1 rounded-xl border p-5">
                 <div className="flex items-center justify-between">
                   <p className="text-sm font-semibold">보안 및 토큰</p>
                   <Button size="sm">새 토큰 발급</Button>
                 </div>
-                <div className="border-border bg-card mt-4 rounded-xl border p-4 text-xs">
-                  <p className="font-medium">인셋 작업 영역 (--background → --card)</p>
-                  <p className="text-muted-foreground mt-1">
-                    사이드바와 본문의 경계를 1px 테두리와 4단계 면 위계로 조용히 구분합니다.
-                  </p>
-                </div>
+                <ul className="border-border bg-card divide-border mt-4 divide-y rounded-xl border text-xs">
+                  <li className="flex items-center justify-between px-4 py-3">
+                    <span className="font-medium">배포 자동화</span>
+                    <span className="text-muted-foreground">3일 전 사용</span>
+                  </li>
+                  <li className="flex items-center justify-between px-4 py-3">
+                    <span className="font-medium">로컬 개발</span>
+                    <span className="text-muted-foreground">오늘 사용</span>
+                  </li>
+                </ul>
               </div>
             </div>
           )}
@@ -109,13 +105,7 @@ function TemplatesPage() {
       {/* Pattern 2: Dialog <-> Bottom Sheet */}
       <section className="space-y-4">
         <div className="flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-lg font-semibold">02. Responsive Dialog ↔ Bottom Sheet</h2>
-            <p className="text-muted-foreground text-xs">
-              상단 뷰포트 토글을 Mobile 390px로 바꾸면 격리된 모바일 화면 하단에서 바텀시트로
-              열립니다.
-            </p>
-          </div>
+          <h2 className="text-lg font-semibold">02. Responsive Dialog ↔ Bottom Sheet</h2>
           <Badge variant="outline">{isMobile ? "Bottom Sheet (390px)" : "Centered Dialog"}</Badge>
         </div>
 

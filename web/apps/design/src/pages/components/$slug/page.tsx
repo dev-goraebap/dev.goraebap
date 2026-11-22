@@ -16,9 +16,6 @@ function ComponentDetailPage() {
     return (
       <div className="border-border bg-card space-y-3 rounded-2xl border p-8 text-center">
         <h1 className="text-lg font-semibold">컴포넌트를 찾을 수 없습니다</h1>
-        <p className="text-muted-foreground text-sm">
-          요청한 <code>{slug}</code> 컴포넌트 문서가 아직 등록되지 않았습니다.
-        </p>
         <Link to="/components" className="text-sm font-medium underline">
           컴포넌트 목록으로 돌아가기
         </Link>

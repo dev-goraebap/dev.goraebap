@@ -8,23 +8,23 @@ export const Route = createFileRoute("/docs/primitives/")({
 const BOUNDARY_ROWS = [
   {
     ui: "Button / Input / Badge / Card / Alert / Table",
-    html: "100% 가능 (네이티브 태그 + CVA 레시피)",
-    primitive: "필요 없음 (라우터 링크 합성 시에만 어댑터 활용)",
+    html: "네이티브 태그와 CVA 레시피로 구현",
+    primitive: "불필요 (라우터 링크 합성 시에만 어댑터 사용)",
   },
   {
     ui: "Dialog / Modal",
-    html: "네이티브 <dialog>.showModal() + ::backdrop + ESC 가능",
-    primitive: "중첩 오버레이 스택 · 스크롤 잠금 · 퇴장 애니메이션 · 모바일 시트 전환",
+    html: "네이티브 <dialog>.showModal(), ::backdrop, ESC 닫기 지원",
+    primitive: "중첩 오버레이 스택, 스크롤 잠금, 퇴장 애니메이션, 모바일 시트 전환",
   },
   {
     ui: "Tabs / Menu / Select",
-    html: "role='tablist' 등으로 외형은 가능",
-    primitive: "화살표 키보드 이동(Roving Focus) · ARIA 자동 연결 · 충돌 회피 포지셔닝",
+    html: "role='tablist' 등으로 외형만 구성",
+    primitive: "화살표 키보드 이동(Roving Focus), ARIA 자동 연결, 충돌 회피 배치",
   },
   {
     ui: "Switch / Checkbox",
-    html: "네이티브 <input type='checkbox'> / role='switch' 가능",
-    primitive: "indeterminate 상태 · 폼 통합 · 커스텀 인디케이터 일관성",
+    html: "네이티브 <input type='checkbox'>, role='switch'로 기본 동작 구성",
+    primitive: "indeterminate 상태, 폼 통합, 커스텀 인디케이터 스타일 통일",
   },
 ];
 
@@ -32,14 +32,13 @@ function DocsPrimitivesPage() {
   return (
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
-        <p className="text-muted-foreground font-mono text-xs">LAYER 03 · ADAPTERS</p>
         <h1 className="text-3xl font-semibold tracking-tight">
           Pure HTML &amp; Headless Primitives
         </h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          UI 컴포넌트를 만들기 전에도 1·2단계(토큰+레시피)와 네이티브 HTML만으로 대부분을 시각적으로
-          검증할 수 있습니다. 3단계 헤드리스 프리미티브는 네이티브 HTML이 보장하지 못하는 복합
-          인터랙션과 접근성 계약을 채웁니다.
+          UI 컴포넌트를 감싸기 전에도 토큰과 레시피를 네이티브 HTML에 입혀 외형을 확인할 수
+          있습니다. 3단계 헤드리스 프리미티브는 네이티브 HTML만으로 처리하기 어려운 키보드 탐색,
+          포커스 관리, 오버레이 동작을 맡습니다.
         </p>
       </header>
 

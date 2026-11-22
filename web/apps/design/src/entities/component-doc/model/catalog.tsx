@@ -79,11 +79,11 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     recipePath: "@goraebap/design-system/recipes/button",
     pureHtmlLevel: "100% Native HTML",
     summary:
-      "행동을 실행하거나 링크로 이동하는 기본 버튼입니다. Pure HTML <button>부터 React·Angular까지 완전히 같은 레시피를 공유합니다.",
+      "동작을 실행하거나 링크로 이동하는 버튼입니다. Pure HTML <button>, React, Angular 예시 모두 같은 레시피를 씁니다.",
     pureHtmlNote:
-      "네이티브 <button>만으로 포커스·키보드(Enter/Space)·비활성화가 모두 동작합니다. React/Angular 어댑터는 주로 라우터 링크 합성(render prop / directive)을 돕습니다.",
+      "네이티브 <button>만으로 포커스, Enter와 Space 키 입력, 비활성화가 동작합니다. React와 Angular 어댑터는 라우터 링크 합성(render prop, directive)을 처리합니다.",
     mobileGuideline:
-      "모바일에서는 터치 오작동을 줄이기 위해 주요 동작 버튼을 전체 폭(w-full) 또는 size='lg' 이상으로 배치합니다.",
+      "모바일에서는 주요 동작 버튼을 전체 폭(w-full)이나 size='lg' 이상으로 배치합니다.",
     htmlCode: `<button class="\${buttonVariants({ variant: 'default' })}">저장</button>
 <button class="\${buttonVariants({ variant: 'secondary' })}">임시 저장</button>
 <button class="\${buttonVariants({ variant: 'outline' })}">미리보기</button>
@@ -190,11 +190,11 @@ export class GbButtonDirective {
     recipePath: "@goraebap/design-system/recipes/input",
     pureHtmlLevel: "100% Native HTML",
     summary:
-      "한 줄 텍스트 입력 칸입니다. invalid 상태로 오류 테두리와 aria-invalid를 함께 표현합니다.",
+      "한 줄 텍스트를 입력하는 칸입니다. invalid 상태로 오류 테두리와 aria-invalid를 함께 표시합니다.",
     pureHtmlNote:
-      "순수 <input> 태그에 inputVariants() 클래스만 부여하면 모든 상태(focus-visible, disabled, aria-invalid)가 동일하게 동작합니다.",
+      "네이티브 <input>에 inputVariants() 클래스를 적용하면 focus-visible, disabled, aria-invalid 스타일이 동작합니다.",
     mobileGuideline:
-      "모바일 사파리 자동 확대를 막고 터치하기 편하도록 14px~16px 글자와 넉넉한 높이를 유지합니다.",
+      "모바일 Safari 자동 확대를 막기 위해 14px~16px 글자 크기와 충분한 터치 높이를 유지합니다.",
     htmlCode: `<input class="\${inputVariants()}" placeholder="name@goraebap.xyz" />
 <input class="\${inputVariants({ invalid: true })}" aria-invalid="true" value="invalid-email" />`,
     reactCode: `import { Input } from "@goraebap/ui/components/input";
@@ -251,7 +251,8 @@ export function Example() {
     recipePath: "@goraebap/design-system/recipes/textarea",
     pureHtmlLevel: "100% Native HTML",
     summary: "여러 줄 설명이나 메모를 작성하는 입력 칸입니다.",
-    pureHtmlNote: "네이티브 <textarea>에 textareaVariants()만 적용하면 프레임워크 없이 완성됩니다.",
+    pureHtmlNote:
+      "네이티브 <textarea>에 textareaVariants() 클래스를 적용해 프레임워크 없이 씁니다.",
     mobileGuideline:
       "긴 글 입력은 대화상자 대신 전용 페이지에서 전체 폭으로 열어야 가상 키보드에 가리지 않습니다.",
     htmlCode: `<textarea class="\${textareaVariants()}" placeholder="변경 이유나 맥락을 적어 주세요."></textarea>`,
@@ -290,9 +291,8 @@ export function Example() {
     pureHtmlLevel: "Native HTML + CSS",
     summary: "즉시 반영되는 켜짐/꺼짐 설정에 쓰는 토글 스위치입니다.",
     pureHtmlNote:
-      "<button role='switch' aria-checked>로 외형과 클릭은 구현할 수 있지만, 폼 제출(name/value)·Space/Enter 일관성·라벨 연결은 Base UI / Spartan Brain이 보장합니다.",
-    mobileGuideline:
-      "스위치 옆 설명과 행 전체 간격을 넉넉히 두어 손가락으로 누르기 쉽게 배치합니다.",
+      "<button role='switch' aria-checked>로 외형과 클릭은 구현할 수 있습니다. 폼 제출(name, value), 키보드 입력 처리, 라벨 연결은 Base UI나 Spartan Brain에서 처리합니다.",
+    mobileGuideline: "스위치와 설명 사이 여백과 행 높이를 넉넉히 두어 터치 영역을 확보합니다.",
     htmlCode: `<button role="switch" aria-checked="true" data-checked class="\${switchTrackVariants()}">
   <span data-checked class="\${switchThumbVariants()}"></span>
 </button>`,
@@ -327,7 +327,7 @@ export function Example() {
     pureHtmlLevel: "100% Native HTML",
     summary: "여러 항목을 고르거나 동의 여부를 확인하는 체크박스입니다.",
     pureHtmlNote:
-      "네이티브 <input type='checkbox'>는 폼 제출까지 완벽하지만, 커스텀 체크 아이콘·indeterminate(부분 선택) 스타일 통일은 헤드리스 프리미티브가 깔끔합니다.",
+      "네이티브 <input type='checkbox'>로 선택과 폼 제출이 동작합니다. 커스텀 체크 아이콘과 indeterminate(부분 선택) 상태 스타일은 헤드리스 프리미티브로 맞춥니다.",
     mobileGuideline: "라벨 텍스트 전체를 클릭 영역으로 묶어 모바일 터치 영역을 넓힙니다.",
     htmlCode: `<label class="flex items-center gap-2">
   <input type="checkbox" checked class="\${checkboxVariants()}" />
@@ -359,8 +359,8 @@ export function Example() {
     recipePath: "@goraebap/design-system/recipes/badge",
     pureHtmlLevel: "100% Native HTML",
     summary: "상태, 역할, 분류처럼 짧은 메타데이터를 표시합니다.",
-    pureHtmlNote: "순수 <span> + badgeVariants()만으로 모든 프레임워크에서 100% 동일합니다.",
-    mobileGuideline: "좁은 폭에서 줄바꿈이 자연스럽게 이어지도록 flex-wrap과 함께 씁니다.",
+    pureHtmlNote: "네이티브 <span>에 badgeVariants() 클래스를 적용해 씁니다.",
+    mobileGuideline: "좁은 폭에서 배지가 가로로 넘치지 않도록 flex-wrap과 함께 씁니다.",
     htmlCode: `<span class="\${badgeVariants({ variant: 'default' })}">원칙</span>
 <span class="\${badgeVariants({ variant: 'secondary' })}">진행 중</span>
 <span class="\${badgeVariants({ variant: 'outline' })}">Pure HTML</span>`,
@@ -413,7 +413,7 @@ export function Example() {
     recipePath: "@goraebap/design-system/recipes/card",
     pureHtmlLevel: "100% Native HTML",
     summary: "페이지 면(--background) 위에 한 단계 올라오는 올린 면(--card) 컨테이너입니다.",
-    pureHtmlNote: "시맨틱 <article> + cardVariants()만으로 완전히 동일하게 구성됩니다.",
+    pureHtmlNote: "네이티브 <article>에 cardVariants() 클래스를 적용해 구성합니다.",
     mobileGuideline:
       "모바일에서는 카드 안쪽 여백을 p-4~p-5로 유지하고, 불필요한 중첩 카드를 피합니다.",
     htmlCode: `<article class="\${cardVariants()}">
@@ -501,8 +501,8 @@ export function Example() {
     recipePath: "@goraebap/design-system/recipes/alert",
     pureHtmlLevel: "100% Native HTML",
     summary: "중요한 안내, 성공, 경고, 오류 메시지를 문맥 안에 인라인으로 알립니다.",
-    pureHtmlNote: "role='alert' 속성과 alertVariants()만으로 접근성과 스타일이 모두 충족됩니다.",
-    mobileGuideline: "모바일에서도 제목과 본문이 2~3줄 이내로 간결하게 읽히도록 문구를 압축합니다.",
+    pureHtmlNote: "role='alert' 속성과 alertVariants() 클래스를 함께 적용해 씁니다.",
+    mobileGuideline: "모바일에서도 제목과 본문이 2~3줄을 넘지 않도록 짧게 씁니다.",
     htmlCode: `<div role="alert" class="\${alertVariants({ variant: 'info' })}">
   <h5 class="font-medium">서브도메인 SSO 활성화</h5>
   <p class="mt-1 text-xs opacity-90">*.goraebap.xyz 전체에 세션이 공유됩니다.</p>
@@ -565,7 +565,7 @@ export function Example() {
     primitiveAngular: "@spartan-ng/brain/separator",
     recipePath: "@goraebap/design-system/recipes/separator",
     pureHtmlLevel: "100% Native HTML",
-    summary: "영역이나 항목 사이를 --border 1px 선으로 조용하게 나눕니다.",
+    summary: "영역이나 항목 사이를 --border 1px 선으로 나눕니다.",
     pureHtmlNote:
       "가로 구분선은 <hr>, 세로 구분선은 role='separator' aria-orientation='vertical'로 충분합니다.",
     mobileGuideline: "구분선 대신 여백으로 묶음이 충분하면 선을 생략해 화면 밀도를 낮춥니다.",
@@ -626,8 +626,8 @@ export function Example() {
     primitiveAngular: "HTML <div>",
     recipePath: "@goraebap/design-system/recipes/skeleton",
     pureHtmlLevel: "100% Native HTML",
-    summary: "데이터를 불러오는 짧은 대기 동안 실제 콘텐츠 자리 모양을 암시합니다.",
-    pureHtmlNote: "순수 <div aria-hidden='true'> + skeletonVariants()만으로 동작합니다.",
+    summary: "데이터를 불러오는 동안 콘텐츠가 들어갈 자리를 미리 표시합니다.",
+    pureHtmlNote: "네이티브 <div aria-hidden='true'>에 skeletonVariants() 클래스를 적용해 씁니다.",
     mobileGuideline:
       "화면 전체 스켈레톤 대신 실제 카드/줄 높이에 맞춘 최소한의 자리 표시만 씁니다.",
     htmlCode: `<div class="\${skeletonVariants({ shape: 'circle' })} size-10"></div>
@@ -682,10 +682,10 @@ export function Example() {
     primitiveAngular: "HTML <table>",
     recipePath: "@goraebap/design-system/recipes/table",
     pureHtmlLevel: "100% Native HTML",
-    summary: "여러 항목의 속성을 같은 열 기준으로 빠르게 비교하는 표 컴포넌트입니다.",
-    pureHtmlNote: "네이티브 <table> 시맨틱 요소에 tableVariants()를 입혀 그대로 씁니다.",
+    summary: "여러 항목의 속성을 같은 열 기준으로 비교하는 표입니다.",
+    pureHtmlNote: "네이티브 <table> 요소에 tableVariants() 클래스를 적용해 씁니다.",
     mobileGuideline:
-      "가로 스크롤 래퍼로 깨짐을 막되, 모바일에서 열이 너무 많으면 카드 목록으로 전환하는 편이 읽기 좋습니다.",
+      "가로 스크롤 래퍼로 넘침을 막고, 모바일에서 열이 많으면 카드 목록으로 바꿉니다.",
     htmlCode: `<div class="w-full overflow-x-auto">
   <table class="\${tableVariants()}">
     <thead><tr class="\${tableRowVariants()}"><th class="px-3 py-2 text-left">서비스</th></tr></thead>
@@ -814,10 +814,9 @@ export function Example() {
     primitiveAngular: "@spartan-ng/brain/tabs",
     recipePath: "@goraebap/design-system/recipes/tabs",
     pureHtmlLevel: "Native HTML (한계 있음)",
-    summary:
-      "같은 맥락 안의 보기를 빠르게 전환하는 탭입니다. 키보드 화살표 탐색을 기본 지원합니다.",
+    summary: "같은 맥락 안의 보기를 전환하는 탭입니다. 키보드 화살표 이동을 지원합니다.",
     pureHtmlNote:
-      "Pure HTML <button role='tab'>로 외형은 똑같이 만들 수 있지만, 좌우 화살표 키보드 이동(Roving Focus)과 aria-controls 자동 연결은 Base UI / Spartan Brain이 담당합니다.",
+      "Pure HTML <button role='tab'>로 외형은 구성할 수 있습니다. 좌우 화살표 키보드 이동(Roving Focus)과 aria-controls 연결은 Base UI나 Spartan Brain에서 처리합니다.",
     mobileGuideline: "탭 개수는 모바일 폭(390px)에서 잘리지 않게 2~4개 이내로 유지합니다.",
     htmlCode: `<div role="tablist" class="\${tabsListVariants()}">
   <button role="tab" aria-selected="true" data-selected class="\${tabsTriggerVariants()}">Tokens</button>
@@ -886,9 +885,9 @@ export function Example() {
     summary:
       "짧은 확인이나 몇 칸짜리 입력을 띄우는 대화상자입니다. 모바일에서는 하단 바텀시트(surface='sheet')로 전환합니다.",
     pureHtmlNote:
-      "최신 브라우저는 네이티브 <dialog>.showModal()과 ::backdrop, ESC 닫기를 기본 지원합니다. 다만 중첩 오버레이 스택·스크롤 잠금·퇴장 애니메이션·포커스 복원 제어는 Base UI / Spartan Brain이 안정적입니다.",
+      "네이티브 <dialog>.showModal()로 모달, ::backdrop, ESC 닫기를 구현할 수 있습니다. 중첩 오버레이 스택, 스크롤 잠금, 퇴장 애니메이션, 포커스 복원은 Base UI나 Spartan Brain에서 처리합니다.",
     mobileGuideline:
-      "390px 토글을 켠 뒤 버튼을 눌러 보세요. 데스크톱 중앙 모달이 하단 시트로 전환됩니다.",
+      "390px 모바일 폭에서는 중앙 모달 대신 하단 시트(surface='sheet')로 열어 한 손으로 닫고 조작할 수 있게 합니다.",
     htmlCode: `<button onclick="document.getElementById('demo-dlg').showModal()" class="\${buttonVariants()}">
   네이티브 &lt;dialog&gt; 열기
 </button>

@@ -1,6 +1,5 @@
 import { Link, Outlet, createRootRoute, useRouterState } from "@tanstack/react-router";
-import { Layers } from "lucide-react";
-import { ModeToggle } from "@/shared/ui";
+import { BrandMark, ModeToggle } from "@/shared/ui";
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -32,7 +31,7 @@ function RootLayout() {
             className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight"
           >
             <span className="bg-primary text-primary-foreground inline-flex size-7 items-center justify-center rounded-lg transition-transform group-hover:scale-105">
-              <Layers className="size-4" />
+              <BrandMark className="size-5" />
             </span>
             <span>goraebap/design</span>
           </Link>
@@ -89,11 +88,7 @@ function RootLayout() {
 
       <footer className="border-border/80 border-t">
         <div className="text-muted-foreground mx-auto flex max-w-7xl flex-col gap-3 px-6 py-8 text-xs sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-foreground font-medium">goraebap/design</span>
-            <span>·</span>
-            <span>Framework-Agnostic 5-Layer Design System</span>
-          </div>
+          <span className="text-foreground font-medium">goraebap/design</span>
           <div className="flex flex-wrap items-center gap-4 font-mono">
             <Link to="/docs" className="hover:text-foreground transition-colors">
               Docs

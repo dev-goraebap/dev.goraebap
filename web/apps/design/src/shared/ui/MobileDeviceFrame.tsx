@@ -182,10 +182,8 @@ export function MobileDeviceFrame({
         </div>
       </div>
 
-      {/* Subtle Viewport Spec + Standalone Link */}
-      <div className="text-muted-foreground flex items-center gap-3 font-mono text-[11px]">
-        <span>390 × 740 · Isolated Mobile Viewport</span>
-        <span aria-hidden="true">·</span>
+      {/* Standalone Link */}
+      <div className="text-muted-foreground flex items-center font-mono text-[11px]">
         <a
           href={externalUrl}
           target="_blank"

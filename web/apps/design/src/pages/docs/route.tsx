@@ -54,44 +54,10 @@ function DocsLayout() {
         </div>
       </aside>
 
-      {/* Center Main Content */}
+      {/* Main Content */}
       <main className="min-w-0 flex-1">
         <Outlet />
       </main>
-
-      {/* Right Sticky Rail */}
-      <aside aria-label="문서 안내" className="hidden w-52 shrink-0 xl:block">
-        <div className="border-border space-y-3 border-l pl-4 text-xs lg:sticky lg:top-24">
-          <p className="text-foreground font-medium">On this system</p>
-          <ul className="text-muted-foreground space-y-2">
-            <li>
-              <Link to="/docs" className="hover:text-foreground transition-colors">
-                5계층 아키텍처
-              </Link>
-            </li>
-            <li>
-              <Link to="/docs/tokens" className="hover:text-foreground transition-colors">
-                4단계 면 위계 & 멀티 테마
-              </Link>
-            </li>
-            <li>
-              <Link to="/docs/recipes" className="hover:text-foreground transition-colors">
-                프레임워크 무관 CVA 레시피
-              </Link>
-            </li>
-            <li>
-              <Link to="/docs/primitives" className="hover:text-foreground transition-colors">
-                Pure HTML vs Base UI / Spartan
-              </Link>
-            </li>
-            <li>
-              <Link to="/components" className="hover:text-foreground transition-colors">
-                컴포넌트 브라우저 →
-              </Link>
-            </li>
-          </ul>
-        </div>
-      </aside>
     </div>
   );
 }

@@ -11,24 +11,6 @@ function ComponentsOverviewPage() {
       {/* Centered Astryx-style Header */}
       <header className="border-border space-y-4 border-b pb-10 text-center">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">Browse the library</h1>
-        <p className="text-muted-foreground mx-auto max-w-xl text-sm leading-relaxed">
-          모든 컴포넌트는 Pure HTML(토큰+레시피), React(Base UI), Angular(Spartan Brain) 어댑터와
-          데스크톱·모바일(390px) 예제를 함께 제공합니다.
-        </p>
-        <div className="flex flex-wrap items-center justify-center gap-2.5 pt-1">
-          <Link
-            to="/docs"
-            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex h-9 items-center rounded-full px-5 text-xs font-medium transition-colors"
-          >
-            Install design-system
-          </Link>
-          <Link
-            to="/docs/primitives"
-            className="border-border bg-secondary text-secondary-foreground hover:bg-accent inline-flex h-9 items-center rounded-full border px-5 text-xs font-medium transition-colors"
-          >
-            Pure HTML vs Primitives
-          </Link>
-        </div>
       </header>
 
       {/* Categorized 3-column Live Miniature Preview Grid */}

@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui/components/alert";
 import { Badge } from "@goraebap/ui/components/badge";
 import { Button } from "@goraebap/ui/components/button";
 import {
@@ -22,14 +21,14 @@ const THEMES = [
     name: "App Theme",
     token: 'data-theme="app"',
     target: "apps/accounts · apps/productivity",
-    desc: "장시간 작업해도 피로도가 낮은 중립 무채색 기반 캔버스와 명확한 4단계 면 위계",
+    desc: "중립 무채색 캔버스와 4단계 면 위계를 쓰는 작업 화면용 테마입니다.",
   },
   {
     id: "editorial" as const,
     name: "Editorial Theme",
     token: 'data-theme="editorial"',
     target: "apps/blog",
-    desc: "긴 기술 글과 아키텍처 문서를 읽기 편한 따뜻한 지면 톤과 강조 포인트",
+    desc: "따뜻한 배경 톤으로 긴 기술 글과 문서에 맞춘 테마입니다.",
   },
 ];
 
@@ -37,11 +36,10 @@ function ThemesPage() {
   return (
     <main className="mx-auto max-w-7xl space-y-12 px-6 py-12">
       <header className="border-border space-y-3 border-b pb-8">
-        <p className="text-muted-foreground font-mono text-xs">MULTI-THEME TOKENS</p>
         <h1 className="text-3xl font-semibold tracking-tight">Themes</h1>
         <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-          같은 컴포넌트와 레시피를 그대로 쓰면서 <code>data-theme</code> 속성만으로 제품 성격에 맞는
-          시각 톤을 전환합니다. 우측 상단 라이트/다크 토글로 양쪽 모드를 함께 비교해 보세요.
+          같은 컴포넌트와 레시피에 <code>data-theme</code> 속성을 바꿔 제품과 블로그 테마를
+          전환합니다.
         </p>
       </header>
 
@@ -69,12 +67,6 @@ function ThemesPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 <Input defaultValue="hello@goraebap.xyz" readOnly />
-                <Alert variant="info">
-                  <AlertTitle>동일한 컴포넌트 계약</AlertTitle>
-                  <AlertDescription>
-                    CSS 변수만 교체되므로 React·Angular·Pure HTML 코드 수정이 필요 없습니다.
-                  </AlertDescription>
-                </Alert>
               </CardContent>
               <CardFooter>
                 <Button size="sm">저장</Button>
