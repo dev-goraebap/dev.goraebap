@@ -14,7 +14,6 @@
     "@goraebap/ui-react": "workspace:*",
     "@tanstack/react-router": "catalog:",
     "lenis": "^1.3.27",
-    "lucide-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "shiki": "^4.6.0"

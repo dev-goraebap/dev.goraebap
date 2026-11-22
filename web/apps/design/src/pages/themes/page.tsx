@@ -70,8 +70,8 @@ function ThemesPage() {
         <div className="space-y-3">
           <h1 className="text-3xl font-semibold tracking-tight">테마</h1>
           <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
-            Neutral을 기본으로, 라이트·다크 토큰이 세트로 구성된 5가지 색상 분위기와 반경·폰트·아이콘을
-            조합해 사이트 전체에 바로 적용합니다.
+            Neutral을 기본으로, 라이트·다크 토큰이 세트로 구성된 5가지 색상 분위기와
+            반경·폰트·아이콘을 조합해 사이트 전체에 바로 적용합니다.
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={resetConfig}>

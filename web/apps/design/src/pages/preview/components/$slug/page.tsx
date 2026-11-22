@@ -35,9 +35,7 @@ function ComponentMobilePreviewPage() {
             </p>
             <h1 className="mt-1 truncate text-sm font-semibold tracking-tight">{doc.name}</h1>
           </div>
-          <Badge variant="secondary">
-            {adapter === "html" ? "Vanilla HTML/TS" : "React"}
-          </Badge>
+          <Badge variant="secondary">{adapter === "html" ? "Vanilla HTML/TS" : "React"}</Badge>
         </header>
 
         {/* Scrollable Mobile Content Area */}

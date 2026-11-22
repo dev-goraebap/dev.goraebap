@@ -108,7 +108,8 @@ function ArchitectureDiagram() {
             </Badge>
           </div>
           <p className="text-muted-foreground text-xs leading-relaxed">
-            Vite + Tailwind 환경에서 프레임워크 없이 네이티브 HTML과 레시피, 경량 DOM 헬퍼를 결합합니다.
+            Vite + Tailwind 환경에서 프레임워크 없이 네이티브 HTML과 레시피, 경량 DOM 헬퍼를
+            결합합니다.
           </p>
           <p className="text-muted-foreground font-mono text-[11px]">@goraebap/ui-html</p>
         </div>
@@ -149,16 +150,16 @@ function OverviewPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">개요</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
-          goraebap/design은 프로토타입(Vanilla HTML/TS), 개인 프로젝트(React), 업무 프로젝트(Angular)가
-          하나의 디자인 기준을 공유하도록 설계한 디자인 시스템입니다.
+          goraebap/design은 프로토타입(Vanilla HTML/TS), 개인 프로젝트(React), 업무
+          프로젝트(Angular)가 하나의 디자인 기준을 공유하도록 설계한 디자인 시스템입니다.
         </p>
       </header>
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">왜 이런 구조를 만들었나요?</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          AI 에이전트로 빠르게 만들어 보고 버리는 프로토타입은 프레임워크 없는 Vanilla HTML/TS(Vite +
-          Tailwind)가 가장 가볍고, 개인 프로젝트는 React, 회사 프로젝트는 Angular를 씁니다. 그런데
+          AI 에이전트로 빠르게 만들어 보고 버리는 프로토타입은 프레임워크 없는 Vanilla HTML/TS(Vite
+          + Tailwind)가 가장 가볍고, 개인 프로젝트는 React, 회사 프로젝트는 Angular를 씁니다. 그런데
           프로토타입에서 실제 프론트엔드 앱으로 옮길 때마다 같은 디자인과 레이아웃이 그대로 옮겨지지
           않고 미묘하게 틀어지는 문제가 반복되었습니다.
         </p>

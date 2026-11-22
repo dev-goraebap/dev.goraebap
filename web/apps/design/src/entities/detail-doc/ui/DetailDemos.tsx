@@ -483,7 +483,11 @@ export function AdaptiveDialogDemo() {
 
 const MASK_POSTS = [
   { id: "42", title: "단일 원본 디자인 시스템 설계", summary: "토큰과 레시피를 공유하는 구조" },
-  { id: "43", title: "페이지 전환과 로딩 대기", summary: "임계 시간 프로그레스바와 View Transition" },
+  {
+    id: "43",
+    title: "페이지 전환과 로딩 대기",
+    summary: "임계 시간 프로그레스바와 View Transition",
+  },
 ];
 
 export function RouteMaskingDemo() {
@@ -584,8 +588,8 @@ export function RouteMaskingDemo() {
               <div className="border-border bg-popover w-full max-w-sm space-y-2.5 rounded-xl border p-4 shadow-lg">
                 <p className="text-xs font-semibold">{selected.title}</p>
                 <p className="text-muted-foreground text-[11px] leading-relaxed">
-                  배경 목록은 유지되고 주소창만 /posts/{selected.id}로 바뀝니다. 새로고침하면
-                  독립 상세 페이지로 열립니다.
+                  배경 목록은 유지되고 주소창만 /posts/{selected.id}로 바뀝니다. 새로고침하면 독립
+                  상세 페이지로 열립니다.
                 </p>
                 <div className="flex justify-end">
                   <Button size="sm" variant="outline" onClick={() => setSelectedId(null)}>

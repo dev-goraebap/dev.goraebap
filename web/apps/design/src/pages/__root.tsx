@@ -22,20 +22,17 @@ function RoutePendingBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
-      setVisible(false);
-      return;
-    }
+    if (!isLoading) return;
     const timer = window.setTimeout(() => setVisible(true), PENDING_BAR_DELAY_MS);
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+      setVisible(false);
+    };
   }, [isLoading]);
 
-  if (!visible) return null;
+  if (!isLoading || !visible) return null;
   return (
-    <div
-      aria-hidden="true"
-      className="bg-primary fixed inset-x-0 top-0 z-50 h-0.5 animate-pulse"
-    />
+    <div aria-hidden="true" className="bg-primary fixed inset-x-0 top-0 z-50 h-0.5 animate-pulse" />
   );
 }
 
@@ -46,7 +43,11 @@ export const Route = createRootRoute({
 const LIBRARY_PATHS = ["/components", "/overview", "/getting-started", "/foundations", "/adapters"];
 const DOCS_SHELL_PATHS = [...LIBRARY_PATHS, "/layouts", "/details"];
 
-const TOP_NAV: { label: string; to: "/components" | "/layouts" | "/details" | "/themes"; icon: SystemIconName }[] = [
+const TOP_NAV: {
+  label: string;
+  to: "/components" | "/layouts" | "/details" | "/themes";
+  icon: SystemIconName;
+}[] = [
   { label: "컴포넌트", to: "/components", icon: "components" },
   { label: "레이아웃", to: "/layouts", icon: "layouts" },
   { label: "디테일", to: "/details", icon: "details" },

@@ -217,9 +217,6 @@ importers:
       lenis:
         specifier: ^1.3.27
         version: 1.3.27(react@19.3.1)
-      lucide-react:
-        specifier: 'catalog:'
-        version: 1.77.0(@types/react@19.3.0)(react@19.3.1)
       react:
         specifier: 'catalog:'
         version: 19.3.1
@@ -447,10 +444,6 @@ importers:
         version: 6.0.3
 
   packages/ui-html:
-    dependencies:
-      '@goraebap/design-system':
-        specifier: workspace:*
-        version: link:../design-system
     devDependencies:
       typescript:
         specifier: 'catalog:'

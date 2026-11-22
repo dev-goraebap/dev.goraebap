@@ -26,7 +26,9 @@ const GUIDE_GROUPS: DocsNavGroup[] = [
   },
   {
     title: "어댑터",
-    items: [{ label: "Vanilla HTML/TS & Primitives", href: "/adapters/primitives", icon: "components" }],
+    items: [
+      { label: "Vanilla HTML/TS & Primitives", href: "/adapters/primitives", icon: "components" },
+    ],
   },
 ];
 

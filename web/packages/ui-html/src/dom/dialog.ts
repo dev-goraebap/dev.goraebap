@@ -31,15 +31,17 @@ export function initDialogs(root: ParentNode = document): () => void {
     cleanups.push(() => button.removeEventListener("click", onClick));
   });
 
-  root.querySelectorAll<HTMLDialogElement>("dialog:not([data-gb-dialog-static])").forEach((dialog) => {
-    const onClick = (event: MouseEvent) => {
-      if (event.target === dialog) {
-        dialog.close();
-      }
-    };
-    dialog.addEventListener("click", onClick);
-    cleanups.push(() => dialog.removeEventListener("click", onClick));
-  });
+  root
+    .querySelectorAll<HTMLDialogElement>("dialog:not([data-gb-dialog-static])")
+    .forEach((dialog) => {
+      const onClick = (event: MouseEvent) => {
+        if (event.target === dialog) {
+          dialog.close();
+        }
+      };
+      dialog.addEventListener("click", onClick);
+      cleanups.push(() => dialog.removeEventListener("click", onClick));
+    });
 
   return () => {
     cleanups.forEach((fn) => fn());

@@ -9,14 +9,14 @@ import {
   ThinScrollbarDemo,
 } from "../ui/DetailDemos";
 
-export interface DetailCodeTab {
+interface DetailCodeTab {
   id: string;
   label: string;
   language: string;
   code: string;
 }
 
-export interface DetailSection {
+interface DetailSection {
   id: string;
   title: string;
   problem: string;

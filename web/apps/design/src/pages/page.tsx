@@ -70,7 +70,12 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             공유합니다.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            <Button size="lg" shape="pill" render={<Link to="/getting-started" />}>
+            <Button
+              size="lg"
+              shape="pill"
+              nativeButton={false}
+              render={<Link to="/getting-started" />}
+            >
               <span>시작하기</span>
               <SystemIcon name="arrowRight" className="size-4" />
             </Button>
@@ -78,6 +83,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               size="lg"
               variant="secondary"
               shape="pill"
+              nativeButton={false}
               render={<Link to="/components" />}
             >
               컴포넌트 보기
@@ -322,7 +328,12 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             분리했습니다.
           </p>
           <div className="pt-1">
-            <Button variant="outline" shape="pill" render={<Link to="/overview" />}>
+            <Button
+              variant="outline"
+              shape="pill"
+              nativeButton={false}
+              render={<Link to="/overview" />}
+            >
               <span>설계 철학 자세히 읽기</span>
               <SystemIcon name="arrowRight" className="size-4" />
             </Button>
@@ -364,13 +375,30 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             반영됩니다.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Button size="lg" shape="pill" render={<Link to="/getting-started" />}>
+            <Button
+              size="lg"
+              shape="pill"
+              nativeButton={false}
+              render={<Link to="/getting-started" />}
+            >
               시작하기
             </Button>
-            <Button size="lg" variant="secondary" shape="pill" render={<Link to="/themes" />}>
+            <Button
+              size="lg"
+              variant="secondary"
+              shape="pill"
+              nativeButton={false}
+              render={<Link to="/themes" />}
+            >
               테마 체험하기
             </Button>
-            <Button size="lg" variant="outline" shape="pill" render={<Link to="/overview" />}>
+            <Button
+              size="lg"
+              variant="outline"
+              shape="pill"
+              nativeButton={false}
+              render={<Link to="/overview" />}
+            >
               개요 읽기
             </Button>
           </div>

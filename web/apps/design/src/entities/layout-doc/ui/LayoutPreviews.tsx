@@ -87,11 +87,7 @@ export function AppShellSidebarExample({ variant }: { variant: AppShellVariant }
 
 export function AppShellCollapsedSidebarExample({ variant }: { variant: AppShellVariant }) {
   return (
-    <AppShellFrame
-      variant={variant}
-      sidebar={<CollapsedSidebarAnatomy />}
-      sidebarWidthClass="w-16"
-    >
+    <AppShellFrame variant={variant} sidebar={<CollapsedSidebarAnatomy />} sidebarWidthClass="w-16">
       <div className="flex min-h-0 flex-1 p-2">
         <Slot label="Main" className="flex-1" />
       </div>
