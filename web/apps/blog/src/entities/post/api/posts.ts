@@ -19,18 +19,18 @@ interface MdxPostModule {
   frontmatter: PostFrontmatter;
 }
 
-export interface PostEntry extends PostFrontmatter {
+interface PostEntry extends PostFrontmatter {
   slug: string;
   tags: string[];
   Content: ComponentType<{ components?: MDXComponents }>;
   raw: string;
 }
 
-const mdxModules = import.meta.glob<MdxPostModule>("../../content/posts/*.mdx", {
+const mdxModules = import.meta.glob<MdxPostModule>("../../../../content/posts/*.mdx", {
   eager: true,
 });
 
-const rawModules = import.meta.glob<string>("../../content/posts/*.mdx", {
+const rawModules = import.meta.glob<string>("../../../../content/posts/*.mdx", {
   eager: true,
   query: "?raw",
   import: "default",

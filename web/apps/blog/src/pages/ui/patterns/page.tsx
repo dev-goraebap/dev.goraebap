@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui/components/badge";
 import { Button } from "@goraebap/ui/components/button";
-import { PreviewStage } from "@/components/ui-docs/preview-stage";
+import { PreviewStage } from "@/shared/ui";
 
-export const Route = createFileRoute("/ui/patterns")({
+export const Route = createFileRoute("/ui/patterns/")({
   component: UiPatternsPage,
 });
 

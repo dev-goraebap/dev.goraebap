@@ -6,7 +6,7 @@
       "ignoreDependencies": ["tailwindcss"]
     },
     "apps/blog": {
-      "entry": ["src/routes/**/*.{ts,tsx}"],
+      "entry": ["src/pages/**/{__root,route,page}.tsx"],
       "ignoreDependencies": ["tailwindcss"]
     },
     "apps/productivity": {

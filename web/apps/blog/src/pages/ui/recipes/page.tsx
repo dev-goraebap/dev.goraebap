@@ -5,7 +5,7 @@ import { badgeVariants, type BadgeRecipeProps } from "@goraebap/design-system/re
 import { buttonVariants, type ButtonRecipeProps } from "@goraebap/design-system/recipes/button";
 import { Badge } from "@goraebap/ui/components/badge";
 
-export const Route = createFileRoute("/ui/recipes")({
+export const Route = createFileRoute("/ui/recipes/")({
   component: UiRecipesPage,
 });
 
@@ -56,7 +56,6 @@ function UiRecipesPage() {
         </p>
       </div>
 
-      {/* Button recipe */}
       <section className="border-border bg-card overflow-hidden rounded-xl border">
         <div className="bg-dots flex min-h-32 items-center justify-center p-6">
           <button type="button" className={btnClasses}>
@@ -104,7 +103,6 @@ function UiRecipesPage() {
         </div>
       </section>
 
-      {/* Badge & Alert recipes */}
       <div className="grid gap-4 sm:grid-cols-2">
         <section className="border-border bg-card space-y-4 rounded-xl border p-5">
           <div className="flex items-center justify-between">

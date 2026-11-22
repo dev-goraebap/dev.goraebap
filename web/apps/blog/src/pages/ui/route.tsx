@@ -1,5 +1,5 @@
 import { Link, Outlet, createFileRoute } from "@tanstack/react-router";
-import { COMPONENT_DOCS } from "@/components/ui-docs/component-catalog";
+import { COMPONENT_DOCS } from "@/entities/ui-doc";
 
 export const Route = createFileRoute("/ui")({
   component: UiDocsLayout,
@@ -18,7 +18,6 @@ const GROUPS = ["입력 · 동작", "표시 · 구조", "오버레이 · 탐색"
 function UiDocsLayout() {
   return (
     <div className="flex flex-col gap-8 lg:flex-row lg:gap-12">
-      {/* Mobile horizontal quick nav */}
       <nav aria-label="디자인 시스템 메뉴" className="flex gap-1.5 overflow-x-auto pb-2 lg:hidden">
         {LAYER_LINKS.map((item) => (
           <Link
@@ -33,7 +32,6 @@ function UiDocsLayout() {
         ))}
       </nav>
 
-      {/* Desktop sticky sidebar (shadcn docs style) */}
       <aside className="hidden w-56 shrink-0 lg:block">
         <div className="sticky top-22 max-h-[calc(100vh-6rem)] space-y-6 overflow-y-auto pr-2">
           <div className="space-y-1">
@@ -79,7 +77,6 @@ function UiDocsLayout() {
         </div>
       </aside>
 
-      {/* Main doc content */}
       <div className="min-w-0 flex-1">
         <Outlet />
       </div>

@@ -22,7 +22,12 @@ export default defineConfig({
     },
     tanstackRouter({
       target: "react",
+      routesDirectory: "./src/pages",
+      generatedRouteTree: "./src/app/router/routeTree.gen.ts",
       autoCodeSplitting: true,
+      indexToken: "page",
+      // /ui 라우트 폴더가 있으므로 ui 세그먼트 대신 api·model·lib·config·index.ts만 라우트에서 제외한다.
+      routeFileIgnorePattern: "^(api|model|lib|config|index\\.ts)$",
     }),
     react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
     tailwindcss(),

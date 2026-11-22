@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui/components/button";
-import { posts, type PostCategory } from "@/lib/posts";
+import { posts, type PostCategory } from "@/entities/post";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -19,7 +19,6 @@ function HomePage() {
 
   return (
     <div className="space-y-16">
-      {/* Intro: restrained editorial orientation */}
       <section className="max-w-2xl space-y-4">
         <p className="text-blog-accent font-mono text-xs">WRITING · DESIGN SYSTEM · CONTEXT</p>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -37,7 +36,6 @@ function HomePage() {
         </p>
       </section>
 
-      {/* Writing index */}
       <section aria-labelledby="writing-heading" className="space-y-5">
         <div className="border-border flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-baseline gap-2.5">
@@ -98,15 +96,14 @@ function HomePage() {
         </ul>
       </section>
 
-      {/* Live UI & shadcn templates strip */}
       <section aria-labelledby="templates-heading" className="space-y-5">
         <div className="border-border flex items-center justify-between border-b pb-4">
           <div className="space-y-0.5">
             <h2 id="templates-heading" className="text-base font-semibold tracking-tight">
-              UI & shadcn 템플릿
+              5계층 디자인 시스템 & 컴포넌트
             </h2>
             <p className="text-muted-foreground text-xs">
-              Base UI + Tailwind v4 기반. 레지스트리 JSON으로 다른 프로젝트에도 설치할 수 있습니다.
+              Design Tokens · Style Recipes · Headless Primitives · UI Components · Patterns
             </p>
           </div>
           <Link
@@ -130,34 +127,38 @@ function HomePage() {
             </div>
             <div className="flex items-center justify-between gap-2">
               <div>
-                <h3 className="text-sm font-medium">Button</h3>
+                <h3 className="text-sm font-medium">UI Components (13종)</h3>
                 <p className="text-muted-foreground text-xs">
-                  Base UI 기반 프리미티브 · 5 variants
+                  Desktop · Mobile 390px 라이브 프리뷰 지원
                 </p>
               </div>
-              <span className="bg-secondary text-muted-foreground rounded px-2 py-0.5 font-mono text-[11px]">
-                registry:ui
-              </span>
+              <Link
+                to="/ui/components/$slug"
+                params={{ slug: "button" }}
+                className="text-blog-accent text-xs font-medium hover:underline"
+              >
+                열기 →
+              </Link>
             </div>
           </div>
 
           <div className="border-border bg-card flex flex-col justify-between gap-5 rounded-lg border p-5">
             <div className="bg-dots border-border/70 flex min-h-28 flex-col justify-center gap-2 rounded-md border p-4">
               <div className="border-border bg-background flex items-center justify-between rounded-md border px-3 py-2 text-xs">
-                <span className="font-medium">문서 읽기 모드</span>
+                <span className="font-medium">Design Tokens</span>
                 <span className="bg-secondary text-muted-foreground rounded px-1.5 py-0.5 font-mono text-[10px]">
-                  Human / Agent
+                  App / Editorial
                 </span>
               </div>
               <div className="border-border bg-background flex items-center justify-between rounded-md border px-3 py-2 text-xs">
-                <span className="text-muted-foreground">레지스트리 CLI 복사 바</span>
-                <span className="text-blog-accent font-mono text-[10px]">Interactive</span>
+                <span className="text-muted-foreground">Style Recipes (CVA)</span>
+                <span className="text-blog-accent font-mono text-[10px]">Framework-agnostic</span>
               </div>
             </div>
             <div className="flex items-center justify-between gap-2">
               <div>
-                <h3 className="text-sm font-medium">Editorial Patterns</h3>
-                <p className="text-muted-foreground text-xs">문서·블로그용 인터랙티브 패턴 묶음</p>
+                <h3 className="text-sm font-medium">5계층 문서</h3>
+                <p className="text-muted-foreground text-xs">토큰·레시피·프리미티브·패턴 가이드</p>
               </div>
               <Link to="/ui" className="text-blog-accent text-xs font-medium hover:underline">
                 열기 →

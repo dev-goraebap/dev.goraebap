@@ -1,11 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui/components/badge";
 import { Button } from "@goraebap/ui/components/button";
-import { CopyCommand } from "@/components/copy-command";
-import { getComponentDoc } from "@/components/ui-docs/component-catalog";
-import { PreviewStage } from "@/components/ui-docs/preview-stage";
+import { getComponentDoc } from "@/entities/ui-doc";
+import { CopyCommand, PreviewStage } from "@/shared/ui";
 
-export const Route = createFileRoute("/ui/components/$slug")({
+export const Route = createFileRoute("/ui/components/$slug/")({
   component: ComponentDocPage,
 });
 

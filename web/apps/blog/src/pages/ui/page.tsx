@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui/components/badge";
 import { Card, CardDescription, CardHeader, CardTitle } from "@goraebap/ui/components/card";
-import { COMPONENT_DOCS } from "@/components/ui-docs/component-catalog";
+import { COMPONENT_DOCS } from "@/entities/ui-doc";
 
 export const Route = createFileRoute("/ui/")({
   component: UiOverviewPage,
@@ -100,11 +100,9 @@ function UiOverviewPage() {
       </section>
 
       <section className="space-y-4">
-        <div className="flex items-baseline justify-between">
-          <h2 className="text-base font-semibold tracking-tight">
-            컴포넌트 빠른 탐색 ({COMPONENT_DOCS.length})
-          </h2>
-        </div>
+        <h2 className="text-base font-semibold tracking-tight">
+          컴포넌트 빠른 탐색 ({COMPONENT_DOCS.length})
+        </h2>
         <div className="grid gap-3 sm:grid-cols-3">
           {COMPONENT_DOCS.map((comp) => (
             <Link

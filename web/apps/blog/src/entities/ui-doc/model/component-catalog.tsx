@@ -27,9 +27,9 @@ import {
   InteractiveCheckboxDemo,
   InteractiveDialogDemo,
   InteractiveSwitchDemo,
-} from "./interactive-demos";
+} from "../ui/InteractiveDemos";
 
-export interface ComponentDocSpec {
+interface ComponentDocSpec {
   slug: string;
   name: string;
   group: "입력 · 동작" | "표시 · 구조" | "오버레이 · 탐색";

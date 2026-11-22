@@ -1,5 +1,5 @@
 import { Link, Outlet, createRootRoute, useRouterState } from "@tanstack/react-router";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/shared/ui";
 
 export const Route = createRootRoute({
   component: RootLayout,

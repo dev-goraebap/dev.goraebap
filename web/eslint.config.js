@@ -34,7 +34,6 @@ export default tseslint.config(
   },
   {
     files: [
-      "apps/*/src/routes/**/*.{ts,tsx}",
       "apps/*/src/pages/**/{__root,route,page}.tsx",
       "packages/ui/src/components/**/*.{ts,tsx}",
     ],

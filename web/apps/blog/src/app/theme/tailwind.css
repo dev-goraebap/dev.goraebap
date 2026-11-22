@@ -1,8 +1,8 @@
 @import "@goraebap/design-system/styles/base.css";
 @import "@goraebap/design-system/styles/theme-app.css";
 @import "@goraebap/design-system/styles/theme-editorial.css";
-@source "../../../packages/design-system/src";
-@source "../../../packages/ui/src";
+@source "../../../../../packages/design-system/src";
+@source "../../../../../packages/ui/src";
 
 :root {
   --blog-accent: oklch(0.46 0.12 245);

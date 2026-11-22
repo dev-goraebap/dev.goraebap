@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui/components/badge";
 
-export const Route = createFileRoute("/ui/tokens")({
+export const Route = createFileRoute("/ui/tokens/")({
   component: UiTokensPage,
 });
 
@@ -26,7 +26,11 @@ const COLORS = [
     swatch: "bg-background border-2 border-border text-foreground",
     text: "Border",
   },
-  { name: "--input", swatch: "bg-background border-2 border-input text-foreground", text: "Input" },
+  {
+    name: "--input",
+    swatch: "bg-background border-2 border-input text-foreground",
+    text: "Input",
+  },
 ];
 
 function UiTokensPage() {

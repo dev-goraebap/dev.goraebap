@@ -25,7 +25,6 @@ export function PreviewStage({ title, code, mobileNote, children }: PreviewStage
 
   return (
     <div className="border-border bg-card overflow-hidden rounded-xl border">
-      {/* Toolbar */}
       <div className="border-border bg-secondary/40 flex flex-wrap items-center justify-between gap-2 border-b px-3 py-2">
         <div className="flex items-center gap-2">
           <div className="border-border bg-background inline-flex rounded-md border p-0.5 text-xs">
@@ -123,7 +122,6 @@ export function PreviewStage({ title, code, mobileNote, children }: PreviewStage
         </div>
       </div>
 
-      {/* Body */}
       {tab === "preview" ? (
         <div
           data-ds-theme={theme}

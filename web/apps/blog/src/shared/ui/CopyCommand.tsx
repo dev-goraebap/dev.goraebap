@@ -26,7 +26,7 @@ export function CopyCommand({ command, label }: CopyCommandProps) {
       </div>
       <button
         type="button"
-        onClick={handleCopy}
+        onClick={() => void handleCopy()}
         className="text-muted-foreground hover:bg-background hover:text-foreground shrink-0 cursor-pointer rounded px-2 py-1 text-[11px] font-medium transition-colors"
       >
         {copied ? "복사됨" : "복사"}

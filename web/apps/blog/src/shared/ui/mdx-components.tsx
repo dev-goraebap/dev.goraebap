@@ -1,7 +1,7 @@
 import type { MDXComponents } from "mdx/types";
 import { Button } from "@goraebap/ui/components/button";
-import { CopyCommand } from "@/components/copy-command";
-import { LivePreview } from "@/components/live-preview";
+import { CopyCommand } from "./CopyCommand";
+import { LivePreview } from "./LivePreview";
 
 export const mdxComponents: MDXComponents = {
   h2: (props) => (
@@ -66,7 +66,6 @@ export const mdxComponents: MDXComponents = {
   td: (props) => (
     <td className="border-border/70 text-foreground/90 border-b px-3 py-2" {...props} />
   ),
-  // Live components usable directly inside MDX posts
   Button,
   CopyCommand,
   LivePreview,

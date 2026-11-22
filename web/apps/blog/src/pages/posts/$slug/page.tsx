@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui/components/button";
-import { mdxComponents } from "@/components/mdx-components";
-import { getPostBySlug } from "@/lib/posts";
+import { getPostBySlug } from "@/entities/post";
+import { mdxComponents } from "@/shared/ui";
 
-export const Route = createFileRoute("/posts/$slug")({
+export const Route = createFileRoute("/posts/$slug/")({
   component: PostDetailPage,
 });
 
@@ -82,7 +82,7 @@ function PostDetailPage() {
           </div>
           <button
             type="button"
-            onClick={handleCopyMarkdown}
+            onClick={() => void handleCopyMarkdown()}
             className="border-border text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded-md border px-2.5 py-1 text-xs font-medium transition-colors"
           >
             {copied ? "복사됨" : "MDX 복사"}

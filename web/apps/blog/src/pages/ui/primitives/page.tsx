@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@goraebap/ui/components/table";
 
-export const Route = createFileRoute("/ui/primitives")({
+export const Route = createFileRoute("/ui/primitives/")({
   component: UiPrimitivesPage,
 });
 
