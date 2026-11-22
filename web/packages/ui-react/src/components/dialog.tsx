@@ -7,7 +7,7 @@ import {
   dialogSheetHandleVariants,
   type DialogPopupRecipeProps,
 } from "@goraebap/design-system/recipes/dialog";
-import { X } from "lucide-react";
+import { SystemIcon } from "../icons";
 import type { ComponentProps } from "react";
 
 export const Dialog = BaseDialog.Root;
@@ -40,7 +40,7 @@ export function DialogContent({
         {children}
         {showCloseButton && (
           <BaseDialog.Close aria-label="닫기" className={dialogCloseButtonVariants()}>
-            <X className="size-4" />
+            <SystemIcon name="close" className="size-4" />
           </BaseDialog.Close>
         )}
       </BaseDialog.Popup>

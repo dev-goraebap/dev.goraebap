@@ -17,7 +17,11 @@ function RootLayout() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
 
   if (pathname.startsWith("/preview")) {
-    return <Outlet />;
+    return (
+      <DesignConfigProvider>
+        <Outlet />
+      </DesignConfigProvider>
+    );
   }
 
   const isNavActive = (to: string) =>
@@ -26,7 +30,8 @@ function RootLayout() {
       : pathname.startsWith(to);
 
   return (
-    <div className="bg-background text-foreground flex min-h-screen flex-col">
+    <DesignConfigProvider>
+      <div className="bg-background text-foreground flex min-h-screen flex-col">
       <header className="border-border/80 bg-background/85 sticky top-0 z-30 border-b backdrop-blur-md">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-5 sm:px-6">
           {/* Left Brand */}
@@ -110,5 +115,6 @@ function RootLayout() {
         </div>
       </footer>
     </div>
+    </DesignConfigProvider>
   );
 }
