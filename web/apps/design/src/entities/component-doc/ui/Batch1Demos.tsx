@@ -318,7 +318,7 @@ export function NativeAlertDialogDemo() {
       <dialog
         ref={dialogRef}
         data-surface="dialog"
-        className={`goraebap-native-dialog m-0 max-h-none max-w-none ${alertDialogPopupVariants()}`}
+        className={`goraebap-native-dialog m-0 max-h-none ${alertDialogPopupVariants()}`}
       >
         <h3 className="text-base font-semibold tracking-tight">프로젝트를 삭제할까요?</h3>
         <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed">

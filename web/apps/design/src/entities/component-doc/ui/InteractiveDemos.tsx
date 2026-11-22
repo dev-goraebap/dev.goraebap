@@ -113,8 +113,8 @@ export function NativeDialogDemo({ isMobile }: { isMobile: boolean }) {
         onClick={(e) => {
           if (e.target === e.currentTarget) dialogRef.current?.close();
         }}
-        className={`goraebap-native-dialog m-0 max-h-none max-w-none ${
-          isMobile ? "top-auto" : ""
+        className={`goraebap-native-dialog m-0 max-h-none ${
+          isMobile ? "top-auto max-w-none" : ""
         } ${dialogPopupVariants({ surface })}`}
       >
         {isMobile && <div aria-hidden="true" className={dialogSheetHandleVariants()} />}
