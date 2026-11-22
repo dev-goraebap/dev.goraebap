@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Moon, Sun } from "lucide-react";
+import { Button } from "@goraebap/ui-react/components/button";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 
 export function ModeToggle() {
   const [dark, setDark] = useState(() =>
@@ -14,14 +15,17 @@ export function ModeToggle() {
   }
 
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
+      size="icon"
+      shape="pill"
       onClick={toggle}
       aria-label={dark ? "라이트 모드로 전환" : "다크 모드로 전환"}
       title={dark ? "라이트 모드로 전환" : "다크 모드로 전환"}
-      className="border-border bg-secondary/60 text-muted-foreground hover:bg-accent hover:text-foreground inline-flex size-8 cursor-pointer items-center justify-center rounded-full border transition-colors"
+      className="bg-secondary/60 text-muted-foreground hover:text-foreground size-8"
     >
-      {dark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-    </button>
+      <SystemIcon name={dark ? "sun" : "moon"} className="size-4" />
+    </Button>
   );
 }

@@ -41,7 +41,7 @@ function DocsPrimitivesPage() {
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">
-          Pure HTML &amp; Headless Primitives
+          Vanilla HTML/TS &amp; Headless Primitives
         </h1>
         <p className="text-muted-foreground text-base leading-relaxed">
           스타일 계층과 상호작용 계층을 분리해 필요한 만큼만 조합합니다. 단순한 UI는 네이티브 HTML에
@@ -52,14 +52,14 @@ function DocsPrimitivesPage() {
 
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">
-          Pure HTML과 헤드리스 프리미티브의 경계
+          Vanilla HTML/TS와 헤드리스 프리미티브의 경계
         </h2>
         <div className="border-border bg-card overflow-hidden rounded-2xl border">
           <Table>
             <TableHeader className="bg-muted/40">
               <TableRow className="hover:bg-transparent">
                 <TableHead className="px-4 py-3">컴포넌트</TableHead>
-                <TableHead className="px-4 py-3">Pure HTML + Recipe</TableHead>
+                <TableHead className="px-4 py-3">Vanilla HTML/TS + Recipe</TableHead>
                 <TableHead className="px-4 py-3">헤드리스 프리미티브의 역할</TableHead>
               </TableRow>
             </TableHeader>
@@ -81,12 +81,12 @@ function DocsPrimitivesPage() {
         <CopyCodeBlock
           label="adapter-mapping.txt"
           language="text"
-          code={`Tokens             : @goraebap/design-system/styles
-Recipes            : @goraebap/design-system/recipes/*
-──────────────────────────────────────────────────────────
-Pure HTML Adapter  : Native HTML (<button>, <dialog>, <details>, <table>)
-React Adapter      : @base-ui/react  → @goraebap/ui-react
-Angular Adapter    : @spartan-ng/brain + @goraebap/design-system/recipes/*`}
+          code={`Tokens                 : @goraebap/design-system/styles
+Recipes                : @goraebap/design-system/recipes/*
+────────────────────────────────────────────────────────────────────
+Vanilla HTML/TS Adapter: Native HTML + @goraebap/ui-html (Vite + Tailwind)
+React Adapter          : @base-ui/react  → @goraebap/ui-react
+Angular Adapter        : @spartan-ng/brain + @goraebap/design-system/recipes/*`}
         />
       </section>
     </article>

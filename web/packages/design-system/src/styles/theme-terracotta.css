@@ -1,0 +1,55 @@
+/*
+ * Terracotta 테마 (Warm Sand — 따뜻한 샌드 캔버스와 테라코타 포인트)
+ */
+[data-ds-theme="terracotta"] {
+  --sidebar: oklch(0.956 0.012 65);
+  --background: oklch(0.986 0.008 68);
+  --foreground: oklch(0.22 0.024 45);
+  --card: oklch(1 0.003 68);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0.003 68);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.55 0.155 42);
+  --primary-foreground: oklch(0.985 0.004 68);
+  --secondary: oklch(0.945 0.016 65);
+  --secondary-foreground: oklch(0.26 0.028 45);
+  --muted: oklch(0.945 0.014 65);
+  --muted-foreground: oklch(0.48 0.022 50);
+  --accent: oklch(0.935 0.022 62);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: #ffffff;
+  --success: oklch(0.5 0.13 152);
+  --warning: oklch(0.64 0.16 68);
+  --info: oklch(0.48 0.12 245);
+  --border: oklch(0.89 0.016 65);
+  --input: oklch(0.84 0.02 62);
+  --ring: oklch(0.55 0.155 42);
+}
+
+.dark[data-ds-theme="terracotta"],
+.dark [data-ds-theme="terracotta"] {
+  --sidebar: oklch(0.15 0.014 48);
+  --background: oklch(0.18 0.016 48);
+  --foreground: oklch(0.945 0.008 68);
+  --card: oklch(0.215 0.018 48);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.24 0.02 48);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.72 0.145 48);
+  --primary-foreground: oklch(0.17 0.024 45);
+  --secondary: oklch(0.26 0.02 48);
+  --secondary-foreground: oklch(0.92 0.01 68);
+  --muted: oklch(0.235 0.018 48);
+  --muted-foreground: oklch(0.7 0.02 60);
+  --accent: oklch(0.275 0.024 48);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: #ffffff;
+  --success: oklch(0.68 0.13 152);
+  --warning: oklch(0.76 0.14 75);
+  --info: oklch(0.7 0.12 245);
+  --border: oklch(0.95 0.01 65 / 12%);
+  --input: oklch(0.95 0.01 65 / 18%);
+  --ring: oklch(0.72 0.145 48);
+}

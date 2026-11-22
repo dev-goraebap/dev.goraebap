@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
+import { Avatar, AvatarFallback } from "@goraebap/ui-react/components/avatar";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { Button } from "@goraebap/ui-react/components/button";
 import {
@@ -21,16 +22,16 @@ import {
   DialogTrigger,
 } from "@goraebap/ui-react/components/dialog";
 import { Input } from "@goraebap/ui-react/components/input";
+import { Progress } from "@goraebap/ui-react/components/progress";
 import { Switch } from "@goraebap/ui-react/components/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import {
-  ACCENT_OPTIONS,
-  BASE_OPTIONS,
   FONT_OPTIONS,
   HEADING_OPTIONS,
   ICON_SET_OPTIONS,
   RADIUS_OPTIONS,
+  THEME_PRESETS,
   useDesignConfig,
 } from "@/shared/lib/design-config";
 import { CopyCodeBlock } from "@/shared/ui";
@@ -39,34 +40,12 @@ export const Route = createFileRoute("/themes/")({
   component: ThemesPage,
 });
 
-const COMPARE_THEMES = [
-  {
-    id: "app" as const,
-    name: "App Theme",
-    token: 'data-ds-theme="app"',
-    target: "작업 화면 · 대시보드 · 설정",
-    desc: "중립 무채색과 뚜렷한 면 위계로 정보 밀도가 높은 작업 화면에 맞춘 테마입니다.",
-  },
-  {
-    id: "editorial" as const,
-    name: "Editorial Theme",
-    token: 'data-ds-theme="editorial"',
-    target: "블로그 · 기술 문서 · 아티클",
-    desc: "따뜻한 종이 톤으로 긴 글과 문서를 편안하게 읽도록 맞춘 테마입니다.",
-  },
-];
-
 function ThemesPage() {
   const { config, updateConfig, resetConfig } = useDesignConfig();
   const [notify, setNotify] = useState(true);
-  const [keepSession, setKeepSession] = useState(true);
+  const [autoDeploy, setAutoDeploy] = useState(true);
 
-  const htmlAttrs = [
-    `data-ds-theme="${config.base}"`,
-    config.accent !== "default" ? `data-ds-accent="${config.accent}"` : null,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  const activePreset = THEME_PRESETS.find((t) => t.id === config.theme) ?? THEME_PRESETS[0];
 
   const cssVars = [
     config.radius !== "0.5rem" ? `  --radius: ${config.radius};` : null,
@@ -78,223 +57,267 @@ function ThemesPage() {
       : null,
   ].filter(Boolean);
 
-  const generatedCode = `<html ${htmlAttrs}>
-  <!-- IconProvider: value="${config.iconSet}" -->
-</html>${cssVars.length > 0 ? `\n\n:root {\n${cssVars.join("\n")}\n}` : ""}`;
+  const generatedCode = `@import "@goraebap/design-system/styles/base.css";
+@import "${activePreset.cssFile}";
+
+<!-- <html data-ds-theme="${config.theme}"> · IconProvider="${config.iconSet}" -->${
+    cssVars.length > 0 ? `\n\n:root {\n${cssVars.join("\n")}\n}` : ""
+  }`;
 
   return (
-    <main className="mx-auto max-w-7xl space-y-14 px-6 py-12">
+    <main className="mx-auto max-w-7xl space-y-10 px-6 py-12">
       <header className="border-border flex flex-wrap items-end justify-between gap-4 border-b pb-8">
         <div className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight">Themes</h1>
-          <p className="text-muted-foreground max-w-2xl text-sm leading-relaxed">
-            바닥 팔레트(Base Color), 포인트 색(Theme Color), 반경(Radius), 폰트, 아이콘 세트를
-            조합해 사이트 전체와 컴포넌트의 분위기를 실시간으로 바꿉니다.
+          <h1 className="text-3xl font-semibold tracking-tight">테마</h1>
+          <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
+            Neutral을 기본으로, 라이트·다크 토큰이 세트로 구성된 5가지 색상 분위기와 반경·폰트·아이콘을
+            조합해 사이트 전체에 바로 적용합니다.
           </p>
         </div>
         <Button variant="outline" size="sm" onClick={resetConfig}>
           <SystemIcon name="reset" className="size-3.5" />
-          <span>기본값으로 초기화</span>
+          <span>초기화</span>
         </Button>
       </header>
 
-      {/* Interactive Theme Customizer */}
-      <section className="grid gap-8 lg:grid-cols-12">
-        {/* Controls Column */}
-        <Card className="space-y-6 lg:col-span-5">
-          {/* Base Color */}
-          <div className="space-y-2.5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold">Base Color</h2>
-              <span className="text-muted-foreground font-mono text-[11px]">data-ds-theme</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {BASE_OPTIONS.map((opt) => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => updateConfig("base", opt.id)}
-                  className={
-                    config.base === opt.id
-                      ? "border-primary bg-accent/60 cursor-pointer rounded-lg border-2 p-3 text-left transition-colors"
-                      : "border-border bg-background hover:bg-accent/40 cursor-pointer rounded-lg border p-3 text-left transition-colors"
-                  }
-                >
-                  <p className="text-xs font-medium">{opt.label}</p>
-                  <p className="text-muted-foreground mt-0.5 text-[11px]">{opt.desc}</p>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Theme Color (Accent) */}
-          <div className="space-y-2.5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold">Theme Color</h2>
-              <span className="text-muted-foreground font-mono text-[11px]">data-ds-accent</span>
-            </div>
-            <div className="grid grid-cols-3 gap-2">
-              {ACCENT_OPTIONS.map((opt) => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => updateConfig("accent", opt.id)}
-                  className={
-                    config.accent === opt.id
-                      ? "border-primary bg-accent/60 flex cursor-pointer items-center gap-2 rounded-lg border-2 px-3 py-2 text-xs font-medium transition-colors"
-                      : "border-border bg-background hover:bg-accent/40 flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 text-xs transition-colors"
-                  }
-                >
-                  <span
-                    className="border-border size-3.5 shrink-0 rounded-full border"
-                    style={{ backgroundColor: opt.swatch }}
-                  />
-                  <span>{opt.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Radius */}
-          <div className="space-y-2.5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold">Radius</h2>
-              <span className="text-muted-foreground font-mono text-[11px]">--radius</span>
-            </div>
-            <div className="grid grid-cols-5 gap-2">
-              {RADIUS_OPTIONS.map((opt) => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => updateConfig("radius", opt.id)}
-                  className={
-                    config.radius === opt.id
-                      ? "border-primary bg-accent/60 cursor-pointer rounded-lg border-2 py-2 font-mono text-xs font-medium transition-colors"
-                      : "border-border bg-background hover:bg-accent/40 cursor-pointer rounded-lg border py-2 font-mono text-xs transition-colors"
-                  }
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Body Font & Heading Font */}
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div className="space-y-2">
-              <h2 className="text-sm font-semibold">Font</h2>
-              <div className="space-y-1.5">
-                {FONT_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => updateConfig("font", opt.id)}
-                    className={
-                      config.font === opt.id
-                        ? "border-primary bg-accent/60 block w-full cursor-pointer rounded-lg border-2 px-3 py-2 text-left text-xs font-medium transition-colors"
-                        : "border-border bg-background hover:bg-accent/40 block w-full cursor-pointer rounded-lg border px-3 py-2 text-left text-xs transition-colors"
-                    }
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <h2 className="text-sm font-semibold">Heading</h2>
-              <div className="space-y-1.5">
-                {HEADING_OPTIONS.map((opt) => (
-                  <button
-                    key={opt.id}
-                    type="button"
-                    onClick={() => updateConfig("heading", opt.id)}
-                    className={
-                      config.heading === opt.id
-                        ? "border-primary bg-accent/60 block w-full cursor-pointer rounded-lg border-2 px-3 py-2 text-left text-xs font-medium transition-colors"
-                        : "border-border bg-background hover:bg-accent/40 block w-full cursor-pointer rounded-lg border px-3 py-2 text-left text-xs transition-colors"
-                    }
-                  >
-                    {opt.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Icon Library */}
-          <div className="space-y-2.5">
-            <div className="flex items-baseline justify-between">
-              <h2 className="text-sm font-semibold">Icon Library</h2>
-              <span className="text-muted-foreground font-mono text-[11px]">IconProvider</span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              {ICON_SET_OPTIONS.map((opt) => (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => updateConfig("iconSet", opt.id)}
-                  className={
-                    config.iconSet === opt.id
-                      ? "border-primary bg-accent/60 flex cursor-pointer items-center gap-2.5 rounded-lg border-2 p-3 text-left transition-colors"
-                      : "border-border bg-background hover:bg-accent/40 flex cursor-pointer items-center gap-2.5 rounded-lg border p-3 text-left transition-colors"
-                  }
-                >
-                  <SystemIcon name="sun" iconSet={opt.id} className="size-4 shrink-0" />
-                  <div>
-                    <p className="text-xs font-medium">{opt.label}</p>
-                    <p className="text-muted-foreground text-[11px]">{opt.desc}</p>
+      {/* 1. Theme Palette Picker (5 complete light/dark palettes) */}
+      <section className="space-y-3">
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-sm font-semibold">색상 테마</h2>
+          <span className="text-muted-foreground font-mono text-xs">
+            data-ds-theme=&quot;{config.theme}&quot;
+          </span>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          {THEME_PRESETS.map((preset) => {
+            const isSelected = config.theme === preset.id;
+            return (
+              <button
+                key={preset.id}
+                type="button"
+                onClick={() => updateConfig("theme", preset.id)}
+                className={
+                  isSelected
+                    ? "border-primary bg-card ring-primary/20 flex cursor-pointer flex-col gap-3 rounded-2xl border-2 p-4 text-left ring-2 transition-all"
+                    : "border-border bg-card hover:border-foreground/30 flex cursor-pointer flex-col gap-3 rounded-2xl border p-4 text-left transition-all"
+                }
+              >
+                <div className="flex items-center gap-1.5">
+                  {preset.swatches.map((hex, i) => (
+                    <span
+                      key={i}
+                      className="border-border/80 h-5 flex-1 rounded-md border"
+                      style={{ backgroundColor: hex }}
+                    />
+                  ))}
+                </div>
+                <div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-sm font-semibold">{preset.name}</span>
+                    {isSelected && <SystemIcon name="check" className="text-primary size-3.5" />}
                   </div>
-                </button>
-              ))}
-            </div>
-          </div>
-        </Card>
+                  <p className="text-muted-foreground mt-0.5 text-xs">{preset.subtitle}</p>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </section>
 
-        {/* Live Preview Column */}
-        <div className="space-y-6 lg:col-span-7">
-          <div className="border-border bg-dots bg-background/70 space-y-5 rounded-2xl border p-6">
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <h2 className="text-lg font-semibold tracking-tight">실시간 미리보기</h2>
-              <div className="flex items-center gap-1.5">
-                <Badge>{config.base}</Badge>
-                <Badge variant="secondary">{config.accent}</Badge>
-                <Badge variant="outline">{config.iconSet}</Badge>
+      {/* 2. Compact Controls Bar (Radius, Font, Heading, Icons) */}
+      <section className="border-border bg-card grid gap-5 rounded-2xl border p-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="space-y-2">
+          <p className="text-muted-foreground font-mono text-[11px] font-medium uppercase">
+            Radius (--radius)
+          </p>
+          <div className="grid grid-cols-5 gap-1">
+            {RADIUS_OPTIONS.map((opt) => (
+              <Button
+                key={opt.id}
+                type="button"
+                size="sm"
+                variant={config.radius === opt.id ? "default" : "outline"}
+                onClick={() => updateConfig("radius", opt.id)}
+                className="h-8 px-1 font-mono text-xs"
+              >
+                {opt.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-muted-foreground font-mono text-[11px] font-medium uppercase">
+            Body Font
+          </p>
+          <div className="grid grid-cols-2 gap-1.5">
+            {FONT_OPTIONS.map((opt) => (
+              <Button
+                key={opt.id}
+                type="button"
+                size="sm"
+                variant={config.font === opt.id ? "default" : "outline"}
+                onClick={() => updateConfig("font", opt.id)}
+                className="h-8 px-2 text-xs"
+              >
+                {opt.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-muted-foreground font-mono text-[11px] font-medium uppercase">
+            Heading Font
+          </p>
+          <div className="grid grid-cols-3 gap-1">
+            {HEADING_OPTIONS.map((opt) => (
+              <Button
+                key={opt.id}
+                type="button"
+                size="sm"
+                variant={config.heading === opt.id ? "default" : "outline"}
+                onClick={() => updateConfig("heading", opt.id)}
+                className="h-8 truncate px-2 text-xs"
+              >
+                {opt.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <p className="text-muted-foreground font-mono text-[11px] font-medium uppercase">
+            Icon Library
+          </p>
+          <div className="grid grid-cols-2 gap-1.5">
+            {ICON_SET_OPTIONS.map((opt) => (
+              <Button
+                key={opt.id}
+                type="button"
+                size="sm"
+                variant={config.iconSet === opt.id ? "default" : "outline"}
+                onClick={() => updateConfig("iconSet", opt.id)}
+                className="h-8 gap-1.5 px-2 text-xs"
+              >
+                <SystemIcon name="sun" iconSet={opt.id} className="size-3.5" />
+                <span>{opt.label}</span>
+              </Button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. Realistic Mini-App Preview Canvas */}
+      <section className="border-border bg-sidebar overflow-hidden rounded-3xl border shadow-xs">
+        <div className="grid lg:grid-cols-12">
+          {/* Mini Sidebar */}
+          <aside className="border-border hidden flex-col justify-between border-r p-4 lg:col-span-3 lg:flex">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 px-2">
+                <Avatar size="sm">
+                  <AvatarFallback>GB</AvatarFallback>
+                </Avatar>
+                <div className="min-w-0">
+                  <p className="truncate text-xs font-semibold">Goraebap Studio</p>
+                  <p className="text-muted-foreground truncate text-[11px]">{activePreset.name}</p>
+                </div>
+              </div>
+              <nav className="space-y-1 text-xs">
+                {[
+                  { label: "대시보드", icon: "overview" as const, active: true },
+                  { label: "컴포넌트", icon: "components" as const, active: false },
+                  { label: "레이아웃", icon: "layouts" as const, active: false },
+                  { label: "디테일", icon: "details" as const, active: false },
+                ].map((nav) => (
+                  <div
+                    key={nav.label}
+                    className={
+                      nav.active
+                        ? "bg-secondary text-foreground flex items-center gap-2 rounded-lg px-2.5 py-2 font-medium"
+                        : "text-muted-foreground flex items-center gap-2 rounded-lg px-2.5 py-2"
+                    }
+                  >
+                    <SystemIcon name={nav.icon} className="size-3.5" />
+                    <span>{nav.label}</span>
+                  </div>
+                ))}
+              </nav>
+            </div>
+            <div className="border-border bg-background rounded-xl border p-3">
+              <div className="flex items-center justify-between text-[11px]">
+                <span className="font-medium">월간 빌드 할당량</span>
+                <span className="text-muted-foreground font-mono">72%</span>
+              </div>
+              <Progress value={72} className="mt-2" />
+            </div>
+          </aside>
+
+          {/* Mini Main Surface */}
+          <div className="bg-background space-y-5 p-6 lg:col-span-9">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold tracking-tight">워크스페이스 미리보기</h2>
+                <p className="text-muted-foreground text-xs">
+                  사이드바(--sidebar), 본문(--background), 카드(--card), 팝오버(--popover) 위계를
+                  함께 확인합니다.
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <Dialog>
+                  <DialogTrigger render={<Button size="sm" variant="outline" />}>
+                    대화상자 확인
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogTitle>{activePreset.name} 테마 대화상자</DialogTitle>
+                    <DialogDescription>
+                      현재 선택한 색상, 모서리 반경, 아이콘 세트가 팝오버 면에도 그대로 적용됩니다.
+                    </DialogDescription>
+                    <div className="mt-4 flex justify-end gap-2">
+                      <DialogClose render={<Button size="sm" variant="ghost" />}>취소</DialogClose>
+                      <DialogClose render={<Button size="sm" />}>확인</DialogClose>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+                <Button size="sm" shape="pill">
+                  새 배포
+                </Button>
               </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
               <Card>
                 <CardHeader>
-                  <CardTitle>프로젝트 설정</CardTitle>
-                  <CardDescription>
-                    변경한 토큰이 버튼·입력·모서리에 즉시 반영됩니다.
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>프로젝트 설정</CardTitle>
+                    <Badge variant="secondary">운영 중</Badge>
+                  </div>
+                  <CardDescription>입력 칸, 스위치, 체크박스, 버튼 조합입니다.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Input defaultValue="dev.goraebap" aria-label="프로젝트 이름" />
+                  <Input defaultValue="design.goraebap.xyz" aria-label="도메인" />
                   <div className="flex items-center justify-between pt-1">
-                    <span className="text-xs font-medium">알림 받기</span>
-                    <Switch checked={notify} onCheckedChange={setNotify} aria-label="알림 받기" />
+                    <span className="text-xs font-medium">배포 알림 받기</span>
+                    <Switch checked={notify} onCheckedChange={setNotify} aria-label="배포 알림" />
                   </div>
                   <div className="flex items-center gap-2">
                     <Checkbox
-                      id="theme-preview-check"
-                      checked={keepSession}
-                      onCheckedChange={setKeepSession}
+                      id="theme-auto-deploy"
+                      checked={autoDeploy}
+                      onCheckedChange={setAutoDeploy}
                     />
-                    <label htmlFor="theme-preview-check" className="cursor-pointer text-xs">
-                      설정을 브라우저에 저장
+                    <label htmlFor="theme-auto-deploy" className="cursor-pointer text-xs">
+                      main 브랜치 푸시 시 자동 빌드
                     </label>
                   </div>
                 </CardContent>
-                <CardFooter className="flex-wrap">
+                <CardFooter>
                   <Button size="sm">저장</Button>
                   <Button size="sm" variant="secondary">
-                    미리보기
+                    임시 저장
                   </Button>
-                  <Button size="sm" shape="pill" variant="outline">
-                    Pill
+                  <Button size="sm" variant="ghost">
+                    취소
                   </Button>
                 </CardFooter>
               </Card>
@@ -302,108 +325,45 @@ function ThemesPage() {
               <div className="space-y-4">
                 <Card>
                   <CardHeader>
-                    <CardTitle>아이콘 · 탭 · 대화상자</CardTitle>
-                    <CardDescription>
-                      Icon Library를 바꾸면 닫기·체크·시스템 아이콘이 함께 바뀝니다.
-                    </CardDescription>
+                    <CardTitle>탭 · 상태 배지</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="text-foreground flex items-center gap-3">
-                      <SystemIcon name="search" className="size-4" />
-                      <SystemIcon name="copy" className="size-4" />
-                      <SystemIcon name="check" className="size-4" />
-                      <SystemIcon name="close" className="size-4" />
-                      <SystemIcon name="sun" className="size-4" />
-                      <SystemIcon name="moon" className="size-4" />
-                    </div>
-                    <Tabs defaultValue="app">
+                  <CardContent className="space-y-3">
+                    <Tabs defaultValue="summary">
                       <TabsList>
-                        <TabsTrigger value="app">개요</TabsTrigger>
-                        <TabsTrigger value="code">설정</TabsTrigger>
+                        <TabsTrigger value="summary">요약</TabsTrigger>
+                        <TabsTrigger value="tokens">토큰</TabsTrigger>
                       </TabsList>
-                      <TabsContent value="app" className="text-muted-foreground text-xs">
-                        다른 페이지로 이동해도 현재 설정이 그대로 유지됩니다.
+                      <TabsContent value="summary" className="text-muted-foreground text-xs">
+                        선택한 테마는 포털의 모든 컴포넌트와 레이아웃 페이지에도 그대로 유지됩니다.
                       </TabsContent>
-                      <TabsContent value="code" className="text-muted-foreground text-xs">
-                        아래 스니펫을 앱 루트에 적용하면 같은 스타일을 재현합니다.
+                      <TabsContent value="tokens" className="text-muted-foreground text-xs">
+                        라이트·다크 모드 전환 버튼으로 두 모드의 대비를 바로 비교할 수 있습니다.
                       </TabsContent>
                     </Tabs>
-                    <Dialog>
-                      <DialogTrigger render={<Button size="sm" variant="outline" />}>
-                        대화상자에서 확인
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogTitle>현재 테마가 적용된 대화상자</DialogTitle>
-                        <DialogDescription>
-                          우측 상단 닫기 아이콘과 모서리 반경, 포인트 색을 확인해 보세요.
-                        </DialogDescription>
-                        <div className="mt-4 flex justify-end gap-2">
-                          <DialogClose render={<Button size="sm" variant="ghost" />}>
-                            취소
-                          </DialogClose>
-                          <DialogClose render={<Button size="sm" />}>확인</DialogClose>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      <Badge>Primary</Badge>
+                      <Badge variant="secondary">Secondary</Badge>
+                      <Badge variant="outline">Outline</Badge>
+                      <Badge variant="destructive">Error</Badge>
+                    </div>
                   </CardContent>
                 </Card>
 
                 <Alert variant="info">
-                  <AlertTitle>전역 실시간 반영</AlertTitle>
+                  <AlertTitle>테마 실시간 적용</AlertTitle>
                   <AlertDescription>
-                    여기서 고른 설정은 컴포넌트·레이아웃 페이지에도 그대로 적용됩니다.
+                    헤더의 라이트/다크 전환과 함께 {activePreset.name} 테마의 양쪽 모드를 확인해
+                    보세요.
                   </AlertDescription>
                 </Alert>
               </div>
             </div>
           </div>
-
-          <CopyCodeBlock label="theme-config.html" language="html" code={generatedCode} />
         </div>
       </section>
 
-      {/* App vs Editorial Side-by-Side Comparison */}
-      <section className="space-y-6">
-        <h2 className="text-xl font-semibold tracking-tight">Base Color 비교</h2>
-        <div className="grid gap-6 lg:grid-cols-2">
-          {COMPARE_THEMES.map((t) => (
-            <section
-              key={t.id}
-              data-ds-theme={t.id}
-              className="border-border bg-background text-foreground space-y-5 rounded-3xl border p-6"
-            >
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <h3 className="text-lg font-semibold">{t.name}</h3>
-                  <p className="text-muted-foreground text-xs">{t.desc}</p>
-                </div>
-                <Badge variant="outline" className="font-mono">
-                  {t.token}
-                </Badge>
-              </div>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>워크스페이스 설정</CardTitle>
-                  <CardDescription>{t.target}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <Input defaultValue="hello@goraebap.xyz" readOnly />
-                </CardContent>
-                <CardFooter>
-                  <Button size="sm">저장</Button>
-                  <Button size="sm" variant="secondary">
-                    임시 저장
-                  </Button>
-                  <Button size="sm" variant="outline">
-                    취소
-                  </Button>
-                </CardFooter>
-              </Card>
-            </section>
-          ))}
-        </div>
-      </section>
+      {/* 4. Generated Import Snippet */}
+      <CopyCodeBlock label="적용 스니펫" language="css" code={generatedCode} />
     </main>
   );
 }

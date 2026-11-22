@@ -150,7 +150,7 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     recipePath: "@goraebap/design-system/recipes/button",
     pureHtmlLevel: "100% Native HTML",
     summary:
-      "동작을 실행하거나 링크로 이동하는 버튼입니다. Pure HTML <button>, React, Angular 예시 모두 같은 레시피를 씁니다.",
+      "동작을 실행하거나 링크로 이동하는 버튼입니다. Vanilla HTML/TS <button>, React, Angular 예시 모두 같은 레시피를 씁니다.",
     pureHtmlNote:
       "네이티브 <button>만으로 포커스, Enter와 Space 키 입력, 비활성화가 동작합니다. React와 Angular 어댑터는 라우터 링크 합성(render prop, directive)을 처리합니다.",
     mobileGuideline:
@@ -560,7 +560,7 @@ export function Example() {
     mobileGuideline: "좁은 폭에서 배지가 가로로 넘치지 않도록 flex-wrap과 함께 씁니다.",
     htmlCode: `<span class="\${badgeVariants({ variant: 'default' })}">원칙</span>
 <span class="\${badgeVariants({ variant: 'secondary' })}">진행 중</span>
-<span class="\${badgeVariants({ variant: 'outline' })}">Pure HTML</span>`,
+<span class="\${badgeVariants({ variant: 'outline' })}">Vanilla HTML/TS</span>`,
     reactCode: `import { Badge } from "@goraebap/ui-react/components/badge";
 
 export function Example() {
@@ -586,7 +586,7 @@ export function Example() {
       <div className="flex flex-wrap items-center justify-center gap-2 py-4">
         <span className={badgeVariants({ variant: "default" })}>원칙</span>
         <span className={badgeVariants({ variant: "secondary" })}>진행 중</span>
-        <span className={badgeVariants({ variant: "outline" })}>Pure HTML</span>
+        <span className={badgeVariants({ variant: "outline" })}>Vanilla HTML/TS</span>
         <span className={badgeVariants({ variant: "muted" })}>보관됨</span>
         <span className={badgeVariants({ variant: "destructive" })}>만료됨</span>
       </div>
@@ -950,7 +950,7 @@ export function Example() {
       <TableBody>
         <TableRow>
           <TableCell>apps/design</TableCell>
-          <TableCell>Pure HTML + React</TableCell>
+          <TableCell>Vanilla HTML/TS + React</TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -1066,7 +1066,7 @@ export function Example() {
     pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "같은 맥락 안의 보기를 전환하는 탭입니다. 키보드 화살표 이동을 지원합니다.",
     pureHtmlNote:
-      "Pure HTML <button role='tab'>로 외형은 구성할 수 있습니다. 좌우 화살표 키보드 이동(Roving Focus)과 aria-controls 연결은 Base UI나 Spartan Brain에서 처리합니다.",
+      "Vanilla HTML/TS에서 <button role='tab'>과 @goraebap/ui-html의 initTabs()로 화살표 키보드 이동과 탭 전환을 연결할 수 있습니다. 복잡한 제어는 Base UI나 Spartan Brain에서 처리합니다.",
     mobileGuideline: "탭 개수는 모바일 폭(390px)에서 잘리지 않게 2~4개 이내로 유지합니다.",
     htmlCode: `<div role="tablist" class="\${tabsListVariants()}">
   <button role="tab" aria-selected="true" data-active class="\${tabsTriggerVariants()}">Tokens</button>

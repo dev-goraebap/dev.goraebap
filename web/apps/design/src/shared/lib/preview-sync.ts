@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
+import type { ThemePresetId } from "./design-config";
 
 export const PREVIEW_SYNC_TYPE = "goraebap-preview-sync";
 
 export type PreviewAdapter = "html" | "react";
-export type PreviewTheme = "app" | "editorial";
+export type PreviewTheme = ThemePresetId;
+
+const ALLOWED_THEMES: readonly PreviewTheme[] = [
+  "app",
+  "editorial",
+  "ocean",
+  "forest",
+  "terracotta",
+];
 
 export interface PreviewSyncPayload {
   type: typeof PREVIEW_SYNC_TYPE;
@@ -41,7 +50,7 @@ export function usePreviewSync(defaults?: { adapter?: PreviewAdapter; theme?: Pr
     readInitialParam("adapter", ["html", "react"] as const, defaults?.adapter ?? "html"),
   );
   const [theme, setTheme] = useState<PreviewTheme>(() =>
-    readInitialParam("theme", ["app", "editorial"] as const, defaults?.theme ?? "app"),
+    readInitialParam("theme", ALLOWED_THEMES, defaults?.theme ?? "app"),
   );
 
   useEffect(() => {
@@ -58,7 +67,7 @@ export function usePreviewSync(defaults?: { adapter?: PreviewAdapter; theme?: Pr
       if (data.adapter === "html" || data.adapter === "react") {
         setAdapter(data.adapter);
       }
-      if (data.theme === "app" || data.theme === "editorial") {
+      if (data.theme && (ALLOWED_THEMES as readonly string[]).includes(data.theme)) {
         setTheme(data.theme);
       }
     }

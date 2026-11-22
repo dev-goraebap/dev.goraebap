@@ -11,7 +11,7 @@ function ComponentsOverviewPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">컴포넌트</h1>
         <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
-          Pure HTML 레시피와 React(Base UI), Angular(Spartan) 예시를 함께 제공하는 UI 컴포넌트
+          Vanilla HTML/TS 레시피와 React(Base UI), Angular(Spartan) 예시를 함께 제공하는 UI 컴포넌트
           라이브러리입니다.
         </p>
       </header>
@@ -41,7 +41,7 @@ function ComponentsOverviewPage() {
                     <div className="flex items-center justify-between px-1">
                       <span className="text-foreground text-sm font-medium">{item.name}</span>
                       <span className="text-muted-foreground font-mono text-[11px]">
-                        {item.pureHtmlLevel === "100% Native HTML" ? "Pure HTML" : "Headless"}
+                        {item.pureHtmlLevel === "100% Native HTML" ? "Vanilla HTML/TS" : "Headless"}
                       </span>
                     </div>
                   </Link>

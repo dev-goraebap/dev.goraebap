@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { badgeVariants } from "@goraebap/design-system/recipes/badge";
+import { Badge } from "@goraebap/ui-react/components/badge";
 import { getComponentDoc } from "@/entities/component-doc";
 import { usePreviewSync } from "@/shared/lib/preview-sync";
 import { ThemedPortalScope } from "@/shared/ui";
@@ -35,9 +35,9 @@ function ComponentMobilePreviewPage() {
             </p>
             <h1 className="mt-1 truncate text-sm font-semibold tracking-tight">{doc.name}</h1>
           </div>
-          <span className={badgeVariants({ variant: "secondary" })}>
-            {adapter === "html" ? "Pure HTML" : "React"}
-          </span>
+          <Badge variant="secondary">
+            {adapter === "html" ? "Vanilla HTML/TS" : "React"}
+          </Badge>
         </header>
 
         {/* Scrollable Mobile Content Area */}

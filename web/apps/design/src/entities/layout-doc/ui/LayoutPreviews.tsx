@@ -126,6 +126,25 @@ export function SingleColumnPreview() {
   );
 }
 
+export function LandingPreview() {
+  return (
+    <div className="bg-background flex h-full flex-col gap-2 p-2">
+      <Slot label="Header" className="h-12 shrink-0" />
+      <Slot label="Hero Section" className="h-28 shrink-0" />
+      <Slot label="Stats Bar" className="h-10 shrink-0" />
+      <div className="grid min-h-0 flex-1 grid-cols-12 gap-2">
+        <Slot label="Bento Main" className="col-span-7" />
+        <div className="col-span-5 flex flex-col gap-2">
+          <Slot label="Bento Sub" className="flex-1" />
+          <Slot label="Bento Sub" className="flex-1" />
+        </div>
+      </div>
+      <Slot label="Feature Split · CTA" className="h-16 shrink-0" />
+      <Slot label="Footer" className="h-12 shrink-0" />
+    </div>
+  );
+}
+
 export function LayoutThumbnail({ children }: { children: ReactNode }) {
   return (
     <div aria-hidden="true" className="ring-border h-36 w-56 overflow-hidden rounded-md ring-1">

@@ -1,42 +1,71 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { IconProvider, type IconSetId } from "@goraebap/ui-react/icons";
 
-export type BaseThemeId = "app" | "editorial";
-export type AccentColorId = "default" | "blue" | "emerald" | "violet" | "amber" | "rose";
+export type ThemePresetId = "app" | "editorial" | "ocean" | "forest" | "terracotta";
 export type RadiusOptionId = "0rem" | "0.25rem" | "0.5rem" | "0.75rem" | "1rem";
 export type BodyFontId = "pretendard" | "system";
 export type HeadingFontId = "same" | "serif" | "mono";
 
 export interface DesignConfig {
-  base: BaseThemeId;
-  accent: AccentColorId;
+  theme: ThemePresetId;
   radius: RadiusOptionId;
   font: BodyFontId;
   heading: HeadingFontId;
   iconSet: IconSetId;
 }
 
-const DEFAULT_DESIGN_CONFIG: DesignConfig = {
-  base: "app",
-  accent: "default",
+export const DEFAULT_DESIGN_CONFIG: DesignConfig = {
+  theme: "app",
   radius: "0.5rem",
   font: "pretendard",
   heading: "same",
   iconSet: "solar",
 };
 
-export const BASE_OPTIONS: { id: BaseThemeId; label: string; desc: string }[] = [
-  { id: "app", label: "App (Neutral)", desc: "중립 무채색 작업 화면" },
-  { id: "editorial", label: "Editorial (Warm)", desc: "따뜻한 종이 톤 읽기 화면" },
-];
+export interface ThemePresetOption {
+  id: ThemePresetId;
+  name: string;
+  subtitle: string;
+  cssFile: string;
+  swatches: [string, string, string, string];
+}
 
-export const ACCENT_OPTIONS: { id: AccentColorId; label: string; swatch: string }[] = [
-  { id: "default", label: "Default", swatch: "var(--foreground)" },
-  { id: "blue", label: "Blue", swatch: "oklch(0.546 0.245 262.881)" },
-  { id: "emerald", label: "Emerald", swatch: "oklch(0.556 0.145 163.225)" },
-  { id: "violet", label: "Violet", swatch: "oklch(0.541 0.281 293.009)" },
-  { id: "amber", label: "Amber", swatch: "oklch(0.666 0.179 58.318)" },
-  { id: "rose", label: "Rose", swatch: "oklch(0.586 0.253 17.585)" },
+export const THEME_PRESETS: ThemePresetOption[] = [
+  {
+    id: "app",
+    name: "Neutral",
+    subtitle: "정제된 무채색 작업 화면",
+    cssFile: "@goraebap/design-system/styles/theme-app.css",
+    swatches: ["#efeff0", "#f9f9fa", "#ffffff", "#1b1b1b"],
+  },
+  {
+    id: "editorial",
+    name: "Editorial",
+    subtitle: "따뜻한 종이 톤의 읽기 화면",
+    cssFile: "@goraebap/design-system/styles/theme-editorial.css",
+    swatches: ["#f5f4f0", "#fdfcfa", "#ffffff", "#25262b"],
+  },
+  {
+    id: "ocean",
+    name: "Ocean",
+    subtitle: "차분한 슬레이트 블루 · 오션",
+    cssFile: "@goraebap/design-system/styles/theme-ocean.css",
+    swatches: ["#eaf0f8", "#f7f9fc", "#ffffff", "#2c64c6"],
+  },
+  {
+    id: "forest",
+    name: "Forest",
+    subtitle: "은은한 세이지 · 딥 포레스트",
+    cssFile: "@goraebap/design-system/styles/theme-forest.css",
+    swatches: ["#ebf2ee", "#f7faf8", "#ffffff", "#2d6e52"],
+  },
+  {
+    id: "terracotta",
+    name: "Terracotta",
+    subtitle: "따뜻한 샌드 · 테라코타",
+    cssFile: "@goraebap/design-system/styles/theme-terracotta.css",
+    swatches: ["#f4eee8", "#fbf9f6", "#ffffff", "#b85c38"],
+  },
 ];
 
 export const RADIUS_OPTIONS: { id: RadiusOptionId; label: string }[] = [
@@ -75,12 +104,12 @@ export const HEADING_OPTIONS: { id: HeadingFontId; label: string; stack: string 
   },
 ];
 
-export const ICON_SET_OPTIONS: { id: IconSetId; label: string; desc: string }[] = [
-  { id: "solar", label: "Solar (기본)", desc: "둥근 기하학 스타일" },
-  { id: "lucide", label: "Lucide", desc: "단정한 선형 스타일" },
+export const ICON_SET_OPTIONS: { id: IconSetId; label: string }[] = [
+  { id: "solar", label: "Solar" },
+  { id: "lucide", label: "Lucide" },
 ];
 
-const STORAGE_KEY = "goraebap-design-config";
+const STORAGE_KEY = "goraebap-design-config-v2";
 
 function loadConfig(): DesignConfig {
   try {
@@ -105,16 +134,11 @@ export function DesignConfigProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const root = document.documentElement;
-    root.setAttribute("data-ds-theme", config.base);
-    if (config.accent === "default") {
-      root.removeAttribute("data-ds-accent");
-    } else {
-      root.setAttribute("data-ds-accent", config.accent);
-    }
+    root.setAttribute("data-ds-theme", config.theme);
+    root.removeAttribute("data-ds-accent");
     root.style.setProperty("--radius", config.radius);
 
-    const fontStack =
-      FONT_OPTIONS.find((f) => f.id === config.font)?.stack ?? FONT_OPTIONS[0].stack;
+    const fontStack = FONT_OPTIONS.find((f) => f.id === config.font)?.stack ?? FONT_OPTIONS[0].stack;
     root.style.setProperty("--font-sans", fontStack);
 
     const headingStack =

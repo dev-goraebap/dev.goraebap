@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ExternalLink } from "lucide-react";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 import {
   PREVIEW_SYNC_TYPE,
   type PreviewAdapter,
@@ -191,7 +191,7 @@ export function MobileDeviceFrame({
           className="hover:text-foreground inline-flex items-center gap-1 transition-colors"
         >
           <span>새 탭에서 열기</span>
-          <ExternalLink className="size-3" />
+          <SystemIcon name="externalLink" className="size-3" />
         </a>
       </div>
     </div>

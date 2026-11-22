@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { Button } from "@goraebap/ui-react/components/button";
 import { getLayoutDoc, type AppShellVariant } from "@/entities/layout-doc";
 import { CopyCodeBlock, ResizableLayoutStage } from "@/shared/ui";
 
@@ -11,11 +12,6 @@ const VIEWS = [
   { id: "preview", label: "Preview" },
   { id: "code", label: "Code" },
 ] as const;
-
-const SEGMENT_ON =
-  "bg-primary text-primary-foreground cursor-pointer rounded-full px-3.5 py-1.5 font-medium";
-const SEGMENT_OFF =
-  "text-muted-foreground hover:text-foreground cursor-pointer rounded-full px-3.5 py-1.5";
 
 function Segments<T extends string>({
   label,
@@ -32,18 +28,21 @@ function Segments<T extends string>({
     <div
       role="group"
       aria-label={label}
-      className="border-border bg-card inline-flex shrink-0 items-center rounded-full border p-0.5 text-xs"
+      className="border-border bg-card inline-flex shrink-0 items-center gap-0.5 rounded-full border p-0.5"
     >
       {items.map((item) => (
-        <button
+        <Button
           key={item.id}
           type="button"
+          size="sm"
+          shape="pill"
+          variant={value === item.id ? "default" : "ghost"}
           aria-pressed={value === item.id}
           onClick={() => onChange(item.id)}
-          className={value === item.id ? SEGMENT_ON : SEGMENT_OFF}
+          className="h-7 px-3.5 text-xs"
         >
           {item.label}
-        </button>
+        </Button>
       ))}
     </div>
   );

@@ -2,6 +2,7 @@ import {
   AppShellCollapsedSidebarExample,
   AppShellPreview,
   AppShellSidebarExample,
+  LandingPreview,
   LayoutThumbnail,
   SidebarContentPreview,
   SingleColumnPreview,
@@ -108,6 +109,18 @@ const SINGLE_COLUMN_CODE = `<div class="flex min-h-dvh flex-col">
   <footer class="shrink-0 border-t py-8"><!-- Footer --></footer>
 </div>`;
 
+const LANDING_CODE = `<div class="flex min-h-dvh flex-col">
+  <header class="sticky top-0 z-30 h-14 border-b"><!-- Header --></header>
+  <main class="mx-auto w-full max-w-7xl flex-1 space-y-24 px-6 py-16">
+    <section><!-- Hero Section --></section>
+    <section><!-- Stats Bar --></section>
+    <section><!-- Bento Grid --></section>
+    <section><!-- Feature Split --></section>
+    <section><!-- Closing CTA --></section>
+  </main>
+  <footer class="border-t py-8"><!-- Footer --></footer>
+</div>`;
+
 export const LAYOUT_DOCS: LayoutDocSpec[] = [
   {
     id: "app-shell",
@@ -153,6 +166,20 @@ export const LAYOUT_DOCS: LayoutDocSpec[] = [
     renderThumbnail: () => (
       <LayoutThumbnail>
         <SingleColumnPreview />
+      </LayoutThumbnail>
+    ),
+  },
+  {
+    id: "landing",
+    name: "랜딩 페이지",
+    level: "shell",
+    summary:
+      "제품 소개, 디자인 포털 첫 화면처럼 핵심 가치와 기능을 섹션별로 풀어내며 다음 행동으로 이끄는 화면에 고릅니다. 반복 업무 화면이라면 워크스페이스 · 관리자를 고릅니다.",
+    getCode: () => LANDING_CODE,
+    renderPreview: () => <LandingPreview />,
+    renderThumbnail: () => (
+      <LayoutThumbnail>
+        <LandingPreview />
       </LayoutThumbnail>
     ),
   },

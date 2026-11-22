@@ -30,6 +30,7 @@
 }
 
 .dark,
+.dark[data-ds-theme="app"],
 .dark [data-ds-theme="app"] {
   --sidebar: #141416;
   --background: #1b1b1e;

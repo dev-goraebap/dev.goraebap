@@ -45,7 +45,7 @@ import { handleMenuKeys, useNativePopup } from "../lib/native-popup";
 
 const POPUP_BASE = "goraebap-native-popup m-0";
 const HIDE_DATALIST_ARROW = "[&::-webkit-calendar-picker-indicator]:hidden!";
-const FRAMEWORK_ITEMS = ["React", "Angular", "Pure HTML", "Tailwind CSS", "Base UI"];
+const FRAMEWORK_ITEMS = ["React", "Angular", "Vanilla HTML/TS", "Tailwind CSS", "Base UI"];
 const SELECT_ITEMS = [
   { value: "app", label: "App Theme" },
   { value: "editorial", label: "Editorial Theme" },

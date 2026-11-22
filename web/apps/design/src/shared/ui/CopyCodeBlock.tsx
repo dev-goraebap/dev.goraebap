@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Check, Copy } from "lucide-react";
+import { Badge } from "@goraebap/ui-react/components/badge";
+import { Button } from "@goraebap/ui-react/components/button";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 import { CodeView } from "./CodeView";
 
 interface CopyCodeBlockProps {
@@ -24,19 +26,21 @@ export function CopyCodeBlock({ code, label, language }: CopyCodeBlockProps) {
           <div className="flex items-center gap-2">
             {label && <span className="text-foreground font-mono text-xs">{label}</span>}
             {language && (
-              <span className="bg-secondary text-muted-foreground rounded px-1.5 py-0.5 font-mono text-[10px]">
+              <Badge variant="secondary" className="px-1.5 py-0 font-mono text-[10px]">
                 {language}
-              </span>
+              </Badge>
             )}
           </div>
-          <button
+          <Button
             type="button"
+            variant="ghost"
+            size="sm"
             onClick={handleCopy}
-            className="text-muted-foreground hover:bg-accent hover:text-foreground inline-flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-xs transition-colors"
+            className="text-muted-foreground hover:text-foreground h-7 gap-1.5 px-2 text-xs"
           >
-            {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+            <SystemIcon name={copied ? "check" : "copy"} className="size-3.5" />
             <span>{copied ? "복사됨" : "복사"}</span>
-          </button>
+          </Button>
         </div>
       )}
       <CodeView

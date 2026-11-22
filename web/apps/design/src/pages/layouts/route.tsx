@@ -14,6 +14,7 @@ const SHELL_ICONS: Record<string, SystemIconName> = {
   "app-shell": "workspace",
   "sidebar-content": "book",
   "single-column": "file",
+  landing: "details",
 };
 
 const LAYOUT_GROUPS: DocsNavGroup[] = [

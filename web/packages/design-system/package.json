@@ -7,6 +7,9 @@
     "./styles/base.css": "./src/styles/base.css",
     "./styles/theme-app.css": "./src/styles/theme-app.css",
     "./styles/theme-editorial.css": "./src/styles/theme-editorial.css",
+    "./styles/theme-ocean.css": "./src/styles/theme-ocean.css",
+    "./styles/theme-forest.css": "./src/styles/theme-forest.css",
+    "./styles/theme-terracotta.css": "./src/styles/theme-terracotta.css",
     "./cn": "./src/lib/cn.ts",
     "./recipes/*": "./src/recipes/*.ts"
   },

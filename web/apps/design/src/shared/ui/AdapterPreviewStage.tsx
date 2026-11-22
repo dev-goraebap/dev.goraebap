@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
-import { Check, Code2, Copy, Eye, Monitor, Smartphone } from "lucide-react";
+import { Button } from "@goraebap/ui-react/components/button";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 import { useDesignConfig } from "../lib/design-config";
 import { detectAngularLanguage } from "../lib/highlight";
 import { CodeView } from "./CodeView";
@@ -35,8 +36,7 @@ export function AdapterPreviewStage({
   const [view, setView] = useState<"preview" | "code">("preview");
   const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
   const { config } = useDesignConfig();
-  const [themeOverride, setTheme] = useState<"app" | "editorial" | null>(null);
-  const theme = themeOverride ?? config.base;
+  const theme = config.theme;
   const [copied, setCopied] = useState(false);
 
   const isMobile = viewport === "mobile";
@@ -57,125 +57,97 @@ export function AdapterPreviewStage({
         <div className="border-border bg-muted/35 flex flex-wrap items-center justify-between gap-3 border-b px-4 py-2.5">
           {/* Adapter Switcher */}
           <div
-            className="border-border bg-background inline-flex items-center rounded-full border p-0.5 text-xs"
+            className="border-border bg-background inline-flex items-center gap-0.5 rounded-full border p-0.5"
             role="tablist"
             aria-label="어댑터 선택"
           >
             {(
               [
-                { id: "html", label: "Pure HTML" },
+                { id: "html", label: "Vanilla HTML/TS" },
                 { id: "react", label: "React (Base UI)" },
                 { id: "angular", label: "Angular (Spartan)" },
               ] as const
             ).map((item) => (
-              <button
+              <Button
                 key={item.id}
                 type="button"
                 role="tab"
+                size="sm"
+                shape="pill"
+                variant={adapter === item.id ? "default" : "ghost"}
                 aria-selected={adapter === item.id}
                 onClick={() => setAdapter(item.id)}
-                className={
-                  adapter === item.id
-                    ? "bg-primary text-primary-foreground cursor-pointer rounded-full px-3 py-1 font-medium transition-colors"
-                    : "text-muted-foreground hover:text-foreground cursor-pointer rounded-full px-3 py-1 transition-colors"
-                }
+                className="h-7 px-3 text-xs"
               >
                 {item.label}
-              </button>
+              </Button>
             ))}
           </div>
 
           {/* Right Controls */}
           <div className="flex flex-wrap items-center gap-2">
             {view === "preview" && adapter !== "angular" && (
-              <>
-                <div
-                  className="border-border bg-background inline-flex items-center rounded-full border p-0.5 text-xs"
-                  role="group"
-                  aria-label="뷰포트 전환"
+              <div
+                className="border-border bg-background inline-flex items-center gap-0.5 rounded-full border p-0.5"
+                role="group"
+                aria-label="뷰포트 전환"
+              >
+                <Button
+                  type="button"
+                  size="sm"
+                  shape="pill"
+                  variant={viewport === "desktop" ? "secondary" : "ghost"}
+                  aria-pressed={viewport === "desktop"}
+                  onClick={() => setViewport("desktop")}
+                  className="h-7 gap-1 px-2.5 text-xs"
                 >
-                  <button
-                    type="button"
-                    onClick={() => setViewport("desktop")}
-                    className={
-                      viewport === "desktop"
-                        ? "bg-secondary text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1 font-medium"
-                        : "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1"
-                    }
-                  >
-                    <Monitor className="size-3.5" />
-                    <span>Desktop</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setViewport("mobile")}
-                    className={
-                      viewport === "mobile"
-                        ? "bg-secondary text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1 font-medium"
-                        : "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1"
-                    }
-                  >
-                    <Smartphone className="size-3.5" />
-                    <span>390px</span>
-                  </button>
-                </div>
-
-                <div
-                  className="border-border bg-background inline-flex items-center rounded-full border p-0.5 text-xs"
-                  role="group"
-                  aria-label="테마 전환"
+                  <SystemIcon name="desktop" className="size-3.5" />
+                  <span>Desktop</span>
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  shape="pill"
+                  variant={viewport === "mobile" ? "secondary" : "ghost"}
+                  aria-pressed={viewport === "mobile"}
+                  onClick={() => setViewport("mobile")}
+                  className="h-7 gap-1 px-2.5 text-xs"
                 >
-                  <button
-                    type="button"
-                    onClick={() => setTheme("app")}
-                    className={
-                      theme === "app"
-                        ? "bg-secondary text-foreground cursor-pointer rounded-full px-2.5 py-1 font-medium"
-                        : "text-muted-foreground hover:text-foreground cursor-pointer rounded-full px-2.5 py-1"
-                    }
-                  >
-                    App
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setTheme("editorial")}
-                    className={
-                      theme === "editorial"
-                        ? "bg-secondary text-foreground cursor-pointer rounded-full px-2.5 py-1 font-medium"
-                        : "text-muted-foreground hover:text-foreground cursor-pointer rounded-full px-2.5 py-1"
-                    }
-                  >
-                    Editorial
-                  </button>
-                </div>
-              </>
+                  <SystemIcon name="mobile" className="size-3.5" />
+                  <span>390px</span>
+                </Button>
+              </div>
             )}
 
-            <div className="border-border bg-background inline-flex items-center rounded-full border p-0.5 text-xs">
-              <button
+            <div
+              className="border-border bg-background inline-flex items-center gap-0.5 rounded-full border p-0.5"
+              role="group"
+              aria-label="보기 전환"
+            >
+              <Button
                 type="button"
+                size="sm"
+                shape="pill"
+                variant={view === "preview" ? "secondary" : "ghost"}
+                aria-pressed={view === "preview"}
                 onClick={() => setView("preview")}
-                className={
-                  view === "preview"
-                    ? "bg-secondary text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1 font-medium"
-                    : "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1"
-                }
+                className="h-7 gap-1 px-2.5 text-xs"
               >
-                <Eye className="size-3.5" />
+                <SystemIcon name="eye" className="size-3.5" />
                 <span>Preview</span>
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
+                size="sm"
+                shape="pill"
+                variant={view === "code" ? "secondary" : "ghost"}
+                aria-pressed={view === "code"}
                 onClick={() => setView("code")}
-                className={
-                  view === "code"
-                    ? "bg-secondary text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1 font-medium"
-                    : "text-muted-foreground hover:text-foreground inline-flex cursor-pointer items-center gap-1 rounded-full px-2.5 py-1"
-                }
+                className="h-7 gap-1 px-2.5 text-xs"
               >
-                <Code2 className="size-3.5" />
+                <SystemIcon name="code" className="size-3.5" />
                 <span>Code</span>
-              </button>
+              </Button>
             </div>
           </div>
         </div>
@@ -199,18 +171,20 @@ export function AdapterPreviewStage({
                       Live iframe 예정 (apps/accounts 전환 시 연결)
                     </span>
                   </div>
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={handleCopy}
-                    className="text-muted-foreground hover:bg-accent hover:text-foreground inline-flex cursor-pointer items-center gap-1 rounded-md px-2 py-1 text-xs"
+                    className="text-muted-foreground hover:text-foreground h-7 gap-1 px-2 text-xs"
                   >
-                    {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+                    <SystemIcon name={copied ? "check" : "copy"} className="size-3.5" />
                     <span>{copied ? "복사됨" : "코드 복사"}</span>
-                  </button>
+                  </Button>
                 </div>
                 <p className="text-muted-foreground text-xs leading-relaxed">
                   {angularNote ??
-                    "Angular에서는 @spartan-ng/brain 헤드리스 디렉티브 위에 React·Pure HTML과 완전히 같은 @goraebap/design-system CVA 레시피를 그대로 결합합니다."}
+                    "Angular에서는 @spartan-ng/brain 헤드리스 디렉티브 위에 React·Vanilla HTML/TS와 완전히 같은 @goraebap/design-system CVA 레시피를 그대로 결합합니다."}
                 </p>
                 <CodeView
                   code={angularCode}
@@ -233,18 +207,20 @@ export function AdapterPreviewStage({
           </div>
         ) : (
           <div className="bg-background relative">
-            <button
+            <Button
               type="button"
+              variant="outline"
+              size="sm"
               onClick={handleCopy}
-              className="border-border bg-card text-muted-foreground hover:text-foreground absolute top-3 right-3 inline-flex cursor-pointer items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs transition-colors"
+              className="bg-card text-muted-foreground hover:text-foreground absolute top-3 right-3 h-7 gap-1.5 px-2.5 text-xs"
             >
-              {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
+              <SystemIcon name={copied ? "check" : "copy"} className="size-3.5" />
               <span>{copied ? "복사됨" : "복사"}</span>
-            </button>
+            </Button>
             <CodeView
               code={activeCode}
               language={activeLang}
-              className="text-foreground overflow-x-auto p-5 pr-20 font-mono text-xs leading-relaxed"
+              className="text-foreground max-h-[30rem] overflow-auto p-5 font-mono text-xs leading-relaxed"
             />
           </div>
         )}

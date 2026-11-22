@@ -1,5 +1,6 @@
 import { createContext, useContext, type ReactNode, type SVGProps } from "react";
 import {
+  ArrowRight,
   ArrowUpDown,
   BookOpen,
   Check,
@@ -9,10 +10,13 @@ import {
   Code2,
   Component,
   Copy,
+  ExternalLink,
+  Eye,
   FileText,
   Grid2x2,
   Layers,
   LayoutGrid,
+  Monitor,
   Moon,
   Palette,
   PanelLeft,
@@ -31,6 +35,7 @@ import {
 export type IconSetId = "solar" | "lucide";
 
 export type SystemIconName =
+  | "arrowRight"
   | "book"
   | "close"
   | "check"
@@ -40,7 +45,10 @@ export type SystemIconName =
   | "code"
   | "components"
   | "copy"
+  | "desktop"
   | "details"
+  | "externalLink"
+  | "eye"
   | "file"
   | "font"
   | "layouts"
@@ -88,6 +96,12 @@ function SolarSvg({ children, ...props }: SvgProps) {
 }
 
 const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
+  arrowRight: (props) => (
+    <SolarSvg {...props}>
+      <path d="M5 12h14" opacity={0.65} />
+      <path d="m13 6 6 6-6 6" />
+    </SolarSvg>
+  ),
   book: (props) => (
     <SolarSvg {...props}>
       <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" />
@@ -141,10 +155,29 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
       <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" opacity={0.55} />
     </SolarSvg>
   ),
+  desktop: (props) => (
+    <SolarSvg {...props}>
+      <rect x="3" y="4" width="18" height="12.5" rx="2.5" />
+      <path d="M8.5 20h7M12 16.5V20" opacity={0.55} />
+    </SolarSvg>
+  ),
   details: (props) => (
     <SolarSvg {...props}>
       <path d="M12 3 14.3 9.7 21 12l-6.7 2.3L12 21l-2.3-6.7L3 12l6.7-2.3L12 3Z" />
       <circle cx="18.5" cy="5.5" r="1.2" opacity={0.5} />
+    </SolarSvg>
+  ),
+  externalLink: (props) => (
+    <SolarSvg {...props}>
+      <path d="M14 4h6v6" />
+      <path d="M10 14 20 4" />
+      <path d="M19 13.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4.5" opacity={0.55} />
+    </SolarSvg>
+  ),
+  eye: (props) => (
+    <SolarSvg {...props}>
+      <path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" opacity={0.65} />
+      <circle cx="12" cy="12" r="3" />
     </SolarSvg>
   ),
   file: (props) => (
@@ -253,6 +286,7 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
 };
 
 const LUCIDE_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
+  arrowRight: (props) => <ArrowRight aria-hidden="true" {...props} />,
   book: (props) => <BookOpen aria-hidden="true" {...props} />,
   close: (props) => <X aria-hidden="true" {...props} />,
   check: (props) => <Check aria-hidden="true" {...props} />,
@@ -262,7 +296,10 @@ const LUCIDE_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
   code: (props) => <Code2 aria-hidden="true" {...props} />,
   components: (props) => <Component aria-hidden="true" {...props} />,
   copy: (props) => <Copy aria-hidden="true" {...props} />,
+  desktop: (props) => <Monitor aria-hidden="true" {...props} />,
   details: (props) => <Sparkles aria-hidden="true" {...props} />,
+  externalLink: (props) => <ExternalLink aria-hidden="true" {...props} />,
+  eye: (props) => <Eye aria-hidden="true" {...props} />,
   file: (props) => <FileText aria-hidden="true" {...props} />,
   font: (props) => <Type aria-hidden="true" {...props} />,
   layouts: (props) => <LayoutGrid aria-hidden="true" {...props} />,

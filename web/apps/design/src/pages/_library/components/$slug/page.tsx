@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import { badgeVariants } from "@goraebap/design-system/recipes/badge";
+import { Badge } from "@goraebap/ui-react/components/badge";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 import { COMPONENT_DOCS, getComponentDoc } from "@/entities/component-doc";
 import { AdapterPreviewStage } from "@/shared/ui";
 
@@ -32,7 +32,7 @@ function ComponentDetailPage() {
       <header className="space-y-3">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-muted-foreground text-xs font-medium">{doc.category}</span>
-          <span className={badgeVariants({ variant: "outline" })}>{doc.pureHtmlLevel}</span>
+          <Badge variant="outline">{doc.pureHtmlLevel}</Badge>
         </div>
         <h1 className="text-3xl font-semibold tracking-tight">{doc.name}</h1>
         <p className="text-muted-foreground text-base leading-relaxed">{doc.summary}</p>
@@ -83,7 +83,7 @@ function ComponentDetailPage() {
       <div className="grid gap-4 md:grid-cols-2">
         <section className="border-border bg-card space-y-2 rounded-2xl border p-5">
           <p className="text-muted-foreground font-mono text-[11px] uppercase">
-            Pure HTML vs Headless Boundary
+            Vanilla HTML/TS vs Headless Boundary
           </p>
           <p className="text-foreground text-sm leading-relaxed">{doc.pureHtmlNote}</p>
         </section>
@@ -107,7 +107,7 @@ function ComponentDetailPage() {
             params={{ slug: prev.slug }}
             className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
           >
-            <ArrowLeft className="size-4" />
+            <SystemIcon name="chevronLeft" className="size-4" />
             <span>{prev.name}</span>
           </Link>
         ) : (
@@ -120,7 +120,7 @@ function ComponentDetailPage() {
             className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
           >
             <span>{next.name}</span>
-            <ArrowRight className="size-4" />
+            <SystemIcon name="chevronRight" className="size-4" />
           </Link>
         ) : (
           <span />

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
-import { Search } from "lucide-react";
 import { Input } from "@goraebap/ui-react/components/input";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
 
@@ -26,7 +26,7 @@ const GUIDE_GROUPS: DocsNavGroup[] = [
   },
   {
     title: "어댑터",
-    items: [{ label: "Pure HTML & Primitives", href: "/adapters/primitives", icon: "components" }],
+    items: [{ label: "Vanilla HTML/TS & Primitives", href: "/adapters/primitives", icon: "components" }],
   },
 ];
 
@@ -57,7 +57,10 @@ function LibraryLayout() {
       groups={normalized ? [componentGroup] : [...GUIDE_GROUPS, componentGroup]}
       navHeader={
         <div className="relative">
-          <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2" />
+          <SystemIcon
+            name="search"
+            className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2"
+          />
           <Input
             type="search"
             value={query}

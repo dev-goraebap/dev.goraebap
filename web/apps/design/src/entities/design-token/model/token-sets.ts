@@ -1,6 +1,9 @@
 import baseCss from "@goraebap/design-system/styles/base.css?raw";
 import appCss from "@goraebap/design-system/styles/theme-app.css?raw";
 import editorialCss from "@goraebap/design-system/styles/theme-editorial.css?raw";
+import forestCss from "@goraebap/design-system/styles/theme-forest.css?raw";
+import oceanCss from "@goraebap/design-system/styles/theme-ocean.css?raw";
+import terracottaCss from "@goraebap/design-system/styles/theme-terracotta.css?raw";
 
 export type TokenMode = "light" | "dark";
 export type TokenValues = Record<string, string>;
@@ -41,8 +44,11 @@ function parseTokenSet(id: string, name: string, source: string, css: string): T
 
 // 토큰 세트를 더할 때는 패키지에 CSS를 두고 이 목록에 한 줄을 더합니다.
 export const TOKEN_SETS: TokenSet[] = [
-  parseTokenSet("app", "App", "theme-app.css", appCss),
+  parseTokenSet("app", "Neutral", "theme-app.css", appCss),
   parseTokenSet("editorial", "Editorial", "theme-editorial.css", editorialCss),
+  parseTokenSet("ocean", "Ocean", "theme-ocean.css", oceanCss),
+  parseTokenSet("forest", "Forest", "theme-forest.css", forestCss),
+  parseTokenSet("terracotta", "Terracotta", "theme-terracotta.css", terracottaCss),
 ];
 
 const COLOR_GROUPS = [

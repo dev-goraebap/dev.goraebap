@@ -51,7 +51,7 @@ import {
 } from "@goraebap/ui-react/components/preview-card";
 import { ScrollArea } from "@goraebap/ui-react/components/scroll-area";
 
-const FRAMEWORK_ITEMS = ["React", "Angular", "Pure HTML", "Tailwind CSS", "Base UI"];
+const FRAMEWORK_ITEMS = ["React", "Angular", "Vanilla HTML/TS", "Tailwind CSS", "Base UI"];
 
 /* ── Combobox ─────────────────────────────────────────────────── */
 

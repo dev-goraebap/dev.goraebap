@@ -1,6 +1,7 @@
 import { useState, type CSSProperties } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Copy } from "lucide-react";
+import { Button } from "@goraebap/ui-react/components/button";
+import { SystemIcon } from "@goraebap/ui-react/icons";
 import {
   FONT_FAMILIES,
   RADIUS_SCALE,
@@ -14,11 +15,6 @@ import { CopyCodeBlock } from "@/shared/ui";
 export const Route = createFileRoute("/_library/foundations/tokens/")({
   component: DesignTokensPage,
 });
-
-const SEGMENT_ON =
-  "bg-primary text-primary-foreground cursor-pointer rounded-full px-3.5 py-1.5 font-medium";
-const SEGMENT_OFF =
-  "text-muted-foreground hover:text-foreground cursor-pointer rounded-full px-3.5 py-1.5";
 
 const SURFACE_LEVELS = ["--sidebar", "--background", "--card", "--popover"];
 
@@ -60,9 +56,12 @@ function TokenSwatch({ name, value }: { name: string; value: string }) {
         <span className="flex items-center justify-between gap-2">
           <span className="text-foreground truncate font-mono text-xs font-medium">{name}</span>
           {copied ? (
-            <Check className="text-foreground size-3.5 shrink-0" />
+            <SystemIcon name="check" className="text-foreground size-3.5 shrink-0" />
           ) : (
-            <Copy className="text-muted-foreground size-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100" />
+            <SystemIcon
+              name="copy"
+              className="text-muted-foreground size-3.5 shrink-0 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
+            />
           )}
         </span>
         <span className="text-muted-foreground block truncate font-mono text-[11px]">{value}</span>
@@ -87,8 +86,8 @@ function DesignTokensPage() {
         <h1 className="text-3xl font-semibold tracking-tight">Design Tokens</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
           디자인 토큰은 색상, 반경, 타이포그래피 같은 시각적 결정을 CSS 변수로 정의한 공통
-          기준입니다. 작업 화면용 App과 긴 글용 Editorial 두 세트로 구성하며, 각 세트는 Light와 Dark
-          모드를 지원합니다.
+          기준입니다. Neutral을 기본으로 Editorial·Ocean·Forest·Terracotta까지 5가지 색상 테마를
+          제공하며, 각 테마는 Light와 Dark 모드를 모두 지원합니다.
         </p>
       </header>
 
@@ -96,36 +95,42 @@ function DesignTokensPage() {
         <div
           role="group"
           aria-label="토큰 세트"
-          className="border-border bg-card inline-flex flex-wrap items-center rounded-full border p-0.5 text-xs"
+          className="border-border bg-card inline-flex flex-wrap items-center gap-0.5 rounded-full border p-0.5"
         >
           {TOKEN_SETS.map((item) => (
-            <button
+            <Button
               key={item.id}
               type="button"
+              size="sm"
+              shape="pill"
+              variant={item.id === tokenSet.id ? "default" : "ghost"}
               aria-pressed={item.id === tokenSet.id}
               onClick={() => setSetId(item.id)}
-              className={item.id === tokenSet.id ? SEGMENT_ON : SEGMENT_OFF}
+              className="h-7 px-3.5 text-xs"
             >
               {item.name}
-            </button>
+            </Button>
           ))}
         </div>
 
         <div
           role="group"
           aria-label="색상 모드"
-          className="border-border bg-card inline-flex items-center rounded-full border p-0.5 text-xs"
+          className="border-border bg-card inline-flex items-center gap-0.5 rounded-full border p-0.5"
         >
           {(["light", "dark"] as const).map((item) => (
-            <button
+            <Button
               key={item}
               type="button"
+              size="sm"
+              shape="pill"
+              variant={item === mode ? "default" : "ghost"}
               aria-pressed={item === mode}
               onClick={() => setMode(item)}
-              className={item === mode ? SEGMENT_ON : SEGMENT_OFF}
+              className="h-7 px-3.5 text-xs"
             >
               {item === "light" ? "Light" : "Dark"}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -155,7 +160,7 @@ function DesignTokensPage() {
 
         <section className="space-y-4">
           <h2 className="text-lg font-semibold tracking-tight">Radius</h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {RADIUS_SCALE.map((token) => (
               <div key={token.name} className="min-w-0 space-y-2">
                 <div

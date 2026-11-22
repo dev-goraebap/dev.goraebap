@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
+import { Button } from "@goraebap/ui-react/components/button";
 import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
 import { SiteFooter } from "./SiteFooter";
 
@@ -121,19 +122,20 @@ export function DocsShell({ label, groups, navHeader, navFooter, children }: Doc
           }}
         />
         <div className="flex min-h-0 flex-1 flex-col space-y-5 lg:pr-5">
-          <button
+          <Button
             type="button"
+            variant="outline"
             aria-expanded={isOpen}
             aria-controls="docs-nav"
             onClick={() => setOpenedAt(isOpen ? null : pathname)}
-            className="border-border bg-card text-foreground flex h-11 w-full cursor-pointer items-center justify-between rounded-xl border px-4 text-sm font-medium lg:hidden"
+            className="bg-card h-11 w-full justify-between rounded-xl px-4 text-sm font-medium lg:hidden"
           >
             <span className="truncate">{current?.label ?? label}</span>
             <SystemIcon
               name="chevronDown"
               className={`text-muted-foreground size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
             />
-          </button>
+          </Button>
 
           <div
             id="docs-nav"

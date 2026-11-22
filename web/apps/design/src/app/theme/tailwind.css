@@ -1,7 +1,10 @@
 @import "tailwindcss";
 @import "@goraebap/design-system/styles/base.css";
-@import "@goraebap/design-system/styles/theme-editorial.css";
 @import "@goraebap/design-system/styles/theme-app.css";
+@import "@goraebap/design-system/styles/theme-editorial.css";
+@import "@goraebap/design-system/styles/theme-ocean.css";
+@import "@goraebap/design-system/styles/theme-forest.css";
+@import "@goraebap/design-system/styles/theme-terracotta.css";
 
 @source "../../../../../packages/design-system/src";
 @source "../../../../../packages/ui-react/src";
