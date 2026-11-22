@@ -1,7 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 
 export const dialogBackdropVariants = cva(
-  "fixed inset-0 z-50 bg-foreground/25 backdrop-blur-[2px] transition-opacity",
+  "fixed inset-0 z-40 bg-foreground/25 backdrop-blur-[2px] transition-opacity",
 );
 
 export const dialogPopupVariants = cva(

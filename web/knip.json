@@ -9,6 +9,9 @@
       "entry": ["src/pages/**/{__root,route,page}.tsx"],
       "ignoreDependencies": ["tailwindcss"]
     },
+    "apps/design": {
+      "entry": ["src/pages/**/{__root,route,page}.tsx"]
+    },
     "apps/productivity": {
       "ignore": ["**/*"]
     },

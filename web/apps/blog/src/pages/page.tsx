@@ -106,12 +106,14 @@ function HomePage() {
               Design Tokens · Style Recipes · Headless Primitives · UI Components · Patterns
             </p>
           </div>
-          <Link
-            to="/ui"
+          <a
+            href={import.meta.env.VITE_DESIGN_URL || "http://localhost:5175"}
+            target="_blank"
+            rel="noreferrer"
             className="text-muted-foreground hover:text-foreground shrink-0 text-xs font-medium transition-colors"
           >
-            전체 보기 →
-          </Link>
+            goraebap/design 열기 ↗
+          </a>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
@@ -129,16 +131,17 @@ function HomePage() {
               <div>
                 <h3 className="text-sm font-medium">UI Components (13종)</h3>
                 <p className="text-muted-foreground text-xs">
-                  Desktop · Mobile 390px 라이브 프리뷰 지원
+                  Pure HTML · React · Angular &amp; 390px 모바일 프리뷰
                 </p>
               </div>
-              <Link
-                to="/ui/components/$slug"
-                params={{ slug: "button" }}
+              <a
+                href={`${import.meta.env.VITE_DESIGN_URL || "http://localhost:5175"}/components`}
+                target="_blank"
+                rel="noreferrer"
                 className="text-blog-accent text-xs font-medium hover:underline"
               >
-                열기 →
-              </Link>
+                열기 ↗
+              </a>
             </div>
           </div>
 
@@ -160,9 +163,14 @@ function HomePage() {
                 <h3 className="text-sm font-medium">5계층 문서</h3>
                 <p className="text-muted-foreground text-xs">토큰·레시피·프리미티브·패턴 가이드</p>
               </div>
-              <Link to="/ui" className="text-blog-accent text-xs font-medium hover:underline">
-                열기 →
-              </Link>
+              <a
+                href={`${import.meta.env.VITE_DESIGN_URL || "http://localhost:5175"}/docs`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blog-accent text-xs font-medium hover:underline"
+              >
+                열기 ↗
+              </a>
             </div>
           </div>
         </div>

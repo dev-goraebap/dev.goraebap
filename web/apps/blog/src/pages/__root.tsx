@@ -1,24 +1,17 @@
-import { Link, Outlet, createRootRoute, useRouterState } from "@tanstack/react-router";
+import { Link, Outlet, createRootRoute } from "@tanstack/react-router";
 import { ThemeToggle } from "@/shared/ui";
 
 export const Route = createRootRoute({
   component: RootLayout,
 });
 
-function RootLayout() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const isDocs = pathname.startsWith("/ui");
+const DESIGN_SYSTEM_URL = import.meta.env.VITE_DESIGN_URL || "http://localhost:5175";
 
+function RootLayout() {
   return (
     <div className="bg-background text-foreground flex min-h-screen flex-col">
       <header className="border-border/80 bg-background/85 sticky top-0 z-20 border-b backdrop-blur-md">
-        <div
-          className={
-            isDocs
-              ? "mx-auto flex h-14 max-w-6xl items-center justify-between px-6"
-              : "mx-auto flex h-14 max-w-4xl items-center justify-between px-6"
-          }
-        >
+        <div className="mx-auto flex h-14 max-w-4xl items-center justify-between px-6">
           <Link
             to="/"
             className="group flex items-center gap-2.5 text-sm font-semibold tracking-tight"
@@ -36,39 +29,28 @@ function RootLayout() {
               >
                 글
               </Link>
-              <Link
-                to="/ui"
+              <a
+                href={DESIGN_SYSTEM_URL}
+                target="_blank"
+                rel="noreferrer"
                 className="text-muted-foreground hover:text-foreground transition-colors"
-                activeProps={{ className: "text-foreground font-medium" }}
               >
-                디자인 시스템
-              </Link>
+                디자인 시스템 ↗
+              </a>
             </nav>
             <ThemeToggle />
           </div>
         </div>
       </header>
 
-      <main
-        className={
-          isDocs
-            ? "mx-auto w-full max-w-6xl flex-1 px-6 py-8 sm:py-10"
-            : "mx-auto w-full max-w-4xl flex-1 px-6 py-12 sm:py-16"
-        }
-      >
+      <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-12 sm:py-16">
         <Outlet />
       </main>
 
       <footer className="border-border/80 border-t">
-        <div
-          className={
-            isDocs
-              ? "text-muted-foreground mx-auto flex max-w-6xl flex-col gap-2 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between"
-              : "text-muted-foreground mx-auto flex max-w-4xl flex-col gap-2 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between"
-          }
-        >
-          <p>dev.goraebap — 사람과 에이전트가 함께 읽는 개발 기록과 5계층 디자인 시스템</p>
-          <p className="font-mono">@goraebap/design-system · @goraebap/ui</p>
+        <div className="text-muted-foreground mx-auto flex max-w-4xl flex-col gap-2 px-6 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
+          <p>dev.goraebap — 사람과 에이전트가 함께 읽는 개발 기록</p>
+          <p className="font-mono">@goraebap/blog · Editorial Theme</p>
         </div>
       </footer>
     </div>

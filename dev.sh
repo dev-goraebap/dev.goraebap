@@ -2,7 +2,7 @@
 set -eu
 
 root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-usage='사용법: sh dev.sh [all|blog|accounts|productivity|server]'
+usage='사용법: sh dev.sh [all|blog|design|accounts|productivity|server]'
 mode=${1:-all}
 if [ "$#" -gt 1 ]; then
   echo "$usage" >&2
@@ -31,6 +31,11 @@ case "$mode" in
     prepare_web
     cd "$root/web"
     exec pnpm dev:blog
+    ;;
+  design)
+    prepare_web
+    cd "$root/web"
+    exec pnpm dev:design
     ;;
   accounts)
     prepare_web

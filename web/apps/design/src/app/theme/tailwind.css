@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "@goraebap/design-system/styles/base.css";
+@import "@goraebap/design-system/styles/theme-app.css";
+@import "@goraebap/design-system/styles/theme-editorial.css";
+
+@source "../../../../../packages/design-system/src";
+@source "../../../../../packages/ui/src";
+
+@layer utilities {
+  .bg-dots {
+    background-image: radial-gradient(
+      color-mix(in oklch, var(--border) 85%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 16px 16px;
+  }
+}
+
+.shiki-code span {
+  color: var(--shiki-light, inherit);
+  font-style: var(--shiki-light-font-style, inherit);
+  font-weight: var(--shiki-light-font-weight, inherit);
+  text-decoration: var(--shiki-light-text-decoration, inherit);
+}
+
+.dark .shiki-code span {
+  color: var(--shiki-dark, inherit);
+  font-style: var(--shiki-dark-font-style, inherit);
+  font-weight: var(--shiki-dark-font-weight, inherit);
+  text-decoration: var(--shiki-dark-text-decoration, inherit);
+}
+
+dialog.goraebap-native-dialog::backdrop {
+  background: rgb(0 0 0 / 0.55);
+  backdrop-filter: blur(3px);
+}

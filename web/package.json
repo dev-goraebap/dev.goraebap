@@ -5,9 +5,11 @@
   "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev:blog": "pnpm --filter @goraebap/blog dev",
+    "dev:design": "pnpm --filter @goraebap/design dev",
     "dev:accounts": "pnpm --filter @goraebap/accounts dev",
     "dev:productivity": "pnpm --filter @goraebap/productivity dev",
     "build:blog": "pnpm --filter @goraebap/blog build",
+    "build:design": "pnpm --filter @goraebap/design build",
     "build:accounts": "pnpm --filter @goraebap/accounts build",
     "build:productivity": "pnpm --filter @goraebap/productivity build",
     "build:registry": "pnpm --filter @goraebap/ui build:registry",
