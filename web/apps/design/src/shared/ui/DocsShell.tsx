@@ -121,7 +121,7 @@ export function DocsShell({ label, groups, navHeader, navFooter, children }: Doc
               "linear-gradient(to bottom, transparent 0%, var(--border) 18%, var(--border) 82%, transparent 100%)",
           }}
         />
-        <div className="flex min-h-0 flex-1 flex-col space-y-5 lg:pr-5">
+        <div className="flex min-h-0 flex-1 flex-col space-y-5 lg:pr-3">
           <Button
             type="button"
             variant="outline"
@@ -144,7 +144,7 @@ export function DocsShell({ label, groups, navHeader, navFooter, children }: Doc
             {navHeader && <div className="shrink-0">{navHeader}</div>}
             <nav
               data-lenis-prevent
-              className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain pr-1 pb-4"
+              className="min-h-0 flex-1 [scrollbar-width:none] space-y-5 overflow-y-auto overscroll-contain pb-4 lg:-mt-4 lg:[mask-image:linear-gradient(to_bottom,transparent,black_1rem,black_calc(100%-2.5rem),transparent)] lg:pt-4 lg:pb-10 [&::-webkit-scrollbar]:hidden"
             >
               {groups.map((group, index) => (
                 <div key={group.title ?? index} className="space-y-1">
