@@ -143,12 +143,12 @@ export function ReactSliderDemo() {
   );
 }
 
-export function ReactDrawerDemo({ isMobile }: { isMobile: boolean }) {
+export function ReactDrawerDemo() {
   return (
     <div className="flex items-center justify-center py-4">
-      <Drawer swipeDirection={isMobile ? "down" : "right"}>
+      <Drawer swipeDirection="right">
         <DrawerTrigger render={<Button variant="outline" size="sm" />}>드로어 열기</DrawerTrigger>
-        <DrawerContent side={isMobile ? "bottom" : "right"}>
+        <DrawerContent side="right">
           <DrawerTitle>필터 설정</DrawerTitle>
           <DrawerDescription>화면 가장자리에서 슬라이드되어 보조 패널을 엽니다.</DrawerDescription>
           <div className="mt-5 flex justify-end">

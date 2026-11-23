@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import {
-  AdaptiveDialogDemo,
   FontLoadingDemo,
   InitialBootDemo,
   PageTransitionDemo,
@@ -8,6 +7,7 @@ import {
   ScrollbarGutterDemo,
   ThinScrollbarDemo,
 } from "../ui/DetailDemos";
+import { AdaptiveMatrix, AdaptivePatternDemo } from "../ui/AdaptiveDemos";
 
 interface DetailCodeTab {
   id: string;
@@ -264,30 +264,116 @@ export const projectResolver: ResolveFn<Project> = (route) => {
     slug: "adaptive-ui",
     title: "적응형 UI",
     summary:
-      "화면 폭만 줄이는 반응형을 넘어, 모바일에서 사용자가 기대하는 조작 방식으로 표현을 바꾸는 기준을 다룹니다.",
+      "화면 폭만 줄이는 반응형을 넘어, 64rem 미만 터치 환경에서 오버레이·목록·입력 방식을 모바일 조작에 맞게 전환하는 기준과 예외를 다룹니다.",
     sections: [
       {
-        id: "dialog-to-sheet",
-        title: "대화상자에서 바텀시트로 (확인창은 중앙 유지)",
+        id: "adaptive-criteria",
+        title: "전환 기준과 대상 구분",
         problem:
-          "데스크톱의 중앙 모달을 모바일에 그대로 띄우면 한 손으로 닫기 어렵고 입력 영역이 좁아집니다. 필터나 짧은 입력 대화상자는 모바일에서 하단 바텀시트로 전환하고, 삭제·초기화 같은 확인창(Alert Dialog)은 실수 방지를 위해 중앙 모달을 유지합니다.",
+          "화면이 좁아졌다고 모든 오버레이를 바텀시트로 바꾸면 짧은 안내가 과하게 커지거나, 파괴적 확인창이 실수로 닫힐 위험이 생깁니다. 입력·선택이 필요한 오버레이는 바텀시트로 옮기고, 주의를 강제해야 하는 확인창은 중앙에 유지해 조작 의도를 지킵니다.",
         guidance:
-          "DialogContent의 surface 속성을 뷰포트에 따라 'dialog'와 'sheet'로 분기합니다. 확인창에는 AlertDialog를 써서 바깥 클릭으로 실수로 닫히지 않게 합니다.",
+          "전환 경계는 64rem 미만이며 @goraebap/ui-react/lib/use-is-mobile의 useIsMobile이 이 기준으로 화면을 판별합니다. Dialog와 Popover는 자동 전환 래퍼를 쓰고, Select·Menu·Combobox·Context Menu는 useIsMobile로 분기해 BottomSheet를 직접 조합합니다.",
+        codeLabel: "use-is-mobile.ts",
+        codeLanguage: "tsx",
+        code: `import { useIsMobile } from "@goraebap/ui-react/lib/use-is-mobile";
+
+const isMobile = useIsMobile();`,
+        renderDemo: () => <AdaptiveMatrix />,
+      },
+      {
+        id: "dialog-to-sheet",
+        title: "Dialog를 바텀시트로 전환",
+        problem:
+          "데스크톱 중앙 모달을 모바일에 그대로 띄우면 상단 닫기 버튼에 엄지가 닿기 어렵고 좌우 여백 때문에 입력 영역이 좁아집니다. 필터 설정이나 짧은 입력 폼은 화면 아래에서 올라오는 시트로 열어야 한 손으로 조작하고 끌어내려 닫을 수 있습니다.",
+        guidance:
+          "@goraebap/ui-react/components/responsive-overlay의 ResponsiveDialog가 64rem 경계에 따라 Dialog와 BottomSheet를 자동으로 전환합니다. BottomSheet는 아래로 끌어내려 닫기, Esc, 바깥 클릭과 포커스 트랩·복원을 기본으로 처리합니다.",
         codeLabel: "ResponsiveDialog.tsx",
         codeLanguage: "tsx",
-        code: `<DialogContent surface={isMobile ? "sheet" : "dialog"}>
-  <DialogTitle>필터 설정</DialogTitle>
-  {/* 모바일에서는 하단 시트 + 핸들 바, 데스크톱에서는 중앙 모달 */}
-</DialogContent>`,
-        renderDemo: () => <AdaptiveDialogDemo />,
+        code: `<ResponsiveDialog>
+  <ResponsiveDialogTrigger render={<Button />}>필터 설정</ResponsiveDialogTrigger>
+  <ResponsiveDialogContent>
+    <ResponsiveDialogTitle>필터 설정</ResponsiveDialogTitle>
+    <ResponsiveDialogDescription>조건을 고릅니다.</ResponsiveDialogDescription>
+  </ResponsiveDialogContent>
+</ResponsiveDialog>`,
+        renderDemo: () => <AdaptivePatternDemo pattern="dialog" />,
+      },
+      {
+        id: "popover-to-sheet",
+        title: "Popover를 바텀시트로 전환",
+        problem:
+          "트리거 옆에 뜨는 팝오버는 좁은 화면에서 좌우 가장자리에 잘리거나, 옵션이 여러 줄일 때 손가락에 가려 선택하기 어렵습니다. 반대로 한두 줄짜리 짧은 도움말까지 시트로 열면 화면 흐름이 끊깁니다.",
+        guidance:
+          '@goraebap/ui-react/components/responsive-overlay의 ResponsivePopover는 64rem 미만에서 자동으로 BottomSheet로 바뀝니다. 짧은 안내처럼 팝오버 형태가 나은 경우에만 mobile="popover"를 지정해 모바일에서도 팝오버를 유지합니다.',
+        codeLabel: "ResponsivePopover.tsx",
+        codeLanguage: "tsx",
+        code: `<ResponsivePopover>
+  <ResponsivePopoverTrigger render={<Button variant="outline" />}>표시 옵션</ResponsivePopoverTrigger>
+  <ResponsivePopoverContent>
+    <ResponsivePopoverTitle>표시 옵션</ResponsivePopoverTitle>
+  </ResponsivePopoverContent>
+</ResponsivePopover>
+
+{/* 모바일에서도 팝오버 유지 */}
+<ResponsivePopover mobile="popover">...</ResponsivePopover>`,
+        renderDemo: () => <AdaptivePatternDemo pattern="popover" />,
+      },
+      {
+        id: "list-to-sheet",
+        title: "Select·Menu·Combobox를 바텀시트 목록으로",
+        problem:
+          "데스크톱 드롭다운은 항목 높이가 좁아 터치 오입력이 잦고, 검색 입력이 있는 Combobox는 가상 키보드가 올라오면 결과 목록이 가려집니다. 우클릭으로 여는 Context Menu는 터치 기기에서 접근 경로 자체가 사라집니다.",
+        guidance:
+          "Select, Menu, Combobox, Context Menu에는 자동 전환 래퍼가 없으므로 useIsMobile로 분기해 BottomSheet를 직접 씁니다. 시트 안의 항목은 최소 44px(h-11) 높이로 배치하고, Context Menu 동작은 항목 옆 더보기 버튼으로 함께 노출합니다.",
+        codeLabel: "ItemActions.tsx",
+        codeLanguage: "tsx",
+        code: `const isMobile = useIsMobile();
+
+if (isMobile) {
+  return (
+    <BottomSheet>
+      <BottomSheetTrigger render={<Button variant="outline" />}>더보기</BottomSheetTrigger>
+      <BottomSheetContent>
+        <BottomSheetTitle>항목 작업</BottomSheetTitle>
+        <BottomSheetClose render={<Button variant="ghost" className="h-11 w-full justify-start" />}>
+          복제
+        </BottomSheetClose>
+      </BottomSheetContent>
+    </BottomSheet>
+  );
+}
+
+return (
+  <Menu>
+    <MenuTrigger render={<Button variant="outline" />}>더보기</MenuTrigger>
+    <MenuContent>
+      <MenuItem>복제</MenuItem>
+    </MenuContent>
+  </Menu>
+);`,
+        renderDemo: () => <AdaptivePatternDemo pattern="menu" />,
+      },
+      {
+        id: "keep-centered",
+        title: "확인창은 모바일에서도 중앙에 유지",
+        problem:
+          "삭제·탈퇴·초기화처럼 되돌릴 수 없는 확인을 바텀시트로 내리면, 아래로 끌어내리거나 바깥을 스치는 동작으로 의도와 다르게 닫히기 쉽습니다. 위험한 결정일수록 시선의 중심을 잡아 명확하게 선택하도록 해야 합니다.",
+        guidance:
+          "AlertDialog는 바텀시트로 전환하지 않고 모바일에서도 중앙 모달을 그대로 유지합니다. 취소와 파괴적 실행 버튼은 좁은 화면에서 충분한 간격을 두고 명확한 동사로 구분합니다.",
+        codeLabel: "ConfirmDelete.tsx",
+        codeLanguage: "tsx",
+        code: `<AlertDialog>
+  <AlertDialogTrigger render={<Button variant="destructive" />}>삭제</AlertDialogTrigger>
+  {/* 모바일에서도 중앙 모달 유지 */}
+</AlertDialog>`,
       },
       {
         id: "touch-and-hover",
-        title: "호버 대체와 터치 영역",
+        title: "호버 대체와 터치 영역 확보",
         problem:
-          "모바일 터치 환경에는 마우스 호버와 우클릭이 없습니다. Tooltip이나 Preview Card 안에 필수 정보를 숨기면 모바일 사용자는 볼 수 없고, 우클릭 Context Menu만 두면 작업에 접근할 수 없습니다.",
+          "터치 기기에는 마우스 호버와 우클릭이 없습니다. Tooltip이나 Preview Card 안에 필수 안내나 실행 동작을 숨기면 모바일 사용자는 확인할 방법이 없고, 작은 아이콘 버튼이 밀집되면 옆 항목을 잘못 누르게 됩니다.",
         guidance:
-          "호버 전용 컴포넌트는 보조 설명에만 쓰고, Context Menu 항목은 더보기(Menu) 버튼으로 함께 제공합니다. 모바일 주요 실행 버튼은 전체 폭(w-full)이나 size='lg'로 터치 영역을 확보합니다.",
+          "호버 전용 컴포넌트에는 보조 설명만 두고 필수 정보는 화면에 직접 드러냅니다. 모바일 주요 실행 버튼은 전체 폭(w-full)이나 size='lg'로 터치 영역을 키우고, 인접한 보조 버튼 사이에는 충분한 간격을 둡니다.",
         codeLabel: "MobileAction.tsx",
         codeLanguage: "tsx",
         code: `<Button size={isMobile ? "lg" : "default"} className={isMobile ? "w-full" : undefined}>
@@ -295,15 +381,57 @@ export const projectResolver: ResolveFn<Project> = (route) => {
 </Button>`,
       },
       {
-        id: "dedicated-edit",
-        title: "긴 입력·편집은 전용 페이지로",
+        id: "keyboard-and-safe-area",
+        title: "가상 키보드와 Safe Area 대응",
         problem:
-          "모바일에서 가상 키보드가 올라오면 화면의 절반 이상이 가려집니다. 여러 칸을 채우거나 긴 글을 편집하는 화면을 바텀시트나 모달에 넣으면 스크롤과 닫기 동작이 꼬입니다.",
+          "모바일 브라우저에서 100vh는 주소창과 가상 키보드 높이를 반영하지 못해 하단 버튼이 화면 밖으로 밀리거나 키보드 뒤에 가립니다. 또한 노치와 홈 인디케이터 영역에 하단 실행 바가 겹치면 마지막 버튼을 탭하기 어렵습니다.",
         guidance:
-          "긴 폼이나 본문 편집은 자기 주소를 가진 전용 페이지(…/edit)로 열어 새로고침과 뒤로가기 동작을 예측 가능하게 유지합니다.",
+          "오버레이와 고정 패널의 높이는 동적 뷰포트 단위(dvh)로 제한하고, 하단 여백에는 env(safe-area-inset-bottom)을 더합니다. BottomSheet는 최대 높이 85dvh, 내부 스크롤, 하단 safe area 여백을 기본으로 적용하므로 화면 하단 고정 바나 커스텀 패널에만 추가로 지정합니다.",
+        codeLabel: "SafeAreaBar.tsx",
+        codeLanguage: "tsx",
+        code: `{/* BottomSheet는 최대 높이 85dvh · 내부 스크롤 · 하단 safe area 기본 적용 */}
+<BottomSheetContent>
+  <BottomSheetTitle>옵션 선택</BottomSheetTitle>
+  {/* 긴 목록도 시트 내부에서 스크롤됨 */}
+</BottomSheetContent>
+
+{/* 커스텀 하단 고정 바에는 dvh와 safe-area-inset-bottom을 직접 적용 */}
+<div className="bg-background fixed inset-x-0 bottom-0 border-t px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+  <Button size="lg" className="w-full">저장</Button>
+</div>`,
+      },
+      {
+        id: "state-on-switch",
+        title: "화면 폭 전환 시 입력 상태 유지",
+        problem:
+          "ResponsiveDialog와 ResponsivePopover는 64rem 경계를 넘을 때 Dialog·Popover와 BottomSheet 트리를 교체해 렌더링합니다. 열림 상태(open)는 래퍼가 이어 주지만, 내부에 비제어로 둔 입력값이나 선택 초안은 언마운트되면서 초기화됩니다.",
+        guidance:
+          "창 크기를 조절하거나 기기 방향을 돌려도 작성 중인 값이 사라지지 않도록, 입력값과 필터 상태는 ResponsiveDialog·ResponsivePopover 바깥의 state에 두고 제어 props로 전달합니다.",
+        codeLabel: "ControlledResponsiveDialog.tsx",
+        codeLanguage: "tsx",
+        code: `const [open, setOpen] = useState(false);
+const [keyword, setKeyword] = useState("");
+
+return (
+  <ResponsiveDialog open={open} onOpenChange={setOpen}>
+    <ResponsiveDialogTrigger render={<Button />}>필터 설정</ResponsiveDialogTrigger>
+    <ResponsiveDialogContent>
+      <ResponsiveDialogTitle>필터 설정</ResponsiveDialogTitle>
+      <Input value={keyword} onChange={(e) => setKeyword(e.target.value)} />
+    </ResponsiveDialogContent>
+  </ResponsiveDialog>
+);`,
+      },
+      {
+        id: "dedicated-edit",
+        title: "긴 입력·편집은 전용 페이지로 분리",
+        problem:
+          "모바일에서 가상 키보드가 올라오면 화면의 절반 이상이 가려집니다. 여러 필드를 채우거나 긴 본문을 편집하는 화면을 바텀시트나 모달에 넣으면 스크롤과 스와이프 닫기가 충돌하고 새로고침 시 작업 맥락을 잃기 쉽습니다.",
+        guidance:
+          "짧은 필터나 1~2칸 입력만 ResponsiveDialog로 처리하고, 긴 폼이나 문서 편집은 자기 주소를 가진 전용 페이지(…/edit)로 열어 뒤로가기와 새로고침 동작을 예측 가능하게 유지합니다.",
         codeLabel: "edit-route.tsx",
         codeLanguage: "tsx",
-        code: `// 짧은 확인·필터 → Dialog / Sheet
+        code: `// 짧은 확인·필터 → ResponsiveDialog
 // 긴 폼·본문 편집 → 전용 라우트 (/items/$id/edit)`,
       },
     ],

@@ -134,7 +134,7 @@ function OverviewPage() {
   return (
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">개요</h1>
+        <h1 className="text-3xl font-bold tracking-tight">개요</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
           goraebap/design은 프로토타입·개인 프로젝트(React)와 업무 프로젝트(Angular)가 하나의 디자인
           기준을 공유하도록 설계한 디자인 시스템입니다.

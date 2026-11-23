@@ -18,7 +18,7 @@ const NEXT_STEPS = [
   },
   {
     title: "컴포넌트",
-    summary: "Base UI 기반 React 컴포넌트 36종의 동작과 사용 예제를 확인합니다.",
+    summary: "Base UI 기반 React 컴포넌트의 동작과 사용 예제를 확인합니다.",
     to: "/components" as const,
   },
   {
@@ -32,7 +32,7 @@ function GettingStartedPage() {
   return (
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">시작하기</h1>
+        <h1 className="text-3xl font-bold tracking-tight">시작하기</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
           워크스페이스 앱에 @goraebap/design-system과 @goraebap/ui-react를 연결해 스타일, 테마,
           컴포넌트를 적용합니다.

@@ -6,7 +6,7 @@ import { SiteFooter } from "./SiteFooter";
 
 interface DocsNavItem {
   label: string;
-  href: string;
+  href?: string;
   icon?: SystemIconName;
   children?: DocsNavItem[];
   defaultOpen?: boolean;
@@ -28,13 +28,14 @@ interface DocsShellProps {
 function DocsNavItemRow({ item, pathname }: { item: DocsNavItem; pathname: string }) {
   const isActive = item.href === pathname;
   const hasActiveChild = item.children?.some((child) => child.href === pathname) ?? false;
-  const [isOpen, setIsOpen] = useState(item.defaultOpen ?? hasActiveChild);
+  const [manualOpen, setManualOpen] = useState<boolean | null>(null);
+  const isOpen = manualOpen ?? item.defaultOpen ?? hasActiveChild;
 
   if (!item.children || item.children.length === 0) {
     return (
       <li>
         <Link
-          to={item.href}
+          to={item.href ?? "/"}
           aria-current={isActive ? "page" : undefined}
           className={
             isActive
@@ -49,36 +50,56 @@ function DocsNavItemRow({ item, pathname }: { item: DocsNavItem; pathname: strin
     );
   }
 
+  const parentClass = `flex w-full cursor-pointer items-center justify-between gap-2 rounded-full px-3 py-1.5 text-sm transition-colors ${
+    isActive
+      ? "bg-secondary text-foreground font-medium"
+      : !item.href && hasActiveChild
+        ? "hover:bg-accent/60 text-foreground font-medium"
+        : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
+  }`;
+  const parentContent = (
+    <>
+      <span className="flex min-w-0 items-center gap-2">
+        {item.icon && <SystemIcon name={item.icon} className="size-3.5 shrink-0 opacity-80" />}
+        <span className="truncate">{item.label}</span>
+      </span>
+      <SystemIcon
+        name="chevronDown"
+        className={`size-3.5 shrink-0 transition-transform duration-150 ${isOpen ? "rotate-180" : ""}`}
+      />
+    </>
+  );
+
   return (
     <li>
-      <Link
-        to={item.href}
-        aria-current={isActive ? "page" : undefined}
-        aria-expanded={isOpen}
-        onClick={() => setIsOpen((prev) => !prev)}
-        className={
-          isActive
-            ? "bg-secondary text-foreground flex w-full items-center justify-between gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition-colors"
-            : "text-muted-foreground hover:bg-accent/60 hover:text-foreground flex w-full items-center justify-between gap-2 rounded-full px-3 py-1.5 text-sm transition-colors"
-        }
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          {item.icon && <SystemIcon name={item.icon} className="size-3.5 shrink-0 opacity-80" />}
-          <span className="truncate">{item.label}</span>
-        </span>
-        <SystemIcon
-          name="chevronDown"
-          className={`size-3.5 shrink-0 transition-transform duration-150 ${isOpen ? "rotate-180" : ""}`}
-        />
-      </Link>
+      {item.href ? (
+        <Link
+          to={item.href}
+          aria-current={isActive ? "page" : undefined}
+          aria-expanded={isOpen}
+          onClick={() => setManualOpen(!isOpen)}
+          className={parentClass}
+        >
+          {parentContent}
+        </Link>
+      ) : (
+        <button
+          type="button"
+          aria-expanded={isOpen}
+          onClick={() => setManualOpen(!isOpen)}
+          className={parentClass}
+        >
+          {parentContent}
+        </button>
+      )}
       {isOpen && (
         <ul className="border-border mt-1 ml-3 space-y-0.5 border-l pl-2.5">
           {item.children.map((child) => {
             const isChildActive = child.href === pathname;
             return (
-              <li key={child.href}>
+              <li key={child.href ?? child.label}>
                 <Link
-                  to={child.href}
+                  to={child.href ?? "/"}
                   aria-current={isChildActive ? "page" : undefined}
                   className={
                     isChildActive
@@ -155,7 +176,11 @@ export function DocsShell({ label, groups, navHeader, navFooter, children }: Doc
                   )}
                   <ul className="space-y-0.5">
                     {group.items.map((item) => (
-                      <DocsNavItemRow key={item.href} item={item} pathname={pathname} />
+                      <DocsNavItemRow
+                        key={item.href ?? item.label}
+                        item={item}
+                        pathname={pathname}
+                      />
                     ))}
                   </ul>
                 </div>

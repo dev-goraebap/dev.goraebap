@@ -55,7 +55,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               <SystemIcon name="arrowRight" className="size-3" />
             </Link>
           </div>
-          <h1 className="text-4xl font-semibold tracking-tight sm:text-6xl sm:leading-[1.08]">
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl sm:leading-[1.08]">
             하나의 디자인 기준을
             <br />
             모든 프론트엔드에

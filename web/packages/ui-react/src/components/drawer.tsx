@@ -1,9 +1,6 @@
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 import { cn } from "@goraebap/design-system/cn";
-import {
-  dialogCloseButtonVariants,
-  dialogSheetHandleVariants,
-} from "@goraebap/design-system/recipes/dialog";
+import { dialogCloseButtonVariants } from "@goraebap/design-system/recipes/dialog";
 import {
   drawerBackdropVariants,
   drawerPopupVariants,
@@ -38,7 +35,6 @@ export function DrawerContent({
         className={mergeClassName(drawerPopupVariants({ side }), className)}
         {...props}
       >
-        {side === "bottom" && <div aria-hidden="true" className={dialogSheetHandleVariants()} />}
         {children}
         {showCloseButton && (
           <BaseDrawer.Close aria-label="닫기" className={dialogCloseButtonVariants()}>

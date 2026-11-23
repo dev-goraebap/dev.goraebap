@@ -1,7 +1,22 @@
+import { useMemo } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { COMPONENT_DOCS, getComponentDoc } from "@/entities/component-doc";
+import {
+  AccessibilitySection,
+  ADAPTIVE_LINKS,
+  AdaptiveLinkSection,
+  AnatomySection,
+  COMPONENT_DOCS,
+  COMPONENT_GUIDES,
+  GuideText,
+  GuideTextProvider,
+  RelatedSection,
+  collectGuideTexts,
+  getComponentDoc,
+  useRecipeSource,
+} from "@/entities/component-doc";
+import { annotateGlossary } from "@/shared/lib/glossary";
 import { AdapterPreviewStage } from "@/shared/ui";
 
 export const Route = createFileRoute("/_library/components/$slug/")({
@@ -11,6 +26,18 @@ export const Route = createFileRoute("/_library/components/$slug/")({
 function ComponentDetailPage() {
   const { slug } = Route.useParams();
   const doc = getComponentDoc(slug);
+  const guide = COMPONENT_GUIDES[slug];
+  const recipeCode = useRecipeSource(guide ? slug : undefined);
+  const guideTexts = useMemo(
+    () =>
+      doc && guide
+        ? annotateGlossary(
+            collectGuideTexts(doc, guide),
+            new Set(COMPONENT_DOCS.map((item) => item.slug)),
+          )
+        : {},
+    [doc, guide],
+  );
 
   if (!doc) {
     return (
@@ -26,86 +53,103 @@ function ComponentDetailPage() {
   const index = COMPONENT_DOCS.findIndex((item) => item.slug === slug);
   const prev = index > 0 ? COMPONENT_DOCS[index - 1] : undefined;
   const next = index < COMPONENT_DOCS.length - 1 ? COMPONENT_DOCS[index + 1] : undefined;
+  const adaptiveLink = ADAPTIVE_LINKS[slug];
+  const getName = (target: string) => getComponentDoc(target)?.name;
 
   return (
-    <article className="space-y-8">
-      <header className="space-y-3">
-        <span className="text-muted-foreground text-xs font-medium">{doc.category}</span>
-        <h1 className="text-3xl font-semibold tracking-tight">{doc.name}</h1>
-        <p className="text-muted-foreground text-base leading-relaxed">{doc.summary}</p>
-      </header>
+    <GuideTextProvider value={guideTexts}>
+      <article className="space-y-12">
+        <header className="space-y-3">
+          <h1 className="text-3xl font-bold tracking-tight">{doc.name}</h1>
+          <p className="text-muted-foreground text-base leading-relaxed break-keep">
+            <GuideText at="usage" text={guide?.usage ?? doc.summary} />
+          </p>
+        </header>
 
-      {/* Live Adapter + Viewport + Theme Preview Stage */}
-      <AdapterPreviewStage
-        slug={doc.slug}
-        title={doc.name}
-        reactCode={doc.reactCode}
-        angularCode={doc.angularCode}
-        renderReact={doc.renderReactDemo}
-      />
+        <AdapterPreviewStage
+          reactCode={doc.reactCode}
+          recipeCode={recipeCode}
+          angularCode={doc.angularCode}
+          renderReact={doc.renderReactDemo}
+        />
 
-      {/* Additional Examples */}
-      {doc.examples && doc.examples.length > 0 && (
-        <section className="space-y-8">
-          <h2 className="text-xl font-semibold tracking-tight">Examples</h2>
-          {doc.examples.map((example) => (
-            <div key={example.id} className="space-y-3">
-              <div className="space-y-1">
-                <h3 className="text-base font-semibold tracking-tight">{example.title}</h3>
-                {example.description && (
-                  <p className="text-muted-foreground text-sm">{example.description}</p>
-                )}
+        {guide && <AnatomySection slug={slug} guide={guide} />}
+
+        {doc.examples && doc.examples.length > 0 && (
+          <section className="space-y-8">
+            <h2 className="text-xl font-semibold tracking-tight">변형</h2>
+            {doc.examples.map((example) => (
+              <div key={example.id} className="space-y-3">
+                <div className="space-y-1">
+                  <h3 className="text-base font-semibold tracking-tight">{example.title}</h3>
+                  {example.description && (
+                    <p className="text-muted-foreground text-sm break-keep">
+                      <GuideText at={`example.${example.id}`} text={example.description} />
+                    </p>
+                  )}
+                </div>
+                <AdapterPreviewStage
+                  reactCode={example.reactCode}
+                  recipeCode={recipeCode}
+                  angularCode={example.angularCode}
+                  renderReact={example.renderReactDemo}
+                />
               </div>
-              <AdapterPreviewStage
-                title={`${doc.name} — ${example.title}`}
-                reactCode={example.reactCode}
-                angularCode={example.angularCode}
-                renderReact={example.renderReactDemo}
-              />
-            </div>
-          ))}
-        </section>
-      )}
-
-      {/* Mobile Guideline */}
-      <Alert role="note" variant="info" className="[&>h5]:mb-2 [&>p]:text-sm [&>p]:break-keep">
-        <AlertTitle className="flex items-center gap-1.5 text-xs font-semibold">
-          <SystemIcon name="mobile" className="size-4" />
-          INFO · 모바일
-        </AlertTitle>
-        <AlertDescription>{doc.mobileGuideline}</AlertDescription>
-      </Alert>
-
-      {/* Prev / Next Navigation */}
-      <nav
-        aria-label="이전/다음 컴포넌트"
-        className="border-border flex items-center justify-between border-t pt-6 text-sm"
-      >
-        {prev ? (
-          <Link
-            to="/components/$slug"
-            params={{ slug: prev.slug }}
-            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
-          >
-            <SystemIcon name="chevronLeft" className="size-4" />
-            <span>{prev.name}</span>
-          </Link>
-        ) : (
-          <span />
+            ))}
+          </section>
         )}
-        {next ? (
-          <Link
-            to="/components/$slug"
-            params={{ slug: next.slug }}
-            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
-          >
-            <span>{next.name}</span>
-            <SystemIcon name="chevronRight" className="size-4" />
-          </Link>
+
+        {guide && <AccessibilitySection guide={guide} />}
+        {adaptiveLink ? (
+          <AdaptiveLinkSection link={adaptiveLink} />
         ) : (
-          <span />
+          !guide && (
+            <Alert
+              role="note"
+              variant="info"
+              className="[&>h5]:mb-2 [&>p]:text-sm [&>p]:break-keep"
+            >
+              <AlertTitle className="flex items-center gap-1.5 text-xs font-semibold">
+                <SystemIcon name="mobile" className="size-4" />
+                INFO · 모바일
+              </AlertTitle>
+              <AlertDescription>{doc.mobileGuideline}</AlertDescription>
+            </Alert>
+          )
         )}
-      </nav>
-    </article>
+        {guide && <RelatedSection guide={guide} getName={getName} />}
+
+        {/* Prev / Next Navigation */}
+        <nav
+          aria-label="이전/다음 컴포넌트"
+          className="border-border flex items-center justify-between border-t pt-6 text-sm"
+        >
+          {prev ? (
+            <Link
+              to="/components/$slug"
+              params={{ slug: prev.slug }}
+              className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
+            >
+              <SystemIcon name="chevronLeft" className="size-4" />
+              <span>{prev.name}</span>
+            </Link>
+          ) : (
+            <span />
+          )}
+          {next ? (
+            <Link
+              to="/components/$slug"
+              params={{ slug: next.slug }}
+              className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
+            >
+              <span>{next.name}</span>
+              <SystemIcon name="chevronRight" className="size-4" />
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
+      </article>
+    </GuideTextProvider>
   );
 }

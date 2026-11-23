@@ -4,8 +4,6 @@ import {
   dialogBackdropVariants,
   dialogCloseButtonVariants,
   dialogPopupVariants,
-  dialogSheetHandleVariants,
-  type DialogPopupRecipeProps,
 } from "@goraebap/design-system/recipes/dialog";
 import { SystemIcon } from "../icons";
 import { usePortalContainer } from "../lib/portal-container";
@@ -16,14 +14,12 @@ export const Dialog = BaseDialog.Root;
 export const DialogTrigger = BaseDialog.Trigger;
 export const DialogClose = BaseDialog.Close;
 
-export type DialogContentProps = ComponentProps<typeof BaseDialog.Popup> &
-  DialogPopupRecipeProps & {
-    showCloseButton?: boolean;
-  };
+export type DialogContentProps = ComponentProps<typeof BaseDialog.Popup> & {
+  showCloseButton?: boolean;
+};
 
 export function DialogContent({
   className,
-  surface,
   showCloseButton = true,
   children,
   ...props
@@ -33,10 +29,9 @@ export function DialogContent({
       <BaseDialog.Backdrop className={dialogBackdropVariants()} />
       <BaseDialog.Popup
         data-slot="dialog-content"
-        className={mergeClassName(dialogPopupVariants({ surface }), className)}
+        className={mergeClassName(dialogPopupVariants(), className)}
         {...props}
       >
-        {surface === "sheet" && <div aria-hidden="true" className={dialogSheetHandleVariants()} />}
         {children}
         {showCloseButton && (
           <BaseDialog.Close aria-label="닫기" className={dialogCloseButtonVariants()}>

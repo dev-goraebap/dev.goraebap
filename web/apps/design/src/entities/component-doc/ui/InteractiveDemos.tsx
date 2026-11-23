@@ -47,27 +47,14 @@ export function ReactCheckboxDemo() {
   );
 }
 
-export function ReactDialogDemo({ isMobile }: { isMobile: boolean }) {
+export function ReactDialogDemo() {
   return (
     <div className="flex flex-col items-center gap-3 py-4">
       <Dialog>
-        <DialogTrigger
-          render={
-            <Button
-              className={isMobile ? "w-full" : undefined}
-              size={isMobile ? "lg" : "default"}
-            />
-          }
-        >
-          {isMobile ? "모바일 바텀시트 열기" : "대화상자 열기"}
-        </DialogTrigger>
-        <DialogContent surface={isMobile ? "sheet" : "dialog"}>
+        <DialogTrigger render={<Button />}>대화상자 열기</DialogTrigger>
+        <DialogContent>
           <DialogTitle>프로젝트 이름 바꾸기</DialogTitle>
-          <DialogDescription>
-            {isMobile
-              ? "휴대폰(64rem 미만)에서는 짧은 양식을 하단 바텀시트로 엽니다."
-              : "데스크톱(64rem 이상)에서는 화면 중앙의 대화상자로 엽니다."}
-          </DialogDescription>
+          <DialogDescription>새 이름을 입력합니다.</DialogDescription>
           <div className="mt-4 space-y-3">
             <Input defaultValue="dev.goraebap" aria-label="프로젝트 이름" />
             <div className="flex justify-end gap-2">

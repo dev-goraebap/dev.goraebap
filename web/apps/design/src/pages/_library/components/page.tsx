@@ -9,10 +9,12 @@ function ComponentsOverviewPage() {
   return (
     <div className="space-y-12">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">컴포넌트</h1>
-        <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
-          React(Base UI) 컴포넌트와 Angular(Spartan) 예시를 같은 레시피 기준으로 함께 제공하는 UI
-          컴포넌트 라이브러리입니다.
+        <h1 className="text-3xl font-bold tracking-tight">컴포넌트</h1>
+        <p className="text-muted-foreground max-w-3xl text-base leading-relaxed break-keep">
+          컴포넌트는 버튼이나 입력창처럼 화면을 이루는 재사용 단위로, 모양과 동작, 접근성을 하나로
+          묶어 어느 화면에서든 같은 경험을 제공합니다. 외형은 프레임워크와 분리된 스타일 레시피 한
+          벌로 관리하고, 각 프레임워크의 UI 컴포넌트 어댑터 계층이 여기에 상태와 키보드 조작 같은
+          동작을 연결합니다.
         </p>
       </header>
 

@@ -9,7 +9,7 @@ function LayoutsOverviewPage() {
   return (
     <div className="space-y-10">
       <header className="border-border border-b pb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">레이아웃</h1>
+        <h1 className="text-3xl font-bold tracking-tight">레이아웃</h1>
       </header>
 
       {LAYOUT_LEVELS.map((level) => {

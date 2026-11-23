@@ -83,7 +83,7 @@ function DesignTokensPage() {
   return (
     <article className="space-y-8">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">Design Tokens</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Design Tokens</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
           디자인 토큰은 색상, 반경, 타이포그래피 같은 시각적 결정을 CSS 변수로 정의한 공통
           기준입니다. Neutral을 기본으로 Editorial·Ocean·Forest·Terracotta까지 5가지 색상 테마를

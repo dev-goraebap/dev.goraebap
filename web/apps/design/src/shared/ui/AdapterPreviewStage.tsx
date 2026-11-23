@@ -1,44 +1,76 @@
-import { useState, type ReactNode } from "react";
+import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { Button } from "@goraebap/ui-react/components/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { useDesignConfig } from "../lib/design-config";
 import { detectAngularLanguage } from "../lib/highlight";
 import { CodeView } from "./CodeView";
-import { MobileDeviceFrame } from "./MobileDeviceFrame";
 import { ThemedPortalScope } from "./ThemedPortalScope";
 
-export type AdapterTarget = "react" | "angular";
+type AdapterTarget = "react" | "angular" | "recipe";
 
 interface AdapterPreviewStageProps {
-  slug?: string;
-  title?: string;
   reactCode: string;
   angularCode: string;
-  renderReact: (ctx: { isMobile: boolean }) => ReactNode;
-  angularNote?: string;
-  defaultAdapter?: AdapterTarget;
+  recipeCode?: string;
+  renderReact: () => ReactNode;
+}
+
+const ADAPTERS: { id: AdapterTarget; label: string }[] = [
+  { id: "react", label: "React" },
+  { id: "angular", label: "Angular" },
+  { id: "recipe", label: "Recipe" },
+];
+const ADAPTER_STORAGE_KEY = "goraebap-design-adapter";
+const COLLAPSED_LINE_LIMIT = 10;
+
+const adapterListeners = new Set<() => void>();
+
+function subscribeAdapter(listener: () => void) {
+  adapterListeners.add(listener);
+  return () => {
+    adapterListeners.delete(listener);
+  };
+}
+
+function readAdapter(): AdapterTarget {
+  const saved = window.localStorage.getItem(ADAPTER_STORAGE_KEY);
+  return saved === "angular" || saved === "recipe" ? saved : "react";
+}
+
+function selectAdapter(adapter: AdapterTarget) {
+  window.localStorage.setItem(ADAPTER_STORAGE_KEY, adapter);
+  adapterListeners.forEach((listener) => listener());
 }
 
 export function AdapterPreviewStage({
-  slug,
-  title,
   reactCode,
   angularCode,
+  recipeCode,
   renderReact,
-  angularNote,
-  defaultAdapter = "react",
 }: AdapterPreviewStageProps) {
-  const [adapter, setAdapter] = useState<AdapterTarget>(defaultAdapter);
-  const [view, setView] = useState<"preview" | "code">("preview");
-  const [viewport, setViewport] = useState<"desktop" | "mobile">("desktop");
+  // 한 페이지의 여러 예제가 같은 프레임워크 코드를 보여 주도록 선택을 공유한다.
+  const selectedAdapter = useSyncExternalStore(
+    subscribeAdapter,
+    readAdapter,
+    () => "react" as const,
+  );
+  const adapter = selectedAdapter === "recipe" && !recipeCode ? "react" : selectedAdapter;
+  const adapters = ADAPTERS.filter((item) => item.id !== "recipe" || recipeCode);
   const { config } = useDesignConfig();
-  const theme = config.theme;
   const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
-  const isMobile = viewport === "mobile";
-  const activeCode = adapter === "react" ? reactCode : angularCode;
-  const angularLang = detectAngularLanguage(angularCode);
-  const activeLang = adapter === "react" ? "tsx" : angularLang;
+  const activeCode =
+    adapter === "react" ? reactCode : adapter === "angular" ? angularCode : (recipeCode ?? "");
+  const activeLang =
+    adapter === "react"
+      ? "tsx"
+      : adapter === "angular"
+        ? detectAngularLanguage(angularCode)
+        : "typescript";
+  const isCollapsible = activeCode.split("\n").length > COLLAPSED_LINE_LIMIT;
+  const isCollapsed = isCollapsible && !expanded;
 
   async function handleCopy() {
     await navigator.clipboard.writeText(activeCode);
@@ -47,171 +79,89 @@ export function AdapterPreviewStage({
   }
 
   return (
-    <ThemedPortalScope theme={theme}>
+    <ThemedPortalScope theme={config.theme}>
       <div className="border-border bg-card overflow-hidden rounded-2xl border">
-        {/* Top Adapter + Controls Bar */}
-        <div className="border-border bg-muted/35 flex flex-wrap items-center justify-between gap-3 border-b px-4 py-2.5">
-          {/* Adapter Switcher */}
-          <div
-            className="border-border bg-background inline-flex items-center gap-0.5 rounded-full border p-0.5"
-            role="tablist"
-            aria-label="어댑터 선택"
-          >
-            {(
-              [
-                { id: "react", label: "React (Base UI)" },
-                { id: "angular", label: "Angular (Spartan)" },
-              ] as const
-            ).map((item) => (
-              <Button
-                key={item.id}
-                type="button"
-                role="tab"
-                size="sm"
-                shape="pill"
-                variant={adapter === item.id ? "default" : "ghost"}
-                aria-selected={adapter === item.id}
-                onClick={() => setAdapter(item.id)}
-                className="h-7 px-3 text-xs"
-              >
-                {item.label}
-              </Button>
-            ))}
-          </div>
-
-          {/* Right Controls */}
-          <div className="flex flex-wrap items-center gap-2">
-            {view === "preview" && adapter !== "angular" && (
-              <div
-                className="border-border bg-background inline-flex items-center gap-0.5 rounded-full border p-0.5"
-                role="group"
-                aria-label="뷰포트 전환"
-              >
-                <Button
-                  type="button"
-                  size="sm"
-                  shape="pill"
-                  variant={viewport === "desktop" ? "secondary" : "ghost"}
-                  aria-pressed={viewport === "desktop"}
-                  onClick={() => setViewport("desktop")}
-                  className="h-7 gap-1 px-2.5 text-xs"
-                >
-                  <SystemIcon name="desktop" className="size-3.5" />
-                  <span>Desktop</span>
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  shape="pill"
-                  variant={viewport === "mobile" ? "secondary" : "ghost"}
-                  aria-pressed={viewport === "mobile"}
-                  onClick={() => setViewport("mobile")}
-                  className="h-7 gap-1 px-2.5 text-xs"
-                >
-                  <SystemIcon name="mobile" className="size-3.5" />
-                  <span>390px</span>
-                </Button>
-              </div>
-            )}
-
-            <div
-              className="border-border bg-background inline-flex items-center gap-0.5 rounded-full border p-0.5"
-              role="group"
-              aria-label="보기 전환"
-            >
-              <Button
-                type="button"
-                size="sm"
-                shape="pill"
-                variant={view === "preview" ? "secondary" : "ghost"}
-                aria-pressed={view === "preview"}
-                onClick={() => setView("preview")}
-                className="h-7 gap-1 px-2.5 text-xs"
-              >
-                <SystemIcon name="eye" className="size-3.5" />
-                <span>Preview</span>
-              </Button>
-              <Button
-                type="button"
-                size="sm"
-                shape="pill"
-                variant={view === "code" ? "secondary" : "ghost"}
-                aria-pressed={view === "code"}
-                onClick={() => setView("code")}
-                className="h-7 gap-1 px-2.5 text-xs"
-              >
-                <SystemIcon name="code" className="size-3.5" />
-                <span>Code</span>
-              </Button>
-            </div>
-          </div>
+        <div
+          data-ds-theme={config.theme}
+          className="bg-dots bg-background/70 flex min-h-64 items-center justify-center px-6 py-12 transition-colors"
+        >
+          <div className="text-foreground w-full max-w-2xl">{renderReact()}</div>
         </div>
 
-        {/* Stage Body */}
-        {view === "preview" ? (
-          <div
-            data-ds-theme={theme}
-            className={`bg-dots bg-background/70 flex min-h-72 flex-col items-center justify-center transition-colors ${
-              isMobile && adapter !== "angular" ? "px-4 py-10 sm:px-8" : "p-6"
-            }`}
-          >
-            {adapter === "angular" ? (
-              <div className="border-border bg-card w-full max-w-2xl space-y-4 rounded-xl border p-6">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className="bg-info/15 text-info border-info/30 rounded-full border px-2.5 py-0.5 font-mono text-[11px] font-medium">
-                      @spartan-ng/brain + @goraebap/design-system
-                    </span>
-                    <span className="text-muted-foreground font-mono text-xs">
-                      Live iframe 예정 (apps/accounts 전환 시 연결)
-                    </span>
-                  </div>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleCopy}
-                    className="text-muted-foreground hover:text-foreground h-7 gap-1 px-2 text-xs"
-                  >
-                    <SystemIcon name={copied ? "check" : "copy"} className="size-3.5" />
-                    <span>{copied ? "복사됨" : "코드 복사"}</span>
-                  </Button>
-                </div>
-                <p className="text-muted-foreground text-xs leading-relaxed">
-                  {angularNote ??
-                    "Angular에서는 @spartan-ng/brain 헤드리스 디렉티브 위에 React와 완전히 같은 @goraebap/design-system 레시피를 그대로 결합합니다."}
-                </p>
-                <CodeView
-                  code={angularCode}
-                  language={angularLang}
-                  className="border-border bg-background text-foreground overflow-x-auto rounded-lg border p-4 font-mono text-xs leading-relaxed"
-                />
-              </div>
-            ) : isMobile && slug ? (
-              <MobileDeviceFrame path={`/preview/components/${slug}`} title={title} theme={theme} />
-            ) : (
-              <div className="text-foreground w-full max-w-2xl">{renderReact({ isMobile })}</div>
-            )}
-          </div>
-        ) : (
-          <div className="bg-background relative">
+        <Tabs
+          value={adapter}
+          onValueChange={(value) => selectAdapter(value as AdapterTarget)}
+          className="border-border border-t"
+        >
+          <div className="border-border flex h-11 items-center justify-between gap-3 border-b px-4">
+            <TabsList
+              aria-label="어댑터 선택"
+              className="h-full gap-4 rounded-none border-0 bg-transparent p-0"
+            >
+              {adapters.map((item) => (
+                <TabsTrigger
+                  key={item.id}
+                  value={item.id}
+                  className="text-muted-foreground hover:text-foreground data-[active]:border-foreground h-full rounded-none border-b-2 border-transparent px-0.5 pt-0.5 pb-0 data-[active]:bg-transparent data-[active]:shadow-none"
+                >
+                  {item.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
               size="sm"
               onClick={handleCopy}
-              className="bg-card text-muted-foreground hover:text-foreground absolute top-3 right-3 h-7 gap-1.5 px-2.5 text-xs"
+              className="text-muted-foreground hover:text-foreground h-7 gap-1.5 px-2 text-xs"
             >
               <SystemIcon name={copied ? "check" : "copy"} className="size-3.5" />
               <span>{copied ? "복사됨" : "복사"}</span>
             </Button>
-            <CodeView
-              code={activeCode}
-              language={activeLang}
-              className="text-foreground max-h-[30rem] overflow-auto p-5 font-mono text-xs leading-relaxed"
-            />
           </div>
-        )}
+
+          {adapters.map((item) => (
+            <TabsContent key={item.id} value={item.id} className="bg-background relative mt-0">
+              <div
+                data-lenis-prevent={isCollapsed ? undefined : true}
+                className={isCollapsed ? "max-h-56 overflow-hidden" : "max-h-[32rem] overflow-auto"}
+              >
+                <CodeView
+                  code={activeCode}
+                  language={activeLang}
+                  className={`text-foreground w-max min-w-full p-5 font-mono text-xs leading-relaxed ${
+                    isCollapsible ? "pb-14" : ""
+                  }`}
+                />
+              </div>
+              {isCollapsible && (
+                <div
+                  className={`pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-3 ${
+                    isCollapsed
+                      ? "from-background via-background/85 bg-gradient-to-t to-transparent pt-14"
+                      : ""
+                  }`}
+                >
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    shape="pill"
+                    aria-expanded={expanded}
+                    onClick={() => setExpanded((value) => !value)}
+                    className="bg-card pointer-events-auto h-7 gap-1 px-3 text-xs"
+                  >
+                    <span>{expanded ? "코드 접기" : "코드 펼치기"}</span>
+                    <SystemIcon
+                      name="chevronDown"
+                      className={`size-3.5 transition-transform ${expanded ? "rotate-180" : ""}`}
+                    />
+                  </Button>
+                </div>
+              )}
+            </TabsContent>
+          ))}
+        </Tabs>
       </div>
     </ThemedPortalScope>
   );

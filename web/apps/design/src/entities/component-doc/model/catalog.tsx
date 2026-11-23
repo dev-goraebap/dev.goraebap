@@ -63,6 +63,11 @@ import {
   ReactSliderShapeDemo,
   ReactSwitchShapeDemo,
 } from "../ui/ShapeDemos";
+import {
+  ReactBottomSheetDemo,
+  ReactResponsiveDialogDemo,
+  ReactResponsivePopoverDemo,
+} from "../ui/BottomSheetDemos";
 import { ReactCheckboxDemo, ReactDialogDemo, ReactSwitchDemo } from "../ui/InteractiveDemos";
 
 export type ComponentCategory = "동작과 입력" | "표시와 구조" | "오버레이와 탐색";
@@ -73,7 +78,7 @@ interface ComponentExample {
   description?: string;
   reactCode: string;
   angularCode: string;
-  renderReactDemo: (ctx: { isMobile: boolean }) => ReactNode;
+  renderReactDemo: () => ReactNode;
 }
 
 export interface ComponentDocSpec {
@@ -85,7 +90,7 @@ export interface ComponentDocSpec {
   reactCode: string;
   angularCode: string;
   renderThumbnail: () => ReactNode;
-  renderReactDemo: (ctx: { isMobile: boolean }) => ReactNode;
+  renderReactDemo: () => ReactNode;
   examples?: ComponentExample[];
 }
 
@@ -100,8 +105,7 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     slug: "button",
     name: "Button",
     category: "동작과 입력",
-    summary:
-      "동작을 실행하거나 링크로 이동하는 버튼입니다. React와 Angular 예시 모두 같은 레시피를 씁니다.",
+    summary: "동작을 실행하거나 링크로 이동하는 버튼입니다.",
     mobileGuideline:
       '좁은 화면에서는 주요 동작 버튼을 w-full과 size="lg"(40px)로 키우고, 하단 고정 바에 둘 때는 safe-area-inset-bottom 여백을 더합니다.',
     reactCode: `import { Button } from "@goraebap/ui-react/components/button";
@@ -139,27 +143,13 @@ export class GbButtonDirective {
         <span className={buttonVariants({ variant: "destructive", size: "sm" })}>Delete</span>
       </div>
     ),
-    renderReactDemo: ({ isMobile }) => (
-      <div
-        className={
-          isMobile
-            ? "flex flex-col gap-2"
-            : "flex flex-wrap items-center justify-center gap-2.5 py-4"
-        }
-      >
-        <Button size={isMobile ? "lg" : "default"}>저장</Button>
-        <Button size={isMobile ? "lg" : "default"} variant="secondary">
-          임시 저장
-        </Button>
-        <Button size={isMobile ? "lg" : "default"} variant="outline">
-          미리보기
-        </Button>
-        <Button size={isMobile ? "lg" : "default"} variant="ghost">
-          취소
-        </Button>
-        <Button size={isMobile ? "lg" : "default"} variant="destructive">
-          삭제
-        </Button>
+    renderReactDemo: () => (
+      <div className="flex flex-wrap items-center justify-center gap-2.5 py-4">
+        <Button>저장</Button>
+        <Button variant="secondary">임시 저장</Button>
+        <Button variant="outline">미리보기</Button>
+        <Button variant="ghost">취소</Button>
+        <Button variant="destructive">삭제</Button>
       </div>
     ),
     examples: [
@@ -167,7 +157,7 @@ export class GbButtonDirective {
         id: "pill",
         title: "Shape (Pill)",
         description:
-          "랜딩 CTA, 헤더 액션, 필터 버튼처럼 둥근 형태가 필요할 때 shape='pill'을 씁니다.",
+          "랜딩 [[cta|CTA]], 헤더 액션, 필터 버튼처럼 둥근 형태가 필요할 때 shape='pill'을 씁니다.",
         reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function PillButtonExample() {
@@ -182,21 +172,13 @@ export function PillButtonExample() {
         angularCode: `<button gbButton shape="pill">시작하기</button>
 <button gbButton variant="secondary" shape="pill">컴포넌트 보기</button>
 <button gbButton variant="outline" shape="pill">문서 보기</button>`,
-        renderReactDemo: ({ isMobile }) => (
-          <div
-            className={
-              isMobile
-                ? "flex flex-col gap-2"
-                : "flex flex-wrap items-center justify-center gap-2.5 py-4"
-            }
-          >
-            <Button shape="pill" size={isMobile ? "lg" : "default"}>
-              시작하기
-            </Button>
-            <Button variant="secondary" shape="pill" size={isMobile ? "lg" : "default"}>
+        renderReactDemo: () => (
+          <div className="flex flex-wrap items-center justify-center gap-2.5 py-4">
+            <Button shape="pill">시작하기</Button>
+            <Button variant="secondary" shape="pill">
               컴포넌트 보기
             </Button>
-            <Button variant="outline" shape="pill" size={isMobile ? "lg" : "default"}>
+            <Button variant="outline" shape="pill">
               문서 보기
             </Button>
           </div>
@@ -720,10 +702,9 @@ export function Example() {
     slug: "dialog",
     name: "Dialog",
     category: "오버레이와 탐색",
-    summary:
-      "짧은 확인이나 몇 칸짜리 입력을 띄우는 대화상자입니다. 모바일에서는 하단 바텀시트(surface='sheet')로 전환합니다.",
+    summary: "현재 화면을 유지한 채 짧은 확인이나 몇 칸짜리 입력을 받는 대화상자입니다.",
     mobileGuideline:
-      '좁은 화면에서는 중앙 모달 대신 하단 시트(surface="sheet")로 전환해 한 손으로 닫고, max-h-[85dvh]와 safe-area-inset-bottom을 적용합니다.',
+      "64rem 미만에서는 ResponsiveDialog로 BottomSheet에 자동 전환해 한 손으로 조작하고, 85dvh 높이 제한과 하단 safe area 여백을 적용합니다.",
     reactCode: `import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@goraebap/ui-react/components/dialog";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -731,9 +712,9 @@ export function Example() {
   return (
     <Dialog>
       <DialogTrigger render={<Button />}>대화상자 열기</DialogTrigger>
-      <DialogContent surface="dialog">
+      <DialogContent>
         <DialogTitle>프로젝트 이름 바꾸기</DialogTitle>
-        <DialogDescription>짧은 양식은 데스크톱 모달, 모바일 시트로 엽니다.</DialogDescription>
+        <DialogDescription>새 이름을 입력합니다.</DialogDescription>
       </DialogContent>
     </Dialog>
   );
@@ -741,7 +722,7 @@ export function Example() {
     angularCode: `<brn-dialog>
   <button brnDialogTrigger [class]="buttonVariants()">대화상자 열기</button>
   <ng-template brnDialogContent>
-    <div [class]="dialogPopupVariants({ surface: 'dialog' })">...</div>
+    <div [class]="dialogPopupVariants()">...</div>
   </ng-template>
 </brn-dialog>`,
     renderThumbnail: () => (
@@ -755,7 +736,28 @@ export function Example() {
         </div>
       </div>
     ),
-    renderReactDemo: ({ isMobile }) => <ReactDialogDemo isMobile={isMobile} />,
+    renderReactDemo: () => <ReactDialogDemo />,
+    examples: [
+      {
+        id: "responsive",
+        title: "Responsive",
+        description:
+          "넓은 화면에서는 중앙 [[modal|모달]], 좁은 화면에서는 [[bottom-sheet|바텀시트]]로 자동 전환합니다.",
+        reactCode: `<ResponsiveDialog>
+  <ResponsiveDialogTrigger render={<Button variant="outline" />}>필터 설정</ResponsiveDialogTrigger>
+  <ResponsiveDialogContent>
+    <ResponsiveDialogTitle>필터 설정</ResponsiveDialogTitle>
+    <ResponsiveDialogDescription>조건을 고릅니다.</ResponsiveDialogDescription>
+  </ResponsiveDialogContent>
+</ResponsiveDialog>`,
+        angularCode: `@if (isMobile()) {
+  <brn-sheet side="bottom">...</brn-sheet>
+} @else {
+  <brn-dialog>...</brn-dialog>
+}`,
+        renderReactDemo: () => <ReactResponsiveDialogDemo />,
+      },
+    ],
   },
   {
     slug: "toggle",
@@ -885,7 +887,7 @@ export function Example() {
     category: "오버레이와 탐색",
     summary: "트리거 요소 근처에 짧은 설정이나 보조 콘텐츠 패널을 띄웁니다.",
     mobileGuideline:
-      '좁은 화면에서는 트리거 옆 공간이 부족해 잘리기 쉬우므로, 내용이 긴 Popover는 하단 시트(Dialog surface="sheet")로 전환합니다.',
+      '64rem 미만에서는 ResponsivePopover로 BottomSheet에 전환하고, 짧은 안내처럼 팝오버가 나은 경우에만 mobile="popover"를 지정합니다.',
     reactCode: `import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@goraebap/ui-react/components/popover";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -911,6 +913,25 @@ export function Example() {
       </div>
     ),
     renderReactDemo: () => <ReactPopoverDemo />,
+    examples: [
+      {
+        id: "responsive",
+        title: "Responsive",
+        description: "넓은 화면에서는 팝오버, 좁은 화면에서는 바텀시트로 자동 전환합니다.",
+        reactCode: `<ResponsivePopover>
+  <ResponsivePopoverTrigger render={<Button variant="outline" />}>표시 옵션</ResponsivePopoverTrigger>
+  <ResponsivePopoverContent>
+    <ResponsivePopoverTitle>표시 옵션</ResponsivePopoverTitle>
+  </ResponsivePopoverContent>
+</ResponsivePopover>`,
+        angularCode: `@if (isMobile()) {
+  <brn-sheet side="bottom">...</brn-sheet>
+} @else {
+  <brn-popover>...</brn-popover>
+}`,
+        renderReactDemo: () => <ReactResponsivePopoverDemo />,
+      },
+    ],
   },
   {
     slug: "menu",
@@ -1202,9 +1223,9 @@ export function Example() {
     slug: "drawer",
     name: "Drawer",
     category: "오버레이와 탐색",
-    summary: "화면 좌우 또는 하단에서 슬라이드되어 보조 탐색이나 필터 패널을 엽니다.",
+    summary: "화면 좌우에서 슬라이드되어 보조 탐색이나 필터 패널을 엽니다.",
     mobileGuideline:
-      '좁은 화면에서는 side="bottom"과 아래 스와이프 닫기로 전환하고, max-h-[85dvh]와 safe-area-inset-bottom을 함께 적용합니다.',
+      "좁은 화면에서는 패널 폭을 화면에 맞추고, 아래에서 올라오는 형태가 필요하면 Bottom Sheet를 씁니다.",
     reactCode: `import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from "@goraebap/ui-react/components/drawer";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1231,7 +1252,57 @@ export function Example() {
         </div>
       </div>
     ),
-    renderReactDemo: ({ isMobile }) => <ReactDrawerDemo isMobile={isMobile} />,
+    renderReactDemo: () => <ReactDrawerDemo />,
+  },
+  {
+    slug: "bottom-sheet",
+    name: "Bottom Sheet",
+    category: "오버레이와 탐색",
+    summary: "화면 아래에서 올라와 한 손으로 조작하고 아래로 끌어내려 닫는 패널입니다.",
+    mobileGuideline: "높이는 화면의 85%를 넘지 않고, 내용이 길면 시트 안에서 스크롤합니다.",
+    reactCode: `import {
+  BottomSheet,
+  BottomSheetClose,
+  BottomSheetContent,
+  BottomSheetDescription,
+  BottomSheetFooter,
+  BottomSheetTitle,
+  BottomSheetTrigger,
+} from "@goraebap/ui-react/components/bottom-sheet";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <BottomSheet>
+      <BottomSheetTrigger render={<Button />}>바텀시트 열기</BottomSheetTrigger>
+      <BottomSheetContent>
+        <BottomSheetTitle>필터 설정</BottomSheetTitle>
+        <BottomSheetDescription>아래로 끌어내리거나 바깥을 눌러 닫습니다.</BottomSheetDescription>
+        <BottomSheetFooter>
+          <BottomSheetClose render={<Button variant="ghost" />}>취소</BottomSheetClose>
+          <BottomSheetClose render={<Button />}>적용</BottomSheetClose>
+        </BottomSheetFooter>
+      </BottomSheetContent>
+    </BottomSheet>
+  );
+}`,
+    angularCode: `<brn-sheet side="bottom">
+  <button brnSheetTrigger [class]="buttonVariants()">바텀시트 열기</button>
+  <div *brnSheetContent [class]="bottomSheetPopupVariants()">
+    <div [class]="bottomSheetHandleVariants()"></div>
+    <div [class]="bottomSheetContentVariants()">...</div>
+  </div>
+</brn-sheet>`,
+    renderThumbnail: () => (
+      <div className="border-border bg-background relative h-24 w-20 overflow-hidden rounded-lg border">
+        <div className="border-border bg-popover absolute inset-x-0 bottom-0 rounded-t-lg border-t p-1.5 shadow-md">
+          <div className="bg-border mx-auto mb-1.5 h-0.5 w-5 rounded-full" />
+          <div className="bg-foreground/20 h-1.5 w-8 rounded" />
+          <div className="bg-muted mt-1 h-1.5 w-full rounded" />
+        </div>
+      </div>
+    ),
+    renderReactDemo: () => <ReactBottomSheetDemo />,
   },
   {
     slug: "toast",

@@ -107,7 +107,7 @@ function LayoutDetailPage() {
     <article className="space-y-10">
       <div className="space-y-6">
         <header className="min-w-0 space-y-2">
-          <h1 className="text-3xl font-semibold tracking-tight">{layout.name}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{layout.name}</h1>
           <p className="text-muted-foreground text-base leading-relaxed">{layout.summary}</p>
         </header>
 

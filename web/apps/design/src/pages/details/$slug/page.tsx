@@ -27,7 +27,7 @@ function DetailPage() {
   return (
     <article className="max-w-3xl space-y-8">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-semibold tracking-tight">{detail.title}</h1>
+        <h1 className="text-3xl font-bold tracking-tight">{detail.title}</h1>
         <p className="text-muted-foreground text-base leading-relaxed">{detail.summary}</p>
       </header>
 
@@ -36,7 +36,7 @@ function DetailPage() {
           {detail.sections.map((section, index) => (
             <Fragment key={section.id}>
               {index > 0 && <Separator variant="wave" className="my-10" />}
-              <section className="space-y-5">
+              <section id={section.id} className="scroll-mt-24 space-y-5">
                 <h2 className="text-xl font-semibold tracking-tight">{section.title}</h2>
                 <p className="text-foreground text-sm leading-relaxed">{section.problem}</p>
                 {section.renderDemo && (

@@ -68,7 +68,7 @@ function ThemesPage() {
     <main className="mx-auto max-w-7xl space-y-10 px-6 py-12">
       <header className="border-border flex flex-wrap items-end justify-between gap-4 border-b pb-8">
         <div className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight">테마</h1>
+          <h1 className="text-3xl font-bold tracking-tight">테마</h1>
           <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
             Neutral을 기본으로, 라이트·다크 토큰이 세트로 구성된 5가지 색상 분위기와
             반경·폰트·아이콘을 조합해 사이트 전체에 바로 적용합니다.

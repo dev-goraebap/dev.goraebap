@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 import { Input } from "@goraebap/ui-react/components/input";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { COMPONENT_DOCS } from "@/entities/component-doc";
+import { COMPONENT_CATEGORIES, COMPONENT_DOCS } from "@/entities/component-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
 
 export const Route = createFileRoute("/_library")({
@@ -39,12 +39,23 @@ function LibraryLayout() {
       )
     : COMPONENT_DOCS;
 
+  const toNavItem = (item: (typeof COMPONENT_DOCS)[number]) => ({
+    label: item.name,
+    href: `/components/${item.slug}`,
+  });
+
   const componentGroup: DocsNavGroup = {
     title: "컴포넌트",
-    items: [
-      ...(normalized ? [] : [{ label: "개요", href: "/components", icon: "overview" as const }]),
-      ...filtered.map((item) => ({ label: item.name, href: `/components/${item.slug}` })),
-    ],
+    items: normalized
+      ? filtered.map(toNavItem)
+      : [
+          { label: "개요", href: "/components", icon: "overview" },
+          ...COMPONENT_CATEGORIES.map((category) => ({
+            label: category,
+            defaultOpen: true,
+            children: COMPONENT_DOCS.filter((item) => item.category === category).map(toNavItem),
+          })),
+        ],
   };
 
   return (
