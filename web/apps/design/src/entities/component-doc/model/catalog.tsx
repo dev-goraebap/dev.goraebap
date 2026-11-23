@@ -80,9 +80,6 @@ export interface ComponentDocSpec {
   slug: string;
   name: string;
   category: ComponentCategory;
-  primitiveReact: string;
-  primitiveAngular: string;
-  recipePath: string;
   summary: string;
   mobileGuideline: string;
   reactCode: string;
@@ -103,9 +100,6 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     slug: "button",
     name: "Button",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/button",
-    primitiveAngular: "HTML <button> / hlmBtn",
-    recipePath: "@goraebap/design-system/recipes/button",
     summary:
       "동작을 실행하거나 링크로 이동하는 버튼입니다. React와 Angular 예시 모두 같은 레시피를 씁니다.",
     mobileGuideline:
@@ -240,9 +234,6 @@ export function SizeButtonExample() {
     slug: "input",
     name: "Input",
     category: "동작과 입력",
-    primitiveReact: "HTML <input>",
-    primitiveAngular: "HTML <input>",
-    recipePath: "@goraebap/design-system/recipes/input",
     summary:
       "한 줄 텍스트를 입력하는 칸입니다. invalid 상태로 오류 테두리와 aria-invalid를 함께 표시합니다.",
     mobileGuideline:
@@ -278,9 +269,6 @@ export function Example() {
     slug: "textarea",
     name: "Textarea",
     category: "동작과 입력",
-    primitiveReact: "HTML <textarea>",
-    primitiveAngular: "HTML <textarea>",
-    recipePath: "@goraebap/design-system/recipes/textarea",
     summary: "여러 줄 설명이나 메모를 작성하는 입력 칸입니다.",
     mobileGuideline:
       "긴 글 입력은 모달 대신 전용 페이지나 전체 폭 시트로 열어 가상 키보드에 가리지 않게 하고, 높이는 dvh 기준으로 제한합니다.",
@@ -305,9 +293,6 @@ export function Example() {
     slug: "switch",
     name: "Switch",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/switch",
-    primitiveAngular: "@spartan-ng/brain/switch",
-    recipePath: "@goraebap/design-system/recipes/switch",
     summary: "즉시 반영되는 켜짐/꺼짐 설정에 쓰는 토글 스위치입니다.",
     mobileGuideline:
       "좁은 화면에서는 설정 한 줄 전체(라벨+설명+스위치)를 최소 44px 높이의 터치 행으로 묶어 엄지로 바로 누르게 배치합니다.",
@@ -344,9 +329,6 @@ export function Example() {
     slug: "checkbox",
     name: "Checkbox",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/checkbox",
-    primitiveAngular: "@spartan-ng/brain/checkbox",
-    recipePath: "@goraebap/design-system/recipes/checkbox",
     summary: "여러 항목을 고르거나 동의 여부를 확인하는 체크박스입니다.",
     mobileGuideline:
       "작은 체크박스만 누르기 어려우므로 라벨 텍스트 전체를 클릭 영역으로 묶고, 목록형 선택에서는 행 간격을 충분히 띄워 오작동을 줄입니다.",
@@ -370,9 +352,6 @@ export function Example() {
     slug: "badge",
     name: "Badge",
     category: "표시와 구조",
-    primitiveReact: "HTML <span>",
-    primitiveAngular: "HTML <span>",
-    recipePath: "@goraebap/design-system/recipes/badge",
     summary: "상태, 역할, 분류처럼 짧은 메타데이터를 표시합니다.",
     mobileGuideline:
       "배지가 여러 개 붙는 헤더·카드 영역은 flex-wrap으로 감싸 좁은 폭에서 가로 스크롤이 생기지 않게 합니다.",
@@ -411,9 +390,6 @@ export function Example() {
     slug: "card",
     name: "Card",
     category: "표시와 구조",
-    primitiveReact: "HTML <div>",
-    primitiveAngular: "HTML <article>",
-    recipePath: "@goraebap/design-system/recipes/card",
     summary: "페이지 면(--background) 위에 한 단계 올라오는 올린 면(--card) 컨테이너입니다.",
     mobileGuideline:
       "좁은 화면에서는 다단 카드 그리드를 1열로 접고, 카드 안쪽 여백을 줄여 본문 폭을 확보하며 불필요한 카드 중첩을 피합니다.",
@@ -467,9 +443,6 @@ export function Example() {
     slug: "alert",
     name: "Alert",
     category: "표시와 구조",
-    primitiveReact: "HTML <div role='alert'>",
-    primitiveAngular: "HTML <div role='alert'>",
-    recipePath: "@goraebap/design-system/recipes/alert",
     summary: "중요한 안내, 성공, 경고, 오류 메시지를 문맥 안에 인라인으로 알립니다.",
     mobileGuideline:
       "좁은 폭에서는 아이콘과 본문 아래로 실행 버튼을 줄바꿈 배치해 문장이 지나치게 좁아지지 않게 합니다.",
@@ -513,9 +486,6 @@ export function Example() {
     slug: "separator",
     name: "Separator",
     category: "표시와 구조",
-    primitiveReact: "@base-ui/react/separator",
-    primitiveAngular: "@spartan-ng/brain/separator",
-    recipePath: "@goraebap/design-system/recipes/separator",
     summary: "영역이나 항목 사이를 --border 1px 선으로 나눕니다.",
     mobileGuideline:
       "좁은 화면에서 수평 구분선을 남발하면 밀도가 높아지므로, 카드나 여백으로 구분이 충분한 곳은 선을 생략합니다.",
@@ -570,9 +540,6 @@ export function WaveDividerExample() {
     slug: "skeleton",
     name: "Skeleton",
     category: "표시와 구조",
-    primitiveReact: "HTML <div>",
-    primitiveAngular: "HTML <div>",
-    recipePath: "@goraebap/design-system/recipes/skeleton",
     summary: "데이터를 불러오는 동안 콘텐츠가 들어갈 자리를 미리 표시합니다.",
     mobileGuideline:
       "모바일 화면에서 자리 표시가 길어지지 않게 첫 화면(viewport)에 보이는 카드·줄 수만큼만 실제 높이에 맞춰 배치합니다.",
@@ -610,9 +577,6 @@ export function Example() {
     slug: "table",
     name: "Table",
     category: "표시와 구조",
-    primitiveReact: "HTML <table>",
-    primitiveAngular: "HTML <table>",
-    recipePath: "@goraebap/design-system/recipes/table",
     summary: "여러 항목의 속성을 같은 열 기준으로 비교하는 표입니다.",
     mobileGuideline:
       "좁은 화면에서는 가로 스크롤 래퍼(overflow-x-auto)로 감싸고, 열이 많아 읽기 어려우면 카드 목록 레이아웃으로 전환합니다.",
@@ -698,9 +662,6 @@ export function Example() {
     slug: "tabs",
     name: "Tabs",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/tabs",
-    primitiveAngular: "@spartan-ng/brain/tabs",
-    recipePath: "@goraebap/design-system/recipes/tabs",
     summary: "같은 맥락 안의 보기를 전환하는 탭입니다. 키보드 화살표 이동을 지원합니다.",
     mobileGuideline:
       "탭이 4개를 넘으면 좁은 폭에서 글자가 잘리므로 가로 스크롤(overflow-x-auto)이나 줄바꿈 가능한 세그먼트로 전환합니다.",
@@ -759,9 +720,6 @@ export function Example() {
     slug: "dialog",
     name: "Dialog",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/dialog",
-    primitiveAngular: "@spartan-ng/brain/dialog",
-    recipePath: "@goraebap/design-system/recipes/dialog",
     summary:
       "짧은 확인이나 몇 칸짜리 입력을 띄우는 대화상자입니다. 모바일에서는 하단 바텀시트(surface='sheet')로 전환합니다.",
     mobileGuideline:
@@ -803,9 +761,6 @@ export function Example() {
     slug: "toggle",
     name: "Toggle",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/toggle",
-    primitiveAngular: "@spartan-ng/brain/toggle",
-    recipePath: "@goraebap/design-system/recipes/toggle",
     summary: "켜짐과 꺼짐 두 상태를 전환하는 토글 버튼입니다.",
     mobileGuideline:
       "터치 오입력을 줄이려면 좁은 화면에서 버튼 높이를 최소 36~44px로 유지하고, 인접한 토글 사이에 충분한 간격을 둡니다.",
@@ -831,9 +786,6 @@ export function Example() {
     slug: "toggle-group",
     name: "Toggle Group",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/toggle-group",
-    primitiveAngular: "@spartan-ng/brain/toggle-group",
-    recipePath: "@goraebap/design-system/recipes/toggle-group",
     summary: "여러 옵션 중 하나 또는 복수를 고르는 세그먼트 토글 그룹입니다.",
     mobileGuideline:
       "항목이 3개 이하일 때 한 줄 세그먼트로 유지하고, 4개 이상이면 가로 스크롤이나 Select·바텀시트 선택으로 전환합니다.",
@@ -864,9 +816,6 @@ export function Example() {
     slug: "select",
     name: "Select",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/select",
-    primitiveAngular: "@spartan-ng/brain/select",
-    recipePath: "@goraebap/design-system/recipes/select",
     summary: "미리 정해진 목록에서 하나의 값을 고르는 선택 컨트롤입니다.",
     mobileGuideline:
       "항목이 많거나 좁은 화면에서 드롭다운이 키보드·화면 끝에 걸릴 때는 바텀시트 목록이나 네이티브 <select>로 전환합니다.",
@@ -898,9 +847,6 @@ export function Example() {
     slug: "tooltip",
     name: "Tooltip",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/tooltip",
-    primitiveAngular: "@spartan-ng/brain/tooltip",
-    recipePath: "@goraebap/design-system/recipes/tooltip",
     summary: "아이콘 버튼이나 컨트롤에 마우스를 올렸을 때 짧은 보조 설명을 띄웁니다.",
     mobileGuideline:
       "터치 환경에는 호버가 없으므로 필수 안내는 본문이나 보조 문구로 드러내고, 필요할 때는 탭으로 여는 Popover로 전환합니다.",
@@ -937,9 +883,6 @@ export function Example() {
     slug: "popover",
     name: "Popover",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/popover",
-    primitiveAngular: "@spartan-ng/brain/popover",
-    recipePath: "@goraebap/design-system/recipes/popover",
     summary: "트리거 요소 근처에 짧은 설정이나 보조 콘텐츠 패널을 띄웁니다.",
     mobileGuideline:
       '좁은 화면에서는 트리거 옆 공간이 부족해 잘리기 쉬우므로, 내용이 긴 Popover는 하단 시트(Dialog surface="sheet")로 전환합니다.',
@@ -973,9 +916,6 @@ export function Example() {
     slug: "menu",
     name: "Menu",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/menu",
-    primitiveAngular: "@spartan-ng/brain/menu",
-    recipePath: "@goraebap/design-system/recipes/menu",
     summary: "버튼을 눌러 실행 가능한 작업 목록을 펼치는 드롭다운 메뉴입니다.",
     mobileGuideline:
       "좁은 화면에서는 좁은 드롭다운 대신 하단 액션 시트로 전환해 항목 높이를 44px 이상으로 키우고, 삭제 같은 위험 동작은 맨 아래에 분리합니다.",
@@ -1014,9 +954,6 @@ export function Example() {
     slug: "alert-dialog",
     name: "Alert Dialog",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/alert-dialog",
-    primitiveAngular: "@spartan-ng/brain/alert-dialog",
-    recipePath: "@goraebap/design-system/recipes/alert-dialog",
     summary: "삭제·초기화처럼 되돌리기 어려운 동작 전 사용자의 명시적 확인을 받는 대화상자입니다.",
     mobileGuideline:
       "중요한 확인은 모바일에서도 중앙 모달을 유지하되, 취소·실행 버튼을 세로 스택이나 전체 폭 2열로 배치해 오작동을 막습니다.",
@@ -1059,9 +996,6 @@ export function Example() {
     slug: "radio-group",
     name: "Radio Group",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/radio-group",
-    primitiveAngular: "@spartan-ng/brain/radio-group",
-    recipePath: "@goraebap/design-system/recipes/radio-group",
     summary: "서로 배타적인 여러 선택지 중 하나를 고르는 라디오 그룹입니다.",
     mobileGuideline:
       "좁은 화면에서는 가로 나열 대신 세로 목록으로 전환하고, 라벨 영역 전체를 터치 가능한 카드로 묶어 선택 영역을 넓힙니다.",
@@ -1098,9 +1032,6 @@ export function Example() {
     slug: "slider",
     name: "Slider",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/slider",
-    primitiveAngular: "@spartan-ng/brain/slider",
-    recipePath: "@goraebap/design-system/recipes/slider",
     summary: "정해진 범위 안에서 연속된 값을 드래그로 조절하는 슬라이더입니다.",
     mobileGuideline:
       "드래그 중 화면 스크롤과 겹치지 않게 touch-none을 유지하고, 엄지 조작 오차를 줄이려면 현재 수치 표시나 +/- 단계 버튼을 함께 둡니다.",
@@ -1133,9 +1064,6 @@ export function Example() {
     slug: "accordion",
     name: "Accordion",
     category: "표시와 구조",
-    primitiveReact: "@base-ui/react/accordion",
-    primitiveAngular: "@spartan-ng/brain/accordion",
-    recipePath: "@goraebap/design-system/recipes/accordion",
     summary: "여러 항목을 접고 펼치며 긴 정보를 단계적으로 보여 주는 아코디언입니다.",
     mobileGuideline:
       "좁은 화면에서는 트리거 행 높이를 최소 44px로 확보하고, 제목은 두 줄 이내로 줄여 펼침 아이콘이 오른쪽에 고정되게 배치합니다.",
@@ -1172,9 +1100,6 @@ export function Example() {
     slug: "collapsible",
     name: "Collapsible",
     category: "표시와 구조",
-    primitiveReact: "@base-ui/react/collapsible",
-    primitiveAngular: "@spartan-ng/brain/collapsible",
-    recipePath: "@goraebap/design-system/recipes/collapsible",
     summary: "단일 보조 영역을 필요할 때만 펼치거나 접는 컨테이너입니다.",
     mobileGuideline:
       "모바일에서 화면 길이를 줄일 때 보조 필터나 부가 설정만 접어 두고, 핵심 입력과 제출 동작은 펼친 상태로 유지합니다.",
@@ -1204,9 +1129,6 @@ export function Example() {
     slug: "avatar",
     name: "Avatar",
     category: "표시와 구조",
-    primitiveReact: "@base-ui/react/avatar",
-    primitiveAngular: "@spartan-ng/brain/avatar",
-    recipePath: "@goraebap/design-system/recipes/avatar",
     summary: "사용자 프로필 이미지와 이미지 로드 실패 시 이니셜 대체 표시를 제공합니다.",
     mobileGuideline:
       "좁은 목록에서는 sm(32px)로 밀도를 맞추고, 프로필 헤더에서는 lg(48px)로 키워 터치 대상일 때 영역을 확보합니다.",
@@ -1247,9 +1169,6 @@ export function Example() {
     slug: "progress",
     name: "Progress",
     category: "표시와 구조",
-    primitiveReact: "@base-ui/react/progress",
-    primitiveAngular: "@spartan-ng/brain/progress",
-    recipePath: "@goraebap/design-system/recipes/progress",
     summary: "작업 완료율이나 업로드 진행 상태를 막대로 표시합니다.",
     mobileGuideline:
       "좁은 폭에서도 진행 상태를 한눈에 읽히게 작업 이름과 퍼센트 수치를 막대 위 한 줄에 양끝 정렬로 배치합니다.",
@@ -1283,9 +1202,6 @@ export function Example() {
     slug: "drawer",
     name: "Drawer",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/drawer",
-    primitiveAngular: "@spartan-ng/brain/sheet",
-    recipePath: "@goraebap/design-system/recipes/drawer",
     summary: "화면 좌우 또는 하단에서 슬라이드되어 보조 탐색이나 필터 패널을 엽니다.",
     mobileGuideline:
       '좁은 화면에서는 side="bottom"과 아래 스와이프 닫기로 전환하고, max-h-[85dvh]와 safe-area-inset-bottom을 함께 적용합니다.',
@@ -1321,9 +1237,6 @@ export function Example() {
     slug: "toast",
     name: "Toast",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/toast",
-    primitiveAngular: "ngx-sonner (Spartan)",
-    recipePath: "@goraebap/design-system/recipes/toast",
     summary: "저장 완료나 복사 같은 짧은 처리 결과를 화면 모서리에 잠시 알립니다.",
     mobileGuideline:
       "좁은 화면에서는 상단이나 하단 전체 폭으로 배치하고, 하단 고정 바가 있으면 그 위로 띄우며 safe-area-inset 여백을 확보합니다.",
@@ -1344,9 +1257,6 @@ toast("설정이 저장되었습니다");`,
     slug: "combobox",
     name: "Combobox",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/combobox",
-    primitiveAngular: "@spartan-ng/brain/combobox",
-    recipePath: "@goraebap/design-system/recipes/combobox",
     summary: "텍스트 입력으로 후보 목록을 실시간 필터링하고 값을 고르는 콤보박스입니다.",
     mobileGuideline:
       "가상 키보드가 올라오면 드롭다운 공간이 좁아지므로, 모바일에서는 전체 화면 검색 시트나 max-h-[60dvh] 상단 검색창으로 전환합니다.",
@@ -1364,9 +1274,6 @@ toast("설정이 저장되었습니다");`,
     slug: "autocomplete",
     name: "Autocomplete",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/autocomplete",
-    primitiveAngular: "@spartan-ng/brain/autocomplete",
-    recipePath: "@goraebap/design-system/recipes/autocomplete",
     summary: "자유 입력을 허용하면서 추천 검색어나 후보를 제안하는 자동완성 입력 칸입니다.",
     mobileGuideline:
       "가상 키보드가 화면 절반을 차지하므로 추천 목록을 5개 안팎으로 제한하고, 목록 영역에 독립 스크롤을 두어 입력창이 가리지 않게 합니다.",
@@ -1388,9 +1295,6 @@ toast("설정이 저장되었습니다");`,
     slug: "otp-field",
     name: "OTP Field",
     category: "동작과 입력",
-    primitiveReact: "@base-ui/react/otp-field",
-    primitiveAngular: "@spartan-ng/brain/input-otp",
-    recipePath: "@goraebap/design-system/recipes/otp-field",
     summary: "이메일·문자 인증번호처럼 고정 길이 코드를 한 자리씩 입력하는 칸입니다.",
     mobileGuideline:
       'inputMode="numeric"과 autocomplete="one-time-code"를 지정해 숫자 키패드와 SMS 자동 완성이 바로 동작하게 합니다.',
@@ -1424,9 +1328,6 @@ export function Example() {
     slug: "scroll-area",
     name: "Scroll Area",
     category: "표시와 구조",
-    primitiveReact: "@base-ui/react/scroll-area",
-    primitiveAngular: "@spartan-ng/brain/scroll-area",
-    recipePath: "@goraebap/design-system/recipes/scroll-area",
     summary: "고정 높이 영역 안에서 일관된 커스텀 스크롤바를 제공하는 스크롤 컨테이너입니다.",
     mobileGuideline:
       "스크롤바 조작에는 touch-none이 적용되어 있으며, 모바일 본문은 관성 스크롤을 살리기 위해 네이티브 스크롤을 우선 유지합니다.",
@@ -1452,9 +1353,6 @@ export function Example() {
     slug: "context-menu",
     name: "Context Menu",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/context-menu",
-    primitiveAngular: "@spartan-ng/brain/context-menu",
-    recipePath: "@goraebap/design-system/recipes/context-menu",
     summary: "대상 영역을 우클릭했을 때 포인터 위치에 열리는 컨텍스트 메뉴입니다.",
     mobileGuideline:
       "터치 기기에는 우클릭이 없고 길게 누르기는 발견하기 어려우므로, 항목 옆 더보기 버튼과 하단 액션 시트를 함께 제공합니다.",
@@ -1471,9 +1369,6 @@ export function Example() {
     slug: "preview-card",
     name: "Preview Card",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/preview-card",
-    primitiveAngular: "@spartan-ng/brain/hover-card",
-    recipePath: "@goraebap/design-system/recipes/preview-card",
     summary: "링크나 사용자 이름에 마우스를 올렸을 때 요약 정보를 미리 보여 주는 호버 카드입니다.",
     mobileGuideline:
       "터치 환경에는 호버가 없으므로 미리보기 카드에 핵심 동작을 두지 않고, 탭하면 대상 페이지나 요약 시트로 이동하게 구성합니다.",
@@ -1494,9 +1389,6 @@ export function Example() {
     slug: "menubar",
     name: "Menubar",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/menubar",
-    primitiveAngular: "@spartan-ng/brain/menu",
-    recipePath: "@goraebap/design-system/recipes/menubar",
     summary: "파일·편집·보기처럼 상단 메뉴 항목을 가로로 묶어 탐색하는 데스크톱 메뉴바입니다.",
     mobileGuideline:
       "가로 메뉴바는 좁은 폭에서 넘치므로 모바일에서는 상단 메뉴 버튼과 Drawer 내부 세로 탐색 목록으로 전환합니다.",
@@ -1516,9 +1408,6 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/com
     slug: "navigation-menu",
     name: "Navigation Menu",
     category: "오버레이와 탐색",
-    primitiveReact: "@base-ui/react/navigation-menu",
-    primitiveAngular: "@spartan-ng/brain/navigation-menu",
-    recipePath: "@goraebap/design-system/recipes/navigation-menu",
     summary: "사이트 상단에서 하위 링크 패널을 부드럽게 전환하는 내비게이션 메뉴입니다.",
     mobileGuideline:
       "호버 기반 메가 메뉴는 터치에서 동작하지 않으므로 모바일 헤더에서는 Drawer 내부 Accordion 목록으로 전환합니다.",
