@@ -154,7 +154,7 @@ function HomePage() {
                 </span>
               </div>
               <div className="border-border bg-background flex items-center justify-between rounded-md border px-3 py-2 text-xs">
-                <span className="text-muted-foreground">Style Recipes (CVA)</span>
+                <span className="text-muted-foreground">Style Recipes (tailwind-variants)</span>
                 <span className="text-blog-accent font-mono text-[10px]">Framework-agnostic</span>
               </div>
             </div>

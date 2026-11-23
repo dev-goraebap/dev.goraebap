@@ -30,9 +30,6 @@ catalogs:
     '@vitejs/plugin-react':
       specifier: ^6.3.0
       version: 6.3.0
-    class-variance-authority:
-      specifier: ^0.7.1
-      version: 0.7.1
     clsx:
       specifier: ^2.1.1
       version: 2.1.1
@@ -51,6 +48,9 @@ catalogs:
     tailwind-merge:
       specifier: ^3.7.1
       version: 3.7.1
+    tailwind-variants:
+      specifier: ^4.0.2
+      version: 4.0.2
     tailwindcss:
       specifier: ^4.3.5
       version: 4.3.5
@@ -423,15 +423,15 @@ importers:
 
   packages/design-system:
     dependencies:
-      class-variance-authority:
-        specifier: 'catalog:'
-        version: 0.7.1
       clsx:
         specifier: 'catalog:'
         version: 2.1.1
       tailwind-merge:
         specifier: 'catalog:'
         version: 3.7.1
+      tailwind-variants:
+        specifier: 'catalog:'
+        version: 4.0.2
     devDependencies:
       tailwindcss:
         specifier: 'catalog:'
@@ -4500,6 +4500,10 @@ packages:
 
   tailwind-merge@3.7.1:
     resolution: {integrity: sha512-v7y4BV4FUlO8exj/4M5UXKeoowDiuugVUg3tkMNIyOUCOHy5xp8+5aWQeXCtZ2491sUV1YPsVeM9EveZ6/xuZQ==}
+
+  tailwind-variants@4.0.2:
+    resolution: {integrity: sha512-sZvOFkfe5LlYG/crRX5IvP3oUHmJPu+7WmrLQFvF0kCRq51C+lurlzFMm/jURG/5keT7VOJ/it0N3jkzYux85w==}
+    engines: {node: '>=16.9.x', pnpm: '>=7.x'}
 
   tailwindcss@4.3.5:
     resolution: {integrity: sha512-FcQk9BuffmEHJP2G0XmB2SplU1aLTI7j07Kunk+U74Ny+XiWOtzXz9aujFZ/avntw1e2cOv/3PkgzflQ7gX2vQ==}
@@ -9406,6 +9410,8 @@ snapshots:
   systeminformation@5.33.23: {}
 
   tailwind-merge@3.7.1: {}
+
+  tailwind-variants@4.0.2: {}
 
   tailwindcss@4.3.5: {}
 

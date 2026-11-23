@@ -8,6 +8,7 @@ import {
 } from "@goraebap/design-system/recipes/context-menu";
 import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export const ContextMenu = BaseContextMenu.Root;
 export const ContextMenuTrigger = BaseContextMenu.Trigger;
@@ -39,7 +40,7 @@ export function ContextMenuItem({ className, variant, ...props }: ContextMenuIte
   return (
     <BaseContextMenu.Item
       data-slot="context-menu-item"
-      className={cn(contextMenuItemVariants({ variant, className }))}
+      className={mergeClassName(contextMenuItemVariants({ variant }), className)}
       {...props}
     />
   );

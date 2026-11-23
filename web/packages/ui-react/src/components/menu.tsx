@@ -9,6 +9,7 @@ import {
 } from "@goraebap/design-system/recipes/menu";
 import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export const Menu = BaseMenu.Root;
 export const MenuTrigger = BaseMenu.Trigger;
@@ -49,7 +50,7 @@ export function MenuItem({ className, variant, ...props }: MenuItemProps) {
   return (
     <BaseMenu.Item
       data-slot="menu-item"
-      className={cn(menuItemVariants({ variant, className }))}
+      className={mergeClassName(menuItemVariants({ variant }), className)}
       {...props}
     />
   );

@@ -5,6 +5,7 @@ import {
   type SeparatorRecipeProps,
 } from "@goraebap/design-system/recipes/separator";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export type SeparatorProps = ComponentProps<typeof BaseSeparator> &
   SeparatorRecipeProps & {
@@ -42,7 +43,7 @@ export function Separator({
     <BaseSeparator
       data-slot="separator"
       orientation={orientation}
-      className={cn(separatorVariants({ orientation, className }))}
+      className={mergeClassName(separatorVariants({ orientation }), className)}
       {...props}
     />
   );

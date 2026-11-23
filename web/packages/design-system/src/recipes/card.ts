@@ -1,6 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { tv, type VariantProps } from "tailwind-variants";
 
-export const cardVariants = cva("rounded-xl border border-border bg-card text-card-foreground", {
+export const cardVariants = tv({
+  base: "rounded-xl border border-border bg-card text-card-foreground",
   variants: {
     padding: {
       none: "",

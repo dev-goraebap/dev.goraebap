@@ -12,6 +12,7 @@ import {
 import { SystemIcon } from "../icons";
 import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export const Drawer = BaseDrawer.Root;
 export const DrawerTrigger = BaseDrawer.Trigger;
@@ -34,7 +35,7 @@ export function DrawerContent({
       <BaseDrawer.Backdrop className={drawerBackdropVariants()} />
       <BaseDrawer.Popup
         data-slot="drawer-content"
-        className={cn(drawerPopupVariants({ side, className }))}
+        className={mergeClassName(drawerPopupVariants({ side }), className)}
         {...props}
       >
         {side === "bottom" && <div aria-hidden="true" className={dialogSheetHandleVariants()} />}

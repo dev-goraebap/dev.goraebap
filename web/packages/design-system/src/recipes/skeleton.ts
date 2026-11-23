@@ -1,6 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { tv, type VariantProps } from "tailwind-variants";
 
-export const skeletonVariants = cva("animate-pulse bg-muted", {
+export const skeletonVariants = tv({
+  base: "animate-pulse bg-muted",
   variants: {
     shape: {
       line: "h-4 rounded-md",

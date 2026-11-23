@@ -7,6 +7,7 @@ import {
   type AvatarRecipeProps,
 } from "@goraebap/design-system/recipes/avatar";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export type AvatarProps = ComponentProps<typeof BaseAvatar.Root> & AvatarRecipeProps;
 
@@ -14,7 +15,7 @@ export function Avatar({ className, size, shape, ...props }: AvatarProps) {
   return (
     <BaseAvatar.Root
       data-slot="avatar"
-      className={cn(avatarVariants({ size, shape, className }))}
+      className={mergeClassName(avatarVariants({ size, shape }), className)}
       {...props}
     />
   );

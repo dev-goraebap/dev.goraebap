@@ -1,7 +1,7 @@
 import { Button as BaseButton } from "@base-ui/react/button";
-import { cn } from "@goraebap/design-system/cn";
 import { buttonVariants, type ButtonRecipeProps } from "@goraebap/design-system/recipes/button";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export type ButtonProps = ComponentProps<typeof BaseButton> & ButtonRecipeProps;
 
@@ -9,7 +9,7 @@ export function Button({ className, variant, size, shape, ...props }: ButtonProp
   return (
     <BaseButton
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, shape, className }))}
+      className={mergeClassName(buttonVariants({ variant, size, shape }), className)}
       {...props}
     />
   );

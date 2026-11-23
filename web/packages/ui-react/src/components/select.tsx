@@ -9,6 +9,7 @@ import {
 import { SystemIcon } from "../icons";
 import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export const Select = BaseSelect.Root;
 export const SelectValue = BaseSelect.Value;
@@ -21,7 +22,7 @@ export function SelectTrigger({ className, size, children, ...props }: SelectTri
   return (
     <BaseSelect.Trigger
       data-slot="select-trigger"
-      className={cn(selectTriggerVariants({ size, className }))}
+      className={mergeClassName(selectTriggerVariants({ size }), className)}
       {...props}
     >
       {children}

@@ -1,6 +1,7 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import { tv, type VariantProps } from "tailwind-variants";
 
-export const separatorVariants = cva("shrink-0 bg-border", {
+export const separatorVariants = tv({
+  base: "shrink-0 bg-border",
   variants: {
     orientation: {
       horizontal: "h-px w-full",

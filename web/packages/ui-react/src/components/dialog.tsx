@@ -10,6 +10,7 @@ import {
 import { SystemIcon } from "../icons";
 import { usePortalContainer } from "../lib/portal-container";
 import type { ComponentProps } from "react";
+import { mergeClassName } from "../lib/utils";
 
 export const Dialog = BaseDialog.Root;
 export const DialogTrigger = BaseDialog.Trigger;
@@ -32,7 +33,7 @@ export function DialogContent({
       <BaseDialog.Backdrop className={dialogBackdropVariants()} />
       <BaseDialog.Popup
         data-slot="dialog-content"
-        className={cn(dialogPopupVariants({ surface, className }))}
+        className={mergeClassName(dialogPopupVariants({ surface }), className)}
         {...props}
       >
         {surface === "sheet" && <div aria-hidden="true" className={dialogSheetHandleVariants()} />}
