@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 
 function Marker({ n, className }: { n: number; className: string }) {
@@ -12,7 +11,7 @@ function Marker({ n, className }: { n: number; className: string }) {
   );
 }
 
-function ButtonAnatomy() {
+export function ButtonAnatomy() {
   return (
     <div className="relative">
       <Marker n={1} className="-top-2.5 -left-2.5" />
@@ -30,7 +29,7 @@ function ButtonAnatomy() {
   );
 }
 
-function DialogAnatomy() {
+export function DialogAnatomy() {
   return (
     <div className="flex w-full max-w-xs flex-col items-center gap-4">
       <div className="relative w-full">
@@ -73,7 +72,7 @@ function DialogAnatomy() {
   );
 }
 
-function BottomSheetAnatomy() {
+export function BottomSheetAnatomy() {
   return (
     <div className="relative w-full max-w-56">
       <Marker n={1} className="-top-2.5 -left-2.5" />
@@ -110,15 +109,4 @@ function BottomSheetAnatomy() {
       </div>
     </div>
   );
-}
-
-const FIGURES: Partial<Record<string, () => ReactNode>> = {
-  button: ButtonAnatomy,
-  dialog: DialogAnatomy,
-  "bottom-sheet": BottomSheetAnatomy,
-};
-
-export function AnatomyFigure({ slug }: { slug: string }) {
-  const Figure = FIGURES[slug];
-  return Figure ? <Figure /> : null;
 }

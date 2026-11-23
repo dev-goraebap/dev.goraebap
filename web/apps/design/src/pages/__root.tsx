@@ -4,7 +4,7 @@ import Lenis from "lenis";
 import { Button } from "@goraebap/ui-react/components/button";
 import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
 import { DesignConfigProvider } from "@/shared/lib/design-config";
-import { BrandMark, ModeToggle, SiteFooter } from "@/shared/ui";
+import { BrandMark, DesignSettings, SiteFooter } from "@/shared/ui";
 
 const PENDING_BAR_DELAY_MS = 180;
 
@@ -45,13 +45,12 @@ const DOCS_SHELL_PATHS = [...LIBRARY_PATHS, "/layouts", "/details"];
 
 const TOP_NAV: {
   label: string;
-  to: "/components" | "/layouts" | "/details" | "/themes";
+  to: "/components" | "/layouts" | "/details";
   icon: SystemIconName;
 }[] = [
   { label: "컴포넌트", to: "/components", icon: "components" },
   { label: "레이아웃", to: "/layouts", icon: "layouts" },
   { label: "디테일", to: "/details", icon: "details" },
-  { label: "테마", to: "/themes", icon: "palette" },
 ];
 
 function RootLayout() {
@@ -112,7 +111,7 @@ function RootLayout() {
 
             {/* Right Utilities */}
             <div className="flex items-center gap-2.5">
-              <ModeToggle />
+              <DesignSettings />
               <Button
                 size="sm"
                 shape="pill"

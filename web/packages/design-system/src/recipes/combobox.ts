@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const comboboxInputVariants = tv({
-  base: "flex h-9 w-full rounded-md border border-input bg-background px-3 pr-8 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  base: "flex h-9 w-full rounded-md border border-input bg-background px-3 pr-8 text-base text-foreground lg:text-sm outline-none transition-colors placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
 });
 
 export const comboboxPopupVariants = tv({

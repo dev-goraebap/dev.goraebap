@@ -4,9 +4,9 @@ export const inputVariants = tv({
   base: "flex w-full rounded-md border bg-background text-foreground outline-none transition-colors placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-inset disabled:cursor-not-allowed disabled:opacity-50",
   variants: {
     size: {
-      sm: "h-8 px-2.5 text-xs",
-      default: "h-9 px-3 text-sm",
-      lg: "h-10 px-3.5 text-sm",
+      sm: "h-8 px-2.5 text-base lg:text-xs",
+      default: "h-9 px-3 text-base lg:text-sm",
+      lg: "h-10 px-3.5 text-base lg:text-sm",
     },
     invalid: {
       false: "border-input focus-visible:border-ring focus-visible:ring-ring",

@@ -4,7 +4,7 @@ const FOOTER_LINKS = [
   { label: "컴포넌트", to: "/components" as const },
   { label: "레이아웃", to: "/layouts" as const },
   { label: "디테일", to: "/details" as const },
-  { label: "테마", to: "/themes" as const },
+  { label: "색상 테마", to: "/foundations/color-themes" as const },
 ];
 
 export function SiteFooter({ isContained = true }: { isContained?: boolean }) {

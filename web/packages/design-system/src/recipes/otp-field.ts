@@ -5,7 +5,7 @@ export const otpFieldRootVariants = tv({
 });
 
 export const otpFieldInputVariants = tv({
-  base: "h-10 w-10 rounded-md border border-input bg-background text-center font-mono text-sm font-medium text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  base: "h-10 w-10 rounded-md border border-input bg-background text-center font-mono text-base font-medium lg:text-sm text-foreground outline-none transition-colors focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
 });
 
 export const otpFieldSeparatorVariants = tv({

@@ -1,7 +1,7 @@
 import { tv, type VariantProps } from "tailwind-variants";
 
 export const buttonVariants = tv({
-  base: "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-[color,background-color,border-color,transform] duration-150 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  base: "inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap text-sm font-medium transition-[color,background-color,border-color,transform] duration-150 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 data-[loading]:cursor-wait data-[loading]:opacity-80 data-[loading]:active:scale-100 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   variants: {
     variant: {
       default: "bg-primary text-primary-foreground hover:bg-primary/90",
@@ -26,6 +26,10 @@ export const buttonVariants = tv({
     size: "default",
     shape: "default",
   },
+});
+
+export const buttonSpinnerVariants = tv({
+  base: "shrink-0 animate-spin motion-reduce:animate-[spin_2s_linear_infinite]",
 });
 
 export type ButtonRecipeProps = VariantProps<typeof buttonVariants>;

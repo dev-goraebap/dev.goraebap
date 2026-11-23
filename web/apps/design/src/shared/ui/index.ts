@@ -1,10 +1,12 @@
+export { AdapterCodePanel } from "./AdapterCodePanel";
 export { AdapterPreviewStage } from "./AdapterPreviewStage";
 export { AdaptiveWireframe } from "./AdaptiveWireframe";
 export { BrandMark } from "./BrandMark";
 export { CodeView } from "./CodeView";
 export { CopyCodeBlock } from "./CopyCodeBlock";
+export { DesignSettings } from "./DesignSettings";
 export { DocsShell, type DocsNavGroup } from "./DocsShell";
 export { GlossaryTerm } from "./GlossaryTerm";
-export { ModeToggle } from "./ModeToggle";
 export { ResizableLayoutStage } from "./ResizableLayoutStage";
 export { SiteFooter } from "./SiteFooter";
+export { ThemedPortalScope } from "./ThemedPortalScope";

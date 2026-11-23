@@ -8,7 +8,7 @@ export const Route = createFileRoute("/_library/getting-started/")({
 const NEXT_STEPS = [
   {
     title: "디자인 토큰",
-    summary: "색상, 반경, 타이포그래피 토큰의 구성과 5가지 테마별 값을 확인합니다.",
+    summary: "색상, 반경, 타이포그래피 토큰의 구성과 5가지 색상 테마별 값을 확인합니다.",
     to: "/foundations/tokens" as const,
   },
   {
@@ -60,10 +60,10 @@ function GettingStartedPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">스타일 연결</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          앱의 엔트리 CSS에서 base.css와 테마 파일을 불러오고, @source로 디자인 시스템 패키지의 소스
-          경로를 지정합니다. base.css가 tailwindcss와 기본 유틸리티를 포함하므로 앱에서
+          앱의 엔트리 CSS에서 base.css와 색상 테마 파일을 불러오고, @source로 디자인 시스템 패키지의
+          소스 경로를 지정합니다. base.css가 tailwindcss와 기본 유틸리티를 포함하므로 앱에서
           tailwindcss를 따로 불러오지 않습니다. theme-app.css를 먼저 불러와 기본(:root)으로 두고,
-          필요한 테마 파일을 그 아래에 이어서 불러옵니다.
+          필요한 색상 테마 파일을 그 아래에 이어서 불러옵니다.
         </p>
         <CopyCodeBlock
           label="src/app/theme/tailwind.css"
@@ -81,7 +81,7 @@ function GettingStartedPage() {
       </section>
 
       <section className="space-y-4">
-        <h2 className="text-lg font-semibold tracking-tight">테마 지정</h2>
+        <h2 className="text-lg font-semibold tracking-tight">색상 테마 지정</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
           요소에 data-ds-theme="app" | "editorial" | "ocean" | "forest" | "terracotta"를 지정해
           영역별로 토큰 세트를 적용합니다. 다크 모드는 html 같은 상위 요소에 dark 클래스를 붙여

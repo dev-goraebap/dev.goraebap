@@ -86,7 +86,6 @@ export interface ComponentDocSpec {
   name: string;
   category: ComponentCategory;
   summary: string;
-  mobileGuideline: string;
   reactCode: string;
   angularCode: string;
   renderThumbnail: () => ReactNode;
@@ -106,8 +105,6 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     name: "Button",
     category: "동작과 입력",
     summary: "동작을 실행하거나 링크로 이동하는 버튼입니다.",
-    mobileGuideline:
-      '좁은 화면에서는 주요 동작 버튼을 w-full과 size="lg"(40px)로 키우고, 하단 고정 바에 둘 때는 safe-area-inset-bottom 여백을 더합니다.',
     reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function Example() {
@@ -218,8 +215,6 @@ export function SizeButtonExample() {
     category: "동작과 입력",
     summary:
       "한 줄 텍스트를 입력하는 칸입니다. invalid 상태로 오류 테두리와 aria-invalid를 함께 표시합니다.",
-    mobileGuideline:
-      "iOS Safari의 입력 자동 확대를 막으려면 16px 글자 크기를 쓰고, 이메일·숫자 등 목적에 맞게 inputMode와 enterKeyHint를 지정합니다.",
     reactCode: `import { Input } from "@goraebap/ui-react/components/input";
 
 export function Example() {
@@ -252,8 +247,6 @@ export function Example() {
     name: "Textarea",
     category: "동작과 입력",
     summary: "여러 줄 설명이나 메모를 작성하는 입력 칸입니다.",
-    mobileGuideline:
-      "긴 글 입력은 모달 대신 전용 페이지나 전체 폭 시트로 열어 가상 키보드에 가리지 않게 하고, 높이는 dvh 기준으로 제한합니다.",
     reactCode: `import { Textarea } from "@goraebap/ui-react/components/textarea";
 
 export function Example() {
@@ -276,8 +269,6 @@ export function Example() {
     name: "Switch",
     category: "동작과 입력",
     summary: "즉시 반영되는 켜짐/꺼짐 설정에 쓰는 토글 스위치입니다.",
-    mobileGuideline:
-      "좁은 화면에서는 설정 한 줄 전체(라벨+설명+스위치)를 최소 44px 높이의 터치 행으로 묶어 엄지로 바로 누르게 배치합니다.",
     reactCode: `import { Switch } from "@goraebap/ui-react/components/switch";
 
 export function Example() {
@@ -312,8 +303,6 @@ export function Example() {
     name: "Checkbox",
     category: "동작과 입력",
     summary: "여러 항목을 고르거나 동의 여부를 확인하는 체크박스입니다.",
-    mobileGuideline:
-      "작은 체크박스만 누르기 어려우므로 라벨 텍스트 전체를 클릭 영역으로 묶고, 목록형 선택에서는 행 간격을 충분히 띄워 오작동을 줄입니다.",
     reactCode: `import { Checkbox } from "@goraebap/ui-react/components/checkbox";
 
 export function Example() {
@@ -335,8 +324,6 @@ export function Example() {
     name: "Badge",
     category: "표시와 구조",
     summary: "상태, 역할, 분류처럼 짧은 메타데이터를 표시합니다.",
-    mobileGuideline:
-      "배지가 여러 개 붙는 헤더·카드 영역은 flex-wrap으로 감싸 좁은 폭에서 가로 스크롤이 생기지 않게 합니다.",
     reactCode: `import { Badge } from "@goraebap/ui-react/components/badge";
 
 export function Example() {
@@ -373,8 +360,6 @@ export function Example() {
     name: "Card",
     category: "표시와 구조",
     summary: "페이지 면(--background) 위에 한 단계 올라오는 올린 면(--card) 컨테이너입니다.",
-    mobileGuideline:
-      "좁은 화면에서는 다단 카드 그리드를 1열로 접고, 카드 안쪽 여백을 줄여 본문 폭을 확보하며 불필요한 카드 중첩을 피합니다.",
     reactCode: `import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@goraebap/ui-react/components/card";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -426,8 +411,6 @@ export function Example() {
     name: "Alert",
     category: "표시와 구조",
     summary: "중요한 안내, 성공, 경고, 오류 메시지를 문맥 안에 인라인으로 알립니다.",
-    mobileGuideline:
-      "좁은 폭에서는 아이콘과 본문 아래로 실행 버튼을 줄바꿈 배치해 문장이 지나치게 좁아지지 않게 합니다.",
     reactCode: `import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 
 export function Example() {
@@ -469,8 +452,6 @@ export function Example() {
     name: "Separator",
     category: "표시와 구조",
     summary: "영역이나 항목 사이를 --border 1px 선으로 나눕니다.",
-    mobileGuideline:
-      "좁은 화면에서 수평 구분선을 남발하면 밀도가 높아지므로, 카드나 여백으로 구분이 충분한 곳은 선을 생략합니다.",
     reactCode: `import { Separator } from "@goraebap/ui-react/components/separator";
 
 export function Example() {
@@ -523,8 +504,6 @@ export function WaveDividerExample() {
     name: "Skeleton",
     category: "표시와 구조",
     summary: "데이터를 불러오는 동안 콘텐츠가 들어갈 자리를 미리 표시합니다.",
-    mobileGuideline:
-      "모바일 화면에서 자리 표시가 길어지지 않게 첫 화면(viewport)에 보이는 카드·줄 수만큼만 실제 높이에 맞춰 배치합니다.",
     reactCode: `import { Skeleton } from "@goraebap/ui-react/components/skeleton";
 
 export function Example() {
@@ -560,8 +539,6 @@ export function Example() {
     name: "Table",
     category: "표시와 구조",
     summary: "여러 항목의 속성을 같은 열 기준으로 비교하는 표입니다.",
-    mobileGuideline:
-      "좁은 화면에서는 가로 스크롤 래퍼(overflow-x-auto)로 감싸고, 열이 많아 읽기 어려우면 카드 목록 레이아웃으로 전환합니다.",
     reactCode: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@goraebap/ui-react/components/table";
 
 export function Example() {
@@ -645,8 +622,6 @@ export function Example() {
     name: "Tabs",
     category: "오버레이와 탐색",
     summary: "같은 맥락 안의 보기를 전환하는 탭입니다. 키보드 화살표 이동을 지원합니다.",
-    mobileGuideline:
-      "탭이 4개를 넘으면 좁은 폭에서 글자가 잘리므로 가로 스크롤(overflow-x-auto)이나 줄바꿈 가능한 세그먼트로 전환합니다.",
     reactCode: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 
 export function Example() {
@@ -703,8 +678,6 @@ export function Example() {
     name: "Dialog",
     category: "오버레이와 탐색",
     summary: "현재 화면을 유지한 채 짧은 확인이나 몇 칸짜리 입력을 받는 대화상자입니다.",
-    mobileGuideline:
-      "64rem 미만에서는 ResponsiveDialog로 BottomSheet에 자동 전환해 한 손으로 조작하고, 85dvh 높이 제한과 하단 safe area 여백을 적용합니다.",
     reactCode: `import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@goraebap/ui-react/components/dialog";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -764,8 +737,6 @@ export function Example() {
     name: "Toggle",
     category: "동작과 입력",
     summary: "켜짐과 꺼짐 두 상태를 전환하는 토글 버튼입니다.",
-    mobileGuideline:
-      "터치 오입력을 줄이려면 좁은 화면에서 버튼 높이를 최소 36~44px로 유지하고, 인접한 토글 사이에 충분한 간격을 둡니다.",
     reactCode: `import { Toggle } from "@goraebap/ui-react/components/toggle";
 
 export function Example() {
@@ -789,8 +760,6 @@ export function Example() {
     name: "Toggle Group",
     category: "동작과 입력",
     summary: "여러 옵션 중 하나 또는 복수를 고르는 세그먼트 토글 그룹입니다.",
-    mobileGuideline:
-      "항목이 3개 이하일 때 한 줄 세그먼트로 유지하고, 4개 이상이면 가로 스크롤이나 Select·바텀시트 선택으로 전환합니다.",
     reactCode: `import { ToggleGroup, ToggleGroupItem } from "@goraebap/ui-react/components/toggle-group";
 
 export function Example() {
@@ -819,8 +788,6 @@ export function Example() {
     name: "Select",
     category: "동작과 입력",
     summary: "미리 정해진 목록에서 하나의 값을 고르는 선택 컨트롤입니다.",
-    mobileGuideline:
-      "항목이 많거나 좁은 화면에서 드롭다운이 키보드·화면 끝에 걸릴 때는 바텀시트 목록이나 네이티브 <select>로 전환합니다.",
     reactCode: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@goraebap/ui-react/components/select";
 
 export function Example() {
@@ -850,8 +817,6 @@ export function Example() {
     name: "Tooltip",
     category: "오버레이와 탐색",
     summary: "아이콘 버튼이나 컨트롤에 마우스를 올렸을 때 짧은 보조 설명을 띄웁니다.",
-    mobileGuideline:
-      "터치 환경에는 호버가 없으므로 필수 안내는 본문이나 보조 문구로 드러내고, 필요할 때는 탭으로 여는 Popover로 전환합니다.",
     reactCode: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@goraebap/ui-react/components/tooltip";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -886,8 +851,6 @@ export function Example() {
     name: "Popover",
     category: "오버레이와 탐색",
     summary: "트리거 요소 근처에 짧은 설정이나 보조 콘텐츠 패널을 띄웁니다.",
-    mobileGuideline:
-      '64rem 미만에서는 ResponsivePopover로 BottomSheet에 전환하고, 짧은 안내처럼 팝오버가 나은 경우에만 mobile="popover"를 지정합니다.',
     reactCode: `import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@goraebap/ui-react/components/popover";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -938,8 +901,6 @@ export function Example() {
     name: "Menu",
     category: "오버레이와 탐색",
     summary: "버튼을 눌러 실행 가능한 작업 목록을 펼치는 드롭다운 메뉴입니다.",
-    mobileGuideline:
-      "좁은 화면에서는 좁은 드롭다운 대신 하단 액션 시트로 전환해 항목 높이를 44px 이상으로 키우고, 삭제 같은 위험 동작은 맨 아래에 분리합니다.",
     reactCode: `import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@goraebap/ui-react/components/menu";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -976,8 +937,6 @@ export function Example() {
     name: "Alert Dialog",
     category: "오버레이와 탐색",
     summary: "삭제·초기화처럼 되돌리기 어려운 동작 전 사용자의 명시적 확인을 받는 대화상자입니다.",
-    mobileGuideline:
-      "중요한 확인은 모바일에서도 중앙 모달을 유지하되, 취소·실행 버튼을 세로 스택이나 전체 폭 2열로 배치해 오작동을 막습니다.",
     reactCode: `import { AlertDialog, AlertDialogClose, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "@goraebap/ui-react/components/alert-dialog";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1018,8 +977,6 @@ export function Example() {
     name: "Radio Group",
     category: "동작과 입력",
     summary: "서로 배타적인 여러 선택지 중 하나를 고르는 라디오 그룹입니다.",
-    mobileGuideline:
-      "좁은 화면에서는 가로 나열 대신 세로 목록으로 전환하고, 라벨 영역 전체를 터치 가능한 카드로 묶어 선택 영역을 넓힙니다.",
     reactCode: `import { RadioGroup, RadioGroupItem } from "@goraebap/ui-react/components/radio-group";
 
 export function Example() {
@@ -1054,8 +1011,6 @@ export function Example() {
     name: "Slider",
     category: "동작과 입력",
     summary: "정해진 범위 안에서 연속된 값을 드래그로 조절하는 슬라이더입니다.",
-    mobileGuideline:
-      "드래그 중 화면 스크롤과 겹치지 않게 touch-none을 유지하고, 엄지 조작 오차를 줄이려면 현재 수치 표시나 +/- 단계 버튼을 함께 둡니다.",
     reactCode: `import { Slider } from "@goraebap/ui-react/components/slider";
 
 export function Example() {
@@ -1086,8 +1041,6 @@ export function Example() {
     name: "Accordion",
     category: "표시와 구조",
     summary: "여러 항목을 접고 펼치며 긴 정보를 단계적으로 보여 주는 아코디언입니다.",
-    mobileGuideline:
-      "좁은 화면에서는 트리거 행 높이를 최소 44px로 확보하고, 제목은 두 줄 이내로 줄여 펼침 아이콘이 오른쪽에 고정되게 배치합니다.",
     reactCode: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@goraebap/ui-react/components/accordion";
 
 export function Example() {
@@ -1122,8 +1075,6 @@ export function Example() {
     name: "Collapsible",
     category: "표시와 구조",
     summary: "단일 보조 영역을 필요할 때만 펼치거나 접는 컨테이너입니다.",
-    mobileGuideline:
-      "모바일에서 화면 길이를 줄일 때 보조 필터나 부가 설정만 접어 두고, 핵심 입력과 제출 동작은 펼친 상태로 유지합니다.",
     reactCode: `import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@goraebap/ui-react/components/collapsible";
 
 export function Example() {
@@ -1151,8 +1102,6 @@ export function Example() {
     name: "Avatar",
     category: "표시와 구조",
     summary: "사용자 프로필 이미지와 이미지 로드 실패 시 이니셜 대체 표시를 제공합니다.",
-    mobileGuideline:
-      "좁은 목록에서는 sm(32px)로 밀도를 맞추고, 프로필 헤더에서는 lg(48px)로 키워 터치 대상일 때 영역을 확보합니다.",
     reactCode: `import { Avatar, AvatarFallback } from "@goraebap/ui-react/components/avatar";
 
 export function Example() {
@@ -1191,8 +1140,6 @@ export function Example() {
     name: "Progress",
     category: "표시와 구조",
     summary: "작업 완료율이나 업로드 진행 상태를 막대로 표시합니다.",
-    mobileGuideline:
-      "좁은 폭에서도 진행 상태를 한눈에 읽히게 작업 이름과 퍼센트 수치를 막대 위 한 줄에 양끝 정렬로 배치합니다.",
     reactCode: `import { Progress } from "@goraebap/ui-react/components/progress";
 
 export function Example() {
@@ -1224,8 +1171,6 @@ export function Example() {
     name: "Drawer",
     category: "오버레이와 탐색",
     summary: "화면 좌우에서 슬라이드되어 보조 탐색이나 필터 패널을 엽니다.",
-    mobileGuideline:
-      "좁은 화면에서는 패널 폭을 화면에 맞추고, 아래에서 올라오는 형태가 필요하면 Bottom Sheet를 씁니다.",
     reactCode: `import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from "@goraebap/ui-react/components/drawer";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1259,7 +1204,6 @@ export function Example() {
     name: "Bottom Sheet",
     category: "오버레이와 탐색",
     summary: "화면 아래에서 올라와 한 손으로 조작하고 아래로 끌어내려 닫는 패널입니다.",
-    mobileGuideline: "높이는 화면의 85%를 넘지 않고, 내용이 길면 시트 안에서 스크롤합니다.",
     reactCode: `import {
   BottomSheet,
   BottomSheetClose,
@@ -1309,8 +1253,6 @@ export function Example() {
     name: "Toast",
     category: "오버레이와 탐색",
     summary: "저장 완료나 복사 같은 짧은 처리 결과를 화면 모서리에 잠시 알립니다.",
-    mobileGuideline:
-      "좁은 화면에서는 상단이나 하단 전체 폭으로 배치하고, 하단 고정 바가 있으면 그 위로 띄우며 safe-area-inset 여백을 확보합니다.",
     reactCode: `import { ToastProvider, useToastManager } from "@goraebap/ui-react/components/toast";
 
 // 앱 루트에 <ToastProvider>를 두고, 내부에서 useToastManager().add(...) 호출`,
@@ -1329,8 +1271,6 @@ toast("설정이 저장되었습니다");`,
     name: "Combobox",
     category: "동작과 입력",
     summary: "텍스트 입력으로 후보 목록을 실시간 필터링하고 값을 고르는 콤보박스입니다.",
-    mobileGuideline:
-      "가상 키보드가 올라오면 드롭다운 공간이 좁아지므로, 모바일에서는 전체 화면 검색 시트나 max-h-[60dvh] 상단 검색창으로 전환합니다.",
     reactCode: `import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@goraebap/ui-react/components/combobox";`,
     angularCode: `<brn-combobox>...</brn-combobox>`,
     renderThumbnail: () => (
@@ -1346,8 +1286,6 @@ toast("설정이 저장되었습니다");`,
     name: "Autocomplete",
     category: "동작과 입력",
     summary: "자유 입력을 허용하면서 추천 검색어나 후보를 제안하는 자동완성 입력 칸입니다.",
-    mobileGuideline:
-      "가상 키보드가 화면 절반을 차지하므로 추천 목록을 5개 안팎으로 제한하고, 목록 영역에 독립 스크롤을 두어 입력창이 가리지 않게 합니다.",
     reactCode: `import { Autocomplete, AutocompleteContent, AutocompleteInput, AutocompleteItem, AutocompleteList } from "@goraebap/ui-react/components/autocomplete";`,
     angularCode: `<brn-autocomplete>...</brn-autocomplete>`,
     renderThumbnail: () => (
@@ -1367,8 +1305,6 @@ toast("설정이 저장되었습니다");`,
     name: "OTP Field",
     category: "동작과 입력",
     summary: "이메일·문자 인증번호처럼 고정 길이 코드를 한 자리씩 입력하는 칸입니다.",
-    mobileGuideline:
-      'inputMode="numeric"과 autocomplete="one-time-code"를 지정해 숫자 키패드와 SMS 자동 완성이 바로 동작하게 합니다.',
     reactCode: `import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@goraebap/ui-react/components/otp-field";
 
 export function Example() {
@@ -1400,8 +1336,6 @@ export function Example() {
     name: "Scroll Area",
     category: "표시와 구조",
     summary: "고정 높이 영역 안에서 일관된 커스텀 스크롤바를 제공하는 스크롤 컨테이너입니다.",
-    mobileGuideline:
-      "스크롤바 조작에는 touch-none이 적용되어 있으며, 모바일 본문은 관성 스크롤을 살리기 위해 네이티브 스크롤을 우선 유지합니다.",
     reactCode: `import { ScrollArea } from "@goraebap/ui-react/components/scroll-area";
 
 export function Example() {
@@ -1425,8 +1359,6 @@ export function Example() {
     name: "Context Menu",
     category: "오버레이와 탐색",
     summary: "대상 영역을 우클릭했을 때 포인터 위치에 열리는 컨텍스트 메뉴입니다.",
-    mobileGuideline:
-      "터치 기기에는 우클릭이 없고 길게 누르기는 발견하기 어려우므로, 항목 옆 더보기 버튼과 하단 액션 시트를 함께 제공합니다.",
     reactCode: `import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@goraebap/ui-react/components/context-menu";`,
     angularCode: `<div [brnContextMenuTriggerFor]="menu">우클릭 영역</div>`,
     renderThumbnail: () => (
@@ -1441,8 +1373,6 @@ export function Example() {
     name: "Preview Card",
     category: "오버레이와 탐색",
     summary: "링크나 사용자 이름에 마우스를 올렸을 때 요약 정보를 미리 보여 주는 호버 카드입니다.",
-    mobileGuideline:
-      "터치 환경에는 호버가 없으므로 미리보기 카드에 핵심 동작을 두지 않고, 탭하면 대상 페이지나 요약 시트로 이동하게 구성합니다.",
     reactCode: `import { PreviewCard, PreviewCardContent, PreviewCardTrigger } from "@goraebap/ui-react/components/preview-card";`,
     angularCode: `<brn-hover-card>
   <a brnHoverCardTrigger>@goraebap/design-system</a>
@@ -1461,8 +1391,6 @@ export function Example() {
     name: "Menubar",
     category: "오버레이와 탐색",
     summary: "파일·편집·보기처럼 상단 메뉴 항목을 가로로 묶어 탐색하는 데스크톱 메뉴바입니다.",
-    mobileGuideline:
-      "가로 메뉴바는 좁은 폭에서 넘치므로 모바일에서는 상단 메뉴 버튼과 Drawer 내부 세로 탐색 목록으로 전환합니다.",
     reactCode: `import { Menubar, menubarTriggerVariants } from "@goraebap/ui-react/components/menubar";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/components/menu";`,
     angularCode: `<div brnMenuBar [class]="menubarVariants()">...</div>`,
@@ -1480,8 +1408,6 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/com
     name: "Navigation Menu",
     category: "오버레이와 탐색",
     summary: "사이트 상단에서 하위 링크 패널을 부드럽게 전환하는 내비게이션 메뉴입니다.",
-    mobileGuideline:
-      "호버 기반 메가 메뉴는 터치에서 동작하지 않으므로 모바일 헤더에서는 Drawer 내부 Accordion 목록으로 전환합니다.",
     reactCode: `import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "@goraebap/ui-react/components/navigation-menu";`,
     angularCode: `<nav brnNavigationMenu>...</nav>`,
     renderThumbnail: () => (

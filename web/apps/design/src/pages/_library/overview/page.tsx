@@ -25,7 +25,7 @@ const LAYER_ROLES = [
   {
     name: "디자인 토큰",
     package: "@goraebap/design-system/styles",
-    owns: "5가지 라이트·다크 테마(Neutral·Editorial·Ocean·Forest·Terracotta), 면 위계, 반경, 폰트",
+    owns: "5가지 색상 테마(Neutral·Editorial·Ocean·Forest·Terracotta), 면 위계, 반경, 폰트",
     boundary: "컴포넌트 모양이나 배치를 직접 정의하지 않습니다.",
     to: "/foundations/tokens" as const,
   },
@@ -179,8 +179,8 @@ function OverviewPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">영역별 역할 경계</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          각 영역이 책임지는 범위를 나누어 두면, 테마를 바꾸거나 프레임워크를 옮겨도 수정 범위가 한
-          곳에 머뭅니다.
+          각 영역이 책임지는 범위를 나누어 두면, 색상 테마를 바꾸거나 프레임워크를 옮겨도 수정
+          범위가 한 곳에 머뭅니다.
         </p>
         <div className="space-y-2.5">
           {LAYER_ROLES.map((layer) => (

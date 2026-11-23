@@ -3,8 +3,14 @@ import { Link } from "@tanstack/react-router";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { stripGlossaryMarkup } from "@/shared/lib/glossary";
 import type { ComponentGuide } from "../model/guides";
-import { AnatomyFigure } from "./AnatomyFigure";
+import { BottomSheetAnatomy, ButtonAnatomy, DialogAnatomy } from "./AnatomyFigure";
 import { GuideText } from "./GuideText";
+
+const ANATOMY_FIGURES: Partial<Record<string, () => ReactNode>> = {
+  button: ButtonAnatomy,
+  dialog: DialogAnatomy,
+  "bottom-sheet": BottomSheetAnatomy,
+};
 
 function GuideSection({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -17,12 +23,19 @@ function GuideSection({ title, children }: { title: string; children: ReactNode 
 
 export function AnatomySection({ slug, guide }: { slug: string; guide: ComponentGuide }) {
   if (!guide.anatomy) return null;
+  const Figure = ANATOMY_FIGURES[slug];
   return (
     <GuideSection title="구성">
-      <div className="border-border bg-card grid overflow-hidden rounded-2xl border md:grid-cols-2">
-        <div className="bg-dots bg-background/70 border-border flex min-h-64 items-center justify-center border-b p-6 md:border-r md:border-b-0">
-          <AnatomyFigure slug={slug} />
-        </div>
+      <div
+        className={`border-border bg-card grid overflow-hidden rounded-2xl border ${
+          Figure ? "md:grid-cols-2" : ""
+        }`}
+      >
+        {Figure && (
+          <div className="bg-dots bg-background/70 border-border flex min-h-64 items-center justify-center border-b p-6 md:border-r md:border-b-0">
+            <Figure />
+          </div>
+        )}
         <ol className="divide-border divide-y">
           {guide.anatomy.map((part, index) => (
             <li key={part.name} className="flex gap-3 px-5 py-3">
@@ -48,22 +61,29 @@ export function AnatomySection({ slug, guide }: { slug: string; guide: Component
 export function AccessibilitySection({ guide }: { guide: ComponentGuide }) {
   return (
     <GuideSection title="접근성">
-      <div className="border-border bg-card overflow-hidden rounded-2xl border">
-        <dl className="divide-border divide-y">
-          {guide.accessibility.keys.map((item, index) => (
-            <div key={item.keys} className="flex items-start gap-4 px-5 py-3">
-              <dt className="w-24 shrink-0">
-                <kbd className="border-border bg-background text-foreground inline-flex rounded-md border px-1.5 py-0.5 font-mono text-[11px] font-medium shadow-xs">
-                  {item.keys}
-                </kbd>
-              </dt>
-              <dd className="text-muted-foreground text-sm leading-relaxed break-keep">
-                <GuideText at={`key.${index}`} text={item.action} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </div>
+      {guide.accessibility.keys.length > 0 && (
+        <div className="border-border bg-card overflow-hidden rounded-2xl border">
+          <dl className="divide-border divide-y">
+            {guide.accessibility.keys.map((item, index) => (
+              <div key={item.keys} className="flex items-start gap-4 px-5 py-3">
+                <dt className="flex w-36 shrink-0 flex-wrap gap-1 sm:w-44">
+                  {item.keys.split(" / ").map((key) => (
+                    <kbd
+                      key={key}
+                      className="border-border bg-background text-foreground inline-flex rounded-md border px-1.5 py-0.5 font-mono text-[11px] font-medium shadow-xs"
+                    >
+                      {key}
+                    </kbd>
+                  ))}
+                </dt>
+                <dd className="text-muted-foreground text-sm leading-relaxed break-keep">
+                  <GuideText at={`key.${index}`} text={item.action} />
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      )}
       <ul className="list-disc space-y-1.5 pl-5">
         {guide.accessibility.notes.map((note, index) => (
           <li key={note} className="text-muted-foreground text-sm leading-relaxed break-keep">

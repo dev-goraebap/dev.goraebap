@@ -16,7 +16,11 @@ export const Route = createFileRoute("/")({
 
 const STATS = [
   { value: `${COMPONENT_DOCS.length}종`, label: "공통 UI 컴포넌트", to: "/components" as const },
-  { value: `${THEME_PRESETS.length}개`, label: "라이트·다크 테마", to: "/themes" as const },
+  {
+    value: `${THEME_PRESETS.length}개`,
+    label: "색상 테마",
+    to: "/foundations/color-themes" as const,
+  },
   { value: `${LAYOUT_DOCS.length}종`, label: "앱·메인 레이아웃", to: "/layouts" as const },
   { value: `${DETAIL_DOCS.length}가지`, label: "UI 마감 디테일", to: "/details" as const },
 ];
@@ -230,13 +234,13 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
           {/* Right Column: Themes + Layouts */}
           <div className="flex flex-col gap-4 lg:col-span-5">
             <Link
-              to="/themes"
+              to="/foundations/color-themes"
               className="border-border bg-card hover:border-foreground/30 flex flex-1 flex-col justify-between gap-5 rounded-3xl border p-6 transition-colors"
             >
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
                   <SystemIcon name="palette" className="text-primary size-4" />
-                  <h3 className="text-lg font-semibold tracking-tight">5가지 라이트·다크 테마</h3>
+                  <h3 className="text-lg font-semibold tracking-tight">5가지 색상 테마</h3>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Neutral, Editorial, Ocean, Forest, Terracotta 팔레트를 반경·폰트·아이콘과 함께
@@ -357,11 +361,11 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
       <section className="border-border bg-card relative overflow-hidden rounded-3xl border px-6 py-16 text-center">
         <div className="mx-auto max-w-xl space-y-6">
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            지금 바로 테마를 바꾸고 컴포넌트를 둘러보세요
+            지금 바로 색상 테마를 바꾸고 컴포넌트를 둘러보세요
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            테마 페이지에서 색상과 반경, 아이콘을 고르면 포털 전체의 컴포넌트와 레이아웃에 즉시
-            반영됩니다.
+            헤더의 디자인 설정에서 색상 테마와 라운드, 폰트를 고르면 포털 전체의 컴포넌트와
+            레이아웃에 즉시 반영됩니다.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Button
@@ -377,9 +381,9 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               variant="secondary"
               shape="pill"
               nativeButton={false}
-              render={<Link to="/themes" />}
+              render={<Link to="/foundations/color-themes" />}
             >
-              테마 체험하기
+              색상 테마 보기
             </Button>
             <Button
               size="lg"

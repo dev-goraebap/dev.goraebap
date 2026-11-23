@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import {
   AccessibilitySection,
@@ -9,11 +8,14 @@ import {
   AnatomySection,
   COMPONENT_DOCS,
   COMPONENT_GUIDES,
+  COMPONENT_PLAYGROUNDS,
   GuideText,
   GuideTextProvider,
+  RecipePlayground,
   RelatedSection,
   collectGuideTexts,
   getComponentDoc,
+  getVisibleExamples,
   useRecipeSource,
 } from "@/entities/component-doc";
 import { annotateGlossary } from "@/shared/lib/glossary";
@@ -27,7 +29,7 @@ function ComponentDetailPage() {
   const { slug } = Route.useParams();
   const doc = getComponentDoc(slug);
   const guide = COMPONENT_GUIDES[slug];
-  const recipeCode = useRecipeSource(guide ? slug : undefined);
+  const recipeCode = useRecipeSource(slug);
   const guideTexts = useMemo(
     () =>
       doc && guide
@@ -54,6 +56,7 @@ function ComponentDetailPage() {
   const prev = index > 0 ? COMPONENT_DOCS[index - 1] : undefined;
   const next = index < COMPONENT_DOCS.length - 1 ? COMPONENT_DOCS[index + 1] : undefined;
   const adaptiveLink = ADAPTIVE_LINKS[slug];
+  const examples = getVisibleExamples(doc);
   const getName = (target: string) => getComponentDoc(target)?.name;
 
   return (
@@ -66,19 +69,20 @@ function ComponentDetailPage() {
           </p>
         </header>
 
-        <AdapterPreviewStage
-          reactCode={doc.reactCode}
+        <RecipePlayground
+          key={slug}
+          slug={slug}
+          doc={doc}
+          config={COMPONENT_PLAYGROUNDS[slug]}
           recipeCode={recipeCode}
-          angularCode={doc.angularCode}
-          renderReact={doc.renderReactDemo}
         />
 
         {guide && <AnatomySection slug={slug} guide={guide} />}
 
-        {doc.examples && doc.examples.length > 0 && (
+        {examples.length > 0 && (
           <section className="space-y-8">
             <h2 className="text-xl font-semibold tracking-tight">변형</h2>
-            {doc.examples.map((example) => (
+            {examples.map((example) => (
               <div key={example.id} className="space-y-3">
                 <div className="space-y-1">
                   <h3 className="text-base font-semibold tracking-tight">{example.title}</h3>
@@ -90,7 +94,6 @@ function ComponentDetailPage() {
                 </div>
                 <AdapterPreviewStage
                   reactCode={example.reactCode}
-                  recipeCode={recipeCode}
                   angularCode={example.angularCode}
                   renderReact={example.renderReactDemo}
                 />
@@ -100,23 +103,7 @@ function ComponentDetailPage() {
         )}
 
         {guide && <AccessibilitySection guide={guide} />}
-        {adaptiveLink ? (
-          <AdaptiveLinkSection link={adaptiveLink} />
-        ) : (
-          !guide && (
-            <Alert
-              role="note"
-              variant="info"
-              className="[&>h5]:mb-2 [&>p]:text-sm [&>p]:break-keep"
-            >
-              <AlertTitle className="flex items-center gap-1.5 text-xs font-semibold">
-                <SystemIcon name="mobile" className="size-4" />
-                INFO · 모바일
-              </AlertTitle>
-              <AlertDescription>{doc.mobileGuideline}</AlertDescription>
-            </Alert>
-          )
-        )}
+        {adaptiveLink && <AdaptiveLinkSection link={adaptiveLink} />}
         {guide && <RelatedSection guide={guide} getName={getName} />}
 
         {/* Prev / Next Navigation */}
