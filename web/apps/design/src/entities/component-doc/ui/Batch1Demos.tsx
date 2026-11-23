@@ -1,9 +1,4 @@
-import { useRef, useState } from "react";
-import { alertDialogPopupVariants } from "@goraebap/design-system/recipes/alert-dialog";
-import { buttonVariants } from "@goraebap/design-system/recipes/button";
-import { toggleVariants } from "@goraebap/design-system/recipes/toggle";
-import { toggleGroupVariants } from "@goraebap/design-system/recipes/toggle-group";
-import { tooltipPopupVariants } from "@goraebap/design-system/recipes/tooltip";
+import { useState } from "react";
 import {
   AlertDialog,
   AlertDialogClose,
@@ -45,26 +40,6 @@ import {
 } from "@goraebap/ui-react/components/tooltip";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 
-/* ── Toggle ───────────────────────────────────────────────────── */
-
-export function NativeToggleDemo() {
-  const [pressed, setPressed] = useState(true);
-  return (
-    <div className="flex items-center justify-center gap-2 py-4">
-      <button
-        type="button"
-        aria-pressed={pressed}
-        data-pressed={pressed ? "" : undefined}
-        onClick={() => setPressed((p) => !p)}
-        className={toggleVariants({ variant: "outline" })}
-      >
-        <SystemIcon name="sun" className="size-3.5" />
-        <span>{pressed ? "고정됨" : "고정"}</span>
-      </button>
-    </div>
-  );
-}
-
 export function ReactToggleDemo() {
   const [pressed, setPressed] = useState(true);
   return (
@@ -73,35 +48,6 @@ export function ReactToggleDemo() {
         <SystemIcon name="sun" className="size-3.5" />
         <span>{pressed ? "고정됨" : "고정"}</span>
       </Toggle>
-    </div>
-  );
-}
-
-/* ── Toggle Group ─────────────────────────────────────────────── */
-
-export function NativeToggleGroupDemo() {
-  const [value, setValue] = useState<"app" | "editorial">("app");
-  return (
-    <div className="flex items-center justify-center py-4">
-      <div role="group" aria-label="테마 선택" className={toggleGroupVariants({ shape: "pill" })}>
-        {(
-          [
-            { id: "app", label: "App" },
-            { id: "editorial", label: "Editorial" },
-          ] as const
-        ).map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            aria-pressed={value === item.id}
-            data-pressed={value === item.id ? "" : undefined}
-            onClick={() => setValue(item.id)}
-            className={toggleVariants({ shape: "pill" })}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
     </div>
   );
 }
@@ -125,26 +71,6 @@ export function ReactToggleGroupDemo() {
           Editorial
         </ToggleGroupItem>
       </ToggleGroup>
-    </div>
-  );
-}
-
-/* ── Tooltip ──────────────────────────────────────────────────── */
-
-export function NativeTooltipDemo() {
-  return (
-    <div className="flex items-center justify-center py-6">
-      <span className="group relative inline-flex">
-        <button type="button" className={buttonVariants({ variant: "outline", size: "sm" })}>
-          마우스를 올려 보세요
-        </button>
-        <span
-          role="tooltip"
-          className={`pointer-events-none invisible absolute bottom-full left-1/2 mb-1.5 -translate-x-1/2 whitespace-nowrap opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 ${tooltipPopupVariants()}`}
-        >
-          단축키: Ctrl + K
-        </span>
-      </span>
     </div>
   );
 }
@@ -225,49 +151,6 @@ export function ReactMenuDemo() {
           <MenuItem variant="destructive">삭제</MenuItem>
         </MenuContent>
       </Menu>
-    </div>
-  );
-}
-
-/* ── Alert Dialog ─────────────────────────────────────────────── */
-
-export function NativeAlertDialogDemo() {
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  return (
-    <div className="flex items-center justify-center py-4">
-      <button
-        type="button"
-        className={buttonVariants({ variant: "destructive", size: "sm" })}
-        onClick={() => dialogRef.current?.showModal()}
-      >
-        프로젝트 삭제
-      </button>
-      <dialog
-        ref={dialogRef}
-        data-surface="dialog"
-        className={`goraebap-native-dialog m-0 max-h-none ${alertDialogPopupVariants()}`}
-      >
-        <h3 className="text-base font-semibold tracking-tight">프로젝트를 삭제할까요?</h3>
-        <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed">
-          삭제한 프로젝트와 연결된 토큰은 복구할 수 없습니다.
-        </p>
-        <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-          <button
-            type="button"
-            className={buttonVariants({ variant: "ghost", size: "sm" })}
-            onClick={() => dialogRef.current?.close()}
-          >
-            취소
-          </button>
-          <button
-            type="button"
-            className={buttonVariants({ variant: "destructive", size: "sm" })}
-            onClick={() => dialogRef.current?.close()}
-          >
-            삭제
-          </button>
-        </div>
-      </dialog>
     </div>
   );
 }

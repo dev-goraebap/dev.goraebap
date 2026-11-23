@@ -13,9 +13,8 @@ function DocsRecipesPage() {
         <h1 className="text-3xl font-semibold tracking-tight">Style Recipes</h1>
         <p className="text-muted-foreground text-base leading-relaxed">
           스타일 레시피는 컴포넌트의 외형과 변형(variant) 규칙을 프레임워크와 분리해 정의한 스타일
-          계층입니다. <code>class-variance-authority (CVA)</code>와 Tailwind 클래스를 조합한
-          TypeScript 함수로 구현하며, React 컴포넌트뿐 아니라 네이티브 HTML과 Angular에서도 같은
-          규칙을 공유합니다.
+          계층입니다. <code>tailwind-variants</code>와 Tailwind 클래스를 조합한 TypeScript 함수로
+          구현하며, React와 Angular 환경에서 같은 규칙을 공유합니다.
         </p>
       </header>
 

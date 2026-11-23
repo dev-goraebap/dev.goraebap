@@ -24,12 +24,6 @@ const GUIDE_GROUPS: DocsNavGroup[] = [
       { label: "스타일 레시피", href: "/foundations/recipes", icon: "code" },
     ],
   },
-  {
-    title: "어댑터",
-    items: [
-      { label: "Vanilla HTML/TS & Primitives", href: "/adapters/primitives", icon: "components" },
-    ],
-  },
 ];
 
 function LibraryLayout() {

@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Badge } from "@goraebap/ui-react/components/badge";
+import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { COMPONENT_DOCS, getComponentDoc } from "@/entities/component-doc";
 import { AdapterPreviewStage } from "@/shared/ui";
@@ -30,27 +30,17 @@ function ComponentDetailPage() {
   return (
     <article className="space-y-8">
       <header className="space-y-3">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-muted-foreground text-xs font-medium">{doc.category}</span>
-          <Badge variant="outline">{doc.pureHtmlLevel}</Badge>
-        </div>
+        <span className="text-muted-foreground text-xs font-medium">{doc.category}</span>
         <h1 className="text-3xl font-semibold tracking-tight">{doc.name}</h1>
         <p className="text-muted-foreground text-base leading-relaxed">{doc.summary}</p>
-        <div className="text-muted-foreground flex flex-wrap gap-x-5 gap-y-1 pt-1 font-mono text-xs">
-          <span>Recipe: {doc.recipePath}</span>
-          <span>React: {doc.primitiveReact}</span>
-          <span>Angular: {doc.primitiveAngular}</span>
-        </div>
       </header>
 
       {/* Live Adapter + Viewport + Theme Preview Stage */}
       <AdapterPreviewStage
         slug={doc.slug}
         title={doc.name}
-        htmlCode={doc.htmlCode}
         reactCode={doc.reactCode}
         angularCode={doc.angularCode}
-        renderHtml={doc.renderHtmlDemo}
         renderReact={doc.renderReactDemo}
       />
 
@@ -68,10 +58,8 @@ function ComponentDetailPage() {
               </div>
               <AdapterPreviewStage
                 title={`${doc.name} — ${example.title}`}
-                htmlCode={example.htmlCode}
                 reactCode={example.reactCode}
                 angularCode={example.angularCode}
-                renderHtml={example.renderHtmlDemo}
                 renderReact={example.renderReactDemo}
               />
             </div>
@@ -79,22 +67,14 @@ function ComponentDetailPage() {
         </section>
       )}
 
-      {/* Boundary & Mobile Guidelines */}
-      <div className="grid gap-4 md:grid-cols-2">
-        <section className="border-border bg-card space-y-2 rounded-2xl border p-5">
-          <p className="text-muted-foreground font-mono text-[11px] uppercase">
-            Vanilla HTML/TS vs Headless Boundary
-          </p>
-          <p className="text-foreground text-sm leading-relaxed">{doc.pureHtmlNote}</p>
-        </section>
-
-        <section className="border-border bg-card space-y-2 rounded-2xl border p-5">
-          <p className="text-muted-foreground font-mono text-[11px] uppercase">
-            Mobile (&lt; 64rem · 390px) Guideline
-          </p>
-          <p className="text-foreground text-sm leading-relaxed">{doc.mobileGuideline}</p>
-        </section>
-      </div>
+      {/* Mobile Guideline */}
+      <Alert role="note" variant="info" className="[&>h5]:mb-2 [&>p]:text-sm [&>p]:break-keep">
+        <AlertTitle className="flex items-center gap-1.5 text-xs font-semibold">
+          <SystemIcon name="mobile" className="size-4" />
+          INFO · 모바일
+        </AlertTitle>
+        <AlertDescription>{doc.mobileGuideline}</AlertDescription>
+      </Alert>
 
       {/* Prev / Next Navigation */}
       <nav

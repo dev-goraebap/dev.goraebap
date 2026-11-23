@@ -11,7 +11,7 @@ export const Route = createFileRoute("/preview/components/$slug/")({
 function ComponentMobilePreviewPage() {
   const { slug } = Route.useParams();
   const doc = getComponentDoc(slug);
-  const { adapter, theme } = usePreviewSync();
+  const { theme } = usePreviewSync();
 
   if (!doc) {
     return (
@@ -28,23 +28,19 @@ function ComponentMobilePreviewPage() {
         className="bg-background text-foreground flex min-h-screen flex-col transition-colors"
       >
         {/* Mobile App Top Bar (respects Dynamic Island safe area) */}
-        <header className="border-border/80 bg-background/90 sticky top-0 z-10 flex items-center justify-between border-b px-4 pt-13 pb-3 backdrop-blur-md">
+        <header className="border-border/80 bg-background sticky top-0 z-10 flex items-center justify-between border-b px-4 pt-13 pb-3">
           <div className="min-w-0">
             <p className="text-muted-foreground font-mono text-[10px] leading-none">
               goraebap/design
             </p>
             <h1 className="mt-1 truncate text-sm font-semibold tracking-tight">{doc.name}</h1>
           </div>
-          <Badge variant="secondary">{adapter === "html" ? "Vanilla HTML/TS" : "React"}</Badge>
+          <Badge variant="secondary">React</Badge>
         </header>
 
         {/* Scrollable Mobile Content Area */}
         <main className="flex flex-1 flex-col justify-center px-4 pt-6 pb-12">
-          <div className="w-full">
-            {adapter === "html"
-              ? doc.renderHtmlDemo({ isMobile: true })
-              : doc.renderReactDemo({ isMobile: true })}
-          </div>
+          <div className="w-full">{doc.renderReactDemo({ isMobile: true })}</div>
         </main>
       </div>
     </ThemedPortalScope>

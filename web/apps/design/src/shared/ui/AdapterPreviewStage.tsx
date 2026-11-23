@@ -7,15 +7,13 @@ import { CodeView } from "./CodeView";
 import { MobileDeviceFrame } from "./MobileDeviceFrame";
 import { ThemedPortalScope } from "./ThemedPortalScope";
 
-export type AdapterTarget = "html" | "react" | "angular";
+export type AdapterTarget = "react" | "angular";
 
 interface AdapterPreviewStageProps {
   slug?: string;
   title?: string;
-  htmlCode: string;
   reactCode: string;
   angularCode: string;
-  renderHtml: (ctx: { isMobile: boolean }) => ReactNode;
   renderReact: (ctx: { isMobile: boolean }) => ReactNode;
   angularNote?: string;
   defaultAdapter?: AdapterTarget;
@@ -24,13 +22,11 @@ interface AdapterPreviewStageProps {
 export function AdapterPreviewStage({
   slug,
   title,
-  htmlCode,
   reactCode,
   angularCode,
-  renderHtml,
   renderReact,
   angularNote,
-  defaultAdapter = "html",
+  defaultAdapter = "react",
 }: AdapterPreviewStageProps) {
   const [adapter, setAdapter] = useState<AdapterTarget>(defaultAdapter);
   const [view, setView] = useState<"preview" | "code">("preview");
@@ -40,9 +36,9 @@ export function AdapterPreviewStage({
   const [copied, setCopied] = useState(false);
 
   const isMobile = viewport === "mobile";
-  const activeCode = adapter === "html" ? htmlCode : adapter === "react" ? reactCode : angularCode;
+  const activeCode = adapter === "react" ? reactCode : angularCode;
   const angularLang = detectAngularLanguage(angularCode);
-  const activeLang = adapter === "html" ? "html" : adapter === "react" ? "tsx" : angularLang;
+  const activeLang = adapter === "react" ? "tsx" : angularLang;
 
   async function handleCopy() {
     await navigator.clipboard.writeText(activeCode);
@@ -63,7 +59,6 @@ export function AdapterPreviewStage({
           >
             {(
               [
-                { id: "html", label: "Vanilla HTML/TS" },
                 { id: "react", label: "React (Base UI)" },
                 { id: "angular", label: "Angular (Spartan)" },
               ] as const
@@ -184,7 +179,7 @@ export function AdapterPreviewStage({
                 </div>
                 <p className="text-muted-foreground text-xs leading-relaxed">
                   {angularNote ??
-                    "Angular에서는 @spartan-ng/brain 헤드리스 디렉티브 위에 React·Vanilla HTML/TS와 완전히 같은 @goraebap/design-system CVA 레시피를 그대로 결합합니다."}
+                    "Angular에서는 @spartan-ng/brain 헤드리스 디렉티브 위에 React와 완전히 같은 @goraebap/design-system 레시피를 그대로 결합합니다."}
                 </p>
                 <CodeView
                   code={angularCode}
@@ -193,16 +188,9 @@ export function AdapterPreviewStage({
                 />
               </div>
             ) : isMobile && slug ? (
-              <MobileDeviceFrame
-                path={`/preview/components/${slug}`}
-                title={title}
-                adapter={adapter}
-                theme={theme}
-              />
+              <MobileDeviceFrame path={`/preview/components/${slug}`} title={title} theme={theme} />
             ) : (
-              <div className="text-foreground w-full max-w-2xl">
-                {adapter === "html" ? renderHtml({ isMobile }) : renderReact({ isMobile })}
-              </div>
+              <div className="text-foreground w-full max-w-2xl">{renderReact({ isMobile })}</div>
             )}
           </div>
         ) : (

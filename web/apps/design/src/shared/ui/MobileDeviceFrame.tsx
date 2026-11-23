@@ -1,23 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import {
-  PREVIEW_SYNC_TYPE,
-  type PreviewAdapter,
-  type PreviewSyncPayload,
-  type PreviewTheme,
-} from "../lib/preview-sync";
+import { PREVIEW_SYNC_TYPE, type PreviewSyncPayload, type PreviewTheme } from "../lib/preview-sync";
 
 interface MobileDeviceFrameProps {
   /** 프리뷰 라우트 경로 (예: /preview/components/dialog) */
   path: string;
   title?: string;
-  adapter?: PreviewAdapter;
   theme?: PreviewTheme;
 }
 
-function buildPreviewUrl(path: string, adapter?: PreviewAdapter, theme?: PreviewTheme): string {
+function buildPreviewUrl(path: string, theme?: PreviewTheme): string {
   const params = new URLSearchParams();
-  if (adapter) params.set("adapter", adapter);
   if (theme) params.set("theme", theme);
   const query = params.toString();
   return query ? `${path}?${query}` : path;
@@ -26,19 +19,18 @@ function buildPreviewUrl(path: string, adapter?: PreviewAdapter, theme?: Preview
 export function MobileDeviceFrame({
   path,
   title = "Mobile Preview",
-  adapter,
   theme = "app",
 }: MobileDeviceFrameProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [loadedPath, setLoadedPath] = useState<string | null>(null);
-  // path가 바뀔 때만 iframe src를 재구성하고, adapter/theme/dark 전환은 postMessage로 무깜빡임 동기화한다.
+  // path가 바뀔 때만 iframe src를 재구성하고, theme/dark 전환은 postMessage로 무깜빡임 동기화한다.
   const [frameTarget, setFrameTarget] = useState(() => ({
     path,
-    src: buildPreviewUrl(path, adapter, theme),
+    src: buildPreviewUrl(path, theme),
   }));
 
   if (frameTarget.path !== path) {
-    setFrameTarget({ path, src: buildPreviewUrl(path, adapter, theme) });
+    setFrameTarget({ path, src: buildPreviewUrl(path, theme) });
   }
 
   const syncToIframe = useCallback(() => {
@@ -46,12 +38,11 @@ export function MobileDeviceFrame({
     if (!win) return;
     const payload: PreviewSyncPayload = {
       type: PREVIEW_SYNC_TYPE,
-      adapter,
       theme,
       dark: document.documentElement.classList.contains("dark"),
     };
     win.postMessage(payload, window.location.origin);
-  }, [adapter, theme]);
+  }, [theme]);
 
   useEffect(() => {
     syncToIframe();
@@ -69,7 +60,7 @@ export function MobileDeviceFrame({
   }, [syncToIframe]);
 
   const isLoaded = loadedPath === path;
-  const externalUrl = buildPreviewUrl(path, adapter, theme);
+  const externalUrl = buildPreviewUrl(path, theme);
 
   return (
     <div className="flex flex-col items-center gap-4">

@@ -1,10 +1,5 @@
 import { menubarTriggerVariants } from "@goraebap/design-system/recipes/menubar";
 import { navigationMenuTriggerVariants } from "@goraebap/design-system/recipes/navigation-menu";
-import { previewCardPopupVariants } from "@goraebap/design-system/recipes/preview-card";
-import {
-  scrollAreaRootVariants,
-  scrollAreaViewportVariants,
-} from "@goraebap/design-system/recipes/scroll-area";
 import {
   Autocomplete,
   AutocompleteContent,
@@ -51,7 +46,7 @@ import {
 } from "@goraebap/ui-react/components/preview-card";
 import { ScrollArea } from "@goraebap/ui-react/components/scroll-area";
 
-const FRAMEWORK_ITEMS = ["React", "Angular", "Vanilla HTML/TS", "Tailwind CSS", "Base UI"];
+const FRAMEWORK_ITEMS = ["React", "Angular", "Tailwind CSS", "Base UI"];
 
 /* ── Combobox ─────────────────────────────────────────────────── */
 
@@ -139,32 +134,6 @@ export function ReactContextMenuDemo() {
   );
 }
 
-/* ── Preview Card ─────────────────────────────────────────────── */
-
-export function NativePreviewCardDemo() {
-  return (
-    <div className="flex items-center justify-center py-6">
-      <span className="group relative inline-flex">
-        <a
-          href="#preview-card-demo"
-          onClick={(e) => e.preventDefault()}
-          className="text-foreground text-sm font-medium underline underline-offset-4"
-        >
-          @goraebap/design-system
-        </a>
-        <div
-          className={`pointer-events-none invisible absolute top-full left-1/2 mt-2 -translate-x-1/2 opacity-0 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100 ${previewCardPopupVariants()}`}
-        >
-          <p className="text-sm font-semibold">@goraebap/design-system</p>
-          <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-            프레임워크와 무관한 CSS 토큰과 CVA 레시피 패키지입니다.
-          </p>
-        </div>
-      </span>
-    </div>
-  );
-}
-
 export function ReactPreviewCardDemo() {
   return (
     <div className="flex items-center justify-center py-6">
@@ -179,7 +148,7 @@ export function ReactPreviewCardDemo() {
         <PreviewCardContent>
           <p className="text-sm font-semibold">@goraebap/design-system</p>
           <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
-            프레임워크와 무관한 CSS 토큰과 CVA 레시피 패키지입니다.
+            프레임워크와 무관한 CSS 토큰과 스타일 레시피 패키지입니다.
           </p>
         </PreviewCardContent>
       </PreviewCard>
@@ -235,7 +204,7 @@ export function ReactNavigationMenuDemo() {
               </NavigationMenuLink>
               <NavigationMenuLink href="#nav-recipes" onClick={(e) => e.preventDefault()}>
                 <p className="font-medium">스타일 레시피</p>
-                <p className="text-muted-foreground">CVA 기반 공통 스타일 규칙</p>
+                <p className="text-muted-foreground">tailwind-variants 기반 공통 스타일 규칙</p>
               </NavigationMenuLink>
             </NavigationMenuContent>
           </NavigationMenuItem>
@@ -267,24 +236,6 @@ export function ReactNavigationMenuDemo() {
 /* ── Scroll Area ──────────────────────────────────────────────── */
 
 const SCROLL_ITEMS = Array.from({ length: 12 }, (_, i) => `토큰 프리셋 항목 ${i + 1}`);
-
-export function NativeScrollAreaDemo() {
-  return (
-    <div className={`mx-auto h-40 max-w-xs ${scrollAreaRootVariants()}`}>
-      <div
-        className={`[scrollbar-width:thin] [scrollbar-color:var(--border)_transparent] p-3 ${scrollAreaViewportVariants()}`}
-      >
-        <div className="divide-border divide-y text-xs">
-          {SCROLL_ITEMS.map((item) => (
-            <div key={item} className="py-2">
-              {item}
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export function ReactScrollAreaDemo() {
   return (

@@ -3,7 +3,6 @@ import type { ThemePresetId } from "./design-config";
 
 export const PREVIEW_SYNC_TYPE = "goraebap-preview-sync";
 
-export type PreviewAdapter = "html" | "react";
 export type PreviewTheme = ThemePresetId;
 
 const ALLOWED_THEMES: readonly PreviewTheme[] = [
@@ -16,7 +15,6 @@ const ALLOWED_THEMES: readonly PreviewTheme[] = [
 
 export interface PreviewSyncPayload {
   type: typeof PREVIEW_SYNC_TYPE;
-  adapter?: PreviewAdapter;
   theme?: PreviewTheme;
   dark?: boolean;
 }
@@ -45,10 +43,7 @@ function readInitialParam<T extends string>(key: string, allowed: readonly T[], 
   return fallback;
 }
 
-export function usePreviewSync(defaults?: { adapter?: PreviewAdapter; theme?: PreviewTheme }) {
-  const [adapter, setAdapter] = useState<PreviewAdapter>(() =>
-    readInitialParam("adapter", ["html", "react"] as const, defaults?.adapter ?? "html"),
-  );
+export function usePreviewSync(defaults?: { theme?: PreviewTheme }) {
   const [theme, setTheme] = useState<PreviewTheme>(() =>
     readInitialParam("theme", ALLOWED_THEMES, defaults?.theme ?? "app"),
   );
@@ -64,9 +59,6 @@ export function usePreviewSync(defaults?: { adapter?: PreviewAdapter; theme?: Pr
       if (typeof data.dark === "boolean") {
         document.documentElement.classList.toggle("dark", data.dark);
       }
-      if (data.adapter === "html" || data.adapter === "react") {
-        setAdapter(data.adapter);
-      }
       if (data.theme && (ALLOWED_THEMES as readonly string[]).includes(data.theme)) {
         setTheme(data.theme);
       }
@@ -76,5 +68,5 @@ export function usePreviewSync(defaults?: { adapter?: PreviewAdapter; theme?: Pr
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
-  return { adapter, theme };
+  return { theme };
 }

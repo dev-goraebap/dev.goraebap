@@ -23,26 +23,22 @@ const STATS = [
 
 function LandingPage() {
   const [heroTheme, setHeroTheme] = useState<ThemePresetId>("app");
-  const [heroAdapter, setHeroAdapter] = useState<"html" | "react" | "angular">("html");
+  const [heroAdapter, setHeroAdapter] = useState<"react" | "angular">("react");
 
   const featuredComponents = COMPONENT_DOCS.slice(0, 6);
   const activePreset = THEME_PRESETS.find((t) => t.id === heroTheme) ?? THEME_PRESETS[0];
 
   const heroCode =
-    heroAdapter === "html"
-      ? `<button class="\${buttonVariants({ variant: 'default', size: 'sm' })}">
-  저장
-</button>`
-      : heroAdapter === "react"
-        ? `import { Button } from "@goraebap/ui-react/components/button";
+    heroAdapter === "react"
+      ? `import { Button } from "@goraebap/ui-react/components/button";
 
 <Button variant="default" size="sm">저장</Button>`
-        : `import { buttonVariants } from "@goraebap/design-system/recipes/button";
+      : `import { buttonVariants } from "@goraebap/design-system/recipes/button";
 
 @Directive({ selector: "button[gbButton]", host: { "[class]": "cls()" } })
 export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`;
 
-  const heroLang = heroAdapter === "html" ? "html" : heroAdapter === "react" ? "tsx" : "angular-ts";
+  const heroLang = heroAdapter === "react" ? "tsx" : "angular-ts";
 
   return (
     <main className="mx-auto max-w-7xl space-y-24 px-6 py-16 sm:py-24">
@@ -55,7 +51,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
               className="border-border bg-card text-muted-foreground hover:text-foreground inline-flex items-center gap-2 rounded-full border px-3.5 py-1 text-xs transition-colors"
             >
               <SystemIcon name="details" className="text-primary size-3.5" />
-              <span>Vanilla HTML/TS · React · Angular 단일 원본 디자인 시스템</span>
+              <span>React · Angular 단일 원본 디자인 시스템</span>
               <SystemIcon name="arrowRight" className="size-3" />
             </Link>
           </div>
@@ -64,9 +60,9 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             <br />
             모든 프론트엔드에
           </h1>
-          <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-7 sm:text-lg">
-            색상 토큰과 스타일 레시피를 한곳에서 정의하고, 프로토타입(Vanilla HTML/TS)부터
-            React(@goraebap/ui-react), Angular(Spartan Brain)까지 같은 외형과 마감 기준을
+          <p className="text-muted-foreground mx-auto max-w-2xl text-base leading-7 break-keep sm:text-lg">
+            색상 토큰과 스타일 레시피를 한곳에서 정의하고, React(@goraebap/ui-react) 프로토타입·개인
+            프로젝트부터 Angular(Spartan Brain) 업무 프로젝트까지 같은 외형과 마감 기준을
             공유합니다.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -116,7 +112,6 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             <div className="border-border bg-background inline-flex items-center gap-0.5 rounded-full border p-0.5">
               {(
                 [
-                  { id: "html", label: "Vanilla HTML/TS" },
                   { id: "react", label: "React" },
                   { id: "angular", label: "Angular" },
                 ] as const
@@ -142,11 +137,7 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
                 <div className="flex items-center justify-between">
                   <Badge variant="outline">{activePreset.name}</Badge>
                   <span className="text-muted-foreground font-mono text-[11px]">
-                    {heroAdapter === "html"
-                      ? "@goraebap/ui-html"
-                      : heroAdapter === "react"
-                        ? "@base-ui/react"
-                        : "@spartan-ng/brain"}
+                    {heroAdapter === "react" ? "@base-ui/react" : "@spartan-ng/brain"}
                   </span>
                 </div>
                 <p className="text-muted-foreground text-xs leading-relaxed">
@@ -167,11 +158,9 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             <div className="border-border bg-card flex flex-col justify-between rounded-2xl border p-5 md:col-span-7">
               <div className="flex flex-wrap items-center justify-between gap-2 pb-3">
                 <span className="text-muted-foreground font-mono text-xs">
-                  {heroAdapter === "html"
-                    ? "main.ts (Vanilla HTML/TS)"
-                    : heroAdapter === "react"
-                      ? "Button.tsx (@goraebap/ui-react)"
-                      : "gb-button.directive.ts (@spartan-ng/brain)"}
+                  {heroAdapter === "react"
+                    ? "Button.tsx (@goraebap/ui-react)"
+                    : "gb-button.directive.ts (@spartan-ng/brain)"}
                 </span>
                 <Badge variant="secondary">@goraebap/design-system</Badge>
               </div>
@@ -222,8 +211,8 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
                 </h3>
               </div>
               <p className="text-muted-foreground text-sm">
-                Base UI와 Spartan Brain이 공통 지원하는 인터랙션 컴포넌트와 네이티브 HTML 레시피를
-                한곳에서 비교합니다.
+                Base UI와 Spartan Brain이 공통 지원하는 인터랙션 컴포넌트와 스타일 레시피를 한곳에서
+                비교합니다.
               </p>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
@@ -323,9 +312,8 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
             프로토타입에서 프로덕션까지 틀어지지 않는 구조
           </h2>
           <p className="text-muted-foreground text-sm leading-relaxed">
-            AI 에이전트로 빠르게 만든 HTML 프로토타입을 React나 Angular로 옮길 때마다 여백과
-            스타일이 깨지는 문제를 없애기 위해, 토큰과 스타일 레시피를 프레임워크 밖으로
-            분리했습니다.
+            React로 빠르게 만든 프로토타입을 Angular 업무 앱으로 옮길 때마다 여백과 스타일이 깨지는
+            문제를 없애기 위해, 토큰과 스타일 레시피를 프레임워크 밖으로 분리했습니다.
           </p>
           <div className="pt-1">
             <Button
@@ -343,11 +331,12 @@ export class GbButton { cls = computed(() => buttonVariants({ size: "sm" })); }`
         <div className="border-border bg-dots bg-card/70 space-y-4 rounded-3xl border p-6 lg:col-span-7">
           <div className="border-border bg-background rounded-2xl border p-4 text-center">
             <p className="text-muted-foreground font-mono text-[11px]">@goraebap/design-system</p>
-            <p className="mt-1 text-sm font-semibold">CSS 토큰 + CVA 스타일 레시피 (런타임 0)</p>
+            <p className="mt-1 text-sm font-semibold">
+              CSS 토큰 + 스타일 레시피 (tailwind-variants)
+            </p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2">
             {[
-              { name: "Vanilla HTML/TS", role: "AI 프로토타입", tech: "@goraebap/ui-html" },
               { name: "React", role: "개인 프로젝트", tech: "@goraebap/ui-react" },
               { name: "Angular", role: "업무 프로젝트", tech: "@spartan-ng/brain" },
             ].map((item) => (

@@ -2,17 +2,8 @@ import type { ReactNode } from "react";
 import { alertVariants } from "@goraebap/design-system/recipes/alert";
 import { badgeVariants } from "@goraebap/design-system/recipes/badge";
 import { buttonVariants } from "@goraebap/design-system/recipes/button";
-import { cardVariants } from "@goraebap/design-system/recipes/card";
-import { inputVariants } from "@goraebap/design-system/recipes/input";
 import { separatorVariants } from "@goraebap/design-system/recipes/separator";
 import { skeletonVariants } from "@goraebap/design-system/recipes/skeleton";
-import {
-  tableCellVariants,
-  tableHeadVariants,
-  tableRowVariants,
-  tableVariants,
-} from "@goraebap/design-system/recipes/table";
-import { textareaVariants } from "@goraebap/design-system/recipes/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { Button } from "@goraebap/ui-react/components/button";
@@ -38,10 +29,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 import { Textarea } from "@goraebap/ui-react/components/textarea";
 import {
-  NativeAlertDialogDemo,
-  NativeToggleDemo,
-  NativeToggleGroupDemo,
-  NativeTooltipDemo,
   ReactAlertDialogDemo,
   ReactMenuDemo,
   ReactPopoverDemo,
@@ -51,12 +38,6 @@ import {
   ReactTooltipDemo,
 } from "../ui/Batch1Demos";
 import {
-  NativeAccordionDemo,
-  NativeAvatarDemo,
-  NativeCollapsibleDemo,
-  NativeDrawerDemo,
-  NativeProgressDemo,
-  NativeRadioGroupDemo,
   ReactAccordionDemo,
   ReactAvatarDemo,
   ReactCollapsibleDemo,
@@ -67,8 +48,6 @@ import {
   ReactToastDemo,
 } from "../ui/Batch2Demos";
 import {
-  NativePreviewCardDemo,
-  NativeScrollAreaDemo,
   ReactAutocompleteDemo,
   ReactComboboxDemo,
   ReactContextMenuDemo,
@@ -79,37 +58,12 @@ import {
   ReactScrollAreaDemo,
 } from "../ui/Batch3Demos";
 import {
-  NativeAutocompleteDemo,
-  NativeComboboxDemo,
-  NativeContextMenuDemo,
-  NativeMenuDemo,
-  NativeMenubarDemo,
-  NativeNavigationMenuDemo,
-  NativeOTPFieldDemo,
-  NativePopoverDemo,
-  NativeSelectDemo,
-  NativeSliderDemo,
-  NativeToastDemo,
-} from "../ui/NativeInteractiveDemos";
-import {
-  NativeAvatarShapeDemo,
-  NativeProgressShapeDemo,
-  NativeSliderShapeDemo,
-  NativeSwitchShapeDemo,
   ReactAvatarShapeDemo,
   ReactProgressShapeDemo,
   ReactSliderShapeDemo,
   ReactSwitchShapeDemo,
 } from "../ui/ShapeDemos";
-import {
-  NativeCheckboxDemo,
-  NativeDialogDemo,
-  NativeSwitchDemo,
-  NativeTabsDemo,
-  ReactCheckboxDemo,
-  ReactDialogDemo,
-  ReactSwitchDemo,
-} from "../ui/InteractiveDemos";
+import { ReactCheckboxDemo, ReactDialogDemo, ReactSwitchDemo } from "../ui/InteractiveDemos";
 
 export type ComponentCategory = "동작과 입력" | "표시와 구조" | "오버레이와 탐색";
 
@@ -117,10 +71,8 @@ interface ComponentExample {
   id: string;
   title: string;
   description?: string;
-  htmlCode: string;
   reactCode: string;
   angularCode: string;
-  renderHtmlDemo: (ctx: { isMobile: boolean }) => ReactNode;
   renderReactDemo: (ctx: { isMobile: boolean }) => ReactNode;
 }
 
@@ -131,15 +83,11 @@ export interface ComponentDocSpec {
   primitiveReact: string;
   primitiveAngular: string;
   recipePath: string;
-  pureHtmlLevel: "100% Native HTML" | "Native HTML + CSS" | "Native HTML (한계 있음)";
   summary: string;
-  pureHtmlNote: string;
   mobileGuideline: string;
-  htmlCode: string;
   reactCode: string;
   angularCode: string;
   renderThumbnail: () => ReactNode;
-  renderHtmlDemo: (ctx: { isMobile: boolean }) => ReactNode;
   renderReactDemo: (ctx: { isMobile: boolean }) => ReactNode;
   examples?: ComponentExample[];
 }
@@ -158,18 +106,10 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     primitiveReact: "@base-ui/react/button",
     primitiveAngular: "HTML <button> / hlmBtn",
     recipePath: "@goraebap/design-system/recipes/button",
-    pureHtmlLevel: "100% Native HTML",
     summary:
-      "동작을 실행하거나 링크로 이동하는 버튼입니다. Vanilla HTML/TS <button>, React, Angular 예시 모두 같은 레시피를 씁니다.",
-    pureHtmlNote:
-      "네이티브 <button>만으로 포커스, Enter와 Space 키 입력, 비활성화가 동작합니다. React와 Angular 어댑터는 라우터 링크 합성(render prop, directive)을 처리합니다.",
+      "동작을 실행하거나 링크로 이동하는 버튼입니다. React와 Angular 예시 모두 같은 레시피를 씁니다.",
     mobileGuideline:
-      "모바일에서는 주요 동작 버튼을 전체 폭(w-full)이나 size='lg' 이상으로 배치합니다.",
-    htmlCode: `<button class="\${buttonVariants({ variant: 'default' })}">저장</button>
-<button class="\${buttonVariants({ variant: 'secondary' })}">임시 저장</button>
-<button class="\${buttonVariants({ variant: 'outline' })}">미리보기</button>
-<button class="\${buttonVariants({ variant: 'ghost' })}">취소</button>
-<button class="\${buttonVariants({ variant: 'destructive' })}">삭제</button>`,
+      '좁은 화면에서는 주요 동작 버튼을 w-full과 size="lg"(40px)로 키우고, 하단 고정 바에 둘 때는 safe-area-inset-bottom 여백을 더합니다.',
     reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function Example() {
@@ -205,43 +145,6 @@ export class GbButtonDirective {
         <span className={buttonVariants({ variant: "destructive", size: "sm" })}>Delete</span>
       </div>
     ),
-    renderHtmlDemo: ({ isMobile }) => (
-      <div
-        className={
-          isMobile
-            ? "flex flex-col gap-2"
-            : "flex flex-wrap items-center justify-center gap-2.5 py-4"
-        }
-      >
-        <button type="button" className={buttonVariants({ size: isMobile ? "lg" : "default" })}>
-          저장
-        </button>
-        <button
-          type="button"
-          className={buttonVariants({ variant: "secondary", size: isMobile ? "lg" : "default" })}
-        >
-          임시 저장
-        </button>
-        <button
-          type="button"
-          className={buttonVariants({ variant: "outline", size: isMobile ? "lg" : "default" })}
-        >
-          미리보기
-        </button>
-        <button
-          type="button"
-          className={buttonVariants({ variant: "ghost", size: isMobile ? "lg" : "default" })}
-        >
-          취소
-        </button>
-        <button
-          type="button"
-          className={buttonVariants({ variant: "destructive", size: isMobile ? "lg" : "default" })}
-        >
-          삭제
-        </button>
-      </div>
-    ),
     renderReactDemo: ({ isMobile }) => (
       <div
         className={
@@ -271,9 +174,6 @@ export class GbButtonDirective {
         title: "Shape (Pill)",
         description:
           "랜딩 CTA, 헤더 액션, 필터 버튼처럼 둥근 형태가 필요할 때 shape='pill'을 씁니다.",
-        htmlCode: `<button class="\${buttonVariants({ shape: 'pill' })}">시작하기</button>
-<button class="\${buttonVariants({ variant: 'secondary', shape: 'pill' })}">컴포넌트 보기</button>
-<button class="\${buttonVariants({ variant: 'outline', shape: 'pill' })}">문서 보기</button>`,
         reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function PillButtonExample() {
@@ -288,42 +188,6 @@ export function PillButtonExample() {
         angularCode: `<button gbButton shape="pill">시작하기</button>
 <button gbButton variant="secondary" shape="pill">컴포넌트 보기</button>
 <button gbButton variant="outline" shape="pill">문서 보기</button>`,
-        renderHtmlDemo: ({ isMobile }) => (
-          <div
-            className={
-              isMobile
-                ? "flex flex-col gap-2"
-                : "flex flex-wrap items-center justify-center gap-2.5 py-4"
-            }
-          >
-            <button
-              type="button"
-              className={buttonVariants({ shape: "pill", size: isMobile ? "lg" : "default" })}
-            >
-              시작하기
-            </button>
-            <button
-              type="button"
-              className={buttonVariants({
-                variant: "secondary",
-                shape: "pill",
-                size: isMobile ? "lg" : "default",
-              })}
-            >
-              컴포넌트 보기
-            </button>
-            <button
-              type="button"
-              className={buttonVariants({
-                variant: "outline",
-                shape: "pill",
-                size: isMobile ? "lg" : "default",
-              })}
-            >
-              문서 보기
-            </button>
-          </div>
-        ),
         renderReactDemo: ({ isMobile }) => (
           <div
             className={
@@ -348,9 +212,6 @@ export function PillButtonExample() {
         id: "size",
         title: "Size",
         description: "툴바와 보조 동작은 sm, 일반 동작은 default, 모바일 주요 버튼은 lg를 씁니다.",
-        htmlCode: `<button class="\${buttonVariants({ size: 'sm' })}">Small</button>
-<button class="\${buttonVariants({ size: 'default' })}">Default</button>
-<button class="\${buttonVariants({ size: 'lg' })}">Large</button>`,
         reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function SizeButtonExample() {
@@ -365,19 +226,6 @@ export function SizeButtonExample() {
         angularCode: `<button gbButton size="sm">Small</button>
 <button gbButton size="default">Default</button>
 <button gbButton size="lg">Large</button>`,
-        renderHtmlDemo: () => (
-          <div className="flex flex-wrap items-center justify-center gap-2.5 py-4">
-            <button type="button" className={buttonVariants({ size: "sm" })}>
-              Small
-            </button>
-            <button type="button" className={buttonVariants({ size: "default" })}>
-              Default
-            </button>
-            <button type="button" className={buttonVariants({ size: "lg" })}>
-              Large
-            </button>
-          </div>
-        ),
         renderReactDemo: () => (
           <div className="flex flex-wrap items-center justify-center gap-2.5 py-4">
             <Button size="sm">Small</Button>
@@ -395,15 +243,10 @@ export function SizeButtonExample() {
     primitiveReact: "HTML <input>",
     primitiveAngular: "HTML <input>",
     recipePath: "@goraebap/design-system/recipes/input",
-    pureHtmlLevel: "100% Native HTML",
     summary:
       "한 줄 텍스트를 입력하는 칸입니다. invalid 상태로 오류 테두리와 aria-invalid를 함께 표시합니다.",
-    pureHtmlNote:
-      "네이티브 <input>에 inputVariants() 클래스를 적용하면 focus-visible, disabled, aria-invalid 스타일이 동작합니다.",
     mobileGuideline:
-      "모바일 Safari 자동 확대를 막기 위해 14px~16px 글자 크기와 충분한 터치 높이를 유지합니다.",
-    htmlCode: `<input class="\${inputVariants()}" placeholder="name@goraebap.xyz" />
-<input class="\${inputVariants({ invalid: true })}" aria-invalid="true" value="invalid-email" />`,
+      "iOS Safari의 입력 자동 확대를 막으려면 16px 글자 크기를 쓰고, 이메일·숫자 등 목적에 맞게 inputMode와 enterKeyHint를 지정합니다.",
     reactCode: `import { Input } from "@goraebap/ui-react/components/input";
 
 export function Example() {
@@ -423,24 +266,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => (
-      <div className="mx-auto max-w-sm space-y-3">
-        <input type="email" className={inputVariants()} placeholder="name@goraebap.xyz" />
-        <input
-          type="text"
-          aria-invalid="true"
-          className={inputVariants({ invalid: true })}
-          defaultValue="잘못된 이메일 형식"
-        />
-        <input
-          type="text"
-          disabled
-          className={inputVariants()}
-          value="비활성화된 입력 칸"
-          readOnly
-        />
-      </div>
-    ),
     renderReactDemo: () => (
       <div className="mx-auto max-w-sm space-y-3">
         <Input placeholder="name@goraebap.xyz" />
@@ -456,13 +281,9 @@ export function Example() {
     primitiveReact: "HTML <textarea>",
     primitiveAngular: "HTML <textarea>",
     recipePath: "@goraebap/design-system/recipes/textarea",
-    pureHtmlLevel: "100% Native HTML",
     summary: "여러 줄 설명이나 메모를 작성하는 입력 칸입니다.",
-    pureHtmlNote:
-      "네이티브 <textarea>에 textareaVariants() 클래스를 적용해 프레임워크 없이 씁니다.",
     mobileGuideline:
-      "긴 글 입력은 대화상자 대신 전용 페이지에서 전체 폭으로 열어야 가상 키보드에 가리지 않습니다.",
-    htmlCode: `<textarea class="\${textareaVariants()}" placeholder="변경 이유나 맥락을 적어 주세요."></textarea>`,
+      "긴 글 입력은 모달 대신 전용 페이지나 전체 폭 시트로 열어 가상 키보드에 가리지 않게 하고, 높이는 dvh 기준으로 제한합니다.",
     reactCode: `import { Textarea } from "@goraebap/ui-react/components/textarea";
 
 export function Example() {
@@ -472,14 +293,6 @@ export function Example() {
     renderThumbnail: () => (
       <div className="border-input bg-background text-muted-foreground h-14 w-48 rounded-md border p-2 text-[11px]">
         변경 이유를 적어 주세요...
-      </div>
-    ),
-    renderHtmlDemo: () => (
-      <div className="mx-auto max-w-md">
-        <textarea
-          className={textareaVariants()}
-          placeholder="변경 이유나 맥락을 간단히 적어 주세요."
-        />
       </div>
     ),
     renderReactDemo: () => (
@@ -495,14 +308,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/switch",
     primitiveAngular: "@spartan-ng/brain/switch",
     recipePath: "@goraebap/design-system/recipes/switch",
-    pureHtmlLevel: "Native HTML + CSS",
     summary: "즉시 반영되는 켜짐/꺼짐 설정에 쓰는 토글 스위치입니다.",
-    pureHtmlNote:
-      "<button role='switch' aria-checked>로 외형과 클릭은 구현할 수 있습니다. 폼 제출(name, value), 키보드 입력 처리, 라벨 연결은 Base UI나 Spartan Brain에서 처리합니다.",
-    mobileGuideline: "스위치와 설명 사이 여백과 행 높이를 넉넉히 두어 터치 영역을 확보합니다.",
-    htmlCode: `<button role="switch" aria-checked="true" data-checked class="\${switchTrackVariants()}">
-  <span data-checked class="\${switchThumbVariants()}"></span>
-</button>`,
+    mobileGuideline:
+      "좁은 화면에서는 설정 한 줄 전체(라벨+설명+스위치)를 최소 44px 높이의 터치 행으로 묶어 엄지로 바로 누르게 배치합니다.",
     reactCode: `import { Switch } from "@goraebap/ui-react/components/switch";
 
 export function Example() {
@@ -515,12 +323,8 @@ export function Example() {
       {
         id: "shape",
         title: "Shape",
-        htmlCode: `<button role="switch" class="\${switchTrackVariants({ shape: 'pill' })}">
-  <span class="\${switchThumbVariants({ shape: 'pill' })}"></span>
-</button>`,
         reactCode: `<Switch shape="pill" aria-label="알림" />`,
         angularCode: `<button brnSwitch [class]="switchTrackVariants({ shape: 'pill' })"></button>`,
-        renderHtmlDemo: () => <NativeSwitchShapeDemo />,
         renderReactDemo: () => <ReactSwitchShapeDemo />,
       },
     ],
@@ -534,7 +338,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeSwitchDemo />,
     renderReactDemo: () => <ReactSwitchDemo />,
   },
   {
@@ -544,15 +347,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/checkbox",
     primitiveAngular: "@spartan-ng/brain/checkbox",
     recipePath: "@goraebap/design-system/recipes/checkbox",
-    pureHtmlLevel: "100% Native HTML",
     summary: "여러 항목을 고르거나 동의 여부를 확인하는 체크박스입니다.",
-    pureHtmlNote:
-      "네이티브 <input type='checkbox'>로 선택과 폼 제출이 동작합니다. 커스텀 체크 아이콘과 indeterminate(부분 선택) 상태 스타일은 헤드리스 프리미티브로 맞춥니다.",
-    mobileGuideline: "라벨 텍스트 전체를 클릭 영역으로 묶어 모바일 터치 영역을 넓힙니다.",
-    htmlCode: `<label class="flex items-center gap-2">
-  <input type="checkbox" checked class="\${checkboxVariants()}" />
-  <span>모든 기기 세션 유지</span>
-</label>`,
+    mobileGuideline:
+      "작은 체크박스만 누르기 어려우므로 라벨 텍스트 전체를 클릭 영역으로 묶고, 목록형 선택에서는 행 간격을 충분히 띄워 오작동을 줄입니다.",
     reactCode: `import { Checkbox } from "@goraebap/ui-react/components/checkbox";
 
 export function Example() {
@@ -567,7 +364,6 @@ export function Example() {
         <span className="text-foreground">세션 유지</span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeCheckboxDemo />,
     renderReactDemo: () => <ReactCheckboxDemo />,
   },
   {
@@ -577,13 +373,9 @@ export function Example() {
     primitiveReact: "HTML <span>",
     primitiveAngular: "HTML <span>",
     recipePath: "@goraebap/design-system/recipes/badge",
-    pureHtmlLevel: "100% Native HTML",
     summary: "상태, 역할, 분류처럼 짧은 메타데이터를 표시합니다.",
-    pureHtmlNote: "네이티브 <span>에 badgeVariants() 클래스를 적용해 씁니다.",
-    mobileGuideline: "좁은 폭에서 배지가 가로로 넘치지 않도록 flex-wrap과 함께 씁니다.",
-    htmlCode: `<span class="\${badgeVariants({ variant: 'default' })}">원칙</span>
-<span class="\${badgeVariants({ variant: 'secondary' })}">진행 중</span>
-<span class="\${badgeVariants({ variant: 'outline' })}">Vanilla HTML/TS</span>`,
+    mobileGuideline:
+      "배지가 여러 개 붙는 헤더·카드 영역은 flex-wrap으로 감싸 좁은 폭에서 가로 스크롤이 생기지 않게 합니다.",
     reactCode: `import { Badge } from "@goraebap/ui-react/components/badge";
 
 export function Example() {
@@ -605,15 +397,6 @@ export function Example() {
         <span className={badgeVariants({ variant: "outline" })}>HTML</span>
       </div>
     ),
-    renderHtmlDemo: () => (
-      <div className="flex flex-wrap items-center justify-center gap-2 py-4">
-        <span className={badgeVariants({ variant: "default" })}>원칙</span>
-        <span className={badgeVariants({ variant: "secondary" })}>진행 중</span>
-        <span className={badgeVariants({ variant: "outline" })}>Vanilla HTML/TS</span>
-        <span className={badgeVariants({ variant: "muted" })}>보관됨</span>
-        <span className={badgeVariants({ variant: "destructive" })}>만료됨</span>
-      </div>
-    ),
     renderReactDemo: () => (
       <div className="flex flex-wrap items-center justify-center gap-2 py-4">
         <Badge variant="default">원칙</Badge>
@@ -631,18 +414,9 @@ export function Example() {
     primitiveReact: "HTML <div>",
     primitiveAngular: "HTML <article>",
     recipePath: "@goraebap/design-system/recipes/card",
-    pureHtmlLevel: "100% Native HTML",
     summary: "페이지 면(--background) 위에 한 단계 올라오는 올린 면(--card) 컨테이너입니다.",
-    pureHtmlNote: "네이티브 <article>에 cardVariants() 클래스를 적용해 구성합니다.",
     mobileGuideline:
-      "모바일에서는 카드 안쪽 여백을 p-4~p-5로 유지하고, 불필요한 중첩 카드를 피합니다.",
-    htmlCode: `<article class="\${cardVariants()}">
-  <header class="space-y-1 p-5 pb-3">
-    <h3 class="text-sm font-semibold">에이전트 토큰</h3>
-    <p class="text-muted-foreground text-xs">MCP 서버 접근용 개인 토큰</p>
-  </header>
-  <div class="px-5 pb-5 text-xs">활성 토큰 2개</div>
-</article>`,
+      "좁은 화면에서는 다단 카드 그리드를 1열로 접고, 카드 안쪽 여백을 줄여 본문 폭을 확보하며 불필요한 카드 중첩을 피합니다.",
     reactCode: `import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@goraebap/ui-react/components/card";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -668,29 +442,6 @@ export function Example() {
         <div className="text-foreground text-xs font-medium">에이전트 토큰</div>
         <div className="text-muted-foreground mt-0.5 text-[10px]">활성 2개 · MCP</div>
       </div>
-    ),
-    renderHtmlDemo: () => (
-      <article className={`mx-auto max-w-sm ${cardVariants()}`}>
-        <div className="space-y-1.5">
-          <h3 className="text-sm font-semibold tracking-tight">에이전트 토큰</h3>
-          <p className="text-muted-foreground text-xs leading-relaxed">
-            MCP 서버 접근을 위한 개인 토큰을 관리합니다.
-          </p>
-        </div>
-        <div className="pt-4">
-          <p className="text-muted-foreground font-mono text-xs">
-            활성 토큰 2개 · 마지막 사용 10분 전
-          </p>
-        </div>
-        <div className="flex items-center gap-2 pt-4">
-          <button type="button" className={buttonVariants({ size: "sm" })}>
-            새 토큰 발급
-          </button>
-          <button type="button" className={buttonVariants({ size: "sm", variant: "ghost" })}>
-            목록 보기
-          </button>
-        </div>
-      </article>
     ),
     renderReactDemo: () => (
       <Card className="mx-auto max-w-sm">
@@ -719,14 +470,9 @@ export function Example() {
     primitiveReact: "HTML <div role='alert'>",
     primitiveAngular: "HTML <div role='alert'>",
     recipePath: "@goraebap/design-system/recipes/alert",
-    pureHtmlLevel: "100% Native HTML",
     summary: "중요한 안내, 성공, 경고, 오류 메시지를 문맥 안에 인라인으로 알립니다.",
-    pureHtmlNote: "role='alert' 속성과 alertVariants() 클래스를 함께 적용해 씁니다.",
-    mobileGuideline: "모바일에서도 제목과 본문이 2~3줄을 넘지 않도록 짧게 씁니다.",
-    htmlCode: `<div role="alert" class="\${alertVariants({ variant: 'info' })}">
-  <h5 class="font-medium">서브도메인 SSO 활성화</h5>
-  <p class="mt-1 text-xs opacity-90">*.goraebap.xyz 전체에 세션이 공유됩니다.</p>
-</div>`,
+    mobileGuideline:
+      "좁은 폭에서는 아이콘과 본문 아래로 실행 버튼을 줄바꿈 배치해 문장이 지나치게 좁아지지 않게 합니다.",
     reactCode: `import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 
 export function Example() {
@@ -744,22 +490,6 @@ export function Example() {
       <div className={`w-48 !p-2.5 text-left ${alertVariants({ variant: "info" })}`}>
         <div className="text-[11px] font-medium">서브도메인 SSO</div>
         <div className="text-[10px] opacity-80">세션 공유 활성화됨</div>
-      </div>
-    ),
-    renderHtmlDemo: () => (
-      <div className="mx-auto max-w-md space-y-3">
-        <div role="alert" className={alertVariants({ variant: "info" })}>
-          <h5>서브도메인 SSO 활성화</h5>
-          <p>로그인 세션이 *.goraebap.xyz 전체에 공유됩니다.</p>
-        </div>
-        <div role="alert" className={alertVariants({ variant: "success" })}>
-          <h5>저장 완료</h5>
-          <p>변경한 프로필 이름이 모든 서비스에 반영되었습니다.</p>
-        </div>
-        <div role="alert" className={alertVariants({ variant: "destructive" })}>
-          <h5>인증 코드 만료</h5>
-          <p>5분이 지나 코드가 만료되었습니다. 다시 요청해 주세요.</p>
-        </div>
       </div>
     ),
     renderReactDemo: () => (
@@ -786,12 +516,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/separator",
     primitiveAngular: "@spartan-ng/brain/separator",
     recipePath: "@goraebap/design-system/recipes/separator",
-    pureHtmlLevel: "100% Native HTML",
     summary: "영역이나 항목 사이를 --border 1px 선으로 나눕니다.",
-    pureHtmlNote:
-      "가로 구분선은 <hr>, 세로 구분선은 role='separator' aria-orientation='vertical'로 충분합니다.",
-    mobileGuideline: "구분선 대신 여백으로 묶음이 충분하면 선을 생략해 화면 밀도를 낮춥니다.",
-    htmlCode: `<hr class="\${separatorVariants({ orientation: 'horizontal' })}" />`,
+    mobileGuideline:
+      "좁은 화면에서 수평 구분선을 남발하면 밀도가 높아지므로, 카드나 여백으로 구분이 충분한 곳은 선을 생략합니다.",
     reactCode: `import { Separator } from "@goraebap/ui-react/components/separator";
 
 export function Example() {
@@ -803,27 +530,6 @@ export function Example() {
         <div className="bg-muted-foreground/30 h-2 w-16 rounded" />
         <hr className={separatorVariants({ orientation: "horizontal" })} />
         <div className="bg-muted-foreground/20 h-2 w-24 rounded" />
-      </div>
-    ),
-    renderHtmlDemo: () => (
-      <div className="border-border bg-card mx-auto max-w-sm space-y-3 rounded-xl border p-5">
-        <p className="text-sm font-medium">계정 정보</p>
-        <hr className={separatorVariants({ orientation: "horizontal" })} />
-        <div className="text-muted-foreground flex h-5 items-center gap-3 text-xs">
-          <span>프로필</span>
-          <div
-            role="separator"
-            aria-orientation="vertical"
-            className={separatorVariants({ orientation: "vertical" })}
-          />
-          <span>세션</span>
-          <div
-            role="separator"
-            aria-orientation="vertical"
-            className={separatorVariants({ orientation: "vertical" })}
-          />
-          <span>토큰</span>
-        </div>
       </div>
     ),
     renderReactDemo: () => (
@@ -844,37 +550,12 @@ export function Example() {
         id: "wave",
         title: "Wave Divider",
         description: "블로그나 문서 본문에서 섹션을 부드럽게 나눌 때 variant='wave'를 씁니다.",
-        htmlCode: `<div role="separator" aria-orientation="horizontal" class="text-border flex w-full justify-center py-2">
-  <svg viewBox="0 0 120 10" fill="none" class="h-2.5 w-28">
-    <path d="M2 5c4-4 8-4 12 0s8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-  </svg>
-</div>`,
         reactCode: `import { Separator } from "@goraebap/ui-react/components/separator";
 
 export function WaveDividerExample() {
   return <Separator variant="wave" />;
 }`,
         angularCode: `<div role="separator" class="text-border flex w-full justify-center py-2">...</div>`,
-        renderHtmlDemo: () => (
-          <div className="border-border bg-card mx-auto max-w-sm space-y-3 rounded-xl border p-5 text-xs">
-            <p className="text-muted-foreground">첫 번째 섹션 본문입니다.</p>
-            <div
-              role="separator"
-              aria-orientation="horizontal"
-              className="text-border flex w-full items-center justify-center py-2"
-            >
-              <svg viewBox="0 0 120 10" fill="none" aria-hidden="true" className="h-2.5 w-28">
-                <path
-                  d="M2 5c4-4 8-4 12 0s8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0 8 4 12 0 8-4 12 0"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-              </svg>
-            </div>
-            <p className="text-muted-foreground">두 번째 섹션 본문입니다.</p>
-          </div>
-        ),
         renderReactDemo: () => (
           <div className="border-border bg-card mx-auto max-w-sm space-y-3 rounded-xl border p-5 text-xs">
             <p className="text-muted-foreground">첫 번째 섹션 본문입니다.</p>
@@ -892,13 +573,9 @@ export function WaveDividerExample() {
     primitiveReact: "HTML <div>",
     primitiveAngular: "HTML <div>",
     recipePath: "@goraebap/design-system/recipes/skeleton",
-    pureHtmlLevel: "100% Native HTML",
     summary: "데이터를 불러오는 동안 콘텐츠가 들어갈 자리를 미리 표시합니다.",
-    pureHtmlNote: "네이티브 <div aria-hidden='true'>에 skeletonVariants() 클래스를 적용해 씁니다.",
     mobileGuideline:
-      "화면 전체 스켈레톤 대신 실제 카드/줄 높이에 맞춘 최소한의 자리 표시만 씁니다.",
-    htmlCode: `<div class="\${skeletonVariants({ shape: 'circle' })} size-10"></div>
-<div class="\${skeletonVariants({ shape: 'line' })} w-1/2"></div>`,
+      "모바일 화면에서 자리 표시가 길어지지 않게 첫 화면(viewport)에 보이는 카드·줄 수만큼만 실제 높이에 맞춰 배치합니다.",
     reactCode: `import { Skeleton } from "@goraebap/ui-react/components/skeleton";
 
 export function Example() {
@@ -919,18 +596,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => (
-      <div className="border-border bg-card mx-auto flex max-w-sm items-center gap-3 rounded-xl border p-4">
-        <div
-          aria-hidden="true"
-          className={`size-10 shrink-0 ${skeletonVariants({ shape: "circle" })}`}
-        />
-        <div className="flex-1 space-y-2">
-          <div aria-hidden="true" className={`w-1/2 ${skeletonVariants({ shape: "line" })}`} />
-          <div aria-hidden="true" className={`w-4/5 ${skeletonVariants({ shape: "line" })}`} />
-        </div>
-      </div>
-    ),
     renderReactDemo: () => (
       <div className="border-border bg-card mx-auto flex max-w-sm items-center gap-3 rounded-xl border p-4">
         <Skeleton shape="circle" className="size-10 shrink-0" />
@@ -948,17 +613,9 @@ export function Example() {
     primitiveReact: "HTML <table>",
     primitiveAngular: "HTML <table>",
     recipePath: "@goraebap/design-system/recipes/table",
-    pureHtmlLevel: "100% Native HTML",
     summary: "여러 항목의 속성을 같은 열 기준으로 비교하는 표입니다.",
-    pureHtmlNote: "네이티브 <table> 요소에 tableVariants() 클래스를 적용해 씁니다.",
     mobileGuideline:
-      "가로 스크롤 래퍼로 넘침을 막고, 모바일에서 열이 많으면 카드 목록으로 바꿉니다.",
-    htmlCode: `<div class="w-full overflow-x-auto">
-  <table class="\${tableVariants()}">
-    <thead><tr class="\${tableRowVariants()}"><th class="px-3 py-2 text-left">서비스</th></tr></thead>
-    <tbody><tr class="\${tableRowVariants()}"><td class="px-3 py-2">apps/design</td></tr></tbody>
-  </table>
-</div>`,
+      "좁은 화면에서는 가로 스크롤 래퍼(overflow-x-auto)로 감싸고, 열이 많아 읽기 어려우면 카드 목록 레이아웃으로 전환합니다.",
     reactCode: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@goraebap/ui-react/components/table";
 
 export function Example() {
@@ -973,7 +630,7 @@ export function Example() {
       <TableBody>
         <TableRow>
           <TableCell>apps/design</TableCell>
-          <TableCell>Vanilla HTML/TS + React</TableCell>
+          <TableCell>React + Angular</TableCell>
         </TableRow>
       </TableBody>
     </Table>
@@ -993,48 +650,6 @@ export function Example() {
         <div className="border-border/60 flex justify-between border-t px-2 py-1">
           <span>accounts</span>
           <span className="text-muted-foreground">Angular</span>
-        </div>
-      </div>
-    ),
-    renderHtmlDemo: () => (
-      <div className="border-border bg-card rounded-xl border">
-        <div className="w-full overflow-x-auto">
-          <table className={tableVariants()}>
-            <thead className="[&_tr]:border-b">
-              <tr className={tableRowVariants()}>
-                <th className={tableHeadVariants()}>서비스</th>
-                <th className={tableHeadVariants()}>어댑터</th>
-                <th className={tableHeadVariants()}>테마</th>
-                <th className={tableHeadVariants()}>상태</th>
-              </tr>
-            </thead>
-            <tbody className="[&_tr:last-child]:border-0">
-              <tr className={tableRowVariants()}>
-                <td className={`${tableCellVariants()} font-medium`}>apps/design</td>
-                <td className={`${tableCellVariants()} font-mono`}>HTML + React</td>
-                <td className={tableCellVariants()}>Multi</td>
-                <td className={tableCellVariants()}>
-                  <span className={badgeVariants({ variant: "outline" })}>운영</span>
-                </td>
-              </tr>
-              <tr className={tableRowVariants()}>
-                <td className={`${tableCellVariants()} font-medium`}>apps/productivity</td>
-                <td className={`${tableCellVariants()} font-mono`}>React</td>
-                <td className={tableCellVariants()}>App</td>
-                <td className={tableCellVariants()}>
-                  <span className={badgeVariants({ variant: "secondary" })}>통합</span>
-                </td>
-              </tr>
-              <tr className={tableRowVariants()}>
-                <td className={`${tableCellVariants()} font-medium`}>apps/accounts</td>
-                <td className={`${tableCellVariants()} font-mono`}>Angular</td>
-                <td className={tableCellVariants()}>App</td>
-                <td className={tableCellVariants()}>
-                  <span className={badgeVariants({ variant: "muted" })}>SSO</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
     ),
@@ -1086,15 +701,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/tabs",
     primitiveAngular: "@spartan-ng/brain/tabs",
     recipePath: "@goraebap/design-system/recipes/tabs",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "같은 맥락 안의 보기를 전환하는 탭입니다. 키보드 화살표 이동을 지원합니다.",
-    pureHtmlNote:
-      "Vanilla HTML/TS에서 <button role='tab'>과 @goraebap/ui-html의 initTabs()로 화살표 키보드 이동과 탭 전환을 연결할 수 있습니다. 복잡한 제어는 Base UI나 Spartan Brain에서 처리합니다.",
-    mobileGuideline: "탭 개수는 모바일 폭(390px)에서 잘리지 않게 2~4개 이내로 유지합니다.",
-    htmlCode: `<div role="tablist" class="\${tabsListVariants()}">
-  <button role="tab" aria-selected="true" data-active class="\${tabsTriggerVariants()}">Tokens</button>
-  <button role="tab" aria-selected="false" class="\${tabsTriggerVariants()}">Recipes</button>
-</div>`,
+    mobileGuideline:
+      "탭이 4개를 넘으면 좁은 폭에서 글자가 잘리므로 가로 스크롤(overflow-x-auto)이나 줄바꿈 가능한 세그먼트로 전환합니다.",
     reactCode: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 
 export function Example() {
@@ -1104,8 +713,8 @@ export function Example() {
         <TabsTrigger value="react">React</TabsTrigger>
         <TabsTrigger value="angular">Angular</TabsTrigger>
       </TabsList>
-      <TabsContent value="react">Base UI + CVA 레시피</TabsContent>
-      <TabsContent value="angular">@spartan-ng/brain + 같은 CVA 레시피</TabsContent>
+      <TabsContent value="react">Base UI + 스타일 레시피</TabsContent>
+      <TabsContent value="angular">@spartan-ng/brain + 같은 스타일 레시피</TabsContent>
     </Tabs>
   );
 }`,
@@ -1123,7 +732,6 @@ export function Example() {
         <span className="text-muted-foreground px-2 py-0.5">Angular</span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeTabsDemo />,
     renderReactDemo: () => (
       <div className="border-border bg-card mx-auto max-w-md rounded-xl border p-5">
         <Tabs defaultValue="react">
@@ -1137,7 +745,7 @@ export function Example() {
             <code className="font-mono">@goraebap/design-system</code> 레시피를 입힙니다.
           </TabsContent>
           <TabsContent value="angular" className="text-muted-foreground text-xs leading-relaxed">
-            Angular는 <code className="font-mono">@spartan-ng/brain</code> 위에 완전히 같은 CVA
+            Angular는 <code className="font-mono">@spartan-ng/brain</code> 위에 완전히 같은 스타일
             레시피를 입힙니다.
           </TabsContent>
           <TabsContent value="tokens" className="text-muted-foreground text-xs leading-relaxed">
@@ -1154,20 +762,10 @@ export function Example() {
     primitiveReact: "@base-ui/react/dialog",
     primitiveAngular: "@spartan-ng/brain/dialog",
     recipePath: "@goraebap/design-system/recipes/dialog",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary:
       "짧은 확인이나 몇 칸짜리 입력을 띄우는 대화상자입니다. 모바일에서는 하단 바텀시트(surface='sheet')로 전환합니다.",
-    pureHtmlNote:
-      "네이티브 <dialog>.showModal()로 모달, ::backdrop, ESC 닫기를 구현할 수 있습니다. 중첩 오버레이 스택, 스크롤 잠금, 퇴장 애니메이션, 포커스 복원은 Base UI나 Spartan Brain에서 처리합니다.",
     mobileGuideline:
-      "390px 모바일 폭에서는 중앙 모달 대신 하단 시트(surface='sheet')로 열어 한 손으로 닫고 조작할 수 있게 합니다.",
-    htmlCode: `<button onclick="document.getElementById('demo-dlg').showModal()" class="\${buttonVariants()}">
-  네이티브 &lt;dialog&gt; 열기
-</button>
-<dialog id="demo-dlg" class="\${dialogPopupVariants({ surface: 'dialog' })}">
-  <h3 class="text-base font-semibold">네이티브 HTML 대화상자</h3>
-  <button onclick="this.closest('dialog').close()">닫기</button>
-</dialog>`,
+      '좁은 화면에서는 중앙 모달 대신 하단 시트(surface="sheet")로 전환해 한 손으로 닫고, max-h-[85dvh]와 safe-area-inset-bottom을 적용합니다.',
     reactCode: `import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@goraebap/ui-react/components/dialog";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1199,7 +797,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: ({ isMobile }) => <NativeDialogDemo isMobile={isMobile} />,
     renderReactDemo: ({ isMobile }) => <ReactDialogDemo isMobile={isMobile} />,
   },
   {
@@ -1209,14 +806,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/toggle",
     primitiveAngular: "@spartan-ng/brain/toggle",
     recipePath: "@goraebap/design-system/recipes/toggle",
-    pureHtmlLevel: "100% Native HTML",
     summary: "켜짐과 꺼짐 두 상태를 전환하는 토글 버튼입니다.",
-    pureHtmlNote:
-      "네이티브 <button aria-pressed>와 data-pressed 속성만으로 동작합니다. 제어·비제어 상태 관리는 헤드리스 프리미티브가 맡습니다.",
-    mobileGuideline: "모바일에서는 최소 36px 이상의 터치 영역을 확보합니다.",
-    htmlCode: `<button type="button" aria-pressed="true" data-pressed class="\${toggleVariants({ variant: 'outline' })}">
-  고정됨
-</button>`,
+    mobileGuideline:
+      "터치 오입력을 줄이려면 좁은 화면에서 버튼 높이를 최소 36~44px로 유지하고, 인접한 토글 사이에 충분한 간격을 둡니다.",
     reactCode: `import { Toggle } from "@goraebap/ui-react/components/toggle";
 
 export function Example() {
@@ -1233,7 +825,6 @@ export function Example() {
         </span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeToggleDemo />,
     renderReactDemo: () => <ReactToggleDemo />,
   },
   {
@@ -1243,15 +834,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/toggle-group",
     primitiveAngular: "@spartan-ng/brain/toggle-group",
     recipePath: "@goraebap/design-system/recipes/toggle-group",
-    pureHtmlLevel: "Native HTML + CSS",
     summary: "여러 옵션 중 하나 또는 복수를 고르는 세그먼트 토글 그룹입니다.",
-    pureHtmlNote:
-      "버튼 묶음과 aria-pressed로 기본 동작을 만들 수 있습니다. 화살표 키 이동과 단일·다중 선택 상태 관리는 Base UI나 Spartan Brain이 처리합니다.",
-    mobileGuideline: "항목이 3개 이하일 때 한 줄 세그먼트로 유지합니다.",
-    htmlCode: `<div role="group" class="\${toggleGroupVariants({ shape: 'pill' })}">
-  <button data-pressed class="\${toggleVariants({ shape: 'pill' })}">App</button>
-  <button class="\${toggleVariants({ shape: 'pill' })}">Editorial</button>
-</div>`,
+    mobileGuideline:
+      "항목이 3개 이하일 때 한 줄 세그먼트로 유지하고, 4개 이상이면 가로 스크롤이나 Select·바텀시트 선택으로 전환합니다.",
     reactCode: `import { ToggleGroup, ToggleGroupItem } from "@goraebap/ui-react/components/toggle-group";
 
 export function Example() {
@@ -1273,7 +858,6 @@ export function Example() {
         <span className="text-muted-foreground px-2.5 py-0.5">Editorial</span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeToggleGroupDemo />,
     renderReactDemo: () => <ReactToggleGroupDemo />,
   },
   {
@@ -1283,15 +867,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/select",
     primitiveAngular: "@spartan-ng/brain/select",
     recipePath: "@goraebap/design-system/recipes/select",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "미리 정해진 목록에서 하나의 값을 고르는 선택 컨트롤입니다.",
-    pureHtmlNote:
-      "네이티브 <select>는 드롭다운 메뉴 스타일을 자유롭게 꾸미기 어렵습니다. 커스텀 팝업, 체크 표시, 키보드 탐색은 Base UI나 Spartan Brain을 씁니다.",
-    mobileGuideline: "선택지가 10개 이하일 때 Select를 쓰고, 검색이 필요하면 Combobox를 씁니다.",
-    htmlCode: `<select class="\${selectTriggerVariants()} appearance-none pr-8">
-  <option value="app">App Theme</option>
-  <option value="editorial">Editorial Theme</option>
-</select>`,
+    mobileGuideline:
+      "항목이 많거나 좁은 화면에서 드롭다운이 키보드·화면 끝에 걸릴 때는 바텀시트 목록이나 네이티브 <select>로 전환합니다.",
     reactCode: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@goraebap/ui-react/components/select";
 
 export function Example() {
@@ -1314,7 +892,6 @@ export function Example() {
         <span className="text-muted-foreground text-[10px]">▾</span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeSelectDemo />,
     renderReactDemo: () => <ReactSelectDemo />,
   },
   {
@@ -1324,12 +901,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/tooltip",
     primitiveAngular: "@spartan-ng/brain/tooltip",
     recipePath: "@goraebap/design-system/recipes/tooltip",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "아이콘 버튼이나 컨트롤에 마우스를 올렸을 때 짧은 보조 설명을 띄웁니다.",
-    pureHtmlNote:
-      "CSS hover만으로 기본 말풍선은 띄울 수 있지만, 화면 끝 충돌 회피·지연 시간·포커스 접근성은 헤드리스 프리미티브가 처리합니다.",
-    mobileGuideline: "터치 환경에는 호버가 없으므로 필수 정보는 Tooltip 안에 숨기지 않습니다.",
-    htmlCode: `<span role="tooltip" class="\${tooltipPopupVariants()}">단축키: Ctrl + K</span>`,
+    mobileGuideline:
+      "터치 환경에는 호버가 없으므로 필수 안내는 본문이나 보조 문구로 드러내고, 필요할 때는 탭으로 여는 Popover로 전환합니다.",
     reactCode: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@goraebap/ui-react/components/tooltip";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1357,7 +931,6 @@ export function Example() {
         </span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeTooltipDemo />,
     renderReactDemo: () => <ReactTooltipDemo />,
   },
   {
@@ -1367,15 +940,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/popover",
     primitiveAngular: "@spartan-ng/brain/popover",
     recipePath: "@goraebap/design-system/recipes/popover",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "트리거 요소 근처에 짧은 설정이나 보조 콘텐츠 패널을 띄웁니다.",
-    pureHtmlNote:
-      "HTML popover 속성으로 기본 토글은 가능하지만, 앵커 위치 계산·화면 경계 회피·포커스 복원은 Base UI나 Spartan Brain이 처리합니다.",
-    mobileGuideline: "내용이 길어지면 Popover 대신 바텀시트 Dialog로 전환합니다.",
-    htmlCode: `<button popovertarget="filter" class="\${buttonVariants({ variant: 'outline', size: 'sm' })}">필터 옵션</button>
-<div id="filter" popover="auto" class="m-0 \${popoverPopupVariants()}">
-  <h4 class="text-sm font-semibold">표시 범위</h4>
-</div>`,
+    mobileGuideline:
+      '좁은 화면에서는 트리거 옆 공간이 부족해 잘리기 쉬우므로, 내용이 긴 Popover는 하단 시트(Dialog surface="sheet")로 전환합니다.',
     reactCode: `import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@goraebap/ui-react/components/popover";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1400,7 +967,6 @@ export function Example() {
         <div className="text-muted-foreground mt-0.5 text-[10px]">필터 옵션 패널</div>
       </div>
     ),
-    renderHtmlDemo: () => <NativePopoverDemo />,
     renderReactDemo: () => <ReactPopoverDemo />,
   },
   {
@@ -1410,16 +976,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/menu",
     primitiveAngular: "@spartan-ng/brain/menu",
     recipePath: "@goraebap/design-system/recipes/menu",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "버튼을 눌러 실행 가능한 작업 목록을 펼치는 드롭다운 메뉴입니다.",
-    pureHtmlNote:
-      "화살표 키 탐색, 타이핑 검색, 바깥 클릭 닫기, 포커스 복원은 Base UI나 Spartan Brain을 통해 처리합니다.",
-    mobileGuideline: "파괴적 동작(삭제 등)은 구분선 아래 마지막 항목에 둡니다.",
-    htmlCode: `<button popovertarget="actions" aria-haspopup="menu" class="\${buttonVariants({ variant: 'outline', size: 'sm' })}">작업 메뉴</button>
-<div id="actions" popover="auto" role="menu" class="m-0 \${menuPopupVariants()}">
-  <button role="menuitem" class="\${menuItemVariants()}">복제</button>
-  <button role="menuitem" class="\${menuItemVariants({ variant: 'destructive' })}">삭제</button>
-</div>`,
+    mobileGuideline:
+      "좁은 화면에서는 좁은 드롭다운 대신 하단 액션 시트로 전환해 항목 높이를 44px 이상으로 키우고, 삭제 같은 위험 동작은 맨 아래에 분리합니다.",
     reactCode: `import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@goraebap/ui-react/components/menu";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1449,7 +1008,6 @@ export function Example() {
         <div className="text-destructive px-2 py-1">삭제</div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeMenuDemo />,
     renderReactDemo: () => <ReactMenuDemo />,
   },
   {
@@ -1459,14 +1017,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/alert-dialog",
     primitiveAngular: "@spartan-ng/brain/alert-dialog",
     recipePath: "@goraebap/design-system/recipes/alert-dialog",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "삭제·초기화처럼 되돌리기 어려운 동작 전 사용자의 명시적 확인을 받는 대화상자입니다.",
-    pureHtmlNote:
-      "일반 Dialog와 달리 바깥 클릭으로 실수로 닫히지 않아야 합니다. role='alertdialog'와 포커스 잠금은 Base UI나 Spartan Brain에서 처리합니다.",
-    mobileGuideline: "취소와 파괴적 실행 버튼을 명확히 구분하고, 실행 버튼에 구체적 동사를 씁니다.",
-    htmlCode: `<dialog class="\${alertDialogPopupVariants()}">
-  <h3>프로젝트를 삭제할까요?</h3>
-</dialog>`,
+    mobileGuideline:
+      "중요한 확인은 모바일에서도 중앙 모달을 유지하되, 취소·실행 버튼을 세로 스택이나 전체 폭 2열로 배치해 오작동을 막습니다.",
     reactCode: `import { AlertDialog, AlertDialogClose, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "@goraebap/ui-react/components/alert-dialog";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1500,7 +1053,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeAlertDialogDemo />,
     renderReactDemo: () => <ReactAlertDialogDemo />,
   },
   {
@@ -1510,14 +1062,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/radio-group",
     primitiveAngular: "@spartan-ng/brain/radio-group",
     recipePath: "@goraebap/design-system/recipes/radio-group",
-    pureHtmlLevel: "100% Native HTML",
     summary: "서로 배타적인 여러 선택지 중 하나를 고르는 라디오 그룹입니다.",
-    pureHtmlNote:
-      "네이티브 <input type='radio'>와 radioItemVariants()로 동일한 외형을 구성할 수 있습니다. 화살표 키 순환과 폼 통합은 Base UI나 Spartan Brain을 씁니다.",
-    mobileGuideline: "라벨 전체를 클릭 영역으로 묶고 항목 간 간격을 충분히 둡니다.",
-    htmlCode: `<div role="radiogroup" class="\${radioGroupVariants()}">
-  <label><input type="radio" name="theme" class="\${radioItemVariants()}" checked /> App Theme</label>
-</div>`,
+    mobileGuideline:
+      "좁은 화면에서는 가로 나열 대신 세로 목록으로 전환하고, 라벨 영역 전체를 터치 가능한 카드로 묶어 선택 영역을 넓힙니다.",
     reactCode: `import { RadioGroup, RadioGroupItem } from "@goraebap/ui-react/components/radio-group";
 
 export function Example() {
@@ -1545,7 +1092,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeRadioGroupDemo />,
     renderReactDemo: () => <ReactRadioGroupDemo />,
   },
   {
@@ -1555,12 +1101,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/slider",
     primitiveAngular: "@spartan-ng/brain/slider",
     recipePath: "@goraebap/design-system/recipes/slider",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "정해진 범위 안에서 연속된 값을 드래그로 조절하는 슬라이더입니다.",
-    pureHtmlNote:
-      "네이티브 <input type='range'>는 브라우저마다 트랙·손잡이 스타일이 다릅니다. 일관된 커스텀 트랙과 범위 선택은 Base UI나 Spartan Brain을 씁니다.",
-    mobileGuideline: "손잡이 터치 영역을 넉넉히 확보하고 현재 값을 숫자로 함께 표시합니다.",
-    htmlCode: `<input type="range" min="0" max="100" value="60" style="--slider-value: 60%" class="\${sliderNativeVariants()}" />`,
+    mobileGuideline:
+      "드래그 중 화면 스크롤과 겹치지 않게 touch-none을 유지하고, 엄지 조작 오차를 줄이려면 현재 수치 표시나 +/- 단계 버튼을 함께 둡니다.",
     reactCode: `import { Slider } from "@goraebap/ui-react/components/slider";
 
 export function Example() {
@@ -1571,10 +1114,8 @@ export function Example() {
       {
         id: "shape",
         title: "Shape",
-        htmlCode: `<input type="range" class="\${sliderNativeVariants({ shape: 'pill' })}" />`,
         reactCode: `<Slider shape="pill" defaultValue={60} aria-label="불투명도" />`,
         angularCode: `<brn-slider [class]="sliderTrackVariants({ shape: 'pill' })" />`,
-        renderHtmlDemo: () => <NativeSliderShapeDemo />,
         renderReactDemo: () => <ReactSliderShapeDemo />,
       },
     ],
@@ -1586,7 +1127,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeSliderDemo />,
     renderReactDemo: () => <ReactSliderDemo />,
   },
   {
@@ -1596,15 +1136,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/accordion",
     primitiveAngular: "@spartan-ng/brain/accordion",
     recipePath: "@goraebap/design-system/recipes/accordion",
-    pureHtmlLevel: "100% Native HTML",
     summary: "여러 항목을 접고 펼치며 긴 정보를 단계적으로 보여 주는 아코디언입니다.",
-    pureHtmlNote:
-      "네이티브 <details>/<summary>로 기본 접기·펼치기가 동작합니다. 단일 열림 제어와 키보드 탐색은 Base UI나 Spartan Brain이 처리합니다.",
-    mobileGuideline: "제목이 두 줄을 넘지 않게 간결하게 쓰고, 펼침 아이콘을 오른쪽에 고정합니다.",
-    htmlCode: `<details class="\${accordionItemVariants()}">
-  <summary class="\${accordionTriggerVariants()}">토큰은 어떻게 적용하나요?</summary>
-  <div class="\${accordionPanelVariants()}">base.css와 테마 CSS를 불러옵니다.</div>
-</details>`,
+    mobileGuideline:
+      "좁은 화면에서는 트리거 행 높이를 최소 44px로 확보하고, 제목은 두 줄 이내로 줄여 펼침 아이콘이 오른쪽에 고정되게 배치합니다.",
     reactCode: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@goraebap/ui-react/components/accordion";
 
 export function Example() {
@@ -1632,7 +1166,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeAccordionDemo />,
     renderReactDemo: () => <ReactAccordionDemo />,
   },
   {
@@ -1642,15 +1175,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/collapsible",
     primitiveAngular: "@spartan-ng/brain/collapsible",
     recipePath: "@goraebap/design-system/recipes/collapsible",
-    pureHtmlLevel: "100% Native HTML",
     summary: "단일 보조 영역을 필요할 때만 펼치거나 접는 컨테이너입니다.",
-    pureHtmlNote:
-      "단순 접기·펼치기는 <details>로 충분하며, 외부 상태로 열림을 제어할 때 헤드리스 프리미티브를 씁니다.",
-    mobileGuideline: "핵심 입력 항목은 접어 두지 않고 보조 설정만 Collapsible로 숨깁니다.",
-    htmlCode: `<details open>
-  <summary class="\${collapsibleTriggerVariants()}">고급 설정 보기</summary>
-  <div class="\${collapsiblePanelVariants()}">보조 설정 내용</div>
-</details>`,
+    mobileGuideline:
+      "모바일에서 화면 길이를 줄일 때 보조 필터나 부가 설정만 접어 두고, 핵심 입력과 제출 동작은 펼친 상태로 유지합니다.",
     reactCode: `import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@goraebap/ui-react/components/collapsible";
 
 export function Example() {
@@ -1671,7 +1198,6 @@ export function Example() {
         <div className="text-muted-foreground mt-1">캐시 · 재시도 정책</div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeCollapsibleDemo />,
     renderReactDemo: () => <ReactCollapsibleDemo />,
   },
   {
@@ -1681,12 +1207,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/avatar",
     primitiveAngular: "@spartan-ng/brain/avatar",
     recipePath: "@goraebap/design-system/recipes/avatar",
-    pureHtmlLevel: "100% Native HTML",
     summary: "사용자 프로필 이미지와 이미지 로드 실패 시 이니셜 대체 표시를 제공합니다.",
-    pureHtmlNote:
-      "이미지 로드 실패 감지와 지연 대체 표시는 Base UI나 Spartan Brain의 Avatar 프리미티브가 처리합니다.",
-    mobileGuideline: "목록에서는 sm(32px), 프로필 헤더에서는 lg(48px) 크기를 씁니다.",
-    htmlCode: `<span class="\${avatarVariants()}"><span class="\${avatarFallbackVariants()}">고래</span></span>`,
+    mobileGuideline:
+      "좁은 목록에서는 sm(32px)로 밀도를 맞추고, 프로필 헤더에서는 lg(48px)로 키워 터치 대상일 때 영역을 확보합니다.",
     reactCode: `import { Avatar, AvatarFallback } from "@goraebap/ui-react/components/avatar";
 
 export function Example() {
@@ -1703,10 +1226,8 @@ export function Example() {
       {
         id: "shape",
         title: "Shape",
-        htmlCode: `<span class="\${avatarVariants({ shape: 'pill' })}">...</span>`,
         reactCode: `<Avatar shape="pill">...</Avatar>`,
         angularCode: `<span [class]="avatarVariants({ shape: 'pill' })">...</span>`,
-        renderHtmlDemo: () => <NativeAvatarShapeDemo />,
         renderReactDemo: () => <ReactAvatarShapeDemo />,
       },
     ],
@@ -1720,7 +1241,6 @@ export function Example() {
         </span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeAvatarDemo />,
     renderReactDemo: () => <ReactAvatarDemo />,
   },
   {
@@ -1730,14 +1250,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/progress",
     primitiveAngular: "@spartan-ng/brain/progress",
     recipePath: "@goraebap/design-system/recipes/progress",
-    pureHtmlLevel: "100% Native HTML",
     summary: "작업 완료율이나 업로드 진행 상태를 막대로 표시합니다.",
-    pureHtmlNote:
-      "role='progressbar'와 aria-valuenow로 접근성을 맞출 수 있으며, Base UI와 Spartan Brain은 이를 자동 관리합니다.",
-    mobileGuideline: "진행 막대 위에 작업 이름과 퍼센트 수치를 함께 표시합니다.",
-    htmlCode: `<div role="progressbar" aria-valuenow="68" class="\${progressTrackVariants()}">
-  <div class="\${progressIndicatorVariants()}" style="width: 68%"></div>
-</div>`,
+    mobileGuideline:
+      "좁은 폭에서도 진행 상태를 한눈에 읽히게 작업 이름과 퍼센트 수치를 막대 위 한 줄에 양끝 정렬로 배치합니다.",
     reactCode: `import { Progress } from "@goraebap/ui-react/components/progress";
 
 export function Example() {
@@ -1750,12 +1265,8 @@ export function Example() {
       {
         id: "shape",
         title: "Shape",
-        htmlCode: `<div role="progressbar" class="\${progressTrackVariants({ shape: 'pill' })}">
-  <div class="\${progressIndicatorVariants({ shape: 'pill' })}" style="width: 68%"></div>
-</div>`,
         reactCode: `<Progress shape="pill" value={68} />`,
         angularCode: `<brn-progress [class]="progressTrackVariants({ shape: 'pill' })" />`,
-        renderHtmlDemo: () => <NativeProgressShapeDemo />,
         renderReactDemo: () => <ReactProgressShapeDemo />,
       },
     ],
@@ -1766,7 +1277,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeProgressDemo />,
     renderReactDemo: () => <ReactProgressDemo />,
   },
   {
@@ -1776,14 +1286,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/drawer",
     primitiveAngular: "@spartan-ng/brain/sheet",
     recipePath: "@goraebap/design-system/recipes/drawer",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "화면 좌우 또는 하단에서 슬라이드되어 보조 탐색이나 필터 패널을 엽니다.",
-    pureHtmlNote:
-      "스와이프 닫기, 스크롤 잠금, 포커스 트랩은 Base UI Drawer나 Spartan Sheet에서 처리합니다.",
-    mobileGuideline: "모바일에서는 side='bottom'으로 열어 한 손으로 닫을 수 있게 합니다.",
-    htmlCode: `<dialog class="\${drawerPopupVariants({ side: 'right' })}">
-  <h3>필터 설정</h3>
-</dialog>`,
+    mobileGuideline:
+      '좁은 화면에서는 side="bottom"과 아래 스와이프 닫기로 전환하고, max-h-[85dvh]와 safe-area-inset-bottom을 함께 적용합니다.',
     reactCode: `import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from "@goraebap/ui-react/components/drawer";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1810,7 +1315,6 @@ export function Example() {
         </div>
       </div>
     ),
-    renderHtmlDemo: ({ isMobile }) => <NativeDrawerDemo isMobile={isMobile} />,
     renderReactDemo: ({ isMobile }) => <ReactDrawerDemo isMobile={isMobile} />,
   },
   {
@@ -1820,15 +1324,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/toast",
     primitiveAngular: "ngx-sonner (Spartan)",
     recipePath: "@goraebap/design-system/recipes/toast",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "저장 완료나 복사 같은 짧은 처리 결과를 화면 모서리에 잠시 알립니다.",
-    pureHtmlNote:
-      "여러 알림의 큐 관리, 자동 닫힘 타이머, 호버 시 일시 정지는 Base UI Toast나 Sonner에서 처리합니다.",
     mobileGuideline:
-      "오류 복구처럼 사용자가 꼭 읽어야 하는 메시지는 Toast 대신 인라인 Alert로 씁니다.",
-    htmlCode: `<div role="status" class="\${toastRootVariants()}">
-  <p class="text-sm font-medium">설정이 저장되었습니다</p>
-</div>`,
+      "좁은 화면에서는 상단이나 하단 전체 폭으로 배치하고, 하단 고정 바가 있으면 그 위로 띄우며 safe-area-inset 여백을 확보합니다.",
     reactCode: `import { ToastProvider, useToastManager } from "@goraebap/ui-react/components/toast";
 
 // 앱 루트에 <ToastProvider>를 두고, 내부에서 useToastManager().add(...) 호출`,
@@ -1840,7 +1338,6 @@ toast("설정이 저장되었습니다");`,
         <div className="text-muted-foreground text-[9px]">변경 사항이 즉시 반영됩니다.</div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeToastDemo />,
     renderReactDemo: () => <ReactToastDemo />,
   },
   {
@@ -1850,12 +1347,9 @@ toast("설정이 저장되었습니다");`,
     primitiveReact: "@base-ui/react/combobox",
     primitiveAngular: "@spartan-ng/brain/combobox",
     recipePath: "@goraebap/design-system/recipes/combobox",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "텍스트 입력으로 후보 목록을 실시간 필터링하고 값을 고르는 콤보박스입니다.",
-    pureHtmlNote:
-      "네이티브 <datalist>는 드롭다운 모양을 꾸밀 수 없습니다. 커스텀 필터링·선택 표시·키보드 이동은 Base UI나 Spartan Brain을 씁니다.",
-    mobileGuideline: "후보가 많을 때 Select 대신 Combobox로 검색 선택을 제공합니다.",
-    htmlCode: `<input list="frameworks" class="\${comboboxInputVariants()}" placeholder="프레임워크 검색..." />`,
+    mobileGuideline:
+      "가상 키보드가 올라오면 드롭다운 공간이 좁아지므로, 모바일에서는 전체 화면 검색 시트나 max-h-[60dvh] 상단 검색창으로 전환합니다.",
     reactCode: `import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@goraebap/ui-react/components/combobox";`,
     angularCode: `<brn-combobox>...</brn-combobox>`,
     renderThumbnail: () => (
@@ -1864,7 +1358,6 @@ toast("설정이 저장되었습니다");`,
         <span className="text-muted-foreground text-[10px]">▾</span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeComboboxDemo />,
     renderReactDemo: () => <ReactComboboxDemo />,
   },
   {
@@ -1874,11 +1367,9 @@ toast("설정이 저장되었습니다");`,
     primitiveReact: "@base-ui/react/autocomplete",
     primitiveAngular: "@spartan-ng/brain/autocomplete",
     recipePath: "@goraebap/design-system/recipes/autocomplete",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "자유 입력을 허용하면서 추천 검색어나 후보를 제안하는 자동완성 입력 칸입니다.",
-    pureHtmlNote: "Combobox와 달리 목록에 없는 자유 문자열도 그대로 입력할 수 있습니다.",
-    mobileGuideline: "추천 목록은 최대 5~6개 이내로 제한해 화면을 가리지 않게 합니다.",
-    htmlCode: `<input list="suggestions" class="\${autocompleteInputVariants()}" placeholder="컴포넌트 검색..." />`,
+    mobileGuideline:
+      "가상 키보드가 화면 절반을 차지하므로 추천 목록을 5개 안팎으로 제한하고, 목록 영역에 독립 스크롤을 두어 입력창이 가리지 않게 합니다.",
     reactCode: `import { Autocomplete, AutocompleteContent, AutocompleteInput, AutocompleteItem, AutocompleteList } from "@goraebap/ui-react/components/autocomplete";`,
     angularCode: `<brn-autocomplete>...</brn-autocomplete>`,
     renderThumbnail: () => (
@@ -1891,7 +1382,6 @@ toast("설정이 저장되었습니다");`,
         </div>
       </div>
     ),
-    renderHtmlDemo: () => <NativeAutocompleteDemo />,
     renderReactDemo: () => <ReactAutocompleteDemo />,
   },
   {
@@ -1901,14 +1391,9 @@ toast("설정이 저장되었습니다");`,
     primitiveReact: "@base-ui/react/otp-field",
     primitiveAngular: "@spartan-ng/brain/input-otp",
     recipePath: "@goraebap/design-system/recipes/otp-field",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "이메일·문자 인증번호처럼 고정 길이 코드를 한 자리씩 입력하는 칸입니다.",
-    pureHtmlNote:
-      "붙여넣기 자동 분배, Backspace 이전 칸 이동, 화살표 탐색은 Base UI나 Spartan Brain에서 처리합니다.",
-    mobileGuideline: "inputMode='numeric'을 지정해 모바일 숫자 키패드가 바로 열리게 합니다.",
-    htmlCode: `<div class="\${otpFieldRootVariants()}">
-  <input maxlength="1" class="\${otpFieldInputVariants()}" />
-</div>`,
+    mobileGuideline:
+      'inputMode="numeric"과 autocomplete="one-time-code"를 지정해 숫자 키패드와 SMS 자동 완성이 바로 동작하게 합니다.',
     reactCode: `import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@goraebap/ui-react/components/otp-field";
 
 export function Example() {
@@ -1933,7 +1418,6 @@ export function Example() {
         ))}
       </div>
     ),
-    renderHtmlDemo: () => <NativeOTPFieldDemo />,
     renderReactDemo: () => <ReactOTPFieldDemo />,
   },
   {
@@ -1943,14 +1427,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/scroll-area",
     primitiveAngular: "@spartan-ng/brain/scroll-area",
     recipePath: "@goraebap/design-system/recipes/scroll-area",
-    pureHtmlLevel: "100% Native HTML",
     summary: "고정 높이 영역 안에서 일관된 커스텀 스크롤바를 제공하는 스크롤 컨테이너입니다.",
-    pureHtmlNote:
-      "기본 스크롤은 overflow-auto로 충분하며, OS별 스크롤바 차이를 통일할 때 Scroll Area를 씁니다.",
-    mobileGuideline: "모바일 터치 스크롤 관성을 해치지 않도록 네이티브 뷰포트 스크롤을 유지합니다.",
-    htmlCode: `<div class="\${scrollAreaRootVariants()} h-40">
-  <div class="\${scrollAreaViewportVariants()} p-3">...</div>
-</div>`,
+    mobileGuideline:
+      "스크롤바 조작에는 touch-none이 적용되어 있으며, 모바일 본문은 관성 스크롤을 살리기 위해 네이티브 스크롤을 우선 유지합니다.",
     reactCode: `import { ScrollArea } from "@goraebap/ui-react/components/scroll-area";
 
 export function Example() {
@@ -1967,7 +1446,6 @@ export function Example() {
         <div className="bg-border absolute top-2 right-1.5 h-8 w-1 rounded-full" />
       </div>
     ),
-    renderHtmlDemo: () => <NativeScrollAreaDemo />,
     renderReactDemo: () => <ReactScrollAreaDemo />,
   },
   {
@@ -1977,14 +1455,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/context-menu",
     primitiveAngular: "@spartan-ng/brain/context-menu",
     recipePath: "@goraebap/design-system/recipes/context-menu",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "대상 영역을 우클릭했을 때 포인터 위치에 열리는 컨텍스트 메뉴입니다.",
-    pureHtmlNote:
-      "포인터 좌표 배치, 화면 경계 회피, 키보드 탐색은 Base UI나 Spartan Brain에서 처리합니다.",
-    mobileGuideline: "터치 기기에서는 우클릭이 없으므로 별도 더보기(Menu) 버튼을 함께 둡니다.",
-    htmlCode: `<div role="menu" class="\${contextMenuPopupVariants()}">
-  <button role="menuitem" class="\${contextMenuItemVariants()}">복사</button>
-</div>`,
+    mobileGuideline:
+      "터치 기기에는 우클릭이 없고 길게 누르기는 발견하기 어려우므로, 항목 옆 더보기 버튼과 하단 액션 시트를 함께 제공합니다.",
     reactCode: `import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@goraebap/ui-react/components/context-menu";`,
     angularCode: `<div [brnContextMenuTriggerFor]="menu">우클릭 영역</div>`,
     renderThumbnail: () => (
@@ -1992,7 +1465,6 @@ export function Example() {
         우클릭 메뉴
       </div>
     ),
-    renderHtmlDemo: () => <NativeContextMenuDemo />,
     renderReactDemo: () => <ReactContextMenuDemo />,
   },
   {
@@ -2002,14 +1474,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/preview-card",
     primitiveAngular: "@spartan-ng/brain/hover-card",
     recipePath: "@goraebap/design-system/recipes/preview-card",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "링크나 사용자 이름에 마우스를 올렸을 때 요약 정보를 미리 보여 주는 호버 카드입니다.",
-    pureHtmlNote:
-      "열림·닫힘 지연과 포인터 이동 허용 영역(safe polygon) 처리는 Base UI나 Spartan Brain이 맡습니다.",
-    mobileGuideline: "핵심 동작은 미리보기 카드 안에 두지 않고 링크 대상 페이지에서 제공합니다.",
-    htmlCode: `<div class="\${previewCardPopupVariants()}">
-  <p class="text-sm font-semibold">@goraebap/design-system</p>
-</div>`,
+    mobileGuideline:
+      "터치 환경에는 호버가 없으므로 미리보기 카드에 핵심 동작을 두지 않고, 탭하면 대상 페이지나 요약 시트로 이동하게 구성합니다.",
     reactCode: `import { PreviewCard, PreviewCardContent, PreviewCardTrigger } from "@goraebap/ui-react/components/preview-card";`,
     angularCode: `<brn-hover-card>
   <a brnHoverCardTrigger>@goraebap/design-system</a>
@@ -2018,10 +1485,9 @@ export function Example() {
     renderThumbnail: () => (
       <div className="border-border bg-popover w-40 rounded-lg border p-2.5 text-left shadow-sm">
         <div className="text-[10px] font-semibold">@goraebap/design-system</div>
-        <div className="text-muted-foreground mt-0.5 text-[9px]">CSS 토큰 · CVA 레시피</div>
+        <div className="text-muted-foreground mt-0.5 text-[9px]">CSS 토큰 · 스타일 레시피</div>
       </div>
     ),
-    renderHtmlDemo: () => <NativePreviewCardDemo />,
     renderReactDemo: () => <ReactPreviewCardDemo />,
   },
   {
@@ -2031,14 +1497,9 @@ export function Example() {
     primitiveReact: "@base-ui/react/menubar",
     primitiveAngular: "@spartan-ng/brain/menu",
     recipePath: "@goraebap/design-system/recipes/menubar",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "파일·편집·보기처럼 상단 메뉴 항목을 가로로 묶어 탐색하는 데스크톱 메뉴바입니다.",
-    pureHtmlNote:
-      "메뉴 간 좌우 화살표 이동과 열린 상태 호버 전환은 Base UI Menubar나 Spartan Menubar가 처리합니다.",
-    mobileGuideline: "좁은 화면에서는 Menubar 대신 Drawer나 단일 Menu로 접어 둡니다.",
-    htmlCode: `<div role="menubar" class="\${menubarVariants()}">
-  <button role="menuitem" class="\${menubarTriggerVariants()}">파일</button>
-</div>`,
+    mobileGuideline:
+      "가로 메뉴바는 좁은 폭에서 넘치므로 모바일에서는 상단 메뉴 버튼과 Drawer 내부 세로 탐색 목록으로 전환합니다.",
     reactCode: `import { Menubar, menubarTriggerVariants } from "@goraebap/ui-react/components/menubar";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/components/menu";`,
     angularCode: `<div brnMenuBar [class]="menubarVariants()">...</div>`,
@@ -2049,7 +1510,6 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/com
         <span className="text-muted-foreground px-2 py-0.5">보기</span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeMenubarDemo />,
     renderReactDemo: () => <ReactMenubarDemo />,
   },
   {
@@ -2059,14 +1519,9 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/com
     primitiveReact: "@base-ui/react/navigation-menu",
     primitiveAngular: "@spartan-ng/brain/navigation-menu",
     recipePath: "@goraebap/design-system/recipes/navigation-menu",
-    pureHtmlLevel: "Native HTML (한계 있음)",
     summary: "사이트 상단에서 하위 링크 패널을 부드럽게 전환하는 내비게이션 메뉴입니다.",
-    pureHtmlNote:
-      "뷰포트 크기 전환 애니메이션과 키보드 탐색은 Base UI나 Spartan Brain에서 처리합니다.",
-    mobileGuideline: "모바일 헤더에서는 Drawer 내부 세로 목록으로 전환합니다.",
-    htmlCode: `<nav class="\${navigationMenuListVariants()}">
-  <a class="\${navigationMenuTriggerVariants()}">파운데이션</a>
-</nav>`,
+    mobileGuideline:
+      "호버 기반 메가 메뉴는 터치에서 동작하지 않으므로 모바일 헤더에서는 Drawer 내부 Accordion 목록으로 전환합니다.",
     reactCode: `import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "@goraebap/ui-react/components/navigation-menu";`,
     angularCode: `<nav brnNavigationMenu>...</nav>`,
     renderThumbnail: () => (
@@ -2075,7 +1530,6 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/com
         <span className="text-muted-foreground">컴포넌트</span>
       </div>
     ),
-    renderHtmlDemo: () => <NativeNavigationMenuDemo />,
     renderReactDemo: () => <ReactNavigationMenuDemo />,
   },
 ];

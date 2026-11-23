@@ -17,11 +17,6 @@ const NEXT_STEPS = [
     to: "/foundations/recipes" as const,
   },
   {
-    title: "Vanilla HTML/TS & Primitives",
-    summary: "네이티브 HTML과 헤드리스 프리미티브를 나누는 기준과 환경별 연결 방식을 다룹니다.",
-    to: "/adapters/primitives" as const,
-  },
-  {
     title: "컴포넌트",
     summary: "Base UI 기반 React 컴포넌트 36종의 동작과 사용 예제를 확인합니다.",
     to: "/components" as const,
@@ -47,8 +42,8 @@ function GettingStartedPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">패키지 연결</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          공통 스타일과 레시피는 @goraebap/design-system에 두고, React 앱은 @goraebap/ui-react,
-          프레임워크 없는 Vanilla HTML/TS 앱은 @goraebap/ui-html을 함께 연결합니다.
+          공통 스타일과 레시피는 @goraebap/design-system에 두고, React 앱은 @goraebap/ui-react를
+          함께 연결합니다.
         </p>
         <CopyCodeBlock
           label="package.json"
@@ -56,8 +51,7 @@ function GettingStartedPage() {
           code={`{
   "dependencies": {
     "@goraebap/design-system": "workspace:*",
-    "@goraebap/ui-react": "workspace:*",
-    "@goraebap/ui-html": "workspace:*"
+    "@goraebap/ui-react": "workspace:*"
   }
 }`}
         />
@@ -107,9 +101,8 @@ function GettingStartedPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">첫 컴포넌트 쓰기</h2>
         <p className="text-muted-foreground text-sm leading-relaxed">
-          React 앱에서는 Base UI 기반의 @goraebap/ui-react 컴포넌트를 쓰고, Vanilla HTML/TS(Vite +
-          Tailwind)에서는 @goraebap/design-system 레시피와 @goraebap/ui-html의 DOM 헬퍼를 함께
-          사용합니다.
+          React 앱에서는 Base UI 기반의 @goraebap/ui-react 컴포넌트를 쓰고, Angular 앱에서는 Spartan
+          Brain 프리미티브에 @goraebap/design-system 레시피를 결합해 사용합니다.
         </p>
         <CopyCodeBlock
           label="SaveButton.tsx (React)"
@@ -119,17 +112,6 @@ function GettingStartedPage() {
 export function SaveButton() {
   return <Button size="sm">저장</Button>;
 }`}
-        />
-        <CopyCodeBlock
-          label="main.ts (Vanilla HTML/TS)"
-          language="ts"
-          code={`import { buttonVariants } from "@goraebap/design-system/recipes/button";
-import { initGoraebapUI } from "@goraebap/ui-html";
-
-const button = document.querySelector("button");
-if (button) button.className = buttonVariants({ size: "sm" });
-
-initGoraebapUI();`}
         />
       </section>
 

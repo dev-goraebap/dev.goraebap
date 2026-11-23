@@ -11,8 +11,8 @@ function ComponentsOverviewPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-semibold tracking-tight">컴포넌트</h1>
         <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
-          Vanilla HTML/TS 레시피와 React(Base UI), Angular(Spartan) 예시를 함께 제공하는 UI 컴포넌트
-          라이브러리입니다.
+          React(Base UI) 컴포넌트와 Angular(Spartan) 예시를 같은 레시피 기준으로 함께 제공하는 UI
+          컴포넌트 라이브러리입니다.
         </p>
       </header>
 
@@ -38,12 +38,7 @@ function ComponentsOverviewPage() {
                     <div className="border-border bg-card group-hover:border-foreground/35 flex h-44 items-center justify-center overflow-hidden rounded-2xl border p-4 transition-colors">
                       {item.renderThumbnail()}
                     </div>
-                    <div className="flex items-center justify-between px-1">
-                      <span className="text-foreground text-sm font-medium">{item.name}</span>
-                      <span className="text-muted-foreground font-mono text-[11px]">
-                        {item.pureHtmlLevel === "100% Native HTML" ? "Vanilla HTML/TS" : "Headless"}
-                      </span>
-                    </div>
+                    <p className="text-foreground px-1 text-sm font-medium">{item.name}</p>
                   </Link>
                 ))}
               </div>
