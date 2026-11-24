@@ -42,7 +42,17 @@ const DOC_ENTRIES: DocEntry[] = [
     title: doc.title,
     href: `/sdlc/${doc.slug}`,
     description: doc.summary,
-    keywords: `${doc.slug} ${doc.group} ${doc.summary} ${doc.sections.map((section) => `${section.title ?? ""} ${section.paragraphs.join(" ")}`).join(" ")}`,
+    keywords: `${doc.slug} ${doc.group} ${doc.summary} ${doc.sections
+      .map((section) =>
+        [
+          section.title ?? "",
+          ...section.paragraphs,
+          ...(section.bullets?.items ?? []),
+          section.callout?.title ?? "",
+          section.callout?.body ?? "",
+        ].join(" "),
+      )
+      .join(" ")}`,
   })),
   page("디자인 시스템", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
   page("디자인 시스템", "패키지 연결", "/frontend/packages", "패키지, 스타일, 색상 테마 연결"),
