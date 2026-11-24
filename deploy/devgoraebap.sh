@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# design.goraebap.xyz를 홈서버에 배포한다. 저장소 루트에서 실행한다.
+# dev.goraebap.xyz를 홈서버에 배포한다. 저장소 루트에서 실행한다.
 #
 #   deploy/devgoraebap.sh            main을 빌드해 배포
 #   deploy/devgoraebap.sh <ref>      브랜치나 커밋을 빌드해 배포
@@ -16,7 +16,7 @@ if [ -f "$ENV_FILE" ]; then
 fi
 SERVER="${DEPLOY_SERVER:?deploy/.env에 DEPLOY_SERVER를 설정하세요}"
 PORT="${DEPLOY_PORT:?deploy/.env에 DEPLOY_PORT를 설정하세요}"
-SITE='~/sites/design.goraebap.xyz'
+SITE='~/sites/dev.goraebap.xyz'
 remote() { ssh -p "$PORT" "$SERVER" "$@"; }
 
 if [ "${1:-}" = "--rollback" ]; then
