@@ -1,6 +1,6 @@
 {
   "name": "dev-goraebap",
-  "description": "웹 앱 개발 지침(프론트·UI/UX·백엔드·API·DB·아키텍처)과 스택별 어댑터·프로젝트 연결",
+  "description": "웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 어댑터·프로젝트 연결",
   "owner": {
     "name": "dev-goraebap"
   },
@@ -8,7 +8,7 @@
     {
       "name": "webapp",
       "source": "./plugins/webapp",
-      "description": "웹 앱 개발 지침(프론트·UI/UX·백엔드·API·DB·아키텍처)과 스택별 어댑터·프로젝트 연결"
+      "description": "웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 어댑터·프로젝트 연결"
     }
   ]
 }

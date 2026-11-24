@@ -1,6 +1,6 @@
 # Webapp 플러그인
 
-웹 플랫폼 개발 지침(프론트엔드·UI/UX·백엔드·API·DB·아키텍처)과 스택별 어댑터입니다. 사용자 범위에 설치하면 에이전트가 작업에 맞는 지침을 스스로 불러 씁니다.
+웹 플랫폼 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 어댑터입니다. 사용자 범위에 설치하면 에이전트가 작업에 맞는 지침을 스스로 불러 씁니다.
 
 ## 동작 구조
 
@@ -18,7 +18,7 @@ flowchart LR
 
     subgraph Plugin["Webapp 플러그인 (사용자 범위 설치)"]
         M["goraebap-mode\n(입구 · 플레이북 선택)"]
-        S["핵심 지침 (skills/)\n스택 없는 판단 기준\nfrontend · ui-ux · backend · api · database · architecture"]
+        S["핵심 지침 (skills/)\n스택 없는 판단 기준\nwebapp-project · frontend-engineering\nfrontend-design-system · frontend-interaction\nbackend-engineering"]
         AD["어댑터 (adapters/)\n오픈소스 스택 구현 스냅샷"]
     end
 

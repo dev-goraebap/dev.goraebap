@@ -4,14 +4,14 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
-const description = '웹 앱 개발 지침(프론트·UI/UX·백엔드·API·DB·아키텍처)과 스택별 어댑터·프로젝트 연결';
+const description = '웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 어댑터·프로젝트 연결';
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
 /**
  * 사람이 부르거나 입구(goraebap-mode)가 링크로 읽을 때만 쓰는 영역 지침. 설명이 범용(React·Java 등)이라 자동 호출을 열어 두면
  * webapp을 쓰지 않는 프로젝트에서도 끼어든다. 입구와 연결 도구는 설명에 조건(AGENTS.md가 밝힌 프로젝트, 이름으로
  * 한 요청)을 적고 자동 호출을 연다.
  */
-export const explicitOnly = ['frontend', 'ui-ux', 'backend', 'api', 'database', 'architecture'];
+export const explicitOnly = ['webapp-project', 'frontend-engineering', 'frontend-design-system', 'frontend-interaction', 'backend-engineering'];
 
 async function put(relative, content) {
   const destination = path.join(root, 'dist', relative);

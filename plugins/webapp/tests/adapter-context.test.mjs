@@ -12,12 +12,12 @@ test('AGENTS.md의 Webapp 어댑터 줄에서 어댑터 이름을 읽는다', ()
 });
 
 test('어댑터 파일이 있으면 함께 읽을 목록을 맥락으로 준다', () => {
-  const output = context('cowork', ['frontend.md', 'ui-ux.md', 'notes.txt'], '/plugin/adapters');
+  const output = context('cowork', ['frontend-engineering.md', 'frontend-design-system.md', 'notes.txt'], '/plugin/adapters');
   const text = output.hookSpecificOutput.additionalContext;
   assert.equal(output.hookSpecificOutput.hookEventName, 'SessionStart');
   assert.match(text, /어댑터 `cowork`/);
-  assert.match(text, /frontend\.md/);
-  assert.match(text, /ui-ux\.md/);
+  assert.match(text, /frontend-engineering\.md/);
+  assert.match(text, /frontend-design-system\.md/);
   assert.doesNotMatch(text, /notes\.txt/);
 });
 

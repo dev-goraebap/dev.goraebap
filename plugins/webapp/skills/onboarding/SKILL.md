@@ -15,6 +15,7 @@ arc42: "none"
 | 새 프로젝트를 지침에 연결 | [연결](#연결) |
 | 프로젝트만 다르게 하는 규칙 추가·정리 | [프로젝트 규칙](references/project-rules.md) |
 | 사본 방식(`.agents/skills`의 지침 사본·동기화 훅)에서 바꾸기 | [사본에서 전환](references/migrate-from-copies.md) |
+| 0.16.0 이전 스킬 이름(frontend·ui-ux·backend·api·database·architecture)을 새 이름으로 바꾸기 | [스킬 이름 이전](references/rename-skills.md) |
 | 프로젝트 규칙 중 공통으로 올릴 것 찾기·반영된 규칙 정리 | [회수](#회수) |
 | 지침 제안 올리기·검토 | [지침 제안](references/proposals.md) |
 
@@ -32,7 +33,7 @@ arc42: "none"
 <!-- webapp@dev-goraebap:start -->
 ## 개발 지침
 
-이 프로젝트는 Webapp 플러그인(0.15.0 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(frontend·ui-ux·backend·api·database·architecture)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webapp 지침을 읽을 수 없거나 설치된 버전이 위 버전보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
+이 프로젝트는 Webapp 플러그인(0.16.0 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(webapp-project·frontend-engineering·frontend-design-system·frontend-interaction·backend-engineering)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webapp 지침을 읽을 수 없거나 설치된 버전이 위 버전보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
 
 - Webapp 어댑터: <이름>
 <!-- webapp@dev-goraebap:end -->

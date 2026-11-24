@@ -16,6 +16,15 @@
 
 `plugins/webapp/dist/`는 직접 고치지 않고 `plugins/webapp/`에서 `npm run package`로 만듭니다. 루트 `.claude-plugin/marketplace.json`과 `.agents/plugins/marketplace.json`은 설치 도구의 연결 파일이며 생성 배포본을 가리킵니다. 마켓플레이스 이름은 `dev-goraebap`, 플러그인 이름은 `webapp`입니다.
 
+## 지침 사이트
+
+`web/apps/devgoraebap`은 지침을 사람이 읽는 글로 옮긴 사이트(dev.goraebap.xyz)입니다. 공간은 webapp·frontend·backend이고, 내용 스킬의 이름은 공간과 메뉴를 따릅니다(`webapp-project`, `frontend-engineering`, `frontend-design-system`, `frontend-interaction`, `backend-engineering`). 규칙의 원본은 스킬이고 사이트는 같은 규칙을 다이어그램·표·1인칭 글로 풉니다. 사이트에서 먼저 새 규칙을 만들지 않습니다.
+
+- 스킬을 고치면 그 파일을 `skills` 값으로 가리키는 사이트 문서(`src/entities/webapp-doc/model/catalog.ts`)도 같은 변경에서 맞춥니다.
+- 문서를 더하거나 주소를 옮기면 메뉴·검색 목록(`src/widgets/doc-search/model/search-index.ts`)과 예전 주소 돌려보내기(`src/pages/__root.tsx`)를 함께 고칩니다. 공간이나 메뉴가 바뀌면 워크스페이스 전환(`WorkspaceSwitcher`)·푸터(`SiteFooter`)·랜딩도 봅니다.
+- 사이트를 바꾼 뒤 `web/apps/devgoraebap`에서 `pnpm typecheck`와 `pnpm check:skills`를 실행합니다.
+- 배포는 사용자가 요청할 때 저장소 루트에서 `deploy/devgoraebap.sh`로 합니다.
+
 ## 검증과 배포
 
 - 도구·패키징 변경 후 `plugins/webapp/`에서 `npm test`로 Claude·Codex·Antigravity 패키지를 모두 확인합니다.
@@ -25,7 +34,7 @@
 <!-- webapp@dev-goraebap:start -->
 ## 개발 지침
 
-이 프로젝트는 Webapp 플러그인(0.15.3 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(frontend·ui-ux·backend·api·database·architecture)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webapp 지침을 읽을 수 없거나 설치된 버전이 위 버전보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
+이 프로젝트는 Webapp 플러그인(0.16.0 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(webapp-project·frontend-engineering·frontend-design-system·frontend-interaction·backend-engineering)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webapp 지침을 읽을 수 없거나 설치된 버전이 위 버전보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
 
 - Webapp 어댑터: cowork
 <!-- webapp@dev-goraebap:end -->

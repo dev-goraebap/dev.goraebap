@@ -32,14 +32,13 @@ arc42: "none"
 
 | 바꾸는 것 | 읽을 스킬 |
 | --- | --- |
-| 화면·상태·라우트 | [프론트엔드](../frontend/SKILL.md) |
-| UI 컴포넌트·테마·화면 패턴 | [UI/UX](../ui-ux/SKILL.md) |
-| 서버 모듈·도메인·서비스 | [백엔드](../backend/SKILL.md) |
-| HTTP·오류·인증·생성 타입 | [API](../api/SKILL.md) |
-| 스키마·마이그레이션 | [DB](../database/SKILL.md) |
-| 시스템 경계·새 기술·운영 | [아키텍처](../architecture/SKILL.md) |
+| 시스템 경계·새 기술·형상관리·운영 | [webapp-project](../webapp-project/SKILL.md) |
+| 화면 코드 구조·상태·라우트 | [frontend-engineering](../frontend-engineering/SKILL.md) |
+| UI 컴포넌트·테마·레이아웃·화면 패턴 | [frontend-design-system](../frontend-design-system/SKILL.md) |
+| 로딩·전환·상태 화면·상호작용 | [frontend-interaction](../frontend-interaction/SKILL.md) |
+| 서버 모듈·도메인·API·스키마 | [backend-engineering](../backend-engineering/SKILL.md) |
 
-프론트엔드는 상태와 코드 구조, UI/UX는 화면 표현과 상호작용을 다룹니다. 백엔드는 도메인·서비스·트랜잭션, DB는 스키마·마이그레이션, API는 외부 HTTP 계약을 다룹니다. 여러 영역을 바꾸면 관련 지침을 함께 읽습니다. 규칙 본문은 담당 지침 한 곳에서 고치고 다른 지침에서는 연결합니다. 지침의 규칙을 프로젝트의 스택으로 구현한 모양은 [어댑터](../../adapters/README.md)에서 읽습니다.
+스킬 이름은 지침 사이트(dev.goraebap.xyz)의 공간과 메뉴를 따릅니다. 프론트엔드 엔지니어링은 코드 구조와 상태, 디자인 시스템은 화면 표현, 인터랙션은 화면의 반응과 움직임을 다룹니다. 백엔드 엔지니어링은 도메인·서비스·트랜잭션과 함께 API 계약과 DB 마이그레이션을 참고 자료로 둡니다. 여러 영역을 바꾸면 관련 지침을 함께 읽습니다. 규칙 본문은 담당 지침 한 곳에서 고치고 다른 지침에서는 연결합니다. 지침의 규칙을 프로젝트의 스택으로 구현한 모양은 [어댑터](../../adapters/README.md)에서 읽습니다.
 
 스킬·참고 자료·문서를 작성하거나 고칠 때는 [글쓰기 기준](references/writing.md)을 읽습니다. 스킬 본문과 예시에도 같은 기준을 적용합니다. 글은 직접 쓰지 않고 [글쓰기 맡기기](references/writer.md)에 따라 맡깁니다. 로고·이미지 같은 에셋은 [에셋 맡기기](references/assets.md)에 따라 맡깁니다.
 
@@ -51,7 +50,7 @@ arc42: "none"
 - [검증](references/verification.md)에 따라 바뀐 부분을 확인합니다. 수행한 검증과 남은 제한을 구분해 답합니다.
 - 작업 보고에 읽은 지침과 어댑터 파일을 적습니다.
 - 작업 중 MCP·플러그인 도구의 기능 부족이나 반복 호출을 실제 스키마로 확인하면 우회만 설명하고 끝내지 않고 [도구의 부족을 발견했을 때](references/tool-improvements.md)를 따릅니다.
-- 브랜치·커밋·PR을 다룰 때는 [Git 작업](references/git.md)을 따릅니다.
+- 브랜치·커밋·PR을 다룰 때는 [Git 작업](../webapp-project/references/git.md)을 따릅니다.
 - 커밋·푸시·게시·배포는 사용자가 허용한 범위에서만 합니다.
 
 스킬 자체가 틀렸으면 [지침 개선](playbooks/evolve.md)으로 원인을 고칩니다.

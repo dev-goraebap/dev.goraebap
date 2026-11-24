@@ -35,7 +35,7 @@ arc42: "none"
 | 항목 | 쓰는 것 |
 | --- | --- |
 | 대상 구분 | 핵심 지침(`skills/`) 또는 어댑터(`adapters/`) |
-| 고칠 파일 | 대상 경로. 예: `skills/ui-ux/references/theme.md`, `adapters/<이름>/ui-ux.md` |
+| 고칠 파일 | 대상 경로. 예: `skills/frontend-design-system/references/theme.md`, `adapters/<이름>/frontend-design-system.md` |
 | 지금 규칙 | 현재 지침이나 어댑터가 정한 기준 한 문장 |
 | 바꿀 규칙 | 새로 바꿀 기준 한 문장 |
 | 이유와 근거 | 프로젝트에서 일어난 일과 바꿀 이유 |

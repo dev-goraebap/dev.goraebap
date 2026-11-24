@@ -22,8 +22,8 @@ export function context(name, files, adaptersDir) {
       hookEventName: 'SessionStart',
       additionalContext: [
         `이 프로젝트는 Webapp 어댑터 \`${name}\`을 따릅니다(AGENTS.md의 "Webapp 어댑터" 줄).`,
-        'Webapp 지침은 스택 없는 규칙만 담습니다. 영역 지침(frontend · ui-ux · backend · api · database · architecture)을 읽을 때마다',
-        '이 어댑터에서 같은 영역의 파일을 함께 읽고, 작업 보고에 읽은 지침과 어댑터 파일을 적습니다. 어댑터와 이 프로젝트의 AGENTS.md가 다르면 AGENTS.md를 따릅니다.',
+        'Webapp 지침은 스택 없는 규칙만 담습니다. 영역 지침(webapp-project · frontend-engineering · frontend-design-system · frontend-interaction · backend-engineering)을 읽을 때마다',
+        '이 어댑터에서 스킬과 같은 이름의 파일을 함께 읽고, 작업 보고에 읽은 지침과 어댑터 파일을 적습니다. 어댑터와 이 프로젝트의 AGENTS.md가 다르면 AGENTS.md를 따릅니다.',
         ...list,
       ].join('\n'),
     },
