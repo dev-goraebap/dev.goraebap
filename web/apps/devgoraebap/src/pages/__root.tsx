@@ -45,7 +45,14 @@ export const Route = createRootRoute({
       throw redirect({ href: "/frontend/foundations/tokens", replace: true });
     }
     if (/^\/(frontend\/)?getting-started\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/frontend/agent", replace: true });
+      throw redirect({ href: "/frontend/packages", replace: true });
+    }
+    if (/^\/frontend\/agent\/?$/.test(location.pathname)) {
+      throw redirect({ href: "/sdlc/agents", replace: true });
+    }
+    const playbook = location.pathname.match(/^\/playbook(\/.*)?$/);
+    if (playbook) {
+      throw redirect({ href: `/sdlc${playbook[1] ?? ""}`, replace: true });
     }
     if (LEGACY_PATHS.test(location.pathname)) {
       throw redirect({ href: `/frontend${location.href}`, replace: true });
@@ -54,18 +61,25 @@ export const Route = createRootRoute({
   component: RootLayout,
 });
 
-const DESIGN_SYSTEM_PATHS = ["components", "overview", "foundations", "layouts"];
+const DESIGN_SYSTEM_PATHS = ["components", "overview", "packages", "foundations", "layouts"];
 
-const TOP_NAV: {
+type NavItem = {
   label: string;
-  to?: "/frontend/overview" | "/frontend/details" | "/frontend/agent";
+  to?: "/frontend/overview" | "/frontend/details" | "/sdlc" | "/sdlc/agents";
   icon: SystemIconName;
-}[] = [
-  { label: "Design System", to: "/frontend/overview", icon: "components" },
-  { label: "Engineering", icon: "code" },
-  { label: "Details", to: "/frontend/details", icon: "details" },
-  { label: "Agent", to: "/frontend/agent", icon: "rocket" },
-];
+};
+
+const WORKSPACE_NAV: Record<"frontend" | "sdlc", NavItem[]> = {
+  frontend: [
+    { label: "Design System", to: "/frontend/overview", icon: "components" },
+    { label: "Engineering", icon: "code" },
+    { label: "Details", to: "/frontend/details", icon: "details" },
+  ],
+  sdlc: [
+    { label: "Docs", to: "/sdlc", icon: "book" },
+    { label: "Agents", to: "/sdlc/agents", icon: "rocket" },
+  ],
+};
 
 function RootLayout() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
@@ -83,14 +97,16 @@ function RootLayout() {
   const isNavActive = (to: string) =>
     to === "/frontend/overview"
       ? DESIGN_SYSTEM_PATHS.some((path) => pathname.startsWith(`/frontend/${path}`))
-      : pathname.startsWith(to);
+      : to === "/sdlc"
+        ? pathname.startsWith("/sdlc") && !pathname.startsWith("/sdlc/agents")
+        : pathname.startsWith(to);
 
   const isFrontend = pathname.startsWith("/frontend");
+  const isSdlc = pathname.startsWith("/sdlc");
+  const navItems = isFrontend ? WORKSPACE_NAV.frontend : isSdlc ? WORKSPACE_NAV.sdlc : [];
   const hasDocsShell =
-    pathname.startsWith("/playbook") ||
-    (isFrontend &&
-      !pathname.startsWith("/frontend/glossary") &&
-      !pathname.startsWith("/frontend/agent"));
+    (isSdlc && !pathname.startsWith("/sdlc/agents")) ||
+    (isFrontend && !pathname.startsWith("/frontend/glossary"));
 
   return (
     <DesignConfigProvider>
@@ -102,13 +118,14 @@ function RootLayout() {
             <WorkspaceSwitcher />
 
             {/* Center Primary Nav */}
-            {isFrontend && (
+            {navItems.length > 0 && (
               <nav aria-label="주요 메뉴" className="hidden items-center gap-1 md:flex">
-                {TOP_NAV.map((item) =>
+                {navItems.map((item) =>
                   item.to ? (
                     <Link
                       key={item.label}
                       to={item.to}
+                      activeOptions={{ exact: true }}
                       aria-current={isNavActive(item.to) ? "page" : undefined}
                       className={
                         isNavActive(item.to)
@@ -142,16 +159,17 @@ function RootLayout() {
           </div>
 
           {/* Mobile Sub-nav */}
-          {isFrontend && (
+          {navItems.length > 0 && (
             <nav
               aria-label="모바일 주요 메뉴"
               className="border-border/60 flex items-center gap-1 overflow-x-auto border-t px-4 py-1.5 md:hidden"
             >
-              {TOP_NAV.map((item) =>
+              {navItems.map((item) =>
                 item.to ? (
                   <Link
                     key={item.label}
                     to={item.to}
+                    activeOptions={{ exact: true }}
                     aria-current={isNavActive(item.to) ? "page" : undefined}
                     className={
                       isNavActive(item.to)

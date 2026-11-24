@@ -11,7 +11,10 @@ export const Route = createFileRoute("/frontend/_library")({
 const GUIDE_GROUPS: DocsNavGroup[] = [
   {
     title: "디자인 시스템",
-    items: [{ label: "개요", href: "/frontend/overview", icon: "book" }],
+    items: [
+      { label: "개요", href: "/frontend/overview", icon: "book" },
+      { label: "패키지 연결", href: "/frontend/packages", icon: "code" },
+    ],
   },
   {
     title: "파운데이션",

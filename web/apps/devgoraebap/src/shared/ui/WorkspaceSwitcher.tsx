@@ -7,10 +7,10 @@ import { Wordmark } from "./Wordmark";
 
 const WORKSPACES = [
   {
-    id: "playbook",
-    label: "Playbook",
-    description: "프로젝트 구성부터 배포까지",
-    to: "/playbook",
+    id: "sdlc",
+    label: "SDLC",
+    description: "요구사항부터 배포와 운영까지",
+    to: "/sdlc",
   },
   {
     id: "frontend",

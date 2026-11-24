@@ -7,7 +7,7 @@ export const Route = createFileRoute("/")({
 });
 
 const WORKSPACE_LINKS = [
-  { label: "Playbook", to: "/playbook" },
+  { label: "SDLC", to: "/sdlc" },
   { label: "Frontend", to: "/frontend/overview" },
 ] as const;
 
@@ -24,7 +24,7 @@ function WorkshopPage() {
           <Wordmark className="wordmark-write h-10 w-auto sm:h-12" />
         </h1>
         <p className="workshop-reveal text-muted-foreground mt-2 text-sm break-keep [animation-delay:120ms] sm:text-base">
-          웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실
+          소프트웨어를 만들며 다듬어 온 방식을 정리해 두는 작업실
         </p>
         <nav
           aria-label="워크스페이스"

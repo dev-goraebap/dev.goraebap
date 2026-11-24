@@ -1,6 +1,6 @@
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 
-interface PlaybookSection {
+interface SdlcSection {
   id: string;
   title?: string;
   paragraphs: string[];
@@ -8,23 +8,95 @@ interface PlaybookSection {
   table?: { after: number; columns: string[]; rows: string[][] };
 }
 
-interface PlaybookDoc {
+interface SdlcDoc {
   slug: string;
   title: string;
   icon: SystemIconName;
   summary: string;
-  sections: PlaybookSection[];
+  sections: SdlcSection[];
   next?: { label: string; to?: "/frontend/overview" };
 }
 
-export interface PlaybookGroup {
+export interface SdlcGroup {
   title: string;
-  docs: PlaybookDoc[];
+  docs: SdlcDoc[];
 }
 
-export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
+export const SDLC_GROUPS: SdlcGroup[] = [
   {
-    title: "프로젝트",
+    title: "시작하기",
+    docs: [
+      {
+        slug: "overview",
+        title: "개요",
+        icon: "book",
+        summary:
+          "SDLC(Software Development Life Cycle)는 요구사항부터 배포와 운영까지 소프트웨어를 만드는 흐름입니다.",
+        sections: [
+          {
+            id: "story",
+            paragraphs: [
+              "이 공간은 그 흐름을 단계별로 나눠, 제가 소프트웨어를 만들며 다듬어 온 방식을 정리합니다. 각 단계는 한 번 지나가고 끝나지 않고, 운영하며 생긴 변경이 다시 요구사항으로 돌아옵니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "요구사항에서 배포와 운영까지, 그리고 다음 변경으로 이어지는 흐름입니다.",
+              code: `flowchart LR
+  req["요구사항"] --> design["설계"] --> dev["개발"] --> scm["형상관리"] --> ops["배포 · 운영"]
+  ops -. "다음 변경" .-> req`,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "요구사항",
+    docs: [
+      {
+        slug: "requirements",
+        title: "요구사항 관리",
+        icon: "file",
+        summary:
+          "이슈 트래킹 도구와 저장소 중 한곳에만 요구사항과 결정을 기록해 기준이 갈라지지 않게 관리합니다.",
+        sections: [
+          {
+            id: "one-place",
+            title: "기록은 한곳에만",
+            paragraphs: [
+              "요구사항과 결정은 반드시 한곳에만 기록합니다. 같은 내용을 두 곳에서 따로 관리하면 시간이 지나며 내용이 어긋나고 어느 쪽이 맞는지 알 수 없게 됩니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption:
+                "이슈 트래킹 도구가 있으면 그곳에, 없으면 저장소에 기록합니다. 두 곳에 나눠 적지 않습니다.",
+              code: `flowchart TB
+  start{"이슈 트래킹 도구가 있는가"}
+  start -- "있음" --> tracker["이슈 트래킹에만 기록<br/>에이전트는 MCP로 읽고 씀"]
+  start -- "없음" --> repo["같은 저장소의 Markdown과 Git<br/>요구사항 · 설계 · 결정 기록"]`,
+            },
+          },
+          {
+            id: "with-tracker",
+            title: "이슈 트래킹 도구가 있을 때",
+            paragraphs: [
+              "이슈 트래킹 도구가 있는 프로젝트라면 그곳을 원본으로 쓰고 저장소에 같은 내용을 복제하지 않습니다. AI 에이전트는 이슈 트래킹 도구의 MCP를 통해 이슈를 직접 읽고 씁니다. 브랜치 이름에 이슈 키를 넣어 코드 변경과 이슈를 연결합니다.",
+            ],
+          },
+          {
+            id: "in-repository",
+            title: "저장소에서 관리할 때",
+            paragraphs: [
+              "이슈 트래킹 도구가 없다면 같은 저장소에 Markdown으로 요구사항, 설계, 결정 기록을 두고 코드와 같은 커밋에 담습니다. 요구사항에는 제품이 지켜야 할 동작과 수용 조건을, 설계에는 기술 구조를, 결정 기록에는 맥락과 선택, 검토했다 버린 대안과 이유를 적습니다.",
+              "문서마다 고유 ID를 두면 파일 위치가 바뀌어도 이력을 따라갈 수 있습니다. 대화 중 시행착오마다 문서를 고치지 않고 작업을 마친 시점에 정리된 문서와 코드를 한 커밋으로 남기며, 과거 이력을 거슬러 문서화하기보다 새로 바꾸는 기능부터 시작합니다.",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "설계",
     docs: [
       {
         slug: "repository",
@@ -102,6 +174,11 @@ export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    title: "개발",
+    docs: [
       {
         slug: "frontend",
         title: "프론트엔드 개발",
@@ -164,6 +241,50 @@ export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
         ],
       },
       {
+        slug: "ai-context",
+        title: "AI 맥락",
+        icon: "details",
+        summary:
+          "에이전트 지침, 결정 기록, 저장소 밖 임시 문서를 역할에 따라 나누어 작업 맥락을 이어 갑니다.",
+        sections: [
+          {
+            id: "instructions",
+            title: "지침 문서",
+            paragraphs: [
+              "에이전트 지침의 원본은 AGENTS.md 파일 하나로 두고, Claude Code용 CLAUDE.md는 @AGENTS.md 한 줄로 같은 파일을 가리킵니다. 지침 파일에는 매번 알아야 할 핵심 규칙만 남기고, 자세한 기준은 참고 문서로 나누어 필요할 때 읽게 합니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "항상 읽는 지침에서 필요한 문서로 이어지게 둡니다.",
+              code: `flowchart LR
+  agents["AGENTS.md<br/>항상 읽는 지침"] --> refs["참고 문서<br/>필요할 때 읽음"]
+  agents --> decisions["결정 기록<br/>저장소 안"]
+  agents --> handoff["이어받기 · 임시 문서<br/>저장소 밖"]`,
+            },
+          },
+          {
+            id: "decisions",
+            title: "결정 기록",
+            paragraphs: [
+              "되돌리기 어려운 결정과 검토했다 기각한 대안은 저장소의 결정 기록인 docs/decisions.md에 남깁니다. 세션이 끝나면 대화 속 결정은 사라지고, 다음 작업자가 배경을 모르면 같은 논의를 반복하거나 기존 결정을 되돌릴 수 있기 때문입니다.",
+            ],
+          },
+          {
+            id: "outside-repository",
+            title: "저장소 밖에 두는 문서",
+            paragraphs: [
+              "Git으로 관리하지 않는 임시 문서는 저장소 밖 ~/tmp/<프로젝트>/ 폴더에 둡니다. 작업을 다른 세션으로 넘겨야 할 때도 이어받기 문서를 저장소 밖에 남깁니다.",
+              "이어받기 문서에는 원한 결과, 결정과 기각한 안, 바꾼 파일, 다음 단계, 검증 상태, 남은 질문을 적고 비밀값은 넣지 않습니다.",
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "형상관리",
+    docs: [
+      {
         slug: "source-control",
         title: "형상관리",
         icon: "route",
@@ -210,6 +331,11 @@ export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
           },
         ],
       },
+    ],
+  },
+  {
+    title: "배포 · 운영",
+    docs: [
       {
         slug: "deployment",
         title: "배포",
@@ -252,96 +378,12 @@ export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
       },
     ],
   },
-  {
-    title: "작업 관리",
-    docs: [
-      {
-        slug: "requirements",
-        title: "요구사항 관리",
-        icon: "file",
-        summary:
-          "이슈 트래킹 도구와 저장소 중 한곳에만 요구사항과 결정을 기록해 기준이 갈라지지 않게 관리합니다.",
-        sections: [
-          {
-            id: "one-place",
-            title: "기록은 한곳에만",
-            paragraphs: [
-              "요구사항과 결정은 반드시 한곳에만 기록합니다. 같은 내용을 두 곳에서 따로 관리하면 시간이 지나며 내용이 어긋나고 어느 쪽이 맞는지 알 수 없게 됩니다.",
-            ],
-            diagram: {
-              after: 0,
-              caption:
-                "이슈 트래킹 도구가 있으면 그곳에, 없으면 저장소에 기록합니다. 두 곳에 나눠 적지 않습니다.",
-              code: `flowchart TB
-  start{"이슈 트래킹 도구가 있는가"}
-  start -- "있음" --> tracker["이슈 트래킹에만 기록<br/>에이전트는 MCP로 읽고 씀"]
-  start -- "없음" --> repo["같은 저장소의 Markdown과 Git<br/>요구사항 · 설계 · 결정 기록"]`,
-            },
-          },
-          {
-            id: "with-tracker",
-            title: "이슈 트래킹 도구가 있을 때",
-            paragraphs: [
-              "이슈 트래킹 도구가 있는 프로젝트라면 그곳을 원본으로 쓰고 저장소에 같은 내용을 복제하지 않습니다. AI 에이전트는 이슈 트래킹 도구의 MCP를 통해 이슈를 직접 읽고 씁니다. 브랜치 이름에 이슈 키를 넣어 코드 변경과 이슈를 연결합니다.",
-            ],
-          },
-          {
-            id: "in-repository",
-            title: "저장소에서 관리할 때",
-            paragraphs: [
-              "이슈 트래킹 도구가 없다면 같은 저장소에 Markdown으로 요구사항, 설계, 결정 기록을 두고 코드와 같은 커밋에 담습니다. 요구사항에는 제품이 지켜야 할 동작과 수용 조건을, 설계에는 기술 구조를, 결정 기록에는 맥락과 선택, 검토했다 버린 대안과 이유를 적습니다.",
-              "문서마다 고유 ID를 두면 파일 위치가 바뀌어도 이력을 따라갈 수 있습니다. 대화 중 시행착오마다 문서를 고치지 않고 작업을 마친 시점에 정리된 문서와 코드를 한 커밋으로 남기며, 과거 이력을 거슬러 문서화하기보다 새로 바꾸는 기능부터 시작합니다.",
-            ],
-          },
-        ],
-      },
-      {
-        slug: "ai-context",
-        title: "AI 맥락",
-        icon: "details",
-        summary:
-          "에이전트 지침, 결정 기록, 저장소 밖 임시 문서를 역할에 따라 나누어 작업 맥락을 이어 갑니다.",
-        sections: [
-          {
-            id: "instructions",
-            title: "지침 문서",
-            paragraphs: [
-              "에이전트 지침의 원본은 AGENTS.md 파일 하나로 두고, Claude Code용 CLAUDE.md는 @AGENTS.md 한 줄로 같은 파일을 가리킵니다. 지침 파일에는 매번 알아야 할 핵심 규칙만 남기고, 자세한 기준은 참고 문서로 나누어 필요할 때 읽게 합니다.",
-            ],
-            diagram: {
-              after: 0,
-              caption: "항상 읽는 지침에서 필요한 문서로 이어지게 둡니다.",
-              code: `flowchart LR
-  agents["AGENTS.md<br/>항상 읽는 지침"] --> refs["참고 문서<br/>필요할 때 읽음"]
-  agents --> decisions["결정 기록<br/>저장소 안"]
-  agents --> handoff["이어받기 · 임시 문서<br/>저장소 밖"]`,
-            },
-          },
-          {
-            id: "decisions",
-            title: "결정 기록",
-            paragraphs: [
-              "되돌리기 어려운 결정과 검토했다 기각한 대안은 저장소의 결정 기록인 docs/decisions.md에 남깁니다. 세션이 끝나면 대화 속 결정은 사라지고, 다음 작업자가 배경을 모르면 같은 논의를 반복하거나 기존 결정을 되돌릴 수 있기 때문입니다.",
-            ],
-          },
-          {
-            id: "outside-repository",
-            title: "저장소 밖에 두는 문서",
-            paragraphs: [
-              "Git으로 관리하지 않는 임시 문서는 저장소 밖 ~/tmp/<프로젝트>/ 폴더에 둡니다. 작업을 다른 세션으로 넘겨야 할 때도 이어받기 문서를 저장소 밖에 남깁니다.",
-              "이어받기 문서에는 원한 결과, 결정과 기각한 안, 바꾼 파일, 다음 단계, 검증 상태, 남은 질문을 적고 비밀값은 넣지 않습니다.",
-            ],
-          },
-        ],
-      },
-    ],
-  },
 ];
 
-export const PLAYBOOK_DOCS = PLAYBOOK_GROUPS.flatMap((group) =>
+export const SDLC_DOCS = SDLC_GROUPS.flatMap((group) =>
   group.docs.map((doc) => ({ ...doc, group: group.title })),
 );
 
-export function getPlaybookDoc(slug: string) {
-  return PLAYBOOK_DOCS.find((doc) => doc.slug === slug);
+export function getSdlcDoc(slug: string) {
+  return SDLC_DOCS.find((doc) => doc.slug === slug);
 }

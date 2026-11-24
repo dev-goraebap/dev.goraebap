@@ -4,11 +4,10 @@ import { Wordmark } from "./Wordmark";
 const FRONTEND_LINKS = [
   { label: "Design System", to: "/frontend/overview" as const },
   { label: "Details", to: "/frontend/details" as const },
-  { label: "Agent", to: "/frontend/agent" as const },
 ];
 
 const WORKSPACE_LINKS = [
-  { label: "Playbook", to: "/playbook" as const },
+  { label: "SDLC", to: "/sdlc" as const },
   { label: "Frontend", to: "/frontend/overview" as const },
 ];
 

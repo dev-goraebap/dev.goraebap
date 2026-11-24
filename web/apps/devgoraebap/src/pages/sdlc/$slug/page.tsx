@@ -11,16 +11,16 @@ import {
   TableRow,
 } from "@goraebap/ui-react/components/table";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { getPlaybookDoc } from "@/entities/playbook-doc";
+import { getSdlcDoc } from "@/entities/sdlc-doc";
 import { MermaidDiagram, PageState } from "@/shared/ui";
 
-export const Route = createFileRoute("/playbook/$slug/")({
-  component: PlaybookDocPage,
+export const Route = createFileRoute("/sdlc/$slug/")({
+  component: SdlcDocPage,
 });
 
-function PlaybookDocPage() {
+function SdlcDocPage() {
   const { slug } = Route.useParams();
-  const doc = getPlaybookDoc(slug);
+  const doc = getSdlcDoc(slug);
 
   if (!doc) {
     return (
@@ -29,11 +29,11 @@ function PlaybookDocPage() {
         title="문서를 찾을 수 없습니다"
         action={
           <Link
-            to="/playbook/$slug"
-            params={{ slug: "repository" }}
+            to="/sdlc/$slug"
+            params={{ slug: "overview" }}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            Playbook 처음으로 돌아가기
+            SDLC 개요로 돌아가기
           </Link>
         }
       />

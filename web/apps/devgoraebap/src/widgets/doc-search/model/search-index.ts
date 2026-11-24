@@ -1,17 +1,17 @@
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { DETAIL_DOCS } from "@/entities/detail-doc";
 import { LAYOUT_DOCS } from "@/entities/layout-doc";
-import { PLAYBOOK_DOCS } from "@/entities/playbook-doc";
+import { SDLC_DOCS } from "@/entities/sdlc-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
-  "Playbook",
+  "SDLC",
   "디자인 시스템",
   "파운데이션",
   "컴포넌트",
   "레이아웃",
   "Details",
-  "Agent",
+  "Agents",
   "용어집",
 ] as const;
 
@@ -26,7 +26,7 @@ export interface DocEntry {
 }
 
 const MAX_RESULTS = 40;
-const SUGGESTED_GROUPS: DocEntry["group"][] = ["디자인 시스템", "파운데이션", "Details", "Agent"];
+const SUGGESTED_GROUPS: DocEntry["group"][] = ["디자인 시스템", "파운데이션", "Details", "Agents"];
 
 const page = (
   group: DocEntry["group"],
@@ -36,15 +36,16 @@ const page = (
 ): DocEntry => ({ id: href, group, title, href, description, keywords: description });
 
 const DOC_ENTRIES: DocEntry[] = [
-  ...PLAYBOOK_DOCS.map((doc) => ({
-    id: `playbook:${doc.slug}`,
-    group: "Playbook" as const,
+  ...SDLC_DOCS.map((doc) => ({
+    id: `sdlc:${doc.slug}`,
+    group: "SDLC" as const,
     title: doc.title,
-    href: `/playbook/${doc.slug}`,
+    href: `/sdlc/${doc.slug}`,
     description: doc.summary,
     keywords: `${doc.slug} ${doc.group} ${doc.summary} ${doc.sections.map((section) => `${section.title ?? ""} ${section.paragraphs.join(" ")}`).join(" ")}`,
   })),
   page("디자인 시스템", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
+  page("디자인 시스템", "패키지 연결", "/frontend/packages", "패키지, 스타일, 색상 테마 연결"),
   page(
     "파운데이션",
     "디자인 토큰",
@@ -90,7 +91,7 @@ const DOC_ENTRIES: DocEntry[] = [
       keywords: `${doc.title} ${section.problem} ${section.guidance}`,
     })),
   ]),
-  page("Agent", "Agent", "/frontend/agent", "frontend@dev-goraebap 플러그인과 패키지 연결"),
+  page("Agents", "Agents", "/sdlc/agents", "webapp@dev-goraebap 플러그인 설치와 범위"),
   page("용어집", "용어집", "/frontend/glossary", "문서에 쓰는 용어 모음"),
   ...Object.entries(GLOSSARY).map(([key, entry]) => ({
     id: `glossary:${key}`,
