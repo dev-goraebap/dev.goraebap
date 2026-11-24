@@ -3,3 +3,4 @@ dist/
 .tanstack/
 *.tsbuildinfo
 **/routeTree.gen.ts
+.angular/

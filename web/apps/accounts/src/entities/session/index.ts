@@ -1,14 +1,2 @@
-export {
-  completeOnboarding,
-  createFirstAdmin,
-  getCurrentUser,
-  getSetupState,
-  logoutAllSessions,
-  logoutCurrentSession,
-  readProblemMessage,
-  requestOtpCode,
-  sendAuthMutation,
-  updateMyName,
-  verifyOtpCode,
-  type AuthMe,
-} from "./api/auth-api";
+export { SESSION_KEY, SessionApi, type AuthMe } from "./api/session";
+export { signedIn, signedOut } from "./model/guards";

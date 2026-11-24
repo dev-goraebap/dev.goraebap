@@ -12,6 +12,7 @@ export default tseslint.config(
       "**/node_modules/**",
       "**/public/r/**",
       "**/routeTree.gen.ts",
+      "**/.angular/**",
       "apps/productivity/**",
     ],
   },

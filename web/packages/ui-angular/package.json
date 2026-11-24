@@ -1,0 +1,30 @@
+{
+  "name": "@goraebap/ui-angular",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@angular/cdk": "catalog:",
+    "@angular/core": "catalog:",
+    "@angular/aria": "catalog:"
+  },
+  "dependencies": {
+    "@goraebap/design-system": "workspace:*",
+    "tslib": "catalog:"
+  },
+  "devDependencies": {
+    "@angular/aria": "catalog:",
+    "@angular/cdk": "catalog:",
+    "@angular/common": "catalog:",
+    "@angular/core": "catalog:",
+    "rxjs": "catalog:",
+    "typescript": "catalog:"
+  }
+}
