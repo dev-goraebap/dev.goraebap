@@ -1,10 +1,9 @@
 import { Link } from "@tanstack/react-router";
+import { Wordmark } from "./Wordmark";
 
 const FOOTER_LINKS = [
-  { label: "컴포넌트", to: "/components" as const },
-  { label: "레이아웃", to: "/layouts" as const },
-  { label: "디테일", to: "/details" as const },
-  { label: "색상 테마", to: "/foundations/color-themes" as const },
+  { label: "Design System", to: "/frontend/overview" as const },
+  { label: "디테일", to: "/frontend/details" as const },
 ];
 
 export function SiteFooter({ isContained = true }: { isContained?: boolean }) {
@@ -15,7 +14,7 @@ export function SiteFooter({ isContained = true }: { isContained?: boolean }) {
           isContained ? "mx-auto max-w-7xl px-6" : ""
         }`}
       >
-        <span className="text-foreground font-medium">goraebap/design</span>
+        <Wordmark className="text-foreground h-4.5 w-auto self-start sm:self-auto" />
         <div className="flex flex-wrap items-center gap-4">
           {FOOTER_LINKS.map((item) => (
             <Link key={item.to} to={item.to} className="hover:text-foreground transition-colors">

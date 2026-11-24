@@ -2,6 +2,7 @@ export function BrandMark({ className }: { className?: string }) {
   return (
     <svg viewBox="70 53 376 376" aria-hidden="true" className={className}>
       <path
+        pathLength={1}
         fill="none"
         stroke="currentColor"
         strokeWidth="32"
@@ -10,6 +11,7 @@ export function BrandMark({ className }: { className?: string }) {
         d="M 296 232 C 245 189 153 179 110 226 C 65 277 97 355 168 378 C 220 394 282 366 292 320 C 316 246 216 226 196 290 C 168 350 286 378 346 324 C 367 302 380 277 380 253"
       />
       <path
+        pathLength={1}
         fill="none"
         stroke="currentColor"
         strokeWidth="28"

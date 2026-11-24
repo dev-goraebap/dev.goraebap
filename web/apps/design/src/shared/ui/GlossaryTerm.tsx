@@ -33,7 +33,7 @@ export function GlossaryTerm({ id, term, korean, definition, children }: Glossar
         {korean && <p className="text-muted-foreground mt-0.5 text-[11px]">{term}</p>}
         <PopoverDescription className="break-keep">{definition}</PopoverDescription>
         <Link
-          to="/glossary"
+          to="/frontend/glossary"
           hash={id}
           className="text-muted-foreground hover:text-foreground mt-2.5 inline-flex items-center gap-1 text-[11px] font-medium transition-colors"
         >

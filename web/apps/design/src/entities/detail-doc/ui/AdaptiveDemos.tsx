@@ -95,7 +95,7 @@ export function AdaptiveMatrix() {
             <tr key={row.slug}>
               <td className="px-4 py-2.5 font-medium">
                 <Link
-                  to="/components/$slug"
+                  to="/frontend/components/$slug"
                   params={{ slug: row.slug }}
                   className="underline-offset-2 hover:underline"
                 >

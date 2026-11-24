@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { IconProvider, type IconSetId } from "@goraebap/ui-react/icons";
 
-export type ThemePresetId = "app" | "editorial" | "ocean" | "forest" | "terracotta";
+type ThemePresetId = "app" | "editorial" | "ocean" | "forest" | "terracotta";
 export type RadiusOptionId = "0rem" | "0.25rem" | "0.5rem" | "0.75rem" | "1rem";
 export type BodyFontId = "pretendard" | "system";
 export type HeadingFontId = "same" | "serif" | "mono";
