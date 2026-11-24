@@ -196,7 +196,7 @@ export function DocsShell({ label, groups, children }: DocsShellProps) {
 
       <aside
         aria-label={label}
-        className="relative hidden w-60 shrink-0 flex-col pt-10 pb-6 lg:sticky lg:top-14 lg:flex lg:h-[calc(100vh-3.5rem)]"
+        className="relative hidden w-60 shrink-0 flex-col pt-10 pb-6 lg:sticky lg:top-[calc(3.5rem+1px)] lg:flex lg:h-[calc(100dvh-3.5rem-1px)]"
       >
         <div
           aria-hidden="true"
@@ -215,7 +215,7 @@ export function DocsShell({ label, groups, children }: DocsShellProps) {
         </nav>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col lg:min-h-[calc(100vh-3.5rem)]">
+      <div className="flex min-w-0 flex-1 flex-col lg:min-h-[calc(100dvh-3.5rem-1px)]">
         <main className="flex-1 pb-10 [overflow-wrap:break-word] lg:py-10">{children}</main>
         <SiteFooter isContained={false} />
       </div>

@@ -1,17 +1,19 @@
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 
+interface PlaybookSection {
+  id: string;
+  title?: string;
+  paragraphs: string[];
+  diagram?: { after: number; code: string; caption: string };
+  table?: { after: number; columns: string[]; rows: string[][] };
+}
+
 interface PlaybookDoc {
   slug: string;
   title: string;
   icon: SystemIconName;
   summary: string;
-  topics: string[];
-  sections?: {
-    id: string;
-    title?: string;
-    paragraphs: string[];
-    diagram?: { after: number; code: string; caption: string };
-  }[];
+  sections: PlaybookSection[];
   next?: { label: string; to?: "/frontend/overview" };
 }
 
@@ -22,18 +24,17 @@ export interface PlaybookGroup {
 
 export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
   {
-    title: "시작하기",
+    title: "프로젝트",
     docs: [
       {
-        slug: "overview",
-        title: "개요",
-        icon: "book",
+        slug: "repository",
+        title: "레포지토리 구성",
+        icon: "workspace",
         summary:
-          "프로젝트를 하나의 저장소로 꾸리게 된 이유와, 구조만큼은 직접 이해하며 가져가려는 생각을 담았습니다.",
-        topics: ["이 공간에서 다루는 범위", "frontend, backend 공간과의 관계", "문서를 읽는 순서"],
+          "제품 하나를 저장소 하나로 꾸리고, 프론트엔드 앱이 늘어날 때 안쪽을 나누는 제 기준을 정리합니다.",
         sections: [
           {
-            id: "common",
+            id: "story",
             diagram: {
               after: 0,
               caption: "프론트엔드와 백엔드를 한 저장소에서 관리합니다.",
@@ -55,144 +56,61 @@ export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
               "AI 에이전트가 순식간에 일상에 녹아들며 직접 코드를 치지 않는 시점이 왔습니다. 그럼에도 프로젝트의 구조만큼은 제가 이해하는 방식대로 흘러가야만 속이 편안합니다.",
             ],
           },
+          {
+            id: "one-repo",
+            title: "제품 하나에 저장소 하나",
+            paragraphs: [
+              "프론트엔드만 다루는 프로젝트라면 저장소에 바로 프론트엔드를 구성하고, 백엔드만 다루는 프로젝트라면 백엔드만 두면 됩니다. 저는 제품 하나당 저장소 하나를 기준으로 삼고 있어서, 프론트엔드와 백엔드가 함께 있는 프로젝트에서는 저장소 안을 client와 server 또는 web과 server처럼 폴더로 나눕니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "제품 저장소 안에서 프론트엔드와 백엔드를 폴더로 나눕니다.",
+              code: `flowchart TB
+  repo["제품 저장소"] --> web["web · 프론트엔드"]
+  repo --> server["server · 백엔드"]`,
+            },
+          },
+          {
+            id: "multiple-frontends",
+            title: "프론트엔드가 둘 이상일 때",
+            paragraphs: [
+              "관리자 페이지를 따로 떼어 배포해야 하는 경우처럼 프론트엔드 앱이 둘 이상이면 web 안을 apps와 packages로 나누는 구성을 씁니다. 패키지 매니저의 워크스페이스 기능을 쓰는 모노레포에서 흔히 쓰는 apps/packages 구조입니다.",
+              "각각 배포하는 앱은 apps에 두고, 여러 앱이 함께 쓰는 UI와 공통 설정은 packages에 모읍니다. 이때도 백엔드는 단일 서버를 그대로 유지해도 문제가 없습니다. 이 사이트가 들어 있는 저장소 역시 web/apps와 web/packages로 나뉘어 있습니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption:
+                "프론트엔드 앱이 둘 이상이면 web 안을 apps와 packages로 나눕니다. 백엔드는 하나로 둡니다.",
+              code: `flowchart TB
+  repo["제품 저장소"] --> web["web"]
+  repo --> server["server · 단일 백엔드"]
+  web --> apps["apps"]
+  web --> packages["packages"]
+  apps --> site["site · 사용자 화면"]
+  apps --> admin["admin · 관리자 화면"]
+  packages --> ui["ui · 공용 컴포넌트"]
+  site -.-> ui
+  admin -.-> ui`,
+            },
+          },
+          {
+            id: "manage-together",
+            title: "나누기보다 한곳에서",
+            paragraphs: [
+              "혼자 프로젝트를 관리할 때는 프로젝트를 어떻게 분리할지보다 어떻게 한 프로젝트 안에서 관리할지를 먼저 묻습니다.",
+            ],
+          },
         ],
       },
-      {
-        slug: "big-picture",
-        title: "전체 그림",
-        icon: "layouts",
-        summary: "프로젝트 구성부터 배포까지 각 단계가 어떻게 이어지는지 다룹니다.",
-        topics: ["프로젝트의 시작부터 운영까지의 흐름", "단계별로 정해 두는 기준"],
-      },
-    ],
-  },
-  {
-    title: "프로젝트 구성",
-    docs: [
-      {
-        slug: "monorepo",
-        title: "모노레포",
-        icon: "workspace",
-        summary: "여러 앱과 패키지를 한 저장소에서 관리하는 구성을 다룹니다.",
-        topics: ["모노레포를 쓰는 기준", "폴더 구조", "패키지 매니저와 작업 실행"],
-      },
-      {
-        slug: "package-boundaries",
-        title: "패키지 경계",
-        icon: "components",
-        summary: "앱과 공용 패키지의 책임을 나누는 기준을 다룹니다.",
-        topics: ["공용 패키지로 올리는 기준", "의존 방향", "패키지 공개 범위"],
-      },
-      {
-        slug: "shared-config",
-        title: "공통 설정",
-        icon: "code",
-        summary: "저장소 전체가 함께 쓰는 개발 도구 설정을 다룹니다.",
-        topics: ["TypeScript 설정 공유", "검사 도구의 공통 기준", "환경 변수 관리"],
-      },
-    ],
-  },
-  {
-    title: "형상관리",
-    docs: [
-      {
-        slug: "branching",
-        title: "브랜치 전략",
-        icon: "route",
-        summary: "작업을 나누고 합치는 브랜치 운영 방식을 다룹니다.",
-        topics: ["기본 브랜치 운영", "작업 브랜치를 쓰는 기준", "병합 방식"],
-      },
-      {
-        slug: "commits",
-        title: "커밋 규칙",
-        icon: "check",
-        summary: "변경 이력을 읽기 쉽게 남기는 기준을 다룹니다.",
-        topics: ["커밋 메시지 형식", "커밋을 나누는 단위", "공개 저장소에 넣지 않는 정보"],
-      },
-      {
-        slug: "releases",
-        title: "릴리스와 버전",
-        icon: "file",
-        summary: "변경을 묶어 내보내고 버전을 매기는 방식을 다룹니다.",
-        topics: ["버전을 올리는 기준", "변경 내역 관리", "패키지와 앱의 릴리스 차이"],
-      },
-    ],
-  },
-  {
-    title: "AI Agent",
-    docs: [
-      {
-        slug: "context",
-        title: "맥락 관리",
-        icon: "details",
-        summary: "AI 에이전트가 작업에 필요한 맥락을 잃지 않게 관리하는 방식을 다룹니다.",
-        topics: [
-          "항상 읽는 맥락과 필요할 때 읽는 맥락",
-          "긴 작업의 이어받기",
-          "저장소 밖 임시 문서",
-        ],
-      },
-      {
-        slug: "instructions",
-        title: "지침 문서",
-        icon: "book",
-        summary: "에이전트가 따르는 프로젝트 지침을 쓰고 유지하는 방식을 다룹니다.",
-        topics: ["지침 문서의 구조", "공통 지침과 프로젝트 규칙", "지침을 최신으로 유지하기"],
-      },
-      {
-        slug: "decisions",
-        title: "결정 기록",
-        icon: "file",
-        summary: "되돌리기 어려운 결정과 기각한 대안을 남기는 방식을 다룹니다.",
-        topics: ["기록할 결정의 기준", "기록 형식", "다음 작업자에게 넘기기"],
-      },
-      {
-        slug: "delegation",
-        title: "작업 위임과 검증",
-        icon: "transition",
-        summary: "에이전트에게 일을 맡기고 결과를 확인하는 방식을 다룹니다.",
-        topics: ["맡길 일과 직접 판단할 일", "역할별 에이전트 나누기", "결과 검증"],
-      },
-    ],
-  },
-  {
-    title: "배포",
-    docs: [
-      {
-        slug: "environments",
-        title: "환경 분리",
-        icon: "desktop",
-        summary: "개발과 운영 환경을 나누고 설정을 관리하는 방식을 다룹니다.",
-        topics: ["환경을 나누는 기준", "환경별 설정", "비밀 값 관리"],
-      },
-      {
-        slug: "deployment",
-        title: "배포 방식",
-        icon: "rocket",
-        summary: "빌드한 결과를 서버에 올리는 절차를 다룹니다.",
-        topics: ["빌드와 배포 절차", "배포 전 확인", "자동화 범위"],
-      },
-      {
-        slug: "rollback",
-        title: "롤백",
-        icon: "reset",
-        summary: "배포에 문제가 생겼을 때 되돌리는 방식을 다룹니다.",
-        topics: ["되돌리는 기준", "롤백 절차", "데이터 변경이 있을 때의 주의점"],
-      },
-    ],
-  },
-  {
-    title: "앱 구성",
-    docs: [
       {
         slug: "frontend",
-        title: "프론트엔드",
+        title: "프론트엔드 개발",
         icon: "components",
         summary: "프론트엔드를 분리했다가 걷어 내고, 다시 분리하기까지의 경험을 담았습니다.",
-        topics: ["기술 구성", "폴더 구조", "디자인 시스템 연결"],
+        next: { label: "frontend 공간으로 이동", to: "/frontend/overview" },
         sections: [
           {
-            id: "frontend",
+            id: "story",
             diagram: {
               after: 3,
               caption: "프론트엔드를 분리했다가 걷어 내고, 다시 분리하기까지의 흐름입니다.",
@@ -210,17 +128,16 @@ export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
             ],
           },
         ],
-        next: { label: "frontend 공간으로 이동", to: "/frontend/overview" },
       },
       {
         slug: "backend",
-        title: "백엔드",
+        title: "백엔드 개발",
         icon: "code",
         summary: "백엔드 기술을 고르고 구조를 고민해 온 과정을 담았습니다.",
-        topics: ["기술 구성", "모듈 구조", "API와 데이터"],
+        next: { label: "backend 공간 준비 중" },
         sections: [
           {
-            id: "backend",
+            id: "story",
             diagram: {
               after: 2,
               caption: "기능을 먼저 나누고, 하위 도메인 사이는 한 방향으로만 참조하려 합니다.",
@@ -245,7 +162,177 @@ export const PLAYBOOK_GROUPS: PlaybookGroup[] = [
             ],
           },
         ],
-        next: { label: "backend 공간 준비 중" },
+      },
+      {
+        slug: "source-control",
+        title: "형상관리",
+        icon: "route",
+        summary:
+          "브랜치 이름과 병합 흐름, 커밋 단위, 릴리스 패치노트를 남기는 제 기준을 정리합니다.",
+        sections: [
+          {
+            id: "branching",
+            title: "브랜치 전략",
+            paragraphs: [
+              "브랜치는 GitHub Flow를 따라 기본 브랜치인 main 최신에서 작업 브랜치를 따고, 한 브랜치에는 한 가지 일만 담습니다. 개인이나 단독 작업에서는 PR을 강제하지 않고 기본 브랜치에 직접 커밋하거나 로컬에서 바로 합치지만, 팀이나 협업 저장소에서는 PR을 거쳐 합칩니다.",
+              "브랜치 이름은 Conventional Branch 형식을 따라 <목적>/<짧은 설명>으로 짓습니다. 설명은 영어 소문자, 숫자, 하이픈으로 두세 단어에서 다섯 단어 안팎으로 쓰고, 이슈 키가 있으면 설명 앞에 붙입니다. 에이전트나 도구, 사람 이름은 접두사로 쓰지 않습니다.",
+            ],
+            table: {
+              after: 0,
+              columns: ["접두사", "쓰는 경우"],
+              rows: [
+                ["feature", "새 기능, 제품 동작 변경"],
+                ["fix", "버그 수정"],
+                ["refactor", "동작을 유지하는 구조 변경"],
+                ["docs", "문서와 지침만 바꿀 때"],
+                ["chore", "빌드, 도구, 의존성, 설정"],
+                ["hotfix", "배포본의 긴급 수정, 배포 브랜치를 쓸 때만"],
+                ["release", "배포 준비, 프로젝트가 쓸 때만"],
+              ],
+            },
+          },
+          {
+            id: "commits",
+            title: "커밋 규칙",
+            paragraphs: [
+              "커밋은 하나의 논리적 변경 단위로 나누고, 무관한 포맷 변경이나 별개의 리팩터링을 한 커밋에 섞지 않습니다. 반면 스키마, API 계약, 생성 산출물처럼 원본과 함께 맞아야 하는 파일은 같은 커밋에 담습니다.",
+              "커밋 메시지는 프로젝트에 정해진 형식이 있으면 그 형식을 우선 따릅니다. 이 저장소에서는 Conventional Commits 형식에 맞춰 유형과 범위를 적고 한국어 제목을 붙이며, 판단 배경이 필요할 때만 본문에 이유를 남깁니다. AI 에이전트와 함께 만든 커밋은 Co-Authored-By 트레일러로 표시합니다.",
+              "커밋과 푸시는 허용된 범위에서만 진행하고, 공개 저장소에는 서버 주소나 접속 정보 같은 비밀값을 넣지 않고 Git에서 제외한 파일에 둡니다.",
+            ],
+          },
+          {
+            id: "releases",
+            title: "릴리스와 버전",
+            paragraphs: [
+              "버전을 올릴 때는 패치노트 맨 앞에 해당 버전 항목을 추가하고, 절 제목은 Added, Changed, Removed, Fixed 네 가지만 씁니다. 내부 구현 정리보다 사용자에게 보이는 변경만 적고, README에는 버전 번호를 적지 않습니다.",
+              "한 번 게시한 버전은 덮어쓰지 않고 수정이 필요하면 새 수정 버전을 발급합니다. 게시 전에는 모의 실행으로 배포 패키지에 포함되는 파일 목록을 먼저 확인합니다.",
+            ],
+          },
+        ],
+      },
+      {
+        slug: "deployment",
+        title: "배포",
+        icon: "rocket",
+        summary:
+          "임시 작업 폴더에서 빌드해 서버에 올리고, 문제가 생기면 링크 전환으로 되돌리는 제 배포 방식을 정리합니다.",
+        sections: [
+          {
+            id: "deploy",
+            title: "배포 방식",
+            paragraphs: [
+              "배포는 저장소 루트에서 스크립트 하나로 실행합니다. 기본 대상은 main이며, 필요하면 다른 브랜치나 커밋을 지정해 배포할 수 있습니다. 지금 작업 중인 폴더를 건드리지 않기 위해 지정한 커밋을 임시 작업 폴더인 git worktree에 꺼내 빌드합니다.",
+              "빌드 결과는 서버의 releases/<시각-커밋> 폴더에 풀고 current 링크만 새 폴더로 바꿉니다. 이전 배포는 최근 5개만 남기고 나머지는 정리하며, 배포에 필요한 접속 정보는 Git에서 제외한 .env 파일에 둡니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "빌드한 결과를 새 폴더에 올리고 링크만 바꿔 배포합니다.",
+              code: `flowchart LR
+  ref["브랜치나 커밋"] --> build["임시 작업 폴더에서 빌드"]
+  build --> upload["releases/시각-커밋에 올리기"]
+  upload --> switch["current 링크 전환"]
+  switch --> prune["최근 5개만 남기기"]`,
+            },
+          },
+          {
+            id: "rollback",
+            title: "롤백",
+            paragraphs: [
+              "문제가 생기면 롤백 옵션으로 current 링크를 바로 전 배포 폴더로 되돌립니다. 소스를 다시 빌드하지 않고 링크만 바꾸므로 빠르게 복구할 수 있습니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "링크를 바로 전 배포로 되돌립니다.",
+              code: `flowchart LR
+  current["current"] -. "지금" .-> latest["releases/새 배포"]
+  current == "롤백" ==> previous["releases/바로 전 배포"]`,
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "작업 관리",
+    docs: [
+      {
+        slug: "requirements",
+        title: "요구사항 관리",
+        icon: "file",
+        summary:
+          "이슈 트래킹 도구와 저장소 중 한곳에만 요구사항과 결정을 기록해 기준이 갈라지지 않게 관리합니다.",
+        sections: [
+          {
+            id: "one-place",
+            title: "기록은 한곳에만",
+            paragraphs: [
+              "요구사항과 결정은 반드시 한곳에만 기록합니다. 같은 내용을 두 곳에서 따로 관리하면 시간이 지나며 내용이 어긋나고 어느 쪽이 맞는지 알 수 없게 됩니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption:
+                "이슈 트래킹 도구가 있으면 그곳에, 없으면 저장소에 기록합니다. 두 곳에 나눠 적지 않습니다.",
+              code: `flowchart TB
+  start{"이슈 트래킹 도구가 있는가"}
+  start -- "있음" --> tracker["이슈 트래킹에만 기록<br/>에이전트는 MCP로 읽고 씀"]
+  start -- "없음" --> repo["같은 저장소의 Markdown과 Git<br/>요구사항 · 설계 · 결정 기록"]`,
+            },
+          },
+          {
+            id: "with-tracker",
+            title: "이슈 트래킹 도구가 있을 때",
+            paragraphs: [
+              "이슈 트래킹 도구가 있는 프로젝트라면 그곳을 원본으로 쓰고 저장소에 같은 내용을 복제하지 않습니다. AI 에이전트는 이슈 트래킹 도구의 MCP를 통해 이슈를 직접 읽고 씁니다. 브랜치 이름에 이슈 키를 넣어 코드 변경과 이슈를 연결합니다.",
+            ],
+          },
+          {
+            id: "in-repository",
+            title: "저장소에서 관리할 때",
+            paragraphs: [
+              "이슈 트래킹 도구가 없다면 같은 저장소에 Markdown으로 요구사항, 설계, 결정 기록을 두고 코드와 같은 커밋에 담습니다. 요구사항에는 제품이 지켜야 할 동작과 수용 조건을, 설계에는 기술 구조를, 결정 기록에는 맥락과 선택, 검토했다 버린 대안과 이유를 적습니다.",
+              "문서마다 고유 ID를 두면 파일 위치가 바뀌어도 이력을 따라갈 수 있습니다. 대화 중 시행착오마다 문서를 고치지 않고 작업을 마친 시점에 정리된 문서와 코드를 한 커밋으로 남기며, 과거 이력을 거슬러 문서화하기보다 새로 바꾸는 기능부터 시작합니다.",
+            ],
+          },
+        ],
+      },
+      {
+        slug: "ai-context",
+        title: "AI 맥락",
+        icon: "details",
+        summary:
+          "에이전트 지침, 결정 기록, 저장소 밖 임시 문서를 역할에 따라 나누어 작업 맥락을 이어 갑니다.",
+        sections: [
+          {
+            id: "instructions",
+            title: "지침 문서",
+            paragraphs: [
+              "에이전트 지침의 원본은 AGENTS.md 파일 하나로 두고, Claude Code용 CLAUDE.md는 @AGENTS.md 한 줄로 같은 파일을 가리킵니다. 지침 파일에는 매번 알아야 할 핵심 규칙만 남기고, 자세한 기준은 참고 문서로 나누어 필요할 때 읽게 합니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "항상 읽는 지침에서 필요한 문서로 이어지게 둡니다.",
+              code: `flowchart LR
+  agents["AGENTS.md<br/>항상 읽는 지침"] --> refs["참고 문서<br/>필요할 때 읽음"]
+  agents --> decisions["결정 기록<br/>저장소 안"]
+  agents --> handoff["이어받기 · 임시 문서<br/>저장소 밖"]`,
+            },
+          },
+          {
+            id: "decisions",
+            title: "결정 기록",
+            paragraphs: [
+              "되돌리기 어려운 결정과 검토했다 기각한 대안은 저장소의 결정 기록인 docs/decisions.md에 남깁니다. 세션이 끝나면 대화 속 결정은 사라지고, 다음 작업자가 배경을 모르면 같은 논의를 반복하거나 기존 결정을 되돌릴 수 있기 때문입니다.",
+            ],
+          },
+          {
+            id: "outside-repository",
+            title: "저장소 밖에 두는 문서",
+            paragraphs: [
+              "Git으로 관리하지 않는 임시 문서는 저장소 밖 ~/tmp/<프로젝트>/ 폴더에 둡니다. 작업을 다른 세션으로 넘겨야 할 때도 이어받기 문서를 저장소 밖에 남깁니다.",
+              "이어받기 문서에는 원한 결과, 결정과 기각한 안, 바꾼 파일, 다음 단계, 검증 상태, 남은 질문을 적고 비밀값은 넣지 않습니다.",
+            ],
+          },
+        ],
       },
     ],
   },

@@ -2,6 +2,14 @@ import { Fragment } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@goraebap/ui-react/components/table";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { getPlaybookDoc } from "@/entities/playbook-doc";
 import { MermaidDiagram, PageState } from "@/shared/ui";
@@ -22,17 +30,17 @@ function PlaybookDocPage() {
         action={
           <Link
             to="/playbook/$slug"
-            params={{ slug: "overview" }}
+            params={{ slug: "repository" }}
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            Playbook 개요로 돌아가기
+            Playbook 처음으로 돌아가기
           </Link>
         }
       />
     );
   }
 
-  const sections = doc.sections?.filter((section) => section.paragraphs.length > 0) ?? [];
+  const sections = doc.sections.filter((section) => section.paragraphs.length > 0);
   const isWritten = sections.length > 0;
 
   return (
@@ -59,6 +67,34 @@ function PlaybookDocPage() {
                   {section.diagram?.after === index && (
                     <MermaidDiagram code={section.diagram.code} caption={section.diagram.caption} />
                   )}
+                  {section.table?.after === index && (
+                    <div className="border-border overflow-x-auto rounded-lg border">
+                      <Table>
+                        <TableHeader>
+                          <TableRow>
+                            {section.table.columns.map((column) => (
+                              <TableHead key={column}>{column}</TableHead>
+                            ))}
+                          </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                          {section.table.rows.map((row) => (
+                            <TableRow key={row[0]}>
+                              {row.map((cell, cellIndex) => (
+                                <TableCell key={cell} className="text-sm">
+                                  {cellIndex === 0 ? (
+                                    <code className="font-mono text-xs">{cell}</code>
+                                  ) : (
+                                    cell
+                                  )}
+                                </TableCell>
+                              ))}
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  )}
                 </Fragment>
               ))}
             </section>
@@ -68,9 +104,9 @@ function PlaybookDocPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold tracking-tight">다룰 내용</h2>
           <ul className="border-border divide-border divide-y rounded-lg border">
-            {doc.topics.map((topic) => (
-              <li key={topic} className="px-4 py-3 text-base">
-                {topic}
+            {doc.sections.map((section) => (
+              <li key={section.id} className="px-4 py-3 text-base">
+                {section.title}
               </li>
             ))}
           </ul>

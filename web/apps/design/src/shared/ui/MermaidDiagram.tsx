@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { toHexColor } from "../lib/css-color";
 
 const THEME_ATTRIBUTES = ["class", "data-ds-theme", "style"];
@@ -28,19 +28,21 @@ function readTheme() {
   };
 }
 
-function useThemeVersion() {
-  const [version, setVersion] = useState(0);
+// 스크롤 라이브러리도 html 클래스를 바꾸므로, 실제로 쓰는 색과 글꼴이 달라졌을 때만 다시 그린다.
+function useThemeKey() {
+  const [key, setKey] = useState(() => JSON.stringify(readTheme()));
   useEffect(() => {
-    const observer = new MutationObserver(() => setVersion((value) => value + 1));
+    const observer = new MutationObserver(() => setKey(JSON.stringify(readTheme())));
     observer.observe(document.documentElement, { attributeFilter: THEME_ATTRIBUTES });
     return () => observer.disconnect();
   }, []);
-  return version;
+  return key;
 }
 
 export function MermaidDiagram({ code, caption }: { code: string; caption: string }) {
   const id = useId().replace(/[^\w-]/g, "");
-  const themeVersion = useThemeVersion();
+  const themeKey = useThemeKey();
+  const renders = useRef(0);
   const [svg, setSvg] = useState<string>();
   const [failed, setFailed] = useState(false);
 
@@ -56,10 +58,13 @@ export function MermaidDiagram({ code, caption }: { code: string; caption: strin
           securityLevel: "strict",
           theme: "base",
           look: "handDrawn",
+          // 손그림 선이 그릴 때마다 달라지지 않도록 흔들림을 고정한다.
+          handDrawnSeed: 1,
           fontFamily: theme.fontFamily,
           themeVariables: theme.themeVariables,
         });
-        const result = await mermaid.render(`mermaid-${id}-${themeVersion}`, code);
+        renders.current += 1;
+        const result = await mermaid.render(`mermaid-${id}-${renders.current}`, code);
         if (!cancelled) setSvg(result.svg);
       } catch {
         if (!cancelled) setFailed(true);
@@ -68,7 +73,7 @@ export function MermaidDiagram({ code, caption }: { code: string; caption: strin
     return () => {
       cancelled = true;
     };
-  }, [code, id, themeVersion]);
+  }, [code, id, themeKey]);
 
   return (
     <figure className="border-border bg-card space-y-3 rounded-xl border p-4 sm:p-6">

@@ -42,7 +42,7 @@ const DOC_ENTRIES: DocEntry[] = [
     title: doc.title,
     href: `/playbook/${doc.slug}`,
     description: doc.summary,
-    keywords: `${doc.slug} ${doc.group} ${doc.summary} ${doc.topics.join(" ")}`,
+    keywords: `${doc.slug} ${doc.group} ${doc.summary} ${doc.sections.map((section) => `${section.title ?? ""} ${section.paragraphs.join(" ")}`).join(" ")}`,
   })),
   page("디자인 시스템", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
   page(
