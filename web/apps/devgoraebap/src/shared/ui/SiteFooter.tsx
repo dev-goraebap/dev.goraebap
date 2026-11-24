@@ -8,7 +8,7 @@ const FRONTEND_LINKS = [
 ];
 
 const WORKSPACE_LINKS = [
-  { label: "Webapp", to: "/webapp" as const },
+  { label: "Playbook", to: "/playbook" as const },
   { label: "Frontend", to: "/frontend" as const },
   { label: "Backend", to: "/backend" as const },
 ];

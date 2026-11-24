@@ -7,7 +7,7 @@ export const Route = createFileRoute("/backend/engineering")({
 });
 
 const ENGINEERING_NAV: DocsNavGroup[] = BACKEND_ENGINEERING_GROUPS.map((group) => ({
-  title: group.title,
+  title: group.title || undefined,
   items: group.docs.map((doc) => ({
     label: doc.title,
     href: `/backend/engineering/${doc.slug}`,

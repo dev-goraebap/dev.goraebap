@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Separator } from "@goraebap/ui-react/components/separator";
 import { CopyCodeBlock } from "@/shared/ui";
 
-export const Route = createFileRoute("/webapp/agents/")({
+export const Route = createFileRoute("/playbook/agents/")({
   component: AgentsPage,
 });
 

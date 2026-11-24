@@ -19,10 +19,9 @@ const DETAIL_ICONS: Record<string, SystemIconName> = {
 };
 
 const DETAIL_GROUPS: DocsNavGroup[] = [
+  { items: [{ label: "개요", href: "/frontend/interaction", icon: "overview" }] },
   {
-    title: "Interaction",
     items: [
-      { label: "개요", href: "/frontend/interaction", icon: "overview" },
       ...DETAIL_DOCS.map((item) => ({
         label: item.title,
         href: `/frontend/interaction/${item.slug}`,

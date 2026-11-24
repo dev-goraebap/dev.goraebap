@@ -10,7 +10,6 @@ export const Route = createFileRoute("/frontend/design-system")({
 
 const GUIDE_GROUPS: DocsNavGroup[] = [
   {
-    title: "디자인 시스템",
     items: [
       { label: "개요", href: "/frontend/design-system/overview", icon: "book" },
       { label: "패키지 연결", href: "/frontend/design-system/packages", icon: "code" },
@@ -35,7 +34,7 @@ const SHELL_ICONS: Record<string, SystemIconName> = {
 const LAYOUT_GROUP: DocsNavGroup = {
   title: "레이아웃",
   items: [
-    { label: "개요", href: "/frontend/design-system/layouts", icon: "overview" },
+    { label: "모든 레이아웃", href: "/frontend/design-system/layouts", icon: "overview" },
     ...LAYOUT_DOCS.filter((item) => item.level === "shell").map((item) => ({
       label: item.name,
       href: `/frontend/design-system/layouts/${item.id}`,
@@ -55,7 +54,7 @@ const LAYOUT_GROUP: DocsNavGroup = {
 const COMPONENT_GROUP: DocsNavGroup = {
   title: "컴포넌트",
   items: [
-    { label: "개요", href: "/frontend/design-system/components", icon: "overview" },
+    { label: "모든 컴포넌트", href: "/frontend/design-system/components", icon: "overview" },
     ...COMPONENT_CATEGORIES.map((category) => ({
       label: category,
       children: COMPONENT_DOCS.filter((item) => item.category === category).map((item) => ({

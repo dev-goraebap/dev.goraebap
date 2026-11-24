@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { CopyCodeBlock } from "@/shared/ui";
+import { CopyCodeBlock, Glossed } from "@/shared/ui";
 
 export const Route = createFileRoute("/frontend/design-system/packages/")({
   component: PackagesPage,
@@ -34,8 +34,11 @@ function PackagesPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-bold tracking-tight">패키지 연결</h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          프로젝트에 @goraebap/design-system과 @goraebap/ui-react를 연결해 스타일, 테마, 컴포넌트를
-          적용하는 방법
+          <Glossed>
+            {
+              "프로젝트에 @goraebap/design-system과 @goraebap/ui-react를 연결해 스타일, 테마, 컴포넌트를 적용하는 방법"
+            }
+          </Glossed>
         </p>
       </header>
 
@@ -60,10 +63,11 @@ function PackagesPage() {
       <section className="space-y-4">
         <h2 className="text-lg font-semibold tracking-tight">스타일 연결</h2>
         <p className="text-muted-foreground text-base leading-relaxed">
-          앱의 엔트리 CSS에서 base.css와 색상 테마 파일을 불러오고, @source로 디자인 시스템 패키지의
-          소스 경로를 지정합니다. base.css가 tailwindcss와 기본 유틸리티를 포함하므로 앱에서
-          tailwindcss를 따로 불러오지 않습니다. theme-app.css를 먼저 불러와 기본(:root)으로 두고,
-          필요한 색상 테마 파일을 그 아래에 이어서 불러옵니다.
+          <Glossed>
+            {
+              "앱의 엔트리 CSS에서 base.css와 색상 테마 파일을 불러오고, @source로 디자인 시스템 패키지의 소스 경로를 지정합니다. base.css가 tailwindcss와 기본 유틸리티를 포함하므로 앱에서 tailwindcss를 따로 불러오지 않습니다. theme-app.css를 먼저 불러와 기본(:root)으로 두고, 필요한 색상 테마 파일을 그 아래에 이어서 불러옵니다."
+            }
+          </Glossed>
         </p>
         <CopyCodeBlock
           label="src/app/theme/tailwind.css"

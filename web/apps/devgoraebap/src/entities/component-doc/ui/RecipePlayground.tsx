@@ -99,6 +99,9 @@ function PropertySwitch({
   );
 }
 
+// 레시피 클래스 목록과 그 목록을 고르는 part 선택. 지금은 화면에 보이지 않게 꺼 두고, 다시 쓸 때 true로 켠다.
+const SHOW_CLASSES = false;
+
 export function RecipePlayground({
   slug,
   doc,
@@ -163,7 +166,8 @@ export function RecipePlayground({
   const booleanAxes = axes.filter((axis) => isBooleanAxis(axis.options));
   const configFlags = config?.flags ?? [];
   const hasToggles = booleanAxes.length + configFlags.length > 0;
-  const hasProperties = parts.length > 1 || selectAxes.length > 0 || hasToggles;
+  const hasPartSelect = SHOW_CLASSES && parts.length > 1;
+  const hasProperties = hasPartSelect || selectAxes.length > 0 || hasToggles;
   const preview = config ? config.render(state) : doc.renderReactDemo();
 
   return (
@@ -192,7 +196,7 @@ export function RecipePlayground({
 
           {hasProperties && (
             <div className="border-border space-y-1 border-t p-4 lg:border-t-0 lg:border-l">
-              {parts.length > 1 && (
+              {hasPartSelect && (
                 <>
                   <PropertySelect
                     label="part"
@@ -247,44 +251,49 @@ export function RecipePlayground({
           )}
         </div>
 
-        <dl className="border-border divide-border divide-y border-t">
-          {CLASS_GROUPS.map((group) => {
-            const groupTokens = tokens.filter((token) => classGroup(token) === group);
-            if (groupTokens.length === 0) return null;
-            return (
-              <div key={group} className="grid gap-2 px-5 py-3 sm:grid-cols-[6.5rem_1fr] sm:gap-4">
-                <dt className="text-muted-foreground pt-0.5 text-xs font-medium">{group}</dt>
-                <dd className="flex min-w-0 flex-wrap gap-1.5">
-                  {groupTokens.map((token) => {
-                    const isChanged = changed.tokens.has(token);
-                    const color = classColor(token);
-                    return (
-                      <code
-                        key={`${token}-${isChanged ? changed.revision : 0}`}
-                        data-changed={isChanged ? "" : undefined}
-                        className={`inline-flex max-w-full items-center gap-1.5 rounded-md border px-1.5 py-0.5 font-mono text-[0.6875rem] break-all ${
-                          isChanged
-                            ? "border-info/50 bg-info/10 text-foreground animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none"
-                            : "border-border bg-background text-muted-foreground"
-                        }`}
-                      >
-                        {color && (
-                          <span
-                            aria-hidden="true"
-                            data-ds-theme={designConfig.theme}
-                            className="ring-foreground/20 size-2.5 shrink-0 rounded-[3px] ring-1"
-                            style={{ background: color }}
-                          />
-                        )}
-                        {token}
-                      </code>
-                    );
-                  })}
-                </dd>
-              </div>
-            );
-          })}
-        </dl>
+        {SHOW_CLASSES && (
+          <dl className="border-border divide-border divide-y border-t">
+            {CLASS_GROUPS.map((group) => {
+              const groupTokens = tokens.filter((token) => classGroup(token) === group);
+              if (groupTokens.length === 0) return null;
+              return (
+                <div
+                  key={group}
+                  className="grid gap-2 px-5 py-3 sm:grid-cols-[6.5rem_1fr] sm:gap-4"
+                >
+                  <dt className="text-muted-foreground pt-0.5 text-xs font-medium">{group}</dt>
+                  <dd className="flex min-w-0 flex-wrap gap-1.5">
+                    {groupTokens.map((token) => {
+                      const isChanged = changed.tokens.has(token);
+                      const color = classColor(token);
+                      return (
+                        <code
+                          key={`${token}-${isChanged ? changed.revision : 0}`}
+                          data-changed={isChanged ? "" : undefined}
+                          className={`inline-flex max-w-full items-center gap-1.5 rounded-md border px-1.5 py-0.5 font-mono text-[0.6875rem] break-all ${
+                            isChanged
+                              ? "border-info/50 bg-info/10 text-foreground animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none"
+                              : "border-border bg-background text-muted-foreground"
+                          }`}
+                        >
+                          {color && (
+                            <span
+                              aria-hidden="true"
+                              data-ds-theme={designConfig.theme}
+                              className="ring-foreground/20 size-2.5 shrink-0 rounded-[3px] ring-1"
+                              style={{ background: color }}
+                            />
+                          )}
+                          {token}
+                        </code>
+                      );
+                    })}
+                  </dd>
+                </div>
+              );
+            })}
+          </dl>
+        )}
 
         <AdapterCodePanel
           reactCode={config ? config.reactCode(attributes, state) : doc.reactCode}

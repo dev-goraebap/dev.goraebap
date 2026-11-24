@@ -19,6 +19,8 @@ export interface DesignConfig {
   heading: HeadingFontId;
   latinFont: LatinFontId;
   iconSet: IconSetId;
+  // 기본 영문 폰트가 바뀐 판. 예전 판에 저장한 값은 새 기본값으로 옮긴다.
+  fontRevision: number;
 }
 
 const DEFAULT_DESIGN_CONFIG: DesignConfig = {
@@ -28,8 +30,9 @@ const DEFAULT_DESIGN_CONFIG: DesignConfig = {
   cornerShape: "round",
   font: "pretendard",
   heading: "same",
-  latinFont: "same",
+  latinFont: "source-serif",
   iconSet: "solar",
+  fontRevision: 2,
 };
 
 export interface ThemePresetOption {
@@ -219,9 +222,14 @@ function loadConfig(): DesignConfig {
     const isKnownSize = UI_SIZE_OPTIONS.some((option) => option.id === stored.uiSize);
     // 예전에 저장한 제목 폰트 값을 새 이름으로 옮긴다.
     const heading = (stored.heading as string) === "serif" ? "noto-serif" : stored.heading;
+    const isOldFont =
+      (JSON.parse(raw) as Partial<DesignConfig>).fontRevision !==
+      DEFAULT_DESIGN_CONFIG.fontRevision;
     return {
       ...stored,
       heading,
+      latinFont: isOldFont ? DEFAULT_DESIGN_CONFIG.latinFont : stored.latinFont,
+      fontRevision: DEFAULT_DESIGN_CONFIG.fontRevision,
       uiSize: isKnownSize ? stored.uiSize : DEFAULT_DESIGN_CONFIG.uiSize,
     };
   } catch {

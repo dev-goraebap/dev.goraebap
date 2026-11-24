@@ -1,7 +1,17 @@
 import type { HighlighterCore, LanguageRegistration, ThemedToken } from "shiki/core";
 
 type SupportedLang =
-  "html" | "tsx" | "typescript" | "css" | "bash" | "json" | "angular-html" | "angular-ts";
+  | "html"
+  | "tsx"
+  | "typescript"
+  | "css"
+  | "bash"
+  | "json"
+  | "angular-html"
+  | "angular-ts"
+  | "java"
+  | "sql"
+  | "groovy";
 
 const LANG_ALIASES: Record<string, SupportedLang> = {
   html: "html",
@@ -17,6 +27,11 @@ const LANG_ALIASES: Record<string, SupportedLang> = {
   json: "json",
   "angular-html": "angular-html",
   "angular-ts": "angular-ts",
+  java: "java",
+  sql: "sql",
+  groovy: "groovy",
+  js: "typescript",
+  javascript: "typescript",
 };
 
 const LANG_LOADERS: Record<SupportedLang, () => Promise<{ default: LanguageRegistration[] }>> = {
@@ -28,6 +43,9 @@ const LANG_LOADERS: Record<SupportedLang, () => Promise<{ default: LanguageRegis
   json: () => import("shiki/langs/json.mjs"),
   "angular-html": () => import("shiki/langs/angular-html.mjs"),
   "angular-ts": () => import("shiki/langs/angular-ts.mjs"),
+  java: () => import("shiki/langs/java.mjs"),
+  sql: () => import("shiki/langs/sql.mjs"),
+  groovy: () => import("shiki/langs/groovy.mjs"),
 };
 
 const DUAL_THEMES = {

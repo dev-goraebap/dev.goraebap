@@ -21,6 +21,7 @@ import {
 } from "@/entities/component-doc";
 import { annotateGlossary } from "@/shared/lib/glossary";
 import { AdapterPreviewStage, PageState } from "@/shared/ui";
+import { CodeExampleList, examplesFor, pageSkills } from "@/entities/code-example";
 
 export const Route = createFileRoute("/frontend/design-system/components/$slug/")({
   component: ComponentDetailPage,
@@ -143,6 +144,9 @@ function ComponentDetailPage() {
             <span />
           )}
         </nav>
+        <CodeExampleList
+          examples={examplesFor(pageSkills(`/frontend/design-system/components/${slug}`))}
+        />
       </article>
     </GuideTextProvider>
   );

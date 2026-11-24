@@ -1,10 +1,12 @@
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
 import { Separator } from "@goraebap/ui-react/components/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 import { getDetailDoc } from "@/entities/detail-doc";
-import { CopyCodeBlock, PageState } from "@/shared/ui";
+import { annotateGlossary } from "@/shared/lib/glossary";
+import { CopyCodeBlock, GlossaryText, PageState } from "@/shared/ui";
+import { CodeExampleList, examplesFor, pageSkills } from "@/entities/code-example";
 
 export const Route = createFileRoute("/frontend/interaction/$slug/")({
   component: DetailPage,
@@ -13,6 +15,20 @@ export const Route = createFileRoute("/frontend/interaction/$slug/")({
 function DetailPage() {
   const { slug } = Route.useParams();
   const detail = getDetailDoc(slug);
+  // 본문에 보이는 순서대로 모아 용어마다 처음 나온 곳만 용어집에 잇는다.
+  const linked = useMemo(() => {
+    const texts: [string, string][] = [];
+    if (detail?.problem) texts.push(["problem", detail.problem]);
+    if (detail?.guidance) texts.push(["guidance", detail.guidance]);
+    for (const section of detail?.sections ?? []) {
+      texts.push([`${section.id}:problem`, section.problem]);
+      texts.push([`${section.id}:guidance`, section.guidance]);
+    }
+    return annotateGlossary(texts);
+  }, [detail]);
+  const text = (key: string, fallback: string) => (
+    <GlossaryText segments={linked[key] ?? [fallback]} />
+  );
 
   if (!detail) {
     return (
@@ -40,7 +56,9 @@ function DetailPage() {
 
       {detail.problem && (
         <div className="space-y-8">
-          <p className="text-foreground text-base leading-relaxed">{detail.problem}</p>
+          <p className="text-foreground text-base leading-relaxed">
+            {text("problem", detail.problem)}
+          </p>
 
           {detail.renderDemo && (
             <div className="bg-dots border-border rounded-2xl border p-4 sm:p-6">
@@ -70,7 +88,9 @@ function DetailPage() {
           )}
 
           {detail.guidance && (
-            <p className="text-foreground text-base leading-relaxed">{detail.guidance}</p>
+            <p className="text-foreground text-base leading-relaxed">
+              {text("guidance", detail.guidance)}
+            </p>
           )}
         </div>
       )}
@@ -82,7 +102,9 @@ function DetailPage() {
               {(index > 0 || detail.problem) && <Separator variant="wave" className="my-10" />}
               <section id={section.id} className="scroll-mt-24 space-y-5">
                 <h2 className="text-xl font-semibold tracking-tight">{section.title}</h2>
-                <p className="text-foreground text-base leading-relaxed">{section.problem}</p>
+                <p className="text-foreground text-base leading-relaxed">
+                  {text(`${section.id}:problem`, section.problem)}
+                </p>
                 {section.renderDemo && (
                   <div className="bg-dots border-border rounded-2xl border p-4 sm:p-6">
                     {section.renderDemo()}
@@ -93,12 +115,16 @@ function DetailPage() {
                   language={section.codeLanguage ?? "css"}
                   code={section.code}
                 />
-                <p className="text-foreground text-base leading-relaxed">{section.guidance}</p>
+                <p className="text-foreground text-base leading-relaxed">
+                  {text(`${section.id}:guidance`, section.guidance)}
+                </p>
               </section>
             </Fragment>
           ))}
         </div>
       )}
+
+      <CodeExampleList examples={examplesFor(pageSkills(`/frontend/interaction/${slug}`))} />
 
       {detail.references && (
         <section className="border-border space-y-4 border-t pt-8">

@@ -6,6 +6,7 @@ export { CopyCodeBlock } from "./CopyCodeBlock";
 export { DesignSettings } from "./DesignSettings";
 export { DocsShell, type DocsNavGroup } from "./DocsShell";
 export { GlossaryTerm } from "./GlossaryTerm";
+export { Glossed, GlossaryText, useGlossaryText } from "./GlossaryText";
 export { LineFieldCanvas } from "./LineFieldCanvas";
 export { MermaidDiagram } from "./MermaidDiagram";
 export { PageState } from "./page-state/PageState";

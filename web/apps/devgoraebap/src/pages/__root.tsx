@@ -51,20 +51,21 @@ export const Route = createRootRoute({
       throw redirect({ href: "/frontend/design-system/packages", replace: true });
     }
     if (/^\/frontend\/agent\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/webapp/agents", replace: true });
+      throw redirect({ href: "/playbook/agents", replace: true });
     }
-    // playbook과 sdlc 시절 주소. 없어진 문서는 webapp 처음으로 보낸다.
-    const legacy = location.pathname.match(/^\/(playbook|sdlc)(\/[^/]+)?\/?$/);
-    if (legacy) {
-      const slug = legacy[2]?.slice(1);
-      const kept = ["repository", "source-control", "deployment", "agents"];
-      const moved: Record<string, string> = {
-        frontend: "/webapp/frontend",
-        backend: "/webapp/backend",
-      };
-      const href = !slug
-        ? "/webapp"
-        : (moved[slug] ?? (kept.includes(slug) ? `/webapp/${slug}` : "/webapp/repository"));
+    // webapp·sdlc 공간과 예전 playbook 문서 주소. 없어진 문서는 플레이북 목록으로 보낸다.
+    const legacy = location.pathname.match(/^\/(webapp|sdlc|playbook)(\/[^/]+)?\/?$/);
+    const moved: Record<string, string> = {
+      repository: "/playbook/project-setup",
+      "source-control": "/playbook/deploy",
+      deployment: "/playbook/deploy",
+      agents: "/playbook/agents",
+      frontend: "/frontend/engineering/overview",
+      backend: "/backend/engineering/overview",
+    };
+    const slug = legacy?.[2]?.slice(1);
+    if (legacy && (legacy[1] !== "playbook" || (slug && slug in moved && slug !== "agents"))) {
+      const href = slug ? (moved[slug] ?? "/playbook") : "/playbook";
       throw redirect({ href, replace: true });
     }
     const story = location.pathname.match(/^\/(frontend|backend)\/engineering\/story\/?$/);
@@ -98,7 +99,7 @@ type NavItem = {
   icon: SystemIconName;
 };
 
-const WORKSPACE_NAV: Record<"frontend" | "backend" | "webapp", NavItem[]> = {
+const WORKSPACE_NAV: Record<"frontend" | "backend" | "playbook", NavItem[]> = {
   frontend: [
     { label: "Engineering", to: "/frontend/engineering", icon: "code" },
     { label: "Design System", to: "/frontend/design-system/overview", icon: "components" },
@@ -108,7 +109,7 @@ const WORKSPACE_NAV: Record<"frontend" | "backend" | "webapp", NavItem[]> = {
     { label: "Engineering", to: "/backend/engineering", icon: "code" },
     { label: "Details", icon: "details" },
   ],
-  webapp: [],
+  playbook: [],
 };
 
 function RootLayout() {
@@ -129,16 +130,16 @@ function RootLayout() {
 
   const isFrontend = pathname.startsWith("/frontend");
   const isBackend = pathname.startsWith("/backend");
-  const isWebapp = pathname.startsWith("/webapp");
+  const isPlaybook = pathname.startsWith("/playbook");
   const navItems = isFrontend
     ? WORKSPACE_NAV.frontend
     : isBackend
       ? WORKSPACE_NAV.backend
-      : isWebapp
-        ? WORKSPACE_NAV.webapp
+      : isPlaybook
+        ? WORKSPACE_NAV.playbook
         : [];
   const hasDocsShell =
-    isBackend || isWebapp || (isFrontend && !pathname.startsWith("/frontend/glossary"));
+    isBackend || isPlaybook || (isFrontend && !pathname.startsWith("/frontend/glossary"));
 
   return (
     <DesignConfigProvider>

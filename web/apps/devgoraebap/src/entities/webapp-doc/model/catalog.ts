@@ -1,6 +1,6 @@
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 
-interface DocSection {
+export interface DocSection {
   id: string;
   title?: string;
   paragraphs: string[];
@@ -33,7 +33,7 @@ export interface GuideGroup {
   docs: GuideDoc[];
 }
 
-// 프론트엔드 개발 이야기. webapp의 프로젝트 묶음과 frontend Engineering 개요가 같은 글을 쓴다.
+// 프론트엔드 개발 이야기. frontend Engineering 개요
 const FRONTEND_STORY: GuideDoc = {
   slug: "overview",
   title: "개요",
@@ -62,15 +62,6 @@ const FRONTEND_STORY: GuideDoc = {
       paragraphs: [
         "결국 AI 에이전트가 일상에 들어와 구현 비용이 압도적으로 낮아지면서 다시 프론트엔드를 분리하는 구조로 돌아왔습니다. 나중에 HDA 진영에 더 나은 패러다임이 나온다면 다시 시도해 볼 의향은 있지만, 이제는 개발 비용보다 구조와 마감 기준을 일관되게 유지하는 쪽에 더 무게를 두고 있습니다.",
       ],
-      diagram: {
-        after: 0,
-        caption: "프론트엔드를 분리했다가 걷어 내고, 다시 분리하기까지의 흐름입니다.",
-        code: `flowchart TB
-  jsp["Spring · JSP · jQuery"] --> react["React<br/>프론트엔드 분리"]
-  react --> angular["Angular 주력"]
-  angular -- "마감 비용과 피로" --> htmx["htmx · HDA"]
-  htmx -- "구현 비용이 낮아지며" --> split["다시 분리"]`,
-      },
     },
     {
       id: "now",
@@ -83,7 +74,7 @@ const FRONTEND_STORY: GuideDoc = {
   ],
 };
 
-// 백엔드 개발 이야기. webapp의 프로젝트 묶음과 backend Engineering 개요가 같은 글을 쓴다.
+// 백엔드 개발 이야기. backend Engineering 개요
 const BACKEND_STORY: GuideDoc = {
   slug: "overview",
   title: "개요",
@@ -140,203 +131,10 @@ const BACKEND_STORY: GuideDoc = {
   ],
 };
 
-export const WEBAPP_GROUPS: GuideGroup[] = [
-  {
-    title: "프로젝트",
-    docs: [
-      {
-        slug: "repository",
-        title: "레포지토리 구성",
-        icon: "workspace",
-        summary: "제품 하나를 저장소 하나로 꾸리고, 프론트엔드 앱이 늘어날 때 안쪽을 나누는 기준",
-        sections: [
-          {
-            id: "story",
-            diagram: {
-              after: 0,
-              caption: "프론트엔드와 백엔드를 한 저장소에서 관리합니다.",
-              code: `flowchart LR
-  subgraph before["예전"]
-    direction TB
-    feRepo["프론트엔드 저장소"]
-    beRepo["백엔드 저장소"]
-  end
-  subgraph now["지금 · 하나의 저장소"]
-    direction TB
-    web["프론트엔드 앱"]
-    api["백엔드 앱"]
-  end
-  before -- "단순함을 택하며" --> now`,
-            },
-            paragraphs: [
-              "예전에는 프로젝트를 관리할 때 백엔드와 프론트엔드 저장소를 나누어 개발하는 것이 당연하다고 생각했습니다. 하지만 시간이 지나면서 복잡함보다 단순함을 더 추구하게 되었고, 이 기준은 저장소 구성에도 그대로 반영되었습니다. 이제는 대부분의 경우 모노레포를 선택하며, 모노레포에서 배포나 관리 면에 부족한 부분은 AI를 통해 현상을 이해하고 메우면 된다고 생각하게 되었습니다.",
-              "AI 에이전트가 순식간에 일상에 녹아들며 직접 코드를 치지 않는 시점이 왔습니다. 그럼에도 프로젝트의 구조만큼은 제가 이해하는 방식대로 흘러가야만 속이 편안합니다.",
-            ],
-          },
-          {
-            id: "one-repo",
-            title: "제품 하나에 저장소 하나",
-            paragraphs: [
-              "프론트엔드만 다루는 프로젝트라면 저장소에 바로 프론트엔드를 구성하고, 백엔드만 다루는 프로젝트라면 백엔드만 두면 됩니다. 저는 제품 하나당 저장소 하나를 기준으로 삼고 있어서, 프론트엔드와 백엔드가 함께 있는 프로젝트에서는 저장소 안을 client와 server 또는 web과 server처럼 폴더로 나눕니다.",
-            ],
-            diagram: {
-              after: 0,
-              caption: "제품 저장소 안에서 프론트엔드와 백엔드를 폴더로 나눕니다.",
-              code: `flowchart TB
-  repo["제품 저장소"] --> web["web · 프론트엔드"]
-  repo --> server["server · 백엔드"]`,
-            },
-          },
-          {
-            id: "multiple-frontends",
-            title: "프론트엔드가 둘 이상일 때",
-            paragraphs: [
-              "관리자 페이지를 따로 떼어 배포해야 하는 경우처럼 프론트엔드 앱이 둘 이상이면 web 안을 apps와 packages로 나누는 구성을 씁니다. 패키지 매니저의 워크스페이스 기능을 쓰는 모노레포에서 흔히 쓰는 apps/packages 구조입니다.",
-              "각각 배포하는 앱은 apps에 두고, 여러 앱이 함께 쓰는 UI와 공통 설정은 packages에 모읍니다. 이때도 백엔드는 단일 서버를 그대로 유지해도 문제가 없습니다. 이 사이트가 들어 있는 저장소 역시 web/apps와 web/packages로 나뉘어 있습니다.",
-            ],
-            diagram: {
-              after: 0,
-              caption:
-                "프론트엔드 앱이 둘 이상이면 web 안을 apps와 packages로 나눕니다. 백엔드는 하나로 둡니다.",
-              code: `flowchart TB
-  repo["제품 저장소"] --> web["web"]
-  repo --> server["server · 단일 백엔드"]
-  web --> apps["apps"]
-  web --> packages["packages"]
-  apps --> site["site · 사용자 화면"]
-  apps --> admin["admin · 관리자 화면"]
-  packages --> ui["ui · 공용 컴포넌트"]
-  site -.-> ui
-  admin -.-> ui`,
-            },
-          },
-          {
-            id: "manage-together",
-            title: "나누기보다 한곳에서",
-            paragraphs: [
-              "혼자 프로젝트를 관리할 때는 프로젝트를 어떻게 분리할지보다 어떻게 한 프로젝트 안에서 관리할지를 먼저 묻습니다.",
-              "프론트엔드, 백엔드, 요구사항과 결정기록이 한 저장소에 모여 있으면 코드 변경과 문서, API 계약을 한 번에 대조할 수 있고 AI 에이전트도 저장소 경계를 넘나들지 않고 전체 맥락을 읽습니다. 배포 권한이나 보안 경계가 완전히 다르거나, 독립된 팀이 서로 다른 주기로 운영하는 단계가 되었을 때 비로소 저장소를 나눕니다.",
-            ],
-          },
-        ],
-      },
-      {
-        ...FRONTEND_STORY,
-        slug: "frontend",
-        title: "프론트엔드 개발",
-        next: { label: "Frontend Engineering에서 이어 읽기", to: "/frontend/engineering/layers" },
-      },
-      {
-        ...BACKEND_STORY,
-        slug: "backend",
-        title: "백엔드 개발",
-        next: { label: "Backend Engineering에서 이어 읽기", to: "/backend/engineering/modules" },
-      },
-      {
-        slug: "source-control",
-        title: "형상관리",
-        icon: "route",
-        summary: "브랜치 이름과 병합 흐름, 문서와 코드를 함께 묶는 커밋 단위, 릴리스 패치노트 기준",
-        sections: [
-          {
-            id: "branching",
-            title: "브랜치 전략",
-            paragraphs: [
-              "브랜치는 GitHub Flow를 따라 기본 브랜치인 main 최신에서 작업 브랜치를 따고, 한 브랜치에는 한 가지 일만 담습니다. 혼자 관리하는 저장소에서는 형식적인 PR 절차보다 단순함을 택해 기본 브랜치에 바로 합치지만, 팀이나 협업 저장소에서는 PR을 리뷰와 CI 관문으로 씁니다.",
-              "브랜치 이름은 Conventional Branch 형식을 따라 <목적>/<짧은 설명>으로 짓습니다. 설명은 영어 소문자, 숫자, 하이픈으로 두세 단어에서 다섯 단어 안팎으로 쓰고, 이슈 키가 있으면 설명 앞에 붙입니다. 에이전트나 도구, 사람 이름은 접두사로 쓰지 않습니다.",
-            ],
-            table: {
-              after: 1,
-              monoFirstColumn: true,
-              columns: ["접두사", "쓰는 경우"],
-              rows: [
-                ["feature", "새 기능, 제품 동작 변경"],
-                ["fix", "버그 수정"],
-                ["refactor", "동작을 유지하는 구조 변경"],
-                ["docs", "문서와 지침만 바꿀 때"],
-                ["chore", "빌드, 도구, 의존성, 설정"],
-                ["hotfix", "배포본의 긴급 수정, 배포 브랜치를 쓸 때만"],
-                ["release", "배포 준비, 프로젝트가 쓸 때만"],
-              ],
-            },
-          },
-          {
-            id: "commits",
-            title: "결정과 변경을 함께 묶는 커밋",
-            paragraphs: [
-              "커밋은 하나의 논리적 변경 단위로 나누고, 무관한 포맷 변경이나 별개의 리팩터링을 한 커밋에 섞지 않습니다. 반면 그 변경을 설명하는 요구사항·설계·결정기록과 스키마, API 계약, 생성 산출물, 테스트처럼 함께 맞아야 하는 파일은 같은 커밋에 담습니다. 나중에 커밋 하나만 열어도 무엇이 왜 함께 바뀌었는지 한 번에 따라갈 수 있기 때문입니다.",
-              "커밋 메시지는 프로젝트에 정해진 형식이 있으면 그 형식을 우선 따릅니다. 이 저장소에서는 Conventional Commits 형식에 맞춰 유형과 범위를 적고 한국어 제목을 붙이며, 판단 배경이 필요할 때만 본문에 이유를 남깁니다. AI 에이전트와 함께 만든 커밋은 Co-Authored-By 트레일러로 표시합니다.",
-              "에이전트가 작업을 마쳤다고 해서 자동으로 커밋하게 두지는 않습니다. 커밋과 푸시는 제가 확인하고 허용한 범위에서만 진행하고, 공개 저장소에는 서버 주소나 접속 정보 같은 비밀값을 넣지 않고 Git에서 제외한 파일에 둡니다.",
-            ],
-          },
-          {
-            id: "releases",
-            title: "릴리스와 버전",
-            paragraphs: [
-              "버전을 올릴 때는 내부 구현 정리보다 쓰는 사람이 체감하는 변경만 패치노트 맨 앞에 적습니다. 절 제목은 Added, Changed, Removed, Fixed 네 가지로 고정해 훑어보기 쉽게 하고, 금세 낡아지기 쉬운 README에는 버전 번호를 적지 않습니다.",
-              "한 번 게시한 버전은 덮어쓰지 않고 수정이 필요하면 새 수정 버전을 발급합니다. 게시 전에는 모의 실행으로 실제 배포 패키지에 포함되는 파일 목록을 먼저 확인합니다.",
-            ],
-          },
-        ],
-      },
-      {
-        slug: "deployment",
-        title: "배포",
-        icon: "rocket",
-        summary:
-          "과한 인프라 대신 임시 작업 폴더에서 빌드해 올리고, 링크 전환으로 되돌리는 단순한 배포 방식",
-        sections: [
-          {
-            id: "deploy",
-            title: "단순함을 유지하는 배포 방식",
-            paragraphs: [
-              "레포지토리 구성에서 단순함을 택한 것처럼, 배포 역시 작은 제품에 과한 인프라를 얹지 않으려 합니다. 복잡한 파이프라인을 관리하는 데 에너지를 쓰기보다, 저장소 루트에서 스크립트 하나로 빌드부터 교체까지 끝내는 구조를 선호합니다.",
-              "기본 대상은 main이며, 필요하면 다른 브랜치나 커밋을 지정해 배포합니다. 지금 작업 중인 폴더를 건드리지 않기 위해 지정한 커밋을 임시 작업 폴더인 git worktree에 꺼내 빌드합니다.",
-              "빌드 결과는 서버의 releases/<시각-커밋> 폴더에 풀고 current 링크만 새 폴더로 바꿉니다. 이전 배포는 최근 5개만 남기고 나머지는 정리하며, 배포에 필요한 접속 정보는 Git에서 제외한 .env 파일에 둡니다.",
-            ],
-            diagram: {
-              after: 2,
-              caption: "빌드한 결과를 새 폴더에 올리고 링크만 바꿔 배포합니다.",
-              code: `flowchart LR
-  ref["브랜치나 커밋"] --> build["임시 작업 폴더에서 빌드"]
-  build --> upload["releases/시각-커밋에 올리기"]
-  upload --> switch["current 링크 전환"]
-  switch --> prune["최근 5개만 남기기"]`,
-            },
-          },
-          {
-            id: "rollback",
-            title: "롤백과 적용 범위",
-            paragraphs: [
-              "문제가 생기면 롤백 옵션으로 current 링크를 바로 전 배포 폴더로 되돌립니다. 소스를 다시 빌드하지 않고 링크만 바꾸므로 빠르게 복구할 수 있습니다.",
-              "트래픽이 크게 늘거나 여러 인스턴스로 수평 확장해야 하는 서비스라면 이 방식에는 분명한 한계가 있습니다. 다만 단일 서버로 충분한 제품에서는 배포 과정을 끝까지 이해하고 직접 통제할 수 있다는 점이 가장 큰 장점입니다.",
-            ],
-            diagram: {
-              after: 0,
-              caption: "링크를 바로 전 배포로 되돌립니다.",
-              code: `flowchart LR
-  current["current"] -. "지금" .-> latest["releases/새 배포"]
-  current == "롤백" ==> previous["releases/바로 전 배포"]`,
-            },
-          },
-        ],
-      },
-    ],
-  },
-];
-
-export const WEBAPP_DOCS = WEBAPP_GROUPS.flatMap((group) =>
-  group.docs.map((doc) => ({ ...doc, group: group.title })),
-);
-
-export function getWebappDoc(slug: string) {
-  return WEBAPP_DOCS.find((doc) => doc.slug === slug);
-}
-
 // frontend 공간의 Engineering 문서. Webapp 플러그인의 frontend 지침을 사람이 읽는 글로 옮긴다.
 export const FRONTEND_ENGINEERING_GROUPS: GuideGroup[] = [
   {
-    title: "시작하기",
+    title: "",
     docs: [FRONTEND_STORY],
   },
   {
@@ -356,15 +154,6 @@ export const FRONTEND_ENGINEERING_GROUPS: GuideGroup[] = [
               "프론트엔드는 FSD의 다섯 층인 app, pages, features, entities, shared로 나누고 widgets 층은 두지 않습니다. 상위 층은 하위 층만 참조하며, 개발 이야기에서 중시한 코로케이션을 살려 슬라이스 안에서 컴포넌트는 파일 하나에 하나씩 둡니다.",
               "여러 파일이 함께 쓰는 훅과 로직은 슬라이스의 model에 모으고, 한 파일에서만 쓰는 작은 조각은 억지로 파일을 나누지 않고 그 파일 위쪽에 둡니다.",
             ],
-            diagram: {
-              after: 0,
-              caption: "다섯 층은 위에서 아래로만 의존하며 widgets 층은 따로 두지 않습니다.",
-              code: `flowchart TB
-  app["app<br/>진입 · 라우터 · 업무 앱 셸"] --> pages["pages<br/>주소이자 라우트 슬라이스"]
-  pages --> features["features<br/>사용자 동작 · 유스케이스"]
-  features --> entities["entities<br/>도메인 모델 · 조회"]
-  entities --> shared["shared<br/>UI 키트 · 제품 공용 · 유틸"]`,
-            },
             table: {
               after: 1,
               columns: ["층", "역할"],
@@ -588,15 +377,6 @@ export const FRONTEND_ENGINEERING_GROUPS: GuideGroup[] = [
               "기본 변경 흐름은 mutation이 성공한 뒤 관련된 캐시 키를 무효화하는 방식입니다. 저장은 성공했는데 뒤따른 재조회만 실패한 상황을 저장 실패로 오인해 알리지 않도록 구분합니다.",
               "낙관적 갱신과 명령 자동 재시도는 기본으로 켜지 않고 중복 실행 위험과 복구 비용을 따져 필요한 곳에만 고릅니다. 하위 컴포넌트가 페이지의 캐시 키를 직접 알지 않도록 콜백을 넘기거나 상태 소유자를 조정합니다.",
             ],
-            diagram: {
-              after: 0,
-              caption:
-                "저장이 성공하면 관련 키만 무효화하고, 재조회 실패는 저장 실패와 분리합니다.",
-              code: `flowchart LR
-  mut["mutation 실행"] -- "성공" --> inv["관련 캐시 키 무효화"]
-  inv --> refetch["백그라운드 재조회"]
-  refetch -- "실패해도" --> keep["저장 성공 상태 유지"]`,
-            },
           },
           {
             id: "states-and-lists",
@@ -777,7 +557,7 @@ export const FRONTEND_ENGINEERING_DOCS = FRONTEND_ENGINEERING_GROUPS.flatMap((gr
 // backend 공간의 Engineering 문서. Webapp 플러그인의 backend · api · database 지침을 사람이 읽는 글로 옮긴다.
 export const BACKEND_ENGINEERING_GROUPS: GuideGroup[] = [
   {
-    title: "시작하기",
+    title: "",
     docs: [BACKEND_STORY],
   },
   {
@@ -1259,14 +1039,6 @@ order.status() # 속성 접근자 → get 접두 없이 이름만`,
               "HTTP 계약의 원본은 서버입니다. API를 바꾸면 OpenAPI 명세, 생성 클라이언트 타입, 실제 호출자를 같은 변경 안에서 함께 맞춥니다. 자원 경로는 복수 명사를 기본으로 하고 업무 전이는 의미 있는 하위 자원으로 표현하며, 화면 주소와 API 경로의 첫 마디를 같은 영역 이름으로 맞춥니다. 웹훅처럼 외부에 등록해 둔 주소는 옮기지 않습니다.",
               "전역 success·data 래퍼를 기본으로 덧붙이지 않고 표준 HTTP 상태 코드를 그대로 씁니다. 오류 응답은 application/problem+json으로 통일하며, 필드 오류와 낙관적 잠금 충돌을 구분하고 스택 트레이스나 비밀값은 절대 응답에 넣지 않습니다.",
             ],
-            diagram: {
-              after: 0,
-              caption: "서버 계약을 바꾸면 명세와 생성 타입, 호출자까지 한 변경에서 동기화합니다.",
-              code: `flowchart LR
-  server["서버 API 계약"] --> spec["OpenAPI 명세"]
-  spec --> types["생성 클라이언트 타입"]
-  types --> caller["프론트엔드 호출자"]`,
-            },
             table: {
               after: 1,
               columns: ["동작", "기본 상태 코드와 응답"],
@@ -1337,16 +1109,6 @@ order.status() # 속성 접근자 → get 접두 없이 이름만`,
               "DB 스키마는 버전을 붙인 마이그레이션 파일로만 바꾸고, 공유 환경에 이미 적용된 마이그레이션 파일은 고치지 않고 항상 다음 버전을 추가합니다. 쿼리 코드와 관련 타입은 스키마에서 프로젝트 명령으로 생성하며 생성된 파일을 손으로 수정하지 않습니다.",
               "마이그레이션은 실제 사용하는 DB 엔진의 트랜잭션, DDL, 잠금, 외래키 동작에 맞춰 작성합니다. 다른 DB 엔진의 문법이나 잠금 가정을 그대로 옮겨 쓰지 않습니다.",
             ],
-            diagram: {
-              after: 1,
-              caption:
-                "마이그레이션 추가부터 검증 사본 적용과 쿼리 코드 생성까지 한 흐름으로 검증합니다.",
-              code: `flowchart LR
-  read["현재 스키마·이력 확인"] --> add["새 버전 마이그레이션 추가"]
-  add --> gen["쿼리 코드·타입 생성"]
-  gen --> verify["빈 DB · 비식별 검증 사본 적용"]
-  verify --> plan["배포 순서 · 복구 수단 검토"]`,
-            },
             bullets: {
               after: 1,
               items: [

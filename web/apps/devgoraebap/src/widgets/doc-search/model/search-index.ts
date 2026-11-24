@@ -4,12 +4,13 @@ import { LAYOUT_DOCS } from "@/entities/layout-doc";
 import {
   BACKEND_ENGINEERING_DOCS,
   FRONTEND_ENGINEERING_DOCS,
-  WEBAPP_DOCS,
+  type GuideDoc,
 } from "@/entities/webapp-doc";
+import { PLAYBOOKS } from "@/entities/playbook";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
-  "Webapp",
+  "Playbook",
   "Engineering",
   "디자인 시스템",
   "파운데이션",
@@ -46,8 +47,8 @@ const page = (
 ): DocEntry => ({ id: href, group, title, href, description, keywords: description });
 
 // 본문까지 검색되도록 섹션의 글을 모두 키워드에 넣는다.
-const guideKeywords = (doc: (typeof WEBAPP_DOCS)[number]) =>
-  `${doc.slug} ${doc.group} ${doc.summary} ${doc.sections
+const guideKeywords = (doc: GuideDoc & { group?: string; phase?: string }) =>
+  `${doc.slug} ${doc.group ?? doc.phase ?? ""} ${doc.summary} ${doc.sections
     .map((section) =>
       [
         section.title ?? "",
@@ -60,13 +61,14 @@ const guideKeywords = (doc: (typeof WEBAPP_DOCS)[number]) =>
     .join(" ")}`;
 
 const DOC_ENTRIES: DocEntry[] = [
-  ...WEBAPP_DOCS.map((doc) => ({
-    id: `webapp:${doc.slug}`,
-    group: "Webapp" as const,
-    title: doc.title,
-    href: `/webapp/${doc.slug}`,
-    description: doc.summary,
-    keywords: guideKeywords(doc),
+  page("Playbook", "플레이북 개요", "/playbook", "자주 하는 일의 절차와 스킬 조합"),
+  ...PLAYBOOKS.map((playbook) => ({
+    id: `playbook:${playbook.slug}`,
+    group: "Playbook" as const,
+    title: playbook.title,
+    href: `/playbook/${playbook.slug}`,
+    description: playbook.summary,
+    keywords: `${guideKeywords(playbook)} ${playbook.steps.map((step) => `${step.title} ${step.detail} ${step.skills.join(" ")}`).join(" ")}`,
   })),
   page("디자인 시스템", "개요", "/frontend/design-system/overview", "디자인 시스템의 구조와 쓰임"),
   page(
@@ -146,7 +148,7 @@ const DOC_ENTRIES: DocEntry[] = [
       keywords: `${doc.title} ${section.problem} ${section.guidance}`,
     })),
   ]),
-  page("Agents", "Agents", "/webapp/agents", "webapp@dev-goraebap 플러그인 설치와 범위"),
+  page("Agents", "Agents", "/playbook/agents", "webapp@dev-goraebap 플러그인 설치와 범위"),
   page("용어집", "용어집", "/frontend/glossary", "문서에 쓰는 용어 모음"),
   ...Object.entries(GLOSSARY).map(([key, entry]) => ({
     id: `glossary:${key}`,

@@ -20,7 +20,8 @@ import {
 } from "@/entities/design-token";
 import { toHexColor } from "@/shared/lib/css-color";
 import { useDesignConfig } from "@/shared/lib/design-config";
-import { CopyCodeBlock } from "@/shared/ui";
+import { CopyCodeBlock, Glossed } from "@/shared/ui";
+import { CodeExampleList, examplesFor, pageSkills } from "@/entities/code-example";
 
 export const Route = createFileRoute("/frontend/design-system/foundations/tokens/")({
   component: DesignTokensPage,
@@ -79,7 +80,9 @@ function DesignTokensPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-bold tracking-tight">디자인 토큰</h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          라이트·다크 모드와 영역별 테마 전환에 쓰는 색상, 반경, 타이포그래피의 CSS 변수 기준
+          <Glossed>
+            {"라이트·다크 모드와 영역별 테마 전환에 쓰는 색상, 반경, 타이포그래피의 CSS 변수 기준"}
+          </Glossed>
         </p>
       </header>
 
@@ -229,8 +232,11 @@ function DesignTokensPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">적용</h2>
         <p className="text-muted-foreground text-base leading-relaxed">
-          영역 요소에 data-ds-theme을 지정해 색상 테마를 정하고, 상위 요소의 dark 클래스로 다크
-          모드를 전환합니다.
+          <Glossed>
+            {
+              "영역 요소에 data-ds-theme을 지정해 색상 테마를 정하고, 상위 요소의 dark 클래스로 다크 모드를 전환합니다."
+            }
+          </Glossed>
         </p>
         <CopyCodeBlock
           label={tokenSet.source}
@@ -238,6 +244,9 @@ function DesignTokensPage() {
           code={`<html${mode === "dark" ? ' class="dark"' : ""} data-ds-theme="${tokenSet.id}">`}
         />
       </section>
+      <CodeExampleList
+        examples={examplesFor(pageSkills("/frontend/design-system/foundations/tokens"))}
+      />
     </article>
   );
 }

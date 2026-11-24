@@ -7,10 +7,10 @@ import { Wordmark } from "./Wordmark";
 
 const WORKSPACES = [
   {
-    id: "webapp",
-    label: "Webapp",
-    description: "프로젝트 구성과 형상관리, 배포",
-    to: "/webapp",
+    id: "playbook",
+    label: "Playbook",
+    description: "자주 하는 일의 절차와 스킬 조합",
+    to: "/playbook",
   },
   {
     id: "frontend",

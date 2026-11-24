@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useMemo, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
@@ -11,7 +11,8 @@ import {
   TableRow,
 } from "@goraebap/ui-react/components/table";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { MermaidDiagram } from "@/shared/ui";
+import { annotateGlossary } from "@/shared/lib/glossary";
+import { GlossaryText, MermaidDiagram } from "@/shared/ui";
 import type { GuideDoc } from "../model/catalog";
 
 interface DocLink {
@@ -23,24 +24,47 @@ export function DocArticle({
   doc,
   prevDoc,
   nextDoc,
+  lead,
+  trailing,
 }: {
   doc: GuideDoc & { group: string };
   prevDoc?: DocLink;
   nextDoc?: DocLink;
+  // 머리와 본문 사이에 두는 그림 같은 요소
+  lead?: ReactNode;
+  // 본문 뒤, 참고 자료 앞에 두는 요소
+  trailing?: ReactNode;
 }) {
   const sections = doc.sections.filter((section) => section.paragraphs.length > 0);
   const isWritten = sections.length > 0;
+  // 본문에 보이는 순서대로 모아 용어마다 처음 나온 곳만 용어집에 잇는다.
+  const linked = useMemo(() => {
+    const texts: [string, string][] = [];
+    for (const section of doc.sections) {
+      section.paragraphs.forEach((paragraph, index) => {
+        texts.push([`${section.id}:p${index}`, paragraph]);
+        if (section.bullets?.after === index)
+          section.bullets.items.forEach((item, at) => texts.push([`${section.id}:b${at}`, item]));
+        if (section.callout?.after === index) texts.push([`${section.id}:c`, section.callout.body]);
+      });
+    }
+    return annotateGlossary(texts);
+  }, [doc]);
+  const text = (key: string, fallback: string) => (
+    <GlossaryText segments={linked[key] ?? [fallback]} />
+  );
 
   return (
     <article className="max-w-3xl space-y-8">
       <header className="border-border space-y-3 border-b pb-8">
-        <p className="text-muted-foreground text-sm font-medium">{doc.group}</p>
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-3xl font-bold tracking-tight">{doc.title}</h1>
           {!isWritten && <Badge variant="secondary">작성 중</Badge>}
         </div>
         <p className="text-muted-foreground text-lg leading-relaxed">{doc.summary}</p>
       </header>
+
+      {lead}
 
       {isWritten ? (
         <div className="space-y-8">
@@ -51,11 +75,13 @@ export function DocArticle({
               )}
               {section.paragraphs.map((paragraph, index) => (
                 <Fragment key={`${section.id}-${index}`}>
-                  <p className="text-foreground/90 text-base leading-7">{paragraph}</p>
+                  <p className="text-foreground/90 text-base leading-7">
+                    {text(`${section.id}:p${index}`, paragraph)}
+                  </p>
                   {section.bullets?.after === index && (
                     <ul className="text-foreground/90 list-disc space-y-2 pl-5 text-base leading-7">
-                      {section.bullets.items.map((item) => (
-                        <li key={item}>{item}</li>
+                      {section.bullets.items.map((item, at) => (
+                        <li key={item}>{text(`${section.id}:b${at}`, item)}</li>
                       ))}
                     </ul>
                   )}
@@ -67,7 +93,7 @@ export function DocArticle({
                         </p>
                       )}
                       <p className="text-muted-foreground text-sm leading-6">
-                        {section.callout.body}
+                        {text(`${section.id}:c`, section.callout.body)}
                       </p>
                     </aside>
                   )}
@@ -148,6 +174,8 @@ export function DocArticle({
         ) : (
           <p className="text-muted-foreground text-sm">{doc.next.label}</p>
         ))}
+
+      {trailing}
 
       {doc.references && doc.references.length > 0 && (
         <section className="border-border space-y-4 border-t pt-8">

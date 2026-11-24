@@ -1,6 +1,8 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { Separator } from "@goraebap/ui-react/components/separator";
+import { Glossed } from "@/shared/ui";
+import { CodeExampleList, examplesFor, pageSkills } from "@/entities/code-example";
 
 export const Route = createFileRoute("/frontend/design-system/overview/")({
   component: OverviewPage,
@@ -66,13 +68,17 @@ function ArchitectureDiagram() {
           <p className="mt-1 text-sm font-semibold">@goraebap/design-system</p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             <div className="border-border bg-background rounded-lg border px-3 py-2 text-left">
-              <p className="text-xs font-semibold">디자인 토큰 (CSS Variables)</p>
+              <p className="text-xs font-semibold">
+                <Glossed>{"디자인 토큰 (CSS Variables)"}</Glossed>
+              </p>
               <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">
                 5 Themes (Light/Dark) · Radius · Font
               </p>
             </div>
             <div className="border-border bg-background rounded-lg border px-3 py-2 text-left">
-              <p className="text-xs font-semibold">스타일 레시피 (tailwind-variants)</p>
+              <p className="text-xs font-semibold">
+                <Glossed>{"스타일 레시피 (tailwind-variants)"}</Glossed>
+              </p>
               <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">
                 프레임워크에 의존하지 않는 TypeScript 함수
               </p>
@@ -150,9 +156,11 @@ function OverviewPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">단일 원본과 어댑터 분리</h2>
         <p className="text-muted-foreground text-base leading-relaxed">
-          해결책은 시각 규칙(토큰과 스타일 레시피)에서 프레임워크를 완전히 걷어내는 것입니다.
-          상호작용이 필요한 컴포넌트만 React의 Base UI와 Angular의 Spartan Brain 같은 헤드리스
-          프리미티브로 감싸고, 색·여백·반경·모션은 모두 같은 원본에서 가져옵니다.
+          <Glossed>
+            {
+              "해결책은 시각 규칙(토큰과 스타일 레시피)에서 프레임워크를 완전히 걷어내는 것입니다. 상호작용이 필요한 컴포넌트만 React의 Base UI와 Angular의 Spartan Brain 같은 헤드리스 프리미티브로 감싸고, 색·여백·반경·모션은 모두 같은 원본에서 가져옵니다."
+            }
+          </Glossed>
         </p>
         <ArchitectureDiagram />
       </section>
@@ -162,8 +170,11 @@ function OverviewPage() {
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">영역별 역할 경계</h2>
         <p className="text-muted-foreground text-base leading-relaxed">
-          각 영역이 책임지는 범위를 나누어 두면, 색상 테마를 바꾸거나 프레임워크를 옮겨도 수정
-          범위가 한 곳에 머뭅니다.
+          <Glossed>
+            {
+              "각 영역이 책임지는 범위를 나누어 두면, 색상 테마를 바꾸거나 프레임워크를 옮겨도 수정 범위가 한 곳에 머뭅니다."
+            }
+          </Glossed>
         </p>
         <div className="space-y-2.5">
           {LAYER_ROLES.map((layer) => (
@@ -188,6 +199,7 @@ function OverviewPage() {
           ))}
         </div>
       </section>
+      <CodeExampleList examples={examplesFor(pageSkills("/frontend/design-system/overview"))} />
     </article>
   );
 }

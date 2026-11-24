@@ -1,6 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
 import { BACKEND_ENGINEERING_DOCS, DocArticle } from "@/entities/webapp-doc";
+import { CodeExampleList, examplesFor } from "@/entities/code-example";
 import { PageState } from "@/shared/ui";
 
 export const Route = createFileRoute("/backend/engineering/$slug/")({
@@ -32,6 +33,7 @@ function BackendEngineeringPage() {
   return (
     <DocArticle
       doc={doc}
+      trailing={<CodeExampleList examples={examplesFor(doc.skills)} />}
       prevDoc={toLink(BACKEND_ENGINEERING_DOCS[index - 1])}
       nextDoc={toLink(BACKEND_ENGINEERING_DOCS[index + 1])}
     />

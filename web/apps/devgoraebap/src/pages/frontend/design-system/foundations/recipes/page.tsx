@@ -10,7 +10,7 @@ function DocsRecipesPage() {
   return (
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-bold tracking-tight">Style Recipes</h1>
+        <h1 className="text-3xl font-bold tracking-tight">스타일 레시피</h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
           <code>tailwind-variants</code>와 Tailwind 클래스를 조합해 React와 Angular에서 함께 쓰는
           컴포넌트 외형과 변형 규칙

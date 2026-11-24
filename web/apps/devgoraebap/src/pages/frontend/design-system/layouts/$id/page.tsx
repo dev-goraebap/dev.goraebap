@@ -1,16 +1,17 @@
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Button, buttonVariants } from "@goraebap/ui-react/components/button";
 import { getLayoutDoc, type AppShellVariant } from "@/entities/layout-doc";
-import { CopyCodeBlock, ResizableLayoutStage, PageState } from "@/shared/ui";
+import { annotateGlossary } from "@/shared/lib/glossary";
+import { CopyCodeBlock, GlossaryText, ResizableLayoutStage, PageState } from "@/shared/ui";
 
 export const Route = createFileRoute("/frontend/design-system/layouts/$id/")({
   component: LayoutDetailPage,
 });
 
 const VIEWS = [
-  { id: "preview", label: "Preview" },
-  { id: "code", label: "Code" },
+  { id: "preview", label: "미리보기" },
+  { id: "code", label: "코드" },
 ] as const;
 
 function Segments<T extends string>({
@@ -91,6 +92,18 @@ function LayoutDetailPage() {
   const { id } = Route.useParams();
   const layout = getLayoutDoc(id);
   const [variant, setVariant] = useState<AppShellVariant>("inset");
+  // 요약과 예제 설명을 보이는 순서대로 모아 용어마다 처음 나온 곳만 용어집에 잇는다.
+  const linked = useMemo(
+    () =>
+      annotateGlossary([
+        ["summary", layout?.summary ?? ""],
+        ...(layout?.examples ?? []).map((example): [string, string] => [
+          example.id,
+          example.description,
+        ]),
+      ]),
+    [layout],
+  );
 
   if (!layout) {
     return (
@@ -114,7 +127,9 @@ function LayoutDetailPage() {
       <div className="space-y-6">
         <header className="min-w-0 space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">{layout.name}</h1>
-          <p className="text-muted-foreground text-lg leading-relaxed">{layout.summary}</p>
+          <p className="text-muted-foreground text-lg leading-relaxed">
+            <GlossaryText segments={linked.summary} />
+          </p>
         </header>
 
         <LayoutBlock
@@ -147,7 +162,7 @@ function LayoutDetailPage() {
               <div className="space-y-1">
                 <h3 className="text-lg font-semibold tracking-tight">{example.title}</h3>
                 <p className="text-muted-foreground text-base leading-relaxed">
-                  {example.description}
+                  <GlossaryText segments={linked[example.id] ?? [example.description]} />
                 </p>
                 {example.relatedLayoutId && (
                   <Link

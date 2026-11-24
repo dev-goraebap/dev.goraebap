@@ -372,8 +372,72 @@ export function stripGlossaryMarkup(text: string) {
   return text.replace(TERM_MARKUP, "$2");
 }
 
-// [[용어 또는 컴포넌트 키|문장에 보일 글]] 중 페이지에서 처음 나온 것만 표시 대상으로 남긴다.
-export function annotateGlossary(texts: [string, string][], componentIds: Set<string>) {
+// 표시 없이 쓴 본문에서 찾을 말. 한국어 이름을 기준으로 두고, 약어와 굳어진 영어 표기만 함께 찾는다.
+// 주요·보조·간격처럼 다른 뜻으로 흔히 쓰는 말은 넣지 않고 [[ ]] 표시로만 잇는다.
+const AUTO_LINK: Record<string, string[]> = {
+  cta: ["CTA"],
+  "visual-hierarchy": ["시각적 위계"],
+  affordance: ["행동 유도성"],
+  overlay: ["오버레이"],
+  modal: ["모달"],
+  "non-modal": ["비모달"],
+  backdrop: ["백드롭"],
+  "focus-trap": ["포커스 트랩"],
+  hover: ["호버"],
+  focus: ["포커스"],
+  "loading-state": ["로딩 상태"],
+  "empty-state": ["빈 상태"],
+  validation: ["유효성 검사"],
+  "app-shell": ["앱 셸"],
+  inset: ["인셋", "Inset"],
+  grid: ["그리드"],
+  "scrollbar-gutter": ["스크롤바 여백", "scrollbar-gutter"],
+  responsive: ["반응형 UI", "반응형"],
+  adaptive: ["적응형 UI", "적응형"],
+  breakpoint: ["브레이크포인트", "분기점"],
+  "touch-target": ["터치 영역"],
+  "safe-area": ["세이프 에어리어", "Safe Area"],
+  dvh: ["dvh"],
+  aria: ["ARIA"],
+  "screen-reader": ["스크린 리더"],
+  "keyboard-navigation": ["키보드 내비게이션"],
+  "focus-ring": ["포커스 링"],
+  "color-contrast": ["명도 대비"],
+  "accessible-name": ["접근 가능한 이름"],
+  "design-token": ["디자인 토큰"],
+  "semantic-token": ["시맨틱 토큰"],
+  theme: ["테마"],
+  recipe: ["스타일 레시피"],
+  "headless-ui": ["헤드리스 UI"],
+};
+
+// 긴 말부터 찾아 포커스 링이 포커스보다, 비모달이 모달보다 먼저 잡히게 한다.
+const AUTO_TERMS = Object.entries(AUTO_LINK)
+  .flatMap(([id, words]) => words.map((word) => ({ id, word })))
+  .sort((a, b) => b.word.length - a.word.length);
+const escape = (word: string) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// 한글이나 영문자에 붙은 말(활성의 비활성, 100dvh)은 다른 낱말의 일부로 보고 건너뛴다.
+const AUTO_PATTERN = new RegExp(
+  `(?<![가-힣A-Za-z0-9-])(${AUTO_TERMS.map(({ word }) => escape(word)).join("|")})(?![A-Za-z0-9-])`,
+  "g",
+);
+const AUTO_ID = new Map(AUTO_TERMS.map(({ id, word }) => [word, id]));
+
+function linkPlain(text: string, seen: Set<string>, segments: GlossarySegment[]) {
+  let cursor = 0;
+  for (const match of text.matchAll(AUTO_PATTERN)) {
+    const id = AUTO_ID.get(match[0])!;
+    if (seen.has(id)) continue;
+    seen.add(id);
+    if (match.index > cursor) segments.push(text.slice(cursor, match.index));
+    segments.push({ id, label: match[0] });
+    cursor = match.index + match[0].length;
+  }
+  if (cursor < text.length) segments.push(text.slice(cursor));
+}
+
+// [[용어 또는 컴포넌트 키|문장에 보일 글]] 표시와 본문 속 용어 이름 중 페이지에서 처음 나온 것만 용어집에 잇는다.
+export function annotateGlossary(texts: [string, string][], componentIds = new Set<string>()) {
   const seen = new Set<string>();
   const result: Record<string, GlossarySegment[]> = {};
   for (const [key, text] of texts) {
@@ -381,17 +445,16 @@ export function annotateGlossary(texts: [string, string][], componentIds: Set<st
     let cursor = 0;
     for (const match of text.matchAll(TERM_MARKUP)) {
       const [markup, id, label] = match;
-      const plain = text.slice(cursor, match.index);
+      linkPlain(text.slice(cursor, match.index), seen, segments);
       if ((GLOSSARY[id] || componentIds.has(id)) && !seen.has(id)) {
         seen.add(id);
-        if (plain) segments.push(plain);
         segments.push({ id, label });
       } else {
-        segments.push(plain + label);
+        segments.push(label);
       }
       cursor = match.index + markup.length;
     }
-    if (cursor < text.length) segments.push(text.slice(cursor));
+    linkPlain(text.slice(cursor), seen, segments);
     result[key] = segments;
   }
   return result;
