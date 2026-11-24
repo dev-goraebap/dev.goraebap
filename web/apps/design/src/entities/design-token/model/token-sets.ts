@@ -18,7 +18,7 @@ export interface TokenSet {
 
 export interface TokenGroup {
   title: string;
-  tokens: { name: string; value: string }[];
+  tokens: { name: string; value: string; role: string }[];
 }
 
 const DECLARATION = /(--[\w-]+)\s*:\s*([^;]+);/g;
@@ -52,13 +52,13 @@ export const TOKEN_SETS: TokenSet[] = [
 ];
 
 const COLOR_GROUPS = [
-  { title: "Surface", names: ["--sidebar", "--background", "--card", "--popover"] },
+  { title: "면", names: ["--sidebar", "--background", "--card", "--popover"] },
   {
-    title: "Text",
+    title: "글자",
     names: ["--foreground", "--card-foreground", "--popover-foreground", "--muted-foreground"],
   },
   {
-    title: "Action",
+    title: "동작",
     names: [
       "--primary",
       "--primary-foreground",
@@ -70,11 +70,37 @@ const COLOR_GROUPS = [
     ],
   },
   {
-    title: "Status",
+    title: "상태",
     names: ["--destructive", "--destructive-foreground", "--success", "--warning", "--info"],
   },
-  { title: "Line", names: ["--border", "--input", "--ring"] },
+  { title: "선", names: ["--border", "--input", "--ring"] },
 ];
+
+const TOKEN_ROLES: Record<string, string> = {
+  "--sidebar": "사이드바와 앱 바깥 바닥 면",
+  "--background": "페이지의 기본 배경 면",
+  "--card": "배경 위 카드와 패널 면",
+  "--popover": "화면 위 팝오버와 메뉴 면",
+  "--foreground": "기본 배경 위 글자와 아이콘",
+  "--card-foreground": "카드 위 글자와 아이콘",
+  "--popover-foreground": "팝오버 위 글자와 아이콘",
+  "--muted-foreground": "설명·보조 글자와 아이콘",
+  "--primary": "주요 동작과 강조 요소 배경",
+  "--primary-foreground": "주요 동작 위 글자와 아이콘",
+  "--secondary": "보조 동작과 태그 배경",
+  "--secondary-foreground": "보조 동작 위 글자와 아이콘",
+  "--muted": "비활성·보조 영역 배경",
+  "--accent": "호버와 선택 상태의 배경",
+  "--accent-foreground": "호버와 선택 상태의 글자와 아이콘",
+  "--destructive": "파괴적 동작과 오류 상태",
+  "--destructive-foreground": "파괴적 동작 위 글자와 아이콘",
+  "--success": "완료와 성공 상태 표시",
+  "--warning": "주의와 경고 상태 표시",
+  "--info": "안내와 진행 상태 표시",
+  "--border": "카드와 영역의 경계선",
+  "--input": "입력 컨트롤의 테두리",
+  "--ring": "키보드 포커스 표시",
+};
 
 const NON_COLOR_TOKENS = new Set(["--radius"]);
 
@@ -88,12 +114,12 @@ export function groupColorTokens(values: TokenValues): TokenGroup[] {
     title: group.title,
     tokens: group.names
       .filter((name) => name in values)
-      .map((name) => ({ name, value: values[name] })),
+      .map((name) => ({ name, value: values[name], role: TOKEN_ROLES[name] ?? "" })),
   }));
   const others = Object.keys(values)
     .filter((name) => !known.has(name) && !NON_COLOR_TOKENS.has(name))
-    .map((name) => ({ name, value: values[name] }));
-  return [...groups, { title: "Other", tokens: others }].filter((group) => group.tokens.length > 0);
+    .map((name) => ({ name, value: values[name], role: TOKEN_ROLES[name] ?? "" }));
+  return [...groups, { title: "기타", tokens: others }].filter((group) => group.tokens.length > 0);
 }
 
 function readScale(prefix: string) {

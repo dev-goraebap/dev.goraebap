@@ -3,16 +3,21 @@ import { IconProvider, type IconSetId } from "@goraebap/ui-react/icons";
 
 type ThemePresetId = "app" | "editorial" | "ocean" | "forest" | "terracotta";
 export type RadiusOptionId = "0rem" | "0.25rem" | "0.5rem" | "0.75rem" | "1rem";
-export type BodyFontId = "pretendard" | "system";
-export type HeadingFontId = "same" | "serif" | "mono";
+export type CornerShapeId = "round" | "squircle";
+export type BodyFontId =
+  "pretendard" | "suit" | "wanted" | "plex" | "gowun" | "noto-serif" | "maru" | "system";
+export type HeadingFontId = "same" | BodyFontId | "mono";
+export type LatinFontId = "same" | "inter" | "geist" | "dm-sans" | "source-serif";
 export type UiSizeId = "93.75%" | "100%" | "112.5%" | "125%";
 
 export interface DesignConfig {
   theme: ThemePresetId;
   uiSize: UiSizeId;
   radius: RadiusOptionId;
+  cornerShape: CornerShapeId;
   font: BodyFontId;
   heading: HeadingFontId;
+  latinFont: LatinFontId;
   iconSet: IconSetId;
 }
 
@@ -20,8 +25,10 @@ const DEFAULT_DESIGN_CONFIG: DesignConfig = {
   theme: "app",
   uiSize: "100%",
   radius: "0.5rem",
+  cornerShape: "round",
   font: "pretendard",
   heading: "same",
+  latinFont: "same",
   iconSet: "solar",
 };
 
@@ -86,12 +93,55 @@ export const RADIUS_OPTIONS: { id: RadiusOptionId; label: string }[] = [
   { id: "1rem", label: "1.0" },
 ];
 
-export const FONT_OPTIONS: { id: BodyFontId; label: string; stack: string }[] = [
+export const CORNER_SHAPE_OPTIONS: { id: CornerShapeId; label: string }[] = [
+  { id: "round", label: "원형" },
+  { id: "squircle", label: "초타원" },
+];
+
+const googleFont = (family: string) =>
+  `https://fonts.googleapis.com/css2?family=${family}&display=swap`;
+
+export const FONT_OPTIONS: { id: BodyFontId; label: string; stack: string; href?: string }[] = [
   {
     id: "pretendard",
     label: "Pretendard",
     stack:
       '"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif',
+  },
+  {
+    id: "suit",
+    label: "SUIT",
+    stack: '"SUIT Variable", system-ui, sans-serif',
+    href: "https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/variable/woff2/SUIT-Variable.css",
+  },
+  {
+    id: "wanted",
+    label: "Wanted Sans",
+    stack: '"Wanted Sans Variable", system-ui, sans-serif',
+    href: "https://cdn.jsdelivr.net/gh/wanteddev/wanted-sans@v1.0.3/packages/wanted-sans/fonts/webfonts/variable/split/WantedSansVariable.min.css",
+  },
+  {
+    id: "plex",
+    label: "IBM Plex Sans KR",
+    stack: '"IBM Plex Sans KR", system-ui, sans-serif',
+    href: googleFont("IBM+Plex+Sans+KR:wght@400;500;600;700"),
+  },
+  {
+    id: "gowun",
+    label: "고운돋움",
+    stack: '"Gowun Dodum", system-ui, sans-serif',
+    href: googleFont("Gowun+Dodum"),
+  },
+  {
+    id: "noto-serif",
+    label: "Noto Serif KR",
+    stack: '"Noto Serif KR", Georgia, serif',
+    href: googleFont("Noto+Serif+KR:wght@400;500;600;700"),
+  },
+  {
+    id: "maru",
+    label: "마루 부리",
+    stack: '"Maru Buri", Georgia, serif',
   },
   {
     id: "system",
@@ -100,19 +150,59 @@ export const FONT_OPTIONS: { id: BodyFontId; label: string; stack: string }[] = 
   },
 ];
 
-export const HEADING_OPTIONS: { id: HeadingFontId; label: string; stack: string }[] = [
-  { id: "same", label: "본문과 동일", stack: "var(--font-sans)" },
+const MONO_STACK = '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace';
+
+export const HEADING_OPTIONS: { id: HeadingFontId; label: string }[] = [
+  { id: "same", label: "본문과 동일" },
+  ...FONT_OPTIONS.filter((option) => option.id !== "system").map(({ id, label }) => ({
+    id,
+    label,
+  })),
+  { id: "mono", label: "JetBrains Mono" },
+];
+
+// 한글 글리프가 없는 폰트를 앞에 두면 영문만 이 폰트로 그려진다.
+export const LATIN_FONT_OPTIONS: {
+  id: LatinFontId;
+  label: string;
+  family?: string;
+  href?: string;
+}[] = [
+  { id: "same", label: "본문과 동일" },
   {
-    id: "serif",
-    label: "Noto Serif KR",
-    stack: '"Noto Serif KR", Georgia, serif',
+    id: "inter",
+    label: "Inter",
+    family: '"Inter"',
+    href: googleFont("Inter:wght@400;500;600;700"),
   },
   {
-    id: "mono",
-    label: "JetBrains Mono",
-    stack: '"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace',
+    id: "geist",
+    label: "Geist",
+    family: '"Geist"',
+    href: googleFont("Geist:wght@400;500;600;700"),
+  },
+  {
+    id: "dm-sans",
+    label: "DM Sans",
+    family: '"DM Sans"',
+    href: googleFont("DM+Sans:wght@400;500;600;700"),
+  },
+  {
+    id: "source-serif",
+    label: "Source Serif 4",
+    family: '"Source Serif 4"',
+    href: googleFont("Source+Serif+4:wght@400;500;600;700"),
   },
 ];
+
+function loadFontStylesheet(href?: string) {
+  if (!href || document.querySelector(`link[data-ds-font="${href}"]`)) return;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = href;
+  link.dataset.dsFont = href;
+  document.head.append(link);
+}
 
 export const ICON_SET_OPTIONS: { id: IconSetId; label: string }[] = [
   { id: "solar", label: "Solar" },
@@ -127,7 +217,13 @@ function loadConfig(): DesignConfig {
     if (!raw) return DEFAULT_DESIGN_CONFIG;
     const stored = { ...DEFAULT_DESIGN_CONFIG, ...(JSON.parse(raw) as Partial<DesignConfig>) };
     const isKnownSize = UI_SIZE_OPTIONS.some((option) => option.id === stored.uiSize);
-    return isKnownSize ? stored : { ...stored, uiSize: DEFAULT_DESIGN_CONFIG.uiSize };
+    // 예전에 저장한 제목 폰트 값을 새 이름으로 옮긴다.
+    const heading = (stored.heading as string) === "serif" ? "noto-serif" : stored.heading;
+    return {
+      ...stored,
+      heading,
+      uiSize: isKnownSize ? stored.uiSize : DEFAULT_DESIGN_CONFIG.uiSize,
+    };
   } catch {
     return DEFAULT_DESIGN_CONFIG;
   }
@@ -161,13 +257,23 @@ export function DesignConfigProvider({ children }: { children: ReactNode }) {
     root.removeAttribute("data-ds-accent");
     root.style.setProperty("--radius", config.radius);
 
-    const fontStack =
-      FONT_OPTIONS.find((f) => f.id === config.font)?.stack ?? FONT_OPTIONS[0].stack;
-    root.style.setProperty("--font-sans", fontStack);
+    root.style.setProperty("--ds-corner-shape", config.cornerShape);
 
-    const headingStack =
-      HEADING_OPTIONS.find((h) => h.id === config.heading)?.stack ?? HEADING_OPTIONS[0].stack;
-    root.style.setProperty("--font-heading", headingStack);
+    const body = FONT_OPTIONS.find((f) => f.id === config.font) ?? FONT_OPTIONS[0];
+    const latin = LATIN_FONT_OPTIONS.find((f) => f.id === config.latinFont);
+    const heading = FONT_OPTIONS.find((f) => f.id === config.heading);
+    const latinPrefix = latin?.family ? `${latin.family}, ` : "";
+    [body.href, heading?.href, latin?.href].forEach(loadFontStylesheet);
+
+    root.style.setProperty("--font-sans", `${latinPrefix}${body.stack}`);
+    root.style.setProperty(
+      "--font-heading",
+      config.heading === "mono"
+        ? MONO_STACK
+        : heading
+          ? `${latinPrefix}${heading.stack}`
+          : "var(--font-sans)",
+    );
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(config));

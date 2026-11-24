@@ -9,6 +9,53 @@
 @source "../../../../../packages/design-system/src";
 @source "../../../../../packages/ui-react/src";
 
+/* 마루 부리는 굵기마다 다른 이름으로 배포되어 한 글꼴로 묶는다. 쓸 때만 내려받는다. */
+@font-face {
+  font-family: "Maru Buri";
+  font-weight: 300;
+  font-display: swap;
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Maru Buri";
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Maru Buri";
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Maru Buri";
+  font-weight: 700;
+  font-display: swap;
+  src: url("https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff2")
+    format("woff2");
+}
+
+@supports (corner-shape: squircle) {
+  @layer base {
+    *,
+    ::before,
+    ::after {
+      corner-shape: var(--ds-corner-shape, round);
+    }
+
+    .rounded-full {
+      corner-shape: round;
+    }
+  }
+}
+
 @layer base {
   html {
     /* 퍼센트라서 브라우저 글꼴 크기 설정 위에 곱해진다. */

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import { Button } from "@goraebap/ui-react/components/button";
 import {
   ResponsivePopover,
@@ -17,9 +17,11 @@ import { ToggleGroup, ToggleGroupItem } from "@goraebap/ui-react/components/togg
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { useIsMobile } from "@goraebap/ui-react/lib/use-is-mobile";
 import {
+  CORNER_SHAPE_OPTIONS,
   FONT_OPTIONS,
   HEADING_OPTIONS,
   ICON_SET_OPTIONS,
+  LATIN_FONT_OPTIONS,
   RADIUS_OPTIONS,
   THEME_PRESETS,
   useDesignConfig,
@@ -47,7 +49,17 @@ function SettingRow({
   );
 }
 
-function SettingSelect<K extends "font" | "heading">({
+function CornerGlyph({ radius, shape }: { radius: string; shape: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className="block size-5 border-t-2 border-l-2 border-current"
+      style={{ borderTopLeftRadius: radius, cornerShape: shape } as CSSProperties}
+    />
+  );
+}
+
+function SettingSelect<K extends "font" | "heading" | "latinFont">({
   label,
   configKey,
   options,
@@ -80,6 +92,8 @@ function SettingSelect<K extends "font" | "heading">({
     </SettingRow>
   );
 }
+
+const supportsSquircle = CSS.supports("corner-shape", "squircle");
 
 export function DesignSettings() {
   const { config, rootScale, updateConfig, resetConfig } = useDesignConfig();
@@ -154,7 +168,11 @@ export function DesignSettings() {
           </SettingRow>
 
           <SettingRow label="색상 테마" value={activePreset?.name}>
-            <div role="radiogroup" aria-label="색상 테마" className="grid grid-cols-5 gap-1.5">
+            <div
+              role="radiogroup"
+              aria-label="색상 테마"
+              className="grid grid-cols-5 gap-2.5 p-0.5"
+            >
               {THEME_PRESETS.map((preset) => {
                 const isSelected = config.theme === preset.id;
                 return (
@@ -166,19 +184,15 @@ export function DesignSettings() {
                     aria-label={preset.name}
                     title={preset.name}
                     onClick={() => updateConfig("theme", preset.id)}
-                    className={`focus-visible:outline-ring flex h-9 cursor-pointer overflow-hidden rounded-md border p-0.5 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
-                      isSelected ? "border-foreground" : "border-border hover:border-foreground/40"
+                    style={{
+                      backgroundImage: `linear-gradient(135deg, ${preset.swatches[2]} 6%, ${preset.swatches[0]} 36%, ${preset.swatches[3]} 100%)`,
+                    }}
+                    className={`focus-visible:outline-ring ring-offset-popover aspect-square w-full cursor-pointer rounded-md transition-shadow focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                      isSelected
+                        ? "ring-foreground ring-2 ring-offset-2"
+                        : "ring-foreground/15 hover:ring-foreground/40 ring-1"
                     }`}
-                  >
-                    <span
-                      className="flex-1 rounded-l-[3px]"
-                      style={{ backgroundColor: preset.swatches[1] }}
-                    />
-                    <span
-                      className="flex-1 rounded-r-[3px]"
-                      style={{ backgroundColor: preset.swatches[3] }}
-                    />
-                  </button>
+                  />
                 );
               })}
             </div>
@@ -198,8 +212,39 @@ export function DesignSettings() {
                   key={option.id}
                   value={option.id}
                   size="sm"
-                  className="w-full px-0"
+                  aria-label={`라운드 ${option.label}`}
+                  className="h-auto w-full flex-col gap-1.5 px-0 py-2"
                 >
+                  <CornerGlyph radius={option.id} shape={config.cornerShape} />
+                  <span className="text-[0.6875rem] tabular-nums">{option.label}</span>
+                </ToggleGroupItem>
+              ))}
+            </ToggleGroup>
+          </SettingRow>
+
+          <SettingRow label="모서리 곡선">
+            <ToggleGroup
+              aria-label="모서리 곡선"
+              value={[config.cornerShape]}
+              onValueChange={(next) => {
+                if (next[0]) updateConfig("cornerShape", next[0] as DesignConfig["cornerShape"]);
+              }}
+              className="grid w-full grid-cols-2"
+            >
+              {CORNER_SHAPE_OPTIONS.map((option) => (
+                <ToggleGroupItem
+                  key={option.id}
+                  value={option.id}
+                  size="sm"
+                  disabled={option.id === "squircle" && !supportsSquircle}
+                  title={
+                    option.id === "squircle" && !supportsSquircle
+                      ? "이 브라우저는 초타원 곡선을 지원하지 않습니다"
+                      : undefined
+                  }
+                  className="h-9 w-full gap-2"
+                >
+                  <CornerGlyph radius="1rem" shape={option.id} />
                   {option.label}
                 </ToggleGroupItem>
               ))}
@@ -210,6 +255,8 @@ export function DesignSettings() {
             <SettingSelect label="본문 폰트" configKey="font" options={FONT_OPTIONS} />
             <SettingSelect label="제목 폰트" configKey="heading" options={HEADING_OPTIONS} />
           </div>
+
+          <SettingSelect label="영문 폰트" configKey="latinFont" options={LATIN_FONT_OPTIONS} />
 
           <SettingRow label="아이콘">
             <ToggleGroup

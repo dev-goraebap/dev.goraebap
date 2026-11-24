@@ -41,8 +41,8 @@ const LEGACY_PATHS = /^\/(components|overview|foundations|layouts|details|glossa
 export const Route = createRootRoute({
   // 워크스페이스 도입 전 주소로 들어온 링크를 새 주소로 보낸다.
   beforeLoad: ({ location }) => {
-    if (location.pathname.replace(/\/$/, "") === "/themes") {
-      throw redirect({ href: "/frontend/foundations/color-themes", replace: true });
+    if (/^\/(themes|(frontend\/)?foundations\/color-themes)\/?$/.test(location.pathname)) {
+      throw redirect({ href: "/frontend/foundations/tokens", replace: true });
     }
     if (/^\/(frontend\/)?getting-started\/?$/.test(location.pathname)) {
       throw redirect({ href: "/frontend/agent", replace: true });

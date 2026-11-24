@@ -17,7 +17,6 @@ const GUIDE_GROUPS: DocsNavGroup[] = [
     title: "파운데이션",
     items: [
       { label: "디자인 토큰", href: "/frontend/foundations/tokens", icon: "swatch" },
-      { label: "색상 테마", href: "/frontend/foundations/color-themes", icon: "palette" },
       { label: "스타일 레시피", href: "/frontend/foundations/recipes", icon: "code" },
     ],
   },
