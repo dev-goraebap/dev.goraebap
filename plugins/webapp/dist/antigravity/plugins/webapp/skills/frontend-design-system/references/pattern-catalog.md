@@ -16,7 +16,7 @@ arc42: "8.8"
 | Layouts (레이아웃) | 앱 셸·공간·사이드바·모바일 탐색·페이지 머리·칸 머리·툴바·목록·표·상세·설정·옆 패널 | [앱 셸](app-layout.md), [페이지 배치](layout-patterns.md) |
 | Patterns (사용 패턴) | 여러 화면에 걸리는 동작 계약: 리소스 화면 패턴(List-Detail·Drill-down·Routed Modal), 라우트 마스킹, 조건의 주소, 대기·빈 상태·실패, 행 클릭·키보드 | [리소스 화면 패턴](resource-patterns.md), [라우트 마스킹](../../frontend-interaction/references/route-masking.md), [데이터 상태](../../frontend-interaction/references/data-states.md), [입력과 상호작용](../../frontend-interaction/references/interaction-patterns.md) |
 
-Primitives와 Composites는 재사용 코드의 단위입니다. Layouts와 Patterns는 공간과 행동의 기준이며 더 큰 컴포넌트라는 이유로 분류하지 않습니다. 여러 화면이 함께 지키는 여는 방식·상태·조작은 Patterns입니다. 같은 구현을 여러 설명에서 참조하되 코드와 규칙의 원본은 한 곳에 둡니다. 파일 배치와 상태·캐시·URL·초안은 frontend 지침을 따릅니다. 접근성·반응형·키보드·문구는 모든 범주의 공통 검토 기준이며 [문구·본문과 검증](content-and-review.md)을 따릅니다.
+Primitives와 Composites는 재사용 코드의 단위입니다. Layouts와 Patterns는 공간과 행동의 기준이며 더 큰 컴포넌트라는 이유로 분류하지 않습니다. 여러 화면이 함께 지키는 여는 방식·상태·조작은 Patterns입니다. 같은 구현을 여러 설명에서 참조하되 코드와 규칙의 원본은 한 곳에 둡니다. 파일 배치와 상태·캐시·URL·초안은 [프론트엔드 엔지니어링](../../frontend-engineering/SKILL.md) 지침을 따릅니다. 접근성·반응형·키보드·문구는 모든 범주의 공통 검토 기준이며 [문구·본문과 검증](content-and-review.md)을 따릅니다.
 
 ## 원본과 갱신
 

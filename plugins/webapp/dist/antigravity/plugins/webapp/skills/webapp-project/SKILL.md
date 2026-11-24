@@ -4,13 +4,13 @@ description: 웹 플랫폼의 모듈 경계, 상태 소유권, 외부 연동, �
 arc42: "4, 7"
 ---
 
-# 아키텍처
+# 프로젝트
 
 여러 영역에 걸친 구조, 새 기술 도입, 배포·운영 방식을 정할 때 따르는 기준입니다.
 
 ## 예시
 
-이 지침은 판단 기준만 담고 구현은 담지 않습니다. 구현 모양은 이 스킬의 `examples/` 폴더에서 프로젝트 `AGENTS.md`의 `Webapp 스택:` 줄과 이름이 같은 절을 읽습니다. 읽는 법은 [예시 읽기](../goraebap-mode/references/examples.md)에 있습니다. 예시와 프로젝트 `AGENTS.md`가 다르면 `AGENTS.md`를 따릅니다.
+구현 모양은 [examples/](examples/)의 주제별 예시에서 프로젝트 스택과 같은 절만 읽습니다([예시 읽기](../goraebap-mode/references/examples.md)).
 
 ## 판단 기준
 

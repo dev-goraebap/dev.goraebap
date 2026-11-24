@@ -28,3 +28,5 @@ arc42: "4"
 5. 무거운 라이브러리는 쓰는 화면에서 지연 로딩합니다.
 
 후보 비교와 감싼 구현 예시는 이 스킬의 `examples/`에서 프로젝트 스택과 같은 절을 확인합니다([예시 읽기](../../goraebap-mode/references/examples.md)).
+
+예시: [open-source-wrapper](../examples/open-source-wrapper.md)

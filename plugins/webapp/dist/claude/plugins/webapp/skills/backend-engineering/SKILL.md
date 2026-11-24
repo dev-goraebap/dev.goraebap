@@ -11,7 +11,7 @@ arc42: "8.2, 8.1, 8.3, 5, 2, 7"
 
 ## 예시
 
-이 지침은 판단 기준만 담고 구현은 담지 않습니다. 구현 모양은 이 스킬의 `examples/` 폴더에서 프로젝트 `AGENTS.md`의 `Webapp 스택:` 줄과 이름이 같은 절을 읽습니다. 읽는 법은 [예시 읽기](../goraebap-mode/references/examples.md)에 있습니다. 예시와 프로젝트 `AGENTS.md`가 다르면 `AGENTS.md`를 따릅니다.
+구현 모양은 [examples/](examples/)의 주제별 예시에서 프로젝트 스택과 같은 절만 읽습니다([예시 읽기](../goraebap-mode/references/examples.md)).
 
 ## 읽을 자료
 

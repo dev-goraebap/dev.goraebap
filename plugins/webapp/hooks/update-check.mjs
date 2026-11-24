@@ -1,6 +1,6 @@
-// Webapp 새 버전 알림(세션 시작 훅). 설치된 버전과 원본 저장소의 최신 버전을 하루 한 번 비교해, 낮으면 사용자에게 한 줄로
-// 알리고 에이전트에게는 갱신을 제안·실행하는 방법을 맥락으로 준다. 네트워크·파일 오류는 조용히 넘긴다: 알림이 실패해도
-// 세션 시작을 막거나 경고를 남기지 않는다.
+// Webapp 새 버전 알림(세션 시작 훅). Webapp을 연결한 프로젝트(AGENTS.md에 관리 블록 마커가 있음)에서만, 설치된 버전과
+// 원본 저장소의 최신 버전을 하루 한 번 비교해 낮으면 알린다. 같은 최신 버전은 한 번만 알려, 갱신을 미룬 사용자에게 세션마다
+// 다시 묻지 않는다. 네트워크·파일 오류는 조용히 넘긴다: 알림이 실패해도 세션 시작을 막거나 경고를 남기지 않는다.
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -52,19 +52,29 @@ async function latestVersion(cacheFile, now = Date.now()) {
     if (!response.ok) return cached?.latest ?? null;
     const { version } = await response.json();
     await fs.mkdir(path.dirname(cacheFile), { recursive: true });
-    await fs.writeFile(cacheFile, JSON.stringify({ latest: version, checkedAt: now }));
+    await fs.writeFile(cacheFile, JSON.stringify({ ...cached, latest: version, checkedAt: now }));
     return version;
   } catch {
     return cached?.latest ?? null;
   }
 }
 
+export const PROJECT_MARKER = 'webapp@dev-goraebap:start';
+
 async function main() {
+  const project = process.env.CLAUDE_PROJECT_DIR ?? process.cwd();
+  const agents = await fs.readFile(path.join(project, 'AGENTS.md'), 'utf8').catch(() => '');
+  if (!agents.includes(PROJECT_MARKER)) return;
   const root = process.env.CLAUDE_PLUGIN_ROOT ?? fileURLToPath(new URL('../', import.meta.url));
   const installed = (await readJson(path.join(root, '.claude-plugin', 'plugin.json')).catch(() => null))?.version;
-  const latest = await latestVersion(path.join(os.homedir(), '.goraebap', 'cache', 'webapp-latest.json'));
+  const cacheFile = path.join(os.homedir(), '.goraebap', 'cache', 'webapp-latest.json');
+  const latest = await latestVersion(cacheFile);
   const output = notice(installed, latest);
-  if (output) process.stdout.write(`${JSON.stringify(output)}\n`);
+  if (!output) return;
+  const cached = await readJson(cacheFile).catch(() => ({}));
+  if (cached.notified === latest) return;
+  await fs.writeFile(cacheFile, JSON.stringify({ ...cached, notified: latest })).catch(() => undefined);
+  process.stdout.write(`${JSON.stringify(output)}\n`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

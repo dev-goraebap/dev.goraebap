@@ -69,7 +69,7 @@ codex plugin add webapp@dev-goraebap
 
 Antigravity:
 
-`plugins/webapp/dist/antigravity/plugins/webapp` 폴더를 `~/.gemini/config/plugins/webapp`에 복사하거나 연결하면 다음 턴부터 자동으로 불러옵니다.
+원본 저장소를 받은 뒤 `plugins/webapp/dist/antigravity/plugins/webapp` 폴더를 `~/.gemini/config/plugins/webapp`에 복사하거나 연결하면 다음 턴부터 자동으로 불러옵니다.
 
 ## 프로젝트에 연결
 
@@ -91,7 +91,7 @@ Antigravity:
 
 Claude Code에서 자동 갱신은 공식 마켓플레이스가 아니면 기본값이 꺼짐입니다. 사용자가 `/plugin` → Marketplaces → `dev-goraebap` → Enable auto-update로 켜거나, 조직 관리자가 managed settings의 `extraKnownMarketplaces` 항목에 `"autoUpdate": true`를 넣습니다. 자동 갱신은 세션 시작 때가 아니라 첫 메시지 뒤 최대 10분 안에 돌며, 실행 중인 세션은 시작할 때의 판을 유지하고 `/reload-plugins`를 입력하거나 다음에 실행할 때 새 버전이 적용됩니다.
 
-Claude Code 배포본에는 세션 시작 훅(`hooks/hooks.json`, `hooks/update-check.mjs`)이 들어갑니다. `update-check.mjs`는 새로 시작할 때만(`startup`) 돌며, 하루 한 번 원본 저장소의 최신 버전을 받아 `~/.goraebap/cache/webapp-latest.json`에 기억합니다. 설치된 버전보다 높으면 `Webapp 새 버전이 나왔습니다(0.8.0 → 0.8.1). 에이전트에게 "Webapp 업데이트해 줘"라고 하면 갱신합니다.` 한 줄을 보이고, 에이전트가 첫 요청 전에 한 번 갱신을 제안합니다. 동의하면 아래 수동 갱신 명령을 실행한 뒤 `/reload-plugins`를 안내하고, 거절하면 다시 묻지 않습니다. 네트워크 실패나 Node가 없는 경우에는 조용히 넘어갑니다. Codex 배포본에는 훅이 없습니다.
+Claude Code 배포본에는 세션 시작 훅(`hooks/hooks.json`, `hooks/update-check.mjs`)이 들어갑니다. `update-check.mjs`는 새로 시작할 때만(`startup`), AGENTS.md에 Webapp 관리 블록이 있는 프로젝트에서만 돌며, 하루 한 번 원본 저장소의 최신 버전을 받아 `~/.goraebap/cache/webapp-latest.json`에 기억합니다. 설치된 버전보다 높으면 `Webapp 새 버전이 나왔습니다(0.8.0 → 0.8.1). 에이전트에게 "Webapp 업데이트해 줘"라고 하면 갱신합니다.` 한 줄을 보이고, 에이전트가 첫 요청 전에 한 번 갱신을 제안합니다. 동의하면 아래 수동 갱신 명령을 실행한 뒤 `/reload-plugins`를 안내합니다. 같은 최신 버전은 한 번만 알리므로, 미루면 다음 버전이 나올 때까지 다시 묻지 않습니다. 네트워크 실패나 Node가 없는 경우에는 조용히 넘어갑니다. Codex 배포본에는 훅이 없습니다.
 
 직접 갱신할 때는 다음 명령을 실행하고, Claude Code에서는 `/reload-plugins`를 입력하거나 새 세션을 엽니다.
 

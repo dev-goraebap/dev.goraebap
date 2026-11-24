@@ -24,7 +24,7 @@ arc42: "none"
 1. 현재 폴더의 Git 루트, status와 staging, 기존 AGENTS.md·CLAUDE.md·`.agents/skills`를 읽습니다. 다른 저장소는 바꾸지 않습니다.
 2. 지침 사본(접두사가 붙은 `*-mode`·`*-frontend` 같은 지침 폴더, `scripts/sync-skills.mjs`, 동기화 시작 훅)이 있으면 연결 대신 [사본에서 전환](references/migrate-from-copies.md)을 따릅니다.
 3. AGENTS.md에 아래 "개발 지침" 관리 블록(`<!-- webapp@dev-goraebap:start -->` ~ `<!-- webapp@dev-goraebap:end -->`)과 "프로젝트 규칙" 표를 넣습니다. 파일이 없으면 만들고, 이미 마커가 있으면 마커 안쪽만 갱신합니다. 마커 밖의 기존 프로젝트 설명·팀 규칙·프로젝트 규칙 표는 보존합니다. 최소 버전은 설치된 플러그인의 버전(`plugin.json`의 `version`)으로 적습니다.
-4. 블록의 `Webapp 스택:` 줄에 프로젝트가 쓰는 스택 id를 쉼표로 구분해 적습니다. 실제 의존성을 확인해 [예시 읽기](../goraebap-mode/references/examples.md)가 지원하는 스택 id를 고르고 사용자에게 확인합니다. 맞는 스택이 없으면 이 줄을 빼고, 지침만으로 작업한다고 사용자에게 알립니다.
+4. 블록의 `Webapp 스택:` 줄에 프로젝트가 쓰는 스택 id를 쉼표로 구분해 적습니다. 실제 의존성을 확인해 [스택 id와 전제](../goraebap-mode/examples/stacks.md)에서 맞는 id를 고르고 사용자에게 확인합니다. 맞는 스택이 없으면 이 줄을 빼고, 지침만으로 작업한다고 사용자에게 알립니다.
 5. 기존 AGENTS.md에 지침과 다른 결정이 이미 있으면 [프로젝트 규칙](references/project-rules.md) 표로 옮깁니다. 확인할 수 없는 의도는 추정하지 말고 사용자에게 묻습니다.
 6. Claude Code 사용자에게는 이 마켓플레이스의 자동 갱신을 켤지 한 번 묻고 켜는 방법(`/plugin` → Marketplaces → `dev-goraebap` → Enable auto-update, 또는 조직 관리 설정의 `extraKnownMarketplaces` 항목에 `"autoUpdate": true` 추가)을 안내합니다. 사용자 설정 파일은 에이전트가 임의로 고치지 않습니다.
 7. 바꾼 파일과 남은 확인 사항을 보고합니다.
@@ -33,7 +33,7 @@ arc42: "none"
 <!-- webapp@dev-goraebap:start -->
 ## 개발 지침
 
-이 프로젝트는 Webapp 플러그인(0.16.0 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(webapp-project·frontend-engineering·frontend-design-system·frontend-interaction·backend-engineering)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webapp 지침을 읽을 수 없거나 설치된 버전이 위 버전보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
+이 프로젝트는 Webapp 플러그인(<설치된 판> 이상)의 지침을 따릅니다. 작업을 시작할 때 goraebap-mode를 읽고, 바꾸는 영역의 지침(webapp-project·frontend-engineering·frontend-design-system·frontend-interaction·backend-engineering)을 함께 읽습니다. 아래 프로젝트 규칙이 지침과 다르면 프로젝트 규칙을 따릅니다. Webapp 지침을 읽을 수 없거나 설치된 버전이 위 버전보다 낮으면 추측으로 진행하지 않습니다. 작업 상태를 이어받기 문서로 남기고, 플러그인 설치·갱신 방법과 새 세션에서 읽을 문서 경로를 사용자에게 알립니다.
 
 - Webapp 스택: <스택 id>
 <!-- webapp@dev-goraebap:end -->

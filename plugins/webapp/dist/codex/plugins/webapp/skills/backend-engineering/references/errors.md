@@ -31,3 +31,5 @@ arc42: "8.2"
 | 닫히거나 보관된 대상을 고치려 함 | 409 |
 
 같은 권한 검사기가 대상 응답의 `can`(`view`·`edit`·`manage`)을 만들고, 알림·실시간 신호를 받을 사람도 거릅니다.
+
+예시: [problem-json](../examples/problem-json.md)

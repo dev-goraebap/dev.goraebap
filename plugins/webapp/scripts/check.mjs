@@ -10,6 +10,10 @@ let skills = 0;
 let links = 0;
 let sections = 0;
 let exampleLinks = 0;
+let anchors = 0;
+
+// 제목을 GitHub 방식의 앵커로 바꾼다. 한글은 그대로 두고 문장부호를 빼고 빈칸을 하이픈으로 바꾼다.
+const toAnchor = (heading) => heading.trim().toLowerCase().replace(/[^\p{L}\p{N}\s-]/gu, '').replace(/\s+/g, '-');
 let examples = 0;
 let pure = 0;
 
@@ -94,6 +98,12 @@ async function checkDir(directory, mode) {
       const target = path.resolve(directory, href.split('#')[0]);
       assert(!path.relative(root, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);
       await fs.access(target);
+      const anchor = href.split('#')[1];
+      if (anchor && target.endsWith('.md')) {
+        const headings = [...(await fs.readFile(target, 'utf8')).matchAll(/^#+ (.+)$/gm)].map(([, heading]) => toAnchor(heading));
+        assert(headings.includes(decodeURIComponent(anchor)), `없는 제목을 가리키는 앵커입니다: ${file} (${href})`);
+        anchors++;
+      }
       links++;
     }
     assert(!content.includes('.local/'), `로컬 참고 자료를 배포 스킬이 읽으면 안 됩니다: ${file}`);
@@ -101,4 +111,4 @@ async function checkDir(directory, mode) {
 }
 
 await checkDir(SKILLS, 'skills');
-process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);
+process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, 앵커 ${anchors}개, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);

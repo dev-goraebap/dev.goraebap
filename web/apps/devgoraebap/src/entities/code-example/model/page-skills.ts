@@ -19,6 +19,9 @@ export const PAGE_SKILLS: Record<string, { skills: string[] }> = {
   "/frontend/design-system/components/button": {
     skills: ["frontend-design-system/references/basic-components.md"],
   },
+  "/playbook/project-setup": {
+    skills: ["goraebap-mode/references/examples.md"],
+  },
   "/playbook/feature": {
     skills: ["webapp-project/references/open-source.md"],
   },

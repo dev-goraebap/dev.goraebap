@@ -34,3 +34,5 @@ arc42: "8.5"
 `prefers-reduced-motion: reduce`이면 이동·등장·회전·화면 전환을 끄고 결과 상태를 바로 보입니다. 완료 축하 효과도 실행하지 않고 생략합니다. CSS 전환을 더하면 같은 파일에 줄이기 규칙도 둡니다. 스크립트에서 부드러운 스크롤·애니메이션을 시작할 때도 같은 설정을 확인합니다.
 
 화면 전환과 데이터 대기의 기준은 [데이터 상태](data-states.md)를 따릅니다.
+
+예시: [route-progress](../examples/route-progress.md)
