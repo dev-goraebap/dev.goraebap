@@ -30,12 +30,12 @@ export function GlossaryTerm({ id, term, korean, definition, children }: Glossar
       </PopoverTrigger>
       <PopoverContent side="top" className="w-64">
         <PopoverTitle>{korean ?? term}</PopoverTitle>
-        {korean && <p className="text-muted-foreground mt-0.5 text-[11px]">{term}</p>}
+        {korean && <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">{term}</p>}
         <PopoverDescription className="break-keep">{definition}</PopoverDescription>
         <Link
           to="/frontend/glossary"
           hash={id}
-          className="text-muted-foreground hover:text-foreground mt-2.5 inline-flex items-center gap-1 text-[11px] font-medium transition-colors"
+          className="text-muted-foreground hover:text-foreground mt-2.5 inline-flex items-center gap-1 text-[0.6875rem] font-medium transition-colors"
         >
           용어집에서 보기
           <SystemIcon name="arrowRight" className="size-3" />

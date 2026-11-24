@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { LayoutSlot as Slot } from "./LayoutSlot";
 
-const PAGE_HEADER = "h-[52px] shrink-0";
+const PAGE_HEADER = "h-13 shrink-0";
 const TOOLBAR = "h-11 shrink-0";
 
 function Stack({ children }: { children: ReactNode }) {

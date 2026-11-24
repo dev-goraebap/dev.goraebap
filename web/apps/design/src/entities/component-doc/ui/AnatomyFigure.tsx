@@ -4,7 +4,7 @@ function Marker({ n, className }: { n: number; className: string }) {
   return (
     <span
       aria-hidden="true"
-      className={`bg-primary text-primary-foreground ring-background absolute z-10 flex size-5 items-center justify-center rounded-full text-[11px] font-semibold ring-2 ${className}`}
+      className={`bg-primary text-primary-foreground ring-background absolute z-10 flex size-5 items-center justify-center rounded-full text-[0.6875rem] font-semibold ring-2 ${className}`}
     >
       {n}
     </span>
@@ -51,15 +51,15 @@ export function DialogAnatomy() {
               </div>
               <div className="relative mt-1 w-fit">
                 <Marker n={6} className="top-1/2 -right-6 -translate-y-1/2" />
-                <p className="text-muted-foreground text-[11px]">새 이름을 입력합니다.</p>
+                <p className="text-muted-foreground text-[0.6875rem]">새 이름을 입력합니다.</p>
               </div>
             </div>
             <div className="bg-hatch border-border my-2 h-8 rounded-md border" />
             <div className="border-border/80 relative flex justify-end gap-1.5 rounded-md border border-dashed p-1.5">
               <Marker n={7} className="top-1/2 -left-2 -translate-y-1/2" />
-              <span className="text-muted-foreground px-2 py-0.5 text-[11px]">취소</span>
+              <span className="text-muted-foreground px-2 py-0.5 text-[0.6875rem]">취소</span>
               <span className="relative">
-                <span className="bg-primary text-primary-foreground block rounded px-2 py-0.5 text-[11px]">
+                <span className="bg-primary text-primary-foreground block rounded px-2 py-0.5 text-[0.6875rem]">
                   저장
                 </span>
                 <Marker n={8} className="-top-3 -right-2" />
@@ -94,12 +94,12 @@ export function BottomSheetAnatomy() {
           </div>
           <div className="relative mt-1 w-fit">
             <Marker n={5} className="top-1/2 -right-6 -translate-y-1/2" />
-            <p className="text-muted-foreground text-[11px]">조건을 고릅니다.</p>
+            <p className="text-muted-foreground text-[0.6875rem]">조건을 고릅니다.</p>
           </div>
           <div className="border-border/80 relative mt-3 space-y-1 rounded-md border border-dashed p-1.5">
             <Marker n={6} className="top-1/2 -left-2 -translate-y-1/2" />
             <span className="relative block">
-              <span className="bg-primary text-primary-foreground block rounded py-0.5 text-center text-[11px]">
+              <span className="bg-primary text-primary-foreground block rounded py-0.5 text-center text-[0.6875rem]">
                 적용
               </span>
               <Marker n={7} className="top-1/2 -right-2 -translate-y-1/2" />

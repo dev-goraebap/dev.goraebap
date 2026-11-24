@@ -5,9 +5,11 @@ type ThemePresetId = "app" | "editorial" | "ocean" | "forest" | "terracotta";
 export type RadiusOptionId = "0rem" | "0.25rem" | "0.5rem" | "0.75rem" | "1rem";
 export type BodyFontId = "pretendard" | "system";
 export type HeadingFontId = "same" | "serif" | "mono";
+export type UiSizeId = "93.75%" | "100%" | "112.5%" | "125%";
 
 export interface DesignConfig {
   theme: ThemePresetId;
+  uiSize: UiSizeId;
   radius: RadiusOptionId;
   font: BodyFontId;
   heading: HeadingFontId;
@@ -16,6 +18,7 @@ export interface DesignConfig {
 
 const DEFAULT_DESIGN_CONFIG: DesignConfig = {
   theme: "app",
+  uiSize: "100%",
   radius: "0.5rem",
   font: "pretendard",
   heading: "same",
@@ -68,6 +71,13 @@ export const THEME_PRESETS: ThemePresetOption[] = [
   },
 ];
 
+export const UI_SIZE_OPTIONS: { id: UiSizeId; label: string }[] = [
+  { id: "93.75%", label: "작게" },
+  { id: "100%", label: "기본" },
+  { id: "112.5%", label: "크게" },
+  { id: "125%", label: "더 크게" },
+];
+
 export const RADIUS_OPTIONS: { id: RadiusOptionId; label: string }[] = [
   { id: "0rem", label: "0" },
   { id: "0.25rem", label: "0.25" },
@@ -115,14 +125,22 @@ function loadConfig(): DesignConfig {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return DEFAULT_DESIGN_CONFIG;
-    return { ...DEFAULT_DESIGN_CONFIG, ...(JSON.parse(raw) as Partial<DesignConfig>) };
+    const stored = { ...DEFAULT_DESIGN_CONFIG, ...(JSON.parse(raw) as Partial<DesignConfig>) };
+    const isKnownSize = UI_SIZE_OPTIONS.some((option) => option.id === stored.uiSize);
+    return isKnownSize ? stored : { ...stored, uiSize: DEFAULT_DESIGN_CONFIG.uiSize };
   } catch {
     return DEFAULT_DESIGN_CONFIG;
   }
 }
 
+function applyUiSize(size: UiSizeId) {
+  document.documentElement.style.setProperty("--ui-size", size);
+}
+
 interface DesignConfigContextValue {
   config: DesignConfig;
+  /** 브라우저 글꼴 설정까지 반영한 1rem과 16px의 비율 */
+  rootScale: number;
   updateConfig: <K extends keyof DesignConfig>(key: K, value: DesignConfig[K]) => void;
   resetConfig: () => void;
 }
@@ -130,7 +148,12 @@ interface DesignConfigContextValue {
 const DesignConfigContext = createContext<DesignConfigContextValue | null>(null);
 
 export function DesignConfigProvider({ children }: { children: ReactNode }) {
-  const [config, setConfig] = useState<DesignConfig>(loadConfig);
+  const [config, setConfig] = useState<DesignConfig>(() => {
+    const initial = loadConfig();
+    applyUiSize(initial.uiSize);
+    return initial;
+  });
+  const rootScale = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16;
 
   useEffect(() => {
     const root = document.documentElement;
@@ -154,15 +177,17 @@ export function DesignConfigProvider({ children }: { children: ReactNode }) {
   }, [config]);
 
   function updateConfig<K extends keyof DesignConfig>(key: K, value: DesignConfig[K]) {
+    if (key === "uiSize") applyUiSize(value as UiSizeId);
     setConfig((prev) => ({ ...prev, [key]: value }));
   }
 
   function resetConfig() {
+    applyUiSize(DEFAULT_DESIGN_CONFIG.uiSize);
     setConfig(DEFAULT_DESIGN_CONFIG);
   }
 
   return (
-    <DesignConfigContext.Provider value={{ config, updateConfig, resetConfig }}>
+    <DesignConfigContext.Provider value={{ config, rootScale, updateConfig, resetConfig }}>
       <IconProvider value={config.iconSet}>{children}</IconProvider>
     </DesignConfigContext.Provider>
   );

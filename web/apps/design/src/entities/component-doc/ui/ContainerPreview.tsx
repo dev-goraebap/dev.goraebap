@@ -37,7 +37,7 @@ export function ContainerPreview({ children }: { children: ReactNode }) {
       style={{ width }}
       className="border-foreground/30 relative max-w-full rounded-lg border border-dashed p-4 pt-8"
     >
-      <span className="text-muted-foreground absolute top-2 left-3 text-[11px] font-medium tabular-nums">
+      <span className="text-muted-foreground absolute top-2 left-3 text-[0.6875rem] font-medium tabular-nums">
         부모 컨테이너 · {measured}px
       </span>
       {children}

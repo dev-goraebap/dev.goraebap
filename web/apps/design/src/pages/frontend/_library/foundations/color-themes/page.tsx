@@ -128,7 +128,9 @@ function ColorThemesPage() {
                 </Avatar>
                 <div className="min-w-0">
                   <p className="truncate text-xs font-semibold">Goraebap Studio</p>
-                  <p className="text-muted-foreground truncate text-[11px]">{activePreset.name}</p>
+                  <p className="text-muted-foreground truncate text-[0.6875rem]">
+                    {activePreset.name}
+                  </p>
                 </div>
               </div>
               <nav className="space-y-1 text-xs">
@@ -153,7 +155,7 @@ function ColorThemesPage() {
               </nav>
             </div>
             <div className="border-border bg-background rounded-xl border p-3">
-              <div className="flex items-center justify-between text-[11px]">
+              <div className="flex items-center justify-between text-[0.6875rem]">
                 <span className="font-medium">월간 빌드 할당량</span>
                 <span className="text-muted-foreground font-mono">72%</span>
               </div>

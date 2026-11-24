@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, createRootRoute, redirect, useRouterState } from "@tanstack/react-router";
 import Lenis from "lenis";
-import { Button } from "@goraebap/ui-react/components/button";
 import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
 import { DesignConfigProvider } from "@/shared/lib/design-config";
 import { DesignSettings, SiteFooter, WorkspaceSwitcher } from "@/shared/ui";
+import { DocSearch } from "@/widgets/doc-search";
 
 const PENDING_BAR_DELAY_MS = 180;
 
@@ -61,7 +61,7 @@ const TOP_NAV: {
 }[] = [
   { label: "Design System", to: "/frontend/overview", icon: "components" },
   { label: "Engineering", icon: "code" },
-  { label: "디테일", to: "/frontend/details", icon: "details" },
+  { label: "Details", to: "/frontend/details", icon: "details" },
 ];
 
 function RootLayout() {
@@ -128,14 +128,7 @@ function RootLayout() {
             {/* Right Utilities */}
             <div className="flex items-center gap-2.5">
               <DesignSettings />
-              <Button
-                size="sm"
-                shape="pill"
-                nativeButton={false}
-                render={<Link to="/frontend/getting-started" />}
-              >
-                시작하기
-              </Button>
+              <DocSearch />
             </div>
           </div>
 

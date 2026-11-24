@@ -12,12 +12,15 @@ const DETAIL_ICONS: Record<string, SystemIconName> = {
   "page-transition": "transition",
   "initial-load": "rocket",
   "adaptive-ui": "mobile",
+  "ui-size": "font",
+  "ui-states": "eye",
+  "loading-feedback": "reset",
   "route-masking": "route",
 };
 
 const DETAIL_GROUPS: DocsNavGroup[] = [
   {
-    title: "디테일",
+    title: "Details",
     items: [
       { label: "개요", href: "/frontend/details", icon: "overview" },
       ...DETAIL_DOCS.map((item) => ({
@@ -31,7 +34,7 @@ const DETAIL_GROUPS: DocsNavGroup[] = [
 
 function DetailsLayout() {
   return (
-    <DocsShell label="디테일 탐색" groups={DETAIL_GROUPS}>
+    <DocsShell label="Details 탐색" groups={DETAIL_GROUPS}>
       <Outlet />
     </DocsShell>
   );

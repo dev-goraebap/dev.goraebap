@@ -28,7 +28,7 @@ function DemoPanel({
 }) {
   return (
     <figure className="min-w-0 space-y-2">
-      <figcaption className="text-muted-foreground font-mono text-[11px]">{label}</figcaption>
+      <figcaption className="text-muted-foreground font-mono text-[0.6875rem]">{label}</figcaption>
       <div className={`border-border bg-card h-44 rounded-lg border ${className}`}>
         <DemoRows count={count} />
       </div>
@@ -238,7 +238,7 @@ export function PageTransitionDemo() {
               );
             })}
           </nav>
-          <Badge variant="outline" className="font-mono text-[10px]">
+          <Badge variant="outline" className="font-mono text-[0.625rem]">
             캐시 {cached.size}/{TRANSITION_PAGES.length}
           </Badge>
         </div>
@@ -246,7 +246,7 @@ export function PageTransitionDemo() {
         <div className="space-y-2 p-5" style={{ viewTransitionName: "detail-demo-page" }}>
           <h3 className="text-sm font-semibold">{current.title}</h3>
           <p className="text-muted-foreground text-xs leading-relaxed">{current.body}</p>
-          <p className="text-muted-foreground pt-1 font-mono text-[11px]">{current.meta}</p>
+          <p className="text-muted-foreground pt-1 font-mono text-[0.6875rem]">{current.meta}</p>
         </div>
       </div>
 
@@ -279,7 +279,7 @@ export function FontLoadingDemo() {
     <div className="space-y-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <figure className="space-y-2">
-          <figcaption className="text-muted-foreground font-mono text-[11px]">
+          <figcaption className="text-muted-foreground font-mono text-[0.6875rem]">
             font-display: swap (즉시 노출 후 교체)
           </figcaption>
           <div className="border-border bg-card space-y-1.5 rounded-lg border p-4">
@@ -303,7 +303,7 @@ export function FontLoadingDemo() {
         </figure>
 
         <figure className="space-y-2">
-          <figcaption className="text-muted-foreground font-mono text-[11px]">
+          <figcaption className="text-muted-foreground font-mono text-[0.6875rem]">
             document.fonts.ready + 짧은 대기 게이트
           </figcaption>
           <div className="border-border bg-card space-y-1.5 rounded-lg border p-4">
@@ -360,7 +360,7 @@ export function InitialBootDemo() {
           <div className="flex h-full flex-col justify-between p-5">
             <div className="flex items-center justify-between">
               <p className="text-sm font-semibold">워크스페이스 대시보드</p>
-              <Badge variant="outline" className="text-[10px]">
+              <Badge variant="outline" className="text-[0.625rem]">
                 초기화 완료
               </Badge>
             </div>
@@ -413,7 +413,7 @@ export function RouteMaskingDemo() {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           <Button
             size="sm"
             variant={viewport === "desktop" ? "default" : "outline"}
@@ -443,9 +443,9 @@ export function RouteMaskingDemo() {
       </div>
 
       <div className="border-border bg-card relative overflow-hidden rounded-xl border">
-        <div className="border-border bg-muted/40 flex items-center justify-between border-b px-3.5 py-2 font-mono text-[11px]">
+        <div className="border-border bg-muted/40 flex items-center justify-between border-b px-3.5 py-2 font-mono text-[0.6875rem]">
           <span className="text-foreground">{currentUrl}</span>
-          <Badge variant="outline" className="text-[10px]">
+          <Badge variant="outline" className="text-[0.625rem]">
             {!selected ? "목록" : standalone ? "독립 상세 페이지" : "목록 위 모달 (Masked)"}
           </Badge>
         </div>
@@ -480,9 +480,9 @@ export function RouteMaskingDemo() {
                 >
                   <div>
                     <p className="text-xs font-medium">{post.title}</p>
-                    <p className="text-muted-foreground text-[11px]">{post.summary}</p>
+                    <p className="text-muted-foreground text-[0.6875rem]">{post.summary}</p>
                   </div>
-                  <span className="text-muted-foreground font-mono text-[11px]">
+                  <span className="text-muted-foreground font-mono text-[0.6875rem]">
                     /posts/{post.id}
                   </span>
                 </button>
@@ -494,7 +494,7 @@ export function RouteMaskingDemo() {
             <div className="bg-foreground/20 absolute inset-0 flex items-center justify-center p-4 backdrop-blur-[1px]">
               <div className="border-border bg-popover w-full max-w-sm space-y-2.5 rounded-xl border p-4 shadow-lg">
                 <p className="text-xs font-semibold">{selected.title}</p>
-                <p className="text-muted-foreground text-[11px] leading-relaxed">
+                <p className="text-muted-foreground text-[0.6875rem] leading-relaxed">
                   배경 목록은 유지되고 주소창만 /posts/{selected.id}로 바뀝니다. 새로고침하면 독립
                   상세 페이지로 열립니다.
                 </p>

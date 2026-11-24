@@ -104,7 +104,9 @@ export function AdaptiveMatrix() {
               </td>
               <td className="text-muted-foreground px-4 py-2.5">{row.desktop}</td>
               <td className="text-foreground px-4 py-2.5">{row.mobile}</td>
-              <td className="text-muted-foreground px-4 py-2.5 font-mono text-[11px]">{row.how}</td>
+              <td className="text-muted-foreground px-4 py-2.5 font-mono text-[0.6875rem]">
+                {row.how}
+              </td>
             </tr>
           ))}
         </tbody>

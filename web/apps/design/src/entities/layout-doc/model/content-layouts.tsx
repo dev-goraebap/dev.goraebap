@@ -18,7 +18,7 @@ import {
 import { LayoutThumbnail } from "../ui/LayoutPreviews";
 import type { LayoutDocSpec } from "./types";
 
-const PAGE_HEADER = `<header class="flex h-[52px] shrink-0 items-center px-4"><!-- Page Header --></header>`;
+const PAGE_HEADER = `<header class="flex h-13 shrink-0 items-center px-4"><!-- Page Header --></header>`;
 const TOOLBAR = `<div class="flex h-11 shrink-0 items-center px-4"><!-- Toolbar --></div>`;
 
 export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
@@ -111,12 +111,12 @@ export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
           "목록을 검색이나 필터로 좁히면서 선택한 항목의 수정·삭제 같은 동작도 함께 실행할 때 씁니다.",
         getCode: () => `<div class="flex h-full min-h-0">
   <section class="flex w-full min-w-0 flex-col lg:w-80 lg:shrink-0 lg:border-r">
-    <header class="h-[52px] shrink-0"><!-- List Header --></header>
+    <header class="h-13 shrink-0"><!-- List Header --></header>
     <div class="h-11 shrink-0"><!-- Toolbar --></div>
     <div class="min-h-0 flex-1 overflow-y-auto"><!-- List --></div>
   </section>
   <main class="hidden min-w-0 flex-1 flex-col lg:flex">
-    <header class="h-[52px] shrink-0"><!-- Pane Header --></header>
+    <header class="h-13 shrink-0"><!-- Pane Header --></header>
     <div class="min-h-0 flex-1 overflow-y-auto"><!-- Detail --></div>
   </main>
 </div>`,
@@ -128,11 +128,11 @@ export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
         description: "개요, 활동, 파일처럼 선택한 항목의 상세 정보가 여러 종류로 나뉠 때 씁니다.",
         getCode: () => `<div class="flex h-full min-h-0">
   <section class="flex w-full min-w-0 flex-col lg:w-80 lg:shrink-0 lg:border-r">
-    <header class="h-[52px] shrink-0"><!-- List Header --></header>
+    <header class="h-13 shrink-0"><!-- List Header --></header>
     <div class="min-h-0 flex-1 overflow-y-auto"><!-- List --></div>
   </section>
   <main class="hidden min-w-0 flex-1 flex-col lg:flex">
-    <header class="h-[52px] shrink-0"><!-- Pane Header --></header>
+    <header class="h-13 shrink-0"><!-- Pane Header --></header>
     <nav class="h-11 shrink-0"><!-- Tabs --></nav>
     <div class="min-h-0 flex-1 overflow-y-auto"><!-- Tab Panel --></div>
   </main>

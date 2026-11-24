@@ -4,8 +4,12 @@ export const drawerBackdropVariants = tv({
   base: "fixed inset-0 z-40 bg-foreground/25 backdrop-blur-[2px] transition-opacity duration-200 ease-out data-[starting-style]:opacity-0 data-[ending-style]:opacity-0",
 });
 
+export const drawerViewportVariants = tv({
+  base: "fixed inset-0 z-50",
+});
+
 export const drawerPopupVariants = tv({
-  base: "fixed z-50 border-border bg-popover p-6 text-popover-foreground shadow-xl outline-none transition-[opacity,transform] duration-250 ease-out",
+  base: "fixed z-50 border-border bg-popover p-6 text-popover-foreground shadow-xl outline-none transition-[opacity,translate] duration-250 ease-out",
   variants: {
     side: {
       right:

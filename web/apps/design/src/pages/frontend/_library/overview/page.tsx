@@ -51,7 +51,7 @@ const LAYER_ROLES = [
     to: "/frontend/layouts" as const,
   },
   {
-    name: "디테일",
+    name: "Details",
     package: "스크롤 · 전환 · 폰트 · 적응형 UI",
     owns: "화면 흔들림 방지, 지연 프로그레스바, View Transition, 모바일 전환 기준",
     boundary: "정답을 강제하기보다 프로젝트를 만들며 꾸준히 챙기는 마감 기준입니다.",
@@ -65,20 +65,20 @@ function ArchitectureDiagram() {
       {/* Shared Core */}
       <div className="mx-auto max-w-2xl space-y-3">
         <div className="border-border bg-card rounded-xl border p-4 text-center shadow-xs">
-          <p className="text-muted-foreground font-mono text-[11px] uppercase">
+          <p className="text-muted-foreground font-mono text-[0.6875rem] uppercase">
             Single Source · Framework-Agnostic
           </p>
           <p className="mt-1 text-sm font-semibold">@goraebap/design-system</p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2">
             <div className="border-border bg-background rounded-lg border px-3 py-2 text-left">
               <p className="text-xs font-semibold">디자인 토큰 (CSS Variables)</p>
-              <p className="text-muted-foreground mt-0.5 text-[11px]">
+              <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">
                 5 Themes (Light/Dark) · Radius · Font
               </p>
             </div>
             <div className="border-border bg-background rounded-lg border px-3 py-2 text-left">
               <p className="text-xs font-semibold">스타일 레시피 (tailwind-variants)</p>
-              <p className="text-muted-foreground mt-0.5 text-[11px]">
+              <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">
                 프레임워크에 의존하지 않는 TypeScript 함수
               </p>
             </div>
@@ -103,27 +103,29 @@ function ArchitectureDiagram() {
         <div className="border-border bg-card space-y-2 rounded-xl border p-4">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-semibold">React</span>
-            <Badge variant="secondary" className="text-[10px]">
+            <Badge variant="secondary" className="text-[0.625rem]">
               개인 프로젝트
             </Badge>
           </div>
           <p className="text-muted-foreground text-xs leading-relaxed">
             Base UI 프리미티브 위에 같은 레시피와 아이콘 어댑터를 결합해 패키지로 제공합니다.
           </p>
-          <p className="text-muted-foreground font-mono text-[11px]">@goraebap/ui-react</p>
+          <p className="text-muted-foreground font-mono text-[0.6875rem]">@goraebap/ui-react</p>
         </div>
 
         <div className="border-border bg-card space-y-2 rounded-xl border p-4">
           <div className="flex items-center justify-between gap-2">
             <span className="text-xs font-semibold">Angular</span>
-            <Badge variant="outline" className="text-[10px]">
+            <Badge variant="outline" className="text-[0.625rem]">
               업무 프로젝트
             </Badge>
           </div>
           <p className="text-muted-foreground text-xs leading-relaxed">
             Spartan Brain 프리미티브에 완전히 같은 레시피 함수를 연결해 동일한 UI를 유지합니다.
           </p>
-          <p className="text-muted-foreground font-mono text-[11px]">@spartan-ng/brain + Recipes</p>
+          <p className="text-muted-foreground font-mono text-[0.6875rem]">
+            @spartan-ng/brain + Recipes
+          </p>
         </div>
       </div>
     </div>
@@ -187,11 +189,13 @@ function OverviewPage() {
             <Link
               key={layer.name}
               to={layer.to}
-              className="border-border bg-card hover:border-foreground/30 grid gap-2 rounded-2xl border p-4 transition-colors sm:grid-cols-12 sm:items-center"
+              className="border-border bg-card hover:border-foreground/30 grid grid-cols-1 gap-2 rounded-2xl border p-4 transition-colors sm:grid-cols-12 sm:items-center"
             >
-              <div className="sm:col-span-3">
+              <div className="min-w-0 sm:col-span-3">
                 <p className="text-sm font-semibold">{layer.name}</p>
-                <p className="text-muted-foreground font-mono text-[11px]">{layer.package}</p>
+                <p className="text-muted-foreground font-mono text-[0.6875rem] break-all">
+                  {layer.package}
+                </p>
               </div>
               <div className="sm:col-span-5">
                 <p className="text-foreground text-xs leading-relaxed">{layer.owns}</p>

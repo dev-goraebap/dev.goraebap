@@ -13,7 +13,7 @@ function ShapeRow({ render }: { render: (shape: Shape) => ReactNode }) {
       {SHAPES.map((shape) => (
         <div key={shape} data-shape={shape} className="flex min-w-0 flex-col items-center gap-3">
           <div className="flex min-h-10 w-full items-center justify-center">{render(shape)}</div>
-          <span className="text-muted-foreground font-mono text-[11px]">{shape}</span>
+          <span className="text-muted-foreground font-mono text-[0.6875rem]">{shape}</span>
         </div>
       ))}
     </div>

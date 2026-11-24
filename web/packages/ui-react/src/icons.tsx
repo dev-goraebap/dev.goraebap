@@ -110,8 +110,7 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
   ),
   close: (props) => (
     <SolarSvg {...props}>
-      <circle cx="12" cy="12" r="9.5" opacity={0.28} />
-      <path d="M14.5 9.5 9.5 14.5M9.5 9.5l5 5" />
+      <path d="M18 6 6 18M6 6l12 12" />
     </SolarSvg>
   ),
   check: (props) => (

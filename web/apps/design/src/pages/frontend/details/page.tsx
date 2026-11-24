@@ -9,7 +9,7 @@ function DetailsOverviewPage() {
   return (
     <div className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-bold tracking-tight">디테일</h1>
+        <h1 className="text-3xl font-bold tracking-tight">Details</h1>
         <p className="text-muted-foreground max-w-2xl text-base leading-relaxed">
           컴포넌트와 레이아웃만으로는 채워지지 않는 스크롤, 화면 전환, 흔들림 방지 같은 마감 기준을
           정리합니다. 정해진 정답은 아니지만, 웹 프로젝트를 만들 때마다 늘 챙기는 부분들입니다.

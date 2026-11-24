@@ -7,7 +7,7 @@ export type AppShellVariant = "inset" | "split";
 function SidebarAnatomy() {
   return (
     <div className="flex h-full w-full flex-col gap-2 p-2">
-      <div className="flex h-[52px] shrink-0 gap-2">
+      <div className="flex h-13 shrink-0 gap-2">
         <Slot label="Logo" className="w-16 shrink-0" />
         <Slot label="Space" className="flex-1" />
       </div>
@@ -21,7 +21,7 @@ function SidebarAnatomy() {
 function CollapsedSidebarAnatomy() {
   return (
     <div className="flex h-full w-full flex-col gap-2 p-2">
-      <Slot label="L" className="h-[52px] shrink-0" />
+      <Slot label="L" className="h-13 shrink-0" />
       <Slot label="G" className="h-24 shrink-0" />
       <Slot label="M" className="flex-1" />
       <Slot label="P" className="h-10 shrink-0" />
@@ -57,7 +57,7 @@ function AppShellFrame({
             : "@5xl:border-border @5xl:border-l",
         )}
       >
-        <Slot label="App Bar" className="m-2 mb-0 h-[60px] shrink-0 @5xl:hidden" />
+        <Slot label="App Bar" className="m-2 mb-0 h-15 shrink-0 @5xl:hidden" />
         <div className="flex min-h-0 flex-1 flex-col">{children}</div>
         <Slot label="Bottom Bar" className="m-2 mt-0 h-14 shrink-0 @5xl:hidden" />
       </div>
@@ -146,7 +146,7 @@ export function LayoutThumbnail({ children }: { children: ReactNode }) {
     <div aria-hidden="true" className="ring-border h-36 w-56 overflow-hidden rounded-md ring-1">
       <div
         data-thumb=""
-        className="group/layout @container h-[802px] w-[1248px] origin-top-left"
+        className="group/layout @container h-[50.125rem] w-[78rem] origin-top-left"
         style={{ transform: "scale(0.1795)", "--layout-scale": 0.1795 } as CSSProperties}
       >
         {children}

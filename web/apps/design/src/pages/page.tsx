@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { BrandMark, LineFieldCanvas, Wordmark } from "@/shared/ui";
+import { BrandMark, DesignSettings, LineFieldCanvas, Wordmark } from "@/shared/ui";
 
 export const Route = createFileRoute("/")({
   component: WorkshopPage,
@@ -10,13 +10,16 @@ function WorkshopPage() {
   return (
     <main className="bg-background text-foreground relative flex min-h-dvh items-center justify-center overflow-hidden px-6">
       <LineFieldCanvas className="absolute inset-0 size-full" />
+      <div className="absolute top-4 right-4 z-10 sm:top-5 sm:right-6">
+        <DesignSettings />
+      </div>
       <div className="relative flex flex-col items-center text-center">
         <BrandMark className="brand-draw size-20 sm:size-24" />
         <h1 className="mt-6">
           <Wordmark className="wordmark-write h-10 w-auto sm:h-12" />
         </h1>
         <p className="workshop-reveal text-muted-foreground mt-2 text-sm break-keep [animation-delay:120ms] sm:text-base">
-          웹 애플리케이션을 만드는 기술을 정리해 두는 작업실
+          웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실
         </p>
         <nav
           aria-label="워크스페이스"

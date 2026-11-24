@@ -1,7 +1,13 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui-react/components/button";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@goraebap/ui-react/components/drawer";
 import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
+import { useIsMobile } from "@goraebap/ui-react/lib/use-is-mobile";
 import { SiteFooter } from "./SiteFooter";
 
 interface DocsNavItem {
@@ -20,8 +26,6 @@ export interface DocsNavGroup {
 interface DocsShellProps {
   label: string;
   groups: DocsNavGroup[];
-  navHeader?: ReactNode;
-  navFooter?: ReactNode;
   children: ReactNode;
 }
 
@@ -118,81 +122,102 @@ function DocsNavItemRow({ item, pathname }: { item: DocsNavItem; pathname: strin
   );
 }
 
-export function DocsShell({ label, groups, navHeader, navFooter, children }: DocsShellProps) {
+function DocsNavList({ groups, pathname }: { groups: DocsNavGroup[]; pathname: string }) {
+  return groups.map((group, index) => (
+    <div key={group.title ?? index} className="space-y-1">
+      {group.title && (
+        <p className="text-muted-foreground px-3 text-xs font-semibold">{group.title}</p>
+      )}
+      <ul className="space-y-0.5">
+        {group.items.map((item) => (
+          <DocsNavItemRow key={item.href ?? item.label} item={item} pathname={pathname} />
+        ))}
+      </ul>
+    </div>
+  ));
+}
+
+function findTrail(groups: DocsNavGroup[], pathname: string) {
+  for (const group of groups) {
+    for (const item of group.items) {
+      const match = [item, ...(item.children ?? [])].find((entry) => entry.href === pathname);
+      if (match) return { section: group.title, page: match.label };
+    }
+  }
+  return undefined;
+}
+
+export function DocsShell({ label, groups, children }: DocsShellProps) {
   const pathname = useRouterState({
     select: (state) => state.location.pathname.replace(/\/$/, "") || "/",
   });
+  const isMobile = useIsMobile();
+  const drawerNavRef = useRef<HTMLElement>(null);
   const [openedAt, setOpenedAt] = useState<string | null>(null);
-  const isOpen = openedAt === pathname;
-  const current = groups
-    .flatMap((group) => group.items.flatMap((item) => [item, ...(item.children ?? [])]))
-    .find((item) => item.href === pathname);
+  const isOpen = isMobile && openedAt === pathname;
+  const trail = findTrail(groups, pathname);
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 pt-6 lg:flex-row lg:items-start lg:gap-10 lg:pt-0">
+    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 pt-4 lg:flex-row lg:items-start lg:gap-10 lg:pt-0">
+      <Drawer
+        open={isOpen}
+        swipeDirection="left"
+        onOpenChange={(next) => setOpenedAt(next ? pathname : null)}
+      >
+        <DrawerTrigger
+          aria-label={`${label} 열기${trail ? `, 현재 ${trail.page}` : ""}`}
+          className="border-border text-muted-foreground hover:text-foreground focus-visible:outline-ring flex h-10 w-full cursor-pointer items-center gap-2 border-b text-sm focus-visible:outline-2 lg:hidden"
+        >
+          <SystemIcon name="workspace" className="size-4 shrink-0" />
+          {trail?.section && <span className="shrink-0">{trail.section}</span>}
+          {trail?.section && <SystemIcon name="chevronRight" className="size-3 shrink-0" />}
+          <span className="text-foreground truncate font-medium">{trail?.page ?? label}</span>
+        </DrawerTrigger>
+        <DrawerContent
+          side="left"
+          initialFocus={() =>
+            drawerNavRef.current?.querySelector<HTMLElement>('[aria-current="page"]') ?? true
+          }
+          className="flex w-[85%] max-w-xs flex-col p-0"
+        >
+          <DrawerTitle className="px-5 pt-5 pb-3">{label}</DrawerTitle>
+          <nav
+            ref={drawerNavRef}
+            data-lenis-prevent
+            aria-label={label}
+            onClick={(event) => {
+              if ((event.target as Element).closest("a")) setOpenedAt(null);
+            }}
+            className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
+          >
+            <DocsNavList groups={groups} pathname={pathname} />
+          </nav>
+        </DrawerContent>
+      </Drawer>
+
       <aside
         aria-label={label}
-        className="relative w-full shrink-0 lg:sticky lg:top-14 lg:flex lg:h-[calc(100vh-3.5rem)] lg:w-60 lg:flex-col lg:pt-10 lg:pb-6"
+        className="relative hidden w-60 shrink-0 flex-col pt-10 pb-6 lg:sticky lg:top-14 lg:flex lg:h-[calc(100vh-3.5rem)]"
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute top-10 right-0 bottom-6 hidden w-px lg:block"
+          className="pointer-events-none absolute top-10 right-0 bottom-6 w-px"
           style={{
             background:
               "linear-gradient(to bottom, transparent 0%, var(--border) 18%, var(--border) 82%, transparent 100%)",
           }}
         />
-        <div className="flex min-h-0 flex-1 flex-col space-y-5 lg:pr-3">
-          <Button
-            type="button"
-            variant="outline"
-            aria-expanded={isOpen}
-            aria-controls="docs-nav"
-            onClick={() => setOpenedAt(isOpen ? null : pathname)}
-            className="bg-card h-11 w-full justify-between rounded-xl px-4 text-sm font-medium lg:hidden"
-          >
-            <span className="truncate">{current?.label ?? label}</span>
-            <SystemIcon
-              name="chevronDown"
-              className={`text-muted-foreground size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
-            />
-          </Button>
-
-          <div
-            id="docs-nav"
-            className={`min-h-0 flex-1 flex-col space-y-5 lg:flex ${isOpen ? "flex" : "hidden"}`}
-          >
-            {navHeader && <div className="shrink-0">{navHeader}</div>}
-            <nav
-              data-lenis-prevent
-              className="min-h-0 flex-1 [scrollbar-width:none] space-y-5 overflow-y-auto overscroll-contain pb-4 lg:-mt-4 lg:[mask-image:linear-gradient(to_bottom,transparent,black_1rem,black_calc(100%-2.5rem),transparent)] lg:pt-4 lg:pb-10 [&::-webkit-scrollbar]:hidden"
-            >
-              {groups.map((group, index) => (
-                <div key={group.title ?? index} className="space-y-1">
-                  {group.title && (
-                    <p className="text-muted-foreground px-3 text-xs font-semibold">
-                      {group.title}
-                    </p>
-                  )}
-                  <ul className="space-y-0.5">
-                    {group.items.map((item) => (
-                      <DocsNavItemRow
-                        key={item.href ?? item.label}
-                        item={item}
-                        pathname={pathname}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              ))}
-              {navFooter}
-            </nav>
-          </div>
-        </div>
+        <nav
+          id="docs-nav"
+          data-lenis-prevent
+          className="-mt-4 min-h-0 flex-1 [scrollbar-width:none] space-y-5 overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,black_1rem,black_calc(100%-2.5rem),transparent)] pt-4 pr-3 pb-10 [&::-webkit-scrollbar]:hidden"
+        >
+          <DocsNavList groups={groups} pathname={pathname} />
+        </nav>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col lg:min-h-[calc(100vh-3.5rem)]">
-        <main className="flex-1 pb-10 lg:py-10">{children}</main>
+        <main className="flex-1 pb-10 [overflow-wrap:break-word] lg:py-10">{children}</main>
         <SiteFooter isContained={false} />
       </div>
     </div>

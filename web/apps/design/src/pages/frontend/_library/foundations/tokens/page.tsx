@@ -64,7 +64,9 @@ function TokenSwatch({ name, value }: { name: string; value: string }) {
             />
           )}
         </span>
-        <span className="text-muted-foreground block truncate font-mono text-[11px]">{value}</span>
+        <span className="text-muted-foreground block truncate font-mono text-[0.6875rem]">
+          {value}
+        </span>
       </span>
     </button>
   );
@@ -168,7 +170,7 @@ function DesignTokensPage() {
                   style={{ borderRadius: token.value }}
                 />
                 <p className="truncate font-mono text-xs font-medium">{token.name}</p>
-                <p className="text-muted-foreground truncate font-mono text-[11px]">
+                <p className="text-muted-foreground truncate font-mono text-[0.6875rem]">
                   {token.value}
                 </p>
               </div>
@@ -189,7 +191,7 @@ function DesignTokensPage() {
                 </p>
                 <p className="font-mono text-xs font-medium">{token.name}</p>
                 <p
-                  className="text-muted-foreground truncate font-mono text-[11px]"
+                  className="text-muted-foreground truncate font-mono text-[0.6875rem]"
                   title={token.value}
                 >
                   {token.value}

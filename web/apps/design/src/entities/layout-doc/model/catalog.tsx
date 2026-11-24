@@ -41,7 +41,7 @@ function appShellCode(
     ${indent(sidebar, 4)}
   </aside>
   <div class="${SHELL_MAIN_CLASS[variant]}">
-    <header class="h-[60px] shrink-0 lg:hidden"><!-- App Bar --></header>
+    <header class="h-15 shrink-0 lg:hidden"><!-- App Bar --></header>
     ${indent(content, 4)}
     <nav class="h-14 shrink-0 lg:hidden"><!-- Bottom Bar --></nav>
   </div>
@@ -61,7 +61,7 @@ const APP_SHELL_EXAMPLES: LayoutExample[] = [
       appShellCode(
         variant,
         CONTENT_MAIN,
-        `<div class="flex h-[52px] shrink-0 items-center gap-2 px-2">
+        `<div class="flex h-13 shrink-0 items-center gap-2 px-2">
   <!-- Logo --><!-- Space -->
 </div>
 <nav class="shrink-0 p-2"><!-- Global --></nav>
@@ -80,7 +80,7 @@ const APP_SHELL_EXAMPLES: LayoutExample[] = [
       appShellCode(
         variant,
         CONTENT_MAIN,
-        `<div class="flex h-[52px] shrink-0 items-center justify-center"><!-- Logo --></div>
+        `<div class="flex h-13 shrink-0 items-center justify-center"><!-- Logo --></div>
 <nav class="shrink-0 p-2"><!-- Global Icons --></nav>
 <nav class="min-h-0 flex-1 overflow-y-auto p-2"><!-- Menu Icons --></nav>
 <div class="shrink-0 p-2"><!-- Profile Avatar --></div>`,

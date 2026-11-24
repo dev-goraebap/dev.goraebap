@@ -2,7 +2,7 @@ import { useState, type ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui-react/components/button";
 import { getLayoutDoc, type AppShellVariant } from "@/entities/layout-doc";
-import { CopyCodeBlock, ResizableLayoutStage } from "@/shared/ui";
+import { CopyCodeBlock, ResizableLayoutStage, PageState } from "@/shared/ui";
 
 export const Route = createFileRoute("/frontend/_library/layouts/$id/")({
   component: LayoutDetailPage,
@@ -94,12 +94,20 @@ function LayoutDetailPage() {
 
   if (!layout) {
     return (
-      <div className="border-border bg-card space-y-3 rounded-2xl border p-8 text-center">
-        <h1 className="text-lg font-semibold">레이아웃을 찾을 수 없습니다</h1>
-        <Link to="/frontend/layouts" className="text-sm font-medium underline">
-          레이아웃 목록으로 돌아가기
-        </Link>
-      </div>
+      <PageState
+        kind="not-found"
+        title="레이아웃을 찾을 수 없습니다"
+        action={
+          <Button
+            variant="outline"
+            size="sm"
+            nativeButton={false}
+            render={<Link to="/frontend/layouts" />}
+          >
+            레이아웃 목록으로 돌아가기
+          </Button>
+        }
+      />
     );
   }
 

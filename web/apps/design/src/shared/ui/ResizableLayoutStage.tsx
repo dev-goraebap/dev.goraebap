@@ -6,6 +6,7 @@ import {
   type KeyboardEvent,
   type ReactNode,
 } from "react";
+import { useDesignConfig } from "../lib/design-config";
 
 const BREAKPOINTS = [
   { label: "Mobile", width: 390, tick: 0 },
@@ -37,6 +38,7 @@ export function ResizableLayoutStage({
   defaultWidth?: number;
   children: ReactNode;
 }) {
+  const { rootScale } = useDesignConfig();
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackWidth, setTrackWidth] = useState(0);
   const [width, setWidth] = useState(
@@ -59,7 +61,9 @@ export function ResizableLayoutStage({
   const toWidth = (display: number) =>
     MIN_WIDTH + ((display - minDisplay) / (available - minDisplay)) * (MAX_WIDTH - MIN_WIDTH);
   const displayWidth = toDisplay(width);
-  const scale = displayWidth / width;
+  // 컨테이너 쿼리의 rem은 화면 크기 설정을 따르므로, 눈금과 전환 지점이 맞도록 실제 폭을 함께 늘린다.
+  const layoutWidth = width * rootScale;
+  const scale = displayWidth / layoutWidth;
   const ticks = BREAKPOINTS.map((item) => ({
     ...item,
     left: item.tick === 0 ? 0 : toDisplay(item.tick),
@@ -102,7 +106,7 @@ export function ResizableLayoutStage({
                     type="button"
                     onClick={() => setWidth(item.width)}
                     style={{ left: item.left }}
-                    className={`absolute top-0 h-7 cursor-pointer border-l pl-1.5 font-mono text-[11px] transition-colors ${
+                    className={`absolute top-0 h-7 cursor-pointer border-l pl-1.5 font-mono text-[0.6875rem] transition-colors ${
                       isReached
                         ? "border-foreground/60 text-foreground"
                         : "border-border text-muted-foreground/70 hover:text-foreground"
@@ -123,7 +127,7 @@ export function ResizableLayoutStage({
                   className="@container origin-top-left"
                   style={
                     {
-                      width,
+                      width: layoutWidth,
                       height: height / scale,
                       transform: `scale(${scale})`,
                       "--layout-scale": scale,
@@ -166,7 +170,7 @@ export function ResizableLayoutStage({
               </div>
             </div>
 
-            <p className="text-muted-foreground mt-2 text-right font-mono text-[11px] tabular-nums">
+            <p className="text-muted-foreground mt-2 text-right font-mono text-[0.6875rem] tabular-nums">
               {width}px
             </p>
           </>

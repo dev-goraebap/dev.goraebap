@@ -8,6 +8,8 @@ import {
   ThinScrollbarDemo,
 } from "../ui/DetailDemos";
 import { AdaptiveMatrix, AdaptivePatternDemo } from "../ui/AdaptiveDemos";
+import { DebounceDemo, LoadingFeedbackDemo, UiStatesDemo } from "../ui/StateDemos";
+import { ScaleMethodTable, UiSizeCompareDemo, UnitGuideTable } from "../ui/UiSizeDemos";
 
 interface DetailCodeTab {
   id: string;
@@ -27,6 +29,13 @@ interface DetailSection {
   renderDemo?: () => ReactNode;
 }
 
+interface DetailReference {
+  title: string;
+  source: string;
+  href: string;
+  note: string;
+}
+
 export interface DetailDocSpec {
   slug: string;
   title: string;
@@ -38,6 +47,7 @@ export interface DetailDocSpec {
   codeTabs?: DetailCodeTab[];
   renderDemo?: () => ReactNode;
   sections?: DetailSection[];
+  references?: DetailReference[];
 }
 
 export const DETAIL_DOCS: DetailDocSpec[] = [
@@ -284,7 +294,7 @@ const isMobile = useIsMobile();`,
         id: "dialog-to-sheet",
         title: "Dialog를 바텀시트로 전환",
         problem:
-          "데스크톱 중앙 모달을 모바일에 그대로 띄우면 상단 닫기 버튼에 엄지가 닿기 어렵고 좌우 여백 때문에 입력 영역이 좁아집니다. 필터 설정이나 짧은 입력 폼은 화면 아래에서 올라오는 시트로 열어야 한 손으로 조작하고 끌어내려 닫을 수 있습니다.",
+          "데스크톱 중앙 모달을 모바일에 그대로 띄우면 상단 닫기 버튼에 엄지가 닿기 어렵고 좌우 여백 때문에 입력 영역이 좁아집니다. 필터 설정이나 선택지는 화면 아래에서 올라오는 시트로 열어야 한 손으로 조작하고 끌어내려 닫을 수 있습니다.",
         guidance:
           "@goraebap/ui-react/components/responsive-overlay의 ResponsiveDialog가 64rem 경계에 따라 Dialog와 BottomSheet를 자동으로 전환합니다. BottomSheet는 아래로 끌어내려 닫기, Esc, 바깥 클릭과 포커스 트랩·복원을 기본으로 처리합니다.",
         codeLabel: "ResponsiveDialog.tsx",
@@ -424,15 +434,274 @@ return (
       },
       {
         id: "dedicated-edit",
-        title: "긴 입력·편집은 전용 페이지로 분리",
+        title: "전역 검색과 폼은 전용 페이지로",
         problem:
-          "모바일에서 가상 키보드가 올라오면 화면의 절반 이상이 가려집니다. 여러 필드를 채우거나 긴 본문을 편집하는 화면을 바텀시트나 모달에 넣으면 스크롤과 스와이프 닫기가 충돌하고 새로고침 시 작업 맥락을 잃기 쉽습니다.",
+          "모바일에서 가상 키보드가 올라오면 화면의 절반 이상이 가려집니다. 입력이 필요한 폼이나 전역 검색을 바텀시트에 넣으면 스크롤과 스와이프 닫기가 충돌하고, 주소가 없어 새로고침할 때 작업 맥락을 잃습니다.",
         guidance:
-          "짧은 필터나 1~2칸 입력만 ResponsiveDialog로 처리하고, 긴 폼이나 문서 편집은 자기 주소를 가진 전용 페이지(…/edit)로 열어 뒤로가기와 새로고침 동작을 예측 가능하게 유지합니다.",
+          "필터와 선택지만 ResponsiveDialog로 처리합니다. 전역 검색과 폼은 길이와 관계없이 자기 주소를 가진 페이지가 원본이며, 데스크톱에서는 지금 화면 위 모달로 열고 주소만 대상 페이지로 바꿉니다. 모바일에서는 바텀시트 없이 처음부터 페이지로 이동합니다.",
         codeLabel: "edit-route.tsx",
         codeLanguage: "tsx",
-        code: `// 짧은 확인·필터 → ResponsiveDialog
-// 긴 폼·본문 편집 → 전용 라우트 (/items/$id/edit)`,
+        code: `// 필터·선택지 → ResponsiveDialog
+// 폼·전역 검색 → 전용 라우트 (/items/$id/edit, /search)
+// 데스크톱은 라우팅 마스크로 모달, 모바일은 페이지`,
+      },
+    ],
+  },
+  {
+    slug: "ui-size",
+    title: "화면 크기와 rem",
+    summary:
+      "브라우저 확대와 별개로 사이트 안에서 화면 크기를 고를 수 있게 설계할 때, rem을 쓸 곳과 px을 남길 곳을 나누는 기준과 구현 방식을 다룹니다.",
+    sections: [
+      {
+        id: "why-setting",
+        title: "브라우저 확대가 있는데 왜 필요한가",
+        problem:
+          "브라우저 확대는 어느 사이트에서나 쓰는 기본 수단이며 사이트 설정이 이를 대신하지는 않습니다. 다만 브라우저를 확대하면 CSS 뷰포트가 좁아져 데스크톱에서도 모바일 배치로 넘어갈 수 있습니다. 넓은 화면 배치는 그대로 두고 글자와 컨트롤만 키우고 싶을 때 사이트의 화면 크기 설정이 도움이 됩니다.",
+        guidance:
+          "이 설정은 브라우저 기능 위에 더하는 선택지입니다. 뷰포트 메타에서 확대를 막지 않으며, WCAG 200% 글자 확대와 320 CSS 픽셀 폭 리플로우 기준도 그대로 지킵니다. 이 사이트 설정은 125%까지만 다루므로 브라우저 확대를 대체하지 않습니다.",
+        codeLabel: "viewport.html",
+        codeLanguage: "html",
+        code: `<!-- 확대를 막는 maximum-scale, user-scalable=no는 쓰지 않습니다. -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />`,
+        renderDemo: () => <ScaleMethodTable />,
+      },
+      {
+        id: "where-rem",
+        title: "rem을 쓰는 곳과 px을 남기는 곳",
+        problem:
+          "모든 수치를 기계적으로 rem으로 바꿀 필요는 없습니다. 글자와 버튼처럼 읽고 누르는 요소는 설정을 따라 커져야 하지만, 1px 테두리나 그림자까지 함께 두꺼워지면 화면만 둔탁해집니다.",
+        guidance:
+          "기준은 하나입니다. 이 값이 커졌을 때 읽거나 누르기 쉬워지는지 따져 보고, 그렇다면 rem을 쓰고 아니라면 px을 남깁니다.",
+        codeLabel: "units.css",
+        codeLanguage: "css",
+        code: `.field {
+  height: 2.25rem;
+  padding-inline: 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--input);
+}`,
+        renderDemo: () => <UnitGuideTable />,
+      },
+      {
+        id: "size-setting",
+        title: "사용자가 고르는 화면 크기",
+        problem:
+          "루트 글자 크기를 px로 고정하면 브라우저의 글꼴 크기 설정이 무시됩니다. 퍼센트로 지정하면 브라우저 설정 위에 사용자의 선택이 곱해지고, rem으로 설계한 크기와 간격이 한꺼번에 따라옵니다.",
+        guidance:
+          "사용자가 고른 작게·기본·크게·더 크게 단계는 첫 화면을 그리기 전에 적용해 초기 크기가 튀지 않게 합니다. iOS는 16px 미만 입력창에 포커스하면 화면을 자동 확대하므로, 터치 입력이 가능한 환경에서는 입력창 글자만 16px 아래로 내려가지 않게 합니다.",
+        codeLabel: "ui-size.css",
+        codeLanguage: "css",
+        code: `html {
+  font-size: var(--ui-size, 100%);
+}
+
+@media (any-pointer: coarse) {
+  input:not([type="checkbox"], [type="radio"], [type="range"]),
+  textarea {
+    font-size: max(1rem, 16px);
+  }
+}`,
+        renderDemo: () => <UiSizeCompareDemo />,
+      },
+      {
+        id: "query-units",
+        title: "미디어 쿼리와 컨테이너 쿼리의 차이",
+        problem:
+          "미디어 쿼리의 rem은 문서에 지정한 값이 아니라 브라우저 초기값을 기준으로 계산하므로 사이트 설정을 바꿔도 전환 지점이 움직이지 않습니다. 반면 컨테이너 쿼리의 rem은 계산된 값을 따르므로 글자를 키우면 전환 지점도 함께 커집니다.",
+        guidance:
+          "사이드바 같은 전체 페이지 배치는 미디어 쿼리로 안정적으로 유지하고, 글자가 커졌을 때 먼저 세로로 접혀야 하는 카드나 좁은 패널은 컨테이너 쿼리로 전환합니다.",
+        codeLabel: "queries.css",
+        codeLanguage: "css",
+        code: `/* 화면 크기 설정과 무관하게 1024px 기준 */
+@media (width >= 64rem) {
+  .shell { grid-template-columns: 16rem 1fr; }
+}
+
+/* 18px 기준이면 432px, 20px 기준이면 480px에서 전환 */
+@container (width >= 24rem) {
+  .card { flex-direction: row; }
+}`,
+      },
+    ],
+    references: [
+      {
+        title: "Understanding SC 1.4.4: Resize Text",
+        source: "W3C WCAG 2.2",
+        href: "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+        note: "글자를 200%까지 키워도 내용과 기능을 잃지 않아야 하는 기준입니다.",
+      },
+      {
+        title: "Understanding SC 1.4.10: Reflow",
+        source: "W3C WCAG 2.2",
+        href: "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
+        note: "320 CSS 픽셀 폭에서도 가로·세로 동시 스크롤 없이 읽혀야 하는 기준입니다.",
+      },
+      {
+        title: "G178: 글자 크기를 조절하는 페이지 내 컨트롤",
+        source: "W3C WCAG 2.2 Techniques",
+        href: "https://www.w3.org/WAI/WCAG22/Techniques/general/G178",
+        note: "페이지 안에 글자 크기 조절을 두는 기법입니다. 200%까지 지원해야 충족하므로, 125%까지인 이 설정은 브라우저 확대를 대신하지 않습니다.",
+      },
+      {
+        title: "Media Queries Level 4",
+        source: "W3C",
+        href: "https://www.w3.org/TR/mediaqueries-4/",
+        note: "미디어 쿼리의 rem 같은 상대 단위가 초기값을 기준으로 계산된다고 정의합니다.",
+      },
+      {
+        title: "CSS Conditional Rules Level 5",
+        source: "W3C",
+        href: "https://www.w3.org/TR/css-conditional-5/",
+        note: "컨테이너 쿼리의 상대 단위가 계산된 값을 기준으로 동작한다고 정의합니다.",
+      },
+      {
+        title: "font-size",
+        source: "MDN",
+        href: "https://developer.mozilla.org/en-US/docs/Web/CSS/font-size",
+        note: "접근성을 위해 사용자의 브라우저 기본 글꼴 크기에 상대적인 단위를 권장합니다.",
+      },
+      {
+        title: "Typography",
+        source: "web.dev",
+        href: "https://web.dev/learn/design/typography",
+        note: "글자 크기를 뷰포트 단위만으로 정하면 사용자가 확대할 수 없는 문제를 설명합니다.",
+      },
+    ],
+  },
+  {
+    slug: "ui-states",
+    title: "화면 상태",
+    summary:
+      "데이터가 없거나 검색 결과가 없거나 주소가 잘못되었거나 요청이 실패했을 때 보여 주는 Empty State와 Error State의 기준을 다룹니다.",
+    sections: [
+      {
+        id: "state-kinds",
+        title: "상태를 나누는 기준",
+        problem:
+          "빈 목록, 검색 결과 없음, 404, 서버 오류를 한 가지 안내 문구로 묶어 두면 사용자는 기다려야 하는지, 조건을 바꿔야 하는지, 다시 시도해야 하는지 판단하기 어렵습니다. 원인과 다음 행동이 다르므로 네 가지 상태를 분명히 구분합니다.",
+        guidance:
+          "Empty는 첫 항목을 만드는 행동으로, No Results는 검색이나 필터 조건을 바꾸는 행동으로, 404는 돌아갈 곳으로, Error는 다시 시도로 이어지게 구성합니다.",
+        codeLabel: "PageState.tsx",
+        codeLanguage: "tsx",
+        code: `<PageState
+  kind="search"
+  title="검색 결과가 없습니다"
+  description="다른 단어로 찾아보세요."
+  action={<Button variant="outline" size="sm">검색어 지우기</Button>}
+/>`,
+        renderDemo: () => <UiStatesDemo />,
+      },
+      {
+        id: "state-motion",
+        title: "이미지와 글의 등장",
+        problem:
+          "상태 화면이 아무 예고 없이 툭 나타나면 화면이 끊긴 것처럼 느껴지고, 일러스트 이미지가 늦게 도착하면 아래 글이 밀리며 레이아웃이 흔들립니다.",
+        guidance:
+          "상태 이미지는 자리를 먼저 잡아 두고 도착하면 자연스럽게 드러내며, 글은 짧게 떠오르게 합니다. 움직임 줄이기 설정이 켜져 있으면 애니메이션 없이 바로 표시합니다.",
+        codeLabel: "page-state.css",
+        codeLanguage: "css",
+        code: `@keyframes page-state-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.375rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-state {
+  animation: page-state-enter 420ms cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-state {
+    animation: none;
+  }
+}`,
+      },
+    ],
+  },
+  {
+    slug: "loading-feedback",
+    title: "로딩과 크기 전환",
+    summary:
+      "모달과 패널에서 입력 디바운스로 요청을 정리하고, 데이터를 기다리는 동안의 로딩 표시와 결과 양에 따른 높이 전환 기준을 다룹니다.",
+    sections: [
+      {
+        id: "debounce",
+        title: "입력 디바운스와 요청 취소",
+        problem:
+          "한 글자를 입력할 때마다 결과가 바뀌면 화면이 계속 흔들리고, API를 호출하는 화면에서는 쓰지 않을 요청이 쌓입니다. 늦게 보낸 요청의 응답이 먼저 도착하면 지금 입력한 검색어와 다른 결과가 화면에 남을 수 있습니다.",
+        guidance:
+          "입력이 멈추고 200~300ms 뒤에 검색을 실행합니다. 입력을 지우면 기다리지 않고 바로 되돌리고, Enter를 누르면 대기 없이 지금 검색어로 즉시 실행합니다. API를 호출할 때는 새 요청을 보내기 전에 이전 요청을 취소합니다. 디바운스는 요청 수를 줄일 뿐 응답 순서를 보장하지 않으므로 취소를 함께 써야 합니다.",
+        codeLabel: "use-search.ts",
+        codeLanguage: "ts",
+        code: `const debouncedQuery = useDebouncedValue(query, 250);
+
+useEffect(() => {
+  if (!debouncedQuery.trim()) return;
+
+  const controller = new AbortController();
+  fetch(\`/api/search?q=\${encodeURIComponent(debouncedQuery)}\`, {
+    signal: controller.signal,
+  })
+    .then((response) => response.json())
+    .then(setResults)
+    .catch((error) => {
+      if (error.name !== "AbortError") setError(error);
+    });
+
+  return () => controller.abort();
+}, [debouncedQuery]);`,
+        renderDemo: () => <DebounceDemo />,
+      },
+      {
+        id: "delayed-spinner",
+        title: "기본 높이와 지연 스피너",
+        problem:
+          "모달이 빈 상태로 작게 열렸다가 데이터가 도착하면서 갑자기 커지면 화면이 크게 튑니다. 반대로 금방 끝나는 응답에도 스피너를 즉시 띄우면 불필요한 깜빡임만 늘어납니다.",
+        guidance:
+          "모달은 기본 높이를 먼저 잡아 두고, 응답이 180ms를 넘길 때만 스피너를 보여 줍니다. 모달을 열고 닫을 때는 페이지 전환 효과를 쓰지 않습니다.",
+        codeLabel: "SearchDialog.tsx",
+        codeLanguage: "tsx",
+        code: `<DialogContent>
+  <Suspense fallback={<SearchLoading />}>
+    <SearchPanel className="min-h-[24rem]" />
+  </Suspense>
+</DialogContent>`,
+        renderDemo: () => <LoadingFeedbackDemo />,
+      },
+      {
+        id: "height-transition",
+        title: "내용 변화에 따른 높이 전환",
+        problem:
+          "height: auto에는 CSS 전환이 걸리지 않아, 검색 결과 개수가 바뀔 때마다 모달 높이가 중간 과정 없이 한 번에 바뀝니다.",
+        guidance:
+          "ResizeObserver로 바뀐 높이를 재고 앞 높이부터 200ms 동안 부드럽게 움직입니다. 움직임 줄이기 설정이 켜져 있으면 전환 없이 바로 바꿉니다.",
+        codeLabel: "use-height-transition.ts",
+        codeLanguage: "ts",
+        code: `const observer = new ResizeObserver(() => {
+  if (motion) return;
+  const next = element.offsetHeight;
+  if (Math.abs(next - last) <= 1 || reduced.matches) {
+    last = next;
+    return;
+  }
+  motion = element.animate(
+    [
+      { height: \`\${last}px\`, overflow: "hidden" },
+      { height: \`\${next}px\`, overflow: "hidden" },
+    ],
+    { duration: 200, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+  );
+  motion.onfinish = () => {
+    motion = undefined;
+    last = element.offsetHeight;
+  };
+});`,
       },
     ],
   },
@@ -478,6 +747,28 @@ openPost(id: string) {
       },
     ],
     renderDemo: () => <RouteMaskingDemo />,
+    sections: [
+      {
+        id: "search-and-forms",
+        title: "전역 검색과 폼에 적용하기",
+        problem:
+          "전역 검색이나 폼을 모달이나 바텀시트로만 만들면 고유 주소가 없어 새로고침하거나 링크를 공유할 때 작업 맥락이 끊깁니다. 길이와 관계없이 자기 주소를 가진 페이지를 원본으로 두고, 환경에 따라 열기 방식만 나눕니다.",
+        guidance:
+          "데스크톱에서는 지금 화면 위 모달로 열고 주소만 대상 페이지로 바꾸며, 새로고침하거나 페이지로 보기를 누르면 전체 페이지로 전환합니다. 모바일에서는 바텀시트 없이 처음부터 대상 페이지로 이동합니다.",
+        codeLabel: "open-search.tsx",
+        codeLanguage: "tsx",
+        code: `function openSearch() {
+  if (isMobile) return navigate({ to: "/search" });
+
+  navigate({
+    to: location.pathname,
+    search: { ...location.search, panel: "search" },
+    mask: { to: "/search", unmaskOnReload: true },
+    resetScroll: false,
+  });
+}`,
+      },
+    ],
   },
 ];
 

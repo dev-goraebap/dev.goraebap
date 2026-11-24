@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>dev.goraebap</title>
-    <meta name="description" content="웹 애플리케이션을 만드는 기술을 정리해 두는 작업실입니다." />
+    <meta
+      name="description"
+      content="웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실입니다."
+    />
     <meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta property="og:type" content="website" />
@@ -13,7 +16,7 @@
     <meta property="og:title" content="dev.goraebap" />
     <meta
       property="og:description"
-      content="웹 애플리케이션을 만드는 기술을 정리해 두는 작업실입니다."
+      content="웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실입니다."
     />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -44,6 +47,14 @@
           root.classList.remove("dark");
         } else {
           root.classList.add("dark");
+        }
+        try {
+          const config = JSON.parse(localStorage.getItem("goraebap-design-config-v2") || "{}");
+          if (["93.75%", "100%", "112.5%", "125%"].includes(config.uiSize)) {
+            root.style.setProperty("--ui-size", config.uiSize);
+          }
+        } catch {
+          // 저장값이 깨졌으면 기본 크기로 시작한다.
         }
         root.classList.add("fonts-loading");
         const reveal = () => root.classList.remove("fonts-loading");

@@ -25,6 +25,7 @@ import {
   useDesignConfig,
   type DesignConfig,
 } from "../lib/design-config";
+import { UiSizeControl } from "./UiSizeControl";
 
 function SettingRow({
   label,
@@ -81,7 +82,7 @@ function SettingSelect<K extends "font" | "heading">({
 }
 
 export function DesignSettings() {
-  const { config, updateConfig, resetConfig } = useDesignConfig();
+  const { config, rootScale, updateConfig, resetConfig } = useDesignConfig();
   const isMobile = useIsMobile();
   const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
   const activePreset = THEME_PRESETS.find((preset) => preset.id === config.theme);
@@ -108,7 +109,11 @@ export function DesignSettings() {
       >
         <SystemIcon name="palette" className="size-4" />
       </ResponsivePopoverTrigger>
-      <ResponsivePopoverContent align="end" className={isMobile ? undefined : "w-80"}>
+      <ResponsivePopoverContent
+        align="end"
+        data-lenis-prevent
+        className={isMobile ? undefined : "max-h-[var(--available-height)] w-80 overflow-y-auto"}
+      >
         <div className="flex items-center justify-between gap-2 pr-7 lg:pr-0">
           <ResponsivePopoverTitle>디자인 설정</ResponsivePopoverTitle>
           <Button
@@ -142,6 +147,10 @@ export function DesignSettings() {
                 다크
               </ToggleGroupItem>
             </ToggleGroup>
+          </SettingRow>
+
+          <SettingRow label="화면 크기" value={`${Math.round(16 * rootScale)}px`}>
+            <UiSizeControl />
           </SettingRow>
 
           <SettingRow label="색상 테마" value={activePreset?.name}>

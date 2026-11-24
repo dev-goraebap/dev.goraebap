@@ -39,7 +39,7 @@ export function AnatomySection({ slug, guide }: { slug: string; guide: Component
         <ol className="divide-border divide-y">
           {guide.anatomy.map((part, index) => (
             <li key={part.name} className="flex gap-3 px-5 py-3">
-              <span className="bg-primary text-primary-foreground mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-[11px] font-semibold">
+              <span className="bg-primary text-primary-foreground mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-[0.6875rem] font-semibold">
                 {index + 1}
               </span>
               <span className="min-w-0 space-y-0.5">
@@ -70,7 +70,7 @@ export function AccessibilitySection({ guide }: { guide: ComponentGuide }) {
                   {item.keys.split(" / ").map((key) => (
                     <kbd
                       key={key}
-                      className="border-border bg-background text-foreground inline-flex rounded-md border px-1.5 py-0.5 font-mono text-[11px] font-medium shadow-xs"
+                      className="border-border bg-background text-foreground inline-flex rounded-md border px-1.5 py-0.5 font-mono text-[0.6875rem] font-medium shadow-xs"
                     >
                       {key}
                     </kbd>

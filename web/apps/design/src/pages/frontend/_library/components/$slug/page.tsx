@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { Button } from "@goraebap/ui-react/components/button";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import {
   AccessibilitySection,
@@ -19,7 +20,7 @@ import {
   useRecipeSource,
 } from "@/entities/component-doc";
 import { annotateGlossary } from "@/shared/lib/glossary";
-import { AdapterPreviewStage } from "@/shared/ui";
+import { AdapterPreviewStage, PageState } from "@/shared/ui";
 
 export const Route = createFileRoute("/frontend/_library/components/$slug/")({
   component: ComponentDetailPage,
@@ -43,12 +44,20 @@ function ComponentDetailPage() {
 
   if (!doc) {
     return (
-      <div className="border-border bg-card space-y-3 rounded-2xl border p-8 text-center">
-        <h1 className="text-lg font-semibold">컴포넌트를 찾을 수 없습니다</h1>
-        <Link to="/frontend/components" className="text-sm font-medium underline">
-          컴포넌트 목록으로 돌아가기
-        </Link>
-      </div>
+      <PageState
+        kind="not-found"
+        title="컴포넌트를 찾을 수 없습니다"
+        action={
+          <Button
+            variant="outline"
+            size="sm"
+            nativeButton={false}
+            render={<Link to="/frontend/components" />}
+          >
+            컴포넌트 목록으로 돌아가기
+          </Button>
+        }
+      />
     );
   }
 

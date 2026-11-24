@@ -26,7 +26,7 @@ export function WorkspaceSwitcher() {
           >
             /
           </span>
-          <span>Frontend</span>
+          <Wordmark name="frontend" className="h-5 w-auto shrink-0" />
           <SystemIcon name="chevronDown" className="text-muted-foreground size-3.5 shrink-0" />
         </PopoverTrigger>
         <PopoverContent side="bottom" align="start" className="w-64 p-1.5">
@@ -55,7 +55,9 @@ export function WorkspaceSwitcher() {
               <span className="block text-sm font-medium">Backend</span>
               <span className="text-muted-foreground block text-xs">API, 데이터, 서버 구조</span>
             </span>
-            <span className="text-muted-foreground shrink-0 text-[11px] font-medium">준비 중</span>
+            <span className="text-muted-foreground shrink-0 text-[0.6875rem] font-medium">
+              준비 중
+            </span>
           </div>
         </PopoverContent>
       </Popover>

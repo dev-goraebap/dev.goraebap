@@ -29,13 +29,13 @@ function ComponentsOverviewPage() {
                 <span className="text-muted-foreground font-mono text-xs">{items.length}</span>
               </div>
 
-              <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
                 {items.map((item) => (
                   <Link
                     key={item.slug}
                     to="/frontend/components/$slug"
                     params={{ slug: item.slug }}
-                    className="group space-y-2.5"
+                    className="group min-w-0 space-y-2.5"
                   >
                     <div className="border-border bg-card group-hover:border-foreground/35 flex h-44 items-center justify-center overflow-hidden rounded-2xl border p-4 transition-colors">
                       {item.renderThumbnail()}

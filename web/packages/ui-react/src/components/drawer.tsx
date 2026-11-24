@@ -4,6 +4,7 @@ import { dialogCloseButtonVariants } from "@goraebap/design-system/recipes/dialo
 import {
   drawerBackdropVariants,
   drawerPopupVariants,
+  drawerViewportVariants,
   type DrawerPopupRecipeProps,
 } from "@goraebap/design-system/recipes/drawer";
 import { SystemIcon } from "../icons";
@@ -30,18 +31,20 @@ export function DrawerContent({
   return (
     <BaseDrawer.Portal container={usePortalContainer()}>
       <BaseDrawer.Backdrop className={drawerBackdropVariants()} />
-      <BaseDrawer.Popup
-        data-slot="drawer-content"
-        className={mergeClassName(drawerPopupVariants({ side }), className)}
-        {...props}
-      >
-        {children}
-        {showCloseButton && (
-          <BaseDrawer.Close aria-label="닫기" className={dialogCloseButtonVariants()}>
-            <SystemIcon name="close" className="size-4" />
-          </BaseDrawer.Close>
-        )}
-      </BaseDrawer.Popup>
+      <BaseDrawer.Viewport className={drawerViewportVariants()}>
+        <BaseDrawer.Popup
+          data-slot="drawer-content"
+          className={mergeClassName(drawerPopupVariants({ side }), className)}
+          {...props}
+        >
+          {children}
+          {showCloseButton && (
+            <BaseDrawer.Close aria-label="닫기" className={dialogCloseButtonVariants()}>
+              <SystemIcon name="close" className="size-4" />
+            </BaseDrawer.Close>
+          )}
+        </BaseDrawer.Popup>
+      </BaseDrawer.Viewport>
     </BaseDrawer.Portal>
   );
 }

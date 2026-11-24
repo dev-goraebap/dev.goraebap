@@ -254,7 +254,7 @@ export function Example() {
 }`,
     angularCode: `<textarea [class]="textareaVariants()" placeholder="변경 이유나 맥락을 적어 주세요."></textarea>`,
     renderThumbnail: () => (
-      <div className="border-input bg-background text-muted-foreground h-14 w-48 rounded-md border p-2 text-[11px]">
+      <div className="border-input bg-background text-muted-foreground h-14 w-48 rounded-md border p-2 text-[0.6875rem]">
         변경 이유를 적어 주세요...
       </div>
     ),
@@ -311,7 +311,7 @@ export function Example() {
     angularCode: `<brn-checkbox [class]="checkboxVariants()" [(checked)]="keepSession" />`,
     renderThumbnail: () => (
       <div className="flex items-center gap-2 text-xs">
-        <span className="bg-primary text-primary-foreground inline-flex size-4 items-center justify-center rounded text-[10px]">
+        <span className="bg-primary text-primary-foreground inline-flex size-4 items-center justify-center rounded text-[0.625rem]">
           ✓
         </span>
         <span className="text-foreground">세션 유지</span>
@@ -383,7 +383,7 @@ export function Example() {
     renderThumbnail: () => (
       <div className="border-border bg-card w-44 rounded-lg border p-3 text-left">
         <div className="text-foreground text-xs font-medium">에이전트 토큰</div>
-        <div className="text-muted-foreground mt-0.5 text-[10px]">활성 2개 · MCP</div>
+        <div className="text-muted-foreground mt-0.5 text-[0.625rem]">활성 2개 · MCP</div>
       </div>
     ),
     renderReactDemo: () => (
@@ -426,8 +426,8 @@ export function Example() {
 </div>`,
     renderThumbnail: () => (
       <div className={`w-48 !p-2.5 text-left ${alertVariants({ variant: "info" })}`}>
-        <div className="text-[11px] font-medium">서브도메인 SSO</div>
-        <div className="text-[10px] opacity-80">세션 공유 활성화됨</div>
+        <div className="text-[0.6875rem] font-medium">서브도메인 SSO</div>
+        <div className="text-[0.625rem] opacity-80">세션 공유 활성화됨</div>
       </div>
     ),
     renderReactDemo: () => (
@@ -561,7 +561,7 @@ export function Example() {
 }`,
     angularCode: `<table [class]="tableVariants()">...</table>`,
     renderThumbnail: () => (
-      <div className="border-border bg-card w-44 overflow-hidden rounded-md border text-[10px]">
+      <div className="border-border bg-card w-44 overflow-hidden rounded-md border text-[0.625rem]">
         <div className="border-border bg-muted/50 flex justify-between border-b px-2 py-1 font-medium">
           <span>App</span>
           <span>Adapter</span>
@@ -642,7 +642,7 @@ export function Example() {
   </brn-tabs-list>
 </brn-tabs>`,
     renderThumbnail: () => (
-      <div className="bg-muted inline-flex items-center gap-1 rounded-lg p-1 text-[11px]">
+      <div className="bg-muted inline-flex items-center gap-1 rounded-lg p-1 text-[0.6875rem]">
         <span className="bg-background text-foreground rounded-md px-2 py-0.5 font-medium shadow-xs">
           HTML
         </span>
@@ -700,10 +700,10 @@ export function Example() {
 </brn-dialog>`,
     renderThumbnail: () => (
       <div className="border-border bg-popover w-44 rounded-lg border p-2.5 text-left shadow-md">
-        <div className="text-foreground text-[11px] font-medium">프로젝트 이름 바꾸기</div>
+        <div className="text-foreground text-[0.6875rem] font-medium">프로젝트 이름 바꾸기</div>
         <div className="bg-muted mt-1.5 h-4 w-full rounded" />
         <div className="mt-2 flex justify-end gap-1">
-          <span className="bg-primary text-primary-foreground rounded px-1.5 py-0.5 text-[9px]">
+          <span className="bg-primary text-primary-foreground rounded px-1.5 py-0.5 text-[0.5625rem]">
             저장
           </span>
         </div>
@@ -745,10 +745,10 @@ export function Example() {
     angularCode: `<button brnToggle [class]="toggleVariants({ variant: 'outline' })">고정됨</button>`,
     renderThumbnail: () => (
       <div className="flex items-center gap-1.5">
-        <span className="bg-primary text-primary-foreground rounded-md px-2.5 py-1 text-[11px] font-medium">
+        <span className="bg-primary text-primary-foreground rounded-md px-2.5 py-1 text-[0.6875rem] font-medium">
           고정됨
         </span>
-        <span className="border-border text-muted-foreground rounded-md border px-2.5 py-1 text-[11px]">
+        <span className="border-border text-muted-foreground rounded-md border px-2.5 py-1 text-[0.6875rem]">
           고정
         </span>
       </div>
@@ -774,7 +774,7 @@ export function Example() {
   <button brnToggle value="app" [class]="toggleVariants({ shape: 'pill' })">App</button>
 </brn-toggle-group>`,
     renderThumbnail: () => (
-      <div className="border-border bg-background inline-flex rounded-full border p-0.5 text-[11px]">
+      <div className="border-border bg-background inline-flex rounded-full border p-0.5 text-[0.6875rem]">
         <span className="bg-primary text-primary-foreground rounded-full px-2.5 py-0.5 font-medium">
           App
         </span>
@@ -807,7 +807,7 @@ export function Example() {
     renderThumbnail: () => (
       <div className="border-input bg-background flex w-44 items-center justify-between rounded-md border px-2.5 py-1.5 text-xs">
         <span>App Theme</span>
-        <span className="text-muted-foreground text-[10px]">▾</span>
+        <span className="text-muted-foreground text-[0.625rem]">▾</span>
       </div>
     ),
     renderReactDemo: () => <ReactSelectDemo />,
@@ -836,10 +836,10 @@ export function Example() {
 </brn-tooltip>`,
     renderThumbnail: () => (
       <div className="flex flex-col items-center gap-1.5">
-        <span className="bg-foreground text-background rounded-md px-2 py-0.5 text-[10px]">
+        <span className="bg-foreground text-background rounded-md px-2 py-0.5 text-[0.625rem]">
           Ctrl + K
         </span>
-        <span className="border-border bg-background rounded-md border px-2.5 py-1 text-[11px]">
+        <span className="border-border bg-background rounded-md border px-2.5 py-1 text-[0.6875rem]">
           도움말
         </span>
       </div>
@@ -871,8 +871,8 @@ export function Example() {
 </brn-popover>`,
     renderThumbnail: () => (
       <div className="border-border bg-popover w-40 rounded-lg border p-2.5 text-left shadow-sm">
-        <div className="text-[11px] font-medium">표시 범위</div>
-        <div className="text-muted-foreground mt-0.5 text-[10px]">필터 옵션 패널</div>
+        <div className="text-[0.6875rem] font-medium">표시 범위</div>
+        <div className="text-muted-foreground mt-0.5 text-[0.625rem]">필터 옵션 패널</div>
       </div>
     ),
     renderReactDemo: () => <ReactPopoverDemo />,
@@ -924,7 +924,7 @@ export function Example() {
   </div>
 </ng-template>`,
     renderThumbnail: () => (
-      <div className="border-border bg-popover w-36 space-y-0.5 rounded-lg border p-1.5 text-left text-[11px] shadow-sm">
+      <div className="border-border bg-popover w-36 space-y-0.5 rounded-lg border p-1.5 text-left text-[0.6875rem] shadow-sm">
         <div className="bg-accent rounded px-2 py-1">복제</div>
         <div className="text-muted-foreground px-2 py-1">이름 바꾸기</div>
         <div className="text-destructive px-2 py-1">삭제</div>
@@ -961,10 +961,10 @@ export function Example() {
 </brn-alert-dialog>`,
     renderThumbnail: () => (
       <div className="border-border bg-popover w-44 rounded-lg border p-2.5 text-left shadow-sm">
-        <div className="text-[11px] font-medium">프로젝트를 삭제할까요?</div>
+        <div className="text-[0.6875rem] font-medium">프로젝트를 삭제할까요?</div>
         <div className="mt-2 flex justify-end gap-1">
-          <span className="text-muted-foreground rounded px-1.5 py-0.5 text-[9px]">취소</span>
-          <span className="bg-destructive text-destructive-foreground rounded px-1.5 py-0.5 text-[9px]">
+          <span className="text-muted-foreground rounded px-1.5 py-0.5 text-[0.5625rem]">취소</span>
+          <span className="bg-destructive text-destructive-foreground rounded px-1.5 py-0.5 text-[0.5625rem]">
             삭제
           </span>
         </div>
@@ -1057,7 +1057,7 @@ export function Example() {
   <div brnAccordionItem [class]="accordionItemVariants()">...</div>
 </div>`,
     renderThumbnail: () => (
-      <div className="border-border bg-card w-44 divide-y rounded-lg border px-2.5 text-left text-[10px]">
+      <div className="border-border bg-card w-44 divide-y rounded-lg border px-2.5 text-left text-[0.625rem]">
         <div className="flex items-center justify-between py-1.5 font-medium">
           <span>토큰 적용</span>
           <span>▾</span>
@@ -1090,7 +1090,7 @@ export function Example() {
   <brn-collapsible-content>보조 설정 내용</brn-collapsible-content>
 </brn-collapsible>`,
     renderThumbnail: () => (
-      <div className="border-border bg-card w-40 rounded-lg border p-2 text-left text-[10px]">
+      <div className="border-border bg-card w-40 rounded-lg border p-2 text-left text-[0.625rem]">
         <div className="font-medium">고급 설정 ▾</div>
         <div className="text-muted-foreground mt-1">캐시 · 재시도 정책</div>
       </div>
@@ -1125,7 +1125,7 @@ export function Example() {
     ],
     renderThumbnail: () => (
       <div className="flex items-center gap-2">
-        <span className="border-border bg-secondary flex size-7 items-center justify-center rounded-full border text-[10px] font-medium">
+        <span className="border-border bg-secondary flex size-7 items-center justify-center rounded-full border text-[0.625rem] font-medium">
           GB
         </span>
         <span className="border-border bg-secondary flex size-9 items-center justify-center rounded-full border text-xs font-medium">
@@ -1260,8 +1260,8 @@ export function Example() {
 toast("설정이 저장되었습니다");`,
     renderThumbnail: () => (
       <div className="border-border bg-popover w-44 rounded-lg border p-2.5 text-left shadow-sm">
-        <div className="text-[11px] font-medium">설정이 저장되었습니다</div>
-        <div className="text-muted-foreground text-[9px]">변경 사항이 즉시 반영됩니다.</div>
+        <div className="text-[0.6875rem] font-medium">설정이 저장되었습니다</div>
+        <div className="text-muted-foreground text-[0.5625rem]">변경 사항이 즉시 반영됩니다.</div>
       </div>
     ),
     renderReactDemo: () => <ReactToastDemo />,
@@ -1276,7 +1276,7 @@ toast("설정이 저장되었습니다");`,
     renderThumbnail: () => (
       <div className="border-input bg-background flex w-44 items-center justify-between rounded-md border px-2.5 py-1.5 text-xs">
         <span className="text-muted-foreground">검색...</span>
-        <span className="text-muted-foreground text-[10px]">▾</span>
+        <span className="text-muted-foreground text-[0.625rem]">▾</span>
       </div>
     ),
     renderReactDemo: () => <ReactComboboxDemo />,
@@ -1290,10 +1290,10 @@ toast("설정이 저장되었습니다");`,
     angularCode: `<brn-autocomplete>...</brn-autocomplete>`,
     renderThumbnail: () => (
       <div className="w-44 space-y-1 text-left">
-        <div className="border-input bg-background rounded-md border px-2.5 py-1 text-[11px]">
+        <div className="border-input bg-background rounded-md border px-2.5 py-1 text-[0.6875rem]">
           Rea|
         </div>
-        <div className="border-border bg-popover rounded-md border px-2 py-1 text-[10px]">
+        <div className="border-border bg-popover rounded-md border px-2 py-1 text-[0.625rem]">
           React
         </div>
       </div>
@@ -1343,7 +1343,7 @@ export function Example() {
 }`,
     angularCode: `<ng-scrollbar [class]="scrollAreaRootVariants()">...</ng-scrollbar>`,
     renderThumbnail: () => (
-      <div className="border-border bg-card relative h-16 w-40 rounded-lg border p-2 text-left text-[10px]">
+      <div className="border-border bg-card relative h-16 w-40 rounded-lg border p-2 text-left text-[0.625rem]">
         <div className="space-y-1">
           <div className="bg-muted h-2 w-24 rounded" />
           <div className="bg-muted h-2 w-20 rounded" />
@@ -1362,7 +1362,7 @@ export function Example() {
     reactCode: `import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@goraebap/ui-react/components/context-menu";`,
     angularCode: `<div [brnContextMenuTriggerFor]="menu">우클릭 영역</div>`,
     renderThumbnail: () => (
-      <div className="border-border bg-card text-muted-foreground flex h-16 w-40 items-center justify-center rounded-lg border border-dashed text-[10px]">
+      <div className="border-border bg-card text-muted-foreground flex h-16 w-40 items-center justify-center rounded-lg border border-dashed text-[0.625rem]">
         우클릭 메뉴
       </div>
     ),
@@ -1380,8 +1380,10 @@ export function Example() {
 </brn-hover-card>`,
     renderThumbnail: () => (
       <div className="border-border bg-popover w-40 rounded-lg border p-2.5 text-left shadow-sm">
-        <div className="text-[10px] font-semibold">@goraebap/design-system</div>
-        <div className="text-muted-foreground mt-0.5 text-[9px]">CSS 토큰 · 스타일 레시피</div>
+        <div className="text-[0.625rem] font-semibold">@goraebap/design-system</div>
+        <div className="text-muted-foreground mt-0.5 text-[0.5625rem]">
+          CSS 토큰 · 스타일 레시피
+        </div>
       </div>
     ),
     renderReactDemo: () => <ReactPreviewCardDemo />,
@@ -1395,7 +1397,7 @@ export function Example() {
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/components/menu";`,
     angularCode: `<div brnMenuBar [class]="menubarVariants()">...</div>`,
     renderThumbnail: () => (
-      <div className="border-border bg-card inline-flex gap-1 rounded-lg border p-1 text-[10px]">
+      <div className="border-border bg-card inline-flex gap-1 rounded-lg border p-1 text-[0.625rem]">
         <span className="bg-accent rounded px-2 py-0.5 font-medium">파일</span>
         <span className="text-muted-foreground px-2 py-0.5">편집</span>
         <span className="text-muted-foreground px-2 py-0.5">보기</span>
@@ -1411,7 +1413,7 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/com
     reactCode: `import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "@goraebap/ui-react/components/navigation-menu";`,
     angularCode: `<nav brnNavigationMenu>...</nav>`,
     renderThumbnail: () => (
-      <div className="border-border bg-card inline-flex gap-1.5 rounded-lg border px-2 py-1 text-[10px]">
+      <div className="border-border bg-card inline-flex gap-1.5 rounded-lg border px-2 py-1 text-[0.625rem]">
         <span className="font-medium">파운데이션 ▾</span>
         <span className="text-muted-foreground">컴포넌트</span>
       </div>

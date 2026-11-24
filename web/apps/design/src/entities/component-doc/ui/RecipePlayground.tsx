@@ -262,7 +262,7 @@ export function RecipePlayground({
                       <code
                         key={`${token}-${isChanged ? changed.revision : 0}`}
                         data-changed={isChanged ? "" : undefined}
-                        className={`inline-flex max-w-full items-center gap-1.5 rounded-md border px-1.5 py-0.5 font-mono text-[11px] break-all ${
+                        className={`inline-flex max-w-full items-center gap-1.5 rounded-md border px-1.5 py-0.5 font-mono text-[0.6875rem] break-all ${
                           isChanged
                             ? "border-info/50 bg-info/10 text-foreground animate-in fade-in zoom-in-95 duration-200 motion-reduce:animate-none"
                             : "border-border bg-background text-muted-foreground"
