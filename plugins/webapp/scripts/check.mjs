@@ -53,7 +53,7 @@ function checkSections(file, content) {
 }
 
 // 예시 파일: 절 제목은 스택 id이고, 절마다 출처 링크와 코드 블록이 있다. 사이트도 같은 형식을 읽는다.
-export const STACKS = ['react', 'spring'];
+export const STACKS = ['react', 'angular', 'spring'];
 function checkExample(file, content) {
   assert(/^# .+$/m.test(content), `예시 제목이 없습니다: ${file}`);
   const sections = content.split(/^## /m).slice(1);
@@ -93,7 +93,7 @@ async function checkDir(directory, mode) {
         if (GITHUB_PINNED_LINK.test(href)) { exampleLinks++; continue; }
         assert(!GITHUB_UNPINNED_BLOB.test(href), `예시의 GitHub 코드 링크는 40자리 고정 커밋 주소여야 합니다: ${file} (${href})`);
       }
-      assert(!href.includes('github.com/dev-goraebap/dev.goraebap/'), `이 저장소에는 예시 원본 코드가 없습니다. 원본 저장소의 고정 커밋으로 겁니다: ${file} (${href})`);
+      assert(isExample || !href.includes('github.com/dev-goraebap/dev.goraebap/'), `이 저장소에는 예시 원본 코드가 없습니다. 원본 저장소의 고정 커밋으로 겁니다: ${file} (${href})`);
       if (/^(https?:|#)/.test(href)) continue;
       const target = path.resolve(directory, href.split('#')[0]);
       assert(!path.relative(root, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);

@@ -6,15 +6,15 @@
 
 ## 설계 방식
 
-- **핵심 지침(`skills/`)과 어댑터(`adapters/`) 분리**: 핵심 지침은 특정 기술 스택이나 라이브러리에 묶이지 않는 판단 기준과 원칙만 담습니다. 기술 스택이 바뀌어도 핵심 지침은 크게 흔들리지 않습니다.
-- **오픈소스 프로젝트 어댑터**: 완성도가 확인된 공개 오픈소스 프로젝트를 스택 조합별 어댑터로 등록해, 핵심 지침을 해당 스택에서 어떻게 구현하는지 고정 커밋 스냅샷으로 보여 줍니다. 어댑터가 없는 새 스택은 핵심 지침만으로 작업하고, 완성도가 올라오면 새 어댑터로 추가합니다.
+- **지침과 예시 분리**: 각 스킬의 본문은 특정 기술 스택이나 라이브러리에 묶이지 않는 판단 기준만 담고, 스택별 구현은 같은 스킬의 `examples/`에 공개 오픈소스 고정 커밋에서 발췌한 코드로 둡니다. 프로젝트는 AGENTS.md의 `Webapp 스택:` 줄로 자기 스택의 예시만 읽습니다.
+- **디자인 시스템 레지스트리**: 스타일 레시피와 프레임워크별 어댑터(React, Angular)를 [dev.goraebap.xyz/r](https://dev.goraebap.xyz/r/registry.json)에서 통째로 받아 씁니다.
 - **분야별 플러그인 확장**: 플랫폼이나 분야가 다르면 `plugins/` 아래에 별도 플러그인으로 관리합니다.
 
 ## 플러그인 목록
 
-| 플러그인 | 식별자 | 다루는 범위 | 등록된 어댑터 | 안내 |
+| 플러그인 | 식별자 | 다루는 범위 | 예시 스택 | 안내 |
 | --- | --- | --- | --- | --- |
-| **Webapp** | `webapp@dev-goraebap` | 웹 앱 개발 절차, 아키텍처, API, DB, 백엔드, 프론트엔드, UI/UX | [cowork](https://github.com/dev-goraebap/cowork) (React · Spring Boot · shadcn) | [사용 안내](plugins/webapp/docs/plugin-usage.md) · [개발 안내](plugins/webapp/README.md) |
+| **Webapp** | `webapp@dev-goraebap` | 웹 앱 개발 절차, 아키텍처, API, DB, 백엔드, 프론트엔드, UI/UX | React · Angular · Spring | [사용 안내](plugins/webapp/docs/plugin-usage.md) · [개발 안내](plugins/webapp/README.md) |
 
 ## 설치
 

@@ -11,7 +11,8 @@ type SupportedLang =
   | "angular-ts"
   | "java"
   | "sql"
-  | "groovy";
+  | "groovy"
+  | "yaml";
 
 const LANG_ALIASES: Record<string, SupportedLang> = {
   html: "html",
@@ -30,6 +31,8 @@ const LANG_ALIASES: Record<string, SupportedLang> = {
   java: "java",
   sql: "sql",
   groovy: "groovy",
+  yaml: "yaml",
+  yml: "yaml",
   js: "typescript",
   javascript: "typescript",
 };
@@ -46,6 +49,7 @@ const LANG_LOADERS: Record<SupportedLang, () => Promise<{ default: LanguageRegis
   java: () => import("shiki/langs/java.mjs"),
   sql: () => import("shiki/langs/sql.mjs"),
   groovy: () => import("shiki/langs/groovy.mjs"),
+  yaml: () => import("shiki/langs/yaml.mjs"),
 };
 
 const DUAL_THEMES = {

@@ -12,7 +12,7 @@
     "build:devgoraebap": "pnpm --filter @goraebap/devgoraebap build",
     "build:accounts": "pnpm --filter @goraebap/accounts build",
     "build:productivity": "pnpm --filter @goraebap/productivity build",
-    "build:registry": "pnpm --filter @goraebap/ui-react build:registry",
+    "build:registry": "node scripts/build-registry.mjs",
     "check:productivity": "pnpm --filter @goraebap/productivity check",
     "lint": "eslint .",
     "format": "prettier --write .",

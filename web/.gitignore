@@ -4,3 +4,4 @@ dist/
 *.tsbuildinfo
 **/routeTree.gen.ts
 .angular/
+apps/devgoraebap/public/r/

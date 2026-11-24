@@ -14,7 +14,7 @@ arc42: "8.4, 2"
 
 ## 읽을 자료
 
-- [코드 작성](references/structure.md): 컴포넌트·훅·Effect를 다룰 때 읽습니다.
+- [코드 작성](references/structure.md): 컴포넌트·훅·Effect, 화면 계층, 렌더링 방식을 다룰 때 읽습니다.
 - [상태와 데이터 흐름](references/data-flow.md): 조회·변경·폼·라우트를 다룰 때 읽습니다.
 - [화면 전환](references/navigation.md): 로딩·목록 복귀·상세 이동을 다룰 때 읽습니다.
 

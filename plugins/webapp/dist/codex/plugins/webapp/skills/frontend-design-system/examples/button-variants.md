@@ -74,3 +74,36 @@ function Button({
 ```
 
 공통 클래스의 `rounded-full`로 버튼이 칩 모양이 되고, `secondary`·`tool`·`view`·`view-active`는 조작 면 토큰 네 개만 씁니다. 켜진 도구는 `aria-pressed`·`aria-expanded`일 때 고른 것을 뜻하는 `bg-control-on`이 됩니다. 툴바 같은 묶음은 `ButtonStyleProvider`로 변형과 크기를 내려 주고, 포털로 뜨는 메뉴·시트·대화상자는 `ButtonStyleReset`으로 그 설정을 끊습니다.
+
+## angular
+
+출처: [web/packages/ui-angular/src/button.ts](https://github.com/dev-goraebap/dev.goraebap/blob/9ab5efcb944c053f149d5f6cb5e12d1359ef9c7a/web/packages/ui-angular/src/button.ts)
+
+```ts
+// 버튼 레시피를 button·a 요소에 입힌다. 처리 중이면 누를 수 없게 하고 aria-busy로 알린다.
+@Directive({
+  selector: "button[gbButton], a[gbButton]",
+  host: {
+    "data-slot": "button",
+    "[class]": "classes()",
+    "[attr.data-loading]": "loading() ? '' : null",
+    "[attr.aria-busy]": "loading() || null",
+    "[attr.aria-disabled]": "loading() || null",
+  },
+})
+export class GbButtonDirective {
+  readonly variant = input<ButtonRecipeProps["variant"]>("default");
+  readonly size = input<ButtonRecipeProps["size"]>("default");
+  readonly shape = input<ButtonRecipeProps["shape"]>("default");
+  readonly loading = input(false, { transform: booleanAttribute });
+  readonly class = input<string>("");
+  protected readonly classes = computed(() =>
+    cn(
+      buttonVariants({ variant: this.variant(), size: this.size(), shape: this.shape() }),
+      this.class(),
+    ),
+  );
+}
+```
+
+React 어댑터와 같은 `buttonVariants` 레시피를 디렉티브의 호스트 클래스로 입힙니다. 그래서 두 프레임워크의 버튼이 같은 생김새를 냅니다.

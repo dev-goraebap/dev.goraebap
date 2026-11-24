@@ -10,8 +10,7 @@
     "./components/*": "./src/components/*.tsx"
   },
   "scripts": {
-    "typecheck": "tsc --noEmit",
-    "build:registry": "shadcn build --output ../../apps/blog/public/r"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "catalog:",

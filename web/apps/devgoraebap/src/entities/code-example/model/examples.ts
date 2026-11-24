@@ -29,6 +29,7 @@ export interface CodeExample {
 
 export const STACK_LABELS: Record<string, string> = {
   react: "React",
+  angular: "Angular",
   spring: "Spring",
 };
 

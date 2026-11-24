@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "node ../../scripts/build-registry.mjs && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "check:skills": "node scripts/check-skills.mjs"
+    "check:skills": "node scripts/check-skills.mjs",
+    "build:registry": "node ../../scripts/build-registry.mjs"
   },
   "dependencies": {
     "@goraebap/design-system": "workspace:*",

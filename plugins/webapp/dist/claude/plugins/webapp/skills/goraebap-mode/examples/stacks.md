@@ -51,3 +51,25 @@ java {
 ```
 
 Java 21과 Spring Boot 4 MVC 서버에서 Flyway 마이그레이션 SQL로 스키마를 바꾸고 jOOQ로 쿼리 코드를 생성합니다. JPA나 다른 영속성 도구를 쓰는 Spring 프로젝트는 계층·계약 규칙은 같지만 저장소·조회 구현 예시는 맞지 않습니다.
+
+## angular
+
+출처: [web/pnpm-workspace.yaml](https://github.com/dev-goraebap/dev.goraebap/blob/9ab5efcb944c053f149d5f6cb5e12d1359ef9c7a/web/pnpm-workspace.yaml)
+
+```yaml
+  "@angular/aria": "^22.3.0"
+  "@angular/build": "^22.3.0"
+  "@angular/cdk": "^22.3.0"
+  # …
+  "@angular/core": "^22.3.0"
+  # …
+  "@angular/router": "^22.3.0"
+  # …
+  typescript: "^6.0.2"
+  # …
+  tailwindcss: "^4.3.5"
+  # …
+  tailwind-variants: "^4.0.2"
+```
+
+Angular 22 화면을 Angular CLI 빌드와 설정 방식의 라우터로 짜고, 서버 데이터는 시그널로 만든 작은 캐시로 다룹니다. 화면 부품은 같은 스타일 레시피에 동작을 Angular Aria(메뉴 등)와 Angular CDK(대화상자)로 입힌 어댑터입니다. NgRx나 TanStack Query로 서버 데이터를 다루는 Angular 프로젝트는 규칙은 같지만 캐시 예시는 맞지 않습니다.
