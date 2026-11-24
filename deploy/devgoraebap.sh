@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # design.goraebap.xyz를 홈서버에 배포한다. 저장소 루트에서 실행한다.
 #
-#   deploy/design.sh            main을 빌드해 배포
-#   deploy/design.sh <ref>      브랜치나 커밋을 빌드해 배포
-#   deploy/design.sh --local    현재 작업 트리를 그대로 빌드해 배포
-#   deploy/design.sh --rollback 바로 전 배포로 되돌림
+#   deploy/devgoraebap.sh            main을 빌드해 배포
+#   deploy/devgoraebap.sh <ref>      브랜치나 커밋을 빌드해 배포
+#   deploy/devgoraebap.sh --local    현재 작업 트리를 그대로 빌드해 배포
+#   deploy/devgoraebap.sh --rollback 바로 전 배포로 되돌림
 #
 # 기본 모드에서는 작업 폴더와 상관없이 <ref>를 임시 worktree에 꺼내 빌드한다.
 # 서버에는 releases/<시각-커밋>에 풀고 current 링크를 바꾼다. 최근 5개만 남긴다.
@@ -30,9 +30,9 @@ if [ "${1:-}" = "--local" ]; then
   SHA="$(git rev-parse --short HEAD)-local"
   ID="$(date +%Y%m%d-%H%M%S)-$SHA"
   echo "로컬 빌드: $SHA"
-  pnpm --dir web --filter @goraebap/design typecheck
-  pnpm --dir web --filter @goraebap/design build
-  DIST="web/apps/design/dist"
+  pnpm --dir web --filter @goraebap/devgoraebap typecheck
+  pnpm --dir web --filter @goraebap/devgoraebap build
+  DIST="web/apps/devgoraebap/dist"
 else
   REF="${1:-main}"
   SHA=$(git rev-parse --short "$REF")
@@ -42,8 +42,8 @@ else
 
   echo "빌드: $REF ($SHA)"
   git worktree add --detach "$WORK" "$REF" >/dev/null
-  (cd "$WORK/web" && pnpm install --frozen-lockfile >/dev/null && pnpm --filter @goraebap/design build >/dev/null)
-  DIST="$WORK/web/apps/design/dist"
+  (cd "$WORK/web" && pnpm install --frozen-lockfile >/dev/null && pnpm --filter @goraebap/devgoraebap build >/dev/null)
+  DIST="$WORK/web/apps/devgoraebap/dist"
 fi
 
 [ -f "$DIST/index.html" ] || { echo "빌드 결과에 index.html이 없습니다"; exit 1; }

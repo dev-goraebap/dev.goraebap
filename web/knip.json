@@ -9,7 +9,7 @@
       "entry": ["src/pages/**/{__root,route,page}.tsx"],
       "ignoreDependencies": ["tailwindcss"]
     },
-    "apps/design": {
+    "apps/devgoraebap": {
       "entry": ["src/pages/**/{__root,route,page}.tsx"]
     },
     "apps/productivity": {

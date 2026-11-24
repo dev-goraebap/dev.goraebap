@@ -552,7 +552,7 @@ export function Example() {
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableCell>apps/design</TableCell>
+          <TableCell>apps/devgoraebap</TableCell>
           <TableCell>React + Angular</TableCell>
         </TableRow>
       </TableBody>
@@ -589,7 +589,7 @@ export function Example() {
           </TableHeader>
           <TableBody>
             <TableRow>
-              <TableCell className="font-medium">apps/design</TableCell>
+              <TableCell className="font-medium">apps/devgoraebap</TableCell>
               <TableCell className="font-mono">HTML + React</TableCell>
               <TableCell>Multi</TableCell>
               <TableCell>

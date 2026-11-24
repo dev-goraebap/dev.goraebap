@@ -1,4 +1,4 @@
-# @goraebap/design — Design Decisions
+# @goraebap/devgoraebap — Design Decisions
 
 ## 1. Product Brief & Intent
 
