@@ -5,18 +5,18 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const SKILLS = path.join(root, 'skills');
-const ADAPTERS = path.join(root, 'adapters');
 
 let skills = 0;
 let links = 0;
 let sections = 0;
-let adapterLinks = 0;
+let exampleLinks = 0;
+let examples = 0;
 let pure = 0;
 
-// 핵심 지침(skills/)은 스택·특정 어댑터 없이 판단 기준만 담는다.
-// 스택 이름과 프로젝트 코드 링크는 adapters/<프로젝트>/에만 둔다.
+// 핵심 지침(skills/)은 스택·특정 프로젝트 없이 판단 기준만 담는다.
+// 스택 이름과 프로젝트 코드는 각 스킬의 examples/ 예시 파일에만 둔다.
 const STACK = /\b(React|TanStack|Vite|Spring|jOOQ|Flyway|shadcn|Tailwind|Base UI|Tiptap|Lombok|SQLite|PostgreSQL|TypeScript|Java|Gradle|Storybook|Angular|NestJS|HTMX)\b/;
-const ADAPTER_PROJECT_REF = /\bcowork\b/i;
+const EXAMPLE_PROJECT_REF = /\bcowork\b/i;
 const GITHUB_PINNED_LINK = /^https:\/\/github\.com\/[^/]+\/[^/]+\/(?:blob|tree)\/([0-9a-f]{40})\/([^#?]+)/;
 const GITHUB_UNPINNED_BLOB = /^https:\/\/github\.com\/[^/]+\/[^/]+\/(?:blob|tree)\/(?!([0-9a-f]{40})\/)/;
 
@@ -24,10 +24,10 @@ function checkPure(file, content) {
   const lines = content.split('\n');
   const line = lines.findIndex(each =>
     STACK.test(each)
-    || ADAPTER_PROJECT_REF.test(each)
+    || EXAMPLE_PROJECT_REF.test(each)
     || each.includes('github.com/dev-goraebap/cowork'),
   );
-  assert(line < 0, `핵심 지침에는 스택 이름·어댑터 프로젝트 참조를 두지 않습니다(adapters/로 옮김): ${file}:${line + 1} ${lines[line]?.trim().slice(0, 80)}`);
+  assert(line < 0, `핵심 지침에는 스택 이름·예시 프로젝트 참조를 두지 않습니다(examples/로 옮김): ${file}:${line + 1} ${lines[line]?.trim().slice(0, 80)}`);
   pure++;
 }
 
@@ -48,6 +48,21 @@ function checkSections(file, content) {
   sections++;
 }
 
+// 예시 파일: 절 제목은 스택 id이고, 절마다 출처 링크와 코드 블록이 있다. 사이트도 같은 형식을 읽는다.
+export const STACKS = ['react', 'spring'];
+function checkExample(file, content) {
+  assert(/^# .+$/m.test(content), `예시 제목이 없습니다: ${file}`);
+  const sections = content.split(/^## /m).slice(1);
+  assert(sections.length > 0, `예시에 스택 절이 없습니다: ${file}`);
+  for (const section of sections) {
+    const stack = section.slice(0, section.indexOf('\n')).trim();
+    assert(STACKS.includes(stack), `예시 절 제목은 스택 id(${STACKS.join(', ')})여야 합니다: ${file} (${stack})`);
+    assert(/^출처: \[[^\]]+\]\(https:\/\/github\.com\//m.test(section), `예시 절에 출처 링크가 없습니다: ${file} (${stack})`);
+    assert(/^```[a-z]+$/m.test(section), `예시 절에 언어를 적은 코드 블록이 없습니다: ${file} (${stack})`);
+  }
+  examples++;
+}
+
 async function checkDir(directory, mode) {
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
@@ -56,7 +71,9 @@ async function checkDir(directory, mode) {
     if (!file.endsWith('.md')) continue;
     const content = await fs.readFile(file, 'utf8');
     checkSections(file, content);
-    if (mode === 'skills') {
+    const isExample = path.basename(directory) === 'examples';
+    if (isExample) checkExample(file, content);
+    if (mode === 'skills' && !isExample) {
       checkPure(file, content);
       if (entry.name === 'SKILL.md') {
         const frontmatter = /^---\r?\nname: ([a-z0-9]+(?:-[a-z0-9]+)*)\r?\ndescription: ([^\r\n]+)\r?\n(?:arc42: "[^"]+"\r?\n)?---/.exec(content);
@@ -68,11 +85,11 @@ async function checkDir(directory, mode) {
       }
     }
     for (const [, href] of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
-      if (mode === 'adapters') {
-        if (GITHUB_PINNED_LINK.test(href)) { adapterLinks++; continue; }
-        assert(!GITHUB_UNPINNED_BLOB.test(href), `어댑터의 GitHub 코드 링크는 40자리 고정 커밋 주소여야 합니다: ${file} (${href})`);
+      if (isExample) {
+        if (GITHUB_PINNED_LINK.test(href)) { exampleLinks++; continue; }
+        assert(!GITHUB_UNPINNED_BLOB.test(href), `예시의 GitHub 코드 링크는 40자리 고정 커밋 주소여야 합니다: ${file} (${href})`);
       }
-      assert(!href.includes('github.com/dev-goraebap/dev.goraebap/'), `이 저장소에는 예제 코드가 없습니다. 어댑터의 원본 저장소 링크로 겁니다: ${file} (${href})`);
+      assert(!href.includes('github.com/dev-goraebap/dev.goraebap/'), `이 저장소에는 예시 원본 코드가 없습니다. 원본 저장소의 고정 커밋으로 겁니다: ${file} (${href})`);
       if (/^(https?:|#)/.test(href)) continue;
       const target = path.resolve(directory, href.split('#')[0]);
       assert(!path.relative(root, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);
@@ -84,5 +101,4 @@ async function checkDir(directory, mode) {
 }
 
 await checkDir(SKILLS, 'skills');
-await checkDir(ADAPTERS, 'adapters');
-process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, ${adapterLinks}개 어댑터 고정 커밋 링크, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·어댑터 없음 확인\n`);
+process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);

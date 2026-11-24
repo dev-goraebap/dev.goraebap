@@ -9,9 +9,9 @@ arc42: "4, 7"
 
 여러 영역에 걸친 구조, 새 기술 도입, 배포·운영 방식을 정할 때 따르는 기준입니다.
 
-## 어댑터
+## 예시
 
-이 지침은 판단 기준만 담고 구현은 담지 않습니다. 프로젝트 AGENTS.md의 `Webapp 어댑터:` 줄이 가리키는 어댑터에서 같은 이름의 파일(`webapp-project.md`)을 함께 읽습니다. 어댑터 목록과 고르는 법은 [어댑터](../../adapters/README.md)에 있습니다. 어댑터와 프로젝트 AGENTS.md가 다르면 AGENTS.md를 따릅니다.
+이 지침은 판단 기준만 담고 구현은 담지 않습니다. 구현 모양은 이 스킬의 `examples/` 폴더에서 프로젝트 `AGENTS.md`의 `Webapp 스택:` 줄과 이름이 같은 절을 읽습니다. 읽는 법은 [예시 읽기](../goraebap-mode/references/examples.md)에 있습니다. 예시와 프로젝트 `AGENTS.md`가 다르면 `AGENTS.md`를 따릅니다.
 
 ## 판단 기준
 

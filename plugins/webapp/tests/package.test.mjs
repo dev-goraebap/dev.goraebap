@@ -23,7 +23,7 @@ async function files(directory) {
 for (const agent of ['claude', 'codex']) {
   const plugin = path.join(dist, agent, 'plugins/webapp');
 
-  test(`${agent}: 원본의 지침과 어댑터를 모두 그대로 담는다`, async () => {
+  test(`${agent}: 원본의 지침과 예시를 모두 그대로 담는다`, async () => {
     const source = (await fs.readdir(path.join(root, 'skills'))).sort();
     const packaged = (await fs.readdir(path.join(plugin, 'skills'))).sort();
     assert.deepEqual(packaged, source);
@@ -32,9 +32,6 @@ for (const agent of ['claude', 'codex']) {
       const packagedSkill = await fs.readFile(path.join(plugin, 'skills', name, 'SKILL.md'), 'utf8');
       assert.equal(packagedSkill.replace(/disable-model-invocation: true\r?\n/, ''), original);
     }
-    const sourceAdapters = (await fs.readdir(path.join(root, 'adapters'))).sort();
-    const packagedAdapters = (await fs.readdir(path.join(plugin, 'adapters'))).sort();
-    assert.deepEqual(packagedAdapters, sourceAdapters);
   });
 
   test(`${agent}: 영역 지침은 명시 호출 전용이고 입구·연결 도구만 스스로 불린다`, async () => {
@@ -77,7 +74,7 @@ for (const agent of ['claude', 'codex']) {
   });
 }
 
-test('antigravity: 원본의 지침·어댑터와 루트 plugin.json을 규격대로 담는다', async () => {
+test('antigravity: 원본의 지침·예시와 루트 plugin.json을 규격대로 담는다', async () => {
   const plugin = path.join(dist, 'antigravity/plugins/webapp');
   const source = (await fs.readdir(path.join(root, 'skills'))).sort();
   const packaged = (await fs.readdir(path.join(plugin, 'skills'))).sort();
@@ -87,9 +84,6 @@ test('antigravity: 원본의 지침·어댑터와 루트 plugin.json을 규격�
     const packagedSkill = await fs.readFile(path.join(plugin, 'skills', name, 'SKILL.md'), 'utf8');
     assert.equal(packagedSkill, original);
   }
-  const sourceAdapters = (await fs.readdir(path.join(root, 'adapters'))).sort();
-  const packagedAdapters = (await fs.readdir(path.join(plugin, 'adapters'))).sort();
-  assert.deepEqual(packagedAdapters, sourceAdapters);
 
   const manifest = JSON.parse(await fs.readFile(path.join(plugin, 'plugin.json'), 'utf8'));
   const allowed = new Set(['name', 'displayName', 'version', 'description', 'logo', 'suggestedPrompts', 'author', 'homepage', 'repository', 'disabled']);

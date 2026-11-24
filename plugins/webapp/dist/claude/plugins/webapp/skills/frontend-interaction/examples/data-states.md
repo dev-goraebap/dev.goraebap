@@ -1,0 +1,57 @@
+---
+arc42: "8.5, 2"
+---
+
+# 상태 화면의 순서와 이전 결과 유지
+
+목록은 실패, 조건이 있는 0건, 조건 없는 0건을 구분해 다음 행동이 다른 상태 화면을 보이고, 조건을 바꾸는 동안은 이전 결과를 자리 값으로 유지합니다. 규칙은 [데이터 상태](../references/data-states.md)에 있습니다.
+
+## react
+
+출처: [web/src/pages/_app/instance/system-status/api/system.ts](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/pages/_app/instance/system-status/api/system.ts)
+
+```ts
+const sliceOptions = <T>(kind: 'activities' | 'errors', params: Record<string, string | undefined>) => infiniteQueryOptions({
+  queryKey: [...SYSTEM_KEY, kind, params],
+  queryFn: ({ pageParam, signal }) => {
+    const query = new URLSearchParams(Object.entries(params).filter((entry): entry is [string, string] => !!entry[1]));
+    if (pageParam) query.set('cursor', pageParam);
+    return getJson<Slice<T>>(`/api/v1/system/${kind}?${query}`, signal);
+  },
+  initialPageParam: undefined as string | undefined,
+  getNextPageParam: last => last.nextCursor ?? undefined,
+  placeholderData: keepPreviousData,
+});
+
+/** What members did and which main screens they opened, newest first. */
+export const activitiesOptions = (listing: ActivityListing) => sliceOptions<ActivityRow>('activities', listing);
+
+/** What the server logged as errors and warnings, newest first. */
+export const errorsOptions = (listing: ErrorListing) => sliceOptions<ErrorRow>('errors', listing);
+```
+
+목록 조건이 키에 들어가므로 조건을 바꾸면 새 조회가 시작되고, `placeholderData: keepPreviousData`가 그동안 이전 결과를 보여 줍니다.
+
+출처: [web/src/pages/_app/instance/system-status/ui/Records.tsx](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/pages/_app/instance/system-status/ui/Records.tsx)
+
+```tsx
+export function Activities({ listing, isNarrowed, onClear, opened, onOpen }: {
+  listing: ActivityListing; isNarrowed: boolean; onClear: () => void; opened: ActivityRow | null; onOpen: (row: ActivityRow | null) => void;
+}) {
+  const isMobile = useIsMobile();
+  const list = useInfiniteQuery(activitiesOptions(listing));
+  const items = useMemo(() => list.data?.pages.flatMap(page => page.items) ?? [], [list.data]);
+  if (isLogUnavailable(list.error)) return <div className="p-6 max-md:p-4"><LogStoreNotice /></div>;
+  if (list.isPending) return null;
+  if (list.isError) return <PageState kind="error" title="활동 기록을 불러오지 못했습니다" description={list.error.message}
+    action={<Button variant="secondary" onClick={() => void list.refetch()}>다시 시도</Button>} />;
+  if (items.length === 0) return isNarrowed
+    ? <PageState kind="search" title="조건에 맞는 활동이 없습니다" action={<Button variant="secondary" onClick={onClear}>조건 지우기</Button>} />
+    : <PageState kind="empty" title="아직 남은 활동이 없습니다" />;
+    // …
+    <ListMore shown={items.length} hasMore={!!list.hasNextPage && !list.isPlaceholderData} isLoading={list.isFetchingNextPage} onMore={() => void list.fetchNextPage()} />
+  </WithPanel>;
+}
+```
+
+실패는 다시 시도 버튼을, 조건이 있는 0건은 조건 지우기 버튼을 둡니다. 조건 없는 0건은 제목만 둡니다. 자리 값을 보이는 동안(`isPlaceholderData`)은 목록 끝 줄의 더 보기를 막습니다.

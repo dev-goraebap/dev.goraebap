@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
-const description = '웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 어댑터·프로젝트 연결';
+const description = '웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 코드 예시·프로젝트 연결';
 const json = value => `${JSON.stringify(value, null, 2)}\n`;
 /**
  * 사람이 부르거나 입구(goraebap-mode)가 링크로 읽을 때만 쓰는 영역 지침. 설명이 범용(React·Java 등)이라 자동 호출을 열어 두면
@@ -46,7 +46,6 @@ export async function packagePlugins() {
     const pluginPath = `${agent}/plugins/webapp`;
     // 프로젝트는 사본 없이 AGENTS.md로 이 플러그인을 가리키고, 작업을 시작할 때 입구(goraebap-mode)를 읽는다.
     await copyFiles(path.join(root, 'skills'), `${pluginPath}/skills`, ['.md', '.yaml']);
-    await copyFiles(path.join(root, 'adapters'), `${pluginPath}/adapters`, ['.md']);
     await put(`${pluginPath}/README.md`, await fs.readFile(path.join(root, 'docs/plugin-usage.md')));
 
     if (agent === 'antigravity') {
@@ -70,7 +69,7 @@ export async function packagePlugins() {
         await put(`${pluginPath}/skills/${name}/agents/openai.yaml`, 'policy:\n  allow_implicit_invocation: false\n');
       }
     }
-    // 새 버전 알림·어댑터 맥락 훅은 Claude Code만 담는다(Codex의 플러그인 훅은 확인하지 못했다). Codex는 입구의 확인 절차를 따른다.
+    // 새 버전 알림 훅은 Claude Code만 담는다(Codex의 플러그인 훅은 확인하지 못했다). Codex는 입구의 확인 절차를 따른다.
     if (agent === 'claude') await copyFiles(path.join(root, 'hooks'), `${pluginPath}/hooks`, ['.json', '.mjs']);
     const manifest = { name: pkg.name, version: pkg.version, description, author: { name: 'dev-goraebap' }, skills: './skills/' };
     if (agent === 'codex') {

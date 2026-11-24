@@ -1,11 +1,11 @@
-// 어댑터(adapters/) 안의 GitHub 고정 커밋 링크가 실제로 존재하는지 온라인으로 확인한다.
-// 서브모듈 없이 어댑터를 최신화하거나 링크 상태를 점검할 때 실행한다(npm run check:links).
+// 예시 파일(skills/<스킬>/examples/) 안의 GitHub 고정 커밋 링크가 실제로 존재하는지 온라인으로 확인한다.
+// 예시를 최신화하거나 링크 상태를 점검할 때 실행한다(npm run check:links).
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const ADAPTERS = path.join(root, 'adapters');
+const SKILLS = path.join(root, 'skills');
 const GITHUB_PINNED_LINK = /^https:\/\/github\.com\/([^/]+)\/([^/]+)\/(blob|tree)\/([0-9a-f]{40})\/([^#?]+)/;
 
 async function collect(directory, out) {
@@ -25,7 +25,7 @@ async function collect(directory, out) {
 }
 
 const urlMap = new Map();
-await collect(ADAPTERS, urlMap);
+await collect(SKILLS, urlMap);
 
 const urls = [...urlMap.keys()];
 const broken = [];
@@ -53,4 +53,4 @@ if (broken.length > 0) {
   process.exit(1);
 }
 
-process.stdout.write(`어댑터 고정 커밋 링크 ${urls.length}개 모두 확인\n`);
+process.stdout.write(`예시 고정 커밋 링크 ${urls.length}개 모두 확인\n`);

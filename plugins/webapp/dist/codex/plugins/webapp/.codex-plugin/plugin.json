@@ -1,7 +1,7 @@
 {
   "name": "webapp",
-  "version": "0.16.0",
-  "description": "웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 어댑터·프로젝트 연결",
+  "version": "0.17.0",
+  "description": "웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 코드 예시·프로젝트 연결",
   "author": {
     "name": "dev-goraebap"
   },
@@ -9,7 +9,7 @@
   "requires_local_executor": true,
   "interface": {
     "displayName": "Webapp",
-    "shortDescription": "웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 어댑터·프로젝트 연결",
+    "shortDescription": "웹 앱 개발 지침(프로젝트·프론트엔드 엔지니어링·디자인 시스템·인터랙션·백엔드 엔지니어링)과 스택별 코드 예시·프로젝트 연결",
     "developerName": "dev-goraebap"
   }
 }
