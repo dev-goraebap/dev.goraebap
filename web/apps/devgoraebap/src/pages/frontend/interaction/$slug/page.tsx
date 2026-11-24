@@ -6,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/com
 import { getDetailDoc } from "@/entities/detail-doc";
 import { CopyCodeBlock, PageState } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/details/$slug/")({
+export const Route = createFileRoute("/frontend/interaction/$slug/")({
   component: DetailPage,
 });
 
@@ -21,10 +21,10 @@ function DetailPage() {
         title="글을 찾을 수 없습니다"
         action={
           <Link
-            to="/frontend/details"
+            to="/frontend/interaction"
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
-            Details 목록으로 돌아가기
+            Interaction 목록으로 돌아가기
           </Link>
         }
       />

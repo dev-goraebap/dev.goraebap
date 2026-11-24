@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { LAYOUT_DOCS, LAYOUT_LEVELS } from "@/entities/layout-doc";
 
-export const Route = createFileRoute("/frontend/_library/layouts/")({
+export const Route = createFileRoute("/frontend/design-system/layouts/")({
   component: LayoutsOverviewPage,
 });
 
@@ -22,7 +22,7 @@ function LayoutsOverviewPage() {
               {items.map((item) => (
                 <Link
                   key={item.id}
-                  to="/frontend/layouts/$id"
+                  to="/frontend/design-system/layouts/$id"
                   params={{ id: item.id }}
                   className="group min-w-0 space-y-2.5"
                 >

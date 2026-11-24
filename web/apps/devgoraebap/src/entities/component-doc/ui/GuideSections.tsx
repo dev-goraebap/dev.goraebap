@@ -99,7 +99,7 @@ export function AdaptiveLinkSection({ link }: { link: { section: string; summary
   return (
     <GuideSection title="적응형 UI">
       <Link
-        to="/frontend/details/$slug"
+        to="/frontend/interaction/$slug"
         params={{ slug: "adaptive-ui" }}
         hash={link.section}
         className="border-border bg-card hover:border-foreground/30 flex items-center gap-4 rounded-2xl border p-5 transition-colors"
@@ -134,7 +134,7 @@ export function RelatedSection({
         {guide.related.map((item) => (
           <Link
             key={item.slug}
-            to="/frontend/components/$slug"
+            to="/frontend/design-system/components/$slug"
             params={{ slug: item.slug }}
             className="border-border bg-card hover:border-foreground/30 space-y-1 rounded-2xl border p-4 transition-colors"
           >

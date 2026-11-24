@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { COMPONENT_CATEGORIES, COMPONENT_DOCS } from "@/entities/component-doc";
 
-export const Route = createFileRoute("/frontend/_library/components/")({
+export const Route = createFileRoute("/frontend/design-system/components/")({
   component: ComponentsOverviewPage,
 });
 
@@ -33,7 +33,7 @@ function ComponentsOverviewPage() {
                 {items.map((item) => (
                   <Link
                     key={item.slug}
-                    to="/frontend/components/$slug"
+                    to="/frontend/design-system/components/$slug"
                     params={{ slug: item.slug }}
                     className="group min-w-0 space-y-2.5"
                   >

@@ -1,7 +1,7 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { CopyCodeBlock } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/_library/packages/")({
+export const Route = createFileRoute("/frontend/design-system/packages/")({
   component: PackagesPage,
 });
 
@@ -9,22 +9,22 @@ const NEXT_STEPS = [
   {
     title: "디자인 토큰",
     summary: "색상, 반경, 타이포그래피 토큰의 구성과 5가지 색상 테마별 값을 확인합니다.",
-    to: "/frontend/foundations/tokens" as const,
+    to: "/frontend/design-system/foundations/tokens" as const,
   },
   {
     title: "스타일 레시피",
     summary: "프레임워크에 독립적인 스타일 레시피의 역할과 변형 규칙을 확인합니다.",
-    to: "/frontend/foundations/recipes" as const,
+    to: "/frontend/design-system/foundations/recipes" as const,
   },
   {
     title: "컴포넌트",
     summary: "Base UI 기반 React 컴포넌트의 동작과 사용 예제를 확인합니다.",
-    to: "/frontend/components" as const,
+    to: "/frontend/design-system/components" as const,
   },
   {
     title: "레이아웃",
     summary: "Inset AppShell과 Responsive Dialog의 화면 구성과 반응형 전환을 확인합니다.",
-    to: "/frontend/layouts" as const,
+    to: "/frontend/design-system/layouts" as const,
   },
 ];
 

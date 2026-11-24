@@ -8,7 +8,7 @@ export const Route = createFileRoute("/")({
 
 const WORKSPACE_LINKS = [
   { label: "Webapp", to: "/webapp" },
-  { label: "Frontend", to: "/frontend/overview" },
+  { label: "Frontend", to: "/frontend" },
   { label: "Backend", to: "/backend" },
 ] as const;
 

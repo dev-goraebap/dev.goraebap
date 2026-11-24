@@ -9,18 +9,19 @@ export const Route = createFileRoute("/webapp/agents/")({
 const PLUGIN_SCOPES = [
   {
     title: "Webapp",
-    skills: "goraebap-mode",
-    summary: "작업 절차, Git, 검증, 이어받기, 글쓰기 기준을 다룹니다.",
+    skills: "goraebap-mode · onboarding · webapp-project",
+    summary:
+      "작업 절차, 검증, 이어받기, 글쓰기와 프로젝트 연결, 모듈 경계·형상관리·운영 설계의 기준을 다룹니다.",
   },
   {
     title: "Frontend",
-    skills: "frontend · ui-ux",
-    summary: "화면 구조, 데이터 흐름, UI/UX 패턴의 기준을 다룹니다.",
+    skills: "frontend-engineering · frontend-design-system · frontend-interaction",
+    summary: "화면 계층과 데이터 흐름, 디자인 시스템, 화면의 반응과 움직임의 기준을 다룹니다.",
   },
   {
     title: "Backend",
-    skills: "backend · api · database · architecture",
-    summary: "모듈 구조, API 계약, 스키마 변경, 운영 설계의 기준을 다룹니다.",
+    skills: "backend-engineering",
+    summary: "모듈 구조, 모듈 간 계약, 조회와 오류, API 계약, 스키마 변경의 기준을 다룹니다.",
   },
 ];
 

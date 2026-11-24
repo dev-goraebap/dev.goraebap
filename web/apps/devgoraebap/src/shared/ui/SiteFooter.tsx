@@ -2,13 +2,14 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Wordmark } from "./Wordmark";
 
 const FRONTEND_LINKS = [
-  { label: "Design System", to: "/frontend/overview" as const },
-  { label: "Details", to: "/frontend/details" as const },
+  { label: "Engineering", to: "/frontend/engineering" as const },
+  { label: "Design System", to: "/frontend/design-system/overview" as const },
+  { label: "Interaction", to: "/frontend/interaction" as const },
 ];
 
 const WORKSPACE_LINKS = [
   { label: "Webapp", to: "/webapp" as const },
-  { label: "Frontend", to: "/frontend/overview" as const },
+  { label: "Frontend", to: "/frontend" as const },
   { label: "Backend", to: "/backend" as const },
 ];
 

@@ -4,7 +4,7 @@ import { Button, buttonVariants } from "@goraebap/ui-react/components/button";
 import { getLayoutDoc, type AppShellVariant } from "@/entities/layout-doc";
 import { CopyCodeBlock, ResizableLayoutStage, PageState } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/_library/layouts/$id/")({
+export const Route = createFileRoute("/frontend/design-system/layouts/$id/")({
   component: LayoutDetailPage,
 });
 
@@ -99,7 +99,7 @@ function LayoutDetailPage() {
         title="레이아웃을 찾을 수 없습니다"
         action={
           <Link
-            to="/frontend/layouts"
+            to="/frontend/design-system/layouts"
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             레이아웃 목록으로 돌아가기
@@ -151,7 +151,7 @@ function LayoutDetailPage() {
                 </p>
                 {example.relatedLayoutId && (
                   <Link
-                    to="/frontend/layouts/$id"
+                    to="/frontend/design-system/layouts/$id"
                     params={{ id: example.relatedLayoutId }}
                     className="text-foreground inline-flex text-xs font-medium underline underline-offset-4"
                   >

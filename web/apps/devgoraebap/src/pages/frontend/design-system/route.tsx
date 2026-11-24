@@ -4,7 +4,7 @@ import { COMPONENT_CATEGORIES, COMPONENT_DOCS } from "@/entities/component-doc";
 import { LAYOUT_DOCS } from "@/entities/layout-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/_library")({
+export const Route = createFileRoute("/frontend/design-system")({
   component: LibraryLayout,
 });
 
@@ -12,15 +12,15 @@ const GUIDE_GROUPS: DocsNavGroup[] = [
   {
     title: "디자인 시스템",
     items: [
-      { label: "개요", href: "/frontend/overview", icon: "book" },
-      { label: "패키지 연결", href: "/frontend/packages", icon: "code" },
+      { label: "개요", href: "/frontend/design-system/overview", icon: "book" },
+      { label: "패키지 연결", href: "/frontend/design-system/packages", icon: "code" },
     ],
   },
   {
     title: "파운데이션",
     items: [
-      { label: "디자인 토큰", href: "/frontend/foundations/tokens", icon: "swatch" },
-      { label: "스타일 레시피", href: "/frontend/foundations/recipes", icon: "code" },
+      { label: "디자인 토큰", href: "/frontend/design-system/foundations/tokens", icon: "swatch" },
+      { label: "스타일 레시피", href: "/frontend/design-system/foundations/recipes", icon: "code" },
     ],
   },
 ];
@@ -35,16 +35,16 @@ const SHELL_ICONS: Record<string, SystemIconName> = {
 const LAYOUT_GROUP: DocsNavGroup = {
   title: "레이아웃",
   items: [
-    { label: "개요", href: "/frontend/layouts", icon: "overview" },
+    { label: "개요", href: "/frontend/design-system/layouts", icon: "overview" },
     ...LAYOUT_DOCS.filter((item) => item.level === "shell").map((item) => ({
       label: item.name,
-      href: `/frontend/layouts/${item.id}`,
+      href: `/frontend/design-system/layouts/${item.id}`,
       icon: SHELL_ICONS[item.id],
       ...(item.id === "app-shell"
         ? {
             children: LAYOUT_DOCS.filter((sub) => sub.level === "content").map((sub) => ({
               label: sub.name,
-              href: `/frontend/layouts/${sub.id}`,
+              href: `/frontend/design-system/layouts/${sub.id}`,
             })),
           }
         : {}),
@@ -55,12 +55,12 @@ const LAYOUT_GROUP: DocsNavGroup = {
 const COMPONENT_GROUP: DocsNavGroup = {
   title: "컴포넌트",
   items: [
-    { label: "개요", href: "/frontend/components", icon: "overview" },
+    { label: "개요", href: "/frontend/design-system/components", icon: "overview" },
     ...COMPONENT_CATEGORIES.map((category) => ({
       label: category,
       children: COMPONENT_DOCS.filter((item) => item.category === category).map((item) => ({
         label: item.name,
-        href: `/frontend/components/${item.slug}`,
+        href: `/frontend/design-system/components/${item.slug}`,
       })),
     })),
   ],

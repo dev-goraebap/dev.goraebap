@@ -9,19 +9,19 @@ const WORKSPACES = [
   {
     id: "webapp",
     label: "Webapp",
-    description: "프로젝트 구성부터 AI Native SDLC까지",
+    description: "프로젝트 구성과 형상관리, 배포",
     to: "/webapp",
   },
   {
     id: "frontend",
     label: "Frontend",
-    description: "디자인 시스템과 프로젝트 구성",
-    to: "/frontend/overview",
+    description: "엔지니어링과 디자인 시스템",
+    to: "/frontend",
   },
   {
     id: "backend",
     label: "Backend",
-    description: "API, 데이터, 서버 구조",
+    description: "모듈 구조와 API, 데이터",
     to: "/backend",
   },
 ] as const;

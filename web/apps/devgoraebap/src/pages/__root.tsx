@@ -36,16 +36,19 @@ function RoutePendingBar() {
   );
 }
 
-const LEGACY_PATHS = /^\/(components|overview|foundations|layouts|details|glossary)(\/|$)/;
+const LEGACY_PATHS = /^\/(glossary)(\/|$)/;
+const DETAILS_PATHS = /^(\/frontend)?\/details(\/|$)/;
+const DESIGN_SYSTEM_PATHS =
+  /^(\/frontend)?\/(components|overview|packages|foundations|layouts)(\/|$)/;
 
 export const Route = createRootRoute({
   // 워크스페이스 도입 전 주소로 들어온 링크를 새 주소로 보낸다.
   beforeLoad: ({ location }) => {
     if (/^\/(themes|(frontend\/)?foundations\/color-themes)\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/frontend/foundations/tokens", replace: true });
+      throw redirect({ href: "/frontend/design-system/foundations/tokens", replace: true });
     }
     if (/^\/(frontend\/)?getting-started\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/frontend/packages", replace: true });
+      throw redirect({ href: "/frontend/design-system/packages", replace: true });
     }
     if (/^\/frontend\/agent\/?$/.test(location.pathname)) {
       throw redirect({ href: "/webapp/agents", replace: true });
@@ -56,13 +59,27 @@ export const Route = createRootRoute({
       const slug = legacy[2]?.slice(1);
       const kept = ["repository", "source-control", "deployment", "agents"];
       const moved: Record<string, string> = {
-        frontend: "/frontend/engineering",
-        backend: "/backend/engineering/story",
+        frontend: "/webapp/frontend",
+        backend: "/webapp/backend",
       };
       const href = !slug
         ? "/webapp"
         : (moved[slug] ?? (kept.includes(slug) ? `/webapp/${slug}` : "/webapp/repository"));
       throw redirect({ href, replace: true });
+    }
+    const story = location.pathname.match(/^\/(frontend|backend)\/engineering\/story\/?$/);
+    if (story) {
+      throw redirect({ href: `/${story[1]}/engineering/overview`, replace: true });
+    }
+    // Design System 문서가 /frontend/design-system 아래로 모이기 전 주소
+    if (DESIGN_SYSTEM_PATHS.test(location.pathname)) {
+      const rest = location.href.replace(/^\/frontend/, "");
+      throw redirect({ href: `/frontend/design-system${rest}`, replace: true });
+    }
+    // Interaction 메뉴의 예전 이름(Details) 주소
+    if (DETAILS_PATHS.test(location.pathname)) {
+      const rest = location.href.replace(/^(\/frontend)?\/details/, "");
+      throw redirect({ href: `/frontend/interaction${rest}`, replace: true });
     }
     if (LEGACY_PATHS.test(location.pathname)) {
       throw redirect({ href: `/frontend${location.href}`, replace: true });
@@ -71,20 +88,21 @@ export const Route = createRootRoute({
   component: RootLayout,
 });
 
-const DESIGN_SYSTEM_PATHS = ["components", "overview", "packages", "foundations", "layouts"];
-
 type NavItem = {
   label: string;
   to?:
-    "/frontend/overview" | "/frontend/engineering" | "/frontend/details" | "/backend/engineering";
+    | "/frontend/engineering"
+    | "/frontend/design-system/overview"
+    | "/frontend/interaction"
+    | "/backend/engineering";
   icon: SystemIconName;
 };
 
 const WORKSPACE_NAV: Record<"frontend" | "backend" | "webapp", NavItem[]> = {
   frontend: [
-    { label: "Design System", to: "/frontend/overview", icon: "components" },
     { label: "Engineering", to: "/frontend/engineering", icon: "code" },
-    { label: "Details", to: "/frontend/details", icon: "details" },
+    { label: "Design System", to: "/frontend/design-system/overview", icon: "components" },
+    { label: "Interaction", to: "/frontend/interaction", icon: "details" },
   ],
   backend: [
     { label: "Engineering", to: "/backend/engineering", icon: "code" },
@@ -107,9 +125,7 @@ function RootLayout() {
   }
 
   const isNavActive = (to: string) =>
-    to === "/frontend/overview"
-      ? DESIGN_SYSTEM_PATHS.some((path) => pathname.startsWith(`/frontend/${path}`))
-      : pathname.startsWith(to);
+    pathname.startsWith(to === "/frontend/design-system/overview" ? "/frontend/design-system" : to);
 
   const isFrontend = pathname.startsWith("/frontend");
   const isBackend = pathname.startsWith("/backend");

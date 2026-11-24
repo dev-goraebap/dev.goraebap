@@ -24,12 +24,121 @@ export interface GuideDoc {
   sections: DocSection[];
   next?: { label: string; to?: string };
   references?: { title: string; source: string; href: string; note: string }[];
+  // 이 글이 옮긴 Webapp 플러그인 지침. plugins/webapp/skills 기준 경로
+  skills?: string[];
 }
 
 export interface GuideGroup {
   title: string;
   docs: GuideDoc[];
 }
+
+// 프론트엔드 개발 이야기. webapp의 프로젝트 묶음과 frontend Engineering 개요가 같은 글을 쓴다.
+const FRONTEND_STORY: GuideDoc = {
+  slug: "overview",
+  title: "개요",
+  icon: "components",
+  summary: "프론트엔드를 분리했다가 걷어 내고, 다시 분리하기까지의 경험",
+  sections: [
+    {
+      id: "split-and-fatigue",
+      title: "JSP에서 프론트엔드 분리, 그리고 피로",
+      paragraphs: [
+        "제가 처음 만든 웹 애플리케이션은 Spring 프레임워크에 JSP 템플릿 엔진과 jQuery를 조합한 사이트였습니다. 이후 React를 접하고 나서는 기존 방식으로 돌아가기 어려울 만큼 프론트엔드를 분리하는 작업에 재미를 느꼈고, 그 뒤로는 Angular를 주력으로 프론트엔드 분리 방식을 오랫동안 고수했습니다.",
+        "그러다 어느샌가 프론트엔드를 분리해 작업하는 방식에 피로감을 느끼기 시작했습니다. 프론트엔드와 백엔드 모두 나름의 이유를 가지고 공을 들여 만들었지만, 완성된 결과물에는 늘 아쉬운 구석이 남았습니다. 시각적인 감각은 어느 정도 있다고 생각해 무엇이 부족한지는 어렴풋이 느끼고 있었고, 다른 사이트들과 비교하며 그 차이를 확인했지만, 그 마감을 끝까지 챙기는 데에도 상당한 비용이 들었습니다.",
+      ],
+    },
+    {
+      id: "hda-and-colocation",
+      title: "HDA 시도와 코로케이션의 빈자리",
+      paragraphs: [
+        "그래서 백엔드 프레임워크에 htmx 같은 HDA(Hypermedia-Driven Application) 방식을 얹어 적은 비용으로 SPA 같은 경험을 내는 접근에 한동안 빠졌습니다. 하지만 소스코드가 적다고 해서 관리 방식까지 우아한 것은 아니라는 사실을 깨달았습니다. 프론트엔드 프레임워크를 쓸 때 당연했던 컴포넌트의 응집도, 즉 HTML·CSS·JS 로직이 한곳에 모여 있는 코로케이션(colocation)이 늘 아쉬웠고, 이를 억지로 보완하려고 추가 설정을 붙이는 과정도 만족스럽지 않았습니다.",
+        "또 htmx가 해결하지 못하는 영역에서 JavaScript를 직접 써야 할 때면 다시 npm 진영의 라이브러리가 그리워졌고, TypeScript나 JavaScript 안에서 createElement를 호출하거나 백틱 문자열 안에 HTML을 넣는 상황이 반복되며 급격히 피로가 쌓였습니다. 프론트엔드 프레임워크가 지나치게 복잡하고 대부분의 웹 애플리케이션에는 필요하지 않을지 모른다는 글에 공감하기도 했지만, 복잡도가 과한 것과 개발 경험(DX)은 또 다른 이야기라고 생각하게 되었습니다.",
+      ],
+    },
+    {
+      id: "back-to-split",
+      title: "AI 에이전트와 다시 분리로",
+      paragraphs: [
+        "결국 AI 에이전트가 일상에 들어와 구현 비용이 압도적으로 낮아지면서 다시 프론트엔드를 분리하는 구조로 돌아왔습니다. 나중에 HDA 진영에 더 나은 패러다임이 나온다면 다시 시도해 볼 의향은 있지만, 이제는 개발 비용보다 구조와 마감 기준을 일관되게 유지하는 쪽에 더 무게를 두고 있습니다.",
+      ],
+      diagram: {
+        after: 0,
+        caption: "프론트엔드를 분리했다가 걷어 내고, 다시 분리하기까지의 흐름입니다.",
+        code: `flowchart TB
+  jsp["Spring · JSP · jQuery"] --> react["React<br/>프론트엔드 분리"]
+  react --> angular["Angular 주력"]
+  angular -- "마감 비용과 피로" --> htmx["htmx · HDA"]
+  htmx -- "구현 비용이 낮아지며" --> split["다시 분리"]`,
+      },
+    },
+    {
+      id: "now",
+      title: "지금의 방식",
+      paragraphs: [
+        "다시 프론트엔드를 분리해 작업하는 지금, 저는 코로케이션과 개발 경험을 지키면서도 예전에 지쳤던 마감 비용을 줄이기 위해 화면 구조와 데이터 흐름을 미리 규칙으로 묶어 두고 있습니다. FSD 다섯 층과 주소 기반 라우팅으로 코드 자리를 고정하고, 서버 데이터·URL·입력 초안의 소유자를 나누어 상태가 얽히지 않게 합니다.",
+        "프론트엔드 문서에는 이러한 구조와 코드 규칙, 상태 소유와 데이터 흐름, 화면 전환과 리소스 주소 기준이 정리되어 있고, 화면 표현과 상호작용 마감은 Design System과 Interaction로 따로 묶어 두었습니다. 여기서 정리한 규칙들은 고정된 정답이 아니라 프로젝트를 만들며 부딪히는 문제에 맞춰 계속 고쳐 가는 지금의 답입니다.",
+      ],
+    },
+  ],
+};
+
+// 백엔드 개발 이야기. webapp의 프로젝트 묶음과 backend Engineering 개요가 같은 글을 쓴다.
+const BACKEND_STORY: GuideDoc = {
+  slug: "overview",
+  title: "개요",
+  icon: "code",
+  summary: "백엔드 기술을 고르고 구조를 고민해 온 과정",
+  sections: [
+    {
+      id: "stack-unification",
+      title: "Spring에서 TypeScript와 NestJS로",
+      paragraphs: [
+        "백엔드를 Spring으로 시작했지만, 별도의 프론트엔드 프레임워크를 늘 함께 도입하게 되면서 기술 스택을 통일하고 싶어졌습니다. 프론트엔드에서 JavaScript와 TypeScript를 반드시 써야 하는 만큼, 인지 비용을 줄이려면 백엔드도 Node.js 기반 프레임워크를 쓰는 편이 낫다고 생각했습니다. OOP에 꾸준한 관심이 있었기 때문에 Spring을 쓰지 않더라도 TypeScript 진영에서 DI와 IoC를 지원하는 NestJS가 거의 유일한 선택지가 되었습니다.",
+      ],
+    },
+    {
+      id: "feature-first",
+      title: "레이어보다 기능을 1차 기준으로",
+      paragraphs: [
+        "프론트엔드 진영은 여러 구조를 거치며 FSD(Feature-Sliced Design)가 저와 잘 맞아 정착했지만, 백엔드는 여전히 구조적인 고민이 끊이지 않습니다. 지금 와서 그 이유를 돌이켜 보면 일관성과 유연성 사이에서 선을 긋기가 어렵고, 만들고자 하는 도메인을 제대로 파악해야 비로소 깔끔한 컨텍스트를 나눌 수 있기 때문이라고 생각합니다.",
+        "저는 DDD가 다루는 개념과 클린 아키텍처의 일부를 좋아하지만, 이를 가장 엄격하게 구현하는 헥사고날 아키텍처는 늘 과하게 느껴졌습니다. 분명한 것은 레이어를 1차 기준으로 패키지를 나누는 것보다 기능을 1차 기준으로 나누는 편이 낫다는 점입니다. 다만 기능 단위로 패키지를 나누면 서로 참조할 수밖에 없고, 저는 그 관계를 깔끔하게 드러내고 싶었습니다.",
+      ],
+      diagram: {
+        after: 1,
+        caption: "기능을 먼저 나누고, 하위 도메인 사이는 한 방향으로만 참조하려 합니다.",
+        code: `flowchart LR
+  subgraph layered["레이어 우선"]
+    direction TB
+    controller --> service --> repository
+  end
+  subgraph featured["기능 우선"]
+    direction TB
+    core["핵심 하위 도메인"] --> supporting["지원 하위 도메인"]
+    core --> generic["일반 하위 도메인"]
+    supporting --> generic
+  end
+  layered -- "기능을 1차 기준으로" --> featured`,
+      },
+    },
+    {
+      id: "unidirectional",
+      title: "단방향 참조와 AI 시대의 구조 감각",
+      paragraphs: [
+        "그러다 보니 자연스럽게 DDD의 핵심(core), 지원(supporting), 일반(generic) 하위 도메인 개념을 접하게 되었고, 도메인의 성격에 따라 패키지 간 참조 패턴도 어느 정도 정해진다고 보게 되었습니다.",
+        "다만 프론트엔드의 FSD와 달리 백엔드에서는 도메인 패키지 안에서 기능이나 컨텍스트 패키지끼리 서로 참조하는 것이 기술적으로 허용됩니다. 기능상 문제가 없더라도 컨텍스트가 서로 참조하는 구조는 좋지 않다고 믿기 때문에, 단방향 참조를 지키기 위한 구조 고민이 끝없이 이어집니다. 그래서 AI 시대인 지금도 코드가 마구잡이로 쌓이는 것을 참기 어렵고, 제가 의도한 구조대로 AI가 만들어 주기를 바랍니다. 이런 이유로 제 백엔드는 지금도 OOP를 지원하는 언어와 프레임워크 조합을 주로 선택하게 됩니다.",
+      ],
+    },
+    {
+      id: "now",
+      title: "지금의 방식",
+      paragraphs: [
+        "기능을 1차 기준으로 나누고 단방향 참조를 지키려는 생각은 지금 모듈형 모놀리스 규칙으로 정리되었습니다. 각 모듈은 내부 계층을 감추고 루트의 공개 계약으로만 소통하며, 쓰기는 도메인 저장소와 업무 메서드로, 읽기는 전용 조회 포트로 경로를 나누어 경계가 흐려지지 않게 합니다.",
+        "백엔드 문서에는 모듈 구조와 계약·공유·조회 경계부터 코드 규칙, 오류와 접근 판정, API 계약, DB 마이그레이션까지 실무에서 반복해 쓰는 기준이 정리되어 있습니다. 이 규칙들 역시 완성된 답이 아니라 실제 서비스를 만들고 운영하면서 계속 다듬어 가는 지금의 답입니다.",
+      ],
+    },
+  ],
+};
 
 export const WEBAPP_GROUPS: GuideGroup[] = [
   {
@@ -110,6 +219,18 @@ export const WEBAPP_GROUPS: GuideGroup[] = [
             ],
           },
         ],
+      },
+      {
+        ...FRONTEND_STORY,
+        slug: "frontend",
+        title: "프론트엔드 개발",
+        next: { label: "Frontend Engineering에서 이어 읽기", to: "/frontend/engineering/layers" },
+      },
+      {
+        ...BACKEND_STORY,
+        slug: "backend",
+        title: "백엔드 개발",
+        next: { label: "Backend Engineering에서 이어 읽기", to: "/backend/engineering/modules" },
       },
       {
         slug: "source-control",
@@ -212,108 +333,452 @@ export function getWebappDoc(slug: string) {
   return WEBAPP_DOCS.find((doc) => doc.slug === slug);
 }
 
-// frontend 공간의 Engineering 첫 글
-export const ENGINEERING_STORIES: Record<"frontend", GuideDoc & { group: string }> = {
-  frontend: {
-    ...{
-      slug: "frontend",
-      title: "프론트엔드 개발",
-      icon: "components",
-      summary: "프론트엔드를 분리했다가 걷어 내고, 다시 분리하기까지의 경험",
-      next: { label: "frontend 공간으로 이동", to: "/frontend/overview" },
-      sections: [
-        {
-          id: "split-and-fatigue",
-          title: "JSP에서 프론트엔드 분리, 그리고 피로",
-          paragraphs: [
-            "제가 처음 만든 웹 애플리케이션은 Spring 프레임워크에 JSP 템플릿 엔진과 jQuery를 조합한 사이트였습니다. 이후 React를 접하고 나서는 기존 방식으로 돌아가기 어려울 만큼 프론트엔드를 분리하는 작업에 재미를 느꼈고, 그 뒤로는 Angular를 주력으로 프론트엔드 분리 방식을 오랫동안 고수했습니다.",
-            "그러다 어느샌가 프론트엔드를 분리해 작업하는 방식에 피로감을 느끼기 시작했습니다. 프론트엔드와 백엔드 모두 나름의 이유를 가지고 공을 들여 만들었지만, 완성된 결과물에는 늘 아쉬운 구석이 남았습니다. 시각적인 감각은 어느 정도 있다고 생각해 무엇이 부족한지는 어렴풋이 느끼고 있었고, 다른 사이트들과 비교하며 그 차이를 확인했지만, 그 마감을 끝까지 챙기는 데에도 상당한 비용이 들었습니다.",
-          ],
-        },
-        {
-          id: "hda-and-colocation",
-          title: "HDA 시도와 코로케이션의 빈자리",
-          paragraphs: [
-            "그래서 백엔드 프레임워크에 htmx 같은 HDA(Hypermedia-Driven Application) 방식을 얹어 적은 비용으로 SPA 같은 경험을 내는 접근에 한동안 빠졌습니다. 하지만 소스코드가 적다고 해서 관리 방식까지 우아한 것은 아니라는 사실을 깨달았습니다. 프론트엔드 프레임워크를 쓸 때 당연했던 컴포넌트의 응집도, 즉 HTML·CSS·JS 로직이 한곳에 모여 있는 코로케이션(colocation)이 늘 아쉬웠고, 이를 억지로 보완하려고 추가 설정을 붙이는 과정도 만족스럽지 않았습니다.",
-            "또 htmx가 해결하지 못하는 영역에서 JavaScript를 직접 써야 할 때면 다시 npm 진영의 라이브러리가 그리워졌고, TypeScript나 JavaScript 안에서 createElement를 호출하거나 백틱 문자열 안에 HTML을 넣는 상황이 반복되며 급격히 피로가 쌓였습니다. 프론트엔드 프레임워크가 지나치게 복잡하고 대부분의 웹 애플리케이션에는 필요하지 않을지 모른다는 글에 공감하기도 했지만, 복잡도가 과한 것과 개발 경험(DX)은 또 다른 이야기라고 생각하게 되었습니다.",
-          ],
-        },
-        {
-          id: "back-to-split",
-          title: "AI 에이전트와 다시 분리로",
-          paragraphs: [
-            "결국 AI 에이전트가 일상에 들어와 구현 비용이 압도적으로 낮아지면서 다시 프론트엔드를 분리하는 구조로 돌아왔습니다. 나중에 HDA 진영에 더 나은 패러다임이 나온다면 다시 시도해 볼 의향은 있지만, 이제는 개발 비용 때문에 고민하는 일이 줄어들어 앞으로 어떻게 될지는 잘 모르겠습니다.",
-          ],
-          diagram: {
-            after: 0,
-            caption: "프론트엔드를 분리했다가 걷어 내고, 다시 분리하기까지의 흐름입니다.",
-            code: `flowchart TB
-  jsp["Spring · JSP · jQuery"] --> react["React<br/>프론트엔드 분리"]
-  react --> angular["Angular 주력"]
-  angular -- "마감 비용과 피로" --> htmx["htmx · HDA"]
-  htmx -- "구현 비용이 낮아지며" --> split["다시 분리"]`,
-          },
-        },
-      ],
-    },
-    group: "Engineering",
+// frontend 공간의 Engineering 문서. Webapp 플러그인의 frontend 지침을 사람이 읽는 글로 옮긴다.
+export const FRONTEND_ENGINEERING_GROUPS: GuideGroup[] = [
+  {
+    title: "시작하기",
+    docs: [FRONTEND_STORY],
   },
-};
+  {
+    title: "구조",
+    docs: [
+      {
+        slug: "layers",
+        title: "화면 계층",
+        icon: "layouts",
+        skills: ["frontend-engineering/references/structure.md"],
+        summary: "FSD 다섯 층과 주소 기반 pages, 키트·앱 셸의 경계를 나누는 기준",
+        sections: [
+          {
+            id: "fsd-five-layers",
+            title: "다섯 층과 widgets를 두지 않는 이유",
+            paragraphs: [
+              "프론트엔드는 FSD의 다섯 층인 app, pages, features, entities, shared로 나누고 widgets 층은 두지 않습니다. 상위 층은 하위 층만 참조하며, 개발 이야기에서 중시한 코로케이션을 살려 슬라이스 안에서 컴포넌트는 파일 하나에 하나씩 둡니다.",
+              "여러 파일이 함께 쓰는 훅과 로직은 슬라이스의 model에 모으고, 한 파일에서만 쓰는 작은 조각은 억지로 파일을 나누지 않고 그 파일 위쪽에 둡니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "다섯 층은 위에서 아래로만 의존하며 widgets 층은 따로 두지 않습니다.",
+              code: `flowchart TB
+  app["app<br/>진입 · 라우터 · 업무 앱 셸"] --> pages["pages<br/>주소이자 라우트 슬라이스"]
+  pages --> features["features<br/>사용자 동작 · 유스케이스"]
+  features --> entities["entities<br/>도메인 모델 · 조회"]
+  entities --> shared["shared<br/>UI 키트 · 제품 공용 · 유틸"]`,
+            },
+            table: {
+              after: 1,
+              columns: ["층", "역할"],
+              rows: [
+                ["app", "진입점, 전역 프로바이더, 공간·메뉴·권한을 아는 앱 셸"],
+                ["pages", "파일 라우팅이 읽는 주소별 화면과 부모 경로"],
+                ["features", "여러 화면에서 재사용하는 사용자 동작과 상호작용"],
+                ["entities", "도메인 모델, 조회 옵션, 표시 컴포넌트"],
+                ["shared", "업무를 모르는 UI 키트, 제품 공용 컴포넌트, 기본 유틸"],
+              ],
+              monoFirstColumn: true,
+            },
+          },
+          {
+            id: "pages-as-routes",
+            title: "주소가 곧 pages 슬라이스",
+            paragraphs: [
+              "pages는 화면을 모아 두는 일반 폴더가 아니라 라우터의 파일 라우팅이 읽는 주소입니다. 폴더 하나가 주소 하나이자 슬라이스 하나이며, 폴더마다 아래 주소들의 레이아웃·가드·데이터 준비를 맡는 부모 경로 파일과 그 주소의 화면 파일을 나눠 둡니다. 주소에 나타나지 않는 묶음 폴더로 여러 주소에 같은 틀을 걸고, ui·model 같은 슬라이스 세그먼트와 공개 진입점은 라우트로 읽지 않게 설정합니다.",
+              "pages 안의 파일은 자기 라우트 폴더와 조상 라우트 폴더의 것만 가져옵니다. 형제 주소의 코드는 가져오지 않으며, 두 주소가 함께 쓰는 코드는 공통 조상 폴더로 올립니다. 공간이 여럿인 앱은 공간마다 pages 아래 폴더를 두어 주소로 묶되, features와 entities는 공간별로 나누지 않습니다.",
+            ],
+            diagram: {
+              after: 1,
+              caption:
+                "pages는 자기 폴더와 조상 폴더만 참조하고 형제 주소끼리는 참조하지 않습니다.",
+              code: `flowchart TB
+  parent["pages/space/ (공통 조상)"] --> a["pages/space/items/"]
+  parent --> b["pages/space/settings/"]
+  a -. "형제 참조 금지" .-> b`,
+            },
+            example: {
+              after: 1,
+              label: "pages 파일 라우팅 구조",
+              code: `pages/
+  __root.tsx          # 전역 루트
+  space/
+    route.tsx         # 부모 경로 (레이아웃·가드·데이터 준비)
+    items/
+      page.tsx        # 목록 화면
+      $id/
+        page.tsx      # 상세 화면
+      ui/             # 라우트로 읽지 않는 슬라이스 세그먼트
+      model/`,
+            },
+          },
+          {
+            id: "shared-and-app",
+            title: "키트, 제품 공용, 앱 셸의 경계",
+            paragraphs: [
+              "shared 층 안에서도 UI 키트와 제품이 만든 공용 컴포넌트는 서로 다른 폴더로 나눕니다. 업무를 모르는 레이아웃 뼈대인 앱 셸 틀, 페이지, 분할 보기, 칸 머리, 모바일 도구는 키트 안의 레이아웃 폴더에 모으고, 공간·메뉴 항목·권한에 따른 관리 진입처럼 업무를 아는 앱 셸은 app 층에 둡니다.",
+              "분할 화면의 진입부와 목록 줄, 위 단계 경로, 버릴지 묻는 창, 양식 바닥 같은 패턴의 공통 뼈대는 한 곳에 두고 화면마다 다시 조립하지 않습니다. 개별 화면은 줄, 도구, 칸 내용만 넘깁니다.",
+            ],
+            callout: {
+              after: 1,
+              title: "화면 표현과의 경계",
+              body: "레이아웃과 컴포넌트의 시각·반응형 표현 기준은 frontend의 Layouts와 Interaction에서 다루고, 여기서는 코드 배치와 소유 경계에 집중합니다.",
+            },
+          },
+        ],
+      },
+      {
+        slug: "code-style",
+        title: "코드 규칙",
+        icon: "code",
+        skills: ["frontend-engineering/references/structure.md"],
+        summary: "파일 이름 규칙, 파생값과 Effect 경계, 메모이제이션과 수명주기 기준",
+        sections: [
+          {
+            id: "naming-and-files",
+            title: "파일과 이름 규칙",
+            paragraphs: [
+              "파일 배치와 공개 API는 FSD 규칙을 따르며, 컴포넌트는 PascalCase 파일 하나에 하나씩 둡니다. 페이지 컴포넌트에는 Page 접미를 붙이고, 훅은 use로 시작하고, 훅·유틸·설정 파일 이름은 kebab-case로 적습니다.",
+              "라우트 묶음 폴더, 경로 별칭, 린트 규칙은 프로젝트마다 다를 수 있으므로 작업 전에 현재 프로젝트 설정을 먼저 확인하고 다른 프로젝트의 도우미나 그룹이 있다고 가정하지 않습니다.",
+            ],
+            table: {
+              after: 0,
+              columns: ["대상", "이름 규칙"],
+              rows: [
+                ["컴포넌트", "PascalCase, 파일 하나에 컴포넌트 하나"],
+                ["페이지", "Page 접미사"],
+                ["훅", "use 접두사, 파일은 kebab-case"],
+                ["유틸 · 설정", "kebab-case"],
+              ],
+            },
+            example: {
+              after: 1,
+              label: "슬라이스 안 파일 이름 예시",
+              code: `items/
+  ItemsPage.tsx
+  ui/
+    ItemRow.tsx
+  model/
+    use-item-filter.ts
+  lib/
+    format-date.ts`,
+            },
+          },
+          {
+            id: "effects-and-memo",
+            title: "Effect, 파생값, 메모이제이션",
+            paragraphs: [
+              "기존 props나 state에서 계산할 수 있는 파생값을 별도 state에 복사해 Effect로 맞추지 않습니다. 사용자 클릭이나 제출 같은 명령은 이벤트 핸들러와 mutation이 처리하고, Effect는 외부 구독과 동기화에만 쓰며 정리 함수로 반드시 해제합니다.",
+              "값과 함수의 메모이제이션은 모든 곳에 습관적으로 붙이지 않고, 측정된 비용이 있거나 참조 안정성이 필요한 경계에서만 씁니다. 개발 모드의 이중 실행 검사에서 드러난 수명주기 문제는 실행 방지 플래그로 덮지 않고 원인 자체를 고칩니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption: "로직의 성격에 따라 렌더 계산, 이벤트 핸들러, Effect로 자리를 나눕니다.",
+              code: `flowchart LR
+  q{"무엇을 하는 로직인가"} --> derived["기존 값의 파생<br/>렌더 중 바로 계산"]
+  q --> action["사용자 명령<br/>이벤트 핸들러 · mutation"]
+  q --> sub["외부 구독 · 동기화<br/>Effect + 해제"]`,
+            },
+            table: {
+              after: 1,
+              columns: ["상황", "처리 기준"],
+              rows: [
+                ["파생값 계산", "state로 복사하지 않고 렌더 중에 직접 계산"],
+                ["사용자 동작", "Effect가 아니라 이벤트 핸들러·mutation에서 실행"],
+                ["메모이제이션", "측정된 비용 또는 참조 안정성이 필요한 경계에만 사용"],
+                ["이중 실행 오류", "실행 방지 플래그로 숨기지 않고 수명주기 원인을 수정"],
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "데이터",
+    docs: [
+      {
+        slug: "state",
+        title: "상태 소유",
+        icon: "swatch",
+        skills: ["frontend-engineering/references/data-flow.md"],
+        summary:
+          "서버 데이터, URL, 입력 초안의 소유자를 나누고 저장 중 편집을 안전하게 지키는 기준",
+        sections: [
+          {
+            id: "state-owners",
+            title: "상태별 소유자 구분",
+            paragraphs: [
+              "프론트엔드 상태가 꼬이는 가장 흔한 원인은 같은 값을 여러 곳에 복제해 두고 서로 맞추려 할 때입니다. 저는 상태를 서버 데이터, 확정된 URL 조건, 임시 입력 초안 세 가지로 나누고 각자 하나의 소유자에게 맡깁니다.",
+            ],
+            table: {
+              after: 0,
+              columns: ["상태", "소유자"],
+              rows: [
+                ["서버 데이터 · 캐시", "서버 데이터 캐시 도구 (TanStack Query 등)"],
+                ["경로 · 확정 필터 · 정렬 · 페이지 · 탭", "라우터가 검증한 URL"],
+                ["입력 초안 · 적용 전 필터 · 열림 상태", "로컬 state 또는 해당 슬라이스 model"],
+              ],
+            },
+            diagram: {
+              after: 0,
+              caption: "상태마다 원본 소유자를 하나로 정해 중복 복사를 막습니다.",
+              code: `flowchart LR
+  server["서버 데이터 · 캐시"] --> query["캐시 도구"]
+  route["경로 · 확정 필터 · 탭"] --> url["검증된 URL"]
+  draft["입력 초안 · 열림 상태"] --> local["로컬 state · 슬라이스 model"]`,
+            },
+          },
+          {
+            id: "server-and-draft",
+            title: "서버 데이터와 초안 분리",
+            paragraphs: [
+              "서버에서 읽어 온 원본 데이터와 사용자가 고치는 수정 초안은 분리합니다. 백그라운드 재조회가 돌아도 입력 중인 초안을 덮어쓰지 않으며, 저장 충돌이 나면 초안을 버리지 않고 유지한 채 다시 읽기나 재적용 방법을 제공합니다.",
+              "저장 요청이 진행 중인 동안에도 계속 편집할 수 있는 화면이라면, 저장 요청에 실어 보낸 초안 판본과 현재 편집 중인 초안을 구분합니다. 그래야 늦게 도착한 이전 저장의 성공 응답이 이후에 입력한 내용을 초기화하지 않습니다.",
+            ],
+            bullets: {
+              after: 1,
+              items: [
+                "백그라운드 재조회가 사용자의 현재 입력 초안을 덮지 않게 분리합니다.",
+                "저장 중 편집을 허용하면 요청 판본과 현재 판본을 비교해 지연 응답을 걸러냅니다.",
+                "연속 저장의 직렬화·충돌·재시도 정책을 정하고, 문서나 계정이 바뀐 뒤 도착한 응답도 격리합니다.",
+              ],
+            },
+          },
+          {
+            id: "filter-and-url",
+            title: "필터 확정과 URL 동기화",
+            paragraphs: [
+              "필터를 확정할 때는 URL 갱신, 페이지 번호 초기화, 조회 키 변경을 하나의 상태 전환으로 다룹니다. 적용 버튼을 누르기 전의 선택은 초안이며, 취소하면 기존 URL을 그대로 유지합니다.",
+              "URL에서 읽는 숫자, 날짜, 열거형과 기본값은 라우터 경계에서 검증해 새로고침, 링크 공유, 뒤로가기에서도 같은 조건이 복원되게 합니다. 칩, 선택기, 모바일 시트의 표현은 Interaction와 컴포넌트 문서에서 다룹니다.",
+            ],
+            callout: {
+              after: 1,
+              title: "초안과 확정의 경계",
+              body: "적용 전 필터는 로컬 초안에 두고, 확정하는 순간에만 URL을 바꿔 페이지를 초기화하고 조회를 갱신합니다.",
+            },
+          },
+        ],
+      },
+      {
+        slug: "data-flow",
+        title: "조회와 변경",
+        icon: "transition",
+        skills: ["frontend-engineering/references/data-flow.md"],
+        summary: "조회 옵션 공유, 준비 함수, mutation 후 무효화, 계정 전환과 목록 정책 기준",
+        sections: [
+          {
+            id: "query-options",
+            title: "조회 옵션, 캐시 키, 준비 함수",
+            paragraphs: [
+              "조회를 소유한 슬라이스의 api에 요청 함수, 캐시 키, 조회 옵션을 함께 둡니다. 라우트의 데이터 준비(loader)와 화면 컴포넌트는 같은 조회 옵션을 쓰며, 응답을 바꾸는 모든 인자를 캐시 키에 빠짐없이 넣습니다.",
+              "캐시에서 꺼낸 값이 항상 최신 응답이라고 가정하지 않고, 최신 응답을 기다려야 하면 그 조회의 신선도 기준을 명시합니다. 라우트의 데이터 준비는 실패하면 준비가 멈추는 필수 조회와 실패해도 넘어가는 선택 조회를 나눈 준비 함수 하나로 정리합니다.",
+            ],
+            diagram: {
+              after: 1,
+              caption: "슬라이스 api의 조회 옵션 하나를 loader와 페이지가 함께 씁니다.",
+              code: `flowchart LR
+  opts["슬라이스 api<br/>요청 · 캐시 키 · 조회 옵션"] --> loader["라우트 loader<br/>필수 조회 · 선택 조회 분기"]
+  opts --> page["페이지 컴포넌트"]
+  loader --> cache["서버 데이터 캐시"]
+  cache --> page`,
+            },
+          },
+          {
+            id: "mutation-and-invalidation",
+            title: "변경과 캐시 무효화",
+            paragraphs: [
+              "기본 변경 흐름은 mutation이 성공한 뒤 관련된 캐시 키를 무효화하는 방식입니다. 저장은 성공했는데 뒤따른 재조회만 실패한 상황을 저장 실패로 오인해 알리지 않도록 구분합니다.",
+              "낙관적 갱신과 명령 자동 재시도는 기본으로 켜지 않고 중복 실행 위험과 복구 비용을 따져 필요한 곳에만 고릅니다. 하위 컴포넌트가 페이지의 캐시 키를 직접 알지 않도록 콜백을 넘기거나 상태 소유자를 조정합니다.",
+            ],
+            diagram: {
+              after: 0,
+              caption:
+                "저장이 성공하면 관련 키만 무효화하고, 재조회 실패는 저장 실패와 분리합니다.",
+              code: `flowchart LR
+  mut["mutation 실행"] -- "성공" --> inv["관련 캐시 키 무효화"]
+  inv --> refetch["백그라운드 재조회"]
+  refetch -- "실패해도" --> keep["저장 성공 상태 유지"]`,
+            },
+          },
+          {
+            id: "states-and-lists",
+            title: "상태 구분, 계정 전환, 큰 목록",
+            paragraphs: [
+              "초기 로딩, 정상 빈 결과, 조회 오류는 분명히 구분해 처리합니다(상태별 화면 표현은 Interaction의 화면 상태에서 다룹니다). 계정이나 권한이 바뀌는 순간에는 이전 범위의 데이터가 노출되지 않도록 진행 중인 조회를 취소하고 캐시를 비웁니다.",
+              "큰 목록은 브라우저에서 전체를 내려받지 않고 서버에서 필터, 정렬, 페이지를 처리합니다. 무한 목록은 보관 중인 페이지 조각 전체가 한꺼번에 재조회되는 비용을 확인하고 목록 복귀, 새 진입, 갱신 정책을 따로 정합니다.",
+            ],
+            table: {
+              after: 1,
+              columns: ["상황", "처리 기준"],
+              rows: [
+                ["조회 결과 구분", "초기 로딩, 정상 빈 결과, 조회 오류를 서로 섞지 않음"],
+                ["계정 · 권한 전환", "진행 중 조회 취소와 이전 범위 캐시 제거"],
+                ["큰 목록", "서버에서 필터, 정렬, 페이징 처리"],
+                ["무한 목록", "조각 전체 재조회 비용을 확인하고 복귀·새 진입·갱신 정책 분리"],
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+  {
+    title: "라우팅",
+    docs: [
+      {
+        slug: "navigation",
+        title: "화면 전환",
+        icon: "route",
+        skills: ["frontend-engineering/references/navigation.md"],
+        summary: "intent prefetch, stale-while-revalidate, 지연 로딩 준비와 목록 복귀 기준",
+        sections: [
+          {
+            id: "prefetch-and-swr",
+            title: "미리 준비, 캐시 우선 표시, 지연 진행 표시",
+            paragraphs: [
+              "첫 화면에 필요한 조회는 라우트 loader에서 컴포넌트와 같은 조회 옵션으로 준비합니다. 캐시가 있으면 오래됐더라도 즉시 그리고 뒤에서 갱신하는 stale-while-revalidate를 기본으로 삼으며, 캐시 신선도 조건 때문에 첫 그림을 막지 않습니다. 캐시로 먼저 그린 본문이 서버 최신본과 다르면 읽던 글을 갑자기 덮지 않고 최신 내용 보기 안내만 띄웁니다.",
+              "앱 안 링크에 포인터나 초점이 오면 그 화면을 미리 준비하는 intent prefetch를 씁니다. 링크마다 붙이지 않고 문서에 한 번 걸어 pointerover와 focusin에서 앱 안 링크를 라우터로 미리 준비하며, 같은 주소는 10초에 한 번만 호출합니다. 캐시가 없으면 다음 화면이 준비될 때까지 지금 화면을 유지하고 150ms가 지나면 콘텐츠 카드 위 테두리에만 진행 표시를 띄웁니다(화면 표현은 Interaction에서 다룹니다).",
+            ],
+            diagram: {
+              after: 1,
+              caption:
+                "링크 호버·포커스로 미리 준비하고, 캐시 유무에 따라 즉시 표시와 지연 진행 표시로 나눕니다.",
+              code: `flowchart LR
+  hover["링크 호버 · 포커스"] --> pre["intent prefetch<br/>같은 주소 10초 1회"]
+  click["링크 클릭"] --> has{"캐시가 있는가"}
+  has -- "있음" --> swr["즉시 표시 후<br/>뒤에서 갱신"]
+  has -- "없음" --> hold["현재 화면 유지<br/>150ms 후 상단 진행 표시"]`,
+            },
+          },
+          {
+            id: "code-preloading",
+            title: "지연 로딩 코드와 데이터 함께 준비",
+            paragraphs: [
+              "지연 로딩하는 화면 코드와 중첩 화면, 리치 에디터처럼 큰 컴포넌트도 데이터와 함께 전환 전에 미리 받습니다. 바깥 라우트만 준비하고 안쪽 지연 로딩 컴포넌트가 렌더 중에 처음 로드되면 가장 가까운 대기 경계가 앱 셸까지 숨기거나 에디터가 뒤늦게 붙으며 아래 영역이 밀립니다.",
+              "본문뿐 아니라 첫 화면에 필요한 목록, 사람, 선택지, 연결 정보도 같은 조회 옵션으로 함께 준비합니다. 라우터가 loader 결과를 기억하는 기간과 서버 데이터 캐시의 수명을 따로 정해, loader가 생략된 뒤 빈 캐시에서 화면이 다시 조회하는 일을 막습니다.",
+            ],
+            bullets: {
+              after: 1,
+              items: [
+                "지연 로딩 컴포넌트는 미리 받는 함수를 가진 래퍼로 감싸 받은 뒤에는 멈춤 없이 바로 그리게 합니다.",
+                "배치에 영향을 주는 비동기 컴포넌트는 빈 채로 먼저 그렸다가 나중에 채우지 않습니다.",
+                "새 경로 일치 시점과 이동 완료 시점을 구분하고, 이전 주소를 넘겨 본문을 다시 마운트하지 않습니다.",
+              ],
+            },
+          },
+          {
+            id: "history-and-return",
+            title: "검색 기록, 목록 복귀, 이동 중인 주소",
+            paragraphs: [
+              "검색 조건과 탭은 검증된 URL에서 읽으며, 입력 중 검색처럼 중간 단계가 쌓이는 변경은 replace로, 사용자가 구분해 돌아올 이동은 push로 기록합니다. 뒤로 돌아온 목록은 읽던 스크롤 위치와 이미 로드한 행을 유지해 새 진입의 최신성 정책과 섞지 않습니다.",
+              "사이드바 메뉴와 선택 표시는 이동이 끝난 주소가 아니라 이동 중인 주소로 계산합니다. 이동이 끝난 주소를 쓰면 다음 화면의 loader가 끝날 때까지 메뉴가 이전 공간에 머물러 반응이 한 박자 늦어집니다.",
+            ],
+            table: {
+              after: 1,
+              columns: ["상황", "처리 기준"],
+              rows: [
+                ["입력 중 검색 조건 변경", "히스토리 replace로 중간 단계 누적 방지"],
+                ["구분해서 돌아올 화면 이동", "히스토리 push로 기록 유지"],
+                ["목록으로 뒤로 복귀", "읽던 위치와 로드한 행 유지"],
+                ["사이드바 메뉴 활성 표시", "응답 완료 전 이동 중인 주소 기준으로 즉시 반영"],
+              ],
+            },
+          },
+        ],
+      },
+      {
+        slug: "resource-routes",
+        title: "리소스 주소",
+        icon: "file",
+        skills: [
+          "frontend-engineering/references/navigation.md",
+          "frontend-design-system/references/resource-patterns.md",
+        ],
+        summary: "리소스 화면 패턴별 주소 계약, 대화상자 내부 이동과 마스킹, 공간 주소 기준",
+        sections: [
+          {
+            id: "resource-patterns",
+            title: "직접 주소와 세 가지 리소스 패턴",
+            paragraphs: [
+              "목록 위에서 패널이나 모달로 상세를 열더라도 대상에는 반드시 직접 접근할 수 있는 주소를 둡니다. 직접 URL 진입이나 새로고침에서는 독립 화면으로 열리며, 닫기는 이전 맥락을 복구하되 이전 기록이 없으면 무조건 브라우저 뒤로가기를 부르지 않고 해당 목록으로 가는 명시적인 대체 경로로 이동합니다.",
+              "리소스의 목록·상세·생성·수정 주소는 List-Detail, Drill-down, Routed Modal 세 패턴에 맞춰 짭니다. 전체 페이지와 상세 패널이 같은 대상을 열면 조회와 화면 컴포넌트를 공유하고, 데모나 플레이그라운드도 제품 컴포넌트에 가짜 데이터만 연결합니다.",
+            ],
+            table: {
+              after: 1,
+              columns: ["패턴", "라우트 구성", "이동 · 복귀 기준"],
+              rows: [
+                [
+                  "List-Detail",
+                  "목록을 부모 라우트, 상세·생성·수정을 자식 라우트로 배치",
+                  "칸을 바꿔도 목록 조회·스크롤 유지, 집중 보기는 ?focus=1, 이탈 시 이동 막기",
+                ],
+                [
+                  "Drill-down",
+                  "상세·생성·수정을 각자 독립 라우트로 배치",
+                  "상세 뒤로는 위 단계 목록 주소, 수정 완료·취소와 생성 저장은 상세로 replace",
+                ],
+                [
+                  "Routed Modal",
+                  "직접 진입 주소와 목록 위 마스킹 모달을 함께 정의",
+                  "새로고침 마스킹 해제 정책 명시, 닫기는 라우터 히스토리 사용",
+                ],
+              ],
+            },
+            example: {
+              after: 1,
+              label: "리소스 주소 구조 예시",
+              code: `/space-a/items           # 목록
+/space-a/items/new       # 생성
+/space-a/items/{id}      # 상세 (직접 진입 가능)
+/space-a/items/{id}/edit # 수정`,
+            },
+          },
+          {
+            id: "modal-and-masking",
+            title: "대화상자 내부 이동과 마스킹 초안",
+            paragraphs: [
+              "대화상자 안에서 허용된 다른 대상으로 이동할 때는 바깥 모달을 유지하고 내용만 교체합니다. 내부 이동은 같은 대화상자 이력 항목을 replace하고, 닫기 버튼·배경 클릭·Esc는 내부 직전 화면이 아니라 대화상자 전체를 닫습니다. 별도의 확인 창은 이 내부 이동과 구분합니다.",
+              "주소 마스킹으로 연 패널에서 편집 중인 초안은 패널·페이지 표현 전환보다 오래 사는 경계인 라우터 위 초안 저장소에 둡니다. 크게 보기나 화면 폭 전환이 일어나도 제목·본문·속성이 유지되고, 저장 성공이나 버리기에서만 지웁니다. 키트 링크와 Markdown·MDX 본문 안의 앱 링크도 라우터 이동으로 연결해 전체 페이지 재로드를 막습니다.",
+            ],
+            diagram: {
+              after: 1,
+              caption:
+                "목록 위 마스킹 모달과 독립 페이지가 같은 주소와 라우터 위 초안 저장소를 공유합니다.",
+              code: `flowchart LR
+  list["목록 화면"] -- "주소 마스킹" --> modal["목록 위 모달<br/>주소창은 대상 URL"]
+  modal -- "새로고침 · 크게 보기" --> full["독립 상세 페이지"]
+  draft["라우터 위 초안 저장소"] -. "전환 중 보존" .- modal
+  draft -. "전환 중 보존" .- full`,
+            },
+          },
+          {
+            id: "spaces-and-menus",
+            title: "공간과 메뉴의 주소",
+            paragraphs: [
+              "공간이 여럿인 앱은 화면 주소의 첫 마디를 공간 이름으로 두고, 어느 공간에도 속하지 않는 계정·인스턴스 설정·전역 진입 화면은 공간 접두 없이 둡니다. API 경로의 첫 마디도 같은 영역 이름으로 맞춰 화면과 서버 주소를 일관되게 유지합니다.",
+            ],
+            bullets: {
+              after: 0,
+              items: [
+                "전역 화면에서 보일 메뉴는 sessionStorage에 기억한 마지막 공간으로 정하고, 저장할 수 없으면 열린 동안만 기억합니다.",
+                "화면 주소를 옮기면 옛 주소에서 새 주소로 돌려보내는 리다이렉트 라우트를 둡니다.",
+                "라우트에서 전달하는 화면 종류와 앱 셸이 판단하는 화면 종류가 어긋나지 않게 맞춥니다.",
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export const FRONTEND_ENGINEERING_DOCS = FRONTEND_ENGINEERING_GROUPS.flatMap((group) =>
+  group.docs.map((doc) => ({ ...doc, group: group.title })),
+);
 
 // backend 공간의 Engineering 문서. Webapp 플러그인의 backend · api · database 지침을 사람이 읽는 글로 옮긴다.
 export const BACKEND_ENGINEERING_GROUPS: GuideGroup[] = [
   {
     title: "시작하기",
-    docs: [
-      {
-        slug: "story",
-        title: "개발 이야기",
-        icon: "code",
-        summary: "백엔드 기술을 고르고 구조를 고민해 온 과정",
-        next: { label: "backend 공간 준비 중" },
-        sections: [
-          {
-            id: "stack-unification",
-            title: "Spring에서 TypeScript와 NestJS로",
-            paragraphs: [
-              "백엔드를 Spring으로 시작했지만, 별도의 프론트엔드 프레임워크를 늘 함께 도입하게 되면서 기술 스택을 통일하고 싶어졌습니다. 프론트엔드에서 JavaScript와 TypeScript를 반드시 써야 하는 만큼, 인지 비용을 줄이려면 백엔드도 Node.js 기반 프레임워크를 쓰는 편이 낫다고 생각했습니다. OOP에 꾸준한 관심이 있었기 때문에 Spring을 쓰지 않더라도 TypeScript 진영에서 DI와 IoC를 지원하는 NestJS가 거의 유일한 선택지가 되었습니다.",
-            ],
-          },
-          {
-            id: "feature-first",
-            title: "레이어보다 기능을 1차 기준으로",
-            paragraphs: [
-              "프론트엔드 진영은 여러 구조를 거치며 FSD(Feature-Sliced Design)가 저와 잘 맞아 정착했지만, 백엔드는 여전히 구조적인 고민이 끊이지 않습니다. 지금 와서 그 이유를 돌이켜 보면 일관성과 유연성 사이에서 선을 긋기가 어렵고, 만들고자 하는 도메인을 제대로 파악해야 비로소 깔끔한 컨텍스트를 나눌 수 있기 때문이라고 생각합니다.",
-              "저는 DDD가 다루는 개념과 클린 아키텍처의 일부를 좋아하지만, 이를 가장 엄격하게 구현하는 헥사고날 아키텍처는 늘 과하게 느껴졌습니다. 분명한 것은 레이어를 1차 기준으로 패키지를 나누는 것보다 기능을 1차 기준으로 나누는 편이 낫다는 점입니다. 다만 기능 단위로 패키지를 나누면 서로 참조할 수밖에 없고, 저는 그 관계를 깔끔하게 드러내고 싶었습니다.",
-            ],
-            diagram: {
-              after: 1,
-              caption: "기능을 먼저 나누고, 하위 도메인 사이는 한 방향으로만 참조하려 합니다.",
-              code: `flowchart LR
-  subgraph layered["레이어 우선"]
-    direction TB
-    controller --> service --> repository
-  end
-  subgraph featured["기능 우선"]
-    direction TB
-    core["핵심 하위 도메인"] --> supporting["지원 하위 도메인"]
-    core --> generic["일반 하위 도메인"]
-    supporting --> generic
-  end
-  layered -- "기능을 1차 기준으로" --> featured`,
-            },
-          },
-          {
-            id: "unidirectional",
-            title: "단방향 참조와 AI 시대의 구조 감각",
-            paragraphs: [
-              "그러다 보니 자연스럽게 DDD의 핵심(core), 지원(supporting), 일반(generic) 하위 도메인 개념을 접하게 되었고, 도메인의 성격에 따라 패키지 간 참조 패턴도 어느 정도 정해진다고 보게 되었습니다.",
-              "다만 프론트엔드의 FSD와 달리 백엔드에서는 도메인 패키지 안에서 기능이나 컨텍스트 패키지끼리 서로 참조하는 것이 기술적으로 허용됩니다. 기능상 문제가 없더라도 컨텍스트가 서로 참조하는 구조는 좋지 않다고 믿기 때문에, 단방향 참조를 지키기 위한 구조 고민이 끝없이 이어집니다. 그래서 AI 시대인 지금도 코드가 마구잡이로 쌓이는 것을 참기 어렵고, 제가 의도한 구조대로 AI가 만들어 주기를 바랍니다. 이런 이유로 제 백엔드는 지금도 OOP를 지원하는 언어와 프레임워크 조합을 주로 선택하게 됩니다.",
-            ],
-          },
-        ],
-      },
-    ],
+    docs: [BACKEND_STORY],
   },
   {
     title: "구조",
@@ -322,6 +787,11 @@ export const BACKEND_ENGINEERING_GROUPS: GuideGroup[] = [
         slug: "modules",
         title: "모듈과 계층",
         icon: "layouts",
+        skills: [
+          "backend-engineering/SKILL.md",
+          "backend-engineering/references/layers.md",
+          "webapp-project/SKILL.md",
+        ],
         summary:
           "서버를 모듈형 모놀리스로 나누고 각 모듈 안의 계층과 서비스·명령·트랜잭션 경계를 정하는 기준",
         sections: [
@@ -422,6 +892,7 @@ export const BACKEND_ENGINEERING_GROUPS: GuideGroup[] = [
         slug: "contracts",
         title: "모듈 간 계약",
         icon: "transition",
+        skills: ["backend-engineering/references/contracts.md"],
         summary:
           "모듈 경계를 넘나드는 Facade, 전달 타입, Event, Spi를 설계해 단방향 의존을 지키는 기준",
         sections: [
@@ -520,6 +991,7 @@ export const BACKEND_ENGINEERING_GROUPS: GuideGroup[] = [
         slug: "sharing",
         title: "공유와 참조",
         icon: "route",
+        skills: ["backend-engineering/references/sharing.md"],
         summary:
           "두 피처에 같은 코드가 필요할 때의 배치 판단과 피처·애그리거트 사이의 참조 방향 기준",
         sections: [
@@ -575,6 +1047,10 @@ export const BACKEND_ENGINEERING_GROUPS: GuideGroup[] = [
         slug: "queries",
         title: "조회",
         icon: "search",
+        skills: [
+          "backend-engineering/references/queries.md",
+          "backend-engineering/references/cross-module-read.md",
+        ],
         summary: "화면 조회 포트의 소유권, DB 필터·정렬·페이징 원칙과 모듈 경계를 넘는 조회 기준",
         sections: [
           {
@@ -644,6 +1120,7 @@ export const BACKEND_ENGINEERING_GROUPS: GuideGroup[] = [
         slug: "code-style",
         title: "코드 규칙",
         icon: "code",
+        skills: ["backend-engineering/references/code-style.md"],
         summary: "역할이 드러나는 이름 규칙, 계층 확장 방식, 타입과 테스트의 일관된 기준",
         sections: [
           {
@@ -711,6 +1188,7 @@ order.status() # 속성 접근자 → get 접두 없이 이름만`,
         slug: "errors",
         title: "오류 처리",
         icon: "details",
+        skills: ["backend-engineering/references/errors.md"],
         summary: "도메인 규칙 위반과 서비스 유스케이스 오류의 분리, 접근 판정 단일화 기준",
         sections: [
           {
@@ -770,6 +1248,7 @@ order.status() # 속성 접근자 → get 접두 없이 이름만`,
         slug: "api",
         title: "API 계약",
         icon: "file",
+        skills: ["backend-engineering/references/api.md"],
         summary:
           "서버를 계약 원본으로 두고 경로, 상태 코드, 오류 형식, 권한, 목록과 업로드 계약을 맞추는 기준",
         sections: [
@@ -847,6 +1326,7 @@ order.status() # 속성 접근자 → get 접두 없이 이름만`,
         slug: "database",
         title: "DB와 마이그레이션",
         icon: "swatch",
+        skills: ["backend-engineering/references/database.md"],
         summary:
           "버전 마이그레이션으로 스키마를 바꾸고 생성 쿼리 코드와 검증·복구 절차를 지키는 기준",
         sections: [

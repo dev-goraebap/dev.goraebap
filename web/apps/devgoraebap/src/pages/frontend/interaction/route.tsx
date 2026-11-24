@@ -3,8 +3,8 @@ import type { SystemIconName } from "@goraebap/ui-react/icons";
 import { DETAIL_DOCS } from "@/entities/detail-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/details")({
-  component: DetailsLayout,
+export const Route = createFileRoute("/frontend/interaction")({
+  component: InteractionLayout,
 });
 
 const DETAIL_ICONS: Record<string, SystemIconName> = {
@@ -20,21 +20,21 @@ const DETAIL_ICONS: Record<string, SystemIconName> = {
 
 const DETAIL_GROUPS: DocsNavGroup[] = [
   {
-    title: "Details",
+    title: "Interaction",
     items: [
-      { label: "개요", href: "/frontend/details", icon: "overview" },
+      { label: "개요", href: "/frontend/interaction", icon: "overview" },
       ...DETAIL_DOCS.map((item) => ({
         label: item.title,
-        href: `/frontend/details/${item.slug}`,
+        href: `/frontend/interaction/${item.slug}`,
         icon: DETAIL_ICONS[item.slug],
       })),
     ],
   },
 ];
 
-function DetailsLayout() {
+function InteractionLayout() {
   return (
-    <DocsShell label="Details 탐색" groups={DETAIL_GROUPS}>
+    <DocsShell label="Interaction 탐색" groups={DETAIL_GROUPS}>
       <Outlet />
     </DocsShell>
   );

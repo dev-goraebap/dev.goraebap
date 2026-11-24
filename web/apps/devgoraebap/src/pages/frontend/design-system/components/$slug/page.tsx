@@ -22,7 +22,7 @@ import {
 import { annotateGlossary } from "@/shared/lib/glossary";
 import { AdapterPreviewStage, PageState } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/_library/components/$slug/")({
+export const Route = createFileRoute("/frontend/design-system/components/$slug/")({
   component: ComponentDetailPage,
 });
 
@@ -49,7 +49,7 @@ function ComponentDetailPage() {
         title="컴포넌트를 찾을 수 없습니다"
         action={
           <Link
-            to="/frontend/components"
+            to="/frontend/design-system/components"
             className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             컴포넌트 목록으로 돌아가기
@@ -120,7 +120,7 @@ function ComponentDetailPage() {
         >
           {prev ? (
             <Link
-              to="/frontend/components/$slug"
+              to="/frontend/design-system/components/$slug"
               params={{ slug: prev.slug }}
               className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
             >
@@ -132,7 +132,7 @@ function ComponentDetailPage() {
           )}
           {next ? (
             <Link
-              to="/frontend/components/$slug"
+              to="/frontend/design-system/components/$slug"
               params={{ slug: next.slug }}
               className="text-muted-foreground hover:text-foreground inline-flex items-center gap-2 transition-colors"
             >

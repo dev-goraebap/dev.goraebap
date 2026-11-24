@@ -2,7 +2,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { Separator } from "@goraebap/ui-react/components/separator";
 
-export const Route = createFileRoute("/frontend/_library/overview/")({
+export const Route = createFileRoute("/frontend/design-system/overview/")({
   component: OverviewPage,
 });
 
@@ -22,35 +22,35 @@ const LAYER_ROLES = [
     package: "@goraebap/design-system/styles",
     owns: "5가지 색상 테마(Neutral·Editorial·Ocean·Forest·Terracotta), 면 위계, 반경, 폰트",
     boundary: "컴포넌트 모양이나 배치를 직접 정의하지 않습니다.",
-    to: "/frontend/foundations/tokens" as const,
+    to: "/frontend/design-system/foundations/tokens" as const,
   },
   {
     name: "스타일 레시피",
     package: "@goraebap/design-system/recipes/*",
     owns: "tailwind-variants 기반 클래스 문자열, variant·size·shape 규칙",
     boundary: "프레임워크 런타임에 의존하지 않습니다.",
-    to: "/frontend/foundations/recipes" as const,
+    to: "/frontend/design-system/foundations/recipes" as const,
   },
   {
     name: "어댑터 컴포넌트",
     package: "@goraebap/ui-react · Spartan 예시",
     owns: "키보드 탐색, 포커스 관리, 오버레이, 아이콘 어댑터(Solar·Lucide)",
     boundary: "색상과 여백 규칙을 새로 만들지 않고 레시피를 그대로 입힙니다.",
-    to: "/frontend/components" as const,
+    to: "/frontend/design-system/components" as const,
   },
   {
     name: "레이아웃",
     package: "앱 외곽 · 메인 영역",
     owns: "워크스페이스·문서·단일 페이지 골격과 목록·상세·설정·폼 배치",
     boundary: "개별 컴포넌트 내부 스타일을 덮어쓰지 않습니다.",
-    to: "/frontend/layouts" as const,
+    to: "/frontend/design-system/layouts" as const,
   },
   {
-    name: "Details",
+    name: "Interaction",
     package: "스크롤 · 전환 · 폰트 · 적응형 UI",
     owns: "화면 흔들림 방지, 지연 프로그레스바, View Transition, 모바일 전환 기준",
     boundary: "정답을 강제하기보다 프로젝트를 만들며 꾸준히 챙기는 마감 기준입니다.",
-    to: "/frontend/details" as const,
+    to: "/frontend/interaction" as const,
   },
 ];
 

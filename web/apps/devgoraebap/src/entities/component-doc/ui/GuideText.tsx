@@ -26,7 +26,7 @@ export function GuideText({ at, text }: { at: string; text: string }) {
       return (
         <Link
           key={index}
-          to="/frontend/components/$slug"
+          to="/frontend/design-system/components/$slug"
           params={{ slug: segment.id }}
           className="text-foreground decoration-muted-foreground/70 hover:decoration-foreground font-medium underline underline-offset-4 transition-colors"
         >

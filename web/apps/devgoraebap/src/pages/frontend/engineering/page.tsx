@@ -1,6 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DocArticle, ENGINEERING_STORIES } from "@/entities/webapp-doc";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/frontend/engineering/")({
-  component: () => <DocArticle doc={ENGINEERING_STORIES.frontend} />,
+  beforeLoad: () => {
+    throw redirect({
+      to: "/frontend/engineering/$slug",
+      params: { slug: "overview" },
+      replace: true,
+    });
+  },
 });

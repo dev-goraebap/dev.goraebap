@@ -22,7 +22,7 @@ import { toHexColor } from "@/shared/lib/css-color";
 import { useDesignConfig } from "@/shared/lib/design-config";
 import { CopyCodeBlock } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/_library/foundations/tokens/")({
+export const Route = createFileRoute("/frontend/design-system/foundations/tokens/")({
   component: DesignTokensPage,
 });
 

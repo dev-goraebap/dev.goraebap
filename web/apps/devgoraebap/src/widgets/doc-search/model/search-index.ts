@@ -1,7 +1,11 @@
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { DETAIL_DOCS } from "@/entities/detail-doc";
 import { LAYOUT_DOCS } from "@/entities/layout-doc";
-import { BACKEND_ENGINEERING_DOCS, ENGINEERING_STORIES, WEBAPP_DOCS } from "@/entities/webapp-doc";
+import {
+  BACKEND_ENGINEERING_DOCS,
+  FRONTEND_ENGINEERING_DOCS,
+  WEBAPP_DOCS,
+} from "@/entities/webapp-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
@@ -11,7 +15,7 @@ export const DOC_GROUPS = [
   "파운데이션",
   "컴포넌트",
   "레이아웃",
-  "Details",
+  "Interaction",
   "Agents",
   "용어집",
 ] as const;
@@ -27,7 +31,12 @@ export interface DocEntry {
 }
 
 const MAX_RESULTS = 40;
-const SUGGESTED_GROUPS: DocEntry["group"][] = ["디자인 시스템", "파운데이션", "Details", "Agents"];
+const SUGGESTED_GROUPS: DocEntry["group"][] = [
+  "디자인 시스템",
+  "파운데이션",
+  "Interaction",
+  "Agents",
+];
 
 const page = (
   group: DocEntry["group"],
@@ -59,20 +68,25 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.summary,
     keywords: guideKeywords(doc),
   })),
-  page("디자인 시스템", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
-  page("디자인 시스템", "패키지 연결", "/frontend/packages", "패키지, 스타일, 색상 테마 연결"),
-  {
-    id: "engineering:frontend",
-    group: "Engineering",
-    title: "프론트엔드 개발 이야기",
-    href: "/frontend/engineering",
-    description: ENGINEERING_STORIES.frontend.summary,
-    keywords: guideKeywords(ENGINEERING_STORIES.frontend),
-  },
+  page("디자인 시스템", "개요", "/frontend/design-system/overview", "디자인 시스템의 구조와 쓰임"),
+  page(
+    "디자인 시스템",
+    "패키지 연결",
+    "/frontend/design-system/packages",
+    "패키지, 스타일, 색상 테마 연결",
+  ),
+  ...FRONTEND_ENGINEERING_DOCS.map((doc) => ({
+    id: `frontend:${doc.slug}`,
+    group: "Engineering" as const,
+    title: `프론트엔드 ${doc.title}`,
+    href: `/frontend/engineering/${doc.slug}`,
+    description: doc.summary,
+    keywords: guideKeywords(doc),
+  })),
   ...BACKEND_ENGINEERING_DOCS.map((doc) => ({
     id: `backend:${doc.slug}`,
     group: "Engineering" as const,
-    title: doc.slug === "story" ? "백엔드 개발 이야기" : `백엔드 ${doc.title}`,
+    title: `백엔드 ${doc.title}`,
     href: `/backend/engineering/${doc.slug}`,
     description: doc.summary,
     keywords: guideKeywords(doc),
@@ -80,43 +94,53 @@ const DOC_ENTRIES: DocEntry[] = [
   page(
     "파운데이션",
     "디자인 토큰",
-    "/frontend/foundations/tokens",
+    "/frontend/design-system/foundations/tokens",
     "색상 테마, 라이트와 다크, 반경, 타이포그래피",
   ),
-  page("파운데이션", "스타일 레시피", "/frontend/foundations/recipes", "Style Recipe와 변형"),
-  page("컴포넌트", "컴포넌트 개요", "/frontend/components", "전체 컴포넌트 목록"),
+  page(
+    "파운데이션",
+    "스타일 레시피",
+    "/frontend/design-system/foundations/recipes",
+    "Style Recipe와 변형",
+  ),
+  page("컴포넌트", "컴포넌트 개요", "/frontend/design-system/components", "전체 컴포넌트 목록"),
   ...COMPONENT_DOCS.map((doc) => ({
     id: `component:${doc.slug}`,
     group: "컴포넌트" as const,
     title: doc.name,
-    href: `/frontend/components/${doc.slug}`,
+    href: `/frontend/design-system/components/${doc.slug}`,
     description: stripGlossaryMarkup(doc.summary),
     keywords: `${doc.slug} ${doc.category} ${stripGlossaryMarkup(doc.summary)}`,
   })),
-  page("레이아웃", "레이아웃 개요", "/frontend/layouts", "앱 외곽과 메인 영역 레이아웃"),
+  page(
+    "레이아웃",
+    "레이아웃 개요",
+    "/frontend/design-system/layouts",
+    "앱 외곽과 메인 영역 레이아웃",
+  ),
   ...LAYOUT_DOCS.map((doc) => ({
     id: `layout:${doc.id}`,
     group: "레이아웃" as const,
     title: doc.name,
-    href: `/frontend/layouts/${doc.id}`,
+    href: `/frontend/design-system/layouts/${doc.id}`,
     description: doc.summary,
     keywords: `${doc.id} ${doc.summary}`,
   })),
-  page("Details", "Details 개요", "/frontend/details", "화면 완성도를 높이는 기준"),
+  page("Interaction", "Interaction 개요", "/frontend/interaction", "화면 완성도를 높이는 기준"),
   ...DETAIL_DOCS.flatMap((doc) => [
     {
       id: `detail:${doc.slug}`,
-      group: "Details" as const,
+      group: "Interaction" as const,
       title: doc.title,
-      href: `/frontend/details/${doc.slug}`,
+      href: `/frontend/interaction/${doc.slug}`,
       description: doc.summary,
       keywords: `${doc.slug} ${doc.summary} ${doc.problem ?? ""} ${doc.guidance ?? ""}`,
     },
     ...(doc.sections ?? []).map((section) => ({
       id: `detail:${doc.slug}:${section.id}`,
-      group: "Details" as const,
+      group: "Interaction" as const,
       title: section.title,
-      href: `/frontend/details/${doc.slug}`,
+      href: `/frontend/interaction/${doc.slug}`,
       hash: section.id,
       description: doc.title,
       keywords: `${doc.title} ${section.problem} ${section.guidance}`,

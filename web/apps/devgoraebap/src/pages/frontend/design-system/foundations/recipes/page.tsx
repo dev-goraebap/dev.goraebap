@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import buttonRecipeSource from "@goraebap/design-system/recipes/button?raw";
 import { CopyCodeBlock } from "@/shared/ui";
 
-export const Route = createFileRoute("/frontend/_library/foundations/recipes/")({
+export const Route = createFileRoute("/frontend/design-system/foundations/recipes/")({
   component: DocsRecipesPage,
 });
 

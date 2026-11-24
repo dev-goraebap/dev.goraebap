@@ -114,7 +114,7 @@ function GlossaryPage() {
                           {entry.components.map((slug) => (
                             <Link
                               key={slug}
-                              to="/frontend/components/$slug"
+                              to="/frontend/design-system/components/$slug"
                               params={{ slug }}
                               className="border-border bg-background text-muted-foreground hover:text-foreground hover:border-foreground/30 rounded-full border px-2 py-0.5 text-[0.6875rem] font-medium transition-colors"
                             >
