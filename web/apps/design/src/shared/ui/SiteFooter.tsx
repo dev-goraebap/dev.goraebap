@@ -1,13 +1,21 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { Wordmark } from "./Wordmark";
 
-const FOOTER_LINKS = [
+const FRONTEND_LINKS = [
   { label: "Design System", to: "/frontend/overview" as const },
   { label: "Details", to: "/frontend/details" as const },
   { label: "Agent", to: "/frontend/agent" as const },
 ];
 
+const WORKSPACE_LINKS = [
+  { label: "Playbook", to: "/playbook" as const },
+  { label: "Frontend", to: "/frontend/overview" as const },
+];
+
 export function SiteFooter({ isContained = true }: { isContained?: boolean }) {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const links = pathname.startsWith("/frontend") ? FRONTEND_LINKS : WORKSPACE_LINKS;
+
   return (
     <footer className="border-border/80 border-t">
       <div
@@ -17,7 +25,7 @@ export function SiteFooter({ isContained = true }: { isContained?: boolean }) {
       >
         <Wordmark className="text-foreground h-4.5 w-auto self-start sm:self-auto" />
         <div className="flex flex-wrap items-center gap-4">
-          {FOOTER_LINKS.map((item) => (
+          {links.map((item) => (
             <Link key={item.to} to={item.to} className="hover:text-foreground transition-colors">
               {item.label}
             </Link>

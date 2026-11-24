@@ -1,6 +1,6 @@
 import { Fragment } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui-react/components/button";
+import { buttonVariants } from "@goraebap/ui-react/components/button";
 import { Separator } from "@goraebap/ui-react/components/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 import { getDetailDoc } from "@/entities/detail-doc";
@@ -20,14 +20,12 @@ function DetailPage() {
         kind="not-found"
         title="글을 찾을 수 없습니다"
         action={
-          <Button
-            variant="outline"
-            size="sm"
-            nativeButton={false}
-            render={<Link to="/frontend/details" />}
+          <Link
+            to="/frontend/details"
+            className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             Details 목록으로 돌아가기
-          </Button>
+          </Link>
         }
       />
     );

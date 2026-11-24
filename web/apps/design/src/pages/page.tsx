@@ -6,6 +6,11 @@ export const Route = createFileRoute("/")({
   component: WorkshopPage,
 });
 
+const WORKSPACE_LINKS = [
+  { label: "Playbook", to: "/playbook" },
+  { label: "Frontend", to: "/frontend/overview" },
+] as const;
+
 function WorkshopPage() {
   return (
     <main className="bg-background text-foreground relative flex min-h-dvh items-center justify-center overflow-hidden px-6">
@@ -23,18 +28,21 @@ function WorkshopPage() {
         </p>
         <nav
           aria-label="워크스페이스"
-          className="workshop-reveal mt-8 flex items-center gap-6 text-sm [animation-delay:240ms]"
+          className="workshop-reveal mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm [animation-delay:240ms]"
         >
-          <Link
-            to="/frontend/overview"
-            className="group decoration-foreground/30 hover:decoration-foreground inline-flex items-center gap-1.5 font-medium underline underline-offset-6 transition-colors"
-          >
-            Frontend
-            <SystemIcon
-              name="arrowRight"
-              className="size-3.5 transition-transform group-hover:translate-x-0.5"
-            />
-          </Link>
+          {WORKSPACE_LINKS.map((workspace) => (
+            <Link
+              key={workspace.to}
+              to={workspace.to}
+              className="group decoration-foreground/30 hover:decoration-foreground inline-flex items-center gap-1.5 font-medium underline underline-offset-6 transition-colors"
+            >
+              {workspace.label}
+              <SystemIcon
+                name="arrowRight"
+                className="size-3.5 transition-transform group-hover:translate-x-0.5"
+              />
+            </Link>
+          ))}
           <span aria-disabled="true" className="text-muted-foreground/70 cursor-not-allowed">
             Backend <span className="text-xs">준비 중</span>
           </span>

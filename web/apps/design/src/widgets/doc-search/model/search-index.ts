@@ -1,9 +1,11 @@
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { DETAIL_DOCS } from "@/entities/detail-doc";
 import { LAYOUT_DOCS } from "@/entities/layout-doc";
+import { PLAYBOOK_DOCS } from "@/entities/playbook-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
+  "Playbook",
   "디자인 시스템",
   "파운데이션",
   "컴포넌트",
@@ -34,6 +36,14 @@ const page = (
 ): DocEntry => ({ id: href, group, title, href, description, keywords: description });
 
 const DOC_ENTRIES: DocEntry[] = [
+  ...PLAYBOOK_DOCS.map((doc) => ({
+    id: `playbook:${doc.slug}`,
+    group: "Playbook" as const,
+    title: doc.title,
+    href: `/playbook/${doc.slug}`,
+    description: doc.summary,
+    keywords: `${doc.slug} ${doc.group} ${doc.summary} ${doc.topics.join(" ")}`,
+  })),
   page("디자인 시스템", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
   page(
     "파운데이션",

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui-react/components/button";
+import { buttonVariants } from "@goraebap/ui-react/components/button";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import {
   AccessibilitySection,
@@ -48,14 +48,12 @@ function ComponentDetailPage() {
         kind="not-found"
         title="컴포넌트를 찾을 수 없습니다"
         action={
-          <Button
-            variant="outline"
-            size="sm"
-            nativeButton={false}
-            render={<Link to="/frontend/components" />}
+          <Link
+            to="/frontend/components"
+            className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             컴포넌트 목록으로 돌아가기
-          </Button>
+          </Link>
         }
       />
     );

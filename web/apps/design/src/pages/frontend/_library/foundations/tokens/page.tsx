@@ -16,9 +16,9 @@ import {
   groupColorTokens,
   resolveTokens,
   substituteVars,
-  toHexColor,
   type TokenMode,
 } from "@/entities/design-token";
+import { toHexColor } from "@/shared/lib/css-color";
 import { useDesignConfig } from "@/shared/lib/design-config";
 import { CopyCodeBlock } from "@/shared/ui";
 

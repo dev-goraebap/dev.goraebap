@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui-react/components/button";
+import { Button, buttonVariants } from "@goraebap/ui-react/components/button";
 import { getLayoutDoc, type AppShellVariant } from "@/entities/layout-doc";
 import { CopyCodeBlock, ResizableLayoutStage, PageState } from "@/shared/ui";
 
@@ -98,14 +98,12 @@ function LayoutDetailPage() {
         kind="not-found"
         title="레이아웃을 찾을 수 없습니다"
         action={
-          <Button
-            variant="outline"
-            size="sm"
-            nativeButton={false}
-            render={<Link to="/frontend/layouts" />}
+          <Link
+            to="/frontend/layouts"
+            className={buttonVariants({ variant: "outline", size: "sm" })}
           >
             레이아웃 목록으로 돌아가기
-          </Button>
+          </Link>
         }
       />
     );

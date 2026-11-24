@@ -7,6 +7,7 @@ export { DesignSettings } from "./DesignSettings";
 export { DocsShell, type DocsNavGroup } from "./DocsShell";
 export { GlossaryTerm } from "./GlossaryTerm";
 export { LineFieldCanvas } from "./LineFieldCanvas";
+export { MermaidDiagram } from "./MermaidDiagram";
 export { PageState } from "./page-state/PageState";
 export { ResizableLayoutStage } from "./ResizableLayoutStage";
 export { SiteFooter } from "./SiteFooter";

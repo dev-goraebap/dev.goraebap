@@ -1,5 +1,5 @@
 import { Link, createRouter } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui-react/components/button";
+import { Button, buttonVariants } from "@goraebap/ui-react/components/button";
 import { PageState } from "@/shared/ui";
 import { routeTree } from "./routeTree.gen";
 
@@ -12,9 +12,9 @@ function RouteNotFound() {
       title="페이지를 찾을 수 없습니다"
       description="주소가 바뀌었거나 없는 문서입니다."
       action={
-        <Button variant="outline" size="sm" nativeButton={false} render={<Link to="/" />}>
+        <Link to="/" className={buttonVariants({ variant: "outline", size: "sm" })}>
           처음으로
-        </Button>
+        </Link>
       }
     />
   );

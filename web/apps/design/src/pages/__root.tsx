@@ -85,10 +85,12 @@ function RootLayout() {
       ? DESIGN_SYSTEM_PATHS.some((path) => pathname.startsWith(`/frontend/${path}`))
       : pathname.startsWith(to);
 
+  const isFrontend = pathname.startsWith("/frontend");
   const hasDocsShell =
-    pathname.startsWith("/frontend") &&
-    !pathname.startsWith("/frontend/glossary") &&
-    !pathname.startsWith("/frontend/agent");
+    pathname.startsWith("/playbook") ||
+    (isFrontend &&
+      !pathname.startsWith("/frontend/glossary") &&
+      !pathname.startsWith("/frontend/agent"));
 
   return (
     <DesignConfigProvider>
@@ -100,35 +102,37 @@ function RootLayout() {
             <WorkspaceSwitcher />
 
             {/* Center Primary Nav */}
-            <nav aria-label="주요 메뉴" className="hidden items-center gap-1 md:flex">
-              {TOP_NAV.map((item) =>
-                item.to ? (
-                  <Link
-                    key={item.label}
-                    to={item.to}
-                    aria-current={isNavActive(item.to) ? "page" : undefined}
-                    className={
-                      isNavActive(item.to)
-                        ? "bg-secondary text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
-                        : "text-muted-foreground hover:bg-accent/70 hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors"
-                    }
-                  >
-                    <SystemIcon name={item.icon} className="size-4" />
-                    <span>{item.label}</span>
-                  </Link>
-                ) : (
-                  <span
-                    key={item.label}
-                    aria-disabled="true"
-                    title="준비 중"
-                    className="text-muted-foreground/60 inline-flex cursor-not-allowed items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm"
-                  >
-                    <SystemIcon name={item.icon} className="size-4" />
-                    <span>{item.label}</span>
-                  </span>
-                ),
-              )}
-            </nav>
+            {isFrontend && (
+              <nav aria-label="주요 메뉴" className="hidden items-center gap-1 md:flex">
+                {TOP_NAV.map((item) =>
+                  item.to ? (
+                    <Link
+                      key={item.label}
+                      to={item.to}
+                      aria-current={isNavActive(item.to) ? "page" : undefined}
+                      className={
+                        isNavActive(item.to)
+                          ? "bg-secondary text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
+                          : "text-muted-foreground hover:bg-accent/70 hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors"
+                      }
+                    >
+                      <SystemIcon name={item.icon} className="size-4" />
+                      <span>{item.label}</span>
+                    </Link>
+                  ) : (
+                    <span
+                      key={item.label}
+                      aria-disabled="true"
+                      title="준비 중"
+                      className="text-muted-foreground/60 inline-flex cursor-not-allowed items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm"
+                    >
+                      <SystemIcon name={item.icon} className="size-4" />
+                      <span>{item.label}</span>
+                    </span>
+                  ),
+                )}
+              </nav>
+            )}
 
             {/* Right Utilities */}
             <div className="flex items-center gap-2.5">
@@ -138,37 +142,39 @@ function RootLayout() {
           </div>
 
           {/* Mobile Sub-nav */}
-          <nav
-            aria-label="모바일 주요 메뉴"
-            className="border-border/60 flex items-center gap-1 overflow-x-auto border-t px-4 py-1.5 md:hidden"
-          >
-            {TOP_NAV.map((item) =>
-              item.to ? (
-                <Link
-                  key={item.label}
-                  to={item.to}
-                  aria-current={isNavActive(item.to) ? "page" : undefined}
-                  className={
-                    isNavActive(item.to)
-                      ? "bg-secondary text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
-                      : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
-                  }
-                >
-                  <SystemIcon name={item.icon} className="size-3.5" />
-                  <span>{item.label}</span>
-                </Link>
-              ) : (
-                <span
-                  key={item.label}
-                  aria-disabled="true"
-                  className="text-muted-foreground/60 inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
-                >
-                  <SystemIcon name={item.icon} className="size-3.5" />
-                  <span>{item.label}</span>
-                </span>
-              ),
-            )}
-          </nav>
+          {isFrontend && (
+            <nav
+              aria-label="모바일 주요 메뉴"
+              className="border-border/60 flex items-center gap-1 overflow-x-auto border-t px-4 py-1.5 md:hidden"
+            >
+              {TOP_NAV.map((item) =>
+                item.to ? (
+                  <Link
+                    key={item.label}
+                    to={item.to}
+                    aria-current={isNavActive(item.to) ? "page" : undefined}
+                    className={
+                      isNavActive(item.to)
+                        ? "bg-secondary text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+                        : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
+                    }
+                  >
+                    <SystemIcon name={item.icon} className="size-3.5" />
+                    <span>{item.label}</span>
+                  </Link>
+                ) : (
+                  <span
+                    key={item.label}
+                    aria-disabled="true"
+                    className="text-muted-foreground/60 inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
+                  >
+                    <SystemIcon name={item.icon} className="size-3.5" />
+                    <span>{item.label}</span>
+                  </span>
+                ),
+              )}
+            </nav>
+          )}
         </header>
 
         <div className="flex-1">
