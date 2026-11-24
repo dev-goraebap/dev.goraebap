@@ -12,9 +12,8 @@ function DocsRecipesPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-bold tracking-tight">Style Recipes</h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          스타일 레시피는 컴포넌트의 외형과 변형(variant) 규칙을 프레임워크와 분리해 정의한 스타일
-          계층입니다. <code>tailwind-variants</code>와 Tailwind 클래스를 조합한 TypeScript 함수로
-          구현하며, React와 Angular 환경에서 같은 규칙을 공유합니다.
+          <code>tailwind-variants</code>와 Tailwind 클래스를 조합해 React와 Angular에서 함께 쓰는
+          컴포넌트 외형과 변형 규칙
         </p>
       </header>
 

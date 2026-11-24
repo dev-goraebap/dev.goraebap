@@ -35,7 +35,7 @@ function PackagesPage() {
         <h1 className="text-3xl font-bold tracking-tight">패키지 연결</h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
           프로젝트에 @goraebap/design-system과 @goraebap/ui-react를 연결해 스타일, 테마, 컴포넌트를
-          적용합니다.
+          적용하는 방법
         </p>
       </header>
 

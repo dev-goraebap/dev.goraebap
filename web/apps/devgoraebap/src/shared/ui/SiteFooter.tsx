@@ -7,8 +7,9 @@ const FRONTEND_LINKS = [
 ];
 
 const WORKSPACE_LINKS = [
-  { label: "SDLC", to: "/sdlc" as const },
+  { label: "Webapp", to: "/webapp" as const },
   { label: "Frontend", to: "/frontend/overview" as const },
+  { label: "Backend", to: "/backend" as const },
 ];
 
 export function SiteFooter({ isContained = true }: { isContained?: boolean }) {

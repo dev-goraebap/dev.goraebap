@@ -7,16 +7,22 @@ import { Wordmark } from "./Wordmark";
 
 const WORKSPACES = [
   {
-    id: "sdlc",
-    label: "SDLC",
-    description: "요구사항부터 배포와 운영까지",
-    to: "/sdlc",
+    id: "webapp",
+    label: "Webapp",
+    description: "프로젝트 구성부터 AI Native SDLC까지",
+    to: "/webapp",
   },
   {
     id: "frontend",
     label: "Frontend",
     description: "디자인 시스템과 프로젝트 구성",
     to: "/frontend/overview",
+  },
+  {
+    id: "backend",
+    label: "Backend",
+    description: "API, 데이터, 서버 구조",
+    to: "/backend",
   },
 ] as const;
 
@@ -71,18 +77,6 @@ export function WorkspaceSwitcher() {
               )}
             </Link>
           ))}
-          <div
-            aria-disabled="true"
-            className="flex items-center justify-between gap-3 rounded-md px-2.5 py-2 opacity-60"
-          >
-            <span className="min-w-0">
-              <span className="block text-sm font-medium">Backend</span>
-              <span className="text-muted-foreground block text-xs">API, 데이터, 서버 구조</span>
-            </span>
-            <span className="text-muted-foreground shrink-0 text-[0.6875rem] font-medium">
-              준비 중
-            </span>
-          </div>
         </PopoverContent>
       </Popover>
     </div>

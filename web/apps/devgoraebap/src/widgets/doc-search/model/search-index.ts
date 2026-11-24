@@ -1,11 +1,12 @@
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { DETAIL_DOCS } from "@/entities/detail-doc";
 import { LAYOUT_DOCS } from "@/entities/layout-doc";
-import { SDLC_DOCS } from "@/entities/sdlc-doc";
+import { BACKEND_ENGINEERING_DOCS, ENGINEERING_STORIES, WEBAPP_DOCS } from "@/entities/webapp-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
-  "SDLC",
+  "Webapp",
+  "Engineering",
   "디자인 시스템",
   "파운데이션",
   "컴포넌트",
@@ -35,27 +36,47 @@ const page = (
   description: string,
 ): DocEntry => ({ id: href, group, title, href, description, keywords: description });
 
+// 본문까지 검색되도록 섹션의 글을 모두 키워드에 넣는다.
+const guideKeywords = (doc: (typeof WEBAPP_DOCS)[number]) =>
+  `${doc.slug} ${doc.group} ${doc.summary} ${doc.sections
+    .map((section) =>
+      [
+        section.title ?? "",
+        ...section.paragraphs,
+        ...(section.bullets?.items ?? []),
+        section.callout?.title ?? "",
+        section.callout?.body ?? "",
+      ].join(" "),
+    )
+    .join(" ")}`;
+
 const DOC_ENTRIES: DocEntry[] = [
-  ...SDLC_DOCS.map((doc) => ({
-    id: `sdlc:${doc.slug}`,
-    group: "SDLC" as const,
+  ...WEBAPP_DOCS.map((doc) => ({
+    id: `webapp:${doc.slug}`,
+    group: "Webapp" as const,
     title: doc.title,
-    href: `/sdlc/${doc.slug}`,
+    href: `/webapp/${doc.slug}`,
     description: doc.summary,
-    keywords: `${doc.slug} ${doc.group} ${doc.summary} ${doc.sections
-      .map((section) =>
-        [
-          section.title ?? "",
-          ...section.paragraphs,
-          ...(section.bullets?.items ?? []),
-          section.callout?.title ?? "",
-          section.callout?.body ?? "",
-        ].join(" "),
-      )
-      .join(" ")}`,
+    keywords: guideKeywords(doc),
   })),
   page("디자인 시스템", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
   page("디자인 시스템", "패키지 연결", "/frontend/packages", "패키지, 스타일, 색상 테마 연결"),
+  {
+    id: "engineering:frontend",
+    group: "Engineering",
+    title: "프론트엔드 개발 이야기",
+    href: "/frontend/engineering",
+    description: ENGINEERING_STORIES.frontend.summary,
+    keywords: guideKeywords(ENGINEERING_STORIES.frontend),
+  },
+  ...BACKEND_ENGINEERING_DOCS.map((doc) => ({
+    id: `backend:${doc.slug}`,
+    group: "Engineering" as const,
+    title: doc.slug === "story" ? "백엔드 개발 이야기" : `백엔드 ${doc.title}`,
+    href: `/backend/engineering/${doc.slug}`,
+    description: doc.summary,
+    keywords: guideKeywords(doc),
+  })),
   page(
     "파운데이션",
     "디자인 토큰",
@@ -101,7 +122,7 @@ const DOC_ENTRIES: DocEntry[] = [
       keywords: `${doc.title} ${section.problem} ${section.guidance}`,
     })),
   ]),
-  page("Agents", "Agents", "/sdlc/agents", "webapp@dev-goraebap 플러그인 설치와 범위"),
+  page("Agents", "Agents", "/webapp/agents", "webapp@dev-goraebap 플러그인 설치와 범위"),
   page("용어집", "용어집", "/frontend/glossary", "문서에 쓰는 용어 모음"),
   ...Object.entries(GLOSSARY).map(([key, entry]) => ({
     id: `glossary:${key}`,

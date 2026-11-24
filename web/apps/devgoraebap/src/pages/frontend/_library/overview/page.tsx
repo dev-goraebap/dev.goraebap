@@ -133,8 +133,7 @@ function OverviewPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-bold tracking-tight">디자인 시스템</h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          디자인 시스템은 제품의 화면을 일관되게 만들기 위해 토큰, 컴포넌트, 사용 원칙과 문서를 함께
-          관리하는 체계입니다.
+          제품의 화면을 일관되게 만들기 위해 토큰, 컴포넌트, 사용 원칙과 문서를 함께 관리하는 체계
         </p>
       </header>
 

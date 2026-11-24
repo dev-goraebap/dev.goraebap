@@ -7,8 +7,9 @@ export const Route = createFileRoute("/")({
 });
 
 const WORKSPACE_LINKS = [
-  { label: "SDLC", to: "/sdlc" },
+  { label: "Webapp", to: "/webapp" },
   { label: "Frontend", to: "/frontend/overview" },
+  { label: "Backend", to: "/backend" },
 ] as const;
 
 function WorkshopPage() {
@@ -43,9 +44,6 @@ function WorkshopPage() {
               />
             </Link>
           ))}
-          <span aria-disabled="true" className="text-muted-foreground/70 cursor-not-allowed">
-            Backend <span className="text-xs">준비 중</span>
-          </span>
         </nav>
       </div>
     </main>

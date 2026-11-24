@@ -79,8 +79,7 @@ function DesignTokensPage() {
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-bold tracking-tight">디자인 토큰</h1>
         <p className="text-muted-foreground text-lg leading-relaxed">
-          색상 테마, 반경, 타이포그래피의 시각 기준을 CSS 변수로 정의해 라이트·다크 모드와 영역별
-          테마 전환에 씁니다.
+          라이트·다크 모드와 영역별 테마 전환에 쓰는 색상, 반경, 타이포그래피의 CSS 변수 기준
         </p>
       </header>
 

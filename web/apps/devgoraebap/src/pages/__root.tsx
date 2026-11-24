@@ -48,11 +48,21 @@ export const Route = createRootRoute({
       throw redirect({ href: "/frontend/packages", replace: true });
     }
     if (/^\/frontend\/agent\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/sdlc/agents", replace: true });
+      throw redirect({ href: "/webapp/agents", replace: true });
     }
-    const playbook = location.pathname.match(/^\/playbook(\/.*)?$/);
-    if (playbook) {
-      throw redirect({ href: `/sdlc${playbook[1] ?? ""}`, replace: true });
+    // playbook과 sdlc 시절 주소. 없어진 문서는 webapp 처음으로 보낸다.
+    const legacy = location.pathname.match(/^\/(playbook|sdlc)(\/[^/]+)?\/?$/);
+    if (legacy) {
+      const slug = legacy[2]?.slice(1);
+      const kept = ["repository", "source-control", "deployment", "agents"];
+      const moved: Record<string, string> = {
+        frontend: "/frontend/engineering",
+        backend: "/backend/engineering/story",
+      };
+      const href = !slug
+        ? "/webapp"
+        : (moved[slug] ?? (kept.includes(slug) ? `/webapp/${slug}` : "/webapp/repository"));
+      throw redirect({ href, replace: true });
     }
     if (LEGACY_PATHS.test(location.pathname)) {
       throw redirect({ href: `/frontend${location.href}`, replace: true });
@@ -65,20 +75,22 @@ const DESIGN_SYSTEM_PATHS = ["components", "overview", "packages", "foundations"
 
 type NavItem = {
   label: string;
-  to?: "/frontend/overview" | "/frontend/details" | "/sdlc" | "/sdlc/agents";
+  to?:
+    "/frontend/overview" | "/frontend/engineering" | "/frontend/details" | "/backend/engineering";
   icon: SystemIconName;
 };
 
-const WORKSPACE_NAV: Record<"frontend" | "sdlc", NavItem[]> = {
+const WORKSPACE_NAV: Record<"frontend" | "backend" | "webapp", NavItem[]> = {
   frontend: [
     { label: "Design System", to: "/frontend/overview", icon: "components" },
-    { label: "Engineering", icon: "code" },
+    { label: "Engineering", to: "/frontend/engineering", icon: "code" },
     { label: "Details", to: "/frontend/details", icon: "details" },
   ],
-  sdlc: [
-    { label: "Docs", to: "/sdlc", icon: "book" },
-    { label: "Agents", to: "/sdlc/agents", icon: "rocket" },
+  backend: [
+    { label: "Engineering", to: "/backend/engineering", icon: "code" },
+    { label: "Details", icon: "details" },
   ],
+  webapp: [],
 };
 
 function RootLayout() {
@@ -97,16 +109,20 @@ function RootLayout() {
   const isNavActive = (to: string) =>
     to === "/frontend/overview"
       ? DESIGN_SYSTEM_PATHS.some((path) => pathname.startsWith(`/frontend/${path}`))
-      : to === "/sdlc"
-        ? pathname.startsWith("/sdlc") && !pathname.startsWith("/sdlc/agents")
-        : pathname.startsWith(to);
+      : pathname.startsWith(to);
 
   const isFrontend = pathname.startsWith("/frontend");
-  const isSdlc = pathname.startsWith("/sdlc");
-  const navItems = isFrontend ? WORKSPACE_NAV.frontend : isSdlc ? WORKSPACE_NAV.sdlc : [];
+  const isBackend = pathname.startsWith("/backend");
+  const isWebapp = pathname.startsWith("/webapp");
+  const navItems = isFrontend
+    ? WORKSPACE_NAV.frontend
+    : isBackend
+      ? WORKSPACE_NAV.backend
+      : isWebapp
+        ? WORKSPACE_NAV.webapp
+        : [];
   const hasDocsShell =
-    (isSdlc && !pathname.startsWith("/sdlc/agents")) ||
-    (isFrontend && !pathname.startsWith("/frontend/glossary"));
+    isBackend || isWebapp || (isFrontend && !pathname.startsWith("/frontend/glossary"));
 
   return (
     <DesignConfigProvider>

@@ -41,7 +41,7 @@ function GlossaryPage() {
       <header className="space-y-3">
         <h1 className="text-3xl font-bold tracking-tight">용어집</h1>
         <p className="text-muted-foreground text-lg leading-relaxed break-keep">
-          디자인과 프론트엔드 문서에서 자주 만나는 용어를 한국어로 풀어 설명합니다.
+          디자인과 프론트엔드 문서에서 자주 만나는 용어의 한국어 풀이
         </p>
       </header>
 

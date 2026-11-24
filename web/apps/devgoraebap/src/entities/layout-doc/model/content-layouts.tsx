@@ -26,8 +26,7 @@ export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
     id: "list",
     name: "목록 · 표",
     level: "content",
-    summary:
-      "회원, 주문, 업무처럼 같은 종류의 항목을 찾고 비교하는 화면에 고릅니다. 항목을 고르면서 내용까지 바로 봐야 하면 목록 · 상세를 고릅니다.",
+    summary: "회원, 주문, 업무처럼 같은 종류의 항목을 찾고 비교하는 표 중심 배치",
     getCode: () => `<div class="flex h-full min-h-0 flex-col">
   ${PAGE_HEADER}
   ${TOOLBAR}
@@ -91,8 +90,7 @@ export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
     id: "list-detail",
     name: "목록 · 상세",
     level: "content",
-    summary:
-      "메일함, 이슈, 고객 문의처럼 항목을 차례로 훑으며 내용을 확인하는 화면에 고릅니다. 항목 하나를 오래 읽거나 편집한다면 상세를 별도 페이지로 둡니다.",
+    summary: "메일함, 이슈, 고객 문의처럼 항목을 차례로 훑으며 내용을 바로 확인하는 분할 배치",
     getCode: () => `<div class="flex h-full min-h-0">
   <section class="w-full min-w-0 overflow-y-auto lg:w-80 lg:shrink-0 lg:border-r"><!-- List --></section>
   <main class="hidden min-w-0 flex-1 overflow-y-auto lg:block"><!-- Detail --></main>
@@ -145,8 +143,7 @@ export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
     id: "detail-properties",
     name: "상세 · 속성",
     level: "content",
-    summary:
-      "이슈, 문서, 주문처럼 긴 내용을 읽으면서 상태, 담당자, 날짜를 함께 확인하는 화면에 고릅니다. 속성이 거의 없는 글이라면 단일 페이지를 고릅니다.",
+    summary: "이슈, 문서, 주문처럼 본문을 읽으며 상태·담당자·날짜 속성을 함께 확인하는 배치",
     getCode: () => `<div class="@container h-full overflow-y-auto">
   <div class="flex flex-col gap-4 p-4 @min-[60rem]:flex-row @min-[60rem]:justify-center">
     <aside class="order-1 shrink-0 @min-[60rem]:order-2 @min-[60rem]:w-64"><!-- Properties --></aside>
@@ -199,8 +196,7 @@ export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
     id: "settings",
     name: "설정",
     level: "content",
-    summary:
-      "계정, 워크스페이스처럼 값과 정책을 항목별로 확인하고 바꾸는 화면에 고릅니다. 다룰 항목이 많으면 목록 · 표를 고릅니다.",
+    summary: "계정이나 워크스페이스의 값과 정책을 항목별로 확인하고 바꾸는 설정 배치",
     getCode: () => `<main class="h-full overflow-y-auto px-4 py-10">
   <div class="mx-auto w-full max-w-[45rem] space-y-8">
     <h1><!-- Title --></h1>
@@ -236,8 +232,7 @@ export const CONTENT_LAYOUT_DOCS: LayoutDocSpec[] = [
     id: "form",
     name: "입력 폼",
     level: "content",
-    summary:
-      "생성, 수정, 신청처럼 사용자가 여러 항목을 채워 제출하는 화면에 고릅니다. 짧은 확인이나 두세 칸 입력은 대화상자에서 처리합니다.",
+    summary: "생성, 수정, 신청처럼 사용자가 여러 항목을 채워 제출하는 입력 폼 배치",
     getCode: () => `<main class="h-full overflow-y-auto px-4 py-10">
   <form class="mx-auto w-full max-w-[45rem] space-y-6">
     <h1><!-- Title --></h1>

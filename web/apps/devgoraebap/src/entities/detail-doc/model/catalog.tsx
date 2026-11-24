@@ -54,7 +54,7 @@ export const DETAIL_DOCS: DetailDocSpec[] = [
   {
     slug: "scrollbar",
     title: "스크롤바",
-    summary: "스크롤바 거터, 얇은 커스텀 스크롤바, 부드러운 스크롤 기준을 다룹니다.",
+    summary: "스크롤바 거터, 얇은 커스텀 스크롤바, 부드러운 스크롤 기준",
     sections: [
       {
         id: "scrollbar-gutter",
@@ -127,8 +127,7 @@ if (!prefersReducedMotion) {
   {
     slug: "page-transition",
     title: "페이지 전환과 대기",
-    summary:
-      "새 화면 데이터가 준비될 때까지 이전 화면을 유지하고, 임계 시간을 넘길 때만 상단 프로그레스바를 띄운 뒤 View Transitions API로 부드럽게 전환합니다.",
+    summary: "이전 화면 유지, 임계 시간 초과 시 지연 프로그레스바, View Transitions API 전환 기준",
     problem:
       "링크를 누르자마자 빈 화면이나 스켈레톤으로 넘기면 빠른 응답에서도 화면이 깜빡입니다. 캐시가 있으면 즉시 전환하고, 지연이 길어질 때만 상단에 얇은 프로그레스바를 띄운 뒤 완성된 화면을 View Transition으로 교체하면 끊김 없는 전환을 만들 수 있습니다.",
     guidance:
@@ -208,8 +207,7 @@ export const projectResolver: ResolveFn<Project> = (route) => {
   {
     slug: "initial-load",
     title: "초기 진입과 새로고침",
-    summary:
-      "웹사이트에 처음 진입하거나 새로고침할 때 폰트 흔들림과 불완전한 화면 깜빡임을 막는 마감 기준을 다룹니다.",
+    summary: "처음 진입과 새로고침 시 폰트 흔들림과 화면 깜빡임을 막는 마감 기준",
     sections: [
       {
         id: "font-loading",
@@ -274,7 +272,7 @@ export const projectResolver: ResolveFn<Project> = (route) => {
     slug: "adaptive-ui",
     title: "적응형 UI",
     summary:
-      "화면 폭만 줄이는 반응형을 넘어, 64rem 미만 터치 환경에서 오버레이·목록·입력 방식을 모바일 조작에 맞게 전환하는 기준과 예외를 다룹니다.",
+      "64rem 미만 터치 환경에서 오버레이·목록·입력 방식을 모바일 조작에 맞게 전환하는 기준과 예외",
     sections: [
       {
         id: "adaptive-criteria",
@@ -450,8 +448,7 @@ return (
   {
     slug: "ui-size",
     title: "화면 크기와 rem",
-    summary:
-      "브라우저 확대와 별개로 사이트 안에서 화면 크기를 고를 수 있게 설계할 때, rem을 쓸 곳과 px을 남길 곳을 나누는 기준과 구현 방식을 다룹니다.",
+    summary: "브라우저 확대와 별개로 화면 크기를 고를 수 있게 하는 rem·px 분리 기준과 구현 방식",
     sections: [
       {
         id: "why-setting",
@@ -573,7 +570,7 @@ return (
     slug: "ui-states",
     title: "화면 상태",
     summary:
-      "데이터가 없거나 검색 결과가 없거나 주소가 잘못되었거나 요청이 실패했을 때 보여 주는 Empty State와 Error State의 기준을 다룹니다.",
+      "데이터 부재, 검색 결과 없음, 404, 요청 실패 상황에 대응하는 Empty State와 Error State 기준",
     sections: [
       {
         id: "state-kinds",
@@ -627,8 +624,7 @@ return (
   {
     slug: "loading-feedback",
     title: "로딩과 크기 전환",
-    summary:
-      "모달과 패널에서 입력 디바운스로 요청을 정리하고, 데이터를 기다리는 동안의 로딩 표시와 결과 양에 따른 높이 전환 기준을 다룹니다.",
+    summary: "모달과 패널의 입력 디바운스, 지연 로딩 표시, 결과 양에 따른 높이 전환 기준",
     sections: [
       {
         id: "debounce",
@@ -709,7 +705,7 @@ useEffect(() => {
     slug: "route-masking",
     title: "라우팅 마스크",
     summary:
-      "데스크톱에서는 목록 위 모달로 열면서 상세 URL을 표시하고, 새로고침·공유·모바일에서는 독립 상세 페이지로 전환하는 패턴입니다.",
+      "데스크톱은 목록 위 모달과 상세 URL, 새로고침·공유·모바일은 독립 상세 페이지로 전환하는 패턴",
     problem:
       "목록에서 항목을 볼 때 데스크톱에서는 목록 컨텍스트를 유지한 채 빠르게 훑고 싶지만, 모달만 띄우면 URL 공유와 새로고침이 깨집니다. 라우팅 마스크를 쓰면 데스크톱은 목록 위 모달 + 상세 URL을 유지하고, 모바일이나 직접 URL 진입 시에는 자연스럽게 전체 상세 페이지로 열 수 있습니다.",
     guidance:

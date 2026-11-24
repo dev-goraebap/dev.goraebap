@@ -127,7 +127,7 @@ export const LAYOUT_DOCS: LayoutDocSpec[] = [
     name: "워크스페이스 · 관리자",
     level: "shell",
     summary:
-      "관리자 콘솔이나 프로젝트 관리처럼 로그인 후 여러 메뉴를 오가는 업무 도구에 고르며, 소개 페이지나 결제처럼 한 흐름만 있는 화면에는 맞지 않습니다. 작업 면을 바탕과 구분해 차분하게 보이고 싶으면 Inset을, 표나 목록이 많아 화면을 빠짐없이 쓰고 싶으면 Split을 고릅니다.",
+      "로그인 후 여러 메뉴를 오가는 업무 도구용 골격, 차분한 구분은 Inset·넓은 작업 면은 Split",
     variants: [
       { id: "inset", label: "Inset" },
       { id: "split", label: "Split" },
@@ -145,8 +145,7 @@ export const LAYOUT_DOCS: LayoutDocSpec[] = [
     id: "sidebar-content",
     name: "문서 · 블로그",
     level: "shell",
-    summary:
-      "개발 문서, 가이드, 카테고리가 있는 블로그처럼 같은 형식의 글이 많고 목록에서 다음 글을 찾아가는 사이트에 고릅니다. 반복 작업을 하는 제품이라면 워크스페이스 · 관리자를 고릅니다.",
+    summary: "개발 문서, 가이드, 카테고리 블로그처럼 목록에서 다음 글을 찾아 읽는 사이트용 골격",
     getCode: () => SIDEBAR_CONTENT_CODE,
     renderPreview: () => <SidebarContentPreview />,
     renderThumbnail: () => (
@@ -159,8 +158,7 @@ export const LAYOUT_DOCS: LayoutDocSpec[] = [
     id: "single-column",
     name: "단일 페이지",
     level: "shell",
-    summary:
-      "글 한 편, 약관, 공지, 짧은 안내처럼 한 가지 내용에 집중해 읽게 할 때 고릅니다. 페이지 사이를 자주 오가야 한다면 사이드바가 있는 레이아웃을 고릅니다.",
+    summary: "글 한 편, 약관, 공지, 짧은 안내처럼 한 가지 내용에 집중해 읽는 화면용 골격",
     getCode: () => SINGLE_COLUMN_CODE,
     renderPreview: () => <SingleColumnPreview />,
     renderThumbnail: () => (
@@ -174,7 +172,7 @@ export const LAYOUT_DOCS: LayoutDocSpec[] = [
     name: "랜딩 페이지",
     level: "shell",
     summary:
-      "제품 소개, 디자인 포털 첫 화면처럼 핵심 가치와 기능을 섹션별로 풀어내며 다음 행동으로 이끄는 화면에 고릅니다. 반복 업무 화면이라면 워크스페이스 · 관리자를 고릅니다.",
+      "제품 소개나 첫 화면처럼 핵심 가치와 기능을 섹션별로 풀어내며 다음 행동으로 이끄는 골격",
     getCode: () => LANDING_CODE,
     renderPreview: () => <LandingPreview />,
     renderThumbnail: () => (

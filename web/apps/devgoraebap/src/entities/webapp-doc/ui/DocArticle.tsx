@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
 import {
@@ -11,41 +11,25 @@ import {
   TableRow,
 } from "@goraebap/ui-react/components/table";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { SDLC_DOCS, getSdlcDoc } from "@/entities/sdlc-doc";
-import { MermaidDiagram, PageState } from "@/shared/ui";
+import { MermaidDiagram } from "@/shared/ui";
+import type { GuideDoc } from "../model/catalog";
 
-export const Route = createFileRoute("/sdlc/$slug/")({
-  component: SdlcDocPage,
-});
+interface DocLink {
+  title: string;
+  href: string;
+}
 
-function SdlcDocPage() {
-  const { slug } = Route.useParams();
-  const doc = getSdlcDoc(slug);
-
-  if (!doc) {
-    return (
-      <PageState
-        kind="not-found"
-        title="문서를 찾을 수 없습니다"
-        action={
-          <Link
-            to="/sdlc/$slug"
-            params={{ slug: "overview" }}
-            className={buttonVariants({ variant: "outline", size: "sm" })}
-          >
-            SDLC 개요로 돌아가기
-          </Link>
-        }
-      />
-    );
-  }
-
+export function DocArticle({
+  doc,
+  prevDoc,
+  nextDoc,
+}: {
+  doc: GuideDoc & { group: string };
+  prevDoc?: DocLink;
+  nextDoc?: DocLink;
+}) {
   const sections = doc.sections.filter((section) => section.paragraphs.length > 0);
   const isWritten = sections.length > 0;
-  const docIndex = SDLC_DOCS.findIndex((item) => item.slug === doc.slug);
-  const prevDoc = docIndex > 0 ? SDLC_DOCS[docIndex - 1] : undefined;
-  const nextDoc =
-    docIndex >= 0 && docIndex < SDLC_DOCS.length - 1 ? SDLC_DOCS[docIndex + 1] : undefined;
 
   return (
     <article className="max-w-3xl space-y-8">
@@ -165,6 +149,28 @@ function SdlcDocPage() {
           <p className="text-muted-foreground text-sm">{doc.next.label}</p>
         ))}
 
+      {doc.references && doc.references.length > 0 && (
+        <section className="border-border space-y-4 border-t pt-8">
+          <h2 className="text-xl font-semibold tracking-tight">참고 자료</h2>
+          <ul className="space-y-3">
+            {doc.references.map((reference) => (
+              <li key={reference.href} className="text-sm leading-relaxed">
+                <a
+                  href={reference.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-medium underline underline-offset-4"
+                >
+                  {reference.title}
+                </a>
+                <span className="text-muted-foreground"> · {reference.source}</span>
+                {reference.note && <p className="text-muted-foreground mt-0.5">{reference.note}</p>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
       {(prevDoc || nextDoc) && (
         <nav
           aria-label="이전 및 다음 문서"
@@ -172,8 +178,7 @@ function SdlcDocPage() {
         >
           {prevDoc ? (
             <Link
-              to="/sdlc/$slug"
-              params={{ slug: prevDoc.slug }}
+              to={prevDoc.href}
               className="border-border hover:bg-accent/50 group flex flex-col gap-1 rounded-xl border px-4 py-3 transition-colors"
             >
               <span className="text-muted-foreground flex items-center gap-1 text-xs">
@@ -187,8 +192,7 @@ function SdlcDocPage() {
           )}
           {nextDoc && (
             <Link
-              to="/sdlc/$slug"
-              params={{ slug: nextDoc.slug }}
+              to={nextDoc.href}
               className="border-border hover:bg-accent/50 group flex flex-col items-end gap-1 rounded-xl border px-4 py-3 text-right transition-colors"
             >
               <span className="text-muted-foreground flex items-center gap-1 text-xs">

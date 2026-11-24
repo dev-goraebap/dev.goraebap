@@ -104,7 +104,7 @@ export const COMPONENT_DOCS: ComponentDocSpec[] = [
     slug: "button",
     name: "Button",
     category: "동작과 입력",
-    summary: "동작을 실행하거나 링크로 이동하는 버튼입니다.",
+    summary: "동작을 실행하거나 링크로 이동하는 버튼",
     reactCode: `import { Button } from "@goraebap/ui-react/components/button";
 
 export function Example() {
@@ -213,8 +213,7 @@ export function SizeButtonExample() {
     slug: "input",
     name: "Input",
     category: "동작과 입력",
-    summary:
-      "한 줄 텍스트를 입력하는 칸입니다. invalid 상태로 오류 테두리와 aria-invalid를 함께 표시합니다.",
+    summary: "한 줄 텍스트 입력과 invalid 오류 상태를 함께 표현하는 입력 칸",
     reactCode: `import { Input } from "@goraebap/ui-react/components/input";
 
 export function Example() {
@@ -246,7 +245,7 @@ export function Example() {
     slug: "textarea",
     name: "Textarea",
     category: "동작과 입력",
-    summary: "여러 줄 설명이나 메모를 작성하는 입력 칸입니다.",
+    summary: "여러 줄 설명이나 메모를 작성하는 입력 칸",
     reactCode: `import { Textarea } from "@goraebap/ui-react/components/textarea";
 
 export function Example() {
@@ -268,7 +267,7 @@ export function Example() {
     slug: "switch",
     name: "Switch",
     category: "동작과 입력",
-    summary: "즉시 반영되는 켜짐/꺼짐 설정에 쓰는 토글 스위치입니다.",
+    summary: "즉시 반영되는 켜짐·꺼짐 설정용 토글 스위치",
     reactCode: `import { Switch } from "@goraebap/ui-react/components/switch";
 
 export function Example() {
@@ -302,7 +301,7 @@ export function Example() {
     slug: "checkbox",
     name: "Checkbox",
     category: "동작과 입력",
-    summary: "여러 항목을 고르거나 동의 여부를 확인하는 체크박스입니다.",
+    summary: "여러 항목 선택이나 동의 여부 확인용 체크박스",
     reactCode: `import { Checkbox } from "@goraebap/ui-react/components/checkbox";
 
 export function Example() {
@@ -323,7 +322,7 @@ export function Example() {
     slug: "badge",
     name: "Badge",
     category: "표시와 구조",
-    summary: "상태, 역할, 분류처럼 짧은 메타데이터를 표시합니다.",
+    summary: "상태, 역할, 분류처럼 짧은 메타데이터를 보여 주는 배지",
     reactCode: `import { Badge } from "@goraebap/ui-react/components/badge";
 
 export function Example() {
@@ -359,7 +358,7 @@ export function Example() {
     slug: "card",
     name: "Card",
     category: "표시와 구조",
-    summary: "페이지 면(--background) 위에 한 단계 올라오는 올린 면(--card) 컨테이너입니다.",
+    summary: "페이지 면 위에 한 단계 올라오는 카드 컨테이너",
     reactCode: `import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@goraebap/ui-react/components/card";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -410,7 +409,7 @@ export function Example() {
     slug: "alert",
     name: "Alert",
     category: "표시와 구조",
-    summary: "중요한 안내, 성공, 경고, 오류 메시지를 문맥 안에 인라인으로 알립니다.",
+    summary: "안내, 성공, 경고, 오류 메시지를 문맥 안에 인라인으로 알리는 배너",
     reactCode: `import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
 
 export function Example() {
@@ -451,7 +450,7 @@ export function Example() {
     slug: "separator",
     name: "Separator",
     category: "표시와 구조",
-    summary: "영역이나 항목 사이를 --border 1px 선으로 나눕니다.",
+    summary: "영역이나 항목 사이를 나누는 1px 구분선",
     reactCode: `import { Separator } from "@goraebap/ui-react/components/separator";
 
 export function Example() {
@@ -503,7 +502,7 @@ export function WaveDividerExample() {
     slug: "skeleton",
     name: "Skeleton",
     category: "표시와 구조",
-    summary: "데이터를 불러오는 동안 콘텐츠가 들어갈 자리를 미리 표시합니다.",
+    summary: "데이터를 불러오는 동안 콘텐츠 자리를 미리 잡는 자리 표시",
     reactCode: `import { Skeleton } from "@goraebap/ui-react/components/skeleton";
 
 export function Example() {
@@ -538,7 +537,7 @@ export function Example() {
     slug: "table",
     name: "Table",
     category: "표시와 구조",
-    summary: "여러 항목의 속성을 같은 열 기준으로 비교하는 표입니다.",
+    summary: "여러 항목의 속성을 같은 열 기준으로 비교하는 표",
     reactCode: `import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@goraebap/ui-react/components/table";
 
 export function Example() {
@@ -621,7 +620,7 @@ export function Example() {
     slug: "tabs",
     name: "Tabs",
     category: "오버레이와 탐색",
-    summary: "같은 맥락 안의 보기를 전환하는 탭입니다. 키보드 화살표 이동을 지원합니다.",
+    summary: "키보드 화살표 이동으로 같은 맥락 안의 보기를 전환하는 탭",
     reactCode: `import { Tabs, TabsContent, TabsList, TabsTrigger } from "@goraebap/ui-react/components/tabs";
 
 export function Example() {
@@ -677,7 +676,7 @@ export function Example() {
     slug: "dialog",
     name: "Dialog",
     category: "오버레이와 탐색",
-    summary: "현재 화면을 유지한 채 짧은 확인이나 몇 칸짜리 입력을 받는 대화상자입니다.",
+    summary: "현재 화면을 유지한 채 짧은 확인이나 몇 칸짜리 입력을 받는 대화상자",
     reactCode: `import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@goraebap/ui-react/components/dialog";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -736,7 +735,7 @@ export function Example() {
     slug: "toggle",
     name: "Toggle",
     category: "동작과 입력",
-    summary: "켜짐과 꺼짐 두 상태를 전환하는 토글 버튼입니다.",
+    summary: "켜짐과 꺼짐 두 상태를 전환하는 토글 버튼",
     reactCode: `import { Toggle } from "@goraebap/ui-react/components/toggle";
 
 export function Example() {
@@ -759,7 +758,7 @@ export function Example() {
     slug: "toggle-group",
     name: "Toggle Group",
     category: "동작과 입력",
-    summary: "여러 옵션 중 하나 또는 복수를 고르는 세그먼트 토글 그룹입니다.",
+    summary: "여러 옵션 중 하나 또는 복수를 고르는 세그먼트 토글 그룹",
     reactCode: `import { ToggleGroup, ToggleGroupItem } from "@goraebap/ui-react/components/toggle-group";
 
 export function Example() {
@@ -787,7 +786,7 @@ export function Example() {
     slug: "select",
     name: "Select",
     category: "동작과 입력",
-    summary: "미리 정해진 목록에서 하나의 값을 고르는 선택 컨트롤입니다.",
+    summary: "미리 정해진 목록에서 하나의 값을 고르는 선택 컨트롤",
     reactCode: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@goraebap/ui-react/components/select";
 
 export function Example() {
@@ -816,7 +815,7 @@ export function Example() {
     slug: "tooltip",
     name: "Tooltip",
     category: "오버레이와 탐색",
-    summary: "아이콘 버튼이나 컨트롤에 마우스를 올렸을 때 짧은 보조 설명을 띄웁니다.",
+    summary: "아이콘 버튼이나 컨트롤에 포인터를 올릴 때 띄우는 짧은 보조 설명",
     reactCode: `import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@goraebap/ui-react/components/tooltip";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -850,7 +849,7 @@ export function Example() {
     slug: "popover",
     name: "Popover",
     category: "오버레이와 탐색",
-    summary: "트리거 요소 근처에 짧은 설정이나 보조 콘텐츠 패널을 띄웁니다.",
+    summary: "트리거 요소 근처에 띄우는 짧은 설정과 보조 콘텐츠 패널",
     reactCode: `import { Popover, PopoverContent, PopoverDescription, PopoverTitle, PopoverTrigger } from "@goraebap/ui-react/components/popover";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -900,7 +899,7 @@ export function Example() {
     slug: "menu",
     name: "Menu",
     category: "오버레이와 탐색",
-    summary: "버튼을 눌러 실행 가능한 작업 목록을 펼치는 드롭다운 메뉴입니다.",
+    summary: "버튼을 눌러 실행 가능한 작업 목록을 펼치는 드롭다운 메뉴",
     reactCode: `import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from "@goraebap/ui-react/components/menu";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -936,7 +935,7 @@ export function Example() {
     slug: "alert-dialog",
     name: "Alert Dialog",
     category: "오버레이와 탐색",
-    summary: "삭제·초기화처럼 되돌리기 어려운 동작 전 사용자의 명시적 확인을 받는 대화상자입니다.",
+    summary: "삭제·초기화처럼 되돌리기 어려운 동작 전 명시적 확인을 받는 대화상자",
     reactCode: `import { AlertDialog, AlertDialogClose, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle, AlertDialogTrigger } from "@goraebap/ui-react/components/alert-dialog";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -976,7 +975,7 @@ export function Example() {
     slug: "radio-group",
     name: "Radio Group",
     category: "동작과 입력",
-    summary: "서로 배타적인 여러 선택지 중 하나를 고르는 라디오 그룹입니다.",
+    summary: "서로 배타적인 여러 선택지 중 하나를 고르는 라디오 그룹",
     reactCode: `import { RadioGroup, RadioGroupItem } from "@goraebap/ui-react/components/radio-group";
 
 export function Example() {
@@ -1010,7 +1009,7 @@ export function Example() {
     slug: "slider",
     name: "Slider",
     category: "동작과 입력",
-    summary: "정해진 범위 안에서 연속된 값을 드래그로 조절하는 슬라이더입니다.",
+    summary: "정해진 범위 안에서 연속된 값을 드래그로 조절하는 슬라이더",
     reactCode: `import { Slider } from "@goraebap/ui-react/components/slider";
 
 export function Example() {
@@ -1040,7 +1039,7 @@ export function Example() {
     slug: "accordion",
     name: "Accordion",
     category: "표시와 구조",
-    summary: "여러 항목을 접고 펼치며 긴 정보를 단계적으로 보여 주는 아코디언입니다.",
+    summary: "여러 항목을 접고 펼치며 긴 정보를 단계적으로 보여 주는 아코디언",
     reactCode: `import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@goraebap/ui-react/components/accordion";
 
 export function Example() {
@@ -1074,7 +1073,7 @@ export function Example() {
     slug: "collapsible",
     name: "Collapsible",
     category: "표시와 구조",
-    summary: "단일 보조 영역을 필요할 때만 펼치거나 접는 컨테이너입니다.",
+    summary: "단일 보조 영역을 필요할 때만 펼치거나 접는 컨테이너",
     reactCode: `import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@goraebap/ui-react/components/collapsible";
 
 export function Example() {
@@ -1101,7 +1100,7 @@ export function Example() {
     slug: "avatar",
     name: "Avatar",
     category: "표시와 구조",
-    summary: "사용자 프로필 이미지와 이미지 로드 실패 시 이니셜 대체 표시를 제공합니다.",
+    summary: "프로필 이미지와 로드 실패 시 이니셜 대체 표시를 묶은 아바타",
     reactCode: `import { Avatar, AvatarFallback } from "@goraebap/ui-react/components/avatar";
 
 export function Example() {
@@ -1139,7 +1138,7 @@ export function Example() {
     slug: "progress",
     name: "Progress",
     category: "표시와 구조",
-    summary: "작업 완료율이나 업로드 진행 상태를 막대로 표시합니다.",
+    summary: "작업 완료율이나 업로드 진행 상태를 보여 주는 막대",
     reactCode: `import { Progress } from "@goraebap/ui-react/components/progress";
 
 export function Example() {
@@ -1170,7 +1169,7 @@ export function Example() {
     slug: "drawer",
     name: "Drawer",
     category: "오버레이와 탐색",
-    summary: "화면 좌우에서 슬라이드되어 보조 탐색이나 필터 패널을 엽니다.",
+    summary: "화면 좌우에서 슬라이드되어 열리는 보조 탐색과 필터 패널",
     reactCode: `import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from "@goraebap/ui-react/components/drawer";
 import { Button } from "@goraebap/ui-react/components/button";
 
@@ -1203,7 +1202,7 @@ export function Example() {
     slug: "bottom-sheet",
     name: "Bottom Sheet",
     category: "오버레이와 탐색",
-    summary: "화면 아래에서 올라와 한 손으로 조작하고 아래로 끌어내려 닫는 패널입니다.",
+    summary: "화면 아래에서 올라와 한 손으로 조작하고 끌어내려 닫는 패널",
     reactCode: `import {
   BottomSheet,
   BottomSheetClose,
@@ -1252,7 +1251,7 @@ export function Example() {
     slug: "toast",
     name: "Toast",
     category: "오버레이와 탐색",
-    summary: "저장 완료나 복사 같은 짧은 처리 결과를 화면 모서리에 잠시 알립니다.",
+    summary: "저장 완료나 복사 같은 짧은 처리 결과를 화면 모서리에 띄우는 알림",
     reactCode: `import { ToastProvider, useToastManager } from "@goraebap/ui-react/components/toast";
 
 // 앱 루트에 <ToastProvider>를 두고, 내부에서 useToastManager().add(...) 호출`,
@@ -1270,7 +1269,7 @@ toast("설정이 저장되었습니다");`,
     slug: "combobox",
     name: "Combobox",
     category: "동작과 입력",
-    summary: "텍스트 입력으로 후보 목록을 실시간 필터링하고 값을 고르는 콤보박스입니다.",
+    summary: "텍스트 입력으로 후보 목록을 필터링해 값을 고르는 콤보박스",
     reactCode: `import { Combobox, ComboboxContent, ComboboxInput, ComboboxItem, ComboboxList } from "@goraebap/ui-react/components/combobox";`,
     angularCode: `<brn-combobox>...</brn-combobox>`,
     renderThumbnail: () => (
@@ -1285,7 +1284,7 @@ toast("설정이 저장되었습니다");`,
     slug: "autocomplete",
     name: "Autocomplete",
     category: "동작과 입력",
-    summary: "자유 입력을 허용하면서 추천 검색어나 후보를 제안하는 자동완성 입력 칸입니다.",
+    summary: "자유 입력을 허용하면서 추천 검색어나 후보를 제안하는 자동완성 입력 칸",
     reactCode: `import { Autocomplete, AutocompleteContent, AutocompleteInput, AutocompleteItem, AutocompleteList } from "@goraebap/ui-react/components/autocomplete";`,
     angularCode: `<brn-autocomplete>...</brn-autocomplete>`,
     renderThumbnail: () => (
@@ -1304,7 +1303,7 @@ toast("설정이 저장되었습니다");`,
     slug: "otp-field",
     name: "OTP Field",
     category: "동작과 입력",
-    summary: "이메일·문자 인증번호처럼 고정 길이 코드를 한 자리씩 입력하는 칸입니다.",
+    summary: "이메일·문자 인증번호처럼 고정 길이 코드를 한 자리씩 입력하는 칸",
     reactCode: `import { OTPField, OTPFieldInput, OTPFieldSeparator } from "@goraebap/ui-react/components/otp-field";
 
 export function Example() {
@@ -1335,7 +1334,7 @@ export function Example() {
     slug: "scroll-area",
     name: "Scroll Area",
     category: "표시와 구조",
-    summary: "고정 높이 영역 안에서 일관된 커스텀 스크롤바를 제공하는 스크롤 컨테이너입니다.",
+    summary: "고정 높이 영역 안에서 일관된 커스텀 스크롤바를 제공하는 스크롤 컨테이너",
     reactCode: `import { ScrollArea } from "@goraebap/ui-react/components/scroll-area";
 
 export function Example() {
@@ -1358,7 +1357,7 @@ export function Example() {
     slug: "context-menu",
     name: "Context Menu",
     category: "오버레이와 탐색",
-    summary: "대상 영역을 우클릭했을 때 포인터 위치에 열리는 컨텍스트 메뉴입니다.",
+    summary: "대상 영역을 우클릭할 때 포인터 위치에 열리는 컨텍스트 메뉴",
     reactCode: `import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@goraebap/ui-react/components/context-menu";`,
     angularCode: `<div [brnContextMenuTriggerFor]="menu">우클릭 영역</div>`,
     renderThumbnail: () => (
@@ -1372,7 +1371,7 @@ export function Example() {
     slug: "preview-card",
     name: "Preview Card",
     category: "오버레이와 탐색",
-    summary: "링크나 사용자 이름에 마우스를 올렸을 때 요약 정보를 미리 보여 주는 호버 카드입니다.",
+    summary: "링크나 사용자 이름에 포인터를 올릴 때 요약 정보를 미리 보여 주는 카드",
     reactCode: `import { PreviewCard, PreviewCardContent, PreviewCardTrigger } from "@goraebap/ui-react/components/preview-card";`,
     angularCode: `<brn-hover-card>
   <a brnHoverCardTrigger>@goraebap/design-system</a>
@@ -1392,7 +1391,7 @@ export function Example() {
     slug: "menubar",
     name: "Menubar",
     category: "오버레이와 탐색",
-    summary: "파일·편집·보기처럼 상단 메뉴 항목을 가로로 묶어 탐색하는 데스크톱 메뉴바입니다.",
+    summary: "파일·편집·보기처럼 상단 메뉴 항목을 가로로 묶는 데스크톱 메뉴바",
     reactCode: `import { Menubar, menubarTriggerVariants } from "@goraebap/ui-react/components/menubar";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/components/menu";`,
     angularCode: `<div brnMenuBar [class]="menubarVariants()">...</div>`,
@@ -1409,7 +1408,7 @@ import { Menu, MenuContent, MenuItem, MenuTrigger } from "@goraebap/ui-react/com
     slug: "navigation-menu",
     name: "Navigation Menu",
     category: "오버레이와 탐색",
-    summary: "사이트 상단에서 하위 링크 패널을 부드럽게 전환하는 내비게이션 메뉴입니다.",
+    summary: "사이트 상단에서 하위 링크 패널을 전환하는 내비게이션 메뉴",
     reactCode: `import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "@goraebap/ui-react/components/navigation-menu";`,
     angularCode: `<nav brnNavigationMenu>...</nav>`,
     renderThumbnail: () => (
