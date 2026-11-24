@@ -15,7 +15,6 @@ interface DocsNavItem {
   href?: string;
   icon?: SystemIconName;
   children?: DocsNavItem[];
-  defaultOpen?: boolean;
 }
 
 export interface DocsNavGroup {
@@ -33,7 +32,7 @@ function DocsNavItemRow({ item, pathname }: { item: DocsNavItem; pathname: strin
   const isActive = item.href === pathname;
   const hasActiveChild = item.children?.some((child) => child.href === pathname) ?? false;
   const [manualOpen, setManualOpen] = useState<boolean | null>(null);
-  const isOpen = manualOpen ?? item.defaultOpen ?? hasActiveChild;
+  const isOpen = manualOpen ?? (isActive || hasActiveChild);
 
   if (!item.children || item.children.length === 0) {
     return (

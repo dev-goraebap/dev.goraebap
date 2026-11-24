@@ -25,7 +25,7 @@ function DetailsOverviewPage() {
             className="border-border bg-card hover:border-foreground/30 space-y-1.5 rounded-2xl border p-5 transition-colors"
           >
             <h2 className="text-sm font-semibold">{item.title}</h2>
-            <p className="text-muted-foreground text-xs leading-relaxed">{item.summary}</p>
+            <p className="text-muted-foreground text-sm leading-relaxed">{item.summary}</p>
           </Link>
         ))}
       </div>

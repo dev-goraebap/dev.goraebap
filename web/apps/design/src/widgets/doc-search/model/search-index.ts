@@ -4,11 +4,12 @@ import { LAYOUT_DOCS } from "@/entities/layout-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
-  "가이드",
+  "디자인 시스템",
   "파운데이션",
   "컴포넌트",
   "레이아웃",
   "Details",
+  "Agent",
   "용어집",
 ] as const;
 
@@ -23,7 +24,7 @@ export interface DocEntry {
 }
 
 const MAX_RESULTS = 40;
-const SUGGESTED_GROUPS: DocEntry["group"][] = ["가이드", "파운데이션", "Details"];
+const SUGGESTED_GROUPS: DocEntry["group"][] = ["디자인 시스템", "파운데이션", "Details", "Agent"];
 
 const page = (
   group: DocEntry["group"],
@@ -33,8 +34,7 @@ const page = (
 ): DocEntry => ({ id: href, group, title, href, description, keywords: description });
 
 const DOC_ENTRIES: DocEntry[] = [
-  page("가이드", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
-  page("가이드", "시작하기", "/frontend/getting-started", "프로젝트에 설치하고 연결하기"),
+  page("디자인 시스템", "개요", "/frontend/overview", "디자인 시스템의 구조와 쓰임"),
   page(
     "파운데이션",
     "디자인 토큰",
@@ -86,6 +86,7 @@ const DOC_ENTRIES: DocEntry[] = [
       keywords: `${doc.title} ${section.problem} ${section.guidance}`,
     })),
   ]),
+  page("Agent", "Agent", "/frontend/agent", "frontend@dev-goraebap 플러그인과 패키지 연결"),
   page("용어집", "용어집", "/frontend/glossary", "문서에 쓰는 용어 모음"),
   ...Object.entries(GLOSSARY).map(([key, entry]) => ({
     id: `glossary:${key}`,

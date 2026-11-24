@@ -6,19 +6,14 @@ export const Route = createFileRoute("/frontend/_library/overview/")({
   component: OverviewPage,
 });
 
-const PAIN_POINTS = [
-  {
-    title: "라이브러리별 기본 리셋과 스케일 충돌",
-    body: "React 프로토타입을 Angular 업무 UI 라이브러리로 옮기면 각 라이브러리가 강제하는 기본 여백, line-height, 포커스 링, 반경 스케일이 겹쳐 높이와 간격이 미묘하게 틀어집니다.",
-  },
-  {
-    title: "컴포넌트 DOM과 스타일의 결합",
-    body: "스타일이 특정 프레임워크 컴포넌트 안에 묶여 있으면 React에서 검증한 클래스를 Angular로 그대로 가져다 쓸 수 없습니다. 특히 Angular의 호스트 래퍼 요소와 ViewEncapsulation은 flex·grid 배치까지 다르게 만듭니다.",
-  },
-  {
-    title: "React와 Angular 생태계의 단절",
-    body: "React는 Base UI·Radix 같은 헤드리스 프리미티브 + Tailwind 조합이 자리 잡았지만, Angular는 스타일이 결합된 컴포넌트 라이브러리가 주류라 두 진영이 같은 디자인 언어를 공유하기 어려웠습니다.",
-  },
+const STORY = [
+  "안녕하세요. 이곳은 제가 관리하는 디자인 시스템을 둘러보실 수 있는 공간입니다. 웹 애플리케이션을 만들면서 생긴 고집이 하나 있습니다. 바퀴를 재발명하지 말라는 것입니다.",
+  "AI 에이전트의 시대이기 때문에 만드는 비용은 매우 저렴해졌지만, 저는 여전히 관리 비용을 높게 생각하고 있습니다. 따라서 필요한 기술이 있다면 완성도 높고 관리가 잘 되는 오픈소스를 먼저 찾아 쓰는 방식을 선호합니다. 제 디자인 시스템 또한 처음부터 쌓아 올린 저만의 규칙이 아니라, 여러 오픈소스와 개념을 조합하고 관리하는 작업실일 뿐입니다.",
+  "그렇기 때문에 오픈소스가 얼마나 잘 관리되는지, 만약 이 오픈소스가 사라진다면 어떤 대체재가 있는지까지 고민하는 것이 이 작업실의 과제인 것 같습니다.",
+  "저는 주로 Angular를 사용해 오다가, AI로 인한 격변을 겪으며 개인 프로젝트에는 React를 쓰고 있습니다. 프론트엔드에서 좋은 오픈소스가 나오면 대부분 React 진영이고, 다양한 개념을 빠르게 접할 수 있기 때문입니다.",
+  "저만의 디자인 시스템을 늘 구축하고 싶었지만 하나의 프론트엔드 프레임워크만 쓰는 것이 아니어서 진영마다 다르게 관리되는 도구를 챙길 엄두가 나지 않았습니다. 점점 발전하는 Web Component로 핵심 컴포넌트를 중앙 집중화하는 방법도 Web Awesome처럼 가능하겠다고 생각했지만, 프레임워크마다 얇은 어댑터가 또 필요해지고 각 프레임워크답지 않은 사용법이 남아 포기했습니다. 시대가 매우 빠르게 변하고 있어 나중에는 금방 달라질 수도 있겠지만요.",
+  "따라서 관리 방식은 깔끔함과 과함 사이의 트레이드오프를 받아들이는 쪽으로 방향을 틀었습니다. 원래 주력으로 쓰던 Tailwind CSS를 중심으로 스타일 레시피를 중앙에서 관리하고, 구현 비용이 큰 웹 접근성 같은 헤드리스 프리미티브 계층은 각 진영에 자리 잡은 오픈소스를 적극적으로 씁니다. React는 shadcn/ui와 Base UI, Angular는 Spartan, Angular CDK, Angular가 직접 관리하는 Angular Aria 같은 도구 위에 UI 컴포넌트 어댑터를 만드는 방식을 택했습니다.",
+  "shadcn/ui, Spartan, Astryx처럼 완성도 높은 컴포넌트 모음이 이미 많지만, 오픈소스는 결국 제 입맛에 맞게 한 번 더 가공해야 만족스러워지는 병이 있는 것 같습니다.",
 ];
 
 const LAYER_ROLES = [
@@ -107,7 +102,7 @@ function ArchitectureDiagram() {
               개인 프로젝트
             </Badge>
           </div>
-          <p className="text-muted-foreground text-xs leading-relaxed">
+          <p className="text-muted-foreground text-sm leading-relaxed">
             Base UI 프리미티브 위에 같은 레시피와 아이콘 어댑터를 결합해 패키지로 제공합니다.
           </p>
           <p className="text-muted-foreground font-mono text-[0.6875rem]">@goraebap/ui-react</p>
@@ -120,7 +115,7 @@ function ArchitectureDiagram() {
               업무 프로젝트
             </Badge>
           </div>
-          <p className="text-muted-foreground text-xs leading-relaxed">
+          <p className="text-muted-foreground text-sm leading-relaxed">
             Spartan Brain 프리미티브에 완전히 같은 레시피 함수를 연결해 동일한 UI를 유지합니다.
           </p>
           <p className="text-muted-foreground font-mono text-[0.6875rem]">
@@ -136,39 +131,26 @@ function OverviewPage() {
   return (
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
-        <h1 className="text-3xl font-bold tracking-tight">개요</h1>
-        <p className="text-muted-foreground text-base leading-relaxed">
-          이 디자인 시스템은 프로토타입·개인 프로젝트(React)와 업무 프로젝트(Angular)가 하나의
-          디자인 기준을 공유하도록 설계한 디자인 시스템입니다.
+        <h1 className="text-3xl font-bold tracking-tight">디자인 시스템</h1>
+        <p className="text-muted-foreground text-lg leading-relaxed">
+          디자인 시스템은 제품의 화면을 일관되게 만들기 위해 토큰, 컴포넌트, 사용 원칙과 문서를 함께
+          관리하는 체계입니다.
         </p>
       </header>
 
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold tracking-tight">왜 이런 구조를 만들었나요?</h2>
-        <p className="text-muted-foreground text-sm leading-relaxed">
-          AI 에이전트로 빠르게 만들어 보는 프로토타입과 개인 프로젝트는 React를 쓰고, 회사 업무
-          프로젝트는 Angular를 씁니다. 그런데 프로토타입에서 검증한 화면을 Angular 업무 앱으로 옮길
-          때마다 같은 디자인과 레이아웃이 그대로 이어지지 않고 미묘하게 틀어지는 문제가
-          반복되었습니다.
-        </p>
-        <div className="grid gap-3 md:grid-cols-3">
-          {PAIN_POINTS.map((item) => (
-            <div
-              key={item.title}
-              className="border-border bg-card space-y-2 rounded-2xl border p-5"
-            >
-              <h3 className="text-sm font-semibold">{item.title}</h3>
-              <p className="text-muted-foreground text-xs leading-relaxed">{item.body}</p>
-            </div>
-          ))}
-        </div>
+        {STORY.map((paragraph) => (
+          <p key={paragraph} className="text-foreground/90 text-base leading-7">
+            {paragraph}
+          </p>
+        ))}
       </section>
 
       <Separator variant="wave" />
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">단일 원본과 어댑터 분리</h2>
-        <p className="text-muted-foreground text-sm leading-relaxed">
+        <p className="text-muted-foreground text-base leading-relaxed">
           해결책은 시각 규칙(토큰과 스타일 레시피)에서 프레임워크를 완전히 걷어내는 것입니다.
           상호작용이 필요한 컴포넌트만 React의 Base UI와 Angular의 Spartan Brain 같은 헤드리스
           프리미티브로 감싸고, 색·여백·반경·모션은 모두 같은 원본에서 가져옵니다.
@@ -180,7 +162,7 @@ function OverviewPage() {
 
       <section className="space-y-4">
         <h2 className="text-xl font-semibold tracking-tight">영역별 역할 경계</h2>
-        <p className="text-muted-foreground text-sm leading-relaxed">
+        <p className="text-muted-foreground text-base leading-relaxed">
           각 영역이 책임지는 범위를 나누어 두면, 색상 테마를 바꾸거나 프레임워크를 옮겨도 수정
           범위가 한 곳에 머뭅니다.
         </p>
@@ -198,10 +180,10 @@ function OverviewPage() {
                 </p>
               </div>
               <div className="sm:col-span-5">
-                <p className="text-foreground text-xs leading-relaxed">{layer.owns}</p>
+                <p className="text-foreground text-sm leading-relaxed">{layer.owns}</p>
               </div>
               <div className="sm:col-span-4">
-                <p className="text-muted-foreground text-xs leading-relaxed">{layer.boundary}</p>
+                <p className="text-muted-foreground text-sm leading-relaxed">{layer.boundary}</p>
               </div>
             </Link>
           ))}

@@ -11,7 +11,7 @@ function DocsRecipesPage() {
     <article className="space-y-10">
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-bold tracking-tight">Style Recipes</h1>
-        <p className="text-muted-foreground text-base leading-relaxed">
+        <p className="text-muted-foreground text-lg leading-relaxed">
           스타일 레시피는 컴포넌트의 외형과 변형(variant) 규칙을 프레임워크와 분리해 정의한 스타일
           계층입니다. <code>tailwind-variants</code>와 Tailwind 클래스를 조합한 TypeScript 함수로
           구현하며, React와 Angular 환경에서 같은 규칙을 공유합니다.
@@ -29,7 +29,7 @@ function DocsRecipesPage() {
 
       <section className="border-border bg-card space-y-3 rounded-2xl border p-6">
         <h2 className="text-base font-semibold">레시피를 분리하는 이유</h2>
-        <ul className="text-muted-foreground list-disc space-y-1.5 pl-5 text-sm leading-relaxed">
+        <ul className="text-muted-foreground list-disc space-y-1.5 pl-5 text-base leading-relaxed">
           <li>
             반경이나 포커스 링 같은 시각 규칙을 한 곳에서 수정하면 같은 레시피를 쓰는 모든 환경에
             함께 반영됩니다.

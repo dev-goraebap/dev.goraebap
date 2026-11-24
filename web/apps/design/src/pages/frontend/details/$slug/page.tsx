@@ -37,12 +37,12 @@ function DetailPage() {
     <article className="max-w-3xl space-y-8">
       <header className="border-border space-y-3 border-b pb-8">
         <h1 className="text-3xl font-bold tracking-tight">{detail.title}</h1>
-        <p className="text-muted-foreground text-base leading-relaxed">{detail.summary}</p>
+        <p className="text-muted-foreground text-lg leading-relaxed">{detail.summary}</p>
       </header>
 
       {detail.problem && (
         <div className="space-y-8">
-          <p className="text-foreground text-sm leading-relaxed">{detail.problem}</p>
+          <p className="text-foreground text-base leading-relaxed">{detail.problem}</p>
 
           {detail.renderDemo && (
             <div className="bg-dots border-border rounded-2xl border p-4 sm:p-6">
@@ -72,7 +72,7 @@ function DetailPage() {
           )}
 
           {detail.guidance && (
-            <p className="text-foreground text-sm leading-relaxed">{detail.guidance}</p>
+            <p className="text-foreground text-base leading-relaxed">{detail.guidance}</p>
           )}
         </div>
       )}
@@ -84,7 +84,7 @@ function DetailPage() {
               {(index > 0 || detail.problem) && <Separator variant="wave" className="my-10" />}
               <section id={section.id} className="scroll-mt-24 space-y-5">
                 <h2 className="text-xl font-semibold tracking-tight">{section.title}</h2>
-                <p className="text-foreground text-sm leading-relaxed">{section.problem}</p>
+                <p className="text-foreground text-base leading-relaxed">{section.problem}</p>
                 {section.renderDemo && (
                   <div className="bg-dots border-border rounded-2xl border p-4 sm:p-6">
                     {section.renderDemo()}
@@ -95,7 +95,7 @@ function DetailPage() {
                   language={section.codeLanguage ?? "css"}
                   code={section.code}
                 />
-                <p className="text-foreground text-sm leading-relaxed">{section.guidance}</p>
+                <p className="text-foreground text-base leading-relaxed">{section.guidance}</p>
               </section>
             </Fragment>
           ))}
@@ -107,7 +107,7 @@ function DetailPage() {
           <h2 className="text-xl font-semibold tracking-tight">참고 자료</h2>
           <ul className="space-y-3">
             {detail.references.map((reference) => (
-              <li key={reference.href} className="text-sm leading-relaxed">
+              <li key={reference.href} className="text-base leading-relaxed">
                 <a
                   href={reference.href}
                   target="_blank"

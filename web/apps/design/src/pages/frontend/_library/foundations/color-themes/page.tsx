@@ -66,7 +66,7 @@ function ColorThemesPage() {
     <article className="space-y-10">
       <header className="space-y-3">
         <h1 className="text-3xl font-bold tracking-tight">색상 테마</h1>
-        <p className="text-muted-foreground text-base leading-relaxed break-keep">
+        <p className="text-muted-foreground text-lg leading-relaxed break-keep">
           색상 테마는 면, 글자, 강조, 상태 색을 라이트와 다크 한 쌍으로 묶은 토큰 세트입니다.
           컴포넌트를 고치지 않고 세트만 바꿔 제품의 분위기를 전환합니다.
         </p>

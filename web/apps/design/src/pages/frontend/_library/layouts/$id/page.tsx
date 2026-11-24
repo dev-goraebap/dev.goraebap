@@ -116,7 +116,7 @@ function LayoutDetailPage() {
       <div className="space-y-6">
         <header className="min-w-0 space-y-2">
           <h1 className="text-3xl font-bold tracking-tight">{layout.name}</h1>
-          <p className="text-muted-foreground text-base leading-relaxed">{layout.summary}</p>
+          <p className="text-muted-foreground text-lg leading-relaxed">{layout.summary}</p>
         </header>
 
         <LayoutBlock
@@ -148,7 +148,7 @@ function LayoutDetailPage() {
             <div key={example.id} className="space-y-3">
               <div className="space-y-1">
                 <h3 className="text-lg font-semibold tracking-tight">{example.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <p className="text-muted-foreground text-base leading-relaxed">
                   {example.description}
                 </p>
                 {example.relatedLayoutId && (

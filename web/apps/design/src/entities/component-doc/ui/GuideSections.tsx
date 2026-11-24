@@ -46,7 +46,7 @@ export function AnatomySection({ slug, guide }: { slug: string; guide: Component
                 <code className="text-foreground block font-mono text-xs font-medium">
                   {part.name}
                 </code>
-                <span className="text-muted-foreground block text-xs leading-relaxed break-keep">
+                <span className="text-muted-foreground block text-sm leading-relaxed break-keep">
                   <GuideText at={`anatomy.${index}`} text={part.role} />
                 </span>
               </span>
@@ -76,7 +76,7 @@ export function AccessibilitySection({ guide }: { guide: ComponentGuide }) {
                     </kbd>
                   ))}
                 </dt>
-                <dd className="text-muted-foreground text-sm leading-relaxed break-keep">
+                <dd className="text-muted-foreground text-base leading-relaxed break-keep">
                   <GuideText at={`key.${index}`} text={item.action} />
                 </dd>
               </div>
@@ -86,7 +86,7 @@ export function AccessibilitySection({ guide }: { guide: ComponentGuide }) {
       )}
       <ul className="list-disc space-y-1.5 pl-5">
         {guide.accessibility.notes.map((note, index) => (
-          <li key={note} className="text-muted-foreground text-sm leading-relaxed break-keep">
+          <li key={note} className="text-muted-foreground text-base leading-relaxed break-keep">
             <GuideText at={`note.${index}`} text={note} />
           </li>
         ))}
@@ -108,7 +108,7 @@ export function AdaptiveLinkSection({ link }: { link: { section: string; summary
           <SystemIcon name="mobile" className="size-5" />
         </span>
         <span className="min-w-0 flex-1 space-y-0.5">
-          <span className="text-foreground block text-sm leading-relaxed font-medium break-keep">
+          <span className="text-foreground block text-base leading-relaxed font-medium break-keep">
             {stripGlossaryMarkup(link.summary)}
           </span>
           <span className="text-muted-foreground block text-xs">
@@ -142,7 +142,7 @@ export function RelatedSection({
               {getName(item.slug) ?? item.slug}
               <SystemIcon name="arrowRight" className="text-muted-foreground size-3.5" />
             </span>
-            <span className="text-muted-foreground block text-xs leading-relaxed break-keep">
+            <span className="text-muted-foreground block text-sm leading-relaxed break-keep">
               {stripGlossaryMarkup(item.reason)}
             </span>
           </Link>

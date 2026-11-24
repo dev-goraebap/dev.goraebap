@@ -36,14 +36,16 @@ function RoutePendingBar() {
   );
 }
 
-const LEGACY_PATHS =
-  /^\/(components|overview|getting-started|foundations|layouts|details|glossary)(\/|$)/;
+const LEGACY_PATHS = /^\/(components|overview|foundations|layouts|details|glossary)(\/|$)/;
 
 export const Route = createRootRoute({
   // 워크스페이스 도입 전 주소로 들어온 링크를 새 주소로 보낸다.
   beforeLoad: ({ location }) => {
     if (location.pathname.replace(/\/$/, "") === "/themes") {
       throw redirect({ href: "/frontend/foundations/color-themes", replace: true });
+    }
+    if (/^\/(frontend\/)?getting-started\/?$/.test(location.pathname)) {
+      throw redirect({ href: "/frontend/agent", replace: true });
     }
     if (LEGACY_PATHS.test(location.pathname)) {
       throw redirect({ href: `/frontend${location.href}`, replace: true });
@@ -52,16 +54,17 @@ export const Route = createRootRoute({
   component: RootLayout,
 });
 
-const DESIGN_SYSTEM_PATHS = ["components", "overview", "getting-started", "foundations", "layouts"];
+const DESIGN_SYSTEM_PATHS = ["components", "overview", "foundations", "layouts"];
 
 const TOP_NAV: {
   label: string;
-  to?: "/frontend/overview" | "/frontend/details";
+  to?: "/frontend/overview" | "/frontend/details" | "/frontend/agent";
   icon: SystemIconName;
 }[] = [
   { label: "Design System", to: "/frontend/overview", icon: "components" },
   { label: "Engineering", icon: "code" },
   { label: "Details", to: "/frontend/details", icon: "details" },
+  { label: "Agent", to: "/frontend/agent", icon: "rocket" },
 ];
 
 function RootLayout() {
@@ -83,7 +86,9 @@ function RootLayout() {
       : pathname.startsWith(to);
 
   const hasDocsShell =
-    pathname.startsWith("/frontend") && !pathname.startsWith("/frontend/glossary");
+    pathname.startsWith("/frontend") &&
+    !pathname.startsWith("/frontend/glossary") &&
+    !pathname.startsWith("/frontend/agent");
 
   return (
     <DesignConfigProvider>

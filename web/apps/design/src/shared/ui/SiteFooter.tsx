@@ -4,6 +4,7 @@ import { Wordmark } from "./Wordmark";
 const FOOTER_LINKS = [
   { label: "Design System", to: "/frontend/overview" as const },
   { label: "Details", to: "/frontend/details" as const },
+  { label: "Agent", to: "/frontend/agent" as const },
 ];
 
 export function SiteFooter({ isContained = true }: { isContained?: boolean }) {

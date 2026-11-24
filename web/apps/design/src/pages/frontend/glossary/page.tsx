@@ -40,7 +40,7 @@ function GlossaryPage() {
     <main className="mx-auto max-w-5xl space-y-10 px-6 py-12 sm:py-16">
       <header className="space-y-3">
         <h1 className="text-3xl font-bold tracking-tight">용어집</h1>
-        <p className="text-muted-foreground text-base leading-relaxed break-keep">
+        <p className="text-muted-foreground text-lg leading-relaxed break-keep">
           디자인과 프론트엔드 문서에서 자주 만나는 용어를 한국어로 풀어 설명합니다.
         </p>
       </header>
@@ -106,7 +106,7 @@ function GlossaryPage() {
                       )}
                     </dt>
                     <dd className="space-y-2">
-                      <p className="text-muted-foreground text-sm leading-relaxed break-keep">
+                      <p className="text-muted-foreground text-base leading-relaxed break-keep">
                         {entry.definition}
                       </p>
                       {entry.components && (

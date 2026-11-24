@@ -73,7 +73,7 @@ function ComponentDetailPage() {
       <article className="space-y-12">
         <header className="space-y-3">
           <h1 className="text-3xl font-bold tracking-tight">{doc.name}</h1>
-          <p className="text-muted-foreground text-base leading-relaxed break-keep">
+          <p className="text-muted-foreground text-lg leading-relaxed break-keep">
             <GuideText at="usage" text={guide?.usage ?? doc.summary} />
           </p>
         </header>
