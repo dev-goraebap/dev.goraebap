@@ -1,4 +1,4 @@
-import { Link, createRouter } from "@tanstack/react-router";
+import { Link, createRouter, type RouterHistory } from "@tanstack/react-router";
 import { Button, buttonVariants } from "@goraebap/ui-react/components/button";
 import { PageState } from "@/shared/ui";
 import { routeTree } from "./routeTree.gen";
@@ -35,18 +35,23 @@ function RouteError({ reset }: { reset: () => void }) {
   );
 }
 
-export const router = createRouter({
-  routeTree,
-  scrollRestoration: true,
-  // 모달을 열고 닫을 때는 페이지 전환 효과를 쓰지 않는다.
-  defaultViewTransition: {
-    types: ({ fromLocation, toLocation }) =>
-      hasPanel(fromLocation?.search) || hasPanel(toLocation.search) ? false : ["page"],
-  },
-  defaultPendingMs: 180,
-  defaultNotFoundComponent: RouteNotFound,
-  defaultErrorComponent: RouteError,
-});
+// 빌드 때 정적 페이지를 만드는 서버 렌더링은 메모리 기록을 넘겨 같은 라우터를 만든다.
+export const createAppRouter = (history?: RouterHistory) =>
+  createRouter({
+    routeTree,
+    history,
+    scrollRestoration: true,
+    // 모달을 열고 닫을 때는 페이지 전환 효과를 쓰지 않는다.
+    defaultViewTransition: {
+      types: ({ fromLocation, toLocation }) =>
+        hasPanel(fromLocation?.search) || hasPanel(toLocation.search) ? false : ["page"],
+    },
+    defaultPendingMs: 180,
+    defaultNotFoundComponent: RouteNotFound,
+    defaultErrorComponent: RouteError,
+  });
+
+export const router = createAppRouter();
 
 declare module "@tanstack/react-router" {
   interface Register {

@@ -16,7 +16,8 @@ const LazyDocSearchPanel = lazy(() =>
   import("./DocSearchPanel").then((module) => ({ default: module.DocSearchPanel })),
 );
 
-const SHORTCUT = /Mac|iPhone|iPad/.test(navigator.userAgent) ? "⌘K" : "Ctrl K";
+const SHORTCUT =
+  typeof navigator !== "undefined" && /Mac|iPhone|iPad/.test(navigator.userAgent) ? "⌘K" : "Ctrl K";
 
 function SearchLoading() {
   return (

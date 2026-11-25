@@ -237,7 +237,11 @@ function loadConfig(): DesignConfig {
   }
 }
 
+// 빌드 때 정적 페이지를 만드는 서버에는 document가 없다. 그때는 기본값으로 그리고 브라우저가 이어받는다.
+const isBrowser = typeof document !== "undefined";
+
 function applyUiSize(size: UiSizeId) {
+  if (!isBrowser) return;
   document.documentElement.style.setProperty("--ui-size", size);
 }
 
@@ -257,7 +261,9 @@ export function DesignConfigProvider({ children }: { children: ReactNode }) {
     applyUiSize(initial.uiSize);
     return initial;
   });
-  const rootScale = parseFloat(getComputedStyle(document.documentElement).fontSize) / 16;
+  const rootScale = isBrowser
+    ? parseFloat(getComputedStyle(document.documentElement).fontSize) / 16
+    : 1;
 
   useEffect(() => {
     const root = document.documentElement;

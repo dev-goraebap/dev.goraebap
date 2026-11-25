@@ -3,12 +3,26 @@ import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
+import mdx from "@mdx-js/rollup";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkGfm from "remark-gfm";
+import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [
+    // 지침 글의 원본(content/). SKILL.md도 같은 방식으로 읽어 사이트에 보인다.
+    {
+      enforce: "pre",
+      ...mdx({
+        mdExtensions: [".md"],
+        // content 밖의 md와 ?raw로 읽는 파일은 글자 그대로 둔다.
+        include: /[\\/]content[\\/].*\.mdx?$/,
+        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
+      }),
+    },
     tanstackRouter({
       target: "react",
       autoCodeSplitting: true,
@@ -17,7 +31,7 @@ export default defineConfig({
       indexToken: "page",
       routeFileIgnorePattern: "^(api|model|lib|config|index\\.ts)$",
     }),
-    react(),
+    react({ include: /\.(mdx?|[jt]sx?)$/ }),
     tailwindcss(),
   ],
   resolve: {
@@ -29,6 +43,11 @@ export default defineConfig({
   },
   server: {
     port: 5175,
-    fs: { allow: [path.resolve(__dirname, "../.."), path.resolve(__dirname, "../../../plugins/webapp/skills")] },
+    fs: {
+      allow: [
+        path.resolve(__dirname, "../.."),
+        path.resolve(__dirname, "../../../plugins/webapp/skills"),
+      ],
+    },
   },
 });

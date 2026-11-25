@@ -1,11 +1,8 @@
 import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { DETAIL_DOCS } from "@/entities/detail-doc";
 import { LAYOUT_DOCS } from "@/entities/layout-doc";
-import {
-  BACKEND_ENGINEERING_DOCS,
-  FRONTEND_ENGINEERING_DOCS,
-  type GuideDoc,
-} from "@/entities/webapp-doc";
+import { BACKEND_ENGINEERING_DOCS, type GuideDoc } from "@/entities/webapp-doc";
+import { menuDocs, plainText } from "@/entities/content-doc";
 import { PLAYBOOKS } from "@/entities/playbook";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
@@ -77,13 +74,14 @@ const DOC_ENTRIES: DocEntry[] = [
     "/frontend/design-system/packages",
     "패키지, 스타일, 색상 테마 연결",
   ),
-  ...FRONTEND_ENGINEERING_DOCS.map((doc) => ({
+  // 스택 없는 주소로 걸어 두면 고른 스택의 페이지로 열린다.
+  ...menuDocs("frontend/engineering").map((doc) => ({
     id: `frontend:${doc.slug}`,
     group: "Engineering" as const,
-    title: `프론트엔드 ${doc.title}`,
+    title: `프론트엔드 ${doc.meta.title ?? doc.slug}`,
     href: `/frontend/engineering/${doc.slug}`,
-    description: doc.summary,
-    keywords: guideKeywords(doc),
+    description: doc.meta.summary ?? doc.meta.description ?? "",
+    keywords: plainText(doc.source),
   })),
   ...BACKEND_ENGINEERING_DOCS.map((doc) => ({
     id: `backend:${doc.slug}`,

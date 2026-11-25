@@ -93,12 +93,14 @@ function SettingSelect<K extends "font" | "heading" | "latinFont">({
   );
 }
 
-const supportsSquircle = CSS.supports("corner-shape", "squircle");
+const supportsSquircle = typeof CSS !== "undefined" && CSS.supports("corner-shape", "squircle");
 
 export function DesignSettings() {
   const { config, rootScale, updateConfig, resetConfig } = useDesignConfig();
   const isMobile = useIsMobile();
-  const [dark, setDark] = useState(() => document.documentElement.classList.contains("dark"));
+  const [dark, setDark] = useState(
+    () => typeof document === "undefined" || document.documentElement.classList.contains("dark"),
+  );
   const activePreset = THEME_PRESETS.find((preset) => preset.id === config.theme);
 
   function selectMode(next: boolean) {

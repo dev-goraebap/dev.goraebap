@@ -114,7 +114,9 @@ export const DETAIL_DOCS: DetailDocSpec[] = [
         codeLanguage: "ts",
         code: `import Lenis from "lenis";
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+// 빌드 때 정적 페이지를 만드는 서버에는 window가 없다.
+const prefersReducedMotion =
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (!prefersReducedMotion) {
   const lenis = new Lenis({ autoRaf: true });
   // 언마운트 시 lenis.destroy() 호출

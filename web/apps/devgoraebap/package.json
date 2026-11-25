@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "node ../../scripts/build-registry.mjs && vite build",
+    "build": "node ../../scripts/build-registry.mjs && vite build && vite build --ssr src/app/entry-server.tsx --outDir dist-server && node scripts/prerender.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "check:skills": "node scripts/check-skills.mjs",
@@ -22,12 +22,17 @@
     "shiki": "^4.6.0"
   },
   "devDependencies": {
+    "@mdx-js/rollup": "^3.1.1",
     "@tailwindcss/vite": "catalog:",
     "@tanstack/router-plugin": "catalog:",
+    "@types/mdx": "^2.0.14",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@vitejs/plugin-react": "catalog:",
+    "remark-frontmatter": "^5.0.0",
+    "remark-gfm": "^4.0.1",
+    "remark-mdx-frontmatter": "^6.0.0",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:"

@@ -4,7 +4,7 @@ arc42: "8.6, 6"
 
 # 리소스 화면 패턴
 
-리소스 하나(공지, 회의록, 업무, 문서처럼 목록과 자기 주소를 가진 대상)의 목록·상세·생성·수정을 어디에 띄우고 어떻게 오가는지 정합니다. 리소스마다 아래 세 패턴 가운데 하나를 고릅니다. 이 문서는 배치·주소·오가는 방식·언제 쓰나만 정하고, 모양은 컴포넌트 이름으로 가리킵니다. 헤더·목록·상세의 모양은 [페이지 배치](layout-patterns.md), 목록 위 대화상자의 주소 계약은 [라우트 마스킹](../../frontend-interaction/references/route-masking.md), 상태·복귀·직접 링크의 코드 계약은 frontend의 [화면 전환](../../frontend-engineering/references/navigation.md)을 따릅니다.
+리소스 하나(공지, 회의록, 업무, 문서처럼 목록과 자기 주소를 가진 대상)의 목록·상세·생성·수정을 어디에 띄우고 어떻게 오가는지 정합니다. 리소스마다 아래 세 패턴 가운데 하나를 고릅니다. 이 문서는 배치·주소·오가는 방식·언제 쓰나만 정하고, 모양은 컴포넌트 이름으로 가리킵니다. 헤더·목록·상세의 모양은 [페이지 배치](layout-patterns.md), 목록 위 대화상자의 주소 계약은 [라우트 마스킹](../../frontend-interaction/references/route-masking.md), 상태·복귀·직접 링크의 코드 계약은 frontend의 [리소스 주소](../../frontend-engineering/references/resource-routes.md)을 따릅니다.
 
 ## 세 패턴
 

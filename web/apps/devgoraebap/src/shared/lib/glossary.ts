@@ -459,3 +459,10 @@ export function annotateGlossary(texts: [string, string][], componentIds = new S
   }
   return result;
 }
+
+// 표시 없는 본문 한 조각을 잇는다. 같은 seen을 넘기면 여러 조각에 걸쳐 용어마다 처음 나온 곳만 잇는다.
+export function annotatePlain(text: string, seen: Set<string>) {
+  const segments: GlossarySegment[] = [];
+  linkPlain(text, seen, segments);
+  return segments;
+}

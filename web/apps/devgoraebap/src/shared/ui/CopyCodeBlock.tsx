@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Badge } from "@goraebap/ui-react/components/badge";
 import { Button } from "@goraebap/ui-react/components/button";
 import { SystemIcon } from "@goraebap/ui-react/icons";
@@ -6,7 +6,7 @@ import { CodeView } from "./CodeView";
 
 interface CopyCodeBlockProps {
   code: string;
-  label?: string;
+  label?: ReactNode;
   language?: string;
 }
 

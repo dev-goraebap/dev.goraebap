@@ -1,10 +1,21 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import os from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { assertNoDuplicate, buildContentSkills } from './content-skills.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const SKILLS = path.join(root, 'skills');
+// 배포될 스킬 전체를 한 곳에 모아 검사한다: skills/의 원본과, 사이트 content에서 만든 스킬.
+// content를 만들 때 Slot·Fill 짝과 스택 파일 이름, 배포본 밖 링크를 확인하고, 아래 검사가 나머지(스택 이름, 링크, 앵커, 예시 형식)를 본다.
+const SKILLS = await fs.mkdtemp(path.join(os.tmpdir(), 'webapp-skills-'));
+await fs.cp(path.join(root, 'skills'), SKILLS, { recursive: true });
+const contentSkills = await buildContentSkills();
+await assertNoDuplicate(new Set([...contentSkills.keys()].map(file => file.split('/')[0])));
+for (const [file, content] of contentSkills) {
+  await fs.mkdir(path.dirname(path.join(SKILLS, file)), { recursive: true });
+  await fs.writeFile(path.join(SKILLS, file), content);
+}
 
 let skills = 0;
 let links = 0;
@@ -96,7 +107,7 @@ async function checkDir(directory, mode) {
       assert(isExample || !href.includes('github.com/dev-goraebap/dev.goraebap/'), `이 저장소에는 예시 원본 코드가 없습니다. 원본 저장소의 고정 커밋으로 겁니다: ${file} (${href})`);
       if (/^(https?:|#)/.test(href)) continue;
       const target = path.resolve(directory, href.split('#')[0]);
-      assert(!path.relative(root, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);
+      assert(!path.relative(SKILLS, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);
       await fs.access(target);
       const anchor = href.split('#')[1];
       if (anchor && target.endsWith('.md')) {
@@ -110,5 +121,9 @@ async function checkDir(directory, mode) {
   }
 }
 
-await checkDir(SKILLS, 'skills');
+try {
+  await checkDir(SKILLS, 'skills');
+} finally {
+  await fs.rm(SKILLS, { recursive: true, force: true });
+}
 process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, 앵커 ${anchors}개, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);

@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { assertNoDuplicate, buildContentSkills } from './content-skills.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
@@ -42,10 +43,15 @@ export async function packagePlugins() {
     await fs.rm(dist, { recursive: true });
   } catch (e) { if (e.code !== 'ENOENT') throw e; }
 
+  // 사이트 content에서 만든 스킬. skills/에 같은 이름이 남아 있으면 멈춘다.
+  const contentSkills = await buildContentSkills();
+  await assertNoDuplicate(new Set([...contentSkills.keys()].map(file => file.split('/')[0])));
+
   for (const agent of ['claude', 'codex', 'antigravity']) {
     const pluginPath = `${agent}/plugins/webapp`;
     // 프로젝트는 사본 없이 AGENTS.md로 이 플러그인을 가리키고, 작업을 시작할 때 입구(goraebap-mode)를 읽는다.
     await copyFiles(path.join(root, 'skills'), `${pluginPath}/skills`, ['.md', '.yaml']);
+    for (const [file, content] of contentSkills) await put(`${pluginPath}/skills/${file}`, content);
     await put(`${pluginPath}/README.md`, await fs.readFile(path.join(root, 'docs/plugin-usage.md')));
 
     if (agent === 'antigravity') {
@@ -63,7 +69,7 @@ export async function packagePlugins() {
 
     for (const name of explicitOnly) {
       if (agent === 'claude') {
-        const original = await fs.readFile(path.join(root, 'skills', name, 'SKILL.md'), 'utf8');
+        const original = contentSkills.get(`${name}/SKILL.md`) ?? await fs.readFile(path.join(root, 'skills', name, 'SKILL.md'), 'utf8');
         await put(`${pluginPath}/skills/${name}/SKILL.md`, original.replace(/^---(\r?\n)/, '$&disable-model-invocation: true$1'));
       } else {
         await put(`${pluginPath}/skills/${name}/agents/openai.yaml`, 'policy:\n  allow_implicit_invocation: false\n');

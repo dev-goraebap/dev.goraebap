@@ -14,6 +14,8 @@ interface DocsNavItem {
   label: string;
   href?: string;
   icon?: SystemIconName;
+  // 이름 뒤에 붙는 짧은 표시(예: AI)
+  badge?: string;
   children?: DocsNavItem[];
 }
 
@@ -25,6 +27,8 @@ export interface DocsNavGroup {
 interface DocsShellProps {
   label: string;
   groups: DocsNavGroup[];
+  // 사이드바 맨 위에 두는 요소(예: 스택 선택기)
+  header?: ReactNode;
   children: ReactNode;
 }
 
@@ -48,6 +52,11 @@ function DocsNavItemRow({ item, pathname }: { item: DocsNavItem; pathname: strin
         >
           {item.icon && <SystemIcon name={item.icon} className="size-3.5 shrink-0 opacity-80" />}
           <span className="truncate">{item.label}</span>
+          {item.badge && (
+            <span className="border-border text-muted-foreground ml-auto rounded-full border px-1.5 font-mono text-[0.625rem] leading-4">
+              {item.badge}
+            </span>
+          )}
         </Link>
       </li>
     );
@@ -146,7 +155,7 @@ function findTrail(groups: DocsNavGroup[], pathname: string) {
   return undefined;
 }
 
-export function DocsShell({ label, groups, children }: DocsShellProps) {
+export function DocsShell({ label, groups, header, children }: DocsShellProps) {
   const pathname = useRouterState({
     select: (state) => state.location.pathname.replace(/\/$/, "") || "/",
   });
@@ -189,6 +198,7 @@ export function DocsShell({ label, groups, children }: DocsShellProps) {
             }}
             className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-3 pb-[calc(1.5rem+env(safe-area-inset-bottom))]"
           >
+            {header}
             <DocsNavList groups={groups} pathname={pathname} />
           </nav>
         </DrawerContent>
@@ -211,6 +221,7 @@ export function DocsShell({ label, groups, children }: DocsShellProps) {
           data-lenis-prevent
           className="-mt-4 min-h-0 flex-1 [scrollbar-width:none] space-y-5 overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,black_1rem,black_calc(100%-2.5rem),transparent)] pt-4 pr-3 pb-10 [&::-webkit-scrollbar]:hidden"
         >
+          {header}
           <DocsNavList groups={groups} pathname={pathname} />
         </nav>
       </aside>

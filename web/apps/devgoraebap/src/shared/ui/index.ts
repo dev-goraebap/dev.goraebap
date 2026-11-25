@@ -4,6 +4,7 @@ export { AdaptiveWireframe } from "./AdaptiveWireframe";
 export { BrandMark } from "./BrandMark";
 export { CopyCodeBlock } from "./CopyCodeBlock";
 export { DesignSettings } from "./DesignSettings";
+export { DocPager, type DocLink } from "./DocPager";
 export { DocsShell, type DocsNavGroup } from "./DocsShell";
 export { GlossaryTerm } from "./GlossaryTerm";
 export { Glossed, GlossaryText, useGlossaryText } from "./GlossaryText";

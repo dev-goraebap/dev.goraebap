@@ -7,17 +7,20 @@ arc42: "8.4, 2"
 
 # 프론트엔드 엔지니어링
 
-웹 앱은 컴포넌트 기반 화면, 검증한 URL을 다루는 라우터, 서버 데이터 캐시를 맡는 조회 도구로 짭니다. 파일 구조는 FSD(Feature-Sliced Design)를 따르며, 이 플러그인이 쓰는 층과 묶는 법은 [코드 작성](references/structure.md)에 있습니다. 공식 `feature-sliced-design` 스킬이 설치되어 있으면 함께 읽습니다. 어떤 라이브러리와 판을 쓰는지는 프로젝트에서 정하며, 프로젝트가 채택한 스택을 다른 것으로 바꾸는 일을 작업에 끼워 넣지 않습니다.
+웹 앱은 컴포넌트 기반 화면, 검증한 URL을 다루는 라우터, 서버 데이터 캐시를 맡는 조회 도구로 짭니다. 파일 구조는 FSD(Feature-Sliced Design)를 따르며, 이 플러그인이 쓰는 층과 묶는 법은 [화면 계층](references/layers.md)에 있습니다. 공식 `feature-sliced-design` 스킬이 설치되어 있으면 함께 읽습니다. 어떤 라이브러리와 판을 쓰는지는 프로젝트에서 정하며, 프로젝트가 채택한 스택을 다른 것으로 바꾸는 일을 작업에 끼워 넣지 않습니다.
 
 ## 예시
 
-구현 모양은 [examples/](examples/)의 주제별 예시에서 프로젝트 스택과 같은 절만 읽습니다([예시 읽기](../goraebap-mode/references/examples.md)).
+구현 모양은 각 자료에 딸린 `examples/`의 예시에서 프로젝트 스택과 같은 절만 읽습니다([예시 읽기](../goraebap-mode/references/examples.md)).
 
 ## 읽을 자료
 
-- [코드 작성](references/structure.md): 컴포넌트·훅·Effect, 화면 계층, 렌더링 방식을 다룰 때 읽습니다.
-- [상태와 데이터 흐름](references/data-flow.md): 조회·변경·폼·라우트를 다룰 때 읽습니다.
-- [화면 전환](references/navigation.md): 로딩·목록 복귀·상세 이동을 다룰 때 읽습니다.
+- [화면 계층](references/layers.md): 층과 pages 폴더, 키트·앱 셸의 경계, 렌더링 방식을 다룰 때 읽습니다.
+- [코드 규칙](references/code-style.md): 파일 이름, 파생값과 부수 효과, 메모이제이션을 다룰 때 읽습니다.
+- [상태 소유](references/state.md): 서버 데이터·URL·입력 초안의 소유와 저장 중 편집을 다룰 때 읽습니다.
+- [조회와 변경](references/data-flow.md): 조회 옵션·준비 함수·변경 후 무효화·큰 목록을 다룰 때 읽습니다.
+- [화면 전환](references/navigation.md): 로딩·미리 준비·지연 로딩·목록 복귀를 다룰 때 읽습니다.
+- [리소스 주소](references/resource-routes.md): 목록·상세·생성·수정의 주소, 대화상자 안 이동, 공간 주소를 다룰 때 읽습니다.
 
 화면 패턴을 구현·수정할 때는 디자인 시스템 지침의 [패턴 카탈로그](../frontend-design-system/references/pattern-catalog.md)에서 사용 기준과 실제 컴포넌트를 함께 찾습니다. 견본에는 제품과 같은 라우터·상태 경계를 연결하고 데이터와 시작 상태를 제어합니다.
 

@@ -5,3 +5,4 @@ dist/
 **/routeTree.gen.ts
 .angular/
 apps/devgoraebap/public/r/
+dist-server/

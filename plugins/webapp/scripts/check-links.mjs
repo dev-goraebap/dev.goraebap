@@ -1,8 +1,9 @@
-// 예시 파일(skills/<스킬>/examples/) 안의 GitHub 고정 커밋 링크가 실제로 존재하는지 온라인으로 확인한다.
+// 예시 파일(skills/<스킬>/examples/와 사이트 content의 스택 파일) 안의 GitHub 고정 커밋 링크가 실제로 존재하는지 온라인으로 확인한다.
 // 예시를 최신화하거나 링크 상태를 점검할 때 실행한다(npm run check:links).
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { CONTENT } from './content-skills.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const SKILLS = path.join(root, 'skills');
@@ -12,7 +13,7 @@ async function collect(directory, out) {
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
     if (entry.isDirectory()) { await collect(file, out); continue; }
-    if (!file.endsWith('.md')) continue;
+    if (!/\.mdx?$/.test(file)) continue;
     const content = await fs.readFile(file, 'utf8');
     for (const [, href] of content.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
       if (GITHUB_PINNED_LINK.test(href)) {
@@ -26,6 +27,7 @@ async function collect(directory, out) {
 
 const urlMap = new Map();
 await collect(SKILLS, urlMap);
+await collect(CONTENT, urlMap);
 
 const urls = [...urlMap.keys()];
 const broken = [];

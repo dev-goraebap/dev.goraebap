@@ -4,11 +4,20 @@ import path from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 import { explicitOnly, packagePlugins } from '../scripts/package-plugins.mjs';
+import { buildContentSkills } from '../scripts/content-skills.mjs';
 import { compareVersions, notice } from '../hooks/update-check.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pkg = JSON.parse(await fs.readFile(path.join(root, 'package.json'), 'utf8'));
 const dist = await packagePlugins();
+// 원본 스킬: skills/의 폴더와, 사이트 content에서 만든 스킬. 이름 → SKILL.md
+const contentSkills = await buildContentSkills();
+const originals = new Map();
+for (const name of await fs.readdir(path.join(root, 'skills')))
+  originals.set(name, await fs.readFile(path.join(root, 'skills', name, 'SKILL.md'), 'utf8'));
+for (const [file, content] of contentSkills)
+  if (file.endsWith('/SKILL.md')) originals.set(file.split('/')[0], content);
+const sourceNames = [...originals.keys()].sort();
 
 async function files(directory) {
   const out = [];
@@ -24,11 +33,10 @@ for (const agent of ['claude', 'codex']) {
   const plugin = path.join(dist, agent, 'plugins/webapp');
 
   test(`${agent}: 원본의 지침과 예시를 모두 그대로 담는다`, async () => {
-    const source = (await fs.readdir(path.join(root, 'skills'))).sort();
     const packaged = (await fs.readdir(path.join(plugin, 'skills'))).sort();
-    assert.deepEqual(packaged, source);
-    for (const name of source) {
-      const original = await fs.readFile(path.join(root, 'skills', name, 'SKILL.md'), 'utf8');
+    assert.deepEqual(packaged, sourceNames);
+    for (const name of sourceNames) {
+      const original = originals.get(name);
       const packagedSkill = await fs.readFile(path.join(plugin, 'skills', name, 'SKILL.md'), 'utf8');
       assert.equal(packagedSkill.replace(/disable-model-invocation: true\r?\n/, ''), original);
     }
@@ -76,11 +84,10 @@ for (const agent of ['claude', 'codex']) {
 
 test('antigravity: 원본의 지침·예시와 루트 plugin.json을 규격대로 담는다', async () => {
   const plugin = path.join(dist, 'antigravity/plugins/webapp');
-  const source = (await fs.readdir(path.join(root, 'skills'))).sort();
   const packaged = (await fs.readdir(path.join(plugin, 'skills'))).sort();
-  assert.deepEqual(packaged, source);
-  for (const name of source) {
-    const original = await fs.readFile(path.join(root, 'skills', name, 'SKILL.md'), 'utf8');
+  assert.deepEqual(packaged, sourceNames);
+  for (const name of sourceNames) {
+    const original = originals.get(name);
     const packagedSkill = await fs.readFile(path.join(plugin, 'skills', name, 'SKILL.md'), 'utf8');
     assert.equal(packagedSkill, original);
   }

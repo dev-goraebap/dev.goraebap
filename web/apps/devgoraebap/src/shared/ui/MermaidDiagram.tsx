@@ -30,7 +30,10 @@ function readTheme() {
 
 // 스크롤 라이브러리도 html 클래스를 바꾸므로, 실제로 쓰는 색과 글꼴이 달라졌을 때만 다시 그린다.
 function useThemeKey() {
-  const [key, setKey] = useState(() => JSON.stringify(readTheme()));
+  // 정적 페이지를 만드는 서버에는 계산된 스타일이 없어 빈 키로 시작한다.
+  const [key, setKey] = useState(() =>
+    typeof document === "undefined" ? "" : JSON.stringify(readTheme()),
+  );
   useEffect(() => {
     const observer = new MutationObserver(() => setKey(JSON.stringify(readTheme())));
     observer.observe(document.documentElement, { attributeFilter: THEME_ATTRIBUTES });
