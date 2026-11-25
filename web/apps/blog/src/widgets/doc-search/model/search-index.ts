@@ -12,6 +12,7 @@ export const DOC_GROUPS = [
   "파운데이션",
   "컴포넌트",
   "레이아웃",
+  "패턴",
   "Interaction",
   "Agents",
   "용어집",
@@ -124,6 +125,14 @@ const DOC_ENTRIES: DocEntry[] = [
     href: `/frontend/design-system/layouts/${doc.id}`,
     description: doc.summary,
     keywords: `${doc.id} ${doc.summary}`,
+  })),
+  ...menuDocs("frontend/design-system").map((doc) => ({
+    id: `design-system:${doc.slug}`,
+    group: "패턴" as const,
+    title: doc.meta.title ?? doc.slug,
+    href: `/frontend/design-system/${doc.slug}`,
+    description: doc.meta.summary ?? doc.meta.description ?? "",
+    keywords: plainText(doc.source),
   })),
   ...menuDocs("frontend/interaction").map((doc) => ({
     id: `interaction:${doc.slug}`,
