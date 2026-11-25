@@ -15,7 +15,7 @@ const catalog = [
   .join("\n");
 
 // 문서로 옮긴 스킬과, 아직 옮기지 않은 참고 자료(이유와 함께)
-// frontend-engineering은 content가 원본이라 이 짝 검사가 필요 없다(플러그인 변환기가 링크를 확인한다).
+// frontend-engineering·frontend-interaction은 content가 원본이라 이 짝 검사가 필요 없다(플러그인 변환기가 링크를 확인한다).
 const COVERED_SKILLS = ["backend-engineering"];
 const NOT_YET = {
   "backend-engineering/references/untrusted-content.md":

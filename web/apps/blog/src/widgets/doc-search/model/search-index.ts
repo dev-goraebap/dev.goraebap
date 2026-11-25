@@ -1,5 +1,4 @@
 import { COMPONENT_DOCS } from "@/entities/component-doc";
-import { DETAIL_DOCS } from "@/entities/detail-doc";
 import { LAYOUT_DOCS } from "@/entities/layout-doc";
 import { BACKEND_ENGINEERING_DOCS, type GuideDoc } from "@/entities/webapp-doc";
 import { menuDocs, plainText } from "@/entities/content-doc";
@@ -126,26 +125,14 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.summary,
     keywords: `${doc.id} ${doc.summary}`,
   })),
-  page("Interaction", "Interaction 개요", "/frontend/interaction", "화면 완성도를 높이는 기준"),
-  ...DETAIL_DOCS.flatMap((doc) => [
-    {
-      id: `detail:${doc.slug}`,
-      group: "Interaction" as const,
-      title: doc.title,
-      href: `/frontend/interaction/${doc.slug}`,
-      description: doc.summary,
-      keywords: `${doc.slug} ${doc.summary} ${doc.problem ?? ""} ${doc.guidance ?? ""}`,
-    },
-    ...(doc.sections ?? []).map((section) => ({
-      id: `detail:${doc.slug}:${section.id}`,
-      group: "Interaction" as const,
-      title: section.title,
-      href: `/frontend/interaction/${doc.slug}`,
-      hash: section.id,
-      description: doc.title,
-      keywords: `${doc.title} ${section.problem} ${section.guidance}`,
-    })),
-  ]),
+  ...menuDocs("frontend/interaction").map((doc) => ({
+    id: `interaction:${doc.slug}`,
+    group: "Interaction" as const,
+    title: doc.meta.title ?? doc.slug,
+    href: `/frontend/interaction/${doc.slug}`,
+    description: doc.meta.summary ?? doc.meta.description ?? "",
+    keywords: plainText(doc.source),
+  })),
   page("Agents", "Agents", "/playbook/agents", "webapp@dev-goraebap 플러그인 설치와 범위"),
   page("용어집", "용어집", "/frontend/glossary", "문서에 쓰는 용어 모음"),
   ...Object.entries(GLOSSARY).map(([key, entry]) => ({

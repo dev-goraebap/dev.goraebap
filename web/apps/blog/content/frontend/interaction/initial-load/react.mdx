@@ -1,0 +1,17 @@
+<Fill name="boot-gate">
+세션·권한·초기 데이터가 준비되기 전까지 스플래시 화면을 유지하고, 실패하면 오류 화면으로 넘깁니다.
+
+```tsx
+export function AppBootGate({ children }: { children: ReactNode }) {
+  const { isPending, isError } = useInitialSessionQuery();
+
+  if (isPending) {
+    return <BootSplashScreen />; // 세션·권한·초기 데이터 준비 전까지 유지
+  }
+  if (isError) {
+    return <BootErrorFallback />;
+  }
+  return <>{children}</>;
+}
+```
+</Fill>

@@ -46,7 +46,7 @@ export const createAppRouter = (history?: RouterHistory) =>
       types: ({ fromLocation, toLocation }) =>
         hasPanel(fromLocation?.search) || hasPanel(toLocation.search) ? false : ["page"],
     },
-    defaultPendingMs: 180,
+    defaultPendingMs: 150,
     defaultNotFoundComponent: RouteNotFound,
     defaultErrorComponent: RouteError,
   });

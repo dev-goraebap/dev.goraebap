@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, createRootRoute, redirect, useRouterState } from "@tanstack/react-router";
 import Lenis from "lenis";
 import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
@@ -6,7 +6,9 @@ import { DesignConfigProvider } from "@/shared/lib/design-config";
 import { DesignSettings, SiteFooter, WorkspaceSwitcher } from "@/shared/ui";
 import { DocSearch } from "@/widgets/doc-search";
 
-const PENDING_BAR_DELAY_MS = 180;
+// 이 시간 안에 끝나는 이동에는 진행 막대를 띄우지 않고, 한 번 띄운 막대는 최소 시간만큼 둔다.
+const PENDING_BAR_DELAY_MS = 150;
+const PENDING_BAR_MIN_MS = 300;
 
 function useSmoothScroll(enabled: boolean) {
   useEffect(() => {
@@ -20,17 +22,24 @@ function useSmoothScroll(enabled: boolean) {
 function RoutePendingBar() {
   const isLoading = useRouterState({ select: (state) => state.isLoading });
   const [visible, setVisible] = useState(false);
+  const shownAt = useRef(0);
 
   useEffect(() => {
-    if (!isLoading) return;
-    const timer = window.setTimeout(() => setVisible(true), PENDING_BAR_DELAY_MS);
-    return () => {
-      window.clearTimeout(timer);
-      setVisible(false);
-    };
+    if (isLoading) {
+      const timer = window.setTimeout(() => {
+        shownAt.current = Date.now();
+        setVisible(true);
+      }, PENDING_BAR_DELAY_MS);
+      return () => window.clearTimeout(timer);
+    }
+    const timer = window.setTimeout(
+      () => setVisible(false),
+      Math.max(0, PENDING_BAR_MIN_MS - (Date.now() - shownAt.current)),
+    );
+    return () => window.clearTimeout(timer);
   }, [isLoading]);
 
-  if (!isLoading || !visible) return null;
+  if (!visible) return null;
   return (
     <div aria-hidden="true" className="bg-primary fixed inset-x-0 top-0 z-50 h-0.5 animate-pulse" />
   );

@@ -23,8 +23,8 @@ const SKILLS = path.join(root, 'skills');
 export const SPACE_STACKS = { frontend: ['react', 'angular'], backend: ['spring'] };
 const SPACE_TITLES = { repo: '레포 구조', frontend: '프론트엔드', backend: '백엔드' };
 const ALL_STACKS = Object.values(SPACE_STACKS).flat();
-// 사람 전용 블록. 스킬에서는 통째로 지운다.
-const HUMAN_ONLY = ['Story', 'Diagram'];
+// 사람 전용 블록(1인칭 글, 그림, 움직이는 견본). 스킬에서는 통째로 지운다.
+const HUMAN_ONLY = ['Story', 'Diagram', 'Demo'];
 // 감싸기만 하는 블록. 스킬에서는 안의 글만 남긴다.
 const UNWRAP = ['Callout'];
 const KNOWN = new Set(['Slot', 'Fill', ...HUMAN_ONLY, ...UNWRAP]);

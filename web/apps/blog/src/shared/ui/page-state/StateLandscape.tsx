@@ -45,6 +45,8 @@ const shown = new Set<string>();
 
 function isAtHand(file: string) {
   if (shown.has(file)) return true;
+  // 빌드 때 정적 페이지를 그리는 서버에는 Image가 없다.
+  if (typeof Image === "undefined") return false;
   const probe = new Image();
   probe.src = file;
   return probe.complete && probe.naturalWidth > 0;

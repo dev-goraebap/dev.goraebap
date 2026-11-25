@@ -1,0 +1,107 @@
+---
+title: 화면 크기와 rem
+icon: font
+group: 화면
+order: 7
+summary: 큰 화면 자동 확대와 사용자 화면 크기 설정을 곱하고 125%에서 자르는 기준, rem·px을 나누는 법
+arc42: "8.5"
+---
+
+import { ScaleMethodTable, UiSizeCompareDemo, UnitGuideTable } from "@/entities/interaction-demo";
+
+## 브라우저 확대가 있는데 왜 필요한가
+
+브라우저 확대는 어느 사이트에서나 쓰는 기본 수단이며 사이트 설정이 이를 대신하지는 않습니다. 다만 브라우저를 확대하면 CSS 뷰포트가 좁아져 데스크톱에서도 휴대폰 배치로 넘어갈 수 있습니다. 넓은 화면 배치는 그대로 두고 글자와 컨트롤만 키우고 싶을 때 사이트의 화면 크기 설정이 도움이 됩니다.
+
+<Demo>
+  <ScaleMethodTable />
+</Demo>
+
+```html
+<!-- 확대를 막는 maximum-scale, user-scalable=no는 쓰지 않습니다. -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+```
+
+이 설정은 브라우저 기능 위에 더하는 선택지입니다. 뷰포트 메타에서 확대를 막지 않으며, WCAG 200% 글자 확대와 320 CSS 픽셀 폭 리플로우 기준도 그대로 지킵니다. 사이트 설정은 125%까지만 다루므로 브라우저 확대를 대체하지 않습니다.
+
+## 큰 화면 자동 확대와 사용자 설정
+
+1920px부터 너비에 따라 루트 글자를 키워 2560px에서 118.75%(19px)에 이르게 합니다. 27인치 QHD에서 24인치 FHD의 16px과 같은 실제 크기가 됩니다. 큰 화면 배율은 사용 환경을 보고 프로젝트가 정합니다.
+
+사용자가 고른 화면 크기는 이 자동 배율에 곱합니다. 모니터마다 실제 크기를 먼저 맞춘 뒤 같은 비율로 키우므로, '크게'는 어느 모니터에서나 같은 만큼 커집니다. 다만 합친 값은 125%를 넘지 않게 자릅니다. 그래서 2560px 모니터에서는 큰 단계들이 125% 가까이에서 모입니다.
+
+```css
+/* --auto-scale: 1920px부터 너비에 따라 1에서 1.1875(2560px)까지 늘어나는 수 */
+/* --ui-size: 사용자가 고른 단계(작게·기본·크게·더 크게)의 백분율 */
+html {
+  font-size: min(calc(var(--auto-scale, 1) * var(--ui-size, 100%)), 125%);
+}
+```
+
+## rem을 쓰는 곳과 px을 남기는 곳
+
+모든 수치를 기계적으로 rem으로 바꿀 필요는 없습니다. 글자와 버튼처럼 읽고 누르는 요소는 설정을 따라 커져야 하지만, 1px 테두리나 그림자까지 함께 두꺼워지면 화면만 둔탁해집니다.
+
+<Demo>
+  <UnitGuideTable />
+</Demo>
+
+```css
+.field {
+  height: 2.25rem;
+  padding-inline: 0.75rem;
+  font-size: 0.875rem;
+  border: 1px solid var(--input);
+}
+```
+
+기준은 하나입니다. 이 값이 커졌을 때 읽거나 누르기 쉬워지는지 따져 보고, 그렇다면 rem을 쓰고 아니라면 px을 남깁니다. 브라우저 확대도 rem을 따라 함께 커져야 하므로, 컴포넌트가 px로 고정한 크기는 속성 값으로 끝내지 말고 실제로 적용된 CSS를 확인합니다.
+
+## 사용자가 고르는 화면 크기
+
+루트 글자 크기를 px로 고정하면 브라우저의 글꼴 크기 설정이 무시됩니다. 퍼센트로 지정하면 브라우저 설정 위에 사용자의 선택이 곱해지고, rem으로 설계한 크기와 간격이 한꺼번에 따라옵니다.
+
+<Demo>
+  <UiSizeCompareDemo />
+</Demo>
+
+```css
+html {
+  font-size: var(--ui-size, 100%);
+}
+@media (any-pointer: coarse) {
+  input:not([type="checkbox"], [type="radio"], [type="range"]),
+  textarea {
+    font-size: max(1rem, 16px);
+  }
+}
+```
+
+사용자가 고른 작게·기본·크게·더 크게 단계는 첫 화면을 그리기 전에 적용해 초기 크기가 튀지 않게 합니다. iOS는 16px 미만 입력창에 초점이 오면 화면을 자동 확대하므로, 터치 입력이 가능한 환경에서는 입력창 글자만 16px 아래로 내려가지 않게 합니다.
+
+## 미디어 쿼리와 컨테이너 쿼리의 차이
+
+미디어 쿼리의 rem은 문서에 지정한 값이 아니라 브라우저 초기값을 기준으로 계산하므로 사이트 설정을 바꿔도 전환 지점이 움직이지 않습니다. 반면 컨테이너 쿼리의 rem은 계산된 값을 따르므로 글자를 키우면 전환 지점도 함께 커집니다.
+
+```css
+/* 화면 크기 설정과 무관하게 1024px 기준 */
+@media (width >= 64rem) {
+  .shell { grid-template-columns: 16rem 1fr; }
+}
+/* 18px 기준이면 432px, 20px 기준이면 480px에서 전환 */
+@container (width >= 24rem) {
+  .card { flex-direction: row; }
+}
+```
+
+사이드바 같은 전체 페이지 배치는 미디어 쿼리로 안정적으로 유지하고, 글자가 커졌을 때 먼저 세로로 접혀야 하는 카드나 좁은 패널은 컨테이너 쿼리로 전환합니다.
+
+## 참고 자료
+
+- [Understanding SC 1.4.4: Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) · W3C WCAG 2.2: 글자를 200%까지 키워도 내용과 기능을 잃지 않아야 하는 기준입니다.
+- [Understanding SC 1.4.10: Reflow](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html) · W3C WCAG 2.2: 320 CSS 픽셀 폭에서도 가로·세로 동시 스크롤 없이 읽혀야 하는 기준입니다.
+- [G178: 글자 크기를 조절하는 페이지 내 컨트롤](https://www.w3.org/WAI/WCAG22/Techniques/general/G178) · W3C WCAG 2.2 Techniques: 페이지 안에 글자 크기 조절을 두는 기법입니다. 200%까지 지원해야 충족하므로, 125%까지인 이 설정은 브라우저 확대를 대신하지 않습니다.
+- [Media Queries Level 4](https://www.w3.org/TR/mediaqueries-4/) · W3C: 미디어 쿼리의 rem 같은 상대 단위가 초기값을 기준으로 계산된다고 정의합니다.
+- [CSS Conditional Rules Level 5](https://www.w3.org/TR/css-conditional-5/) · W3C: 컨테이너 쿼리의 상대 단위가 계산된 값을 기준으로 동작한다고 정의합니다.
+- [font-size](https://developer.mozilla.org/en-US/docs/Web/CSS/font-size) · MDN: 접근성을 위해 사용자의 브라우저 기본 글꼴 크기에 상대적인 단위를 권장합니다.
+- [Typography](https://web.dev/learn/design/typography) · web.dev: 글자 크기를 뷰포트 단위만으로 정하면 사용자가 확대할 수 없는 문제를 설명합니다.
