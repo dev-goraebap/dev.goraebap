@@ -69,7 +69,7 @@ async function findMenus() {
   return menus.sort((a, b) => a.space.localeCompare(b.space) || a.menu.localeCompare(b.menu));
 }
 
-/** content로 옮긴 지침(메뉴 SKILL.md)의 이름. skills/의 지침이 이 이름을 가리키면 사이트가 옮긴 페이지로 잇는다. */
+/** content로 옮긴 지침(메뉴 SKILL.md)의 이름. skills/의 지침이 이 이름의 없는 파일을 가리키면 사이트가 옮긴 페이지로 잇는다. */
 export async function contentSkillNames() {
   const names = new Set();
   for (const { dir } of await findMenus()) names.add((await parse(path.join(dir, 'SKILL.md'))).meta.name);
@@ -91,7 +91,6 @@ export async function buildContentSkill() {
     const skillFile = path.join(dir, 'SKILL.md');
     const { meta } = await parse(skillFile);
     if (!meta.name || !meta.description) throw new Error(`SKILL.md에 name·description이 없습니다: ${skillFile}`);
-    if (await exists(path.join(SKILLS, meta.name))) throw new Error(`content로 옮긴 지침이 skills/에도 있습니다: ${meta.name}`);
     const stacks = SPACE_STACKS[space] ?? [];
     // SKILL.md에서 링크로 닿는 같은 메뉴 안의 문서
     const docs = [];
@@ -110,6 +109,12 @@ export async function buildContentSkill() {
         docs.push(linked);
       });
     }
+    // 한 메뉴를 나눠 옮기는 동안 skills/에 같은 지침 폴더가 남아 있을 수 있다. 같은 이름의 문서가 두 곳에 함께 있으면 원본이 흐려지므로 멈춘다.
+    for (const doc of docs)
+      for (const kind of ['references', 'examples']) {
+        const old = path.join(SKILLS, meta.name, kind, `${docSlug(doc)}.md`);
+        if (await exists(old)) throw new Error(`같은 문서가 content와 skills/에 함께 있습니다: ${path.relative(repo, doc)} ↔ ${path.relative(repo, old)}`);
+      }
     for (const doc of docs) {
       const base = `references/${space}/${menu}/${docSlug(doc)}`;
       target.set(doc, `${base}/index.md`);
