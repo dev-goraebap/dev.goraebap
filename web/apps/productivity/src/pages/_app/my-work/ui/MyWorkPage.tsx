@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { boardGroupsOptions, CATEGORIES, workspaceWorkItemHref, type WorkItemBoardGroup, newWorkItemHref } from '@/entities/work-item';
 import { useOpenPanel } from '@/shared/lib/panel';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { Page } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { pageCrumbs } from '@/shared/ui/nav-icon';

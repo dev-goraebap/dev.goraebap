@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { sessionOptions } from '@/shared/auth';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { CheckIcon } from '@/shared/ui/kit/icon';
 import { SettingsPage, SettingsSection } from '@/shared/ui/kit/settings';
 

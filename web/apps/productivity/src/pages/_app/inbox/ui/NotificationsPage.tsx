@@ -7,7 +7,7 @@ import {
 } from '@/entities/notification';
 import { activitySplit } from '@/features/activity-navigation';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { DetailSurface } from '@/shared/ui/kit/detail-surface';
 import type { FilterDef } from '@/shared/ui/kit/filter';
 import { BellIcon, CircleCheckIcon } from '@/shared/ui/kit/icon';

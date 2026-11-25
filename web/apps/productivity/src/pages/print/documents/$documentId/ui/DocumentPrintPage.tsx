@@ -5,9 +5,9 @@ import {
   DEFAULT_PAGE_SETUP, DocumentSettings, formatOf, PageCanvas, pageSetupOf, printPageRule, type PageLayout, type PageSetup, type SettingsTab,
 } from '@/shared/ui/paged-document';
 import { RichBody, type RichBodySnapshot, type RichBodyStore } from '@/shared/ui/rich-body';
-import { Button } from '@/shared/ui/kit/button';
-import { Spinner } from '@/shared/ui/kit/spinner';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 import { useQueries, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from '@tanstack/react-router';
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';

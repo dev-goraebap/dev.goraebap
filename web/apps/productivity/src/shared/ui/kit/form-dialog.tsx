@@ -1,9 +1,9 @@
-import type { FormEvent, ReactNode } from "react"
+import type { SubmitEvent, ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { Button } from "@/shared/ui/kit/button"
-import { Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/shared/ui/kit/dialog"
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/shared/ui/kit/drawer"
-import { Spinner } from "@/shared/ui/kit/spinner"
+import { Button } from "@goraebap/ui-react/compact/button"
+import { Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@goraebap/ui-react/compact/dialog"
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@goraebap/ui-react/compact/drawer"
+import { Spinner } from "@goraebap/ui-react/components/spinner"
 
 /**
  * 짧은 양식(cowork FormDialog): 제목 · 설명 · 칸 · 취소와 제출. 데스크톱은 대화상자, 휴대폰은 바텀시트.
@@ -26,7 +26,7 @@ export function FormDialog({ open, onOpenChange, title, description, submitLabel
 }) {
   const isMobile = useIsMobile()
   const change = (next: boolean) => { if (!isPending) onOpenChange(next) }
-  const submit = (event: FormEvent) => {
+  const submit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!isSubmitDisabled && !isPending) onSubmit()
   }

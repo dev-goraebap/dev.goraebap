@@ -2,7 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { libraryOptions, saveDocumentOrder, useCreateBoxDocument, useDeleteDocument, useRenameDocument, type DocumentRow } from '@/entities/document';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
 import { DetailSurface } from '@/shared/ui/kit/detail-surface';
 import { PlusIcon } from '@/shared/ui/kit/icon';

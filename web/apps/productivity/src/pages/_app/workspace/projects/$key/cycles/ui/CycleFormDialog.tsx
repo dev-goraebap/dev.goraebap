@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useId, useState } from 'react';
 import { createCycle, editCycle, refreshWorkItems, type Cycle } from '@/entities/work-item';
 import { DatePicker } from '@/shared/ui/kit/date-picker';
-import { Field, FieldError, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldError, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
-import { Input } from '@/shared/ui/kit/input';
-import { Textarea } from '@/shared/ui/kit/textarea';
+import { Input } from '@goraebap/ui-react/compact/input';
+import { Textarea } from '@goraebap/ui-react/components/textarea';
 
 export const iso = (date: Date) => date.toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
 const plusDays = (day: string, days: number) => { const date = new Date(`${day}T00:00:00`); date.setDate(date.getDate() + days); return iso(date); };
@@ -50,7 +50,7 @@ export function CycleFormDialog({ projectKey, cycle, cycles, onClose }: { projec
     </div>
     <Field>
       <FieldLabel htmlFor={`${id}-goal`}>목표</FieldLabel>
-      <Textarea id={`${id}-goal`} rows={3} maxLength={500} placeholder="이 사이클에서 끝낼 것 (선택)" value={goal} onChange={event => setGoal(event.target.value)} />
+      <Textarea appearance="compact" id={`${id}-goal`} rows={3} maxLength={500} placeholder="이 사이클에서 끝낼 것 (선택)" value={goal} onChange={event => setGoal(event.target.value)} />
     </Field>
     {save.error ? <p role="alert" className="text-sm text-destructive">{save.error.message}</p> : null}
   </FormDialog>;

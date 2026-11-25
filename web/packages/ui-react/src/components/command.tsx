@@ -1,8 +1,10 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Command as CommandPrimitive } from "cmdk"
-import { cn } from "cn"
+import { commandSlots } from "@goraebap/design-system/recipes/command";
+
+import * as React from "react";
+import { Command as CommandPrimitive } from "cmdk";
+import { mergeClassName } from "../lib/utils";
 
 import {
   Dialog,
@@ -10,12 +12,11 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/shared/ui/kit/dialog"
-import {
-  InputGroup,
-  InputGroupAddon,
-} from "@/shared/ui/kit/input-group"
-import { SearchIcon, CheckIcon } from "@/shared/ui/kit/icon"
+} from "../compact/dialog";
+import { InputGroup, InputGroupAddon } from "./input-group";
+import { SystemIcon } from "../icons";
+
+const styles = commandSlots();
 
 function Command({
   className,
@@ -24,13 +25,10 @@ function Command({
   return (
     <CommandPrimitive
       data-slot="command"
-      className={cn(
-        "flex size-full flex-col overflow-hidden rounded-xl! bg-popover p-1 text-popover-foreground",
-        className
-      )}
+      className={mergeClassName(styles.command(), className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandDialog({
@@ -43,30 +41,31 @@ function CommandDialog({
   ...props
 }: Omit<React.ComponentProps<typeof Dialog>, "children"> & {
   /** 열 때 초점을 줄 곳(검색 칸). 주지 않으면 대화상자가 정한다. */
-  initialFocus?: React.ComponentProps<typeof DialogContent>["initialFocus"]
-  title?: string
-  description?: string
-  className?: string
-  showCloseButton?: boolean
-  children: React.ReactNode
+  initialFocus?: React.ComponentProps<typeof DialogContent>["initialFocus"];
+  title?: string;
+  description?: string;
+  className?: string;
+  showCloseButton?: boolean;
+  children: React.ReactNode;
 }) {
   return (
     <Dialog {...props}>
-      <DialogHeader className="sr-only">
+      <DialogHeader className={styles.commandDialogDialogHeader()}>
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
-      <DialogContent initialFocus={initialFocus}
-        className={cn(
-          "overflow-hidden p-0",
-          className
+      <DialogContent
+        initialFocus={initialFocus}
+        className={mergeClassName(
+          styles.commandDialogDialogContent(),
+          className,
         )}
         showCloseButton={showCloseButton}
       >
         {children}
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 function CommandInput({
@@ -74,22 +73,25 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
-    <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+    <div
+      data-slot="command-input-wrapper"
+      className={styles.commandInputWrapper()}
+    >
+      <InputGroup className={styles.commandInputInputGroup()}>
         <CommandPrimitive.Input
           data-slot="command-input"
-          className={cn(
-            "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
-            className
-          )}
+          className={mergeClassName(styles.commandInput(), className)}
           {...props}
         />
         <InputGroupAddon>
-          <SearchIcon className="size-4 shrink-0 opacity-50" />
+          <SystemIcon
+            name="search"
+            className={styles.commandInputSearchIcon()}
+          />
         </InputGroupAddon>
       </InputGroup>
     </div>
-  )
+  );
 }
 
 function CommandList({
@@ -99,13 +101,10 @@ function CommandList({
   return (
     <CommandPrimitive.List
       data-slot="command-list"
-      className={cn(
-        "no-scrollbar max-h-72 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none",
-        className
-      )}
+      className={mergeClassName(styles.commandList(), className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandEmpty({
@@ -115,10 +114,10 @@ function CommandEmpty({
   return (
     <CommandPrimitive.Empty
       data-slot="command-empty"
-      className={cn("py-6 text-center text-sm", className)}
+      className={mergeClassName(styles.commandEmpty(), className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandGroup({
@@ -128,13 +127,10 @@ function CommandGroup({
   return (
     <CommandPrimitive.Group
       data-slot="command-group"
-      className={cn(
-        "overflow-hidden p-1 text-foreground **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:py-1.5 **:[[cmdk-group-heading]]:text-xs **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-muted-foreground",
-        className
-      )}
+      className={mergeClassName(styles.commandGroup(), className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandSeparator({
@@ -144,10 +140,10 @@ function CommandSeparator({
   return (
     <CommandPrimitive.Separator
       data-slot="command-separator"
-      className={cn("-mx-1 h-px bg-border", className)}
+      className={mergeClassName(styles.commandSeparator(), className)}
       {...props}
     />
-  )
+  );
 }
 
 function CommandItem({
@@ -158,16 +154,13 @@ function CommandItem({
   return (
     <CommandPrimitive.Item
       data-slot="command-item"
-      className={cn(
-        "group/command-item relative flex min-h-9 cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm outline-hidden select-none in-data-[slot=dialog-content]:rounded-lg! data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 data-selected:bg-accent data-selected:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-selected:*:[svg]:text-foreground",
-        className
-      )}
+      className={mergeClassName(styles.commandItem(), className)}
       {...props}
     >
       {children}
-      <CheckIcon className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" />
+      <SystemIcon name="check" className={styles.commandItemCheckIcon()} />
     </CommandPrimitive.Item>
-  )
+  );
 }
 
 function CommandShortcut({
@@ -177,13 +170,10 @@ function CommandShortcut({
   return (
     <span
       data-slot="command-shortcut"
-      className={cn(
-        "ml-auto text-xs tracking-widest text-muted-foreground group-data-selected/command-item:text-foreground",
-        className
-      )}
+      className={mergeClassName(styles.commandShortcut(), className)}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -196,4 +186,4 @@ export {
   CommandItem,
   CommandShortcut,
   CommandSeparator,
-}
+};

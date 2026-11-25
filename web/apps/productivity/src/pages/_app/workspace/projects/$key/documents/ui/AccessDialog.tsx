@@ -3,11 +3,11 @@ import { useState } from 'react';
 import { accessOptions, useReplaceAccess, type Grant, type GrantSubject } from '@/entities/document';
 import { orgChartOptions } from '@/entities/organization';
 import { projectsOptions } from '@/entities/project';
-import { Alert, AlertTitle } from '@/shared/ui/kit/alert';
-import { Button } from '@/shared/ui/kit/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/kit/dialog';
+import { Alert, AlertTitle } from '@goraebap/ui-react/compact/alert';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@goraebap/ui-react/compact/dialog';
 import { LockIcon, OctagonXIcon, RestoreIcon } from '@/shared/ui/kit/icon';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { ACCESS_LEVEL_TEXT, AccessGrantLine } from './AccessGrantLine';
 import { AccessSubjectPicker } from './AccessSubjectPicker';
 

@@ -6,6 +6,7 @@ export const skeletonVariants = tv({
     shape: {
       line: "h-4 rounded-md",
       block: "rounded-lg",
+      rounded: "rounded-md",
       circle: "rounded-full",
     },
   },

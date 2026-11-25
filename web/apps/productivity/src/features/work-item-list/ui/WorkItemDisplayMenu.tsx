@@ -1,4 +1,4 @@
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { DisplayChoice, DisplayMenu } from '@/shared/ui/kit/display-menu';
 import { ChartNoAxesColumnIcon, KanbanSquareIcon, ListIcon, TableIcon, type Icon } from '@/shared/ui/kit/icon';
 import { LAYOUTS, type ViewLayout } from '@/shared/ui/views';

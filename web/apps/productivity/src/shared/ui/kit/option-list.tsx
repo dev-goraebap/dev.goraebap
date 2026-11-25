@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/shared/ui/kit/command"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@goraebap/ui-react/components/command"
 
 export type Option = { value: string; label: string; icon?: ReactNode; end?: ReactNode }
 

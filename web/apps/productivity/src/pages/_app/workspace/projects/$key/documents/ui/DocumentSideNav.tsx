@@ -1,10 +1,10 @@
 import type { MouseEvent } from 'react';
 import type { DocumentRow } from '@/entities/document';
 import { useStoredWidth } from '@/shared/lib/use-stored-width';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { SettingsIcon } from '@/shared/ui/kit/icon';
 import { PaneResizeHandle } from '@/shared/ui/kit/pane-resize-handle';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 import { groupsOf, isSectionPage, type SideNavState } from '../model/side-nav';
 import { SideNavPageItem } from './SideNavPageItem';
 import { SideNavPageLink } from './SideNavPageLink';

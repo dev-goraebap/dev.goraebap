@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/kit/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@goraebap/ui-react/compact/select';
 import { PROJECT_ROLES, PROJECT_ROLE_LABEL, type ProjectRole } from '../api/projects';
 import { PROJECT_ROLE_ICON } from './ProjectRoleLabel';
 

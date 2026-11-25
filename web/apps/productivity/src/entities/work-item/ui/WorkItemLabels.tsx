@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { Badge } from '@/shared/ui/kit/badge';
+import { Badge } from '@goraebap/ui-react/compact/badge';
 import { LabelDot } from '@/shared/ui/label-dot/LabelDot';
 import type { LabelChip } from '../model/types';
 

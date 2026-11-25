@@ -8,15 +8,15 @@ import {
 import { useOpenPanel } from '@/shared/lib/panel';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { ActionMenu } from '@/shared/ui/kit/action-menu';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
 import { LogoutIcon } from '@/shared/ui/kit/icon';
 import { ListMore } from '@/shared/ui/kit/list-more';
 import { Page } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { memberHref, PersonAvatar } from '@/shared/ui/person';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/kit/table';
-import { toast } from '@/shared/ui/kit/toast';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@goraebap/ui-react/compact/table';
+import { toast } from '@goraebap/ui-react/compact/toast';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
 import { AddMemberDialog } from './AddMemberDialog';
 

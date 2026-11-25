@@ -2,7 +2,7 @@ import { Collapsible } from "@base-ui/react/collapsible"
 import { Link } from "@tanstack/react-router"
 import { useEffect, useState, type ReactNode } from "react"
 import { cn } from "cn"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/shared/ui/kit/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@goraebap/ui-react/compact/dropdown-menu"
 import { ArrowLeftIcon, ChevronDownIcon, MoreHorizontalIcon, SquareArrowOutUpRightIcon } from "@/shared/ui/kit/icon"
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupContent, SidebarHeader,

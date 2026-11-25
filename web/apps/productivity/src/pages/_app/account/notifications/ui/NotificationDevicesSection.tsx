@@ -1,12 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { pushDevicesOptions, pushKeys, removeDevice, thisDeviceId, type PushDevice } from '@/features/push-device';
-import { Badge } from '@/shared/ui/kit/badge';
-import { Button } from '@/shared/ui/kit/button';
+import { Badge } from '@goraebap/ui-react/compact/badge';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
 import { MonitorIcon, Trash2Icon } from '@/shared/ui/kit/icon';
 import { SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 import { momentText, pushStatusLabels } from '../model/push-labels';
 import { NotificationIconRow } from './NotificationIconRow';
 

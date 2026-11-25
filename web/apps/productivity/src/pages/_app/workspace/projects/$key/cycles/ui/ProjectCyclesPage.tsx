@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from '@tanstack/react-router';
 import { useState } from 'react';
 import { CYCLE_STATES, cyclesOptions, deleteCycle, editCycle, refreshWorkItems, type Cycle } from '@/entities/work-item';
 import { useProjectCan } from '@/entities/project';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
 import { CalendarIcon, CircleCheckIcon, PenSquareIcon, SettingsIcon, Trash2Icon } from '@/shared/ui/kit/icon';
 import { Page } from '@/shared/ui/kit/layout/page';

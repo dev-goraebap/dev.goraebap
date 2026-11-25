@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { cn } from 'cn';
 import { codeLinksOptions, providerName, type CodeLink } from '@/entities/work-item';
 import { Timeline, TimelineItem } from '@/shared/ui/activity';
-import { Badge } from '@/shared/ui/kit/badge';
+import { Badge } from '@goraebap/ui-react/compact/badge';
 import { BranchIcon, CodeIcon, CommitIcon } from '@/shared/ui/kit/icon';
 import { visibleCodeLinks } from '../model/visible-code-links';
 

@@ -2,7 +2,7 @@ import { COLOR_THEMES, DIAGRAM_STYLES, setAppearance, useAppearance, type ColorT
 import { cn } from 'cn';
 import { DiagramPreview } from '@/shared/lib/rich-document';
 import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/kit/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@goraebap/ui-react/compact/select';
 import { SettingsPage, SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
 

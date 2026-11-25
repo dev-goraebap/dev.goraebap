@@ -3,14 +3,14 @@ import { Suspense, useState } from 'react';
 import { createProject, isProjectError, keyFrom, PROJECT_KEY, PROJECT_NAME_MAX, type ProjectDraft } from '@/entities/project';
 import type { JSONNode } from '@/shared/lib/rich-document';
 import { ComposeSurface } from '@/shared/ui/kit/compose';
-import { Field, FieldDescription, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldDescription, FieldLabel } from '@goraebap/ui-react/components/field';
 import { HashtagIcon, ProjectsIcon } from '@/shared/ui/kit/icon';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { MarkPicker } from '@/shared/ui/mark-picker';
 import { PropertyPill } from '@/shared/ui/kit/property-pill';
 import { RichDraft } from '@/shared/ui/rich-body';
 import { writeMarkdownDraft } from '@/shared/ui/rich-body/markdown-draft';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 
 /**
  * 새 프로젝트 (client/'s CreateProjectDialog) on the paper of every new thing: the name in the title's place, the

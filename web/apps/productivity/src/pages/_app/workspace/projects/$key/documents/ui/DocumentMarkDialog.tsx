@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Mark } from '@/entities/document';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
 import { MarkPicker } from '@/shared/ui/mark-picker';
 

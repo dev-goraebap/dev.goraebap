@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react"
 import { AdaptivePopover } from "@/shared/ui/kit/adaptive-popover"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { SortIcon } from "@/shared/ui/kit/icon"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { usePhoneTool, usePhoneTools } from "@/shared/ui/kit/layout/phone-tools"

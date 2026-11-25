@@ -11,11 +11,11 @@ import {
   drawnAvatarSource,
   useMemberAvatar,
 } from '@/shared/lib/avatar';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
 import { CheckIcon, RotateCcwIcon, UploadIcon } from '@/shared/ui/kit/icon';
 import { PersonAvatar } from '@/shared/ui/kit/person-avatar';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { cropPicture, type CropArea } from '../model/crop-picture';
 import { openPhoto, PHOTO_ACCEPT } from '../model/photo';
 import { savePreset, uploadPicture } from '../api/picture';

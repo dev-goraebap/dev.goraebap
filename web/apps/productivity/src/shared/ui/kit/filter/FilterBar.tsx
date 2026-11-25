@@ -1,9 +1,9 @@
 import { useState } from "react"
 import { toggleValue } from "@/shared/lib/toggle"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { PlusIcon, XIcon } from "@/shared/ui/kit/icon"
 import { OptionList } from "@/shared/ui/kit/option-list"
-import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/kit/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@goraebap/ui-react/compact/popover"
 import type { Filters } from "./use-filters"
 
 /**

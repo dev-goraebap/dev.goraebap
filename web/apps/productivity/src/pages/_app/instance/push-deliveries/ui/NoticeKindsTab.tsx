@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { cn } from 'cn';
 import { kindOf } from '@/entities/notification';
-import { Badge } from '@/shared/ui/kit/badge';
-import { Button } from '@/shared/ui/kit/button';
+import { Badge } from '@goraebap/ui-react/compact/badge';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { Facts } from '@/shared/ui/kit/side-panel';
 import { noticeKindsOptions, type NoticeKindRow } from '../api/push';

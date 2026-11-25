@@ -1,6 +1,6 @@
 import { cn } from 'cn';
 import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@/shared/ui/kit/icon';
-import { TableHead } from '@/shared/ui/kit/table';
+import { TableHead } from '@goraebap/ui-react/compact/table';
 
 export type SortDirection = 'asc' | 'desc';
 

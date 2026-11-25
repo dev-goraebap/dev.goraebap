@@ -1,6 +1,6 @@
 import { cn } from 'cn';
 import type { Project } from '@/entities/project';
-import { Popover, PopoverContent, PopoverHeader, PopoverTitle, PopoverTrigger } from '@/shared/ui/kit/popover';
+import { Popover, PopoverContent, PopoverHeader, PopoverTitle, PopoverTrigger } from '@goraebap/ui-react/compact/popover';
 import { PersonAvatar } from '@/shared/ui/person';
 
 /** 한 칸에 겹쳐 그리는 멤버 사진 수. 넘치면 '외 N명'. */

@@ -1,6 +1,6 @@
 import { useId, type RefCallback } from 'react';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
-import { Input } from '@/shared/ui/kit/input';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
+import { Input } from '@goraebap/ui-react/compact/input';
 
 export function DocumentTextField({ label, value, inputRef, onFocus, onChange }: {
   label: string; value: string; inputRef: RefCallback<HTMLInputElement>; onFocus: () => void; onChange: (value: string) => void;

@@ -2,11 +2,11 @@ import { Fragment, useState, type ReactElement } from "react"
 import { cn } from "cn"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { AdaptivePopover } from "@/shared/ui/kit/adaptive-popover"
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/kit/avatar"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/shared/ui/kit/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@goraebap/ui-react/compact/avatar"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@goraebap/ui-react/compact/dropdown-menu"
 import { MoreVerticalIcon, type Icon } from "@/shared/ui/kit/icon"
 import { MenuItem } from "@/shared/ui/kit/menu-item"
-import { Skeleton } from "@/shared/ui/kit/skeleton"
+import { Skeleton } from "@goraebap/ui-react/components/skeleton"
 
 /**
  * 셸이 보이는 나. 펼친 사이드바는 내 박스(아바타 · 이름 · 소속 · …), 접은 사이드바와 휴대폰 앱 바는 아바타만 그리고,
@@ -85,8 +85,8 @@ export function MeBox({ me }: { me: ShellMe }) {
             </>
           ) : (
             <>
-              <Skeleton className="my-0.5 h-4 w-16" />
-              <Skeleton className="my-0.5 h-3 w-12" />
+              <Skeleton shape="rounded" className="my-0.5 h-4 w-16" />
+              <Skeleton shape="rounded" className="my-0.5 h-3 w-12" />
             </>
           )}
         </span>

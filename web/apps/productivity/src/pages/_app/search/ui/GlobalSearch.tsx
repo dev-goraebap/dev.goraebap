@@ -1,12 +1,12 @@
 import { Command as CommandPrimitive } from 'cmdk';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/kit/button';
-import { Command, CommandDialog, CommandGroup, CommandItem, CommandList, CommandShortcut } from '@/shared/ui/kit/command';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Command, CommandDialog, CommandGroup, CommandItem, CommandList, CommandShortcut } from '@goraebap/ui-react/components/command';
 import { ArrowLeftIcon, ClockIcon, SearchIcon, SquareArrowOutUpRightIcon, Trash2Icon, XIcon, type Icon } from '@/shared/ui/kit/icon';
 import { Page, useFullScreen, type Crumb } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { useRecentSearches, useSearch, useSettled, type SearchHit, type SearchSource } from '../model/search';
 
 /** A row of the list: a hit to go to, or a search made before to ask again. */

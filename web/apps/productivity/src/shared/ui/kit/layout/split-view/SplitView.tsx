@@ -3,12 +3,12 @@ import { createContext, useCallback, useContext, useEffect, useMemo, type Compon
 import { cn } from 'cn';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { useStoredWidth } from '@/shared/lib/use-stored-width';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { MaximizeIcon, MinimizeIcon, SquareArrowOutUpRightIcon, type Icon } from '@/shared/ui/kit/icon';
 import { Page, type CreateAction } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { PaneResizeHandle } from '@/shared/ui/kit/pane-resize-handle';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 import { solarIcon } from '@/shared/ui/icons';
 import { PaneFrame } from '@/shared/ui/kit/layout/pane-frame';
 

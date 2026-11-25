@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { Badge } from '@/shared/ui/kit/badge';
+import { Badge } from '@goraebap/ui-react/compact/badge';
 
 /** 색이 뜻을 거드는 짧은 낱말의 색: 분류 토큰(라이트 · 다크 모두 읽히는 옅은 바탕과 그 글자색)으로 그린다. */
 export type Tone = 'blue' | 'green' | 'red' | 'gray' | 'purple' | 'orange';

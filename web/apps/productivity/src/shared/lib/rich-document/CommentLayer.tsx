@@ -1,5 +1,5 @@
 import {topLayer} from './floating';
-import {Button} from '@/shared/ui/kit/button';
+import {Button} from '@goraebap/ui-react/compact/button';
 import {useEffect,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import type {Editor} from '@tiptap/react';

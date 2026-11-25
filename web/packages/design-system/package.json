@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "exports": {
+    "./styles/app-tokens.css": "./src/styles/app-tokens.css",
     "./styles/base.css": "./src/styles/base.css",
     "./styles/theme-app.css": "./src/styles/theme-app.css",
     "./styles/theme-editorial.css": "./src/styles/theme-editorial.css",

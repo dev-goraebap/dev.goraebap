@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { cyclesOptions, refreshWorkItems, saveCycleSettings, type CycleSettings } from '@/entities/work-item';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { SettingsPage, SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Switch } from '@goraebap/ui-react/components/switch';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
 import { ChoiceSelect } from '@/shared/ui/settings';
 
@@ -40,7 +40,7 @@ export function ProjectCycleSettingsPage({ crumbs, projectKey }: { crumbs: Crumb
     {save.error ? <p role="alert" className="text-sm text-destructive">{save.error.message}</p> : null}
     <SettingsSection title="사용">
       <SettingsRow label="사이클 쓰기">
-        <Switch aria-label="사이클 쓰기" checked={!!settings.isEnabled} disabled={save.isPending} onCheckedChange={isEnabled => change({ isEnabled })} />
+        <Switch appearance="compact" aria-label="사이클 쓰기" checked={!!settings.isEnabled} disabled={save.isPending} onCheckedChange={isEnabled => change({ isEnabled })} />
       </SettingsRow>
     </SettingsSection>
     <SettingsSection title="일정">
@@ -56,10 +56,10 @@ export function ProjectCycleSettingsPage({ crumbs, projectKey }: { crumbs: Crumb
     </SettingsSection>
     <SettingsSection title="자동으로 넣기">
       <SettingsRow label="진행 중이 된 업무">
-        <Switch aria-label="진행 중이 된 업무" checked={!!settings.addsStarted} disabled={isOff} onCheckedChange={addsStarted => change({ addsStarted })} />
+        <Switch appearance="compact" aria-label="진행 중이 된 업무" checked={!!settings.addsStarted} disabled={isOff} onCheckedChange={addsStarted => change({ addsStarted })} />
       </SettingsRow>
       <SettingsRow label="완료된 업무">
-        <Switch aria-label="완료된 업무" checked={!!settings.addsCompleted} disabled={isOff} onCheckedChange={addsCompleted => change({ addsCompleted })} />
+        <Switch appearance="compact" aria-label="완료된 업무" checked={!!settings.addsCompleted} disabled={isOff} onCheckedChange={addsCompleted => change({ addsCompleted })} />
       </SettingsRow>
     </SettingsSection>
   </SettingsPage>;

@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { ProjectRoleSelect, type Project, type ProjectRole } from '@/entities/project';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
-import { Dialog, DialogBar, DialogBody, DialogContent, DialogDescription } from '@/shared/ui/kit/dialog';
-import { Input } from '@/shared/ui/kit/input';
+import { Dialog, DialogBar, DialogBody, DialogContent, DialogDescription } from '@goraebap/ui-react/compact/dialog';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { Mark } from '@/shared/ui/mark-picker';
 
 /** 새로 참여시킬 때의 역할: 쓰는 사람이 대부분이라 에디터에서 시작한다(추가한 뒤 줄에서 바꾼다). */

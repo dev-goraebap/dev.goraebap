@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { cn } from "cn"
-import { Button } from "@/shared/ui/kit/button"
-import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/shared/ui/kit/drawer"
+import { Button } from "@goraebap/ui-react/compact/button"
+import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@goraebap/ui-react/compact/drawer"
 import { XIcon } from "@/shared/ui/kit/icon"
 import { useClosingValue } from "@/shared/lib/use-closing-value"
 

@@ -5,22 +5,22 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "cn"
 
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { Button } from "@/shared/ui/kit/button"
-import { Input } from "@/shared/ui/kit/input"
-import { Separator } from "@/shared/ui/kit/separator"
+import { Button } from "@goraebap/ui-react/compact/button"
+import { Input } from "@goraebap/ui-react/compact/input"
+import { Separator } from "@goraebap/ui-react/components/separator"
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@/shared/ui/kit/sheet"
-import { Skeleton } from "@/shared/ui/kit/skeleton"
+} from "@goraebap/ui-react/components/sheet"
+import { Skeleton } from "@goraebap/ui-react/components/skeleton"
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@/shared/ui/kit/tooltip"
+} from "@goraebap/ui-react/compact/tooltip"
 import { PanelLeftIcon } from "@/shared/ui/kit/icon"
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
@@ -355,7 +355,7 @@ function SidebarSeparator({
   ...props
 }: React.ComponentProps<typeof Separator>) {
   return (
-    <Separator
+    <Separator stretch
       data-slot="sidebar-separator"
       data-sidebar="separator"
       className={cn("mx-2 w-auto bg-sidebar-border", className)}
@@ -627,12 +627,12 @@ function SidebarMenuSkeleton({
       {...props}
     >
       {showIcon && (
-        <Skeleton
+        <Skeleton shape="rounded"
           className="size-4 rounded-md"
           data-sidebar="menu-skeleton-icon"
         />
       )}
-      <Skeleton
+      <Skeleton shape="rounded"
         className="h-4 max-w-(--skeleton-width) flex-1"
         data-sidebar="menu-skeleton-text"
         style={

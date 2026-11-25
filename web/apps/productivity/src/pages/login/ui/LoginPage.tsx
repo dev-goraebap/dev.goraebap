@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query';
-import { useState, type FormEvent, type ReactNode } from 'react';
+import { useState, type SubmitEvent, type ReactNode } from 'react';
 import { sendCommand } from '@/shared/api';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { BrandMark } from '@/shared/ui/brand';
-import { Button } from '@/shared/ui/kit/button';
-import { Card } from '@/shared/ui/kit/card';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
-import { Input } from '@/shared/ui/kit/input';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Card } from '@goraebap/ui-react/compact/card';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
+import { Input } from '@goraebap/ui-react/compact/input';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { AuthBackground } from './AuthBackground';
 import { DevLogin } from './DevLogin';
 
@@ -27,7 +27,7 @@ export function LoginPage({ onSignedIn, codeSentTo }: {
   const request = useMutation({ mutationFn: () => sendCommand('/api/v1/auth/otp/request', 'POST', { email: email.trim() }), onSuccess: () => setSentTo(email.trim()) });
   const verify = useMutation({ mutationFn: () => sendCommand('/api/v1/auth/otp/verify', 'POST', { email: sentTo, code: code.trim() }), onSuccess: onSignedIn });
   const error = (sentTo ? verify.error : request.error)?.message;
-  const submit = (event: FormEvent) => {
+  const submit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (sentTo) { if (code.trim() && !verify.isPending) verify.mutate(); }
     else if (email.trim() && !request.isPending) request.mutate();

@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { createWorkItem, WorkItemAssignee, WorkItemPriorityIcon, WorkItemStatusIcon, refreshWorkItems, type WorkItemRow } from '@/entities/work-item';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { RowLink } from '@/shared/ui/kit/row-link';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 
 /**
  * The work item's sub-items (BIT's hierarchy): each with its status, reference, title, priority and assignee, opened at

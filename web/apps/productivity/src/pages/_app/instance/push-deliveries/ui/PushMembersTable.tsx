@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/kit/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@goraebap/ui-react/compact/table';
 import { PersonAvatar } from '@/shared/ui/person';
 import type { PushMember } from '../api/push';
 import { formatPushMoment, PUSH_OPENS_ROW } from '../model/push-format';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { AdaptivePopover } from '@/shared/ui/kit/adaptive-popover';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { GripIcon } from '@/shared/ui/kit/icon';
 import { PropertyPill } from '@/shared/ui/kit/property-pill';
 import { useBodyHeadings, type BodyHeading } from './outline-context';

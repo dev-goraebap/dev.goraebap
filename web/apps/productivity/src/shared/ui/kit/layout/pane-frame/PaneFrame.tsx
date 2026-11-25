@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { cn } from 'cn';
 import { useHeadingPassed } from '@/shared/lib/use-heading-passed';
-import { Button, ButtonStyleProvider, type ButtonStyle } from '@/shared/ui/kit/button';
+import { Button, ButtonStyleProvider, type ButtonStyle } from '@goraebap/ui-react/compact/button';
 import { ChevronLeftIcon } from '@/shared/ui/kit/icon';
 import { usePageChrome } from '@/shared/ui/kit/layout/page';
 

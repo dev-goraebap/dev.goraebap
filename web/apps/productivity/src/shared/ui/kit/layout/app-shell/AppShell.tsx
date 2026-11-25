@@ -3,9 +3,9 @@ import { useIsMobile } from "@/shared/lib/use-mobile"
 import { cn } from "cn"
 import { PageChromeProvider } from "@/shared/ui/kit/layout/page"
 import { SidebarProvider, useSidebar } from "@/shared/ui/kit/sidebar"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { PanelLeftIcon } from "@/shared/ui/kit/icon"
-import { TooltipProvider } from "@/shared/ui/kit/tooltip"
+import { TooltipProvider } from "@goraebap/ui-react/compact/tooltip"
 import type { ShellMe } from "./MeMenu"
 import { MobileTabBar } from "./MobileTabBar"
 import { PhoneBar, type PhoneBarProps } from "./PhoneBar"
@@ -104,7 +104,7 @@ export function AppShell({ space, pathname, brand, headerTools, me, footer, bott
               "data-[edge=hover]:before:w-0.5 data-[edge=hover]:before:bg-border data-[edge=active]:before:w-1 data-[edge=active]:before:bg-ring",
               isMobile && "pt-[env(safe-area-inset-top)] pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)]",
               // 본문 면의 모서리는 초타원(2026-11-15): 같은 반지름이면 덜 둥글어 보여 1.5배로 깎는다(지원하지 않는 브라우저는 둥근 모서리).
-              !isMobile && isInset && cn("mt-2 mr-2 squircle rounded-[calc(var(--radius-surface)*1.5)] shadow-surface", !hasBottomBar && "mb-2"))}>
+              !isMobile && isInset && cn("mt-2 mr-2 squircle rounded-[calc(var(--surface-radius)*1.5)] shadow-surface", !hasBottomBar && "mb-2"))}>
               {children}
             </main>
             {hasBottomBar && <div data-slot="shell-bottom-bar" className={cn("fixed inset-x-0 bottom-0 z-10", !isInset && "border-t bg-background")}>{bottomBar}</div>}

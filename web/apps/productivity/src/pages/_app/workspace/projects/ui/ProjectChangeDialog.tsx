@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { Project, ProjectChange } from '@/entities/project';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 
 /** What each change asks before it is made (client/'s words). */
 const ASKS: Record<ProjectChange, { title: string; description: string; confirm: string }> = {

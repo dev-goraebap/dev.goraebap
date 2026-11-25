@@ -1,7 +1,7 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { cn } from 'cn';
 import type { MenuAction } from '@/shared/ui/kit/action-menu';
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/kit/alert';
+import { Alert, AlertDescription, AlertTitle } from '@goraebap/ui-react/compact/alert';
 import { InfoIcon, OctagonXIcon, TriangleAlertIcon } from '@/shared/ui/kit/icon';
 
 /**

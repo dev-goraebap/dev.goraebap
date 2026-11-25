@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableText } from '@/shared/ui/kit/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, TableText } from '@goraebap/ui-react/compact/table';
 import type { ManageMember, WorkspaceMemberRowData } from '../model/member-row';
 import { MemberNameCell } from './MemberNameCell';
 import { MemberProjectsCell } from './MemberProjectsCell';

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { pushKeys, pushPreferencesOptions, savePreferences, type PushTopic } from '@/features/push-device';
 import { SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Switch } from '@goraebap/ui-react/components/switch';
 import { topicLabels } from '../model/push-labels';
 
 /**
@@ -26,7 +26,7 @@ export function NotificationTopicsSection() {
         : !preferences.data ? <SettingsRow label="불러오는 중…" hasValue={false} />
           : topics.map(item => (
             <SettingsRow key={item.topic} label={topicLabels[item.topic].label} description={topicLabels[item.topic].description}>
-              <Switch aria-label={topicLabels[item.topic].label} checked={item.enabled} onCheckedChange={enabled => toggle(item.topic, enabled)} />
+              <Switch appearance="compact" aria-label={topicLabels[item.topic].label} checked={item.enabled} onCheckedChange={enabled => toggle(item.topic, enabled)} />
             </SettingsRow>
           ))}
     </SettingsSection>

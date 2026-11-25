@@ -3,11 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { boardGroupsOptions, PRIORITIES, useWorkItemTypes, WorkItemPriorityIcon, WorkItemStatusIcon, WorkItemTypeIcon,
   type BoardColumn, type WorkItemBoardGroup, type WorkItemListing, type WorkItemRow, type WorkItemTypeRow, type WorkItemViewGrouping } from '@/entities/work-item';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ProjectsIcon, UserIcon } from '@/shared/ui/kit/icon';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { PersonAvatar } from '@/shared/ui/person';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { listGroupPageOptions, listGroupsInOrder } from '../../model/list-group-pages';
 import { WorkItemGroupView } from './WorkItemGroupView';
 import { WorkItemTree } from './WorkItemTree';

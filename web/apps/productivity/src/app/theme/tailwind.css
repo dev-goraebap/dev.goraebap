@@ -4,26 +4,21 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@goraebap/design-system/styles/app-tokens.css";
+
+@source "../../../../../packages/design-system/src/recipes";
+@source "../../../../../packages/ui-react/src";
 
 /*
  * 라이트 · 다크는 html[data-theme]가 정한다(app/providers/AppTheme, public/boot.js). 선택자를 html(:root)로 둔다: 안쪽 요소가
  * data-theme를 달아도 다크 블록을 다시 선언해 색 테마(html에 덮어쓴 기준 색)를 가리지 않게 한다.
  */
 @custom-variant dark (&:where(:root[data-theme=dark], :root[data-theme=dark] *));
-/* 화면 설정의 목록 높이가 촘촘하게일 때(html[data-density=compact]). 페이지 목록 · 표의 줄 높이에만 쓴다. */
-@custom-variant compact (&:where([data-density=compact] *));
 
 @theme inline {
     --font-heading: var(--font-sans);
     --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
     --font-mono: 'JetBrains Mono Variable', 'SF Mono', Consolas, monospace;
-    --color-sidebar-ring: var(--sidebar-ring);
-    --color-sidebar-border: var(--sidebar-border);
-    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-    --color-sidebar-accent: var(--sidebar-accent);
-    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-    --color-sidebar-primary: var(--sidebar-primary);
-    --color-sidebar-foreground: var(--sidebar-foreground);
     --color-sidebar: var(--sidebar);
     --color-chart-5: var(--chart-5);
     --color-chart-4: var(--chart-4);
@@ -83,24 +78,13 @@
     --border: color-mix(in srgb, var(--foreground) 9%, var(--background));
     --input: color-mix(in srgb, var(--foreground) 18%, var(--background));
     --ring: color-mix(in srgb, var(--foreground) 72%, var(--background));
-    --icon-muted: #6b6b6f;
-    --pressed: color-mix(in srgb, var(--foreground) 7%, transparent);
-    --shadow-color: rgb(0 0 0 / 0.04);
     --chart-1: oklch(0.87 0 0);
     --chart-2: oklch(0.556 0 0);
     --chart-3: oklch(0.439 0 0);
     --chart-4: oklch(0.371 0 0);
     --chart-5: oklch(0.269 0 0);
-    /* 요소 8px. 묶음(카드)은 xl(약 12px), 앱 본문 면은 2xl(16px에 가깝게 아래 --radius-surface). */
+    /* 요소 8px. 묶음(카드)은 xl(약 12px), 앱 본문 면은 2xl(16px에 가깝게 아래 --surface-radius). */
     --radius: 0.5rem;
-    --radius-surface: 1rem;
-    --sidebar-foreground: var(--foreground);
-    --sidebar-primary: var(--foreground);
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: var(--pressed);
-    --sidebar-accent-foreground: var(--foreground);
-    --sidebar-border: var(--border);
-    --sidebar-ring: var(--ring);
     /* 업무 표식 색(상태 · 우선순위). 모양과 함께 색으로도 구분한다. */
     --mark-backlog: #d7d7da;
     --mark-progress: #524622;
@@ -148,10 +132,6 @@
     --destructive: oklch(0.704 0.191 22.216);
     --border: color-mix(in srgb, var(--foreground) 8%, var(--background));
     --input: color-mix(in srgb, var(--foreground) 16%, var(--background));
-    --icon-muted: #8a8f98;
-    --pressed: color-mix(in srgb, var(--foreground) 8%, transparent);
-    --shadow-color: rgb(0 0 0 / 0.3);
-    --sidebar-primary-foreground: var(--primary-foreground);
     --mark-backlog: #5e5e61;
     --mark-progress: #d7c59c;
     --mark-done: #b4cdb2;
@@ -192,22 +172,8 @@
     --text-sm--line-height: 1.5;
     --text-base: 0.9375rem;
     --text-base--line-height: 1.6;
-    --color-icon-muted: var(--icon-muted);
-    --color-pressed: var(--pressed);
-    /* 목록 줄을 가리킬 때 · 그룹 머리 띠. 둘 다 불투명해 점 무늬와 지나가는 줄이 비치지 않는다. */
-    --color-row-hover: color-mix(in srgb, var(--foreground) 4%, var(--background));
+    /* 그룹 머리 띠는 불투명해서 점 무늬와 지나가는 줄이 비치지 않는다. */
     --color-band: color-mix(in srgb, var(--muted) 55%, var(--background));
-    /* 읽지 않은 줄의 바탕과 그 줄을 가리키거나 고를 때. */
-    --color-unread: color-mix(in srgb, var(--foreground) 9%, var(--background));
-    --color-unread-strong: color-mix(in srgb, var(--foreground) 14%, var(--background));
-    /*
-     * 조작 면(2026-11-14, Linear처럼): 단추 · 도구 · 보기 탭 · 속성 알약 · 셀렉트가 함께 쓰는 '바탕보다 살짝 밝은 면 + 가는 테두리'.
-     * 가리키면 한 단계, 켜지거나 열리면(지금 보기 · 눌린 도구) 두 단계 밝다.
-     */
-    --color-control: color-mix(in srgb, var(--foreground) 5%, var(--background));
-    --color-control-hover: color-mix(in srgb, var(--foreground) 9%, var(--background));
-    --color-control-on: color-mix(in srgb, var(--foreground) 14%, var(--background));
-    --color-control-border: color-mix(in srgb, var(--foreground) 11%, var(--background));
     --color-mark-backlog: var(--mark-backlog);
     --color-mark-progress: var(--mark-progress);
     --color-mark-done: var(--mark-done);
@@ -218,8 +184,6 @@
     --color-illustration-accent: var(--illustration-accent);
     /* 빈 상태 설명: 보조 아이콘 색보다 한 단계 연하게. */
     --color-state-description: color-mix(in srgb, var(--icon-muted) 75%, var(--background));
-    --radius-surface: 1rem;
-    --shadow-surface: 0 1px 2px var(--shadow-color), 0 0 0 1px var(--border);
     /* 일정 분류 색과 요일 색(bg-event-blue · text-event-blue-foreground · text-day-off …). */
     --color-event-blue: var(--event-blue);
     --color-event-blue-foreground: var(--event-blue-foreground);
@@ -250,12 +214,6 @@
 @keyframes page-state-enter {
     from { opacity: 0; transform: translateY(0.375rem); }
     to { opacity: 1; transform: none; }
-}
-
-/* 되돌리기 토스트의 남은 시간: 막대가 오른쪽에서 줄어든다(toast.add의 data.countdown). */
-@keyframes toast-countdown {
-    from { transform: scaleX(1); }
-    to { transform: scaleX(0); }
 }
 
 /* 점 무늬. 지금은 목록-상세 분할 보기에서 고른 것이 없을 때의 오른쪽 칸에만 쓴다(2026-11-14). */

@@ -2,22 +2,22 @@ import { useQuery } from '@tanstack/react-query';
 import { useBlocker } from '@tanstack/react-router';
 import { useState } from 'react';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/kit/alert';
-import { Button } from '@/shared/ui/kit/button';
-import { Card } from '@/shared/ui/kit/card';
+import { Alert, AlertDescription, AlertTitle } from '@goraebap/ui-react/compact/alert';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Card } from '@goraebap/ui-react/compact/card';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
-import { Field, FieldDescription, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldDescription, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
-import { Input } from '@/shared/ui/kit/input';
-import { toast } from '@/shared/ui/kit/toast';
+import { Input } from '@goraebap/ui-react/compact/input';
+import { toast } from '@goraebap/ui-react/compact/toast';
 import { PlusIcon, TriangleAlertIcon } from '@/shared/ui/kit/icon';
 import { Page } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { PersonAvatar } from '@/shared/ui/person';
 import { SearchTool } from '@/shared/ui/kit/search-tool';
 import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
-import { Spinner } from '@/shared/ui/kit/spinner';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
+import { Switch } from '@goraebap/ui-react/components/switch';
 import { ROLE_LABEL, ROLES, rolesOptions, useAddMember, useSetRoles, type Role, type RoleHolder } from '../api/roles';
 
 type Crumb = { label: string; href?: string; icon?: string };
@@ -102,7 +102,7 @@ export function RolesPage({ crumbs }: { crumbs: Crumb[] }) {
                     <span className="truncate text-sm text-muted-foreground">{holder.email}</span>
                   </div>
                   {changed.has(key(holder.id, role)) ? <span className="text-xs whitespace-nowrap text-muted-foreground">바뀜</span> : null}
-                  <Switch aria-label={label} checked={valueOf(holder, role)} disabled={isSaving} onCheckedChange={() => toggle(holder, role)} />
+                  <Switch appearance="compact" aria-label={label} checked={valueOf(holder, role)} disabled={isSaving} onCheckedChange={() => toggle(holder, role)} />
                 </li>;
               })}
             </ul>

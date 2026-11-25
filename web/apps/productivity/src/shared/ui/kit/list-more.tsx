@@ -1,8 +1,8 @@
 import type { ReactNode } from "react"
 import { cn } from "cn"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { StarAngleIcon, type Icon } from "@/shared/ui/kit/icon"
-import { Spinner } from "@/shared/ui/kit/spinner"
+import { Spinner } from "@goraebap/ui-react/components/spinner"
 
 /**
  * 목록 끝 줄(cowork ListMore, 2026-11-15 모든 목록 · 표의 공통): 마지막 줄 바로 아래에 붙어 좌 · 가운데 · 우 세 자리를 갖는다.

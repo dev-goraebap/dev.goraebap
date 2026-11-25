@@ -5,7 +5,7 @@ import { ProjectRoleLabel, projectMembersOptions, projectOptions, type Project }
 import { boardGroupsOptions, cyclesOptions, workItemHref, WorkItemListRow, workItemsOptions } from '@/entities/work-item';
 import { ApiError } from '@/shared/api';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ArchiveIcon, CalendarIcon, FileTextIcon, NotesIcon, RepeatIcon, SettingsIcon } from '@/shared/ui/kit/icon';
 import { Page } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';

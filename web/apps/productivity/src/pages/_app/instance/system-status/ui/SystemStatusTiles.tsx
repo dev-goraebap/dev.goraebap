@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { Progress } from '@/shared/ui/kit/progress';
+import { Progress } from '@goraebap/ui-react/compact/progress';
 import type { SystemStatus } from '../api/system';
 import { STATUS_SURFACE } from '../model/chart-style';
 import { bytesText, countText, momentText, percentText, uptimeText } from '../model/format';

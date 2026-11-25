@@ -1,3 +1,4 @@
+import { flushSync } from 'react-dom';
 import { lazyRouteComponent } from '@tanstack/react-router';
 import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -7,7 +8,7 @@ import { useLoadingHold } from '@/shared/ui/page-loading/use-loading-hold';
 import { sessionOptions } from '@/shared/auth';
 import { useOpenPanel, usePanel } from '@/shared/lib/panel';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { DialogPanel, swapDialog } from '@/shared/ui/kit/dialog';
+import { DialogPanel } from '@goraebap/ui-react/compact/dialog';
 import { workItemHref } from '@/entities/work-item';
 
 import { GlobalSearch, useSearchSources } from '@/pages/_app/search';
@@ -39,6 +40,17 @@ export function PanelHost() {
     idle(() => { for (const each of LAZY_PANELS) void each.preload?.(); });
   }, []);
   return shown;
+}
+
+function swapDialog(apply: () => void) {
+  const root = document.documentElement;
+  if (!('startViewTransition' in document) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    apply();
+    return;
+  }
+  root.dataset.vt = 'dialog';
+  const transition = document.startViewTransition(() => flushSync(apply));
+  void transition.finished.finally(() => { delete root.dataset.vt; });
 }
 
 /**

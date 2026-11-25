@@ -2,10 +2,10 @@ import type { ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import {
   AlertDialog, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
-} from "@/shared/ui/kit/alert-dialog"
-import { Button } from "@/shared/ui/kit/button"
-import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@/shared/ui/kit/drawer"
-import { Spinner } from "@/shared/ui/kit/spinner"
+} from "@goraebap/ui-react/compact/alert-dialog"
+import { Button } from "@goraebap/ui-react/compact/button"
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerFooter, DrawerHeader, DrawerTitle } from "@goraebap/ui-react/compact/drawer"
+import { Spinner } from "@goraebap/ui-react/components/spinner"
 
 export type ConfirmAction = {
   label: string

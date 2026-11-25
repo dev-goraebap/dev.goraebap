@@ -6,7 +6,7 @@ import { workItemOptions, workItemPath } from '@/entities/work-item';
 import { getJson, sendJson, type components } from '@/shared/api';
 import { sessionOptions } from '@/shared/auth';
 import { blank, prepareDocument, VersionList, type JSONNode, type VersionRecord } from '@/shared/lib/rich-document';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
 import { ChevronLeftIcon, ChevronRightIcon } from '@/shared/ui/kit/icon';
 import { DetailSurface } from '@/shared/ui/kit/detail-surface';
@@ -14,7 +14,7 @@ import { useOwnPageTitle } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { bodyStateOptions } from '@/shared/ui/rich-body';
 import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
 import { SplitDiff } from './SplitDiff';
 

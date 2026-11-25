@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/shared/ui/kit/dialog';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@goraebap/ui-react/compact/dialog';
 import { ClockIcon, RestoreIcon, SearchIcon, ShieldCheckIcon, SquareArrowOutUpRightIcon } from '@/shared/ui/kit/icon';
-import { InputGroup, InputGroupAddon, InputGroupInput } from '@/shared/ui/kit/input-group';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@goraebap/ui-react/components/input-group';
 import { PageState } from '@/shared/ui/kit/page-state';
 import type { VersionRecord } from './model';
 

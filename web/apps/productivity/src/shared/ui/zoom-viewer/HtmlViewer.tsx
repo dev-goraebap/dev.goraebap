@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import type { HtmlPage } from './store';
 
 /**

@@ -2,7 +2,7 @@ import { Fragment, useMemo, useState, type ReactNode } from 'react';
 import type { JSONNode } from '@/shared/lib/rich-document';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { bodyLines, lineDiff, type Piece, type Row } from '../model/body-lines';
 
 type Kind = 'removed' | 'added' | 'same';

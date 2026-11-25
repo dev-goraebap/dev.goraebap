@@ -4,11 +4,11 @@ import { documentLinks, libraryOptions } from '@/entities/document';
 import { workItemOptions, workItemPath, type WorkItemView } from '@/entities/work-item';
 import { isNotFound } from '@/shared/api';
 import { sessionOptions } from '@/shared/auth';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { useOwnPageTitle } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { BodyEditContext, BodyTitle, BodyToolsContext, RichBody, serverBodyStore, useBodyEdit } from '@/shared/ui/rich-body';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { useWorkItemChange } from '../model/use-work-item-change';
 import { useBodyToolPlaces } from './body-tool-places';
 

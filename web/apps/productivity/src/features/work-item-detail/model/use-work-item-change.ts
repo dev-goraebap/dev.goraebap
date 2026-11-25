@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { draftOf, editWorkItem, refreshWorkItems, workItemOptions, type WorkItemDraft, type WorkItemRow } from '@/entities/work-item';
-import { toast } from '@/shared/ui/kit/toast';
+import { toast } from '@goraebap/ui-react/compact/toast';
 
 /** 되돌리기 토스트가 떠 있는 시간. 잘못 누른 것을 알아차리고 누를 만큼만 둔다. */
 const UNDO_MS = 5000;

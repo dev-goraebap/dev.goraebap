@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Cropper, { type Area } from 'react-easy-crop';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { MinusIcon, PlusIcon } from '@/shared/ui/kit/icon';
 import type { CropArea } from '../model/crop-picture';
 

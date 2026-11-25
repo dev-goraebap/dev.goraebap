@@ -2,7 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { cn } from 'cn';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ListMore } from '@/shared/ui/kit/list-more';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { WithPanel } from '@/shared/ui/kit/side-panel';

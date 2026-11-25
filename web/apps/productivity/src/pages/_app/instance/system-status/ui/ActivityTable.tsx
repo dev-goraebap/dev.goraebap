@@ -1,6 +1,6 @@
 import { cn } from 'cn';
 import { stampText } from '@/shared/lib/date-stamp';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/kit/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@goraebap/ui-react/compact/table';
 import { ToneBadge } from '@/shared/ui/tone-badge';
 import type { ActivityRow } from '../api/system';
 import { activityOutcome, activityText, agentText, durationText } from '../model/format';

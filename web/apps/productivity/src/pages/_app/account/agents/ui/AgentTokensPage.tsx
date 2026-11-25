@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { directoryAgentKeys } from '@/entities/organization';
-import { Badge } from '@/shared/ui/kit/badge';
-import { Button } from '@/shared/ui/kit/button';
+import { Badge } from '@goraebap/ui-react/compact/badge';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
 import { PenSquareIcon, PlusIcon, Trash2Icon } from '@/shared/ui/kit/icon';
 import { PageState } from '@/shared/ui/kit/page-state';

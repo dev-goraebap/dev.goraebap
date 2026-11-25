@@ -1,11 +1,13 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./app-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --font-sans:
-    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, sans-serif;
   --font-heading: var(--font-sans);
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --color-sidebar: var(--sidebar);

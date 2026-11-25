@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { DocumentRow } from '@/entities/document';
 import { rowReorderStyles as rows, useRowReorder } from '@/shared/lib/row-reorder';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ChevronDownIcon, ChevronRightIcon, GripIcon } from '@/shared/ui/kit/icon';
 import { MarkIcon } from '@/shared/ui/mark-picker';
 

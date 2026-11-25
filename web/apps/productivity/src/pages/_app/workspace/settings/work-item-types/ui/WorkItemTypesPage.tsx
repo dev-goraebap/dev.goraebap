@@ -7,18 +7,18 @@ import {
 import { rowReorderStyles as rows, useRowReorder } from '@/shared/lib/row-reorder';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
 import { ActionMenu, type MenuAction } from '@/shared/ui/kit/action-menu';
-import { Badge } from '@/shared/ui/kit/badge';
-import { Button } from '@/shared/ui/kit/button';
+import { Badge } from '@goraebap/ui-react/compact/badge';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { DEFAULT_MARK_COLOR } from '@/shared/ui/color-palette';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
-import { Field, FieldContent, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldContent, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
 import { GripIcon, PenSquareIcon, PlusIcon, Trash2Icon } from '@/shared/ui/kit/icon';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { MarkPicker } from '@/shared/ui/mark-picker';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { SettingsPage, SettingsSection } from '@/shared/ui/kit/settings';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Switch } from '@goraebap/ui-react/components/switch';
 import { ADMIN_ROW, ADMIN_ROW_NAME } from '@/shared/ui/ordered-row';
 
 type Crumb = { label: string; href?: string; icon?: string };
@@ -112,7 +112,7 @@ function TypeDialog({ type, isPending, error, onSave, onClose }: {
       <FieldContent>
         <FieldLabel htmlFor={defaultId}>기본 유형으로</FieldLabel>
       </FieldContent>
-      <Switch id={defaultId} checked={isDefault} disabled={type?.isDefault} onCheckedChange={setDefault} />
+      <Switch appearance="compact" id={defaultId} checked={isDefault} disabled={type?.isDefault} onCheckedChange={setDefault} />
     </Field>
     {error ? <p className="text-sm text-destructive" role="alert">{error.message}</p> : null}
   </FormDialog>;

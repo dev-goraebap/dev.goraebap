@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useId, useState } from 'react';
 import { deleteTimeEntry, formatHours, logTime, refreshWorkItems, timeEntriesOptions, type WorkItemRow } from '@/entities/work-item';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { DatePicker } from '@/shared/ui/kit/date-picker';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
 import { Trash2Icon } from '@/shared/ui/kit/icon';
-import { Input } from '@/shared/ui/kit/input';
-import { Spinner } from '@/shared/ui/kit/spinner';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Input } from '@goraebap/ui-react/compact/input';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 
 const today = () => new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Seoul' });
 const hoursOf = (text: string) => {

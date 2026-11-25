@@ -1,4 +1,10 @@
-import { createContext, useContext, type ReactNode, type SVGProps } from "react";
+import {
+  createContext,
+  useContext,
+  type ComponentType,
+  type ReactNode,
+  type SVGProps,
+} from "react";
 import {
   ArrowRight,
   ArrowUpDown,
@@ -7,6 +13,8 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
+  CircleCheck,
   Code2,
   Component,
   Copy,
@@ -14,10 +22,13 @@ import {
   Eye,
   FileText,
   Grid2x2,
+  Info,
   Layers,
   LayoutGrid,
+  LoaderCircle,
   Monitor,
   Moon,
+  OctagonX,
   Palette,
   PanelLeft,
   Rocket,
@@ -29,6 +40,7 @@ import {
   Sun,
   SwatchBook,
   Type,
+  TriangleAlert,
   X,
 } from "lucide-react";
 
@@ -42,16 +54,20 @@ export type SystemIconName =
   | "chevronDown"
   | "chevronLeft"
   | "chevronRight"
+  | "chevronUp"
   | "code"
   | "components"
   | "copy"
   | "desktop"
   | "details"
+  | "error"
   | "externalLink"
   | "eye"
   | "file"
   | "font"
+  | "info"
   | "layouts"
+  | "loading"
   | "moon"
   | "mobile"
   | "overview"
@@ -62,14 +78,36 @@ export type SystemIconName =
   | "scroll"
   | "search"
   | "sun"
+  | "success"
   | "swatch"
   | "transition"
+  | "warning"
   | "workspace";
 
 const IconSetContext = createContext<IconSetId>("solar");
+export type IconOverrides = Partial<
+  Record<SystemIconName, ComponentType<SvgProps>>
+>;
+const IconOverridesContext = createContext<IconOverrides | undefined>(
+  undefined,
+);
 
-export function IconProvider({ value, children }: { value: IconSetId; children: ReactNode }) {
-  return <IconSetContext.Provider value={value}>{children}</IconSetContext.Provider>;
+export function IconProvider({
+  value,
+  overrides,
+  children,
+}: {
+  value: IconSetId;
+  overrides?: IconOverrides;
+  children: ReactNode;
+}) {
+  return (
+    <IconSetContext.Provider value={value}>
+      <IconOverridesContext.Provider value={overrides}>
+        {children}
+      </IconOverridesContext.Provider>
+    </IconSetContext.Provider>
+  );
 }
 
 export function useIconSet(): IconSetId {
@@ -96,6 +134,39 @@ function SolarSvg({ children, ...props }: SvgProps) {
 }
 
 const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
+  chevronUp: (props) => (
+    <SolarSvg {...props}>
+      <path d="m6 15 6-6 6 6" />
+    </SolarSvg>
+  ),
+  error: (props) => (
+    <SolarSvg {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m9 9 6 6m0-6-6 6" />
+    </SolarSvg>
+  ),
+  info: (props) => (
+    <SolarSvg {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5m0-8h.01" />
+    </SolarSvg>
+  ),
+  loading: (props) => (
+    <SolarSvg {...props}>
+      <path d="M12 3a9 9 0 1 0 9 9" />
+    </SolarSvg>
+  ),
+  success: (props) => (
+    <SolarSvg {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="m8 12 2.75 2.75L16 9.5" />
+    </SolarSvg>
+  ),
+  warning: (props) => (
+    <SolarSvg {...props}>
+      <path d="M10.3 4.8a2 2 0 0 1 3.4 0l7.3 12.7a2 2 0 0 1-1.7 3H4.7a2 2 0 0 1-1.7-3Z M12 9v4m0 3h.01" />
+    </SolarSvg>
+  ),
   arrowRight: (props) => (
     <SolarSvg {...props}>
       <path d="M5 12h14" opacity={0.65} />
@@ -105,7 +176,10 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
   book: (props) => (
     <SolarSvg {...props}>
       <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" />
-      <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v17h5.5a2.5 2.5 0 0 1 2.5 2V5.5Z" opacity={0.55} />
+      <path
+        d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v17h5.5a2.5 2.5 0 0 1 2.5 2V5.5Z"
+        opacity={0.55}
+      />
     </SolarSvg>
   ),
   close: (props) => (
@@ -151,7 +225,10 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
   copy: (props) => (
     <SolarSvg {...props}>
       <rect x="8" y="8" width="12" height="12" rx="3" />
-      <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" opacity={0.55} />
+      <path
+        d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
+        opacity={0.55}
+      />
     </SolarSvg>
   ),
   desktop: (props) => (
@@ -170,7 +247,10 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
     <SolarSvg {...props}>
       <path d="M14 4h6v6" />
       <path d="M10 14 20 4" />
-      <path d="M19 13.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4.5" opacity={0.55} />
+      <path
+        d="M19 13.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4.5"
+        opacity={0.55}
+      />
     </SolarSvg>
   ),
   eye: (props) => (
@@ -288,6 +368,12 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
 };
 
 const LUCIDE_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
+  chevronUp: (props) => <ChevronUp aria-hidden="true" {...props} />,
+  error: (props) => <OctagonX aria-hidden="true" {...props} />,
+  info: (props) => <Info aria-hidden="true" {...props} />,
+  loading: (props) => <LoaderCircle aria-hidden="true" {...props} />,
+  success: (props) => <CircleCheck aria-hidden="true" {...props} />,
+  warning: (props) => <TriangleAlert aria-hidden="true" {...props} />,
   arrowRight: (props) => <ArrowRight aria-hidden="true" {...props} />,
   book: (props) => <BookOpen aria-hidden="true" {...props} />,
   close: (props) => <X aria-hidden="true" {...props} />,
@@ -326,6 +412,9 @@ export function SystemIcon({
   ...props
 }: SvgProps & { name: SystemIconName; iconSet?: IconSetId }) {
   const ctxSet = useIconSet();
+  const overrides = useContext(IconOverridesContext);
+  const Override = iconSet ? undefined : overrides?.[name];
+  if (Override) return <Override aria-hidden="true" {...props} />;
   const active = iconSet ?? ctxSet;
   const render = active === "lucide" ? LUCIDE_ICONS[name] : SOLAR_ICONS[name];
   return <>{render(props)}</>;

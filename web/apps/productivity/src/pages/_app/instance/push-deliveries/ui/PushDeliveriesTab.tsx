@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { cn } from 'cn';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/kit/alert';
-import { Button } from '@/shared/ui/kit/button';
+import { Alert, AlertDescription, AlertTitle } from '@goraebap/ui-react/compact/alert';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { TriangleAlertIcon } from '@/shared/ui/kit/icon';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { WithPanel } from '@/shared/ui/kit/side-panel';

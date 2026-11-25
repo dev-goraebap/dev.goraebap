@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { FileIcon, ImageIcon, XIcon, type Icon } from "@/shared/ui/kit/icon"
 import { fileKey, fileSizeText } from "./files"
 

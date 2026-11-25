@@ -1,6 +1,6 @@
 import type {ButtonHTMLAttributes} from 'react';
 import {cn} from 'cn';
-import {Button as KitButton} from '@/shared/ui/kit/button';
+import {Button as KitButton} from '@goraebap/ui-react/compact/button';
 
 /**
  * 본문 편집기 안의 작은 단추(키트 Button, sm). primary는 주 동작, bordered는 테두리 단추, 그 밖은 바탕 없는 단추다. active는 켜진

@@ -1,7 +1,7 @@
 import type { AccessLevel, Grant, GrantSubject } from '@/entities/document';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ProjectsIcon, UserIcon, XIcon, type Icon } from '@/shared/ui/kit/icon';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/kit/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@goraebap/ui-react/compact/select';
 
 const LEVELS: { value: Grant['level']; label: string }[] = [{ value: 'READ', label: '보기' }, { value: 'WRITE', label: '쓰기' }, { value: 'MANAGE', label: '관리' }];
 export const ACCESS_LEVEL_TEXT: Record<AccessLevel, string> = { NONE: '볼 수 없음', READ: '보기', WRITE: '쓰기', MANAGE: '관리' };

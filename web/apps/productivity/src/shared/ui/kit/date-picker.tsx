@@ -2,8 +2,8 @@ import { useState } from "react"
 import { ko } from "react-day-picker/locale/ko"
 import { cn } from "cn"
 import { AdaptivePopover } from "@/shared/ui/kit/adaptive-popover"
-import { Button } from "@/shared/ui/kit/button"
-import { Calendar } from "@/shared/ui/kit/calendar"
+import { Button } from "@goraebap/ui-react/compact/button"
+import { Calendar } from "@goraebap/ui-react/components/calendar"
 import { CalendarIcon } from "@/shared/ui/kit/icon"
 
 /* 날짜 값은 YYYY-MM-DD 문자열이다. 달력은 그 날의 현지 자정으로 그린다. */

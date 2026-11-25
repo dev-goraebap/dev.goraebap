@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { SparklesIcon } from "@/shared/ui/kit/icon"
 
 /**

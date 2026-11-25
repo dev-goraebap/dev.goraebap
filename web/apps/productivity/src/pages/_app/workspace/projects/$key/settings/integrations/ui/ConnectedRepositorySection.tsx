@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { disconnectRepository, providerName, refreshCode, type CodeIntegration } from '@/entities/work-item';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
 import { CopyIcon, EyeClosedIcon, EyeIcon, SquareArrowOutUpRightIcon } from '@/shared/ui/kit/icon';
 import { SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
-import { toast } from '@/shared/ui/kit/toast';
+import { toast } from '@goraebap/ui-react/compact/toast';
 import { IconAction } from '@/shared/ui/settings';
 import { RepositoryTokenDialog } from './RepositoryTokenDialog';
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { CheckIcon, CopyIcon } from '@/shared/ui/kit/icon';
 
 /**

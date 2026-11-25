@@ -1,7 +1,7 @@
 import { useLayoutEffect, useState, type KeyboardEvent } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { AdaptivePopover } from "@/shared/ui/kit/adaptive-popover"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { MoreHorizontalIcon, type Icon } from "@/shared/ui/kit/icon"
 import { useIsInAppBar, usePhoneTools } from "@/shared/ui/kit/layout/phone-tools"
 import { MenuItem } from "@/shared/ui/kit/menu-item"

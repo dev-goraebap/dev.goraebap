@@ -1,7 +1,7 @@
 import { toggleValue } from "@/shared/lib/toggle"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { AdaptivePopover } from "@/shared/ui/kit/adaptive-popover"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { ArrowLeftIcon, ChevronRightIcon, ListFilterIcon } from "@/shared/ui/kit/icon"
 import { OptionList } from "@/shared/ui/kit/option-list"
 import { usePhoneTool, usePhoneTools } from "@/shared/ui/kit/layout/phone-tools"

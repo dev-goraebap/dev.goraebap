@@ -4,13 +4,13 @@ import { Suspense, useId, useState } from 'react';
 import {
   PROJECT_KEY, PROJECT_NAME_MAX, editProject, isProjectError, refreshProjects, type Project, type ProjectDraft,
 } from '@/entities/project';
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/kit/alert';
-import { Button } from '@/shared/ui/kit/button';
-import { Field, FieldContent, FieldLabel, FieldTitle } from '@/shared/ui/kit/field';
+import { Alert, AlertDescription, AlertTitle } from '@goraebap/ui-react/compact/alert';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Field, FieldContent, FieldLabel, FieldTitle } from '@goraebap/ui-react/components/field';
 import { InfoIcon, TriangleAlertIcon } from '@/shared/ui/kit/icon';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { MarkNameField } from '@/shared/ui/mark-picker';
 import { MarkdownRead } from '@/shared/ui/rich-body';
 import { useMarkdownDraft } from '@/shared/ui/rich-body/markdown-draft';

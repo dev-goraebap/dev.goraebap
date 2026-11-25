@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Switch } from '@goraebap/ui-react/components/switch';
 import { MarkNameField } from '../mark-picker';
 import type { ViewDraft } from './types';
 
@@ -22,7 +22,7 @@ export function ViewEditor({ title, initial, onSave, onClose }: {
       onChange: mark => set({ icon: mark.icon ?? draft.icon, color: mark.color ?? undefined }) }}
       input={{ label: '이름', placeholder: '뷰 이름', value: draft.label, onChange: label => set({ label }), hasAutoFocus: true }} />
     <Field orientation="horizontal">
-      <Switch id={privateId} checked={draft.isPrivate ?? false} onCheckedChange={isPrivate => set({ isPrivate })} />
+      <Switch appearance="compact" id={privateId} checked={draft.isPrivate ?? false} onCheckedChange={isPrivate => set({ isPrivate })} />
       <FieldLabel htmlFor={privateId}>나만 보기</FieldLabel>
     </Field>
   </FormDialog>;

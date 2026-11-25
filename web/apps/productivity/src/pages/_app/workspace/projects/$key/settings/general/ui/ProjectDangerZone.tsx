@@ -2,11 +2,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useId, useState } from 'react';
 import { changeProject, refreshProjects, type Project, type ProjectChange } from '@/entities/project';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
 
 const ASK: Record<ProjectChange, { title: string; label: string; description: string }> = {

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react"
 import { cn } from "cn"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { ChevronDownIcon, PlusIcon } from "@/shared/ui/kit/icon"
 
 /**

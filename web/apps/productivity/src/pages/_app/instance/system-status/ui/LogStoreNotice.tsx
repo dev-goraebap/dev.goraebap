@@ -1,4 +1,4 @@
-import { Alert, AlertDescription, AlertTitle } from '@/shared/ui/kit/alert';
+import { Alert, AlertDescription, AlertTitle } from '@goraebap/ui-react/compact/alert';
 import { TriangleAlertIcon } from '@/shared/ui/kit/icon';
 import { momentText } from '../model/format';
 

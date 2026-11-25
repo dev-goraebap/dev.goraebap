@@ -2,10 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { sendCommand } from '@/shared/api';
 import { isAdministrator, sessionOptions } from '@/shared/auth';
 import { BrandMark } from '@/shared/ui/brand';
-import { Button } from '@/shared/ui/kit/button';
-import { Card } from '@/shared/ui/kit/card';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Card } from '@goraebap/ui-react/compact/card';
 import { FolderIcon, UsersIcon, UserIcon } from '@/shared/ui/kit/icon';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 
 type Step = { icon: typeof UserIcon; title: string; detail: string };
 

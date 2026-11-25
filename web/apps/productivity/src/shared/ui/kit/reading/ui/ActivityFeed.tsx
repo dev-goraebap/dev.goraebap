@@ -1,10 +1,10 @@
-import { useId, useState, type FormEvent, type KeyboardEvent, type ReactNode } from "react"
+import { useId, useState, type SubmitEvent, type KeyboardEvent, type ReactNode } from "react"
 import { cn } from "cn"
 import { ActionMenu, type MenuAction } from "@/shared/ui/kit/action-menu"
 import { ConfirmDialog } from "@/shared/ui/kit/confirm-dialog"
 import { PersonAvatar } from "@/shared/ui/kit/person-avatar"
 import { ArrowUpIcon, PencilIcon, Trash2Icon, type Icon } from "@/shared/ui/kit/icon"
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@/shared/ui/kit/input-group"
+import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupTextarea } from "@goraebap/ui-react/components/input-group"
 
 /**
  * 활동의 한 칸: 일어난 일(누가 한 뒤의 한 문장과 그 종류의 아이콘) 또는 댓글. 댓글은 답글(parentId: 그 댓글의 카드 안에 선다),
@@ -138,7 +138,7 @@ export function CommentComposer({ label = "댓글", placeholder = "의견을 남
   const [text, setText] = useState(initial)
   const [isBusy, setBusy] = useState(false)
   const body = text.trim()
-  const send = (event?: FormEvent) => {
+  const send = (event?: SubmitEvent<HTMLFormElement>) => {
     event?.preventDefault()
     if (!body || isBusy) return
     setBusy(true)

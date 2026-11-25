@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { MarkPicker } from './MarkPicker';
 
 /** The name's text box beside the mark (a project's, a view's, an agent's). onChange takes the text. */

@@ -4,7 +4,7 @@ import { documentBodyStore, documentLinks, documentOptions, libraryOptions, useR
 import { sessionOptions } from '@/shared/auth';
 import { useLeaveEditor } from '@/shared/lib/panel';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { DetailSurface } from '@/shared/ui/kit/detail-surface';
 import { Page, useOwnPageTitle } from '@/shared/ui/kit/layout/page';
 import { PageState } from '@/shared/ui/kit/page-state';

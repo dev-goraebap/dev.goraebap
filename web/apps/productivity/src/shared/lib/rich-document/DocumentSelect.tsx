@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ChevronDownIcon } from '@/shared/ui/kit/icon';
 import { OptionList } from '@/shared/ui/kit/option-list';
-import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/kit/popover';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/kit/select';
+import { Popover, PopoverContent, PopoverTrigger } from '@goraebap/ui-react/compact/popover';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@goraebap/ui-react/compact/select';
 
 export type SelectOption = { value: string; label: string };
 

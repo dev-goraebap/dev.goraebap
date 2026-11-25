@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { DocumentRow } from '@/entities/document';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ChevronDownIcon, ChevronRightIcon } from '@/shared/ui/kit/icon';
 import type { SideNavState } from '../model/side-nav';
 import { SideNavPageLink } from './SideNavPageLink';

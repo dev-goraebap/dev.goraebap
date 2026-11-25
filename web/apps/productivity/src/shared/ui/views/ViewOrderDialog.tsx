@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { cn } from 'cn';
 import { rowReorderStyles as rows, useRowReorder } from '@/shared/lib/row-reorder';
-import { Button } from '@/shared/ui/kit/button';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/kit/dialog';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@goraebap/ui-react/compact/dialog';
 import { GripIcon } from '@/shared/ui/kit/icon';
 import { ReorderAnnouncer } from '@/shared/ui/kit/reorder';
 import type { ViewPill } from './ViewBar';

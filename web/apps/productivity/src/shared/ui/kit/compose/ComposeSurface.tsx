@@ -2,14 +2,14 @@ import { useBlocker } from "@tanstack/react-router"
 import { useRef, useState, type KeyboardEvent, type ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
 import { cn } from "cn"
-import { Button } from "@/shared/ui/kit/button"
+import { Button } from "@goraebap/ui-react/compact/button"
 import { ConfirmDialog } from "@/shared/ui/kit/confirm-dialog"
-import { Dialog, DialogBar, DialogContent } from "@/shared/ui/kit/dialog"
+import { Dialog, DialogBar, DialogContent } from "@goraebap/ui-react/compact/dialog"
 import { ArrowUpIcon, XIcon } from "@/shared/ui/kit/icon"
 import { PaneFrame } from "@/shared/ui/kit/layout/pane-frame"
 import { parentCrumb, useFullScreen, type Crumb } from "@/shared/ui/kit/layout/page"
-import { Spinner } from "@/shared/ui/kit/spinner"
-import { Switch } from "@/shared/ui/kit/switch"
+import { Spinner } from "@goraebap/ui-react/components/spinner"
+import { Switch } from "@goraebap/ui-react/components/switch"
 
 export type ComposeSubmit = { label: string; onSubmit: () => void; isDisabled?: boolean; isPending?: boolean }
 
@@ -106,7 +106,7 @@ function SubmitButton({ submit, className }: { submit: ComposeSubmit; className?
 function Continuing({ value = false, onChange }: { value?: boolean; onChange: (value: boolean) => void }) {
   return (
     <label className="flex items-center gap-2 text-sm">
-      <Switch checked={value} onCheckedChange={onChange} />
+      <Switch appearance="compact" checked={value} onCheckedChange={onChange} />
       계속 만들기
     </label>
   )

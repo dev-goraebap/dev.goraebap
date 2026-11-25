@@ -4,10 +4,10 @@ import {
   formatWorkItemDate, WorkItemAssignee, WorkItemPullRequests, WorkItemDueDate, WorkItemLabels, WorkItemPriorityIcon, WorkItemStatusIcon, WorkItemTypeIcon, priorityMark, type WorkItemRow,
 } from '@/entities/work-item';
 import { WorkItemRowMenu } from '../../ui/WorkItemRowMenu';
-import { Checkbox } from '@/shared/ui/kit/checkbox';
+import { Checkbox } from '@goraebap/ui-react/components/checkbox';
 import { DetailLink } from '@/shared/ui/kit/detail-surface';
 import { ProjectsIcon } from '@/shared/ui/kit/icon';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/shared/ui/kit/table';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@goraebap/ui-react/compact/table';
 
 /** 줄은 자기 바탕을 칠해 페이지의 점 무늬를 가리고, 가리키면 옅게 덮는다. 제목의 줄 링크가 줄 전체를 덮는다. */
 const ROW = 'relative bg-background hover:bg-row-hover';
@@ -38,7 +38,7 @@ export function WorkItemTable({ workItems, selected, showsProject = false, hrefO
     <TableHeader>
       <TableRow>
         <TableHead className="w-10">
-          <Checkbox aria-label="모두 고르기" checked={isAll} indeterminate={isSome}
+          <Checkbox appearance="compact" aria-label="모두 고르기" checked={isAll} indeterminate={isSome}
             onCheckedChange={isOn => onSelect(isOn ? new Set(workItems.map(workItem => workItem.id)) : new Set())} />
         </TableHead>
         <TableHead className={cn('w-26', HEAD)}>번호</TableHead>
@@ -58,7 +58,7 @@ export function WorkItemTable({ workItems, selected, showsProject = false, hrefO
         const href = hrefOf?.(workItem);
         return <TableRow key={workItem.id} data-state={selected.has(workItem.id) ? 'selected' : undefined} className={ROW}>
           <TableCell className="h-12.25 compact:h-10.25">
-            <Checkbox className="relative z-1" aria-label={`${workItem.ref} ${workItem.title} 고르기`} checked={selected.has(workItem.id)}
+            <Checkbox appearance="compact" className="relative z-1" aria-label={`${workItem.ref} ${workItem.title} 고르기`} checked={selected.has(workItem.id)}
               onCheckedChange={isOn => pick(workItem.id, isOn)} />
           </TableCell>
           <TableCell className="max-w-26 truncate text-muted-foreground tabular-nums">{workItem.ref}</TableCell>

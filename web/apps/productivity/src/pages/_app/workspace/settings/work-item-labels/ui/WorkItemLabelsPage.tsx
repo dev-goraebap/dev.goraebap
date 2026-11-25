@@ -7,13 +7,13 @@ import {
 import { rowReorderStyles as rows, useRowReorder } from '@/shared/lib/row-reorder';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
 import { ActionMenu, type MenuAction } from '@/shared/ui/kit/action-menu';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ColorPalette, DEFAULT_MARK_COLOR } from '@/shared/ui/color-palette';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
-import { Field, FieldLabel, FieldTitle } from '@/shared/ui/kit/field';
+import { Field, FieldLabel, FieldTitle } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
 import { GripIcon, PenSquareIcon, PlusIcon, Trash2Icon } from '@/shared/ui/kit/icon';
-import { Input } from '@/shared/ui/kit/input';
+import { Input } from '@goraebap/ui-react/compact/input';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { SettingsPage, SettingsSection } from '@/shared/ui/kit/settings';
 import { ADMIN_ROW, ADMIN_ROW_NAME } from '@/shared/ui/ordered-row';

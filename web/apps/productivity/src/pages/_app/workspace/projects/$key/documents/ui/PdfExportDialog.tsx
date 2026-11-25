@@ -1,8 +1,8 @@
 import { useId, useState } from 'react';
-import { Field, FieldContent, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldContent, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
 import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Switch } from '@goraebap/ui-react/components/switch';
 
 /** 고른 구성을 PDF 미리보기 주소의 쿼리로 만든다(1·0). */
 export const pdfQuery = (choice: { cover: boolean; toc: boolean; headings: boolean }) =>
@@ -14,7 +14,7 @@ function SwitchField({ label, value, onChange }: { label: string; value: boolean
     <FieldContent>
       <FieldLabel htmlFor={id}>{label}</FieldLabel>
     </FieldContent>
-    <Switch id={id} checked={value} onCheckedChange={onChange} />
+    <Switch appearance="compact" id={id} checked={value} onCheckedChange={onChange} />
   </Field>;
 }
 

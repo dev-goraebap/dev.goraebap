@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
-import { Input } from '@/shared/ui/kit/input';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Input } from '@goraebap/ui-react/compact/input';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { MarkPicker } from '@/shared/ui/mark-picker';
 import { MANAGED_ROW, useManagePages } from '../model/manage-pages-context';
 

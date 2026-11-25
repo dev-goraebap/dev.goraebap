@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { AdaptivePopover } from '@/shared/ui/kit/adaptive-popover';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { PlusIcon } from '@/shared/ui/kit/icon';
 import { OptionList } from '@/shared/ui/kit/option-list';
 

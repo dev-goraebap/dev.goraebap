@@ -8,7 +8,7 @@ import { Page } from '@/shared/ui/kit/layout/page';
 import { ListMore } from '@/shared/ui/kit/list-more';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { SearchTool } from '@/shared/ui/kit/search-tool';
-import { toast } from '@/shared/ui/kit/toast';
+import { toast } from '@goraebap/ui-react/compact/toast';
 import { pageCrumbs } from '@/shared/ui/nav-icon';
 import { memberHref } from '@/shared/ui/person';
 import type { ManageMember, WorkspaceMemberRowData } from '../model/member-row';

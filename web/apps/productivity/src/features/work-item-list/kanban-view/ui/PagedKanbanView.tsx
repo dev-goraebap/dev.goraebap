@@ -4,11 +4,11 @@ import { cn } from 'cn';
 import { boardGroupsOptions, workItemsOptions, useWorkItemTypes, PRIORITIES, WorkItemPriorityIcon, WorkItemStatusIcon, WorkItemTypeIcon,
   type BoardColumn, type WorkItemBoardGroup, type WorkItemListing, type WorkItemRow, type WorkItemViewGrouping } from '@/entities/work-item';
 import { useIsMobile } from '@/shared/lib/use-mobile';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { NotesIcon, ProjectsIcon, UserIcon } from '@/shared/ui/kit/icon';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { PersonAvatar } from '@/shared/ui/person';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { listingForGroup } from '../../model/board-query';
 import { kanbanGroupsInOrder } from '../../model/kanban-groups';
 import { KanbanColumn } from './KanbanColumn';

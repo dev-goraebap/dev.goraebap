@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { useIsInDialogBody } from "@/shared/ui/kit/dialog"
+import { useIsInDialogBody } from "@goraebap/ui-react/compact/dialog"
 import { cn } from "cn"
 import { useOwnPageTitle } from "@/shared/ui/kit/layout/page"
 

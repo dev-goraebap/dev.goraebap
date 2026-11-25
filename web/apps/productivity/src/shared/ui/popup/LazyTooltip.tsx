@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Tooltip, TooltipContent, TooltipTrigger } from '../kit/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 
 /**
  * A name's tooltip beside what it names (a person's picture in a row). Base UI builds the tooltip's content only when it

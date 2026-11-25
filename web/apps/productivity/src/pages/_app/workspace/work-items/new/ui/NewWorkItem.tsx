@@ -15,7 +15,7 @@ import { PersonAvatar } from '@/shared/ui/person';
 import { DatePill, OptionPill } from '@/shared/ui/kit/property-pill';
 import { RichDraft, serverBodyStore, useDraftFiles } from '@/shared/ui/rich-body';
 import type { DraftFilesSnapshot } from '@/shared/ui/rich-body/use-draft-files';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 
 const blankDraft = (columnId?: string): WorkItemDraft => ({ title: '', type: 'TASK', priority: 'MEDIUM', columnId, labelIds: [] });
 type Snapshot = { chosenKey?: string; draft: WorkItemDraft; body?: JSONNode; files: DraftFilesSnapshot; created: { key: string; number: number } | null };

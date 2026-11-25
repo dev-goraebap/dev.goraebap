@@ -1,5 +1,5 @@
-import { Button } from '@/shared/ui/kit/button';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { RichDraft } from '@/shared/ui/rich-body';
 import type { useMarkdownDraft } from '@/shared/ui/rich-body/markdown-draft';
 

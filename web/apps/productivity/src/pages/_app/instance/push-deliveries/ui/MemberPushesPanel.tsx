@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { BellIcon } from '@/shared/ui/kit/icon';
 import { SettingsSection } from '@/shared/ui/kit/settings';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 import { PUSH_KEY, pushMemberOptions, sendMemberTest, type PushMember } from '../api/push';
 import { formatPushMoment } from '../model/push-format';
 import { PushPanelRow } from './PushPanelRow';

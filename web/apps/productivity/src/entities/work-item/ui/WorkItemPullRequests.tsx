@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { Badge } from '@/shared/ui/kit/badge';
+import { Badge } from '@goraebap/ui-react/compact/badge';
 import { BranchIcon } from '@/shared/ui/kit/icon';
 import { LazyTooltip } from '@/shared/ui/popup';
 

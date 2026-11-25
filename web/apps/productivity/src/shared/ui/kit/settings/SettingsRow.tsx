@@ -1,5 +1,5 @@
 import type { ReactNode } from "react"
-import { Field, FieldContent, FieldDescription, FieldTitle } from "@/shared/ui/kit/field"
+import { Field, FieldContent, FieldDescription, FieldTitle } from "@goraebap/ui-react/components/field"
 
 type SettingsRowProps = {
   /** 이름. 링크처럼 글자가 아닌 것도 된다(저장소 연동의 저장소 주소). */

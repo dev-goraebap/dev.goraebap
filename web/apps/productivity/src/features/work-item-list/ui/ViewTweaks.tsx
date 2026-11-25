@@ -1,5 +1,5 @@
-import { Button } from '@/shared/ui/kit/button';
-import { Spinner } from '@/shared/ui/kit/spinner';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
 
 /** 필터 개수와 관계없이 저장 가능한 뷰 변경을 도구 모음에서 저장한다. */
 export function ViewTweaks({ isChanged, canSave, isSaving, onSave }: {

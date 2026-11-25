@@ -8,9 +8,9 @@ import {
 } from '@/entities/work-item';
 import { rowReorderStyles as rows, useRowReorder } from '@/shared/lib/row-reorder';
 import { ActionMenu, type MenuAction } from '@/shared/ui/kit/action-menu';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { ConfirmDialog } from '@/shared/ui/kit/confirm-dialog';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
 import { CheckIcon, GripIcon, PenSquareIcon, PlusIcon, Trash2Icon } from '@/shared/ui/kit/icon';
 import { PageState } from '@/shared/ui/kit/page-state';

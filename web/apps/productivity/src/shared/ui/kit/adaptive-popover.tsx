@@ -1,9 +1,9 @@
 import type { ReactElement, ReactNode } from "react"
 import { useIsMobile } from "@/shared/lib/use-mobile"
-import { Button } from "@/shared/ui/kit/button"
-import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerTrigger } from "@/shared/ui/kit/drawer"
+import { Button } from "@goraebap/ui-react/compact/button"
+import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerTrigger } from "@goraebap/ui-react/compact/drawer"
 import { XIcon } from "@/shared/ui/kit/icon"
-import { Popover, PopoverContent, PopoverTrigger } from "@/shared/ui/kit/popover"
+import { Popover, PopoverContent, PopoverTrigger } from "@goraebap/ui-react/compact/popover"
 
 /**
  * 무엇을 누르면 옆에 뜨는 것(cowork AdaptivePopover). 데스크톱은 팝오버, 휴대폰은 반드시 바텀시트.

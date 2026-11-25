@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNod
 import { cn } from 'cn';
 import { ColorPalette } from '../color-palette';
 import { SearchIcon } from '../kit/icon';
-import { InputGroup, InputGroupAddon, InputGroupInput } from '../kit/input-group';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@goraebap/ui-react/components/input-group';
 import { COMMON, loadedSolar, loadSolar, searchIcons } from './catalog';
 import { markTone } from './Mark';
 import { MarkIcon } from './MarkIcon';

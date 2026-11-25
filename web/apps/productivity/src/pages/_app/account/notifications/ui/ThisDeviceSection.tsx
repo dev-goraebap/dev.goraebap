@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 import { claimThisDevice, deviceName, pushKeys, sendTestPush, stateTexts, useThisDevice } from '@/features/push-device';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { BellIcon, SentIcon } from '@/shared/ui/kit/icon';
 import { SettingsSection } from '@/shared/ui/kit/settings';
-import { Spinner } from '@/shared/ui/kit/spinner';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
+import { Switch } from '@goraebap/ui-react/components/switch';
 import { NotificationIconRow } from './NotificationIconRow';
 
 /**
@@ -33,7 +33,7 @@ export function ThisDeviceSection() {
         {text.help ? <span>{text.help}</span> : null}
       </>}>
         {isBusy ? <Spinner aria-label="바꾸는 중" /> : null}
-        <Switch aria-label="이 기기에서 알림 받기" checked={isOn} disabled={!canSwitch || isBusy}
+        <Switch appearance="compact" aria-label="이 기기에서 알림 받기" checked={isOn} disabled={!canSwitch || isBusy}
           onCheckedChange={next => { setTested(false); if (next) turnOn.mutate(); else turnOff.mutate(); }} />
       </NotificationIconRow>
       {isOn ? (

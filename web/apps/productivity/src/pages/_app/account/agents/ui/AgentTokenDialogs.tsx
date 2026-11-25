@@ -1,10 +1,10 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { DEFAULT_MARK_COLOR } from '@/shared/ui/color-palette';
 import { DatePicker } from '@/shared/ui/kit/date-picker';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/shared/ui/kit/dialog';
-import { Field, FieldError, FieldLabel } from '@/shared/ui/kit/field';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@goraebap/ui-react/compact/dialog';
+import { Field, FieldError, FieldLabel } from '@goraebap/ui-react/components/field';
 import { FormDialog } from '@/shared/ui/kit/form-dialog';
 import { MarkNameField, type MarkValue } from '@/shared/ui/mark-picker';
 import { createAgentToken, editAgentProfile, type AgentProfile, type AgentTokenCreated } from '../api/agents';

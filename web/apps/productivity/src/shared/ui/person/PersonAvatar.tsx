@@ -3,7 +3,7 @@ import { cn } from 'cn';
 import { avatarSource, derivedAvatar, drawnAvatarSource, useMemberPicture } from '@/shared/lib/avatar';
 import { useOpenPanel } from '@/shared/lib/panel';
 import { PersonAvatar as KitPersonAvatar } from '@/shared/ui/kit/person-avatar';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 
 /** A member's own page (구성원's profile), which a desktop opens as a dialog over the page in view. */
 export const memberHref = (id: string) => `/workspace/members/${encodeURIComponent(id)}`;

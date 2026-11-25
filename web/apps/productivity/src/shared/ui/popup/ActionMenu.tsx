@@ -1,5 +1,5 @@
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { CheckIcon, type Icon } from '@/shared/ui/kit/icon';
 import { iconOf } from './icon-of';
 

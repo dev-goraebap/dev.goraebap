@@ -1,7 +1,7 @@
 import { PROJECT_ROLE_LABEL } from '@/entities/project';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { SettingsIcon } from '@/shared/ui/kit/icon';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/shared/ui/kit/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@goraebap/ui-react/compact/tooltip';
 import type { ManageMember, WorkspaceMemberRowData } from '../model/member-row';
 import { MemberProjectChip } from './MemberProjectChip';
 

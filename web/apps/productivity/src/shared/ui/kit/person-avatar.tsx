@@ -1,5 +1,5 @@
 import { cn } from "cn"
-import { Avatar, AvatarFallback, AvatarImage } from "@/shared/ui/kit/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@goraebap/ui-react/compact/avatar"
 
 /**
  * 사람 아바타(원형). 고른 그림(picture)이 있으면 그것을, 없거나 뜨기 전에는 이름 첫 글자를 보인다.

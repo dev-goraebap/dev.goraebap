@@ -43,7 +43,7 @@
  */
 ::view-transition-group(cowork-phone-bar), ::view-transition-group(cowork-phone-search) { border-radius: 9999px; }
 @media (min-width: 48rem) {
-  ::view-transition-image-pair(cowork-content) { overflow: hidden; border-radius: calc(var(--radius-surface) * 1.5); corner-shape: squircle; }
+  ::view-transition-image-pair(cowork-content) { overflow: hidden; border-radius: calc(var(--surface-radius) * 1.5); corner-shape: squircle; }
 }
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(cowork-content), ::view-transition-old(cowork-content), ::view-transition-new(cowork-content) { animation: none; }
@@ -79,7 +79,7 @@
 .fade-strip:not([data-end]) { --fade-r: 1.5rem; }
 
 /*
- * 목록 위 대화상자 바꿔 끼우기(2026-11-15, View Transitions API · shared/ui/dialog의 swapDialog).
+ * 목록 위 대화상자 바꿔 끼우기(2026-11-15, View Transitions API · PanelHost의 swapDialog).
  * 전환하는 동안(data-vt="dialog")만 그 대화상자에 이름을 준다. 페이지 콘텐츠(.route-content, cowork-content)는 이때 잡지 않는다:
  * 잡히면 그 스냅숏이 대화상자 바탕(흐림) 위에 그려져, 전환하는 동안 뒤 화면이 또렷해졌다가 바탕이 다시 덮여 대화상자가 다시 뜨는
  * 것처럼 보였다. 앞 · 새 화면은 같은 길이 · 같은 곡선으로 더해 섞어(plus-lighter) 겹치는 동안에도 투명해지지 않는다.

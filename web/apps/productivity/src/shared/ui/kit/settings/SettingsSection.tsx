@@ -1,6 +1,6 @@
 import { useId, type ReactNode } from "react"
-import { Card } from "@/shared/ui/kit/card"
-import { FieldGroup } from "@/shared/ui/kit/field"
+import { Card } from "@goraebap/ui-react/compact/card"
+import { FieldGroup } from "@goraebap/ui-react/components/field"
 
 type SettingsSectionProps = {
   title: string

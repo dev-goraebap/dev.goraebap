@@ -11,8 +11,8 @@ import { sessionOptions } from '@/shared/auth';
 import { stampText } from '@/shared/lib/date-stamp';
 import { useIsMobile } from '@/shared/lib/use-mobile';
 import { ActionMenu, type MenuAction } from '@/shared/ui/kit/action-menu';
-import { Alert, AlertAction, AlertTitle } from '@/shared/ui/kit/alert';
-import { Button } from '@/shared/ui/kit/button';
+import { Alert, AlertAction, AlertTitle } from '@goraebap/ui-react/compact/alert';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { CalendarIcon, ClockIcon, LinkIcon, Trash2Icon, TriangleAlertIcon, XIcon } from '@/shared/ui/kit/icon';
 import { InfoPill } from '@/shared/ui/kit/info-pill';
 import { PageState } from '@/shared/ui/kit/page-state';
@@ -22,8 +22,8 @@ import {
   BodyOutline, BodyOutlineProvider, BodyToolsContext, BodyVersions, RichBody, blockCommentsOf, serverBodyStore, useBodyHeadings, useRevealQuote,
   type BlockComments,
 } from '@/shared/ui/rich-body';
-import { Spinner } from '@/shared/ui/kit/spinner';
-import { toast } from '@/shared/ui/kit/toast';
+import { Spinner } from '@goraebap/ui-react/components/spinner';
+import { toast } from '@goraebap/ui-react/compact/toast';
 import { useWorkItemChange } from '../model/use-work-item-change';
 import { useWorkItemSections } from './WorkItemProperties';
 import { WorkItemTimeline } from './WorkItemTimeline';

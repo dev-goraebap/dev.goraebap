@@ -1,4 +1,4 @@
-import { toast } from '@/shared/ui/kit/toast';
+import { toast } from '@goraebap/ui-react/compact/toast';
 import { openBlockThread } from './block-comments';
 
 /**

@@ -47,7 +47,7 @@ const ITEMS = [
     description: "Base UI 위에 레시피를 입힌 React 컴포넌트 전체",
     root: "packages/ui-react/src",
     place: (file) => `react/${file}`,
-    dependencies: ["@base-ui/react", "lucide-react"],
+    dependencies: ["@base-ui/react", "cmdk", "lucide-react", "react-day-picker"],
     registryDependencies: [`${SITE}/design-system.json`],
   },
   {

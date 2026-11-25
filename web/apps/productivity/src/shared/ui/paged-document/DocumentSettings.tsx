@@ -1,10 +1,10 @@
 import { useEffect, useId, useRef } from 'react';
-import { Button } from '@/shared/ui/kit/button';
-import { Field, FieldDescription, FieldLabel } from '@/shared/ui/kit/field';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Field, FieldDescription, FieldLabel } from '@goraebap/ui-react/components/field';
 import { XIcon } from '@/shared/ui/kit/icon';
 import { SegmentedControl } from '@/shared/ui/kit/segmented-control';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/kit/select';
-import { Switch } from '@/shared/ui/kit/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@goraebap/ui-react/compact/select';
+import { Switch } from '@goraebap/ui-react/components/switch';
 import { DocumentNumberField } from './DocumentNumberField';
 import { DocumentSettingsSection } from './DocumentSettingsSection';
 import { DocumentTextField } from './DocumentTextField';
@@ -74,7 +74,7 @@ export function DocumentSettings({ setup, onChange, tab, onTab, focus, onClose }
               <FieldLabel htmlFor={switchId}>첫 페이지 다르게</FieldLabel>
               <FieldDescription className="text-xs">표지처럼 첫 페이지에는 머리말·바닥글을 두지 않습니다.</FieldDescription>
             </div>
-            <Switch id={switchId} checked={setup.differentFirstPage} onCheckedChange={value => set({ differentFirstPage: value })} />
+            <Switch appearance="compact" id={switchId} checked={setup.differentFirstPage} onCheckedChange={value => set({ differentFirstPage: value })} />
           </Field>
         </DocumentSettingsSection>
         <DocumentSettingsSection title="머리말">

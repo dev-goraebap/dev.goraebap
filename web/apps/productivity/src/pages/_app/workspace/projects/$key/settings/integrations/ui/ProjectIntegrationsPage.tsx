@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { projectOptions } from '@/entities/project';
 import { CODE_PROVIDERS, integrationsOptions, type CodeProvider } from '@/entities/work-item';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { SettingsPage, SettingsRow, SettingsSection } from '@/shared/ui/kit/settings';
 import { pageCrumbs } from '@/shared/ui/nav-icon';

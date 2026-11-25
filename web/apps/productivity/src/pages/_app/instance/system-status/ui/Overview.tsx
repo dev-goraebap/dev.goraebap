@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { cn } from 'cn';
-import { Button } from '@/shared/ui/kit/button';
+import { Button } from '@goraebap/ui-react/compact/button';
 import { PageState } from '@/shared/ui/kit/page-state';
 import { isLogUnavailable, statusOptions, trafficOptions, type TrafficRange } from '../api/system';
 import { countText } from '../model/format';

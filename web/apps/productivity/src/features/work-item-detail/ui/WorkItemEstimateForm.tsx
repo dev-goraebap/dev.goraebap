@@ -1,7 +1,7 @@
 import { useId, useState } from 'react';
-import { Button } from '@/shared/ui/kit/button';
-import { Field, FieldLabel } from '@/shared/ui/kit/field';
-import { Input } from '@/shared/ui/kit/input';
+import { Button } from '@goraebap/ui-react/compact/button';
+import { Field, FieldLabel } from '@goraebap/ui-react/components/field';
+import { Input } from '@goraebap/ui-react/compact/input';
 
 /** 숫자 칸의 값: 0보다 큰 수만 값이고, 비우거나 0 이하면 없음이다. */
 const hoursOf = (text: string) => {

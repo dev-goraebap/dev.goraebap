@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router"
 import { useEffect, useState } from "react"
 import { cn } from "cn"
-import { Button } from "@/shared/ui/kit/button"
-import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@/shared/ui/kit/drawer"
+import { Button } from "@goraebap/ui-react/compact/button"
+import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@goraebap/ui-react/compact/drawer"
 import { ArrowLeftIcon, FileTextIcon, MoreHorizontalIcon, XIcon } from "@/shared/ui/kit/icon"
 import { badgeText, contains, EXACT_LINK, phoneEntriesOf, type NavEntry, type NavSpace } from "./nav"
 
