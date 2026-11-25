@@ -1,12 +1,8 @@
----
-arc42: "8.5, 2"
----
+# 아이콘 (react)
 
-# 공통 아이콘 모듈
+공통 규칙은 [index.md](index.md)에 있습니다.
 
-화면은 아이콘 세트를 직접 가져오지 않고 공통 아이콘 모듈에서 뜻을 나타내는 이름으로 부르며, 이름에서 실제 아이콘으로 가는 매핑은 한 곳에 둡니다. 규칙은 [아이콘](../references/icons.md)에 있습니다.
-
-## react
+## icon-module
 
 출처: [web/scripts/generate-ui-icons.mjs](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/scripts/generate-ui-icons.mjs)
 

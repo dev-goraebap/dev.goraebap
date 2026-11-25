@@ -7,3 +7,9 @@ export {
   resolveTokens,
   type TokenMode,
 } from "./model/token-sets";
+export {
+  ButtonRecipeSource,
+  FontFamiliesDemo,
+  RadiusScaleDemo,
+  ThemeTokensDemo,
+} from "./ui/FoundationDemos";

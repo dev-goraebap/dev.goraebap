@@ -1,13 +1,4 @@
----
-arc42: "8.5, 2"
----
-
-# 테마 토큰을 CSS 변수로 정의하고 유틸리티로 노출
-
-토큰은 테마 파일 하나에 라이트와 다크로 정의하고, 스타일 도구가 그 토큰을 유틸리티로 쓰게 노출합니다. 규칙은 [테마와 색상](../references/theme.md)에 있습니다.
-
-## react
-
+<Fill name="tokens">
 출처: [web/src/app/theme/tailwind.css](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/app/theme/tailwind.css)
 
 ```css
@@ -64,3 +55,4 @@ arc42: "8.5, 2"
 ```
 
 라이트 값은 `:root`, 다크 값은 `:root[data-theme=dark]`에 두고, Tailwind의 `dark:` 변형도 같은 문서 루트 속성을 봅니다. 내부 구분선·바깥 경계·조작 면 같은 파생 토큰은 `color-mix`로 글자색을 면 색에 섞어 만듭니다. `@theme inline`과 `@theme`이 변수를 `border-border`·`bg-control` 같은 유틸리티로 노출하고, 휴대폰 글자 크기는 같은 파일의 `@media (width < 64rem)`에서 바꿉니다.
+</Fill>

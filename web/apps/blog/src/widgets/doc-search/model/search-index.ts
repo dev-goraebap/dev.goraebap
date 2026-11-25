@@ -91,18 +91,6 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.summary,
     keywords: guideKeywords(doc),
   })),
-  page(
-    "파운데이션",
-    "디자인 토큰",
-    "/frontend/design-system/foundations/tokens",
-    "색상 테마, 라이트와 다크, 반경, 타이포그래피",
-  ),
-  page(
-    "파운데이션",
-    "스타일 레시피",
-    "/frontend/design-system/foundations/recipes",
-    "Style Recipe와 변형",
-  ),
   page("컴포넌트", "컴포넌트 개요", "/frontend/design-system/components", "전체 컴포넌트 목록"),
   ...COMPONENT_DOCS.map((doc) => ({
     id: `component:${doc.slug}`,
@@ -128,7 +116,8 @@ const DOC_ENTRIES: DocEntry[] = [
   })),
   ...menuDocs("frontend/design-system").map((doc) => ({
     id: `design-system:${doc.slug}`,
-    group: "패턴" as const,
+    // 머리말의 묶음(파운데이션·패턴)을 따르고, 묶음이 없는 AI 지침은 패턴에 둔다.
+    group: (doc.meta.group === "파운데이션" ? "파운데이션" : "패턴") as DocEntry["group"],
     title: doc.meta.title ?? doc.slug,
     href: `/frontend/design-system/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",

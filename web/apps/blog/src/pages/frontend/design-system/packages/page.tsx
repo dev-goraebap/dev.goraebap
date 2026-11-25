@@ -1,4 +1,4 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, linkOptions } from "@tanstack/react-router";
 import { CopyCodeBlock, Glossed } from "@/shared/ui";
 
 export const Route = createFileRoute("/frontend/design-system/packages/")({
@@ -9,22 +9,22 @@ const NEXT_STEPS = [
   {
     title: "디자인 토큰",
     summary: "색상, 반경, 타이포그래피 토큰의 구성과 5가지 색상 테마별 값을 확인합니다.",
-    to: "/frontend/design-system/foundations/tokens" as const,
+    link: linkOptions({ to: "/frontend/design-system/$slug", params: { slug: "theme" } }),
   },
   {
     title: "스타일 레시피",
     summary: "프레임워크에 독립적인 스타일 레시피의 역할과 변형 규칙을 확인합니다.",
-    to: "/frontend/design-system/foundations/recipes" as const,
+    link: linkOptions({ to: "/frontend/design-system/$slug", params: { slug: "recipes" } }),
   },
   {
     title: "컴포넌트",
     summary: "Base UI 기반 React 컴포넌트의 동작과 사용 예제를 확인합니다.",
-    to: "/frontend/design-system/components" as const,
+    link: linkOptions({ to: "/frontend/design-system/components" }),
   },
   {
     title: "레이아웃",
     summary: "Inset AppShell과 Responsive Dialog의 화면 구성과 반응형 전환을 확인합니다.",
-    to: "/frontend/design-system/layouts" as const,
+    link: linkOptions({ to: "/frontend/design-system/layouts" }),
   },
 ];
 
@@ -124,8 +124,8 @@ return <Button size="sm">저장</Button>;
         <div className="grid gap-3 sm:grid-cols-2">
           {NEXT_STEPS.map((step) => (
             <Link
-              key={step.to}
-              to={step.to}
+              key={step.title}
+              {...step.link}
               className="border-border bg-card hover:border-foreground/30 space-y-1 rounded-2xl border p-5 transition-colors"
             >
               <h3 className="text-sm font-semibold">{step.title}</h3>

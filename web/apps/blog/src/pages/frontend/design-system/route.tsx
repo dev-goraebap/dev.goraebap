@@ -16,13 +16,6 @@ const GUIDE_GROUPS: DocsNavGroup[] = [
       { label: "패키지 연결", href: "/frontend/design-system/packages", icon: "code" },
     ],
   },
-  {
-    title: "파운데이션",
-    items: [
-      { label: "디자인 토큰", href: "/frontend/design-system/foundations/tokens", icon: "swatch" },
-      { label: "스타일 레시피", href: "/frontend/design-system/foundations/recipes", icon: "code" },
-    ],
-  },
 ];
 
 const SHELL_ICONS: Record<string, SystemIconName> = {
@@ -66,7 +59,7 @@ const COMPONENT_GROUP: DocsNavGroup = {
   ],
 };
 
-// content가 원본인 문서(패턴 등)와 AI 지침. 스택을 고른 문서 화면에서는 그 스택 주소로, 다른 화면에서는 고른 적 있는 스택으로 보내는 주소로 잇는다.
+// content가 원본인 문서(파운데이션·패턴 등)와 AI 지침. 스택을 고른 문서 화면에서는 그 스택 주소로, 다른 화면에서는 고른 적 있는 스택으로 보내는 주소로 잇는다.
 const MENU = "frontend/design-system";
 const DOCS = menuDocs(MENU);
 const STACKS = stacksOf(MENU);
@@ -89,13 +82,21 @@ function contentGroups(stack?: string): DocsNavGroup[] {
   return groups;
 }
 
+// 파운데이션은 개요 바로 아래에, 나머지 content 묶음(패턴·AI 지침)은 컴포넌트·레이아웃 뒤에 둔다.
+function sidebarGroups(stack?: string): DocsNavGroup[] {
+  const content = contentGroups(stack);
+  const foundations = content.filter((group) => group.title === "파운데이션");
+  const rest = content.filter((group) => group.title !== "파운데이션");
+  return [...GUIDE_GROUPS, ...foundations, COMPONENT_GROUP, LAYOUT_GROUP, ...rest];
+}
+
 function LibraryLayout() {
   const params = useParams({ strict: false }) as { slug?: string; stack?: string };
   const stack = params.stack && STACKS.includes(params.stack) ? params.stack : undefined;
   return (
     <DocsShell
       label="문서 탐색"
-      groups={[...GUIDE_GROUPS, COMPONENT_GROUP, LAYOUT_GROUP, ...contentGroups(stack)]}
+      groups={sidebarGroups(stack)}
       header={
         stack && params.slug ? (
           <StackSwitcher

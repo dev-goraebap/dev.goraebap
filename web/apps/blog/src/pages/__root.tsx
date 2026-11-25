@@ -54,7 +54,15 @@ export const Route = createRootRoute({
   // 워크스페이스 도입 전 주소로 들어온 링크를 새 주소로 보낸다.
   beforeLoad: ({ location }) => {
     if (/^\/(themes|(frontend\/)?foundations\/color-themes)\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/frontend/design-system/foundations/tokens", replace: true });
+      throw redirect({ href: "/frontend/design-system/theme", replace: true });
+    }
+    // 파운데이션이 content 문서(테마와 색상, 스타일 레시피)로 옮기기 전 주소
+    const foundation = location.pathname.match(
+      /^(?:\/frontend\/design-system|\/frontend)?\/foundations\/(tokens|recipes)\/?$/,
+    );
+    if (foundation) {
+      const slug = foundation[1] === "tokens" ? "theme" : "recipes";
+      throw redirect({ href: `/frontend/design-system/${slug}`, replace: true });
     }
     if (/^\/(frontend\/)?getting-started\/?$/.test(location.pathname)) {
       throw redirect({ href: "/frontend/design-system/packages", replace: true });

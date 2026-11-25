@@ -2,6 +2,8 @@ const SENTINEL = "#010203";
 let context: CanvasRenderingContext2D | null = null;
 
 function getContext() {
+  // 정적 페이지를 만드는 서버에는 document가 없다. 그때는 값을 그대로 두고 브라우저가 이어받는다.
+  if (typeof document === "undefined") return null;
   if (!context) {
     const canvas = document.createElement("canvas");
     canvas.width = 1;

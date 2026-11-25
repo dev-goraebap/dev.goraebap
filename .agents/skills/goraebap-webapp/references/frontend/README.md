@@ -16,6 +16,15 @@
 
 ### 읽을 자료
 
+#### 파운데이션
+
+- [테마와 색상](design-system/theme/index.md): 색·상태 표현·라이트·다크와 테마 적용 범위를 다룰 때 읽습니다.
+- [글자](design-system/typography/index.md): 글자 크기·글꼴·숫자·넘침을 다룰 때 읽습니다.
+- [간격과 크기](design-system/spacing/index.md): 치수·분기점·정렬선·확대를 다룰 때 읽습니다.
+- [면과 경계](design-system/surfaces/index.md): 면 단계·선·그림자·모서리·점 무늬를 다룰 때 읽습니다.
+- [아이콘](design-system/icons/index.md): 아이콘 선택·크기·정렬·접근성을 다룰 때 읽습니다.
+- [스타일 레시피](design-system/recipes/index.md): 컴포넌트 외형과 변형을 레시피로 묶을 때 읽습니다.
+
 #### 패턴
 
 - [대화상자](design-system/dialog/index.md): 대화상자·확인 창·짧은 양식을 다룰 때 읽습니다.

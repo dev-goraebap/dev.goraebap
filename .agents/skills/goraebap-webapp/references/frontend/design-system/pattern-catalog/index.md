@@ -6,7 +6,7 @@
 
 | 범주 | 소유하는 내용 | 지침 |
 | - | - | - |
-| Foundations (디자인 기초) | 테마·색상, 글자, 간격·크기, 면·경계·그림자·곡률, 아이콘, 모션 | 테마, 글자, 간격, 면, 아이콘, [페이지 전환과 대기](../../interaction/page-transition/index.md) |
+| Foundations (디자인 기초) | 테마·색상, 글자, 간격·크기, 면·경계·그림자·곡률, 아이콘, 모션 | [테마](../theme/index.md), [글자](../typography/index.md), [간격](../spacing/index.md), [면](../surfaces/index.md), [아이콘](../icons/index.md), [페이지 전환과 대기](../../interaction/page-transition/index.md) |
 | Primitives (기본 컴포넌트) | 컴포넌트 라이브러리 컴포넌트의 쓰임과 변형 | 기본 컴포넌트 |
 | Composites (조합 컴포넌트) | 다이얼로그·팝오버·검색·필터·표시·속성·올리기·상태·본문 칸 | 조합 컴포넌트, [다이얼로그](../dialog/index.md), [검색·필터·표시](../search-filter/index.md) |
 | Layouts (레이아웃) | 앱 셸·공간·사이드바·모바일 탐색·페이지 머리·칸 머리·툴바·목록·표·상세·설정·옆 패널 | 앱 셸, 페이지 배치 |
