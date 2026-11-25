@@ -13,7 +13,6 @@ const GUIDE_GROUPS: DocsNavGroup[] = [
   {
     items: [
       { label: "개요", href: "/frontend/design-system/overview", icon: "book" },
-      { label: "패키지 연결", href: "/frontend/design-system/packages", icon: "code" },
     ],
   },
   {
