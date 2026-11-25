@@ -1,0 +1,18 @@
+<Fill name="usage">
+```html
+<brn-popover>
+  <button brnPopoverTrigger>필터 옵션</button>
+  <div *brnPopoverContent [class]="popoverPopupVariants()">...</div>
+</brn-popover>
+```
+</Fill>
+
+<Fill name="responsive">
+```ts
+@if (isMobile()) {
+  <brn-sheet side="bottom">...</brn-sheet>
+} @else {
+  <brn-popover>...</brn-popover>
+}
+```
+</Fill>

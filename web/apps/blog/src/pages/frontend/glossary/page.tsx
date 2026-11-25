@@ -3,7 +3,12 @@ import { Link, createFileRoute, useLocation } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui-react/components/button";
 import { Input } from "@goraebap/ui-react/components/input";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { getComponentDoc } from "@/entities/component-doc";
+import { menuDocs } from "@/entities/content-doc";
+
+// 용어가 쓰이는 컴포넌트의 이름은 컴포넌트 문서(content)의 제목을 쓴다.
+const COMPONENT_TITLES = new Map(
+  menuDocs("frontend/design-system/components").map((doc) => [doc.slug, doc.meta.title ?? doc.slug]),
+);
 import { GLOSSARY, GLOSSARY_CATEGORIES, type GlossaryCategory } from "@/shared/lib/glossary";
 
 export const Route = createFileRoute("/frontend/glossary/")({
@@ -118,7 +123,7 @@ function GlossaryPage() {
                               params={{ slug }}
                               className="border-border bg-background text-muted-foreground hover:text-foreground hover:border-foreground/30 rounded-full border px-2 py-0.5 text-[0.6875rem] font-medium transition-colors"
                             >
-                              {getComponentDoc(slug)?.name ?? slug}
+                              {COMPONENT_TITLES.get(slug) ?? slug}
                             </Link>
                           ))}
                         </p>

@@ -1,0 +1,35 @@
+---
+title: Alert
+group: 표시와 구조
+order: 8
+summary: "안내, 성공, 경고, 오류 메시지를 문맥 안에 인라인으로 알리는 배너"
+arc42: "8.8"
+---
+
+import { ComponentAnatomyFigure, ComponentExampleDemo, ComponentPlayground } from "@/entities/component-doc";
+
+오류, 경고, 완료 안내처럼 사용자가 현재 화면 안에서 꼭 읽어야 하는 상태 메시지를 전달할 때 씁니다. 페이지 흐름 안에 고정되어 사용자가 닫기 전까지 맥락을 유지합니다.
+
+<Demo>
+<ComponentPlayground slug="alert" />
+</Demo>
+
+<Slot name="usage" />
+
+## 구성
+
+| 부분 | 역할 |
+| --- | --- |
+| Alert | role="alert"를 포함해 상태 강조 스타일과 메시지 틀을 제공하는 컨테이너입니다. |
+| AlertTitle | 알림의 핵심 요지를 한 줄로 요약하는 제목입니다. |
+| AlertDescription | 원인이나 사용자가 취할 다음 행동을 설명하는 본문입니다. |
+
+## 접근성
+
+- 긴급한 오류나 상태 변경이 아닌 단순 상시 안내에는 과도한 알림을 막기 위해 role을 조정합니다.
+- 아이콘이나 색에만 의존하지 않고 제목과 설명으로 상태 의미를 명확히 적습니다.
+
+## 관련 컴포넌트
+
+- [Toast](../toast/index.mdx): 저장 완료처럼 잠시 띄웠다 사라져도 되는 일시적 피드백은 Toast를 씁니다.
+- [Alert Dialog](../alert-dialog/index.mdx): 배경 조작을 멈추고 사용자의 확인 응답을 받아야 할 때 씁니다.

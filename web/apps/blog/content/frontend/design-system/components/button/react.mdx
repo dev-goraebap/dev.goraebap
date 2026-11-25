@@ -1,0 +1,19 @@
+<Fill name="usage">
+링크로 합성할 때는 `nativeButton={false}`를 함께 넘깁니다.
+
+```tsx
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button>저장</Button>
+      <Button variant="secondary">임시 저장</Button>
+      <Button variant="outline">미리보기</Button>
+      <Button variant="ghost">취소</Button>
+      <Button variant="destructive">삭제</Button>
+    </div>
+  );
+}
+```
+</Fill>

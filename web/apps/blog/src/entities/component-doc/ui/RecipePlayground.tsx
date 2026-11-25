@@ -11,7 +11,7 @@ import { useDesignConfig } from "@/shared/lib/design-config";
 import { AdapterCodePanel, ThemedPortalScope } from "@/shared/ui";
 import { CLASS_GROUPS, classColor, classGroup } from "../lib/recipe-classes";
 import { getRecipeAxes, getRecipeParts, type RecipePart } from "../lib/recipe-parts";
-import type { ComponentDocSpec } from "../model/catalog";
+import type { ComponentDemoSpec } from "../model/catalog";
 import type { PlaygroundConfig, PlaygroundFlag, PlaygroundState } from "../model/playgrounds";
 import { ContainerPreview } from "./ContainerPreview";
 
@@ -109,7 +109,7 @@ export function RecipePlayground({
   recipeCode,
 }: {
   slug: string;
-  doc: ComponentDocSpec;
+  doc: ComponentDemoSpec;
   config?: PlaygroundConfig;
   recipeCode?: string;
 }) {
@@ -295,11 +295,14 @@ export function RecipePlayground({
           </dl>
         )}
 
-        <AdapterCodePanel
-          reactCode={config ? config.reactCode(attributes, state) : doc.reactCode}
-          angularCode={config ? config.angularCode(recipeArguments, state) : doc.angularCode}
-          recipeCode={recipeCode}
-        />
+        {/* 고른 옵션을 반영한 코드. 옵션이 없는 컴포넌트의 코드는 문서의 스택 글에 있다. */}
+        {config && (
+          <AdapterCodePanel
+            reactCode={config.reactCode(attributes, state)}
+            angularCode={config.angularCode(recipeArguments, state)}
+            recipeCode={recipeCode}
+          />
+        )}
       </section>
     </ThemedPortalScope>
   );

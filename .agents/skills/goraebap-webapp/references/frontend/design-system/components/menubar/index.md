@@ -1,0 +1,22 @@
+# Menubar
+
+파일, 편집, 보기처럼 데스크톱 앱 스타일의 상위 명령 메뉴들을 가로 한 줄에 나란히 배치할 때 씁니다. 한 메뉴가 열린 상태에서 포인터 이동이나 화살표 키로 옆 메뉴를 자연스럽게 넘나듭니다.
+
+스택별 구현: [react.md](react.md#usage) · [angular.md](angular.md#usage)의 「usage」 절
+
+## 접근성
+
+| 키 | 동작 |
+| - | - |
+| ArrowLeft / ArrowRight | 메뉴바의 이전·다음 상위 메뉴로 이동합니다. |
+| ArrowUp / ArrowDown | 열린 메뉴 안의 이전·다음 항목으로 이동합니다. |
+| Enter / Space | 메뉴를 열거나 강조된 항목을 실행합니다. |
+| Esc | 열린 메뉴를 닫고 메뉴바 트리거로 포커스를 되돌립니다. |
+
+- 메뉴바는 페이지 이동용 전역 헤더가 아니라 문서 편집기 같은 앱 명령 모음에 씁니다.
+- 좁은 화면에서는 가로 공간이 부족하므로 Drawer나 단일 Menu로 전환합니다.
+
+## 관련 컴포넌트
+
+- [Navigation Menu](../navigation-menu/index.md): 앱 명령이 아니라 사이트 페이지 간 이동을 위한 전역 탐색은 Navigation Menu를 씁니다.
+- [Menu](../menu/index.md): 단일 버튼 하나로 동작 목록을 열 때 씁니다.

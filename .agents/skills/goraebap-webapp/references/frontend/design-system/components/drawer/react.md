@@ -1,0 +1,22 @@
+# Drawer (react)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## usage
+
+```tsx
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerTitle, DrawerTrigger } from "@goraebap/ui-react/components/drawer";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <Drawer>
+      <DrawerTrigger render={<Button variant="outline" size="sm" />}>드로어 열기</DrawerTrigger>
+      <DrawerContent side="right">
+        <DrawerTitle>필터 설정</DrawerTitle>
+        <DrawerDescription>화면 가장자리에서 보조 패널을 엽니다.</DrawerDescription>
+      </DrawerContent>
+    </Drawer>
+  );
+}
+```

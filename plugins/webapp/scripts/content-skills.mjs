@@ -78,6 +78,8 @@ export async function contentSkillNames() {
 
 // 공통 글 파일 → 문서 이름. 폴더 문서는 폴더 이름, 한 파일 문서는 파일 이름이다.
 const docSlug = file => path.basename(file) === 'index.mdx' ? path.basename(path.dirname(file)) : path.basename(file, '.mdx');
+// 메뉴 폴더 기준 문서 경로. 하위 폴더에 묶은 문서(예: components/button)는 그 경로를 그대로 쓴다.
+const docPath = (dir, file) => path.relative(dir, path.basename(file) === 'index.mdx' ? path.dirname(file) : file.slice(0, -'.mdx'.length)).split(path.sep).join('/');
 
 /** 스킬 폴더 기준 { 'references/... 경로': 내용 }과, 이 빌드가 관리하는 영역 목록을 만든다. */
 export async function buildContentSkill() {
@@ -117,7 +119,7 @@ export async function buildContentSkill() {
         if (await exists(old)) throw new Error(`같은 문서가 content와 skills/에 함께 있습니다: ${path.relative(repo, doc)} ↔ ${path.relative(repo, old)}`);
       }
     for (const doc of docs) {
-      const base = `references/${space}/${menu}/${docSlug(doc)}`;
+      const base = `references/${space}/${menu}/${docPath(dir, doc)}`;
       target.set(doc, `${base}/index.md`);
       const stackFiles = [];
       if (path.basename(doc) === 'index.mdx') {

@@ -1,0 +1,41 @@
+---
+title: Toggle Group
+group: 동작과 입력
+order: 15
+summary: "여러 옵션 중 하나 또는 복수를 고르는 세그먼트 토글 그룹"
+arc42: "8.8"
+---
+
+import { ComponentAnatomyFigure, ComponentExampleDemo, ComponentPlayground } from "@/entities/component-doc";
+
+텍스트 정렬, 보기 방식, 기간 필터처럼 서로 관련된 옵션 묶음에서 하나 또는 여러 개를 고를 때 씁니다. 선택지가 적고 모든 옵션을 한눈에 펼쳐 두어야 할 때 적합합니다.
+
+<Demo>
+<ComponentPlayground slug="toggle-group" />
+</Demo>
+
+<Slot name="usage" />
+
+## 구성
+
+| 부분 | 역할 |
+| --- | --- |
+| ToggleGroup | 단일·다중 선택 상태와 그룹 내부 키보드 탐색을 관리하는 컨테이너입니다. |
+| ToggleGroupItem | 그룹 안에서 개별 옵션을 선택하거나 해제하는 토글 버튼입니다. |
+
+## 접근성
+
+| 키 | 동작 |
+| --- | --- |
+| Tab | 토글 그룹으로 포커스를 이동합니다. |
+| ArrowLeft / ArrowRight | 그룹 안의 이전·다음 항목으로 이동합니다. |
+| Enter / Space | 현재 항목의 선택 상태를 전환합니다. |
+
+- ToggleGroup에 aria-label을 붙여 어떤 기준의 선택 묶음인지 스크린 리더에 알립니다.
+- 아이콘만 들어간 항목에도 각각 aria-label로 접근 가능한 이름을 적습니다.
+
+## 관련 컴포넌트
+
+- [Tabs](../tabs/index.mdx): 선택에 따라 아래 본문 패널 전체가 바뀌어야 할 때는 Tabs를 씁니다.
+- [Radio Group](../radio-group/index.mdx): 폼 안에서 설명이 붙은 선택지 중 하나를 고를 때 씁니다.
+- [Select](../select/index.mdx): 선택지가 많아 한 줄에 펼쳐 두기 어려울 때 씁니다.

@@ -1,5 +1,4 @@
 export { AdapterCodePanel } from "./AdapterCodePanel";
-export { AdapterPreviewStage } from "./AdapterPreviewStage";
 export { AdaptiveWireframe } from "./AdaptiveWireframe";
 export { BrandMark } from "./BrandMark";
 export { CopyCodeBlock } from "./CopyCodeBlock";

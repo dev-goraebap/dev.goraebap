@@ -1,0 +1,33 @@
+---
+title: Slider
+group: 동작과 입력
+order: 22
+summary: "정해진 범위 안에서 연속된 값을 드래그로 조절하는 슬라이더"
+arc42: "8.8"
+---
+
+import { ComponentAnatomyFigure, ComponentExampleDemo, ComponentPlayground } from "@/entities/component-doc";
+
+음량, 밝기, 가격 범위처럼 연속된 숫자 구간에서 값을 직관적으로 조절할 때 씁니다. 드래그 도중 화면 스크롤과 겹치지 않도록 터치 제어가 적용되어 있습니다.
+
+<Demo>
+<ComponentPlayground slug="slider" />
+</Demo>
+
+<Slot name="usage" />
+
+## 접근성
+
+| 키 | 동작 |
+| --- | --- |
+| Tab | 슬라이더 손잡이로 포커스를 이동합니다. |
+| ArrowLeft / ArrowRight / ArrowUp / ArrowDown | 지정된 step 단위로 값을 줄이거나 늘립니다. |
+| Home / End | 최솟값 또는 최댓값으로 즉시 이동합니다. |
+
+- 슬라이더에 aria-label이나 aria-labelledby를 연결해 무엇을 조절하는지 알립니다.
+- 현재 값을 숫자로 함께 표시해 시각적으로나 정밀 조절 시 혼동을 줄입니다.
+
+## 관련 컴포넌트
+
+- [Input](../input/index.mdx): 정확한 숫자를 직접 타이핑해 입력해야 할 때는 Input을 씁니다.
+- [Progress](../progress/index.mdx): 사용자가 조작하는 값이 아니라 진행 상태만 보여 줄 때 씁니다.

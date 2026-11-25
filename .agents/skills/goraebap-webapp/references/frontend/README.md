@@ -45,6 +45,7 @@
 - [디자인 시스템 받기와 갱신](design-system/packages/index.md): 디자인 시스템을 받고 테마를 연결하고 갱신할 때 읽습니다.
 - [기본 컴포넌트](design-system/primitives/index.md): 버튼·라벨·아바타·입력을 다룰 때 읽습니다.
 - [조합 컴포넌트](design-system/composites/index.md): 팝오버·시트·메뉴·속성 칩·올리기·본문 칸·문서 편집기를 다룰 때 읽습니다.
+- [컴포넌트 목록](design-system/component-list/index.md): 컴포넌트 하나의 쓰임·구성·변형·접근성을 찾을 때 읽고, 목록에서 그 컴포넌트 문서 하나만 엽니다.
 
 규칙 본문은 각 자료가 소유합니다. URL·서버 데이터·초안의 소유는 [프론트엔드 엔지니어링](README.md#engineering), 움직임·대기와 상태 화면·라우트 마스킹·누르는 동작은 [인터랙션](README.md#interaction), 모양과 컴포넌트 조합은 이 지침이 담당합니다. 화면을 만들거나 고칠 때 문구도 설계 대상으로 검토합니다.
 

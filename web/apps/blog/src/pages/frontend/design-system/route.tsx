@@ -1,6 +1,5 @@
-import { Outlet, createFileRoute, useParams } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useLocation, useParams } from "@tanstack/react-router";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
-import { COMPONENT_CATEGORIES, COMPONENT_DOCS } from "@/entities/component-doc";
 import { StackSwitcher, menuDocs, stacksOf, docHref, type ContentDoc } from "@/entities/content-doc";
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
@@ -44,19 +43,25 @@ const LAYOUT_GROUP: DocsNavGroup = {
   ],
 };
 
-const COMPONENT_GROUP: DocsNavGroup = {
-  title: "컴포넌트",
-  items: [
-    { label: "모든 컴포넌트", href: "/frontend/design-system/components", icon: "overview" },
-    ...COMPONENT_CATEGORIES.map((category) => ({
-      label: category,
-      children: COMPONENT_DOCS.filter((item) => item.category === category).map((item) => ({
-        label: item.name,
-        href: `/frontend/design-system/components/${item.slug}`,
+// 컴포넌트 문서는 content의 하위 메뉴(components)이고, 머리말의 묶음(쓰임별 분류)으로 나눈다.
+const COMPONENT_MENU = "frontend/design-system/components";
+const COMPONENT_DOCS = menuDocs(COMPONENT_MENU).filter((doc) => !doc.isSkill);
+
+function componentGroup(stack?: string): DocsNavGroup {
+  const categories = [...new Set(COMPONENT_DOCS.map((doc) => doc.meta.group ?? ""))];
+  return {
+    title: "컴포넌트",
+    items: [
+      { label: "모든 컴포넌트", href: "/frontend/design-system/components", icon: "overview" },
+      ...categories.map((category) => ({
+        label: category,
+        children: COMPONENT_DOCS.filter((doc) => (doc.meta.group ?? "") === category).map(
+          (doc) => ({ label: doc.meta.title ?? doc.slug, href: contentHref(doc, stack) }),
+        ),
       })),
-    })),
-  ],
-};
+    ],
+  };
+}
 
 // content가 원본인 문서(파운데이션·패턴 등)와 AI 지침. 스택을 고른 문서 화면에서는 그 스택 주소로, 다른 화면에서는 고른 적 있는 스택으로 보내는 주소로 잇는다.
 const MENU = "frontend/design-system";
@@ -87,11 +92,12 @@ function sidebarGroups(stack?: string): DocsNavGroup[] {
   const content = contentGroups(stack);
   const foundations = content.filter((group) => group.title === "파운데이션");
   const rest = content.filter((group) => group.title !== "파운데이션");
-  return [...GUIDE_GROUPS, ...foundations, COMPONENT_GROUP, LAYOUT_GROUP, ...rest];
+  return [...GUIDE_GROUPS, ...foundations, componentGroup(stack), LAYOUT_GROUP, ...rest];
 }
 
 function LibraryLayout() {
   const params = useParams({ strict: false }) as { slug?: string; stack?: string };
+  const location = useLocation();
   const stack = params.stack && STACKS.includes(params.stack) ? params.stack : undefined;
   return (
     <DocsShell
@@ -103,7 +109,7 @@ function LibraryLayout() {
             space="frontend"
             stacks={STACKS}
             current={stack}
-            hrefFor={(next) => `/${MENU}/${params.slug}/${next}`}
+            hrefFor={(next) => `${location.pathname.split("/").slice(0, -1).join("/")}/${next}`}
           />
         ) : undefined
       }

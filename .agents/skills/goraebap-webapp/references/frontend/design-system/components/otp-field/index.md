@@ -1,0 +1,27 @@
+# OTP Field
+
+이메일·문자 인증번호나 2단계 보안 코드처럼 자릿수가 고정된 코드를 칸마다 나누어 입력받을 때 씁니다. 한 자리씩 입력하면 자동으로 다음 칸으로 넘어가며 붙여넣기도 칸에 맞춰 분배합니다.
+
+스택별 구현: [react.md](react.md#usage) · [angular.md](angular.md#usage)의 「usage」 절
+
+## 구성
+
+| 부분 | 역할 |
+| - | - |
+| OTPField | 전체 코드 값, 칸 간 이동, 붙여넣기 분배를 관리하는 최상위 컨테이너입니다. |
+| OTPFieldInput | 코드 한 자리를 입력받는 개별 칸입니다. |
+| OTPFieldSeparator | 코드 자릿수 묶음 사이를 시각적으로 나누는 구분 기호입니다. |
+
+## 접근성
+
+| 키 | 동작 |
+| - | - |
+| ArrowLeft / ArrowRight | 이전·다음 자리 입력 칸으로 포커스를 이동합니다. |
+| Backspace | 현재 칸을 지우고 이전 칸으로 이동합니다. |
+
+- 숫자 코드라면 inputMode="numeric"과 autoComplete="one-time-code"를 지정해 모바일 숫자 키패드와 자동 완성을 지원합니다.
+- 전체 필드에 aria-label이나 주변 제목을 연결해 몇 자리 인증 코드인지 알립니다.
+
+## 관련 컴포넌트
+
+- [Input](../input/index.md): 자릿수가 고정되지 않은 일반 텍스트나 비밀번호는 Input을 씁니다.

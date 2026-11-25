@@ -1,10 +1,15 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { COMPONENT_CATEGORIES, COMPONENT_DOCS } from "@/entities/component-doc";
+import { getComponentDemo } from "@/entities/component-doc";
+import { menuDocs } from "@/entities/content-doc";
 import { Glossed } from "@/shared/ui";
 
 export const Route = createFileRoute("/frontend/design-system/components/")({
   component: ComponentsOverviewPage,
 });
+
+// 컴포넌트 문서(content)의 묶음과 순서를 따른다. 견본 그림만 component-doc에서 가져온다.
+const DOCS = menuDocs("frontend/design-system/components").filter((doc) => !doc.isSkill);
+const CATEGORIES = [...new Set(DOCS.map((doc) => doc.meta.group ?? ""))];
 
 function ComponentsOverviewPage() {
   return (
@@ -22,8 +27,8 @@ function ComponentsOverviewPage() {
 
       {/* Categorized 3-column Live Miniature Preview Grid */}
       <div className="space-y-12">
-        {COMPONENT_CATEGORIES.map((category) => {
-          const items = COMPONENT_DOCS.filter((doc) => doc.category === category);
+        {CATEGORIES.map((category) => {
+          const items = DOCS.filter((doc) => (doc.meta.group ?? "") === category);
           return (
             <section key={category} className="space-y-4">
               <div className="flex items-baseline justify-between">
@@ -40,9 +45,9 @@ function ComponentsOverviewPage() {
                     className="group min-w-0 space-y-2.5"
                   >
                     <div className="border-border bg-card group-hover:border-foreground/35 flex h-44 items-center justify-center overflow-hidden rounded-2xl border p-4 transition-colors">
-                      {item.renderThumbnail()}
+                      {getComponentDemo(item.slug)?.renderThumbnail()}
                     </div>
-                    <p className="text-foreground px-1 text-sm font-medium">{item.name}</p>
+                    <p className="text-foreground px-1 text-sm font-medium">{item.meta.title ?? item.slug}</p>
                   </Link>
                 ))}
               </div>

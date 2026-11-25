@@ -1,0 +1,50 @@
+---
+title: Menu
+group: 오버레이와 탐색
+order: 19
+summary: "버튼을 눌러 실행 가능한 작업 목록을 펼치는 드롭다운 메뉴"
+arc42: "8.8"
+---
+
+import { ComponentAnatomyFigure, ComponentExampleDemo, ComponentPlayground } from "@/entities/component-doc";
+
+복제, 이름 변경, 삭제처럼 한 항목에 딸린 여러 동작을 버튼 하나로 묶어 펼칠 때 씁니다. 화면에 모든 버튼을 늘어놓지 않고 필요할 때만 동작 목록을 보여 줍니다.
+
+<Demo>
+<ComponentPlayground slug="menu" />
+</Demo>
+
+<Slot name="usage" />
+
+## 구성
+
+| 부분 | 역할 |
+| --- | --- |
+| Menu | 메뉴의 열림 상태와 항목 탐색을 관리하는 최상위 래퍼입니다. |
+| MenuTrigger | 클릭이나 키보드로 메뉴를 여는 트리거 버튼입니다. |
+| MenuContent | 동작 항목들을 담아 띄우는 팝업 패널입니다. |
+| MenuGroup | 성격이 같은 메뉴 항목들을 묶는 그룹입니다. |
+| MenuLabel | 메뉴 그룹의 성격을 알리는 비클릭 제목입니다. |
+| MenuItem | 클릭이나 Enter로 동작을 실행하는 개별 항목입니다. |
+| MenuSeparator | 일반 동작과 위험 동작 같은 구역을 나누는 구분선입니다. |
+
+## 접근성
+
+| 키 | 동작 |
+| --- | --- |
+| Enter / Space | 메뉴를 열거나 강조된 항목을 실행합니다. |
+| ArrowUp / ArrowDown | 메뉴 안의 이전·다음 항목으로 이동합니다. |
+| Esc | 메뉴를 닫고 트리거로 포커스를 되돌립니다. |
+
+- 삭제처럼 되돌리기 어려운 항목은 MenuSeparator 아래에 두고 Destructive 스타일로 구분합니다.
+- 아이콘만 있는 더보기 트리거에는 aria-label로 접근 가능한 이름을 적습니다.
+
+## 적응형 UI
+
+자동 전환 래퍼가 없으므로 64rem 미만에서는 useIsMobile로 분기해 BottomSheet에 44px 이상 항목을 배치합니다. 자세한 기준은 [적응형 UI](../../../interaction/adaptive-ui/index.mdx)에 있습니다.
+
+## 관련 컴포넌트
+
+- [Select](../select/index.mdx): 명령 실행이 아니라 폼에서 하나의 값을 선택해 유지할 때 씁니다.
+- [Context Menu](../context-menu/index.mdx): 트리거 버튼 대신 항목 위 우클릭으로 동작 목록을 열 때 씁니다.
+- [Menubar](../menubar/index.mdx): 파일·편집처럼 여러 메뉴를 상단 바에 나란히 묶어 쓸 때 씁니다.

@@ -1,0 +1,27 @@
+---
+title: Badge
+group: 표시와 구조
+order: 6
+summary: "상태, 역할, 분류처럼 짧은 메타데이터를 보여 주는 배지"
+arc42: "8.8"
+---
+
+import { ComponentAnatomyFigure, ComponentExampleDemo, ComponentPlayground } from "@/entities/component-doc";
+
+상태, 분류, 개수처럼 짧은 메타 정보를 항목 옆에 붙여 한눈에 구분할 때 씁니다. 여러 변형으로 정보의 강조 수준을 조절합니다.
+
+<Demo>
+<ComponentPlayground slug="badge" />
+</Demo>
+
+<Slot name="usage" />
+
+## 접근성
+
+- 상태가 실시간으로 바뀌어 스크린 리더에 알려야 할 때만 aria-live를 함께 씁니다.
+- 배지 색만 보지 않아도 뜻을 알 수 있게 짧은 텍스트 라벨을 함께 적습니다.
+
+## 관련 컴포넌트
+
+- [Button](../button/index.mdx): 클릭해 동작을 실행하거나 필터를 해제하는 상호작용이 필요하면 Button을 씁니다.
+- [Alert](../alert/index.mdx): 문장 단위의 상태 설명이나 오류 안내를 전달할 때 씁니다.

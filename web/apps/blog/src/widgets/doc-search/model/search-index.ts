@@ -1,4 +1,3 @@
-import { COMPONENT_DOCS } from "@/entities/component-doc";
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import { BACKEND_ENGINEERING_DOCS, type GuideDoc } from "@/entities/webapp-doc";
 import { menuDocs, plainText } from "@/entities/content-doc";
@@ -86,14 +85,16 @@ const DOC_ENTRIES: DocEntry[] = [
     keywords: guideKeywords(doc),
   })),
   page("컴포넌트", "컴포넌트 개요", "/frontend/design-system/components", "전체 컴포넌트 목록"),
-  ...COMPONENT_DOCS.map((doc) => ({
-    id: `component:${doc.slug}`,
-    group: "컴포넌트" as const,
-    title: doc.name,
-    href: `/frontend/design-system/components/${doc.slug}`,
-    description: stripGlossaryMarkup(doc.summary),
-    keywords: `${doc.slug} ${doc.category} ${stripGlossaryMarkup(doc.summary)}`,
-  })),
+  ...menuDocs("frontend/design-system/components")
+    .filter((doc) => !doc.isSkill)
+    .map((doc) => ({
+      id: `component:${doc.slug}`,
+      group: "컴포넌트" as const,
+      title: doc.meta.title ?? doc.slug,
+      href: `/frontend/design-system/components/${doc.slug}`,
+      description: doc.meta.summary ?? "",
+      keywords: `${doc.slug} ${doc.meta.group ?? ""} ${plainText(doc.source)}`,
+    })),
   page(
     "레이아웃",
     "레이아웃 개요",
