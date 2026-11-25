@@ -1,5 +1,5 @@
 import { COMPONENT_DOCS } from "@/entities/component-doc";
-import { LAYOUT_DOCS } from "@/entities/layout-doc";
+import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import { BACKEND_ENGINEERING_DOCS, type GuideDoc } from "@/entities/webapp-doc";
 import { menuDocs, plainText } from "@/entities/content-doc";
 import { PLAYBOOKS } from "@/entities/playbook";
@@ -118,17 +118,18 @@ const DOC_ENTRIES: DocEntry[] = [
     "/frontend/design-system/layouts",
     "앱 외곽과 메인 영역 레이아웃",
   ),
-  ...LAYOUT_DOCS.map((doc) => ({
+  // 메인 영역 레이아웃은 「페이지 배치」 문서의 절이다. 앱 외곽 레이아웃은 아래 content 문서로 찾는다.
+  ...LAYOUT_DOCS.filter((doc) => doc.level === "content").map((doc) => ({
     id: `layout:${doc.id}`,
     group: "레이아웃" as const,
     title: doc.name,
-    href: `/frontend/design-system/layouts/${doc.id}`,
+    href: layoutPage(doc.id) ?? "/frontend/design-system/layouts",
     description: doc.summary,
     keywords: `${doc.id} ${doc.summary}`,
   })),
   ...menuDocs("frontend/design-system").map((doc) => ({
     id: `design-system:${doc.slug}`,
-    group: "패턴" as const,
+    group: doc.meta.group === "레이아웃" ? ("레이아웃" as const) : ("패턴" as const),
     title: doc.meta.title ?? doc.slug,
     href: `/frontend/design-system/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",
