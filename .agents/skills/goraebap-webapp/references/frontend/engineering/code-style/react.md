@@ -1,0 +1,27 @@
+# 코드 규칙 (react)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## naming
+
+컴포넌트 파일은 PascalCase로 컴포넌트 이름과 같게 짓고, 훅은 `use`로 시작합니다. 훅·유틸·설정 파일 이름은 kebab-case로 적습니다.
+
+| 대상 | 이름 규칙 |
+| - | - |
+| 컴포넌트 | PascalCase, 파일 하나에 컴포넌트 하나 |
+| 페이지 | Page 접미사 (`RolesPage.tsx`) |
+| 훅 | `use` 접두사, 파일은 kebab-case |
+| 유틸 · 설정 | kebab-case |
+
+출처: [web/src/pages/\_app/instance/members](https://github.com/dev-goraebap/cowork/tree/570d27da402451fe2ca06fca74862dd3899555c9/web/src/pages/_app/instance/members)
+
+```text
+members/
+  page.tsx            # 주소의 화면 파일 (라우터가 정한 이름)
+  api/roles.ts
+  ui/RolesPage.tsx
+```
+
+## effects
+
+파생값은 렌더 중에 바로 계산하고, `useEffect`는 외부 구독과 동기화에만 쓰며 정리 함수로 해제합니다. `useMemo`·`useCallback`은 측정된 비용이나 참조 안정성이 필요한 경계에만 씁니다. Strict Mode의 이중 실행에서 드러난 문제는 `useRef` 플래그로 막지 않고 정리 함수를 고칩니다.

@@ -1,21 +1,14 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import assert from 'node:assert/strict';
-import os from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { assertNoDuplicate, buildContentSkills } from './content-skills.mjs';
+import { OUT, buildContentSkill, contentSkillNames } from './content-skills.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-// 배포될 스킬 전체를 한 곳에 모아 검사한다: skills/의 원본과, 사이트 content에서 만든 스킬.
-// content를 만들 때 Slot·Fill 짝과 스택 파일 이름, 배포본 밖 링크를 확인하고, 아래 검사가 나머지(스택 이름, 링크, 앵커, 예시 형식)를 본다.
-const SKILLS = await fs.mkdtemp(path.join(os.tmpdir(), 'webapp-skills-'));
-await fs.cp(path.join(root, 'skills'), SKILLS, { recursive: true });
-const contentSkills = await buildContentSkills();
-await assertNoDuplicate(new Set([...contentSkills.keys()].map(file => file.split('/')[0])));
-for (const [file, content] of contentSkills) {
-  await fs.mkdir(path.dirname(path.join(SKILLS, file)), { recursive: true });
-  await fs.writeFile(path.join(SKILLS, file), content);
-}
+// 두 곳을 검사한다. skills/는 아직 content로 옮기지 않은 지침의 원본이고, OUT(goraebap-webapp)은 content에서 만든 스킬이다.
+// content를 만들 때 Slot·Fill 짝과 스택 파일 이름, 스킬 밖 링크를 확인하고, 아래 검사가 나머지(만든 결과가 최신인지, 스택 이름, 링크, 앵커, 예시 형식)를 본다.
+const SKILLS = path.join(root, 'skills');
+const MOVED = await contentSkillNames();
 
 let skills = 0;
 let links = 0;
@@ -46,7 +39,7 @@ function checkPure(file, content) {
   pure++;
 }
 
-// 아키텍처 정의서(arc42)의 절: 1~9와 8절의 하위 절. 결정 기록(docs/decisions.md)과 같은 절 구성이다.
+// 아키텍처 정의서(arc42)의 절: 1~9와 8절의 하위 절.
 const ARC42 = /^([1-79]|8\.[1-9])$/;
 // 꼬리 구획은 이 이름과 순서로 파일 맨 끝에만 둔다(글쓰기 기준의 「참고 문서의 구획」).
 const TAILS = ['작업 절차'];
@@ -78,16 +71,21 @@ function checkExample(file, content) {
   examples++;
 }
 
-async function checkDir(directory, mode) {
+async function checkDir(directory, mode, base = SKILLS) {
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
     assert(!entry.isSymbolicLink(), `링크 파일은 배포하지 않습니다: ${file}`);
-    if (entry.isDirectory()) { await checkDir(file, mode); continue; }
+    if (entry.isDirectory()) { await checkDir(file, mode, base); continue; }
     if (!file.endsWith('.md')) continue;
     const content = await fs.readFile(file, 'utf8');
-    checkSections(file, content);
-    const isExample = path.basename(directory) === 'examples';
-    if (isExample) checkExample(file, content);
+    if (mode === 'content') {
+      // 공통 글(index.md, 영역 README, 스킬 SKILL.md)에는 스택 이름을 두지 않는다. 스택 글(<스택>.md)에만 둔다.
+      if (!STACKS.includes(path.basename(file, '.md'))) checkPure(file, content);
+      else assert(/^## .+$/m.test(content), `스택 글에 절이 없습니다: ${file}`);
+    } else checkSections(file, content);
+    // 예시: skills/<스킬>/examples/의 파일과, content에서 만든 스택 글(<스택>.md)
+    const isExample = mode === 'skills' ? path.basename(directory) === 'examples' : STACKS.includes(path.basename(file, '.md'));
+    if (isExample && mode === 'skills') checkExample(file, content);
     if (mode === 'skills' && !isExample) {
       checkPure(file, content);
       if (entry.name === 'SKILL.md') {
@@ -107,7 +105,9 @@ async function checkDir(directory, mode) {
       assert(isExample || !href.includes('github.com/dev-goraebap/dev.goraebap/'), `이 저장소에는 예시 원본 코드가 없습니다. 원본 저장소의 고정 커밋으로 겁니다: ${file} (${href})`);
       if (/^(https?:|#)/.test(href)) continue;
       const target = path.resolve(directory, href.split('#')[0]);
-      assert(!path.relative(SKILLS, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);
+      assert(!path.relative(base, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);
+      // content로 옮긴 지침을 가리키는 링크는 사이트가 옮긴 페이지로 잇는다.
+      if (mode === 'skills' && MOVED.has(path.relative(SKILLS, target).split(path.sep)[0])) { links++; continue; }
       await fs.access(target);
       const anchor = href.split('#')[1];
       if (anchor && target.endsWith('.md')) {
@@ -121,9 +121,26 @@ async function checkDir(directory, mode) {
   }
 }
 
-try {
-  await checkDir(SKILLS, 'skills');
-} finally {
-  await fs.rm(SKILLS, { recursive: true, force: true });
+await checkDir(SKILLS, 'skills');
+
+// content에서 만든 결과가 커밋된 OUT과 같아야 한다. 다르면 npm run build로 다시 만든다.
+const { files, spaces } = await buildContentSkill();
+const stale = [];
+for (const [file, content] of files) {
+  const current = await fs.readFile(path.join(OUT, file), 'utf8').catch(() => null);
+  if (current?.replace(/\r\n/g, '\n') !== content) stale.push(file);
 }
-process.stdout.write(`${skills}개 스킬, ${links}개 로컬 링크, 앵커 ${anchors}개, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);
+async function listFiles(directory, out = []) {
+  for (const entry of await fs.readdir(directory, { withFileTypes: true }).catch(() => [])) {
+    const file = path.join(directory, entry.name);
+    if (entry.isDirectory()) await listFiles(file, out); else out.push(path.relative(OUT, file).split(path.sep).join('/'));
+  }
+  return out;
+}
+for (const space of spaces)
+  for (const file of await listFiles(path.join(OUT, 'references', space))) if (!files.has(file)) stale.push(file);
+assert(!stale.length, `goraebap-webapp이 content와 다릅니다. plugins/webapp에서 npm run build를 실행합니다: ${stale.join(', ')}`);
+await checkDir(OUT, 'content', OUT);
+const outFiles = files.size;
+
+process.stdout.write(`goraebap-webapp ${outFiles}개 파일 최신, ${skills}개 스킬, ${links}개 로컬 링크, 앵커 ${anchors}개, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);

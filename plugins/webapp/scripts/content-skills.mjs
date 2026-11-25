@@ -1,7 +1,8 @@
-// 사이트 content(web/apps/blog/content)에서 플러그인 스킬을 만든다.
-// SKILL.md가 있는 폴더가 스킬 하나이고, SKILL.md에서 링크를 따라 닿는 문서만 스킬에 넣는다(사람 전용 글은 빠진다).
-// 공통 글(<문서>.mdx, <문서>/index.mdx)은 references/<문서>.md가 되고, <Slot> 자리는 예시를 가리키는 한 줄이 된다.
-// 스택 파일(<문서>/<스택>.mdx)의 <Fill>은 examples/<문서>.md의 「## <스택>」 절이 된다. <Story>·<Diagram>은 사람 전용이라 지운다.
+// 사이트 content(web/apps/blog/content)에서 스킬 goraebap-webapp의 references/를 만든다.
+// content/<영역>/<메뉴>/SKILL.md가 메뉴 하나이고, 그 SKILL.md에서 링크로 닿는 문서만 스킬에 넣는다(사람 전용 글은 빠진다).
+// 문서는 references/<영역>/<메뉴>/<문서>/index.md(공통 글)와 <스택>.md(스택 글)가 된다. <Slot> 자리는 스택 글의 절을 가리키는 한 줄이 되고,
+// 스택 파일의 <Fill>은 그 스택 글의 「## <이름>」 절이 된다. <Story>·<Diagram>은 사람 전용이라 지운다.
+// 영역마다 references/<영역>/README.md에 메뉴 SKILL.md의 본문을 모은다. 스킬의 SKILL.md(영역 안내)는 손으로 관리한다.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -16,13 +17,15 @@ import { parse as parseYaml } from 'yaml';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const repo = path.resolve(root, '../..');
 export const CONTENT = path.join(repo, 'web/apps/blog/content');
+export const OUT = path.join(repo, '.agents/skills/goraebap-webapp');
 const SKILLS = path.join(root, 'skills');
 // 공간마다 고를 수 있는 스택. 사이트의 SPACE_STACKS와 같다.
 export const SPACE_STACKS = { frontend: ['react', 'angular'], backend: ['spring'] };
+const SPACE_TITLES = { repo: '레포 구조', frontend: '프론트엔드', backend: '백엔드' };
 const ALL_STACKS = Object.values(SPACE_STACKS).flat();
-// 사람 전용 블록. 플러그인에서는 통째로 지운다.
+// 사람 전용 블록. 스킬에서는 통째로 지운다.
 const HUMAN_ONLY = ['Story', 'Diagram'];
-// 감싸기만 하는 블록. 플러그인에서는 안의 글만 남긴다.
+// 감싸기만 하는 블록. 스킬에서는 안의 글만 남긴다.
 const UNWRAP = ['Callout'];
 const KNOWN = new Set(['Slot', 'Fill', ...HUMAN_ONLY, ...UNWRAP]);
 
@@ -30,6 +33,7 @@ const processor = () => unified().use(remarkParse).use(remarkMdx).use(remarkFron
   .use(remarkStringify, { bullet: '-', fences: true, rule: '-', listItemIndent: 'one' });
 const isJsx = node => node.type === 'mdxJsxFlowElement' || node.type === 'mdxJsxTextElement';
 const attr = (node, name) => node.attributes?.find(each => each.name === name)?.value;
+const stringify = tree => processor().stringify(tree).trim() + '\n';
 
 async function parse(file) {
   const tree = processor().parse(await fs.readFile(file, 'utf8'));
@@ -52,34 +56,44 @@ async function exists(file) {
   try { await fs.access(file); return true; } catch { return false; }
 }
 
-async function findSkillDirs(dir, found = []) {
-  for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
-    const next = path.join(dir, entry.name);
-    if (entry.isDirectory()) await findSkillDirs(next, found);
-    else if (entry.name === 'SKILL.md') found.push(dir);
+// content/<영역>/<메뉴>/SKILL.md
+async function findMenus() {
+  const menus = [];
+  for (const space of await fs.readdir(CONTENT, { withFileTypes: true })) {
+    if (!space.isDirectory()) continue;
+    for (const menu of await fs.readdir(path.join(CONTENT, space.name), { withFileTypes: true })) {
+      const dir = path.join(CONTENT, space.name, menu.name);
+      if (menu.isDirectory() && await exists(path.join(dir, 'SKILL.md'))) menus.push({ space: space.name, menu: menu.name, dir });
+    }
   }
-  return found;
+  return menus.sort((a, b) => a.space.localeCompare(b.space) || a.menu.localeCompare(b.menu));
+}
+
+/** content로 옮긴 지침(메뉴 SKILL.md)의 이름. skills/의 지침이 이 이름을 가리키면 사이트가 옮긴 페이지로 잇는다. */
+export async function contentSkillNames() {
+  const names = new Set();
+  for (const { dir } of await findMenus()) names.add((await parse(path.join(dir, 'SKILL.md'))).meta.name);
+  return names;
 }
 
 // 공통 글 파일 → 문서 이름. 폴더 문서는 폴더 이름, 한 파일 문서는 파일 이름이다.
 const docSlug = file => path.basename(file) === 'index.mdx' ? path.basename(path.dirname(file)) : path.basename(file, '.mdx');
 
-/** content의 스킬을 { 'skills/<스킬>/... 경로': 내용 } 으로 만든다. */
-export async function buildContentSkills() {
+/** 스킬 폴더 기준 { 'references/... 경로': 내용 }과, 이 빌드가 관리하는 영역 목록을 만든다. */
+export async function buildContentSkill() {
   const out = new Map();
-  const skillDirs = await findSkillDirs(CONTENT);
-  // content 파일 → 배포 경로(skills/ 기준). 링크를 다시 쓸 때 쓴다.
+  const menus = await findMenus();
+  // content 파일 → 스킬 안 경로. 링크를 다시 쓸 때 쓴다.
   const target = new Map();
   const plans = [];
 
-  for (const dir of skillDirs) {
+  for (const { space, menu, dir } of menus) {
     const skillFile = path.join(dir, 'SKILL.md');
     const { meta } = await parse(skillFile);
-    if (!meta.name) throw new Error(`SKILL.md에 name이 없습니다: ${skillFile}`);
-    const space = path.relative(CONTENT, dir).split(path.sep)[0];
+    if (!meta.name || !meta.description) throw new Error(`SKILL.md에 name·description이 없습니다: ${skillFile}`);
+    if (await exists(path.join(SKILLS, meta.name))) throw new Error(`content로 옮긴 지침이 skills/에도 있습니다: ${meta.name}`);
     const stacks = SPACE_STACKS[space] ?? [];
-    target.set(skillFile, `${meta.name}/SKILL.md`);
-    // SKILL.md에서 링크로 닿는 같은 스킬 안의 문서
+    // SKILL.md에서 링크로 닿는 같은 메뉴 안의 문서
     const docs = [];
     const queue = [skillFile];
     const seen = new Set(queue);
@@ -97,70 +111,62 @@ export async function buildContentSkills() {
       });
     }
     for (const doc of docs) {
-      const slug = docSlug(doc);
-      target.set(doc, `${meta.name}/references/${slug}.md`);
+      const base = `references/${space}/${menu}/${docSlug(doc)}`;
+      target.set(doc, `${base}/index.md`);
       const stackFiles = [];
       if (path.basename(doc) === 'index.mdx') {
         for (const entry of await fs.readdir(path.dirname(doc))) {
           if (entry === 'index.mdx' || !entry.endsWith('.mdx')) continue;
           const stack = path.basename(entry, '.mdx');
           if (!stacks.includes(stack)) throw new Error(`이 공간의 스택(${stacks.join(', ')})이 아닌 파일입니다: ${path.join(path.dirname(doc), entry)}`);
-          stackFiles.push({ stack, file: path.join(path.dirname(doc), entry) });
+          const file = path.join(path.dirname(doc), entry);
+          stackFiles.push({ stack, file });
+          target.set(file, `${base}/${stack}.md`);
         }
         stackFiles.sort((a, b) => stacks.indexOf(a.stack) - stacks.indexOf(b.stack));
-        for (const { file } of stackFiles) target.set(file, `${meta.name}/examples/${slug}.md`);
       }
-      plans.push({ skill: meta.name, doc, slug, stackFiles });
+      plans.push({ doc, stackFiles });
     }
-    plans.push({ skill: meta.name, doc: skillFile, slug: null, stackFiles: [] });
+    target.set(skillFile, `references/${space}/README.md`);
   }
 
-  // 링크를 배포 위치 기준으로 다시 쓴다. 아직 content로 옮기지 않은 스킬은 plugins/webapp/skills의 같은 경로로 잇는다.
+  // 링크를 스킬 안 위치 기준으로 다시 쓴다. 아직 content로 옮기지 않은 지침(plugins/webapp/skills)을 가리키면 링크를 풀고 글자만 남긴다.
   const relink = (from, to) => node => {
     if (node.type !== 'link' || node.data?.final || /^(https?:|mailto:|#)/.test(node.url)) return;
     const [href, anchor] = node.url.split('#');
     const linked = path.resolve(path.dirname(from), decodeURI(href));
-    let dest = target.get(linked);
-    if (!dest && linked.startsWith(SKILLS + path.sep)) dest = path.relative(SKILLS, linked).split(path.sep).join('/');
-    if (!dest) throw new Error(`배포본에 없는 파일을 가리킵니다: ${from} (${node.url})`);
+    const dest = target.get(linked);
+    if (!dest && linked.startsWith(SKILLS + path.sep)) return node.children;
+    if (!dest) throw new Error(`스킬에 없는 파일을 가리킵니다: ${from} (${node.url})`);
     node.url = path.posix.relative(path.posix.dirname(to), dest) + (anchor ? `#${anchor}` : '');
   };
-  const front = (meta, keys) => `---\n${keys.filter(key => meta[key] !== undefined).map(key => `${key}: ${key === 'arc42' ? JSON.stringify(String(meta[key])) : meta[key]}`).join('\n')}\n---\n\n`;
-  const stringify = tree => processor().stringify(tree).trim() + '\n';
+  const link = (url, text) => ({ type: 'link', data: { final: true }, url, children: [{ type: 'text', value: text }] });
 
-  for (const { skill, doc, slug, stackFiles } of plans) {
+  for (const { doc, stackFiles } of plans) {
     const to = target.get(doc);
     const { tree, meta } = await parse(doc);
-    if (!slug) {
-      rewrite(tree, relink(doc, to));
-      tree.children = tree.children.filter(node => node.type !== 'yaml');
-      out.set(to, front(meta, ['name', 'description', 'arc42']) + stringify(tree));
-      continue;
-    }
-    if (!meta.title || !meta.arc42) throw new Error(`title·arc42 머리말이 없습니다: ${doc}`);
+    if (!meta.title) throw new Error(`title 머리말이 없습니다: ${doc}`);
 
-    // 스택 파일의 Fill: 이름 → 스택별 내용
+    // 스택 파일의 Fill: 이름 → 그 이름을 채운 스택
     const fills = new Map();
-    let examples = '';
     for (const { stack, file } of stackFiles) {
       const parsed = await parse(file);
-      const examplePath = target.get(file);
-      let section = `## ${stack}\n\n`;
+      const stackPath = target.get(file);
+      let body = `# ${meta.title} (${stack})\n\n공통 규칙은 [index.md](index.md)에 있습니다.\n\n`;
       for (const node of parsed.tree.children) {
         if (node.type === 'text' || (node.type === 'paragraph' && !node.children.length)) continue;
         if (!isJsx(node) || node.name !== 'Fill') throw new Error(`스택 파일의 맨 위에는 <Fill>만 둡니다: ${file}`);
         const name = attr(node, 'name');
-        if (!fills.has(name)) fills.set(name, new Set());
-        fills.get(name).add(stack);
-        const body = { type: 'root', children: node.children };
-        rewrite(body, relink(file, examplePath));
-        section += stringify(body) + '\n';
+        if (!fills.has(name)) fills.set(name, []);
+        fills.get(name).push(stack);
+        const section = { type: 'root', children: node.children };
+        rewrite(section, relink(file, stackPath));
+        body += `## ${name}\n\n` + stringify(section) + '\n';
       }
-      examples += section;
+      out.set(stackPath, body.trim() + '\n');
     }
 
     const slots = new Set();
-    const examplePath = `${skill}/examples/${slug}.md`;
     rewrite(tree, node => {
       if (node.type === 'yaml' || node.type === 'mdxjsEsm') return [];
       if (!isJsx(node)) return;
@@ -171,30 +177,50 @@ export async function buildContentSkills() {
       const name = attr(node, 'name');
       slots.add(name);
       if (!fills.has(name)) return [];
-      return [{ type: 'paragraph', children: [
-        { type: 'text', value: '스택별 구현: ' },
-        { type: 'link', data: { final: true }, url: path.posix.relative(path.posix.dirname(to), examplePath), children: [{ type: 'text', value: `examples/${slug}.md` }] },
-        { type: 'text', value: `의 ${[...fills.get(name)].join('·')} 절` },
-      ] }];
+      const children = [{ type: 'text', value: '스택별 구현: ' }];
+      fills.get(name).forEach((stack, index) => {
+        if (index) children.push({ type: 'text', value: ' · ' });
+        children.push(link(`${stack}.md#${name}`, `${stack}.md`));
+      });
+      children.push({ type: 'text', value: `의 「${name}」 절` });
+      return [{ type: 'paragraph', children }];
     });
     for (const name of fills.keys())
       if (!slots.has(name)) throw new Error(`공통 글에 없는 자리를 채웁니다(<Slot name="${name}">이 없음): ${doc}`);
     rewrite(tree, relink(doc, to));
-    out.set(to, front(meta, ['arc42']) + `# ${meta.title}\n\n` + stringify(tree));
-    if (examples) {
-      const rule = path.posix.relative(path.posix.dirname(examplePath), to);
-      out.set(examplePath, front(meta, ['arc42']) + `# ${meta.title} 예시\n\n규칙은 [${meta.title}](${rule})에 있습니다. 프로젝트 스택과 같은 절만 읽습니다.\n\n` + examples.trim() + '\n');
-    }
+    out.set(to, `# ${meta.title}\n\n` + stringify(tree));
   }
-  return out;
+
+  // 영역 README: 메뉴 SKILL.md의 설명과 본문(첫 제목 제외, 제목 한 단계 내림)을 메뉴 순서로 모은다.
+  const spaces = [...new Set(menus.map(each => each.space))];
+  for (const space of spaces) {
+    const to = `references/${space}/README.md`;
+    let body = `# ${SPACE_TITLES[space] ?? space}\n\n`;
+    for (const { menu, dir } of menus.filter(each => each.space === space)) {
+      const file = path.join(dir, 'SKILL.md');
+      const { tree, meta } = await parse(file);
+      tree.children = tree.children.filter(node => node.type !== 'yaml' && !(node.type === 'heading' && node.depth === 1));
+      rewrite(tree, node => { if (node.type === 'heading') node.depth = Math.min(node.depth + 1, 6); });
+      rewrite(tree, relink(file, to));
+      body += `## ${menu}\n\n${meta.description}\n\n` + stringify(tree) + '\n';
+    }
+    out.set(to, body.trim() + '\n');
+  }
+  return { files: out, spaces };
 }
 
-// content로 옮긴 스킬과 같은 이름의 폴더가 skills/에 남아 있으면 둘 중 무엇이 원본인지 흐려진다.
-export async function assertNoDuplicate(names) {
-  for (const name of names)
-    if (await exists(path.join(SKILLS, name))) throw new Error(`content로 옮긴 스킬이 skills/에도 있습니다: ${name}`);
+/** 빌드 결과를 OUT에 쓴다. 이 빌드가 관리하는 영역 폴더는 먼저 비운다. */
+export async function writeContentSkill() {
+  const { files, spaces } = await buildContentSkill();
+  for (const space of spaces) await fs.rm(path.join(OUT, 'references', space), { recursive: true, force: true });
+  for (const [file, content] of files) {
+    await fs.mkdir(path.dirname(path.join(OUT, file)), { recursive: true });
+    await fs.writeFile(path.join(OUT, file), content);
+  }
+  return files.size;
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  for (const [file, content] of await buildContentSkills()) process.stdout.write(`=== ${file}\n${content}\n`);
+  const count = await writeContentSkill();
+  process.stdout.write(`${path.relative(repo, OUT)}에 ${count}개 파일을 만들었습니다\n`);
 }

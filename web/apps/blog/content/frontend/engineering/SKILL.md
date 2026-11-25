@@ -6,11 +6,11 @@ arc42: "8.4, 2"
 
 # 프론트엔드 엔지니어링
 
-웹 앱은 컴포넌트 기반 화면, 검증한 URL을 다루는 라우터, 서버 데이터 캐시를 맡는 조회 도구로 짭니다. 파일 구조는 FSD(Feature-Sliced Design)를 따르며, 이 플러그인이 쓰는 층과 묶는 법은 [화면 계층](layers/index.mdx)에 있습니다. 공식 `feature-sliced-design` 스킬이 설치되어 있으면 함께 읽습니다. 어떤 라이브러리와 판을 쓰는지는 프로젝트에서 정하며, 프로젝트가 채택한 스택을 다른 것으로 바꾸는 일을 작업에 끼워 넣지 않습니다.
+웹 앱은 컴포넌트 기반 화면, 검증한 URL을 다루는 라우터, 서버 데이터 캐시를 맡는 조회 도구로 짭니다. 파일 구조는 FSD(Feature-Sliced Design)를 따르며, 이 지침이 쓰는 층과 묶는 법은 [화면 계층](layers/index.mdx)에 있습니다. 공식 `feature-sliced-design` 스킬이 설치되어 있으면 함께 읽습니다. 어떤 라이브러리와 판을 쓰는지는 프로젝트에서 정하며, 프로젝트가 채택한 스택을 다른 것으로 바꾸는 일을 작업에 끼워 넣지 않습니다.
 
 ## 예시
 
-구현 모양은 각 자료에 딸린 `examples/`의 예시에서 프로젝트 스택과 같은 절만 읽습니다([예시 읽기](../../../../../../plugins/webapp/skills/goraebap-mode/references/examples.md)).
+구현 모양은 각 자료 폴더의 스택 글(`react.md`·`angular.md`)에서 프로젝트 스택의 것만 읽습니다([예시 읽기](../../../../../../plugins/webapp/skills/goraebap-mode/references/examples.md)).
 
 ## 읽을 자료
 

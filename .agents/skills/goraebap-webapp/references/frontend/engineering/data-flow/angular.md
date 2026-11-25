@@ -1,0 +1,60 @@
+# 조회와 변경 (angular)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## query-options
+
+출처: [web/apps/accounts/src/entities/session/api/session.ts](https://github.com/dev-goraebap/dev.goraebap/blob/9ab5efcb944c053f149d5f6cb5e12d1359ef9c7a/web/apps/accounts/src/entities/session/api/session.ts)
+
+```ts
+// 로그인한 사람과 세션. 가드·리졸버·화면이 이 조회 옵션 하나를 함께 쓴다.
+@Injectable({ providedIn: "root" })
+export class SessionApi {
+  // …
+  readonly me = queryOptions<AuthMe | null>({
+    key: [...SESSION_KEY, "me"],
+    staleTime: 60_000,
+    fetch: async () => {
+      // …
+    },
+  });
+```
+
+출처: [web/apps/accounts/src/entities/session/model/guards.ts](https://github.com/dev-goraebap/dev.goraebap/blob/9ab5efcb944c053f149d5f6cb5e12d1359ef9c7a/web/apps/accounts/src/entities/session/model/guards.ts)
+
+```ts
+// 계정 화면: 로그인하지 않았으면 로그인으로, 첫 설정 전이면 온보딩으로 보낸다.
+export const signedIn: CanActivateFn = async (_route, state) => {
+  const router = inject(Router);
+  const me = await inject(ServerState).ensure(inject(SessionApi).me);
+  if (!me) return router.createUrlTree(["/login"], { queryParams: { next: state.url } });
+  if (!me.onboarded) return router.createUrlTree(["/onboarding"]);
+  return true;
+};
+```
+
+출처: [web/apps/accounts/src/shared/lib/server-state.ts](https://github.com/dev-goraebap/dev.goraebap/blob/9ab5efcb944c053f149d5f6cb5e12d1359ef9c7a/web/apps/accounts/src/shared/lib/server-state.ts)
+
+```ts
+  // 화면용. 캐시 값을 먼저 보이고, 오래됐으면 뒤에서 다시 읽는다.
+  watch<T>(options: QueryOptions<T>): QueryState<T> {
+    const entry = this.entry(options);
+    if (!entry.fetchedAt || Date.now() - entry.fetchedAt > entry.staleTime) {
+      void this.load(entry).catch(() => undefined);
+    }
+    // …
+  }
+
+  // 키 앞부분이 같은 캐시를 오래된 것으로 만들고 다시 읽는다. 다시 읽기가 실패해도 변경 자체는 성공으로 본다.
+  async invalidate(prefix: readonly unknown[]): Promise<void> {
+    // …
+  }
+
+  // 로그아웃·계정 전환. 진행 중인 응답도 새 계정의 캐시에 들어오지 않게 한다.
+  clear(): void {
+    this.generation += 1;
+    this.entries.clear();
+  }
+```
+
+조회 옵션(`SessionApi.me`)은 엔티티 슬라이스의 api에 두고, 라우트 가드는 `ensure`로 미리 읽고 화면은 `watch`로 같은 캐시를 시그널로 읽습니다. 별도 조회 도구 없이 시그널로 만든 캐시가 무효화와 계정 전환 시 비우기를 맡습니다.

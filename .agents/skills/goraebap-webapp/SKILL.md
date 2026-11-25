@@ -1,0 +1,18 @@
+---
+name: goraebap-webapp
+description: 웹 앱의 레포 구조·프론트엔드·백엔드 구현 기준입니다. 저장소 폴더 구성, 페이지·컴포넌트·라우트·프론트 상태·서버 데이터 조회, API·모듈·데이터 접근 코드를 만들거나 고칠 때 읽습니다.
+metadata:
+  version: "0.1"
+---
+
+# goraebap-webapp
+
+웹 앱을 구현할 때 따르는 기준입니다. 이 기준이 다른 스킬이나 일반 관례와 다르면 이 기준을 따르고, 프로젝트가 다르게 정한 것은 AGENTS.md의 프로젝트 규칙 표를 따릅니다.
+
+바꾸는 영역의 목록을 먼저 읽고, 작업에 해당하는 문서만 읽습니다. 문서 폴더마다 공통 글 `index.md`를 읽고, 프로젝트 스택의 파일(`react.md`·`angular.md`·`spring.md`)이 있으면 그것만 함께 읽습니다. 프로젝트 스택은 AGENTS.md의 goraebap-webapp 블록에 있습니다.
+
+| 영역 | 목록 | 읽을 때 |
+| --- | --- | --- |
+| 레포 구조 | [references/repo/README.md](references/repo/README.md) | 저장소 폴더 구성, 앱·패키지·서버 배치를 다룰 때 |
+| 프론트엔드 | [references/frontend/README.md](references/frontend/README.md) | 페이지·컴포넌트·라우트·프론트 상태·서버 데이터 조회를 다룰 때 |
+| 백엔드 | [references/backend/README.md](references/backend/README.md) | API·모듈·데이터 접근·서버 코드를 다룰 때 |

@@ -15,9 +15,6 @@ jobs:
           node-version: 22
       - run: npm ci
         working-directory: plugins/webapp
+      # content에서 만든 .agents/skills/goraebap-webapp이 최신인지도 함께 본다.
       - run: npm run check
         working-directory: plugins/webapp
-      - run: npm test
-        working-directory: plugins/webapp
-      # dist는 content·skills에서 만든 생성물이다. 원본을 고치고 다시 만들지 않았으면 여기서 멈춘다.
-      - run: git diff --exit-code -- plugins/webapp/dist

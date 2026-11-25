@@ -7,10 +7,9 @@
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/content-skills.mjs",
     "check": "node scripts/check.mjs",
-    "check:links": "node scripts/check-links.mjs",
-    "package": "node scripts/package-plugins.mjs"
+    "check:links": "node scripts/check-links.mjs"
   },
   "devDependencies": {
     "remark-frontmatter": "^5.0.0",
