@@ -42,7 +42,10 @@ export function ResizableLayoutStage({
   const trackRef = useRef<HTMLDivElement>(null);
   const [trackWidth, setTrackWidth] = useState(0);
   const [width, setWidth] = useState(
-    () => defaultWidth ?? (window.innerWidth < DESKTOP_MIN_WIDTH ? 390 : 1280),
+    // 정적 생성(서버)에는 창이 없어 데스크톱 너비로 그린다.
+    () =>
+      defaultWidth ??
+      (typeof window !== "undefined" && window.innerWidth < DESKTOP_MIN_WIDTH ? 390 : 1280),
   );
   const [isDragging, setIsDragging] = useState(false);
 

@@ -2,7 +2,7 @@ import { Outlet, createFileRoute, useParams } from "@tanstack/react-router";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 import { COMPONENT_CATEGORIES, COMPONENT_DOCS } from "@/entities/component-doc";
 import { StackSwitcher, menuDocs, stacksOf, docHref, type ContentDoc } from "@/entities/content-doc";
-import { LAYOUT_DOCS } from "@/entities/layout-doc";
+import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
 
 export const Route = createFileRoute("/frontend/design-system")({
@@ -31,13 +31,13 @@ const LAYOUT_GROUP: DocsNavGroup = {
     { label: "모든 레이아웃", href: "/frontend/design-system/layouts", icon: "overview" },
     ...LAYOUT_DOCS.filter((item) => item.level === "shell").map((item) => ({
       label: item.name,
-      href: `/frontend/design-system/layouts/${item.id}`,
+      href: layoutPage(item.id),
       icon: SHELL_ICONS[item.id],
       ...(item.id === "app-shell"
         ? {
             children: LAYOUT_DOCS.filter((sub) => sub.level === "content").map((sub) => ({
               label: sub.name,
-              href: `/frontend/design-system/layouts/${sub.id}`,
+              href: layoutPage(sub.id),
             })),
           }
         : {}),
@@ -68,7 +68,8 @@ const contentHref = (doc: ContentDoc, stack?: string) =>
 
 function contentGroups(stack?: string): DocsNavGroup[] {
   const groups: DocsNavGroup[] = [];
-  for (const doc of DOCS) {
+  // 레이아웃 문서는 위의 레이아웃 묶음이 견본 이름으로 잇는다.
+  for (const doc of DOCS.filter((each) => each.meta.group !== "레이아웃")) {
     const title = doc.isSkill ? undefined : doc.meta.group || undefined;
     let group = groups.at(-1);
     if (!group || group.title !== title || doc.isSkill) groups.push((group = { title, items: [] }));
