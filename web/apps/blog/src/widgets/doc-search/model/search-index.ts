@@ -68,12 +68,6 @@ const DOC_ENTRIES: DocEntry[] = [
     keywords: `${guideKeywords(playbook)} ${playbook.steps.map((step) => `${step.title} ${step.detail} ${step.skills.join(" ")}`).join(" ")}`,
   })),
   page("디자인 시스템", "개요", "/frontend/design-system/overview", "디자인 시스템의 구조와 쓰임"),
-  page(
-    "디자인 시스템",
-    "패키지 연결",
-    "/frontend/design-system/packages",
-    "패키지, 스타일, 색상 테마 연결",
-  ),
   // 스택 없는 주소로 걸어 두면 고른 스택의 페이지로 열린다.
   ...menuDocs("frontend/engineering").map((doc) => ({
     id: `frontend:${doc.slug}`,
