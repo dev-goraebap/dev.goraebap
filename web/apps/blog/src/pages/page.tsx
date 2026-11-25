@@ -1,180 +1,51 @@
-import { useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui-react/components/button";
-import { posts, type PostCategory } from "@/entities/post";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { SystemIcon } from "@goraebap/ui-react/icons";
+import { BrandMark, DesignSettings, LineFieldCanvas, Wordmark } from "@/shared/ui";
 
 export const Route = createFileRoute("/")({
-  component: HomePage,
+  component: WorkshopPage,
 });
 
-const categories: Array<"전체" | PostCategory> = ["전체", "아키텍처", "UI/UX", "에이전트"];
+const WORKSPACE_LINKS = [
+  { label: "Playbook", to: "/playbook" },
+  { label: "Frontend", to: "/frontend" },
+  { label: "Backend", to: "/backend" },
+] as const;
 
-function HomePage() {
-  const [selectedCategory, setSelectedCategory] = useState<"전체" | PostCategory>("전체");
-
-  const filteredPosts =
-    selectedCategory === "전체"
-      ? posts
-      : posts.filter((post) => post.category === selectedCategory);
-
+function WorkshopPage() {
   return (
-    <div className="space-y-16">
-      <section className="max-w-2xl space-y-4">
-        <p className="text-blog-accent font-mono text-xs">WRITING · DESIGN SYSTEM · CONTEXT</p>
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          생각의 기준을 글로 남기고,
-          <br />
-          직접 쓰는 UI를 템플릿으로 다듬습니다.
+    <main className="bg-background text-foreground relative flex min-h-dvh items-center justify-center overflow-hidden px-6">
+      <LineFieldCanvas className="absolute inset-0 size-full" />
+      <div className="absolute top-4 right-4 z-10 sm:top-5 sm:right-6">
+        <DesignSettings />
+      </div>
+      <div className="relative flex flex-col items-center text-center">
+        <BrandMark className="brand-draw size-20 sm:size-24" />
+        <h1 className="mt-6">
+          <Wordmark className="wordmark-write h-10 w-auto sm:h-12" />
         </h1>
-        <p className="text-muted-foreground text-[15px] leading-7">
-          아키텍처 판단과 UI/UX 기준을 마크다운으로 기록해 사람과 에이전트가 같은 맥락을 읽도록
-          만듭니다. 모든 예제는{" "}
-          <code className="bg-secondary text-foreground rounded px-1.5 py-0.5 font-mono text-xs">
-            @goraebap/ui-react
-          </code>
-          에서 바로 실행됩니다.
+        <p className="workshop-reveal text-muted-foreground mt-2 text-sm break-keep [animation-delay:120ms] sm:text-base">
+          웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실
         </p>
-      </section>
-
-      <section aria-labelledby="writing-heading" className="space-y-5">
-        <div className="border-border flex flex-col gap-3 border-b pb-4 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-baseline gap-2.5">
-            <h2 id="writing-heading" className="text-base font-semibold tracking-tight">
-              글
-            </h2>
-            <span className="text-muted-foreground font-mono text-xs tabular-nums">
-              {filteredPosts.length}
-            </span>
-          </div>
-          <div className="flex flex-wrap items-center gap-1.5" role="group" aria-label="주제 필터">
-            {categories.map((category) => {
-              const active = selectedCategory === category;
-              return (
-                <button
-                  key={category}
-                  type="button"
-                  onClick={() => setSelectedCategory(category)}
-                  className={
-                    active
-                      ? "bg-primary text-primary-foreground cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
-                      : "text-muted-foreground hover:bg-accent hover:text-foreground cursor-pointer rounded-md px-2.5 py-1 text-xs font-medium transition-colors"
-                  }
-                >
-                  {category}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <ul className="divide-border/70 divide-y">
-          {filteredPosts.map((post) => (
-            <li key={post.slug}>
-              <Link
-                to="/posts/$slug"
-                params={{ slug: post.slug }}
-                className="group hover:bg-accent/60 -mx-3 flex flex-col gap-2 rounded-lg px-3 py-4 transition-colors sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
-              >
-                <div className="min-w-0 space-y-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-foreground group-hover:text-blog-accent text-[15px] font-medium tracking-tight transition-colors">
-                      {post.title}
-                    </span>
-                    <span className="border-border text-muted-foreground rounded border px-1.5 py-0.5 font-mono text-[10px]">
-                      {post.status}
-                    </span>
-                  </div>
-                  <p className="text-muted-foreground line-clamp-1 text-sm">{post.summary}</p>
-                </div>
-                <div className="text-muted-foreground flex shrink-0 items-center gap-3 font-mono text-xs tabular-nums">
-                  <span>{post.category}</span>
-                  <span>{post.date}</span>
-                </div>
-              </Link>
-            </li>
+        <nav
+          aria-label="워크스페이스"
+          className="workshop-reveal mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm [animation-delay:240ms]"
+        >
+          {WORKSPACE_LINKS.map((workspace) => (
+            <Link
+              key={workspace.to}
+              to={workspace.to}
+              className="group decoration-foreground/30 hover:decoration-foreground inline-flex items-center gap-1.5 font-medium underline underline-offset-6 transition-colors"
+            >
+              {workspace.label}
+              <SystemIcon
+                name="arrowRight"
+                className="size-3.5 transition-transform group-hover:translate-x-0.5"
+              />
+            </Link>
           ))}
-        </ul>
-      </section>
-
-      <section aria-labelledby="templates-heading" className="space-y-5">
-        <div className="border-border flex items-center justify-between border-b pb-4">
-          <div className="space-y-0.5">
-            <h2 id="templates-heading" className="text-base font-semibold tracking-tight">
-              5계층 디자인 시스템 & 컴포넌트
-            </h2>
-            <p className="text-muted-foreground text-xs">
-              Design Tokens · Style Recipes · Headless Primitives · UI Components · Patterns
-            </p>
-          </div>
-          <a
-            href={import.meta.env.VITE_DESIGN_URL || "http://localhost:5175"}
-            target="_blank"
-            rel="noreferrer"
-            className="text-muted-foreground hover:text-foreground shrink-0 text-xs font-medium transition-colors"
-          >
-            goraebap/design 열기 ↗
-          </a>
-        </div>
-
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="border-border bg-card flex flex-col justify-between gap-5 rounded-lg border p-5">
-            <div className="bg-dots border-border/70 flex min-h-28 items-center justify-center gap-2 rounded-md border p-4">
-              <Button size="sm">저장</Button>
-              <Button size="sm" variant="outline">
-                미리보기
-              </Button>
-              <Button size="sm" variant="ghost">
-                취소
-              </Button>
-            </div>
-            <div className="flex items-center justify-between gap-2">
-              <div>
-                <h3 className="text-sm font-medium">UI Components (13종)</h3>
-                <p className="text-muted-foreground text-xs">
-                  Pure HTML · React · Angular &amp; 390px 모바일 프리뷰
-                </p>
-              </div>
-              <a
-                href={`${import.meta.env.VITE_DESIGN_URL || "http://localhost:5175"}/components`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-blog-accent text-xs font-medium hover:underline"
-              >
-                열기 ↗
-              </a>
-            </div>
-          </div>
-
-          <div className="border-border bg-card flex flex-col justify-between gap-5 rounded-lg border p-5">
-            <div className="bg-dots border-border/70 flex min-h-28 flex-col justify-center gap-2 rounded-md border p-4">
-              <div className="border-border bg-background flex items-center justify-between rounded-md border px-3 py-2 text-xs">
-                <span className="font-medium">Design Tokens</span>
-                <span className="bg-secondary text-muted-foreground rounded px-1.5 py-0.5 font-mono text-[10px]">
-                  App / Editorial
-                </span>
-              </div>
-              <div className="border-border bg-background flex items-center justify-between rounded-md border px-3 py-2 text-xs">
-                <span className="text-muted-foreground">Style Recipes (tailwind-variants)</span>
-                <span className="text-blog-accent font-mono text-[10px]">Framework-agnostic</span>
-              </div>
-            </div>
-            <div className="flex items-center justify-between gap-2">
-              <div>
-                <h3 className="text-sm font-medium">5계층 문서</h3>
-                <p className="text-muted-foreground text-xs">토큰·레시피·프리미티브·패턴 가이드</p>
-              </div>
-              <a
-                href={`${import.meta.env.VITE_DESIGN_URL || "http://localhost:5175"}/docs`}
-                target="_blank"
-                rel="noreferrer"
-                className="text-blog-accent text-xs font-medium hover:underline"
-              >
-                열기 ↗
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+        </nav>
+      </div>
+    </main>
   );
 }

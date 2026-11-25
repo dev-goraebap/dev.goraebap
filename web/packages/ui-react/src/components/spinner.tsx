@@ -18,14 +18,7 @@ function Spinner({ className, ...props }: React.ComponentProps<"svg">) {
       className={mergeClassName(styles.spinner(), className)}
       {...props}
     >
-      <circle
-        cx="8"
-        cy="8"
-        r="6.25"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        opacity="0.2"
-      />
+      <circle cx="8" cy="8" r="6.25" stroke="currentColor" strokeWidth="1.5" opacity="0.2" />
       <path
         d="M8 1.75a6.25 6.25 0 0 1 6.25 6.25"
         stroke="currentColor"

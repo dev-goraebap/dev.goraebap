@@ -26,13 +26,7 @@ function SheetClose({ ...props }: SheetPrimitive.Close.Props) {
 
 function SheetPortal({ ...props }: SheetPrimitive.Portal.Props) {
   const container = usePortalContainer();
-  return (
-    <SheetPrimitive.Portal
-      container={container}
-      data-slot="sheet-portal"
-      {...props}
-    />
-  );
+  return <SheetPrimitive.Portal container={container} data-slot="sheet-portal" {...props} />;
 }
 
 function SheetOverlay({ className, ...props }: SheetPrimitive.Backdrop.Props) {
@@ -69,13 +63,7 @@ function SheetContent({
           {showCloseButton && (
             <SheetPrimitive.Close
               data-slot="sheet-close"
-              render={
-                <Button
-                  variant="ghost"
-                  className={styles.closeButton()}
-                  size="icon-sm"
-                />
-              }
+              render={<Button variant="ghost" className={styles.closeButton()} size="icon-sm" />}
             >
               <SystemIcon name="close" />
               <span className={styles.closeLabel()}>닫기</span>
@@ -117,10 +105,7 @@ function SheetTitle({ className, ...props }: SheetPrimitive.Title.Props) {
   );
 }
 
-function SheetDescription({
-  className,
-  ...props
-}: SheetPrimitive.Description.Props) {
+function SheetDescription({ className, ...props }: SheetPrimitive.Description.Props) {
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"

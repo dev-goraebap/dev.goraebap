@@ -85,12 +85,8 @@ export type SystemIconName =
   | "workspace";
 
 const IconSetContext = createContext<IconSetId>("solar");
-export type IconOverrides = Partial<
-  Record<SystemIconName, ComponentType<SvgProps>>
->;
-const IconOverridesContext = createContext<IconOverrides | undefined>(
-  undefined,
-);
+export type IconOverrides = Partial<Record<SystemIconName, ComponentType<SvgProps>>>;
+const IconOverridesContext = createContext<IconOverrides | undefined>(undefined);
 
 export function IconProvider({
   value,
@@ -103,9 +99,7 @@ export function IconProvider({
 }) {
   return (
     <IconSetContext.Provider value={value}>
-      <IconOverridesContext.Provider value={overrides}>
-        {children}
-      </IconOverridesContext.Provider>
+      <IconOverridesContext.Provider value={overrides}>{children}</IconOverridesContext.Provider>
     </IconSetContext.Provider>
   );
 }
@@ -176,10 +170,7 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
   book: (props) => (
     <SolarSvg {...props}>
       <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H12v17H6.5A2.5 2.5 0 0 0 4 22V5.5Z" />
-      <path
-        d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v17h5.5a2.5 2.5 0 0 1 2.5 2V5.5Z"
-        opacity={0.55}
-      />
+      <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H12v17h5.5a2.5 2.5 0 0 1 2.5 2V5.5Z" opacity={0.55} />
     </SolarSvg>
   ),
   close: (props) => (
@@ -225,10 +216,7 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
   copy: (props) => (
     <SolarSvg {...props}>
       <rect x="8" y="8" width="12" height="12" rx="3" />
-      <path
-        d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
-        opacity={0.55}
-      />
+      <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" opacity={0.55} />
     </SolarSvg>
   ),
   desktop: (props) => (
@@ -247,10 +235,7 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
     <SolarSvg {...props}>
       <path d="M14 4h6v6" />
       <path d="M10 14 20 4" />
-      <path
-        d="M19 13.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4.5"
-        opacity={0.55}
-      />
+      <path d="M19 13.5V18a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h4.5" opacity={0.55} />
     </SolarSvg>
   ),
   eye: (props) => (

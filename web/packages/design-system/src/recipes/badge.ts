@@ -2,8 +2,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 
 const labelStyle = "h-5.5 rounded-full bg-pressed px-2 text-foreground";
 const linkStyle = "text-primary underline-offset-4 hover:underline";
-const ghostStyle =
-  "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50";
+const ghostStyle = "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50";
 
 export const badgeVariants = tv({
   base: "inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium transition-colors",
@@ -31,12 +30,10 @@ export const compactBadgeVariants = tv({
   variants: {
     variant: {
       default: "bg-primary text-primary-foreground [a]:hover:bg-primary/80",
-      secondary:
-        "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
+      secondary: "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
       destructive:
         "bg-destructive/10 text-destructive focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 [a]:hover:bg-destructive/20",
-      outline:
-        "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
+      outline: "border-border text-foreground [a]:hover:bg-muted [a]:hover:text-muted-foreground",
       ghost: ghostStyle,
       link: linkStyle,
       /** 라벨 알약(cowork token): 색 점 + 이름, radius-full. 네모나면 버튼으로 읽힌다. */

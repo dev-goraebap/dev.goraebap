@@ -42,8 +42,7 @@ export const compactToastSlots = tv({
       "relative shrink-0 text-muted-foreground after:absolute after:-inset-2 after:content-[''] hover:text-foreground",
     errorIcon: "text-destructive",
     loadingIcon: "animate-spin",
-    toastIcon:
-      "shrink-0 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
+    toastIcon: "shrink-0 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4",
     toastListdiv: "flex min-w-0 flex-1 flex-col gap-1",
   },
 });

@@ -6,9 +6,22 @@
 
 ## 설계 방식
 
-- **지침과 예시 분리**: 각 스킬의 본문은 특정 기술 스택이나 라이브러리에 묶이지 않는 판단 기준만 담고, 스택별 구현은 같은 스킬의 `examples/`에 공개 오픈소스 고정 커밋에서 발췌한 코드로 둡니다. 프로젝트는 AGENTS.md의 `Webapp 스택:` 줄로 자기 스택의 예시만 읽습니다.
+- **글 하나에서 사이트와 스킬을 함께**: 지침 글의 원본은 사이트([dev.goraebap.xyz](https://dev.goraebap.xyz))의 `web/apps/blog/content/`입니다. 같은 글이 사이트 페이지가 되고, 패키징 때 스킬로 바뀝니다. 아직 옮기지 않은 스킬은 `plugins/webapp/skills/`에 있습니다.
+- **지침과 예시 분리**: 공통 글은 특정 기술 스택이나 라이브러리에 묶이지 않는 판단 기준만 담습니다. 스택별 구현은 공개 오픈소스 고정 커밋에서 발췌한 코드로 스택 파일(사이트)이나 `examples/`(스킬)에 둡니다. 사이트는 고른 스택의 글만 보이고, 프로젝트는 AGENTS.md의 `Webapp 스택:` 줄로 자기 스택의 예시만 읽습니다.
 - **디자인 시스템 레지스트리**: 스타일 레시피와 프레임워크별 어댑터(React, Angular)를 [dev.goraebap.xyz/r](https://dev.goraebap.xyz/r/registry.json)에서 통째로 받아 씁니다.
 - **분야별 플러그인 확장**: 플랫폼이나 분야가 다르면 `plugins/` 아래에 별도 플러그인으로 관리합니다.
+
+## 저장소 구성
+
+| 경로 | 내용 |
+| --- | --- |
+| `plugins/webapp/` | Webapp 플러그인의 패키징·검사 도구와 생성 배포본(`dist/`) |
+| `web/apps/blog/` | 지침 사이트 dev.goraebap.xyz (React) |
+| `web/apps/sso/` | 계정·로그인 화면 (Angular) |
+| `web/packages/` | 디자인 시스템 레시피와 React·Angular 어댑터 |
+| `server/` | sso의 API (Spring) |
+
+로컬 실행은 `web/`에서 `pnpm install`을 한 뒤 루트에서 `sh dev.sh [all|blog|sso|server]`로 합니다.
 
 ## 플러그인 목록
 

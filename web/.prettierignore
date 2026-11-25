@@ -3,4 +3,5 @@ node_modules/
 pnpm-lock.yaml
 **/routeTree.gen.ts
 apps/blog/public/r/
-apps/productivity/
+# 지침 글은 MDX 3 문법이라 prettier의 MDX 형식기가 망가뜨릴 수 있다.
+apps/blog/content/

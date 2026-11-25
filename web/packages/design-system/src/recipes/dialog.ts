@@ -19,13 +19,11 @@ export const compactDialogSlots = tv({
     dialogContent:
       "fixed top-[12dvh] left-1/2 z-50 flex max-h-[76dvh] w-full max-w-[calc(100%-2rem)] -translate-x-1/2 flex-col gap-6 overflow-hidden rounded-2xl bg-popover px-10 pt-7 pb-6 text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-180 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
     overlayEnter: "data-open:animate-in data-open:fade-in-0",
-    contentEnter:
-      "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
+    contentEnter: "data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95",
     closeButton: "absolute top-7.5 right-8",
     closeLabel: "sr-only",
     dialogHeader: "flex flex-col gap-2 pr-10",
-    dialogFooter:
-      "flex shrink-0 flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end",
+    dialogFooter: "flex shrink-0 flex-col-reverse gap-2 pt-2 sm:flex-row sm:justify-end",
     dialogTitle: "font-heading text-xl leading-normal font-semibold",
     dialogDescription:
       "text-sm text-muted-foreground *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",

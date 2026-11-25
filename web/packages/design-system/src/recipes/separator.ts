@@ -9,9 +9,7 @@ export const separatorVariants = tv({
     },
     stretch: { true: "" },
   },
-  compoundVariants: [
-    { orientation: "vertical", stretch: true, class: "h-auto self-stretch" },
-  ],
+  compoundVariants: [{ orientation: "vertical", stretch: true, class: "h-auto self-stretch" }],
   defaultVariants: {
     orientation: "horizontal",
   },

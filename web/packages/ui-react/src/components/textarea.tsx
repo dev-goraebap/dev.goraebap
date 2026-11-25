@@ -11,12 +11,7 @@ export type TextareaProps = ComponentProps<"textarea"> &
     appearance?: "compact";
   };
 
-export function Textarea({
-  className,
-  invalid,
-  appearance,
-  ...props
-}: TextareaProps) {
+export function Textarea({ className, invalid, appearance, ...props }: TextareaProps) {
   return (
     <textarea
       data-slot="textarea"

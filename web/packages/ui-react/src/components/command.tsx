@@ -18,10 +18,7 @@ import { SystemIcon } from "../icons";
 
 const styles = commandSlots();
 
-function Command({
-  className,
-  ...props
-}: React.ComponentProps<typeof CommandPrimitive>) {
+function Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {
   return (
     <CommandPrimitive
       data-slot="command"
@@ -56,10 +53,7 @@ function CommandDialog({
       </DialogHeader>
       <DialogContent
         initialFocus={initialFocus}
-        className={mergeClassName(
-          styles.commandDialogDialogContent(),
-          className,
-        )}
+        className={mergeClassName(styles.commandDialogDialogContent(), className)}
         showCloseButton={showCloseButton}
       >
         {children}
@@ -73,10 +67,7 @@ function CommandInput({
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
-    <div
-      data-slot="command-input-wrapper"
-      className={styles.commandInputWrapper()}
-    >
+    <div data-slot="command-input-wrapper" className={styles.commandInputWrapper()}>
       <InputGroup className={styles.commandInputInputGroup()}>
         <CommandPrimitive.Input
           data-slot="command-input"
@@ -84,20 +75,14 @@ function CommandInput({
           {...props}
         />
         <InputGroupAddon>
-          <SystemIcon
-            name="search"
-            className={styles.commandInputSearchIcon()}
-          />
+          <SystemIcon name="search" className={styles.commandInputSearchIcon()} />
         </InputGroupAddon>
       </InputGroup>
     </div>
   );
 }
 
-function CommandList({
-  className,
-  ...props
-}: React.ComponentProps<typeof CommandPrimitive.List>) {
+function CommandList({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
   return (
     <CommandPrimitive.List
       data-slot="command-list"
@@ -163,10 +148,7 @@ function CommandItem({
   );
 }
 
-function CommandShortcut({
-  className,
-  ...props
-}: React.ComponentProps<"span">) {
+function CommandShortcut({ className, ...props }: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="command-shortcut"

@@ -25,9 +25,7 @@ const styles = compactTableSlots();
 /** fit 표의 적정 너비: 열들이 합쳐서 이만큼까지 펼쳐 쓴다(첫 칸 왼쪽 여백 1rem은 뺀다). 표가 놓인 상자가 좁으면 상자 폭까지. */
 type Layout = "fit" | "fill";
 const TableLayoutContext = React.createContext<Layout>("fill");
-const TableSectionContext = React.createContext<"head" | "body" | "foot">(
-  "body",
-);
+const TableSectionContext = React.createContext<"head" | "body" | "foot">("body");
 
 function Table({
   className,
@@ -61,11 +59,7 @@ function Table({
   );
 }
 
-function TableHeader({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<"thead">) {
+function TableHeader({ className, children, ...props }: React.ComponentProps<"thead">) {
   const layout = React.useContext(TableLayoutContext);
   // 열 수: 첫 머리 줄의 칸 수(조건으로 빠진 칸은 세지 않는다).
   const first = React.Children.toArray(children)[0];
@@ -120,11 +114,7 @@ function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
   );
 }
 
-function TableRow({
-  className,
-  children,
-  ...props
-}: React.ComponentProps<"tr">) {
+function TableRow({ className, children, ...props }: React.ComponentProps<"tr">) {
   const layout = React.useContext(TableLayoutContext);
   const section = React.useContext(TableSectionContext);
   return (
@@ -177,18 +167,11 @@ function TableText({
   ...props
 }: React.ComponentProps<"span"> & TableTextRecipeProps) {
   return (
-    <span
-      data-slot="table-text"
-      className={tableTextVariants({ size, className })}
-      {...props}
-    />
+    <span data-slot="table-text" className={tableTextVariants({ size, className })} {...props} />
   );
 }
 
-function TableCaption({
-  className,
-  ...props
-}: React.ComponentProps<"caption">) {
+function TableCaption({ className, ...props }: React.ComponentProps<"caption">) {
   return (
     <caption
       data-slot="table-caption"

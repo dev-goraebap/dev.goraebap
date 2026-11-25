@@ -3,12 +3,7 @@
 import * as React from "react";
 import { calendarSlots } from "@goraebap/design-system/recipes/calendar";
 import { cn } from "@goraebap/design-system/cn";
-import {
-  DayPicker,
-  getDefaultClassNames,
-  type DayButton,
-  type Locale,
-} from "react-day-picker";
+import { DayPicker, getDefaultClassNames, type DayButton, type Locale } from "react-day-picker";
 
 import { Button, buttonVariants } from "../compact/button";
 import { SystemIcon } from "../icons";
@@ -37,8 +32,7 @@ function Calendar({
       captionLayout={captionLayout}
       locale={locale}
       formatters={{
-        formatMonthDropdown: (date) =>
-          date.toLocaleString(locale?.code, { month: "short" }),
+        formatMonthDropdown: (date) => date.toLocaleString(locale?.code, { month: "short" }),
         ...formatters,
       }}
       classNames={{
@@ -56,31 +50,20 @@ function Calendar({
           styles.navButton(),
           defaultClassNames.button_next,
         ),
-        month_caption: cn(
-          styles.monthCaption(),
-          defaultClassNames.month_caption,
-        ),
+        month_caption: cn(styles.monthCaption(), defaultClassNames.month_caption),
         dropdowns: cn(styles.dropdowns(), defaultClassNames.dropdowns),
-        dropdown_root: cn(
-          styles.dropdownRoot(),
-          defaultClassNames.dropdown_root,
-        ),
+        dropdown_root: cn(styles.dropdownRoot(), defaultClassNames.dropdown_root),
         dropdown: cn(styles.dropdown(), defaultClassNames.dropdown),
         caption_label: cn(
           styles.captionLabel(),
-          captionLayout === "label"
-            ? styles.captionPlain()
-            : styles.captionAlternate(),
+          captionLayout === "label" ? styles.captionPlain() : styles.captionAlternate(),
           defaultClassNames.caption_label,
         ),
         month_grid: cn(styles.monthGrid(), defaultClassNames.month_grid),
         weekdays: cn(styles.weekdays(), defaultClassNames.weekdays),
         weekday: cn(styles.weekday(), defaultClassNames.weekday),
         week: cn(styles.week(), defaultClassNames.week),
-        week_number_header: cn(
-          styles.weekNumberHeader(),
-          defaultClassNames.week_number_header,
-        ),
+        week_number_header: cn(styles.weekNumberHeader(), defaultClassNames.week_number_header),
         week_number: cn(styles.weekNumber(), defaultClassNames.week_number),
         day: cn(
           styles.day(),
@@ -99,14 +82,7 @@ function Calendar({
       }}
       components={{
         Root: ({ className, rootRef, ...props }) => {
-          return (
-            <div
-              data-slot="calendar"
-              ref={rootRef}
-              className={cn(className)}
-              {...props}
-            />
-          );
+          return <div data-slot="calendar" ref={rootRef} className={cn(className)} {...props} />;
         },
         Chevron: ({ className, orientation, ...props }) => {
           if (orientation === "left") {
@@ -130,16 +106,10 @@ function Calendar({
           }
 
           return (
-            <SystemIcon
-              name="chevronDown"
-              className={cn(styles.chevron(), className)}
-              {...props}
-            />
+            <SystemIcon name="chevronDown" className={cn(styles.chevron(), className)} {...props} />
           );
         },
-        DayButton: ({ ...props }) => (
-          <CalendarDayButton locale={locale} {...props} />
-        ),
+        DayButton: ({ ...props }) => <CalendarDayButton locale={locale} {...props} />,
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>

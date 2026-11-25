@@ -1,4 +1,4 @@
-// 사이트 content(web/apps/devgoraebap/content)에서 플러그인 스킬을 만든다.
+// 사이트 content(web/apps/blog/content)에서 플러그인 스킬을 만든다.
 // SKILL.md가 있는 폴더가 스킬 하나이고, SKILL.md에서 링크를 따라 닿는 문서만 스킬에 넣는다(사람 전용 글은 빠진다).
 // 공통 글(<문서>.mdx, <문서>/index.mdx)은 references/<문서>.md가 되고, <Slot> 자리는 예시를 가리키는 한 줄이 된다.
 // 스택 파일(<문서>/<스택>.mdx)의 <Fill>은 examples/<문서>.md의 「## <스택>」 절이 된다. <Story>·<Diagram>은 사람 전용이라 지운다.
@@ -15,7 +15,7 @@ import { parse as parseYaml } from 'yaml';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const repo = path.resolve(root, '../..');
-export const CONTENT = path.join(repo, 'web/apps/devgoraebap/content');
+export const CONTENT = path.join(repo, 'web/apps/blog/content');
 const SKILLS = path.join(root, 'skills');
 // 공간마다 고를 수 있는 스택. 사이트의 SPACE_STACKS와 같다.
 export const SPACE_STACKS = { frontend: ['react', 'angular'], backend: ['spring'] };

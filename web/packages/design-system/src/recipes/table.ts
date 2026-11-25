@@ -33,11 +33,9 @@ export const compactTableSlots = tv({
     tableRowtd: "w-full p-0",
     tableHead:
       "h-11 px-3 text-left align-middle font-medium whitespace-nowrap text-muted-foreground [&:has([role=checkbox])]:pr-0",
-    tableCell:
-      "px-3 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
+    tableCell: "px-3 py-2 align-middle whitespace-nowrap [&:has([role=checkbox])]:pr-0",
     sizerWidth: "w-[calc(min(1920px,100cqw)-1rem)]",
-    fitLayout:
-      "table-auto [&_td:not([data-filler])]:w-px [&_th:not([data-filler])]:w-px",
+    fitLayout: "table-auto [&_td:not([data-filler])]:w-px [&_th:not([data-filler])]:w-px",
     tableCaption: "mt-4 text-sm text-muted-foreground",
   },
 });

@@ -1,5 +1,0 @@
-export { ComposeSurface, PlaceChip, type ComposeSubmit } from "./ComposeSurface"
-export { ComposeFields } from "./ComposeFields"
-export { FileDropzone } from "./FileDropzone"
-export { FileList, FileMark, FileRemoveButton, FileRow } from "./FileList"
-export { MB, fileKey, fileSizeText, mergeFiles } from "./files"

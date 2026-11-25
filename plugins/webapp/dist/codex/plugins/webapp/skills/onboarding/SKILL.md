@@ -22,10 +22,10 @@ arc42: "none"
 ## 연결
 
 1. 현재 폴더의 Git 루트, status와 staging, 기존 AGENTS.md·CLAUDE.md·`.agents/skills`를 읽습니다. 다른 저장소는 바꾸지 않습니다.
-2. 지침 사본(접두사가 붙은 `*-mode`·`*-frontend` 같은 지침 폴더, `scripts/sync-skills.mjs`, 동기화 시작 훅)이 있으면 연결 대신 [사본에서 전환](references/migrate-from-copies.md)을 따릅니다.
+2. Webapp 지침 사본(접두사가 붙은 `*-mode`·`*-frontend` 같은 지침 폴더)이 있으면 연결 대신 [사본에서 전환](references/migrate-from-copies.md)을 따릅니다. 프로젝트 고유 스킬과 그 동기화(`scripts/sync-skills.mjs`, 시작 훅)는 사본이 아닙니다.
 3. AGENTS.md에 아래 "개발 지침" 관리 블록(`<!-- webapp@dev-goraebap:start -->` ~ `<!-- webapp@dev-goraebap:end -->`)과 "프로젝트 규칙" 표를 넣습니다. 파일이 없으면 만들고, 이미 마커가 있으면 마커 안쪽만 갱신합니다. 마커 밖의 기존 프로젝트 설명·팀 규칙·프로젝트 규칙 표는 보존합니다. 최소 버전은 설치된 플러그인의 버전(`plugin.json`의 `version`)으로 적습니다.
 4. 블록의 `Webapp 스택:` 줄에 프로젝트가 쓰는 스택 id를 쉼표로 구분해 적습니다. 실제 의존성을 확인해 [스택 id와 전제](../goraebap-mode/examples/stacks.md)에서 맞는 id를 고르고 사용자에게 확인합니다. 맞는 스택이 없으면 이 줄을 빼고, 지침만으로 작업한다고 사용자에게 알립니다.
-5. 기존 AGENTS.md에 지침과 다른 결정이 이미 있으면 [프로젝트 규칙](references/project-rules.md) 표로 옮깁니다. 확인할 수 없는 의도는 추정하지 말고 사용자에게 묻습니다.
+5. 기존 AGENTS.md에 지침과 다른 결정이 이미 있으면 [프로젝트 규칙](references/project-rules.md) 표로 옮깁니다. 특정 작업에서만 필요한 긴 절차는 [프로젝트 스킬](references/project-rules.md#프로젝트-스킬)로 옮길지 사용자에게 묻습니다. 확인할 수 없는 의도는 추정하지 말고 사용자에게 묻습니다.
 6. Claude Code 사용자에게는 이 마켓플레이스의 자동 갱신을 켤지 한 번 묻고 켜는 방법(`/plugin` → Marketplaces → `dev-goraebap` → Enable auto-update, 또는 조직 관리 설정의 `extraKnownMarketplaces` 항목에 `"autoUpdate": true` 추가)을 안내합니다. 사용자 설정 파일은 에이전트가 임의로 고치지 않습니다.
 7. 바꾼 파일과 남은 확인 사항을 보고합니다.
 

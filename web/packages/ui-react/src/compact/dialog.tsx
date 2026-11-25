@@ -18,19 +18,9 @@ type Size = { width: number; height: number };
 type DialogPanelState = { isSwapped: boolean };
 const DialogPanelContext = React.createContext<DialogPanelState | null>(null);
 
-function DialogPanel({
-  isSwapped,
-  children,
-}: {
-  isSwapped: boolean;
-  children: React.ReactNode;
-}) {
+function DialogPanel({ isSwapped, children }: { isSwapped: boolean; children: React.ReactNode }) {
   const value = React.useMemo(() => ({ isSwapped }), [isSwapped]);
-  return (
-    <DialogPanelContext.Provider value={value}>
-      {children}
-    </DialogPanelContext.Provider>
-  );
+  return <DialogPanelContext.Provider value={value}>{children}</DialogPanelContext.Provider>;
 }
 
 const SIZE_MOTION: KeyframeAnimationOptions = {
@@ -53,9 +43,7 @@ function useSizeTransition(element: HTMLDivElement | null) {
       if (motion) return;
       const next = { width: element.offsetWidth, height: element.offsetHeight };
       const moved =
-        last &&
-        (Math.abs(last.height - next.height) > 1 ||
-          Math.abs(last.width - next.width) > 1);
+        last && (Math.abs(last.height - next.height) > 1 || Math.abs(last.width - next.width) > 1);
       if (!moved || reduced.matches) {
         last = next;
         return;
@@ -103,23 +91,14 @@ function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
 
 function DialogPortal({ ...props }: DialogPrimitive.Portal.Props) {
   const container = usePortalContainer();
-  return (
-    <DialogPrimitive.Portal
-      container={container}
-      data-slot="dialog-portal"
-      {...props}
-    />
-  );
+  return <DialogPrimitive.Portal container={container} data-slot="dialog-portal" {...props} />;
 }
 
 function DialogClose({ ...props }: DialogPrimitive.Close.Props) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
-function DialogOverlay({
-  className,
-  ...props
-}: DialogPrimitive.Backdrop.Props) {
+function DialogOverlay({ className, ...props }: DialogPrimitive.Backdrop.Props) {
   const isHandedOff = !!React.useContext(DialogPanelContext)?.isSwapped;
   return (
     <DialogPrimitive.Backdrop
@@ -155,10 +134,7 @@ function DialogContent({
   const from = panel?.isSwapped;
   // 팝업은 포털이 붙은 뒤에 생기므로 ref 객체가 아니라 상태로 받아, 생긴 때 크기 재기를 건다.
   const [element, setElement] = React.useState<HTMLDivElement | null>(null);
-  const popupRef = React.useMemo(
-    () => mergeRefs<HTMLDivElement>(setElement, ref),
-    [ref],
-  );
+  const popupRef = React.useMemo(() => mergeRefs<HTMLDivElement>(setElement, ref), [ref]);
   useSizeTransition(element);
   return (
     <DialogPortal>
@@ -174,19 +150,11 @@ function DialogContent({
           )}
           {...props}
         >
-          <DialogPanelContext.Provider value={null}>
-            {children}
-          </DialogPanelContext.Provider>
+          <DialogPanelContext.Provider value={null}>{children}</DialogPanelContext.Provider>
           {showCloseButton && (
             <DialogPrimitive.Close
               data-slot="dialog-close"
-              render={
-                <Button
-                  variant="ghost"
-                  className={styles.closeButton()}
-                  size="icon-sm"
-                />
-              }
+              render={<Button variant="ghost" className={styles.closeButton()} size="icon-sm" />}
             >
               <SystemIcon name="close" />
               <span className={styles.closeLabel()}>닫기</span>
@@ -224,9 +192,7 @@ function DialogFooter({
     >
       {children}
       {showCloseButton && (
-        <DialogPrimitive.Close render={<Button variant="outline" />}>
-          닫기
-        </DialogPrimitive.Close>
+        <DialogPrimitive.Close render={<Button variant="outline" />}>닫기</DialogPrimitive.Close>
       )}
     </div>
   );
@@ -242,10 +208,7 @@ function DialogTitle({ className, ...props }: DialogPrimitive.Title.Props) {
   );
 }
 
-function DialogDescription({
-  className,
-  ...props
-}: DialogPrimitive.Description.Props) {
+function DialogDescription({ className, ...props }: DialogPrimitive.Description.Props) {
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
@@ -289,14 +252,7 @@ function DialogBar({
           </Button>
         )}
         <DialogClose
-          render={
-            <Button
-              variant="ghost"
-              size="icon-sm"
-              aria-label="닫기"
-              title="닫기"
-            />
-          }
+          render={<Button variant="ghost" size="icon-sm" aria-label="닫기" title="닫기" />}
         >
           <SystemIcon name="close" />
         </DialogClose>

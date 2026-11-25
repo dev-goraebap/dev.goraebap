@@ -1,1 +1,0 @@
-export { PaneFrame } from './PaneFrame';

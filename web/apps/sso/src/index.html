@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>goraebap sso</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <script>
+      // 저장한 테마를 첫 그림 전에 적용해 화면이 번쩍이지 않게 한다.
+      try {
+        if (localStorage.getItem("theme") === "dark")
+          document.documentElement.classList.add("dark");
+      } catch {}
+    </script>
+  </head>
+  <body class="bg-sidebar text-foreground antialiased">
+    <gb-root></gb-root>
+  </body>
+</html>

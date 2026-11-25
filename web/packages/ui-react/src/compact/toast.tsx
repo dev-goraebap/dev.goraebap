@@ -38,13 +38,7 @@ function ToastProvider({ ...props }: ToastPrimitive.Provider.Props) {
 
 function ToastPortal({ ...props }: ToastPrimitive.Portal.Props) {
   const container = usePortalContainer();
-  return (
-    <ToastPrimitive.Portal
-      container={container}
-      data-slot="toast-portal"
-      {...props}
-    />
-  );
+  return <ToastPrimitive.Portal container={container} data-slot="toast-portal" {...props} />;
 }
 
 function ToastViewport({ className, ...props }: ToastPrimitive.Viewport.Props) {
@@ -91,10 +85,7 @@ function ToastTitle({ className, ...props }: ToastPrimitive.Title.Props) {
   );
 }
 
-function ToastDescription({
-  className,
-  ...props
-}: ToastPrimitive.Description.Props) {
+function ToastDescription({ className, ...props }: ToastPrimitive.Description.Props) {
   return (
     <ToastPrimitive.Description
       data-slot="toast-description"
@@ -154,23 +145,11 @@ function ToastIcon({ type }: { type: string | undefined }) {
   }
 
   if (type === "error") {
-    icon = (
-      <SystemIcon
-        name="error"
-        className={styles.errorIcon()}
-        aria-hidden="true"
-      />
-    );
+    icon = <SystemIcon name="error" className={styles.errorIcon()} aria-hidden="true" />;
   }
 
   if (type === "loading") {
-    icon = (
-      <SystemIcon
-        name="loading"
-        className={styles.loadingIcon()}
-        aria-hidden="true"
-      />
-    );
+    icon = <SystemIcon name="loading" className={styles.loadingIcon()} aria-hidden="true" />;
   }
 
   if (!icon) {
@@ -189,11 +168,7 @@ function ToastList() {
 
   return toasts.map((toastItem) => (
     <Toast key={toastItem.id} toast={toastItem}>
-      <ToastContent
-        className={
-          toastItem.data?.countdown ? styles.countdownContent() : undefined
-        }
-      >
+      <ToastContent className={toastItem.data?.countdown ? styles.countdownContent() : undefined}>
         <ToastIcon type={toastItem.type} />
         <div className={styles.toastListdiv()}>
           <ToastTitle />
@@ -209,11 +184,7 @@ function ToastList() {
   ));
 }
 
-function Toaster({
-  children,
-  toastManager = toast,
-  ...props
-}: ToastPrimitive.Provider.Props) {
+function Toaster({ children, toastManager = toast, ...props }: ToastPrimitive.Provider.Props) {
   return (
     <ToastProvider toastManager={toastManager} {...props}>
       {children}

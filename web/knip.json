@@ -1,19 +1,17 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
-    "apps/accounts": {
-      "entry": ["src/pages/**/{__root,route,page}.tsx"],
+    "apps/sso": {
+      "entry": ["src/main.ts", "src/pages/**/routes.ts"],
       "ignoreDependencies": ["tailwindcss"]
     },
     "apps/blog": {
-      "entry": ["src/pages/**/{__root,route,page}.tsx"],
+      "entry": [
+        "src/pages/**/{__root,route,page}.tsx",
+        "src/app/entry-server.tsx",
+        "scripts/*.mjs"
+      ],
       "ignoreDependencies": ["tailwindcss"]
-    },
-    "apps/devgoraebap": {
-      "entry": ["src/pages/**/{__root,route,page}.tsx"]
-    },
-    "apps/productivity": {
-      "ignore": ["**/*"]
     },
     "packages/design-system": {
       "entry": ["src/lib/*.ts", "src/recipes/*.ts"]

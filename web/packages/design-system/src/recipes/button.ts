@@ -5,8 +5,7 @@ const controlVariants = {
   view: "border-control-border bg-control text-muted-foreground hover:bg-control-hover hover:text-foreground",
   "view-active": "border-control-border bg-control-on text-foreground",
   tool: "border-control-border bg-control text-muted-foreground hover:bg-control-hover hover:text-foreground aria-expanded:bg-control-on aria-expanded:text-foreground aria-pressed:bg-control-on aria-pressed:text-foreground",
-  create:
-    "bg-primary font-semibold text-primary-foreground hover:bg-primary/85",
+  create: "bg-primary font-semibold text-primary-foreground hover:bg-primary/85",
 };
 
 const compactSizes = {
@@ -30,11 +29,9 @@ export const buttonVariants = tv({
       ...controlVariants,
       default: "bg-primary text-primary-foreground hover:bg-primary/90",
       secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-      outline:
-        "border border-border bg-background hover:bg-accent hover:text-accent-foreground",
+      outline: "border border-border bg-background hover:bg-accent hover:text-accent-foreground",
       ghost: "hover:bg-accent hover:text-accent-foreground",
-      destructive:
-        "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+      destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
     },
     size: {
       ...compactSizes,
@@ -104,6 +101,4 @@ export const compactButtonVariants = tv({
   },
 });
 
-export type CompactButtonRecipeProps = VariantProps<
-  typeof compactButtonVariants
->;
+export type CompactButtonRecipeProps = VariantProps<typeof compactButtonVariants>;

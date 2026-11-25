@@ -9,11 +9,7 @@ const styles = labelSlots();
 
 function Label({ className, ...props }: React.ComponentProps<"label">) {
   return (
-    <label
-      data-slot="label"
-      className={mergeClassName(styles.label(), className)}
-      {...props}
-    />
+    <label data-slot="label" className={mergeClassName(styles.label(), className)} {...props} />
   );
 }
 

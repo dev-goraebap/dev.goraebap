@@ -13,7 +13,6 @@ export default tseslint.config(
       "**/public/r/**",
       "**/routeTree.gen.ts",
       "**/.angular/**",
-      "apps/productivity/**",
     ],
   },
   js.configs.recommended,
@@ -32,6 +31,11 @@ export default tseslint.config(
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
     },
+  },
+  {
+    // 빌드·검사 스크립트는 Node에서 돈다.
+    files: ["**/*.mjs"],
+    languageOptions: { globals: globals.node },
   },
   {
     files: [

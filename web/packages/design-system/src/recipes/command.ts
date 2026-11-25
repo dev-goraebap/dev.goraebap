@@ -9,11 +9,9 @@ export const commandSlots = tv({
     commandInputWrapper: "p-1 pb-0",
     commandInputInputGroup:
       "h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!",
-    commandInput:
-      "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
+    commandInput: "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
     commandInputSearchIcon: "size-4 shrink-0 opacity-50",
-    commandList:
-      "no-scrollbar max-h-72 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none",
+    commandList: "no-scrollbar max-h-72 scroll-py-1 overflow-x-hidden overflow-y-auto outline-none",
     commandEmpty: "py-6 text-center text-sm",
     commandGroup:
       "overflow-hidden p-1 text-foreground **:[[cmdk-group-heading]]:px-2 **:[[cmdk-group-heading]]:py-1.5 **:[[cmdk-group-heading]]:text-xs **:[[cmdk-group-heading]]:font-medium **:[[cmdk-group-heading]]:text-muted-foreground",

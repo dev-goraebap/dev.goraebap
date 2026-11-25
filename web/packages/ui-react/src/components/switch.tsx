@@ -16,13 +16,7 @@ export type SwitchProps = ComponentProps<typeof BaseSwitch.Root> &
 
 const compactStyles = compactSwitchSlots();
 
-export function Switch({
-  className,
-  shape,
-  appearance,
-  size = "default",
-  ...props
-}: SwitchProps) {
+export function Switch({ className, shape, appearance, size = "default", ...props }: SwitchProps) {
   const compact = appearance === "compact";
   return (
     <BaseSwitch.Root
@@ -36,9 +30,7 @@ export function Switch({
     >
       <BaseSwitch.Thumb
         data-slot="switch-thumb"
-        className={
-          compact ? compactStyles.switchThumb() : switchThumbVariants({ shape })
-        }
+        className={compact ? compactStyles.switchThumb() : switchThumbVariants({ shape })}
       />
     </BaseSwitch.Root>
   );

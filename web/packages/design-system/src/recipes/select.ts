@@ -22,9 +22,7 @@ export const selectItemVariants = tv({
   base: "relative flex w-full cursor-pointer select-none items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-xs text-popover-foreground outline-none transition-colors data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground data-[selected]:font-medium data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 });
 
-export type SelectTriggerRecipeProps = VariantProps<
-  typeof selectTriggerVariants
->;
+export type SelectTriggerRecipeProps = VariantProps<typeof selectTriggerVariants>;
 
 export const compactSelectSlots = tv({
   slots: {
@@ -41,8 +39,7 @@ export const compactSelectSlots = tv({
     selectItem:
       "relative flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-md py-1.5 pr-8 pl-2 text-sm outline-hidden select-none focus:bg-accent focus:text-accent-foreground not-data-[variant=destructive]:focus:**:text-accent-foreground data-disabled:pointer-events-none data-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
     selectItemItemText: "flex flex-1 shrink-0 gap-2 whitespace-nowrap",
-    itemIndicator:
-      "pointer-events-none absolute right-2 flex size-4 items-center justify-center",
+    itemIndicator: "pointer-events-none absolute right-2 flex size-4 items-center justify-center",
     itemCheck: "pointer-events-none",
     selectSeparator: "pointer-events-none -mx-1 my-1 h-px bg-border",
     selectScrollUpButton:

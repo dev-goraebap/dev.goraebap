@@ -14,18 +14,8 @@ export type ButtonProps = ComponentProps<typeof BaseButton> &
 
 function ButtonSpinner() {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      fill="none"
-      className={buttonSpinnerVariants()}
-    >
-      <path
-        d="M12 3a9 9 0 1 0 9 9"
-        stroke="currentColor"
-        strokeWidth="2.5"
-        strokeLinecap="round"
-      />
+    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" className={buttonSpinnerVariants()}>
+      <path d="M12 3a9 9 0 1 0 9 9" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
     </svg>
   );
 }
@@ -49,10 +39,7 @@ export function Button({
       aria-busy={loading || undefined}
       disabled={disabled || loading}
       focusableWhenDisabled={focusableWhenDisabled ?? loading}
-      className={mergeClassName(
-        buttonVariants({ variant, size, shape }),
-        className,
-      )}
+      className={mergeClassName(buttonVariants({ variant, size, shape }), className)}
       {...props}
     >
       {loading && <ButtonSpinner />}

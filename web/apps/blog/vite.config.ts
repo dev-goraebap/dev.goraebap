@@ -1,40 +1,53 @@
-import { fileURLToPath, URL } from "node:url";
-import mdx from "@mdx-js/rollup";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
+import mdx from "@mdx-js/rollup";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig } from "vite";
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 export default defineConfig({
   plugins: [
+    // 지침 글의 원본(content/). SKILL.md도 같은 방식으로 읽어 사이트에 보인다.
     {
       enforce: "pre",
       ...mdx({
-        remarkPlugins: [
-          remarkFrontmatter,
-          [remarkMdxFrontmatter, { name: "frontmatter" }],
-          remarkGfm,
-        ],
+        mdExtensions: [".md"],
+        // content 밖의 md와 ?raw로 읽는 파일은 글자 그대로 둔다.
+        include: /[\\/]content[\\/].*\.mdx?$/,
+        remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter, remarkGfm],
       }),
     },
     tanstackRouter({
       target: "react",
+      autoCodeSplitting: true,
       routesDirectory: "./src/pages",
       generatedRouteTree: "./src/app/router/routeTree.gen.ts",
-      autoCodeSplitting: true,
       indexToken: "page",
-      // /ui 라우트 폴더가 있으므로 ui 세그먼트 대신 api·model·lib·config·index.ts만 라우트에서 제외한다.
       routeFileIgnorePattern: "^(api|model|lib|config|index\\.ts)$",
     }),
-    react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
+    react({ include: /\.(mdx?|[jt]sx?)$/ }),
     tailwindcss(),
   ],
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@": path.resolve(__dirname, "./src"),
+      // 사이트가 예시 파일을 그대로 읽는 Webapp 플러그인 지침
+      "@webapp-skills": path.resolve(__dirname, "../../../plugins/webapp/skills"),
+    },
+  },
+  server: {
+    port: 5175,
+    fs: {
+      allow: [
+        path.resolve(__dirname, "../.."),
+        path.resolve(__dirname, "../../../plugins/webapp/skills"),
+      ],
     },
   },
 });

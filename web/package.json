@@ -5,22 +5,17 @@
   "packageManager": "pnpm@10.33.0",
   "scripts": {
     "dev:blog": "pnpm --filter @goraebap/blog dev",
-    "dev:devgoraebap": "pnpm --filter @goraebap/devgoraebap dev",
-    "dev:accounts": "pnpm --filter @goraebap/accounts dev",
-    "dev:productivity": "pnpm --filter @goraebap/productivity dev",
+    "dev:sso": "pnpm --filter @goraebap/sso dev",
     "build:blog": "pnpm --filter @goraebap/blog build",
-    "build:devgoraebap": "pnpm --filter @goraebap/devgoraebap build",
-    "build:accounts": "pnpm --filter @goraebap/accounts build",
-    "build:productivity": "pnpm --filter @goraebap/productivity build",
+    "build:sso": "pnpm --filter @goraebap/sso build",
     "build:registry": "node scripts/build-registry.mjs",
-    "check:productivity": "pnpm --filter @goraebap/productivity check",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "knip": "knip",
     "typecheck": "pnpm -r typecheck",
     "build": "pnpm -r build",
-    "check": "pnpm lint && pnpm format:check && pnpm knip && pnpm typecheck && pnpm build && pnpm check:productivity"
+    "check": "pnpm lint && pnpm format:check && pnpm knip && pnpm typecheck && pnpm build"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -1,8 +1,5 @@
 import { Checkbox as BaseCheckbox } from "@base-ui/react/checkbox";
-import {
-  checkboxVariants,
-  compactCheckboxSlots,
-} from "@goraebap/design-system/recipes/checkbox";
+import { checkboxVariants, compactCheckboxSlots } from "@goraebap/design-system/recipes/checkbox";
 import { SystemIcon } from "../icons";
 import { mergeClassName } from "../lib/utils";
 import type { ComponentProps } from "react";
@@ -18,10 +15,7 @@ export function Checkbox({ className, appearance, ...props }: CheckboxProps) {
   return (
     <BaseCheckbox.Root
       data-slot="checkbox"
-      className={mergeClassName(
-        compact ? compactStyles.checkbox() : checkboxVariants(),
-        className,
-      )}
+      className={mergeClassName(compact ? compactStyles.checkbox() : checkboxVariants(), className)}
       {...props}
     >
       <BaseCheckbox.Indicator

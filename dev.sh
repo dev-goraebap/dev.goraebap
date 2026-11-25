@@ -1,8 +1,9 @@
 #!/bin/sh
 set -eu
 
+# 로컬 개발 실행. blog는 서버 없이 혼자 뜨고, sso는 서버(API)와 함께 뜬다.
 root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-usage='사용법: sh dev.sh [all|blog|devgoraebap|accounts|productivity|server]'
+usage='사용법: sh dev.sh [all|blog|sso|server]'
 mode=${1:-all}
 if [ "$#" -gt 1 ]; then
   echo "$usage" >&2
@@ -32,28 +33,14 @@ case "$mode" in
     cd "$root/web"
     exec pnpm dev:blog
     ;;
-  devgoraebap)
-    prepare_web
-    cd "$root/web"
-    exec pnpm dev:devgoraebap
-    ;;
-  accounts)
+  sso)
     prepare_web
     cd "$root/web"
     exec npx --yes concurrently@10.0.5 -k \
-      -n server,accounts \
+      -n server,sso \
       -c blue,magenta \
       "cd ../server && $gradle $gradle_args" \
-      'node ../scripts/wait-for-server.mjs && pnpm dev:accounts'
-    ;;
-  productivity)
-    prepare_web
-    cd "$root/web"
-    exec npx --yes concurrently@10.0.5 -k \
-      -n server,productivity \
-      -c blue,yellow \
-      "cd ../server && $gradle $gradle_args" \
-      'node ../scripts/wait-for-server.mjs && pnpm dev:productivity'
+      'node ../scripts/wait-for-server.mjs && pnpm dev:sso'
     ;;
   server)
     cd "$root/server"
@@ -63,11 +50,11 @@ case "$mode" in
     prepare_web
     cd "$root/web"
     exec npx --yes concurrently@10.0.5 -k \
-      -n server,accounts,productivity \
-      -c blue,magenta,yellow \
+      -n server,sso,blog \
+      -c blue,magenta,green \
       "cd ../server && $gradle $gradle_args" \
-      'node ../scripts/wait-for-server.mjs && pnpm dev:accounts' \
-      'node ../scripts/wait-for-server.mjs && pnpm dev:productivity'
+      'node ../scripts/wait-for-server.mjs && pnpm dev:sso' \
+      'pnpm dev:blog'
     ;;
   *)
     echo "$usage" >&2

@@ -76,10 +76,7 @@ function FieldContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function FieldLabel({
-  className,
-  ...props
-}: React.ComponentProps<typeof Label>) {
+function FieldLabel({ className, ...props }: React.ComponentProps<typeof Label>) {
   return (
     <Label
       data-slot="field-label"
@@ -125,10 +122,7 @@ function FieldSeparator({
     >
       <Separator className={styles.fieldSeparatorSeparator()} />
       {children && (
-        <span
-          className={styles.fieldSeparatorContent()}
-          data-slot="field-separator-content"
-        >
+        <span className={styles.fieldSeparatorContent()} data-slot="field-separator-content">
           {children}
         </span>
       )}
@@ -153,9 +147,7 @@ function FieldError({
       return null;
     }
 
-    const uniqueErrors = [
-      ...new Map(errors.map((error) => [error?.message, error])).values(),
-    ];
+    const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
     if (uniqueErrors?.length == 1) {
       return uniqueErrors[0]?.message;
@@ -163,10 +155,7 @@ function FieldError({
 
     return (
       <ul className={styles.fieldErrorul()}>
-        {uniqueErrors.map(
-          (error, index) =>
-            error?.message && <li key={index}>{error.message}</li>,
-        )}
+        {uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}
       </ul>
     );
   }, [children, errors]);

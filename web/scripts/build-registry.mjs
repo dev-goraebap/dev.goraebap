@@ -1,4 +1,4 @@
-// 디자인 시스템 레지스트리를 만든다. 사이트 빌드 때 돌아 apps/devgoraebap/public/r에 JSON을 남긴다.
+// 디자인 시스템 레지스트리를 만든다. 사이트 빌드 때 돌아 apps/blog/public/r에 JSON을 남긴다.
 // 프로젝트는 필요한 파일을 고르지 않고 스타일 레시피 전체(design-system)와 자기 프레임워크의 어댑터 전체를 받는다.
 // 받은 파일은 src/shared/ui/goraebap/ 아래에 두며, 패키지 이름 import는 그 안의 상대 경로로 바꿔 별칭 설정 없이 쓰게 한다.
 import { execSync } from "node:child_process";
@@ -7,14 +7,16 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const web = fileURLToPath(new URL("../", import.meta.url));
-const out = path.join(web, "apps/devgoraebap/public/r");
+const out = path.join(web, "apps/blog/public/r");
 const SITE = "https://dev.goraebap.xyz/r";
 const REPO = "https://github.com/dev-goraebap/dev.goraebap";
 const TARGET = "src/shared/ui/goraebap";
 const catalog = Object.fromEntries(
-  [...fs.readFileSync(path.join(web, "pnpm-workspace.yaml"), "utf8").matchAll(/^ {2}"?([^":\s]+)"?: "([^"]+)"$/gm)].map(
-    ([, name, version]) => [name, version],
-  ),
+  [
+    ...fs
+      .readFileSync(path.join(web, "pnpm-workspace.yaml"), "utf8")
+      .matchAll(/^ {2}"?([^":\s]+)"?: "([^"]+)"$/gm),
+  ].map(([, name, version]) => [name, version]),
 );
 const commit = (() => {
   try {
@@ -27,7 +29,9 @@ const commit = (() => {
 const walk = (dir) =>
   fs
     .readdirSync(dir, { withFileTypes: true })
-    .flatMap((entry) => (entry.isDirectory() ? walk(path.join(dir, entry.name)) : [path.join(dir, entry.name)]));
+    .flatMap((entry) =>
+      entry.isDirectory() ? walk(path.join(dir, entry.name)) : [path.join(dir, entry.name)],
+    );
 
 // 원본 패키지 안 경로 → 받는 쪽 경로(TARGET 기준)
 const ITEMS = [
@@ -36,8 +40,7 @@ const ITEMS = [
     title: "스타일 레시피",
     description: "테마 CSS, cn, 모든 컴포넌트 레시피. React·Angular 어댑터가 함께 쓴다.",
     root: "packages/design-system/src",
-    place: (file) =>
-      file === "lib/cn.ts" ? "design-system/cn.ts" : `design-system/${file}`,
+    place: (file) => (file === "lib/cn.ts" ? "design-system/cn.ts" : `design-system/${file}`),
     dependencies: ["clsx", "tailwind-merge", "tailwind-variants", "tw-animate-css"],
     registryDependencies: [],
   },
@@ -70,8 +73,14 @@ function rewrite(content, placedAt) {
   };
   return content
     .replace(/(["'])@goraebap\/design-system\/cn\1/g, (_, q) => `${q}${to("design-system/cn")}${q}`)
-    .replace(/(["'])@goraebap\/design-system\/recipes\/([\w-]+)\1/g, (_, q, name) => `${q}${to(`design-system/recipes/${name}`)}${q}`)
-    .replace(/(["'])@goraebap\/design-system\/styles\/([\w.-]+)\1/g, (_, q, name) => `${q}${to(`design-system/styles/${name}`)}${q}`);
+    .replace(
+      /(["'])@goraebap\/design-system\/recipes\/([\w-]+)\1/g,
+      (_, q, name) => `${q}${to(`design-system/recipes/${name}`)}${q}`,
+    )
+    .replace(
+      /(["'])@goraebap\/design-system\/styles\/([\w.-]+)\1/g,
+      (_, q, name) => `${q}${to(`design-system/styles/${name}`)}${q}`,
+    );
 }
 
 fs.rmSync(out, { recursive: true, force: true });
@@ -105,15 +114,25 @@ for (const item of ITEMS) {
     type: "registry:lib",
     title: item.title,
     description: item.description,
-    dependencies: item.dependencies.map((name) => (catalog[name] ? `${name}@${catalog[name]}` : name)),
+    dependencies: item.dependencies.map((name) =>
+      catalog[name] ? `${name}@${catalog[name]}` : name,
+    ),
     registryDependencies: item.registryDependencies,
     files,
   };
   fs.writeFileSync(path.join(out, `${item.name}.json`), `${JSON.stringify(entry, null, 2)}\n`);
-  index.push({ name: item.name, type: entry.type, title: item.title, description: item.description, files: files.length });
+  index.push({
+    name: item.name,
+    type: entry.type,
+    title: item.title,
+    description: item.description,
+    files: files.length,
+  });
 }
 fs.writeFileSync(
   path.join(out, "registry.json"),
   `${JSON.stringify({ $schema: "https://ui.shadcn.com/schema/registry.json", name: "goraebap", homepage: "https://dev.goraebap.xyz", commit, items: index }, null, 2)}\n`,
 );
-console.log(`registry: ${index.map((entry) => `${entry.name} ${entry.files}`).join(", ")} (${commit.slice(0, 7)})`);
+console.log(
+  `registry: ${index.map((entry) => `${entry.name} ${entry.files}`).join(", ")} (${commit.slice(0, 7)})`,
+);
