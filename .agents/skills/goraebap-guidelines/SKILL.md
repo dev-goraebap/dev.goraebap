@@ -9,7 +9,7 @@ description: 이 저장소에서 지침 글(web/apps/blog/content, plugins/webap
 
 - 지침 원본은 사이트 `web/apps/blog/content/`의 md·mdx입니다. `content/<영역>/<메뉴>/`가 사이트 메뉴 하나이고, 그 폴더의 SKILL.md가 메뉴 안내입니다. 빌드하면 스킬 `.agents/skills/goraebap-webapp/`의 `references/<영역>/<메뉴>/<문서>/`가 됩니다.
 - 스킬의 `SKILL.md`(영역 안내)는 빌드 대상이 아니라 손으로 관리합니다. 영역을 더하면 함께 고칩니다.
-- 아직 content로 옮기지 않은 지침은 `plugins/webapp/skills/`가 원본이고 사이트만 읽습니다. 한 메뉴를 나눠 옮기는 동안에는 같은 지침 폴더가 두 곳에 함께 있을 수 있지만, 같은 문서(content의 문서 이름과 같은 `references/<이름>.md`·`examples/<이름>.md`)는 두 곳에 두지 않습니다(빌드가 막습니다). 옮긴 문서는 그 자리에서 지웁니다. 지금 content에 있는 메뉴는 `frontend/engineering`, `frontend/interaction`, `frontend/design-system`(패턴과 파운데이션 문서만 옮겼고 나머지는 skills/에 있음)입니다.
+- content에 없는 지침(backend-engineering, webapp-project, goraebap-mode, onboarding)은 `plugins/webapp/skills/`가 원본이고 사이트만 읽습니다. 같은 지침 폴더는 두 곳에 함께 있을 수 있지만, 같은 문서(content의 문서 이름과 같은 `references/<이름>.md`·`examples/<이름>.md`)는 두 곳에 두지 않습니다(빌드가 막습니다). 지침을 content로 옮기면 옛 문서는 그 자리에서 지웁니다.
 - 특정 회사 제품의 동작·업무 데이터·접속 정보는 넣지 않습니다.
 
 ## content 글
@@ -17,7 +17,7 @@ description: 이 저장소에서 지침 글(web/apps/blog/content, plugins/webap
 - 공통 글(`<문서>.mdx`, `<문서>/index.mdx`)에는 모든 스택에서 참인 문장만 씁니다. 스택 이름은 `npm run check`가 막습니다.
 - 스택마다 다른 부분은 `<Slot name>`으로 두고 스택 파일(`<문서>/react.mdx`·`angular.mdx`·`spring.mdx`)의 `<Fill name>`이 채웁니다. 스택 파일 맨 위에는 `<Fill>`만 둡니다.
 - 사람에게만 보일 글은 `<Story>`, 그림은 `<Diagram>`으로 감쌉니다. 스킬에서는 지워지므로 판단에 필요한 내용은 그 밖에도 씁니다. `<Callout>`은 안의 글만 남습니다.
-- 스킬에는 메뉴 SKILL.md에서 링크로 닿는 문서만 들어갑니다. 링크는 실제 파일을 가리키는 상대 경로로 겁니다. 변환기(`plugins/webapp/scripts/content-skills.mjs`)가 스킬 안 위치로 다시 쓰고, 아직 옮기지 않은 지침(`plugins/webapp/skills/...`)을 가리키는 링크는 글자만 남깁니다.
+- 스킬에는 메뉴 SKILL.md에서 링크로 닿는 문서만 들어갑니다. 링크는 실제 파일을 가리키는 상대 경로로 겁니다. 변환기(`plugins/webapp/scripts/content-skills.mjs`)가 스킬 안 위치로 다시 쓰고, `plugins/webapp/skills/...`를 가리키는 링크는 글자만 남깁니다.
 - 공통 글의 `<Slot>`은 스킬에서 스택 글(`<스택>.md`)의 같은 이름 절을 가리키는 한 줄이 됩니다.
 - 머리말: 문서는 `title`·`icon`·`group`·`order`·`summary`·`arc42`, SKILL.md는 `name`·`description`·`arc42`.
 

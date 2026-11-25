@@ -5,11 +5,11 @@
 | 경로 | 역할 |
 | --- | --- |
 | `.agents/skills/goraebap-webapp/` | 배포하는 스킬. `references/`는 content에서 빌드한 결과이고 `SKILL.md`는 손으로 관리 |
-| `plugins/webapp/` | 스킬 빌드·검사 스크립트와 아직 content로 옮기지 않은 지침(`skills/`, 사이트만 읽음) |
+| `plugins/webapp/` | 스킬 빌드·검사 스크립트와 content에 없는 지침(`skills/`: backend·playbook 쪽, 사이트만 읽음) |
 | `web/apps/blog/` | 지침 사이트(React). `content/`가 옮긴 지침의 원본 |
 | `web/apps/sso/` | 계정·로그인 화면(Angular). Angular 예시의 원본 |
 | `web/packages/` | 디자인 시스템 레시피와 React·Angular 어댑터 |
-| `server/` | sso의 API(Spring). `foundation`·`shared`만 남은 이전 중 상태 |
+| `server/` | sso의 API(Spring). `foundation`(사용자·파일·알림 등)과 `shared`(기술 기반) |
 | `docs/adr/` | 되돌리기 어려운 결정(ADR) |
 
 로컬 실행은 루트에서 `sh dev.sh [all|blog|sso|server]`입니다. 의존성은 `web/`에서 pnpm으로 설치합니다.

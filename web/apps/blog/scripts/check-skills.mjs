@@ -14,8 +14,8 @@ const catalog = [
   .map((file) => fs.readFileSync(path.join(app, file), "utf8"))
   .join("\n");
 
-// 문서로 옮긴 스킬과, 아직 옮기지 않은 참고 자료(이유와 함께)
-// frontend-engineering·frontend-interaction과 frontend-design-system의 옮긴 문서는 content가 원본이라 이 짝 검사가 필요 없다(스킬 변환기가 링크를 확인한다).
+// 사이트 문서가 다루는 스킬과, 사이트 문서가 없는 참고 자료(이유와 함께)
+// frontend의 지침은 content가 원본이라 이 짝 검사가 필요 없다(스킬 변환기가 링크를 확인한다).
 const COVERED_SKILLS = ["backend-engineering"];
 const NOT_YET = {
   "backend-engineering/references/untrusted-content.md":
@@ -82,7 +82,7 @@ if (errors.length) {
   process.exit(1);
 }
 process.stdout.write(
-  `지침 ${used.size}개와 플레이북 ${sitePlaybooks.length}개가 사이트 문서와 짝을 이룹니다. 아직 옮기지 않은 지침 ${Object.keys(NOT_YET).length}개\n`,
+  `지침 ${used.size}개와 플레이북 ${sitePlaybooks.length}개가 사이트 문서와 짝을 이룹니다. 사이트 문서가 없는 참고 자료 ${Object.keys(NOT_YET).length}개\n`,
 );
 process.stdout.write(
   `예시 ${exampleCount}개 중 ${exampleCount - hidden.length}개가 사이트 문서에 보입니다.${hidden.length ? ` 보이지 않는 예시: ${hidden.join(", ")}` : ""}\n`,

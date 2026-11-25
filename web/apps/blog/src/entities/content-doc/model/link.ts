@@ -1,7 +1,7 @@
 import { docHref, findDocByFile } from "./content";
 
 // content 글의 링크는 저장소 안의 실제 파일을 가리킨다. 사이트에서는 그 파일을 옮긴 페이지 주소로 바꾼다.
-// 아직 content로 옮기지 않은 스킬 파일(plugins/webapp/skills/...)은 그 지침을 옮긴 페이지로 잇고, 없으면 링크 없이 글자만 보인다.
+// content에 없는 스킬 파일(plugins/webapp/skills/...)은 그 지침을 다루는 사이트 페이지로 잇고, 없으면 링크 없이 글자만 보인다.
 
 const APP = "/web/apps/blog";
 const SKILLS = "/plugins/webapp/skills/";

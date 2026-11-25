@@ -85,6 +85,7 @@ export async function buildContentSkill() {
   const menus = await findMenus();
   // content 파일 → 스킬 안 경로. 링크를 다시 쓸 때 쓴다.
   const target = new Map();
+  const menuAnchor = new Map();
   const plans = [];
 
   for (const { space, menu, dir } of menus) {
@@ -109,7 +110,7 @@ export async function buildContentSkill() {
         docs.push(linked);
       });
     }
-    // 한 메뉴를 나눠 옮기는 동안 skills/에 같은 지침 폴더가 남아 있을 수 있다. 같은 이름의 문서가 두 곳에 함께 있으면 원본이 흐려지므로 멈춘다.
+    // skills/에 같은 이름의 지침 폴더가 함께 있을 수 있다. 같은 이름의 문서가 두 곳에 함께 있으면 원본이 흐려지므로 멈춘다.
     for (const doc of docs)
       for (const kind of ['references', 'examples']) {
         const old = path.join(SKILLS, meta.name, kind, `${docSlug(doc)}.md`);
@@ -132,10 +133,12 @@ export async function buildContentSkill() {
       }
       plans.push({ doc, stackFiles });
     }
+    // 메뉴 SKILL.md는 영역 README의 「## <메뉴>」 절이 된다. 앵커 없이 가리키면 그 절로 잇는다.
     target.set(skillFile, `references/${space}/README.md`);
+    menuAnchor.set(skillFile, menu);
   }
 
-  // 링크를 스킬 안 위치 기준으로 다시 쓴다. 아직 content로 옮기지 않은 지침(plugins/webapp/skills)을 가리키면 링크를 풀고 글자만 남긴다.
+  // 링크를 스킬 안 위치 기준으로 다시 쓴다. content에 없는 지침(plugins/webapp/skills)을 가리키면 링크를 풀고 글자만 남긴다.
   const relink = (from, to) => node => {
     if (node.type !== 'link' || node.data?.final || /^(https?:|mailto:|#)/.test(node.url)) return;
     const [href, anchor] = node.url.split('#');
@@ -143,7 +146,8 @@ export async function buildContentSkill() {
     const dest = target.get(linked);
     if (!dest && linked.startsWith(SKILLS + path.sep)) return node.children;
     if (!dest) throw new Error(`스킬에 없는 파일을 가리킵니다: ${from} (${node.url})`);
-    node.url = path.posix.relative(path.posix.dirname(to), dest) + (anchor ? `#${anchor}` : '');
+    const hash = anchor ?? menuAnchor.get(linked);
+    node.url = path.posix.relative(path.posix.dirname(to), dest) + (hash ? `#${hash}` : '');
   };
   const link = (url, text) => ({ type: 'link', data: { final: true }, url, children: [{ type: 'text', value: text }] });
 

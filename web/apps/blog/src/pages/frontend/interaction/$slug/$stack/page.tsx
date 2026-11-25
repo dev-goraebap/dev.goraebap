@@ -21,7 +21,7 @@ const MENU = "frontend/interaction";
 const DOCS = menuDocs(MENU);
 const STACKS = stacksOf(MENU);
 
-// 아직 content로 옮기지 않은 스킬 파일을 그 지침을 옮긴 사이트 페이지로 잇는다.
+// content에 없는 스킬 파일을 그 지침을 다루는 사이트 페이지로 잇는다.
 const SKILL_PAGES = new Map<string, string>([
   ...Object.entries(PAGE_SKILLS).flatMap(([href, { skills }]) =>
     skills.map((skill) => [skill, href] as const),

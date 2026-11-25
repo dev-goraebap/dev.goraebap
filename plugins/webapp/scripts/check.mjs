@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { OUT, buildContentSkill, contentSkillNames } from './content-skills.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-// 두 곳을 검사한다. skills/는 아직 content로 옮기지 않은 지침의 원본이고, OUT(goraebap-webapp)은 content에서 만든 스킬이다.
+// 두 곳을 검사한다. skills/는 content에 없는 지침의 원본이고, OUT(goraebap-webapp)은 content에서 만든 스킬이다.
 // content를 만들 때 Slot·Fill 짝과 스택 파일 이름, 스킬 밖 링크를 확인하고, 아래 검사가 나머지(만든 결과가 최신인지, 스택 이름, 링크, 앵커, 예시 형식)를 본다.
 const SKILLS = path.join(root, 'skills');
 const MOVED = await contentSkillNames();
@@ -106,7 +106,7 @@ async function checkDir(directory, mode, base = SKILLS) {
       if (/^(https?:|#)/.test(href)) continue;
       const target = path.resolve(directory, href.split('#')[0]);
       assert(!path.relative(base, target).startsWith('..'), `외부 로컬 링크: ${file} (${href})`);
-      // content로 옮긴 지침을 가리키는 링크는 사이트가 옮긴 페이지로 잇는다. 나눠 옮기는 중인 지침은 아직 남은 파일이면 그대로 확인한다.
+      // content에 있는 지침 이름으로 skills/ 안의 없는 파일을 가리키면 사이트가 그 지침의 페이지로 잇는다. 있는 파일이면 그대로 확인한다.
       const exists = await fs.access(target).then(() => true, () => false);
       if (!exists && mode === 'skills' && MOVED.has(path.relative(SKILLS, target).split(path.sep)[0])) { links++; continue; }
       assert(exists, `없는 파일을 가리킵니다: ${file} (${href})`);

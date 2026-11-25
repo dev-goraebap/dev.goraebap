@@ -31,12 +31,12 @@ function Fill() {
   return null;
 }
 
-// 사람에게만 보이는 글. 플러그인으로 옮길 때 지운다.
+// 사람에게만 보이는 글. 스킬로 빌드할 때 지운다.
 function Story({ children }: { children?: ReactNode }) {
   return <div className="space-y-4">{children}</div>;
 }
 
-// 움직이는 견본. 사람에게만 보이고 플러그인으로 옮길 때 지운다.
+// 움직이는 견본. 사람에게만 보이고 스킬로 빌드할 때 지운다.
 function Demo({ children }: { children?: ReactNode }) {
   return <div className="bg-dots border-border rounded-2xl border p-4 sm:p-6">{children}</div>;
 }
