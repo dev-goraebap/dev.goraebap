@@ -46,13 +46,6 @@ const LAYER_ROLES = [
     boundary: "개별 컴포넌트 내부 스타일을 덮어쓰지 않습니다.",
     link: linkOptions({ to: "/design-system/layouts" }),
   },
-  {
-    name: "Interaction",
-    package: "스크롤 · 전환 · 폰트 · 적응형 UI",
-    owns: "화면 흔들림 방지, 지연 프로그레스바, View Transition, 모바일 전환 기준",
-    boundary: "정답을 강제하기보다 프로젝트를 만들며 꾸준히 챙기는 마감 기준입니다.",
-    link: linkOptions({ to: "/frontend/interaction" }),
-  },
 ];
 
 function ArchitectureDiagram() {

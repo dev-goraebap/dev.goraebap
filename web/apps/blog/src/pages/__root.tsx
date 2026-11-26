@@ -56,7 +56,17 @@ const ENGINEERING_MOVES: Record<string, string> = {
   state: "state/state",
   "data-flow": "state/data-flow",
 };
-const DETAILS_PATHS = /^(\/frontend)?\/details(\/|$)/;
+// 옛 /frontend/interaction 문서 → 새 자리(#58). 나뉜 문서는 앵커로 한 번 더 가른다.
+const INTERACTION_MOVES: Record<string, string> = {
+  "page-transition": "/reference/frontend/routing/transitions",
+  "route-masking": "/reference/frontend/routing/route-masking",
+  "initial-load": "/reference/frontend/rendering/initial-load",
+  "loading-feedback": "/design-system/loading-feedback",
+  "ui-states": "/design-system/ui-states",
+  "adaptive-ui": "/design-system/adaptive-ui",
+  "ui-size": "/design-system/ui-size",
+  scrollbar: "/design-system/scrollbar",
+};
 const DESIGN_SYSTEM_PATHS =
   /^(\/frontend)?\/(components|overview|packages|foundations|layouts)(\/|$)/;
 
@@ -138,10 +148,24 @@ export const Route = createRootRoute({
       const rest = location.href.replace(/^\/frontend/, "");
       throw redirect({ href: `/design-system${rest}`, replace: true });
     }
-    // Interaction 메뉴의 예전 이름(Details) 주소
-    if (DETAILS_PATHS.test(location.pathname)) {
-      const rest = location.href.replace(/^(\/frontend)?\/details/, "");
-      throw redirect({ href: `/frontend/interaction${rest}`, replace: true });
+    // Interaction 메뉴(#58에서 없앰)와 그 예전 이름(Details)의 주소: 문서마다 Reference나 Design System의 새 자리로 보낸다.
+    const interaction = location.pathname.match(
+      /^(?:\/frontend)?\/(?:interaction|details)(?:\/([^/]+))?(\/[^/]+)?\/?$/,
+    );
+    if (interaction) {
+      const [, slug = "", stack = ""] = interaction;
+      const anchor = decodeURIComponent(location.hash);
+      const target =
+        slug === "page-transition" && /화면-전환|움직임|완료|동작-줄이기/.test(anchor)
+          ? "/design-system/motion"
+          : slug === "loading-feedback" && /디바운스|요청-취소/.test(anchor)
+            ? "/reference/frontend/state/search-input"
+            : INTERACTION_MOVES[slug];
+      const hash = location.hash ? `#${location.hash}` : "";
+      throw redirect({
+        href: target ? `${target}${stack}${hash}` : "/reference/frontend",
+        replace: true,
+      });
     }
     if (LEGACY_PATHS.test(location.pathname)) {
       throw redirect({ href: `/frontend${location.href}`, replace: true });

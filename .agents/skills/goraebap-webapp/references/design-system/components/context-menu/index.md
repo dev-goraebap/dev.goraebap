@@ -27,7 +27,7 @@
 
 ## 적응형 UI
 
-터치 환경에는 우클릭이 없으므로 더보기 버튼과 useIsMobile 분기 BottomSheet로 같은 동작을 제공합니다. 자세한 기준은 [적응형 UI](../../../frontend/interaction/adaptive-ui/index.md)에 있습니다.
+터치 환경에는 우클릭이 없으므로 더보기 버튼과 useIsMobile 분기 BottomSheet로 같은 동작을 제공합니다. 자세한 기준은 [적응형 UI](../../adaptive-ui/index.md)에 있습니다.
 
 ## 관련 컴포넌트
 

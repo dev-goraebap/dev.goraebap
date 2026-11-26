@@ -86,7 +86,7 @@ export const createAppRouter = (queryClient: QueryClient) => createRouter({
 });
 ```
 
-아래 예시는 캐시가 없는 패널을 곧바로(`delay: 0`) 대기 화면으로 엽니다. 기준은 [대화상자의 데이터 준비](../loading-feedback/index.md#대화상자의-데이터-준비)대로 150ms 뒤에 띄우고 최소 300ms 두는 것입니다.
+아래 예시는 캐시가 없는 패널을 곧바로(`delay: 0`) 대기 화면으로 엽니다. 기준은 [대화상자의 데이터 준비](../../../design-system/loading-feedback/index.md#대화상자의-데이터-준비)대로 150ms 뒤에 띄우고 최소 300ms 두는 것입니다.
 
 출처: [web/src/app/layout/PanelHost.tsx](https://github.com/dev-goraebap/cowork/blob/570d27da402451fe2ca06fca74862dd3899555c9/web/src/app/layout/PanelHost.tsx)
 

@@ -24,7 +24,7 @@ description: 웹 플랫폼의 기능 구현, 버그 수정, 구조 변경을 작
 | 시스템 경계·새 기술·형상관리·운영 | [webapp-project](../webapp-project/SKILL.md) |
 | 화면 코드 구조·상태·라우트 | [frontend-engineering](../frontend-engineering/SKILL.md) |
 | UI 컴포넌트·테마·레이아웃·화면 패턴 | [frontend-design-system](../frontend-design-system/SKILL.md) |
-| 로딩·전환·상태 화면·상호작용 | [frontend-interaction](../frontend-interaction/SKILL.md) |
+| 로딩·전환·상태 화면·상호작용 | [frontend-engineering](../frontend-engineering/SKILL.md) · [frontend-design-system](../frontend-design-system/SKILL.md) |
 | 서버 모듈·도메인·API·스키마 | [backend-engineering](../backend-engineering/SKILL.md) |
 
 스킬 이름은 지침 사이트(dev.goraebap.xyz)의 공간과 메뉴를 따릅니다. 프론트엔드 엔지니어링은 코드 구조와 상태, 디자인 시스템은 화면 표현, 인터랙션은 화면의 반응과 움직임을 다룹니다. 백엔드 엔지니어링은 도메인·서비스·트랜잭션과 함께 API 계약과 DB 마이그레이션을 참고 자료로 둡니다. 여러 영역을 바꾸면 관련 지침을 함께 읽습니다. 규칙 본문은 담당 지침 한 곳에서 고치고 다른 지침에서는 연결합니다. 지침의 규칙을 프로젝트의 스택으로 구현한 모양은 각 스킬의 `examples/`에서 읽습니다([예시 읽기](references/examples.md)).

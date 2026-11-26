@@ -28,7 +28,7 @@
 
 ## 적응형 UI
 
-좁은 화면에서는 useIsMobile로 분기해 BottomSheet나 독립 스크롤 목록으로 추천 항목을 보여 줍니다. 자세한 기준은 [적응형 UI](../../../frontend/interaction/adaptive-ui/index.md)에 있습니다.
+좁은 화면에서는 useIsMobile로 분기해 BottomSheet나 독립 스크롤 목록으로 추천 항목을 보여 줍니다. 자세한 기준은 [적응형 UI](../../adaptive-ui/index.md)에 있습니다.
 
 ## 관련 컴포넌트
 

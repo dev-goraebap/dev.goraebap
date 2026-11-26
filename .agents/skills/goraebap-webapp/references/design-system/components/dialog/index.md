@@ -38,7 +38,7 @@
 
 ## 적응형 UI
 
-64rem 미만에서는 ResponsiveDialog가 중앙 모달을 BottomSheet로 자동 전환합니다. 자세한 기준은 [적응형 UI](../../../frontend/interaction/adaptive-ui/index.md)에 있습니다.
+64rem 미만에서는 ResponsiveDialog가 중앙 모달을 BottomSheet로 자동 전환합니다. 자세한 기준은 [적응형 UI](../../adaptive-ui/index.md)에 있습니다.
 
 ## 관련 컴포넌트
 

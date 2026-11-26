@@ -4,7 +4,6 @@ import type { SystemIconName } from "@goraebap/ui-react/icons";
 // match는 그 메뉴에 속한 주소의 앞부분이다.
 type SiteMenuTarget =
   | "/reference/frontend"
-  | "/frontend/interaction"
   | "/design-system/overview"
   | "/backend/engineering";
 
@@ -36,10 +35,9 @@ export const SITE_MENUS: SiteMenu[] = [
     icon: "code",
     description: "프론트엔드·백엔드 구현 기준",
     to: "/reference/frontend",
-    match: ["/reference", "/frontend/interaction", "/frontend/glossary", "/backend"],
+    match: ["/reference", "/frontend/glossary", "/backend"],
     children: [
       { label: "Frontend", to: "/reference/frontend", match: ["/reference/frontend"] },
-      { label: "Interaction", to: "/frontend/interaction", match: ["/frontend/interaction"] },
       { label: "Backend", to: "/backend/engineering", match: ["/backend"] },
     ],
   },

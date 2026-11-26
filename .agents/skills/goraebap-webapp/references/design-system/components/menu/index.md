@@ -29,7 +29,7 @@
 
 ## 적응형 UI
 
-자동 전환 래퍼가 없으므로 64rem 미만에서는 useIsMobile로 분기해 BottomSheet에 44px 이상 항목을 배치합니다. 자세한 기준은 [적응형 UI](../../../frontend/interaction/adaptive-ui/index.md)에 있습니다.
+자동 전환 래퍼가 없으므로 64rem 미만에서는 useIsMobile로 분기해 BottomSheet에 44px 이상 항목을 배치합니다. 자세한 기준은 [적응형 UI](../../adaptive-ui/index.md)에 있습니다.
 
 ## 관련 컴포넌트
 

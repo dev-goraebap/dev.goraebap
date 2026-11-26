@@ -9,7 +9,7 @@ description: 지침 사이트 web/apps/blog(dev.goraebap.xyz)의 화면·문서 
 
 ## 두 가지 글
 
-- **content 메뉴**(`/reference/frontend`, `/design-system`, `/frontend/interaction`): `content/`의 글이 곧 스킬 원본이고, content 경로가 주소입니다. 사이드바의 스택 선택기로 고른 스택의 글만 보이고, 빌드 때 문서마다 스택별 정적 HTML(`…/<문서>/<스택>/index.html`)을 만듭니다. Reference › Frontend처럼 하위 폴더를 묶음으로 쓰는 메뉴는 `src/entities/content-doc`의 `SECTION_GROUPS`에 묶음 순서를 두고 `ContentSectionShell`로 그립니다. 쓰는 법은 [goraebap-guidelines](../goraebap-guidelines/SKILL.md)에 있습니다.
+- **content 메뉴**(`/reference/frontend`, `/design-system`): `content/`의 글이 곧 스킬 원본이고, content 경로가 주소입니다. 사이드바의 스택 선택기로 고른 스택의 글만 보이고, 빌드 때 문서마다 스택별 정적 HTML(`…/<문서>/<스택>/index.html`)을 만듭니다. Reference › Frontend처럼 하위 폴더를 묶음으로 쓰는 메뉴는 `src/entities/content-doc`의 `SECTION_GROUPS`에 묶음 순서를 두고 `ContentSectionShell`로 그립니다. 쓰는 법은 [goraebap-guidelines](../goraebap-guidelines/SKILL.md)에 있습니다.
 - **그 밖의 메뉴**(backend): 스킬이 원본이고 사이트가 같은 규칙을 TS 데이터로 풉니다. 스킬을 고치면 그 파일을 `skills` 값으로 가리키는 사이트 문서(`src/entities/webapp-doc/model/catalog.ts`, 그 밖은 `src/entities/code-example/model/page-skills.ts`)를 같은 변경에서 맞춥니다.
 
 ## 함께 고칠 곳

@@ -36,7 +36,7 @@
 
 ## 적응형 UI
 
-64rem 미만에서는 ResponsivePopover가 팝오버를 BottomSheet로 전환하며, mobile="popover"로 유지할 수도 있습니다. 자세한 기준은 [적응형 UI](../../../frontend/interaction/adaptive-ui/index.md)에 있습니다.
+64rem 미만에서는 ResponsivePopover가 팝오버를 BottomSheet로 전환하며, mobile="popover"로 유지할 수도 있습니다. 자세한 기준은 [적응형 UI](../../adaptive-ui/index.md)에 있습니다.
 
 ## 관련 컴포넌트
 

@@ -1,4 +1,4 @@
-# 페이지 전환과 대기 (angular)
+# 전환과 대기 표시 (angular)
 
 공통 규칙은 [index.md](index.md)에 있습니다.
 

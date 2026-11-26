@@ -10,7 +10,6 @@ export const DOC_GROUPS = [
   "컴포넌트",
   "레이아웃",
   "패턴",
-  "Interaction",
   "용어집",
 ] as const;
 
@@ -25,7 +24,7 @@ export interface DocEntry {
 }
 
 const MAX_RESULTS = 40;
-const SUGGESTED_GROUPS: DocEntry["group"][] = ["디자인 시스템", "파운데이션", "Interaction"];
+const SUGGESTED_GROUPS: DocEntry["group"][] = ["디자인 시스템", "파운데이션", "패턴"];
 
 const page = (
   group: DocEntry["group"],
@@ -96,14 +95,6 @@ const DOC_ENTRIES: DocEntry[] = [
       : "패턴") as DocEntry["group"],
     title: doc.meta.title ?? doc.slug,
     href: `/design-system/${doc.slug}`,
-    description: doc.meta.summary ?? doc.meta.description ?? "",
-    keywords: plainText(doc.source),
-  })),
-  ...menuDocs("frontend/interaction").map((doc) => ({
-    id: `interaction:${doc.slug}`,
-    group: "Interaction" as const,
-    title: doc.meta.title ?? doc.slug,
-    href: `/frontend/interaction/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),
