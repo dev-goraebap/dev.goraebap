@@ -1,7 +1,3 @@
----
-arc42: "none"
----
-
 # 배포
 
 1. [Git 작업](../../webapp-project/references/git.md)에 따라 배포할 브랜치와 커밋을 정리하고 필요한 리뷰와 검사를 통과시킵니다.

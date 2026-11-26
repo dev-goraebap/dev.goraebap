@@ -1,7 +1,3 @@
----
-arc42: "8.2"
----
-
 # 코드 규칙
 
 - 역할을 Controller·Service·Query·Repository·Requests·Views·ErrorCode 이름으로 드러냅니다. 피처별 Service가 읽기·쓰기를 함께 제공합니다. 저장소·조회 구현은 구현 기술의 이름을 앞에 붙이고(예제의 실제 이름 참고), QueryRepository처럼 역할을 섞지 않습니다.

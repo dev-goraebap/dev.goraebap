@@ -39,16 +39,9 @@ function checkPure(file, content) {
   pure++;
 }
 
-// 아키텍처 정의서(arc42)의 절: 1~9와 8절의 하위 절.
-const ARC42 = /^([1-79]|8\.[1-9])$/;
 // 꼬리 구획은 이 이름과 순서로 파일 맨 끝에만 둔다(글쓰기 기준의 「참고 문서의 구획」).
 const TAILS = ['작업 절차'];
 function checkSections(file, content) {
-  const front = /^---\r?\n([\s\S]*?)\r?\n---/.exec(content)?.[1] ?? '';
-  const value = /^arc42: "([^"]+)"\r?$/m.exec(front)?.[1];
-  assert(value, `arc42 프론트매터가 없습니다: ${file}`);
-  if (value !== 'none') for (const part of value.split(',').map(item => item.trim()))
-    assert(ARC42.test(part), `arc42 값은 1~9 또는 8.1~8.9, 해당 없으면 none입니다: ${file} (${part})`);
   const headings = [...content.matchAll(/^## (.+)$/gm)].map(match => match[1].trim());
   const tails = headings.filter(heading => TAILS.includes(heading));
   assert.deepEqual(headings.slice(headings.length - tails.length), tails, `꼬리 구획은 파일 맨 끝에만 둡니다: ${file}`);
@@ -89,7 +82,7 @@ async function checkDir(directory, mode, base = SKILLS) {
     if (mode === 'skills' && !isExample) {
       checkPure(file, content);
       if (entry.name === 'SKILL.md') {
-        const frontmatter = /^---\r?\nname: ([a-z0-9]+(?:-[a-z0-9]+)*)\r?\ndescription: ([^\r\n]+)\r?\n(?:arc42: "[^"]+"\r?\n)?---/.exec(content);
+        const frontmatter = /^---\r?\nname: ([a-z0-9]+(?:-[a-z0-9]+)*)\r?\ndescription: ([^\r\n]+)\r?\n---/.exec(content);
         assert(frontmatter, `스킬 frontmatter가 잘못됐습니다: ${file}`);
         assert.equal(frontmatter[1], path.basename(directory));
         assert(frontmatter[1].length <= 64);
@@ -144,4 +137,4 @@ assert(!stale.length, `goraebap-webapp이 content와 다릅니다. plugins/webap
 await checkDir(OUT, 'content', OUT);
 const outFiles = files.size;
 
-process.stdout.write(`goraebap-webapp ${outFiles}개 파일 최신, ${skills}개 스킬, ${links}개 로컬 링크, 앵커 ${anchors}개, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 arc42·구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);
+process.stdout.write(`goraebap-webapp ${outFiles}개 파일 최신, ${skills}개 스킬, ${links}개 로컬 링크, 앵커 ${anchors}개, 예시 ${examples}개와 고정 커밋 링크 ${exampleLinks}개, ${sections}개 문서의 꼬리 구획, ${pure}개 지침의 스택·예시 프로젝트 없음 확인\n`);

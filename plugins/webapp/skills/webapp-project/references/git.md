@@ -1,7 +1,3 @@
----
-arc42: "none"
----
-
 # Git 작업
 
 작업 브랜치를 어디서 따고 이름을 어떻게 붙이는지, 커밋과 PR을 어떤 기준으로 남기는지 정합니다. 브랜치 이름과 커밋만 보고 다른 사람이 무엇을 왜 바꿨는지 알 수 있어야 합니다. 브랜치 흐름은 [GitHub Flow](https://docs.github.com/en/get-started/using-github/github-flow), 목적 접두사는 [Conventional Branch](https://conventionalbranch.org/)를 따릅니다.

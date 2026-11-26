@@ -1,7 +1,3 @@
----
-arc42: "8.2, 8.1, 8.3, 5, 2, 7"
----
-
 # 오류 응답 problem+json
 
 서비스는 부재·권한·충돌을 모듈 ErrorCode를 가진 업무 예외로, 도메인은 규칙 위반 예외로 던지고, 공통 HTTP 경계가 둘을 `application/problem+json` 응답으로 바꿉니다. 규칙은 [도메인 오류와 서비스 오류](../references/errors.md)와 [API 계약](../references/api.md)에 있습니다.

@@ -20,7 +20,7 @@ description: 이 저장소에서 지침 글(web/apps/blog/content, plugins/webap
 - 사이트는 본문의 용어를 자동으로 용어집에 잇습니다(`web/apps/blog/src/shared/lib/glossary.ts`의 자동 연결 목록). 다른 뜻으로 흔히 쓰여 자동 연결에서 뺀 말(비활성, 변형, Primary 등)은 `<Term id="용어 id">표시</Term>`로 직접 잇고, 스킬에서는 글자만 남습니다. 다른 컴포넌트 이름은 그 문서로 가는 링크로 겁니다.
 - 스킬에는 메뉴 SKILL.md에서 링크로 닿는 문서만 들어갑니다. 링크는 실제 파일을 가리키는 상대 경로로 겁니다. 변환기(`plugins/webapp/scripts/content-skills.mjs`)가 스킬 안 위치로 다시 쓰고, `plugins/webapp/skills/...`를 가리키는 링크는 글자만 남깁니다.
 - 공통 글의 `<Slot>`은 스킬에서 스택 글(`<스택>.md`)의 같은 이름 절을 가리키는 한 줄이 됩니다.
-- 머리말: 문서는 `title`·`icon`·`group`·`order`·`summary`·`arc42`, SKILL.md는 `name`·`description`·`arc42`.
+- 머리말: 문서는 `title`·`icon`·`group`·`order`·`summary`, SKILL.md는 `name`·`description`.
 
 ## 예시
 

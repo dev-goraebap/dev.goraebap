@@ -1,7 +1,3 @@
----
-arc42: "8.2, 8.1, 8.3, 5, 2, 7"
----
-
 # 조회 포트와 jOOQ 구현
 
 화면 조회는 서비스와 같은 피처의 application에 둔 조회 포트로 하고, 구현은 infrastructure에 기술 이름을 붙여 둡니다. 규칙은 [조회 포트](../references/queries.md)에 있습니다.
