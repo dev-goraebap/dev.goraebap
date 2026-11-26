@@ -13,12 +13,29 @@ description: 웹 앱의 화면 계층·코드 규칙, 서버 데이터 캐시와
 
 ## 읽을 자료
 
-- [화면 계층](structure/layers/index.mdx): 층과 pages 폴더, 키트·앱 셸의 경계, 렌더링 방식을 다룰 때 읽습니다.
-- [코드 규칙](code-style/code-style/index.mdx): 파일 이름, 파생값과 부수 효과, 메모이제이션을 다룰 때 읽습니다.
+### 구조
+
+- [화면 계층](structure/layers/index.mdx): 층과 pages 폴더, 키트·앱 셸의 경계를 다룰 때 읽습니다.
+
+### 라우팅
+
+- [화면 전환](routing/navigation/index.mdx): 미리 준비·캐시 우선 표시·지연 진행 표시·목록 복귀를 다룰 때 읽습니다.
+- [리소스 주소](routing/resource-routes.mdx): 목록·상세·생성·수정의 주소, 대화상자 안 이동, 공간 주소를 다룰 때 읽습니다.
+
+### 상태 관리
+
 - [상태 소유](state/state.mdx): 서버 데이터·URL·입력 초안의 소유와 저장 중 편집을 다룰 때 읽습니다.
 - [조회와 변경](state/data-flow/index.mdx): 조회 옵션·준비 함수·변경 후 무효화·큰 목록을 다룰 때 읽습니다.
-- [화면 전환](routing/navigation/index.mdx): 로딩·미리 준비·지연 로딩·목록 복귀를 다룰 때 읽습니다.
-- [리소스 주소](routing/resource-routes.mdx): 목록·상세·생성·수정의 주소, 대화상자 안 이동, 공간 주소를 다룰 때 읽습니다.
+
+### 렌더링
+
+- [렌더링 방식](rendering/render-modes.mdx): CSR·SSG·SSR 중 무엇으로 그려 내보낼지 정할 때 읽습니다.
+- [지연 로딩](rendering/lazy-loading.mdx): 지연 로딩하는 화면 코드와 큰 컴포넌트를 준비할 때 읽습니다.
+
+### 코드 규칙
+
+- [파일과 이름](code-style/naming/index.mdx): 파일 이름과 컴포넌트 배치를 다룰 때 읽습니다.
+- [파생값과 부수 효과](code-style/effects/index.mdx): 파생값·부수 효과·메모이제이션을 다룰 때 읽습니다.
 
 화면 패턴을 구현·수정할 때는 디자인 시스템 지침의 [패턴 카탈로그](../../design-system/pattern-catalog.mdx)에서 사용 기준과 실제 컴포넌트를 함께 찾습니다. 견본에는 제품과 같은 라우터·상태 경계를 연결하고 데이터와 시작 상태를 제어합니다.
 

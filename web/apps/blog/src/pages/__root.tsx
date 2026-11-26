@@ -50,7 +50,7 @@ const LEGACY_PATHS = /^\/(glossary)(\/|$)/;
 // 옛 /frontend/engineering 문서 이름 → Reference › Frontend의 묶음/문서
 const ENGINEERING_MOVES: Record<string, string> = {
   layers: "structure/layers",
-  "code-style": "code-style/code-style",
+  "code-style": "code-style/naming",
   navigation: "routing/navigation",
   "resource-routes": "routing/resource-routes",
   state: "state/state",
@@ -70,12 +70,33 @@ export const Route = createRootRoute({
     );
     if (engineering) {
       const [, slug, stack = ""] = engineering;
-      const moved = slug === "story" ? "overview" : (ENGINEERING_MOVES[slug ?? ""] ?? slug ?? "");
+      const moved =
+        slug === "story" || slug === "overview"
+          ? "structure/layers"
+          : slug === "code-style" && /파생|부수|메모/.test(decodeURIComponent(location.hash))
+            ? "code-style/effects"
+            : (ENGINEERING_MOVES[slug ?? ""] ?? slug ?? "");
       const hash = location.hash ? `#${location.hash}` : "";
       throw redirect({
         href: `/reference/frontend${moved ? `/${moved}${stack}` : ""}${hash}`,
         replace: true,
       });
+    }
+    // Frontend Reference를 다섯 묶음으로 나누기 전 주소(#59): 개요는 Blog 글감으로 빠졌고, 코드 규칙은 두 문서로 나뉘었다.
+    const reference = location.pathname.match(
+      /^\/reference\/frontend\/(overview|code-style\/code-style)(\/[^/]+)?\/?$/,
+    );
+    if (reference) {
+      const [, old, stack = ""] = reference;
+      const hash = location.hash ? `#${location.hash}` : "";
+      const effects = /파생|부수|메모/.test(decodeURIComponent(location.hash));
+      const target =
+        old === "overview"
+          ? "structure/layers"
+          : effects
+            ? "code-style/effects"
+            : "code-style/naming";
+      throw redirect({ href: `/reference/frontend/${target}${stack}${hash}`, replace: true });
     }
     if (/^\/frontend\/design-system(\/|$)/.test(location.pathname)) {
       throw redirect({
@@ -104,7 +125,7 @@ export const Route = createRootRoute({
     const legacy = location.pathname.match(/^\/(webapp|sdlc)(\/[^/]+)?\/?$/);
     if (legacy) {
       const moved: Record<string, string> = {
-        frontend: "/reference/frontend/overview",
+        frontend: "/reference/frontend",
         backend: "/backend/engineering/overview",
       };
       throw redirect({ href: moved[legacy[2]?.slice(1) ?? ""] ?? "/", replace: true });
