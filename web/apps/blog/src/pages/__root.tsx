@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, createRootRoute, redirect, useRouterState } from "@tanstack/react-router";
 import Lenis from "lenis";
-import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
+import { SystemIcon } from "@goraebap/ui-react/icons";
+import { VISIBLE_MENUS, activeMenu, isUnder } from "@/shared/config/site-menus";
 import { DesignConfigProvider } from "@/shared/lib/design-config";
-import { DesignSettings, SiteFooter, WorkspaceSwitcher } from "@/shared/ui";
+import { BrandMark, DesignSettings, SiteFooter, Wordmark } from "@/shared/ui";
 import { DocSearch } from "@/widgets/doc-search";
 
 // 이 시간 안에 끝나는 이동에는 진행 막대를 띄우지 않고, 한 번 띄운 막대는 최소 시간만큼 둔다.
@@ -67,23 +68,17 @@ export const Route = createRootRoute({
     if (/^\/(frontend\/)?getting-started\/?$/.test(location.pathname)) {
       throw redirect({ href: "/frontend/design-system/packages", replace: true });
     }
-    if (/^\/frontend\/agent\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/playbook/agents", replace: true });
+    // 옛 playbook 공간(지움)과 그 앞의 webapp·sdlc 공간 주소. 옮긴 문서는 그 자리로, 나머지는 처음 화면으로 보낸다.
+    if (/^\/(playbook|frontend\/agent)(\/|$)/.test(location.pathname)) {
+      throw redirect({ href: "/", replace: true });
     }
-    // webapp·sdlc 공간과 예전 playbook 문서 주소. 없어진 문서는 플레이북 목록으로 보낸다.
-    const legacy = location.pathname.match(/^\/(webapp|sdlc|playbook)(\/[^/]+)?\/?$/);
-    const moved: Record<string, string> = {
-      repository: "/playbook/project-setup",
-      "source-control": "/playbook/deploy",
-      deployment: "/playbook/deploy",
-      agents: "/playbook/agents",
-      frontend: "/frontend/engineering/overview",
-      backend: "/backend/engineering/overview",
-    };
-    const slug = legacy?.[2]?.slice(1);
-    if (legacy && (legacy[1] !== "playbook" || (slug && slug in moved && slug !== "agents"))) {
-      const href = slug ? (moved[slug] ?? "/playbook") : "/playbook";
-      throw redirect({ href, replace: true });
+    const legacy = location.pathname.match(/^\/(webapp|sdlc)(\/[^/]+)?\/?$/);
+    if (legacy) {
+      const moved: Record<string, string> = {
+        frontend: "/frontend/engineering/overview",
+        backend: "/backend/engineering/overview",
+      };
+      throw redirect({ href: moved[legacy[2]?.slice(1) ?? ""] ?? "/", replace: true });
     }
     const story = location.pathname.match(/^\/(frontend|backend)\/engineering\/story\/?$/);
     if (story) {
@@ -106,29 +101,6 @@ export const Route = createRootRoute({
   component: RootLayout,
 });
 
-type NavItem = {
-  label: string;
-  to?:
-    | "/frontend/engineering"
-    | "/frontend/design-system/overview"
-    | "/frontend/interaction"
-    | "/backend/engineering";
-  icon: SystemIconName;
-};
-
-const WORKSPACE_NAV: Record<"frontend" | "backend" | "playbook", NavItem[]> = {
-  frontend: [
-    { label: "Engineering", to: "/frontend/engineering", icon: "code" },
-    { label: "Design System", to: "/frontend/design-system/overview", icon: "components" },
-    { label: "Interaction", to: "/frontend/interaction", icon: "details" },
-  ],
-  backend: [
-    { label: "Engineering", to: "/backend/engineering", icon: "code" },
-    { label: "Details", icon: "details" },
-  ],
-  playbook: [],
-};
-
 function RootLayout() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const isLanding = pathname === "/";
@@ -142,21 +114,11 @@ function RootLayout() {
     );
   }
 
-  const isNavActive = (to: string) =>
-    pathname.startsWith(to === "/frontend/design-system/overview" ? "/frontend/design-system" : to);
-
+  const current = activeMenu(pathname);
+  const subItems = current?.children ?? [];
   const isFrontend = pathname.startsWith("/frontend");
   const isBackend = pathname.startsWith("/backend");
-  const isPlaybook = pathname.startsWith("/playbook");
-  const navItems = isFrontend
-    ? WORKSPACE_NAV.frontend
-    : isBackend
-      ? WORKSPACE_NAV.backend
-      : isPlaybook
-        ? WORKSPACE_NAV.playbook
-        : [];
-  const hasDocsShell =
-    isBackend || isPlaybook || (isFrontend && !pathname.startsWith("/frontend/glossary"));
+  const hasDocsShell = isBackend || (isFrontend && !pathname.startsWith("/frontend/glossary"));
 
   return (
     <DesignConfigProvider>
@@ -165,41 +127,35 @@ function RootLayout() {
         <header className="border-border/80 bg-background/85 sticky top-0 z-30 border-b backdrop-blur-md">
           <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-4 px-5 sm:px-6">
             {/* Left Brand */}
-            <WorkspaceSwitcher />
+            <Link
+              to="/"
+              aria-label="dev.goraebap 처음으로"
+              className="flex min-w-0 items-center gap-2.5"
+            >
+              <span className="bg-primary text-primary-foreground inline-flex size-9 shrink-0 items-center justify-center rounded-md transition-transform hover:scale-105">
+                <BrandMark className="size-7" />
+              </span>
+              <Wordmark className="hidden h-5 w-auto shrink-0 sm:block" />
+            </Link>
 
-            {/* Center Primary Nav */}
-            {navItems.length > 0 && (
-              <nav aria-label="주요 메뉴" className="hidden items-center gap-1 md:flex">
-                {navItems.map((item) =>
-                  item.to ? (
-                    <Link
-                      key={item.label}
-                      to={item.to}
-                      activeOptions={{ exact: true }}
-                      aria-current={isNavActive(item.to) ? "page" : undefined}
-                      className={
-                        isNavActive(item.to)
-                          ? "bg-secondary text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
-                          : "text-muted-foreground hover:bg-accent/70 hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors"
-                      }
-                    >
-                      <SystemIcon name={item.icon} className="size-4" />
-                      <span>{item.label}</span>
-                    </Link>
-                  ) : (
-                    <span
-                      key={item.label}
-                      aria-disabled="true"
-                      title="준비 중"
-                      className="text-muted-foreground/60 inline-flex cursor-not-allowed items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm"
-                    >
-                      <SystemIcon name={item.icon} className="size-4" />
-                      <span>{item.label}</span>
-                    </span>
-                  ),
-                )}
-              </nav>
-            )}
+            {/* Center Primary Nav: 어느 페이지에서나 같은 메뉴 */}
+            <nav aria-label="주요 메뉴" className="hidden items-center gap-1 md:flex">
+              {VISIBLE_MENUS.map((menu) => (
+                <Link
+                  key={menu.label}
+                  to={menu.to}
+                  aria-current={menu === current ? "page" : undefined}
+                  className={
+                    menu === current
+                      ? "bg-secondary text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors"
+                      : "text-muted-foreground hover:bg-accent/70 hover:text-foreground inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm transition-colors"
+                  }
+                >
+                  <SystemIcon name={menu.icon} className="size-4" />
+                  <span>{menu.label}</span>
+                </Link>
+              ))}
+            </nav>
 
             {/* Right Utilities */}
             <div className="flex items-center gap-2.5">
@@ -208,39 +164,48 @@ function RootLayout() {
             </div>
           </div>
 
-          {/* Mobile Sub-nav */}
-          {navItems.length > 0 && (
+          {/* Mobile: 메뉴 줄 */}
+          <nav
+            aria-label="모바일 주요 메뉴"
+            className="border-border/60 flex items-center gap-1 overflow-x-auto border-t px-4 py-1.5 md:hidden"
+          >
+            {VISIBLE_MENUS.map((menu) => (
+              <Link
+                key={menu.label}
+                to={menu.to}
+                aria-current={menu === current ? "page" : undefined}
+                className={
+                  menu === current
+                    ? "bg-secondary text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+                    : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
+                }
+              >
+                <SystemIcon name={menu.icon} className="size-3.5" />
+                <span>{menu.label}</span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* 하위 메뉴: 지금 메뉴에 하위 메뉴가 있을 때 */}
+          {subItems.length > 0 && (
             <nav
-              aria-label="모바일 주요 메뉴"
-              className="border-border/60 flex items-center gap-1 overflow-x-auto border-t px-4 py-1.5 md:hidden"
+              aria-label={`${current?.label} 하위 메뉴`}
+              className="border-border/60 mx-auto flex max-w-7xl items-center gap-1 overflow-x-auto border-t px-4 py-1.5 sm:px-6"
             >
-              {navItems.map((item) =>
-                item.to ? (
-                  <Link
-                    key={item.label}
-                    to={item.to}
-                    activeOptions={{ exact: true }}
-                    aria-current={isNavActive(item.to) ? "page" : undefined}
-                    className={
-                      isNavActive(item.to)
-                        ? "bg-secondary text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
-                        : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
-                    }
-                  >
-                    <SystemIcon name={item.icon} className="size-3.5" />
-                    <span>{item.label}</span>
-                  </Link>
-                ) : (
-                  <span
-                    key={item.label}
-                    aria-disabled="true"
-                    className="text-muted-foreground/60 inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
-                  >
-                    <SystemIcon name={item.icon} className="size-3.5" />
-                    <span>{item.label}</span>
-                  </span>
-                ),
-              )}
+              {subItems.map((item) => (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  aria-current={isUnder(pathname, item.match) ? "page" : undefined}
+                  className={
+                    isUnder(pathname, item.match)
+                      ? "text-foreground inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-medium"
+                      : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs"
+                  }
+                >
+                  {item.label}
+                </Link>
+              ))}
             </nav>
           )}
         </header>

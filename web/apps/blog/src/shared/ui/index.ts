@@ -15,4 +15,3 @@ export { SiteFooter } from "./SiteFooter";
 export { ThemedPortalScope } from "./ThemedPortalScope";
 export { UiSizeControl } from "./UiSizeControl";
 export { Wordmark } from "./Wordmark";
-export { WorkspaceSwitcher } from "./WorkspaceSwitcher";
