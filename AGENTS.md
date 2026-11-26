@@ -5,7 +5,7 @@
 | 경로 | 역할 |
 | --- | --- |
 | `.agents/skills/goraebap-webapp/` | 배포하는 스킬. `references/`는 content에서 빌드한 결과이고 `SKILL.md`는 손으로 관리 |
-| `plugins/webapp/` | 스킬 빌드·검사 스크립트와 content에 없는 지침(`skills/`: backend-engineering, 글쓰기 기준 등) |
+| `plugins/webapp/` | 스킬 빌드·검사 스크립트와 content에 없는 지침(`skills/`: 글쓰기 기준, 프로젝트 구성 등) |
 | `web/apps/blog/` | 지침 사이트(React). `content/`가 옮긴 지침의 원본 |
 | `web/apps/sso/` | 계정·로그인 화면(Angular). Angular 예시의 원본 |
 | `web/packages/` | 디자인 시스템 레시피와 React·Angular 어댑터 |

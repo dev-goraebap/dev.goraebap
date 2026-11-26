@@ -1,26 +1,16 @@
 // 사이트 문서와 Webapp 플러그인 지침의 짝을 확인한다.
-// 문서의 skills 경로가 실제 지침을 가리키는지, 사이트가 옮겨 쓰기로 한 스킬의 참고 자료가 모두 어느 문서엔가 쓰였는지 본다.
+// 페이지 연결표의 skills 경로가 실제 지침을 가리키는지 보고, 어느 페이지에도 보이지 않는 예시를 알려 준다.
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const app = fileURLToPath(new URL("../", import.meta.url));
 const skillsDir = path.resolve(app, "../../../plugins/webapp/skills");
-// 문서가 옮긴 지침: Engineering 문서와, 그 밖의 페이지 연결표
-const catalog = [
-  "src/entities/webapp-doc/model/catalog.ts",
-  "src/entities/code-example/model/page-skills.ts",
-]
-  .map((file) => fs.readFileSync(path.join(app, file), "utf8"))
-  .join("\n");
-
-// 사이트 문서가 다루는 스킬과, 사이트 문서가 없는 참고 자료(이유와 함께)
-// frontend의 지침은 content가 원본이라 이 짝 검사가 필요 없다(스킬 변환기가 링크를 확인한다).
-const COVERED_SKILLS = ["backend-engineering"];
-const NOT_YET = {
-  "backend-engineering/references/untrusted-content.md":
-    "사용자가 올린 HTML과 고른 주소. 사이트 글 미작성",
-};
+// 문서가 옮긴 지침: content 밖의 페이지 연결표
+const catalog = fs.readFileSync(
+  path.join(app, "src/entities/code-example/model/page-skills.ts"),
+  "utf8",
+);
 
 const errors = [];
 const used = new Set();
@@ -30,18 +20,6 @@ for (const [, list] of catalog.matchAll(/^\s*skills: \[([^\]]*)\],?$/gm)) {
     if (!fs.existsSync(path.join(skillsDir, file))) errors.push(`없는 지침을 가리킵니다: ${file}`);
   }
 }
-for (const skill of COVERED_SKILLS) {
-  const refs = path.join(skillsDir, skill, "references");
-  for (const name of fs.readdirSync(refs).filter((name) => name.endsWith(".md"))) {
-    const file = `${skill}/references/${name}`;
-    if (!used.has(file) && !NOT_YET[file])
-      errors.push(`사이트 문서가 옮기지 않은 지침입니다: ${file}`);
-  }
-}
-for (const file of Object.keys(NOT_YET)) {
-  if (used.has(file)) errors.push(`이미 문서가 있으니 NOT_YET에서 지웁니다: ${file}`);
-}
-
 // 예시 파일은 첫 문단이 링크한 지침을 옮긴 사이트 문서에 보인다. 어느 문서에도 보이지 않는 예시는 알려만 준다.
 const hidden = [];
 let exampleCount = 0;
@@ -65,9 +43,7 @@ if (errors.length) {
   process.stderr.write(`${errors.join("\n")}\n`);
   process.exit(1);
 }
-process.stdout.write(
-  `지침 ${used.size}개가 사이트 문서와 짝을 이룹니다. 사이트 문서가 없는 참고 자료 ${Object.keys(NOT_YET).length}개\n`,
-);
+process.stdout.write(`지침 ${used.size}개가 사이트 문서와 짝을 이룹니다.\n`);
 process.stdout.write(
   `예시 ${exampleCount}개 중 ${exampleCount - hidden.length}개가 사이트 문서에 보입니다.${hidden.length ? ` 보이지 않는 예시: ${hidden.join(", ")}` : ""}\n`,
 );

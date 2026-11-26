@@ -1,5 +1,4 @@
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
-import { BACKEND_ENGINEERING_DOCS, type GuideDoc } from "@/entities/webapp-doc";
 import { menuDocs, plainText, sectionDocs } from "@/entities/content-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
@@ -33,20 +32,6 @@ const page = (
   description: string,
 ): DocEntry => ({ id: href, group, title, href, description, keywords: description });
 
-// 본문까지 검색되도록 섹션의 글을 모두 키워드에 넣는다.
-const guideKeywords = (doc: GuideDoc & { group?: string; phase?: string }) =>
-  `${doc.slug} ${doc.group ?? doc.phase ?? ""} ${doc.summary} ${doc.sections
-    .map((section) =>
-      [
-        section.title ?? "",
-        ...section.paragraphs,
-        ...(section.bullets?.items ?? []),
-        section.callout?.title ?? "",
-        section.callout?.body ?? "",
-      ].join(" "),
-    )
-    .join(" ")}`;
-
 const DOC_ENTRIES: DocEntry[] = [
   page("디자인 시스템", "개요", "/design-system/overview", "디자인 시스템의 구조와 쓰임"),
   // 스택 없는 주소로 걸어 두면 고른 스택의 페이지로 열린다.
@@ -58,13 +43,13 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),
-  ...BACKEND_ENGINEERING_DOCS.map((doc) => ({
-    id: `backend:${doc.slug}`,
+  ...sectionDocs("reference/backend").map((doc) => ({
+    id: `backend:${doc.menu}/${doc.slug}`,
     group: "Engineering" as const,
-    title: `백엔드 ${doc.title}`,
-    href: `/backend/engineering/${doc.slug}`,
-    description: doc.summary,
-    keywords: guideKeywords(doc),
+    title: `백엔드 ${doc.meta.title ?? doc.slug}`,
+    href: `/${doc.menu}/${doc.slug}`,
+    description: doc.meta.summary ?? doc.meta.description ?? "",
+    keywords: plainText(doc.source),
   })),
   page("컴포넌트", "컴포넌트 개요", "/design-system/components", "전체 컴포넌트 목록"),
   ...menuDocs("design-system/components")
