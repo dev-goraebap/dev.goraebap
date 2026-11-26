@@ -1,26 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { STACK_LABELS } from "../model/content";
-
-const KEY = (space: string) => `goraebap-stack-${space}`;
-
-// 고른 스택을 기억해 스택 없는 주소로 들어와도 같은 스택으로 연다. 저장하지 못하면 첫 스택을 쓴다.
-export function storedStack(space: string, stacks: readonly string[]) {
-  if (typeof window === "undefined") return stacks[0];
-  try {
-    const stored = window.localStorage.getItem(KEY(space));
-    return stored && stacks.includes(stored) ? stored : stacks[0];
-  } catch {
-    return stacks[0];
-  }
-}
-
-export function rememberStack(space: string, stack: string) {
-  try {
-    window.localStorage.setItem(KEY(space), stack);
-  } catch {
-    // 저장하지 못해도 주소가 스택을 가진다.
-  }
-}
+import { rememberStack } from "../model/stack-choice";
 
 // 사이드바 맨 위의 스택 선택기. 같은 문서의 다른 스택 주소로 가는 링크라 새 탭·공유에서도 같은 화면이 열린다.
 export function StackSwitcher({

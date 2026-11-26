@@ -1,6 +1,13 @@
 import { Outlet, createFileRoute, useLocation, useParams } from "@tanstack/react-router";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
-import { StackSwitcher, menuDocs, stacksOf, docHref, type ContentDoc } from "@/entities/content-doc";
+import {
+  StackSwitcher,
+  contentNavGroups,
+  docHref,
+  menuDocs,
+  stacksOf,
+  type ContentDoc,
+} from "@/entities/content-doc";
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import { DocsShell, type DocsNavGroup } from "@/shared/ui";
 
@@ -71,20 +78,11 @@ const contentHref = (doc: ContentDoc, stack?: string) =>
   stack ? docHref(doc, stack) : `/${doc.menu}/${doc.slug}`;
 
 function contentGroups(stack?: string): DocsNavGroup[] {
-  const groups: DocsNavGroup[] = [];
   // 레이아웃 문서는 위의 레이아웃 묶음이 견본 이름으로 잇는다.
-  for (const doc of DOCS.filter((each) => each.meta.group !== "레이아웃")) {
-    const title = doc.isSkill ? undefined : doc.meta.group || undefined;
-    let group = groups.at(-1);
-    if (!group || group.title !== title || doc.isSkill) groups.push((group = { title, items: [] }));
-    group.items.push({
-      label: doc.meta.title ?? doc.slug,
-      href: contentHref(doc, stack),
-      icon: doc.isSkill ? "details" : doc.meta.icon,
-      badge: doc.isSkill ? "AI" : undefined,
-    });
-  }
-  return groups;
+  return contentNavGroups(
+    DOCS.filter((each) => each.meta.group !== "레이아웃"),
+    (doc) => contentHref(doc, stack),
+  );
 }
 
 // 파운데이션은 개요 바로 아래에, 나머지 content 묶음(패턴·AI 지침)은 컴포넌트·레이아웃 뒤에 둔다.
