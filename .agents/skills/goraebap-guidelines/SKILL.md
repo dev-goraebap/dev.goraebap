@@ -17,6 +17,7 @@ description: 이 저장소에서 지침 글(web/apps/blog/content, plugins/webap
 - 공통 글(`<문서>.mdx`, `<문서>/index.mdx`)에는 모든 스택에서 참인 문장만 씁니다. 스택 이름은 `npm run check`가 막습니다.
 - 스택마다 다른 부분은 `<Slot name>`으로 두고 스택 파일(`<문서>/react.mdx`·`angular.mdx`·`spring.mdx`)의 `<Fill name>`이 채웁니다. 스택 파일 맨 위에는 `<Fill>`만 둡니다.
 - 사람에게만 보일 글은 `<Story>`, 그림은 `<Diagram>`으로 감쌉니다. 스킬에서는 지워지므로 판단에 필요한 내용은 그 밖에도 씁니다. `<Callout>`은 안의 글만 남습니다.
+- 사이트는 본문의 용어를 자동으로 용어집에 잇습니다(`web/apps/blog/src/shared/lib/glossary.ts`의 자동 연결 목록). 다른 뜻으로 흔히 쓰여 자동 연결에서 뺀 말(비활성, 변형, Primary 등)은 `<Term id="용어 id">표시</Term>`로 직접 잇고, 스킬에서는 글자만 남습니다. 다른 컴포넌트 이름은 그 문서로 가는 링크로 겁니다.
 - 스킬에는 메뉴 SKILL.md에서 링크로 닿는 문서만 들어갑니다. 링크는 실제 파일을 가리키는 상대 경로로 겁니다. 변환기(`plugins/webapp/scripts/content-skills.mjs`)가 스킬 안 위치로 다시 쓰고, `plugins/webapp/skills/...`를 가리키는 링크는 글자만 남깁니다.
 - 공통 글의 `<Slot>`은 스킬에서 스택 글(`<스택>.md`)의 같은 이름 절을 가리키는 한 줄이 됩니다.
 - 머리말: 문서는 `title`·`icon`·`group`·`order`·`summary`·`arc42`, SKILL.md는 `name`·`description`·`arc42`.

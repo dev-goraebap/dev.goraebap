@@ -32,7 +32,7 @@
 | Esc | 팝오버를 닫고 트리거로 포커스를 되돌립니다. |
 
 - 팝오버에 제목이 있으면 PopoverTitle을 써서 스크린 리더에 맥락을 연결합니다.
-- 내용이 길거나 좁은 화면에서 잘리기 쉬우면 ResponsivePopover로 Bottom Sheet 전환을 씁니다.
+- 내용이 길거나 좁은 화면에서 잘리기 쉬우면 ResponsivePopover로 [Bottom Sheet](../bottom-sheet/index.md) 전환을 씁니다.
 
 ## 적응형 UI
 

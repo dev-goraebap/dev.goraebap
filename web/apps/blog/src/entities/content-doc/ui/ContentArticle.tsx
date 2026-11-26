@@ -41,6 +41,11 @@ function Demo({ children }: { children?: ReactNode }) {
   return <div className="bg-dots border-border rounded-2xl border p-4 sm:p-6">{children}</div>;
 }
 
+// 자동 연결 목록에 없는 용어를 용어집에 잇는 표시. 다른 뜻으로 흔히 쓰는 말(비활성, 변형 등)에 직접 단다. 스킬로 빌드할 때는 글자만 남는다.
+function Term({ children }: { id: string; children?: ReactNode }) {
+  return <>{children}</>;
+}
+
 function Callout({ title, children }: { title?: string; children?: ReactNode }) {
   return (
     <aside className="border-foreground/25 bg-muted/40 [&_p]:text-muted-foreground space-y-1.5 rounded-r-xl border-l-2 px-4 py-3.5 [&_p]:text-sm [&_p]:leading-6">
@@ -93,6 +98,7 @@ const COMPONENTS = {
   Story,
   Demo,
   Callout,
+  Term,
   Diagram,
   h2: ({ children }: ComponentProps<"h2">) => (
     <h2
@@ -242,6 +248,18 @@ function transform(node: ReactNode, ctx: Context): ReactNode {
     return fill == null ? null : transform(fill, { ...ctx, file: ctx.fillFile ?? ctx.file });
   }
   if (node.type === Fill) return null;
+  if (node.type === Term) {
+    const id = (node.props as { id?: string }).id ?? "";
+    const entry = GLOSSARY[id];
+    const label = transform(node.props.children, { ...ctx, glossed: false });
+    if (!entry || ctx.seen.has(id)) return label;
+    ctx.seen.add(id);
+    return (
+      <GlossaryTerm key={node.key ?? undefined} id={id} term={entry.term} korean={entry.korean} definition={entry.definition}>
+        {label}
+      </GlossaryTerm>
+    );
+  }
   if (CODE.has(node.type)) return node;
 
   const props: Props = { ...node.props };

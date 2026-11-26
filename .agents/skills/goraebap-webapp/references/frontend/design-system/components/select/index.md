@@ -24,7 +24,7 @@
 | Esc | 값을 바꾸지 않고 목록을 닫습니다. |
 
 - SelectTrigger에 label이나 aria-label을 연결해 어떤 항목을 고르는지 알립니다.
-- 선택지가 많아 검색이 필요하면 Combobox로 전환하고, 좁은 화면에서는 Bottom Sheet 목록을 고려합니다.
+- 선택지가 많아 검색이 필요하면 [Combobox](../combobox/index.md)로 전환하고, 좁은 화면에서는 [Bottom Sheet](../bottom-sheet/index.md) 목록을 고려합니다.
 
 ## 적응형 UI
 
