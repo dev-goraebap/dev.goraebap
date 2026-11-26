@@ -21,15 +21,3 @@ useEffect(() => {
 }, [debouncedQuery]);
 ```
 </Fill>
-
-<Fill name="dialog-loading">
-준비 영역에 최소 높이를 주고, 대기 표시는 `Suspense`의 대체 화면으로 둡니다.
-
-```tsx
-<DialogContent>
-  <Suspense fallback={<SearchLoading />}>
-    <SearchPanel className="min-h-[24rem]" />
-  </Suspense>
-</DialogContent>
-```
-</Fill>
