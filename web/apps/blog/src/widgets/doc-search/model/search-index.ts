@@ -1,11 +1,9 @@
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import { BACKEND_ENGINEERING_DOCS, type GuideDoc } from "@/entities/webapp-doc";
 import { menuDocs, plainText } from "@/entities/content-doc";
-import { PLAYBOOKS } from "@/entities/playbook";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
-  "Playbook",
   "Engineering",
   "디자인 시스템",
   "파운데이션",
@@ -13,7 +11,6 @@ export const DOC_GROUPS = [
   "레이아웃",
   "패턴",
   "Interaction",
-  "Agents",
   "용어집",
 ] as const;
 
@@ -28,12 +25,7 @@ export interface DocEntry {
 }
 
 const MAX_RESULTS = 40;
-const SUGGESTED_GROUPS: DocEntry["group"][] = [
-  "디자인 시스템",
-  "파운데이션",
-  "Interaction",
-  "Agents",
-];
+const SUGGESTED_GROUPS: DocEntry["group"][] = ["디자인 시스템", "파운데이션", "Interaction"];
 
 const page = (
   group: DocEntry["group"],
@@ -57,15 +49,6 @@ const guideKeywords = (doc: GuideDoc & { group?: string; phase?: string }) =>
     .join(" ")}`;
 
 const DOC_ENTRIES: DocEntry[] = [
-  page("Playbook", "플레이북 개요", "/playbook", "자주 하는 일의 절차와 스킬 조합"),
-  ...PLAYBOOKS.map((playbook) => ({
-    id: `playbook:${playbook.slug}`,
-    group: "Playbook" as const,
-    title: playbook.title,
-    href: `/playbook/${playbook.slug}`,
-    description: playbook.summary,
-    keywords: `${guideKeywords(playbook)} ${playbook.steps.map((step) => `${step.title} ${step.detail} ${step.skills.join(" ")}`).join(" ")}`,
-  })),
   page("디자인 시스템", "개요", "/frontend/design-system/overview", "디자인 시스템의 구조와 쓰임"),
   // 스택 없는 주소로 걸어 두면 고른 스택의 페이지로 열린다.
   ...menuDocs("frontend/engineering").map((doc) => ({
@@ -113,7 +96,9 @@ const DOC_ENTRIES: DocEntry[] = [
   ...menuDocs("frontend/design-system").map((doc) => ({
     id: `design-system:${doc.slug}`,
     // 머리말의 묶음(파운데이션·레이아웃·패턴 등)을 따르고, 검색 묶음에 없는 것(AI 지침 등)은 패턴에 둔다.
-    group: ((DOC_GROUPS as readonly string[]).includes(doc.meta.group ?? "") ? doc.meta.group : "패턴") as DocEntry["group"],
+    group: ((DOC_GROUPS as readonly string[]).includes(doc.meta.group ?? "")
+      ? doc.meta.group
+      : "패턴") as DocEntry["group"],
     title: doc.meta.title ?? doc.slug,
     href: `/frontend/design-system/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",
@@ -127,7 +112,6 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),
-  page("Agents", "Agents", "/playbook/agents", "webapp@dev-goraebap 플러그인 설치와 범위"),
   page("용어집", "용어집", "/frontend/glossary", "문서에 쓰는 용어 모음"),
   ...Object.entries(GLOSSARY).map(([key, entry]) => ({
     id: `glossary:${key}`,

@@ -1,16 +1,11 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { SystemIcon } from "@goraebap/ui-react/icons";
+import { VISIBLE_MENUS } from "@/shared/config/site-menus";
 import { BrandMark, DesignSettings, LineFieldCanvas, Wordmark } from "@/shared/ui";
 
 export const Route = createFileRoute("/")({
   component: WorkshopPage,
 });
-
-const WORKSPACE_LINKS = [
-  { label: "Playbook", to: "/playbook" },
-  { label: "Frontend", to: "/frontend" },
-  { label: "Backend", to: "/backend" },
-] as const;
 
 function WorkshopPage() {
   return (
@@ -28,16 +23,18 @@ function WorkshopPage() {
           웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실
         </p>
         <nav
-          aria-label="워크스페이스"
+          aria-label="메뉴"
           className="workshop-reveal mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm [animation-delay:240ms]"
         >
-          {WORKSPACE_LINKS.map((workspace) => (
+          {/* 헤더와 같은 메뉴. 글이 없는 메뉴는 보이지 않는다. */}
+          {VISIBLE_MENUS.map((menu) => (
             <Link
-              key={workspace.to}
-              to={workspace.to}
+              key={menu.label}
+              to={menu.to}
+              title={menu.description}
               className="group decoration-foreground/30 hover:decoration-foreground inline-flex items-center gap-1.5 font-medium underline underline-offset-6 transition-colors"
             >
-              {workspace.label}
+              {menu.label}
               <SystemIcon
                 name="arrowRight"
                 className="size-3.5 transition-transform group-hover:translate-x-0.5"

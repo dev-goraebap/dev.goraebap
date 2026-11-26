@@ -4,7 +4,7 @@
 
 ## 설계 방식
 
-- **글 하나에서 사이트와 스킬을 함께**: 지침 글의 원본은 사이트의 `web/apps/blog/content/`입니다. 같은 글이 사이트 페이지가 되고, 빌드하면 스킬 `.agents/skills/goraebap-webapp/`이 됩니다. content에 없는 지침(backend·playbook 쪽)은 `plugins/webapp/skills/`에 있고 사이트만 읽습니다.
+- **글 하나에서 사이트와 스킬을 함께**: 지침 글의 원본은 사이트의 `web/apps/blog/content/`입니다. 같은 글이 사이트 페이지가 되고, 빌드하면 스킬 `.agents/skills/goraebap-webapp/`이 됩니다. content에 없는 지침(backend-engineering, 글쓰기 기준 등)은 `plugins/webapp/skills/`에 있고 사이트만 읽습니다.
 - **공통 글과 스택 글 분리**: 공통 글은 특정 기술 스택에 묶이지 않는 판단 기준만 담습니다. 스택별 구현은 공개 오픈소스 고정 커밋에서 발췌한 코드로 스택 글(`react`·`angular`·`spring`)에 둡니다.
 - **구현 기준만**: 요구사항·명세·리뷰 같은 작업 절차는 외부 하네스에 맡깁니다([ADR 0002](docs/adr/0002-implementation-only.md)).
 - **디자인 시스템 레지스트리**: 스타일 레시피와 프레임워크별 어댑터(React, Angular)를 [dev.goraebap.xyz/r](https://dev.goraebap.xyz/r/registry.json)에서 통째로 받아 씁니다.

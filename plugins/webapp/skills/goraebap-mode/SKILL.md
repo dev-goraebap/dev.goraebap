@@ -16,21 +16,6 @@ arc42: "none"
 
 프로젝트 AGENTS.md의 `Webapp 스택:` 줄을 확인합니다. 영역 지침은 구현을 담지 않으므로, 영역 지침을 읽을 때마다 같은 스킬의 `examples/`에서 프로젝트 스택과 이름이 같은 절을 함께 읽습니다([예시 읽기](references/examples.md)). 줄이 없으면 프로젝트의 실제 의존성에서 스택을 확인하고, AGENTS.md에 그 줄을 더할지 사용자에게 묻습니다([연결](../onboarding/SKILL.md#연결)). 맞는 스택 절이 없으면 지침만으로 진행하고 그 사실을 보고합니다.
 
-작업에 맞는 플레이북 하나를 읽고, 계약·스키마 변경 같은 의존 단계만 함께 수행합니다. 작은 수정은 필요한 단계만 적용합니다.
-
-| 작업 | 플레이북 |
-| --- | --- |
-| 문제 정의, 근거 조사, 선택지 결정 | [요구사항 토론](playbooks/requirements.md) |
-| 저장소 구성, 지침 연결, 스택·배포 경로 설정 | [프로젝트 만들기](playbooks/project-setup.md) |
-| 새 기능, 제품 동작 변경 | [기능 구현](playbooks/feature.md) |
-| 브라우저로 화면 확인과 표현·상호작용 마감 | [화면 다듬기](playbooks/ui-polish.md) |
-| 버그 재현·원인 추적·회귀 수정 | [버그 수정](playbooks/bug-fix.md) |
-| 동작을 유지하는 구조 변경 | [리팩터링](playbooks/refactor.md) |
-| 브랜치·커밋 정리, 배포 실행, 운영 확인 | [배포](playbooks/deploy.md) |
-| 문서·스킬 작성과 문체 대조 | [글 다듬기](playbooks/writing.md) |
-| 이슈 탐색, 상태 전환, 검증·남은 일 기록 | [이슈·업무 기록](playbooks/records.md) |
-| 반복 실수·작업 방식·지침 개선 | [지침 개선](playbooks/evolve.md) |
-
 ## 필요한 지침만 읽기
 
 아래 링크에서 필요한 지침만 읽습니다. 관리 도구로 이름을 바꿔 설치하면 스킬 메타데이터와 지침 링크도 함께 바뀝니다.
@@ -58,4 +43,4 @@ arc42: "none"
 - 브랜치·커밋·PR을 다룰 때는 [Git 작업](../webapp-project/references/git.md)을 따릅니다.
 - 커밋·푸시·게시·배포는 사용자가 허용한 범위에서만 합니다.
 
-스킬 자체가 틀렸으면 [지침 개선](playbooks/evolve.md)으로 원인을 고칩니다.
+스킬 자체가 틀렸으면 [지침 제안](../onboarding/references/proposals.md)으로 원인을 고칩니다.
