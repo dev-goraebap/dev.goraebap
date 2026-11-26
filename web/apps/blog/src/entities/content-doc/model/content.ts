@@ -11,6 +11,8 @@ interface ContentMeta {
   group?: string;
   order?: number;
   summary?: string;
+  // Blog 글의 날짜(yyyy-mm-dd)
+  date?: string;
   // SKILL.md 머리말
   name?: string;
   description?: string;
@@ -155,8 +157,19 @@ export function sectionDocs(root: string) {
   return [...top.filter((doc) => !doc.isSkill), ...grouped, ...top.filter((doc) => doc.isSkill)];
 }
 
-export const stacksOf = (menu: string): readonly string[] => SPACE_STACKS[stackSpace(menu)];
-export const docHref = (doc: ContentDoc, stack: string) => `/${doc.menu}/${doc.slug}/${stack}`;
+// Blog 글은 스택이 없어서 주소 끝에 스택을 붙이지 않는다(/blog/<글>).
+export const BLOG_MENU = "blog";
+const isStackless = (menu: string) => menu === BLOG_MENU;
+
+export const stacksOf = (menu: string): readonly string[] =>
+  isStackless(menu) ? [] : SPACE_STACKS[stackSpace(menu)];
+// 스택을 모르면(스택 없는 Blog 글에서 거는 링크 등) 스택 없는 주소를 돌려준다. 그 주소는 독자가 고른 스택으로 다시 보낸다.
+export const docHref = (doc: ContentDoc, stack: string) =>
+  isStackless(doc.menu) || !stack ? `/${doc.menu}/${doc.slug}` : `/${doc.menu}/${doc.slug}/${stack}`;
+
+// Blog 글을 날짜가 늦은 것부터.
+export const blogPosts = () =>
+  menuDocs(BLOG_MENU).sort((a, b) => (b.meta.date ?? "").localeCompare(a.meta.date ?? ""));
 
 // 검색용 본문: 머리말·JSX 표시·마크다운 기호를 걷어 낸 글
 export function plainText(source: string) {

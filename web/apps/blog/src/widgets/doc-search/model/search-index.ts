@@ -1,8 +1,9 @@
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
-import { menuDocs, plainText, sectionDocs } from "@/entities/content-doc";
+import { blogPosts, docHref, menuDocs, plainText, sectionDocs } from "@/entities/content-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
+  "Blog",
   "Engineering",
   "디자인 시스템",
   "파운데이션",
@@ -33,6 +34,14 @@ const page = (
 ): DocEntry => ({ id: href, group, title, href, description, keywords: description });
 
 const DOC_ENTRIES: DocEntry[] = [
+  ...blogPosts().map((doc) => ({
+    id: `blog:${doc.slug}`,
+    group: "Blog" as const,
+    title: doc.meta.title ?? doc.slug,
+    href: docHref(doc, ""),
+    description: doc.meta.summary ?? "",
+    keywords: plainText(doc.source),
+  })),
   page("디자인 시스템", "개요", "/design-system/overview", "디자인 시스템의 구조와 쓰임"),
   // 스택 없는 주소로 걸어 두면 고른 스택의 페이지로 열린다.
   ...sectionDocs("reference/frontend").map((doc) => ({

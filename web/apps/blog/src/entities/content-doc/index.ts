@@ -1,4 +1,6 @@
 export {
+  BLOG_MENU,
+  blogPosts,
   CONTENT_DOCS,
   SKILL_SLUG,
   docHref,

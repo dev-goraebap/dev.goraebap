@@ -156,6 +156,8 @@ export async function buildContentSkill() {
     const linked = path.resolve(path.dirname(from), decodeURI(href));
     const dest = target.get(linked);
     if (!dest && linked.startsWith(SKILLS + path.sep)) return node.children;
+    // Blog 글은 사람만 읽는 해설이라 스킬에 넣지 않는다. 링크를 풀고 글자만 남긴다(ADR 0008).
+    if (!dest && linked.startsWith(path.join(CONTENT, 'blog') + path.sep)) return node.children;
     if (!dest) throw new Error(`스킬에 없는 파일을 가리킵니다: ${from} (${node.url})`);
     const hash = anchor ?? menuAnchor.get(linked);
     node.url = path.posix.relative(path.posix.dirname(to), dest) + (hash ? `#${hash}` : '');

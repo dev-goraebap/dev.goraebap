@@ -3,9 +3,7 @@ import type { SystemIconName } from "@goraebap/ui-react/icons";
 // 헤더 메뉴. 어느 페이지에서나 같고, 글이 없는 메뉴(to가 없는 것)는 보이지 않는다(ADR 0008).
 // match는 그 메뉴에 속한 주소의 앞부분이다.
 type SiteMenuTarget =
-  | "/reference/frontend"
-  | "/design-system/overview"
-  | "/reference/backend";
+  "/blog" | "/reference/frontend" | "/design-system/overview" | "/reference/backend";
 
 export interface SiteMenu {
   label: string;
@@ -16,6 +14,9 @@ export interface SiteMenu {
   // 메뉴 아래 줄에 보이는 하위 메뉴
   children?: { label: string; to: SiteMenuTarget; match: string[] }[];
 }
+
+// Blog 글이 하나라도 있으면 Blog 메뉴를 보인다. 파일 목록만 보고 글은 불러오지 않는다.
+const HAS_BLOG = Object.keys(import.meta.glob("/content/blog/*.mdx")).length > 0;
 
 export const SITE_MENUS: SiteMenu[] = [
   {
@@ -28,6 +29,7 @@ export const SITE_MENUS: SiteMenu[] = [
     label: "Blog",
     icon: "details",
     description: "왜 이렇게 하는지에 대한 글",
+    to: HAS_BLOG ? "/blog" : undefined,
     match: ["/blog"],
   },
   {
