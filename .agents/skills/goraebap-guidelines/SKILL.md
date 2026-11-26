@@ -10,7 +10,7 @@ description: 이 저장소에서 지침 글(web/apps/blog/content, plugins/webap
 - 지침 원본은 사이트 `web/apps/blog/content/`의 md·mdx이고, content 경로가 곧 사이트 주소입니다(ADR 0008): `content/reference/frontend/<묶음>/<문서>`는 `/reference/frontend/<묶음>/<문서>/<스택>`, `content/design-system/<문서>`는 `/design-system/<문서>/<스택>`입니다. Reference › Frontend의 묶음은 structure(구조)·routing(라우팅)·state(상태 관리)·rendering(렌더링)·code-style(코드 규칙)이고, 순서와 이름은 사이트의 `SECTION_GROUPS`가 정합니다.
 - SKILL.md가 있는 폴더가 메뉴 안내입니다(`content/reference/frontend/SKILL.md`, `content/design-system/SKILL.md`). 빌드하면 스킬 `.agents/skills/goraebap-webapp/references/` 아래 같은 경로(앞의 `reference/`를 뗀 것)가 됩니다. 예: `references/frontend/routing/navigation/`, `references/design-system/theme/`.
 - 스킬의 `SKILL.md`(영역 안내)는 빌드 대상이 아니라 손으로 관리합니다. 영역을 더하면 함께 고칩니다.
-- content에 없는 지침(backend-engineering, webapp-project, goraebap-mode, onboarding)은 `plugins/webapp/skills/`가 원본이고 사이트만 읽습니다. 같은 지침 폴더는 두 곳에 함께 있을 수 있지만, 같은 문서(content의 문서 이름과 같은 `references/<이름>.md`·`examples/<이름>.md`)는 두 곳에 두지 않습니다(빌드가 막습니다). 지침을 content로 옮기면 옛 문서는 그 자리에서 지웁니다.
+- content에 없는 지침(webapp-project, goraebap-mode, onboarding)은 `plugins/webapp/skills/`가 원본이고 사이트만 읽습니다. 같은 지침 폴더는 두 곳에 함께 있을 수 있지만, 같은 문서(content의 문서 이름과 같은 `references/<이름>.md`·`examples/<이름>.md`)는 두 곳에 두지 않습니다(빌드가 막습니다). 지침을 content로 옮기면 옛 문서는 그 자리에서 지웁니다.
 - 특정 회사 제품의 동작·업무 데이터·접속 정보는 넣지 않습니다.
 
 ## content 글

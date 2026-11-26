@@ -6,7 +6,7 @@ type SiteMenuTarget =
   | "/reference/frontend"
   | "/frontend/interaction"
   | "/design-system/overview"
-  | "/backend/engineering";
+  | "/reference/backend";
 
 export interface SiteMenu {
   label: string;
@@ -36,11 +36,11 @@ export const SITE_MENUS: SiteMenu[] = [
     icon: "code",
     description: "프론트엔드·백엔드 구현 기준",
     to: "/reference/frontend",
-    match: ["/reference", "/frontend/interaction", "/frontend/glossary", "/backend"],
+    match: ["/reference", "/frontend/interaction", "/frontend/glossary"],
     children: [
       { label: "Frontend", to: "/reference/frontend", match: ["/reference/frontend"] },
       { label: "Interaction", to: "/frontend/interaction", match: ["/frontend/interaction"] },
-      { label: "Backend", to: "/backend/engineering", match: ["/backend"] },
+      { label: "Backend", to: "/reference/backend", match: ["/reference/backend"] },
     ],
   },
   {

@@ -60,6 +60,13 @@ export const SECTION_GROUPS: Record<string, readonly { id: string; title: string
     { id: "rendering", title: "렌더링" },
     { id: "code-style", title: "코드 규칙" },
   ],
+  "reference/backend": [
+    { id: "structure", title: "구조" },
+    { id: "api", title: "API" },
+    { id: "data", title: "데이터" },
+    { id: "security", title: "보안" },
+    { id: "code-style", title: "코드 규칙" },
+  ],
 };
 
 // SKILL.md를 사이트에서 보이는 문서의 주소 이름

@@ -91,7 +91,7 @@
 
 도표(글로 쓴 원문을 그림으로 그리는 블록)는 칸 폭을 채우되 원래 크기의 3배까지, 높이 36rem 안에서 그립니다. 누르면 크게 보기 창으로 열리고, 원문 편집 칸은 테마 색을 따릅니다. 도표를 그리는 도구가 CSS 변수를 읽지 못하면 도표 색표는 라이트·다크별 값으로 테마 쪽 한 곳에 두고 그 값을 넘깁니다.
 
-HTML 임베드는 올린 HTML을 본문 안의 격리된 틀로 미리 봅니다. 틀은 `sandbox="allow-scripts allow-modals allow-forms allow-popups"`와 `referrerPolicy="no-referrer"`를 쓰고 `allow-same-origin`을 주지 않습니다. 크게 보기는 창을 거의 채우는 `<dialog>`에 같은 격리 틀을 두며, 닫기 버튼과 Esc로 닫습니다. 새 탭 열기는 서버 주소일 때만 둡니다. 저장 전의 `blob:` 주소는 새 탭에서 앱의 출처로 열리기 때문입니다. 서버 쪽 규칙은 사용자가 올린 파일과 고른 주소를 따릅니다.
+HTML 임베드는 올린 HTML을 본문 안의 격리된 틀로 미리 봅니다. 틀은 `sandbox="allow-scripts allow-modals allow-forms allow-popups"`와 `referrerPolicy="no-referrer"`를 쓰고 `allow-same-origin`을 주지 않습니다. 크게 보기는 창을 거의 채우는 `<dialog>`에 같은 격리 틀을 두며, 닫기 버튼과 Esc로 닫습니다. 새 탭 열기는 서버 주소일 때만 둡니다. 저장 전의 `blob:` 주소는 새 탭에서 앱의 출처로 열리기 때문입니다. 서버 쪽 규칙은 [사용자가 올린 파일과 고른 주소](../../backend/security/untrusted-content/index.md)를 따릅니다.
 
 ### 링크 카드
 

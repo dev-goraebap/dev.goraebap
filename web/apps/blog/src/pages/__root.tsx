@@ -56,6 +56,17 @@ const ENGINEERING_MOVES: Record<string, string> = {
   state: "state/state",
   "data-flow": "state/data-flow",
 };
+// 옛 /backend/engineering 문서 이름 → Reference › Backend의 묶음/문서
+const BACKEND_MOVES: Record<string, string> = {
+  modules: "structure/layers",
+  contracts: "structure/contracts",
+  sharing: "structure/sharing",
+  queries: "data/queries",
+  "code-style": "code-style/code-style",
+  errors: "api/errors",
+  api: "api/api",
+  database: "data/database",
+};
 const DETAILS_PATHS = /^(\/frontend)?\/details(\/|$)/;
 const DESIGN_SYSTEM_PATHS =
   /^(\/frontend)?\/(components|overview|packages|foundations|layouts)(\/|$)/;
@@ -105,12 +116,19 @@ export const Route = createRootRoute({
     if (legacy) {
       const moved: Record<string, string> = {
         frontend: "/reference/frontend/overview",
-        backend: "/backend/engineering/overview",
+        backend: "/reference/backend",
       };
       throw redirect({ href: moved[legacy[2]?.slice(1) ?? ""] ?? "/", replace: true });
     }
-    if (/^\/backend\/engineering\/story\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/backend/engineering/overview", replace: true });
+    // Backend Reference가 content로 옮기기 전 주소(/backend/engineering/<문서>)
+    const backend = location.pathname.match(/^\/backend(?:\/engineering(?:\/([^/]+))?)?\/?$/);
+    if (backend) {
+      const moved = BACKEND_MOVES[backend[1] ?? ""];
+      const hash = location.hash ? `#${location.hash}` : "";
+      throw redirect({
+        href: `/reference/backend${moved ? `/${moved}` : ""}${hash}`,
+        replace: true,
+      });
     }
     // Design System 문서가 /design-system 아래로 모이기 전 주소
     if (DESIGN_SYSTEM_PATHS.test(location.pathname)) {
@@ -147,8 +165,7 @@ function RootLayout() {
   const isDocs = ["/frontend", "/reference", "/design-system"].some((prefix) =>
     pathname.startsWith(prefix),
   );
-  const isBackend = pathname.startsWith("/backend");
-  const hasDocsShell = isBackend || (isDocs && !pathname.startsWith("/frontend/glossary"));
+  const hasDocsShell = isDocs && !pathname.startsWith("/frontend/glossary");
 
   return (
     <DesignConfigProvider>
