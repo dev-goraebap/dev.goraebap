@@ -1,7 +1,8 @@
 import type { ComponentType } from "react";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 
-// 지침 글의 원본(content/)을 읽는다. 폴더 하나가 메뉴 하나이고, SKILL.md가 있는 폴더가 스킬 하나다.
+// 지침 글의 원본(content/)을 읽는다. 문서가 든 폴더가 그 문서의 메뉴이고, SKILL.md가 있는 폴더가 스킬 하나다.
+// 주소는 content 경로를 따른다: reference/frontend/<묶음>/<문서>, design-system/<문서>, design-system/components/<컴포넌트>.
 // 문서는 공통 글(<문서>.mdx 또는 <문서>/index.mdx)과, 스택마다 다른 자리를 채우는 스택 파일(<문서>/<스택>.mdx)로 이뤄진다.
 
 interface ContentMeta {
@@ -29,7 +30,7 @@ const SOURCES = import.meta.glob<string>(["/content/**/*.mdx", "/content/**/SKIL
   eager: true,
 });
 
-// 공간마다 고를 수 있는 스택. 하나뿐인 공간은 선택기를 숨긴다.
+// 스택 갈래마다 고를 수 있는 스택. 하나뿐인 갈래는 선택기를 숨긴다.
 const SPACE_STACKS = {
   frontend: ["react", "angular"],
   backend: ["spring"],
@@ -43,11 +44,29 @@ export const STACK_LABELS: Record<string, string> = {
   spring: "Spring",
 };
 
+// 메뉴가 어느 스택 갈래인지: Reference는 둘째 마디(frontend·backend), 디자인 시스템과 그 밖의 frontend 메뉴는 frontend다.
+export function stackSpace(menu: string): Space {
+  const [first, second] = menu.split("/");
+  if (first === "reference") return second === "backend" ? "backend" : "frontend";
+  return first === "backend" ? "backend" : "frontend";
+}
+
+// 하위 폴더를 묶음으로 나눠 한 사이드바로 보이는 메뉴(섹션). 묶음은 이 순서로 보인다.
+export const SECTION_GROUPS: Record<string, readonly { id: string; title: string }[]> = {
+  "reference/frontend": [
+    { id: "structure", title: "구조" },
+    { id: "routing", title: "라우팅" },
+    { id: "state", title: "상태 관리" },
+    { id: "rendering", title: "렌더링" },
+    { id: "code-style", title: "코드 규칙" },
+  ],
+};
+
 // SKILL.md를 사이트에서 보이는 문서의 주소 이름
 export const SKILL_SLUG = "ai";
 
 export interface ContentDoc {
-  // content 기준 메뉴 경로. 예: frontend/engineering
+  // content 기준 메뉴 경로(문서가 든 폴더). 예: reference/frontend/routing
   menu: string;
   slug: string;
   // 공통 글 파일(/content/...)
@@ -120,8 +139,16 @@ export function findDocByFile(file: string) {
   );
 }
 
-const spaceOf = (menu: string) => menu.split("/")[0] as Space;
-export const stacksOf = (menu: string): readonly string[] => SPACE_STACKS[spaceOf(menu)] ?? [];
+// 섹션 하나의 문서를 사이드바 순서로: 섹션 바로 아래 문서, 묶음 순서대로 묶음 문서, 맨 끝에 AI 지침.
+export function sectionDocs(root: string) {
+  const top = menuDocs(root);
+  const grouped = (SECTION_GROUPS[root] ?? []).flatMap((group) =>
+    menuDocs(`${root}/${group.id}`).filter((doc) => !doc.isSkill),
+  );
+  return [...top.filter((doc) => !doc.isSkill), ...grouped, ...top.filter((doc) => doc.isSkill)];
+}
+
+export const stacksOf = (menu: string): readonly string[] => SPACE_STACKS[stackSpace(menu)];
 export const docHref = (doc: ContentDoc, stack: string) => `/${doc.menu}/${doc.slug}/${stack}`;
 
 // 검색용 본문: 머리말·JSX 표시·마크다운 기호를 걷어 낸 글

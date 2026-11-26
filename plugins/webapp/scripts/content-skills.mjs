@@ -1,8 +1,9 @@
 // 사이트 content(web/apps/blog/content)에서 스킬 goraebap-webapp의 references/를 만든다.
-// content/<영역>/<메뉴>/SKILL.md가 메뉴 하나이고, 그 SKILL.md에서 링크로 닿는 문서만 스킬에 넣는다(사람 전용 글은 빠진다).
-// 문서는 references/<영역>/<메뉴>/<문서>/index.md(공통 글)와 <스택>.md(스택 글)가 된다. <Slot> 자리는 스택 글의 절을 가리키는 한 줄이 되고,
+// SKILL.md가 있는 content 폴더가 메뉴 하나이고, 그 SKILL.md에서 링크로 닿는 문서만 스킬에 넣는다(사람 전용 글은 빠진다).
+// 스킬 안 경로는 사이트 주소를 따르되 앞의 reference/를 뗀다: content/reference/frontend/routing/navigation → references/frontend/routing/navigation,
+// content/design-system/theme → references/design-system/theme. 문서는 그 폴더의 index.md(공통 글)와 <스택>.md(스택 글)가 된다. <Slot> 자리는 스택 글의 절을 가리키는 한 줄이 되고,
 // 스택 파일의 <Fill>은 그 스택 글의 「## <이름>」 절이 된다. <Story>·<Diagram>은 사람 전용이라 지운다.
-// 영역마다 references/<영역>/README.md에 메뉴 SKILL.md의 본문을 모은다. 스킬의 SKILL.md(영역 안내)는 손으로 관리한다.
+// 영역(스킬 안 경로의 첫 마디)마다 references/<영역>/README.md에 메뉴 SKILL.md의 본문을 모은다. 스킬의 SKILL.md(영역 안내)는 손으로 관리한다.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,9 +20,14 @@ const repo = path.resolve(root, '../..');
 export const CONTENT = path.join(repo, 'web/apps/blog/content');
 export const OUT = path.join(repo, '.agents/skills/goraebap-webapp');
 const SKILLS = path.join(root, 'skills');
-// 공간마다 고를 수 있는 스택. 사이트의 SPACE_STACKS와 같다.
+// 스택 갈래마다 고를 수 있는 스택. 사이트의 SPACE_STACKS·stackSpace와 같다.
 export const SPACE_STACKS = { frontend: ['react', 'angular'], backend: ['spring'] };
-const SPACE_TITLES = { repo: '레포 구조', frontend: '프론트엔드', backend: '백엔드' };
+const stackSpace = rel => {
+  const [first, second] = rel.split('/');
+  if (first === 'reference') return second === 'backend' ? 'backend' : 'frontend';
+  return first === 'backend' ? 'backend' : 'frontend';
+};
+const SPACE_TITLES = { repo: '레포 구조', frontend: '프론트엔드', backend: '백엔드', 'design-system': '디자인 시스템' };
 const ALL_STACKS = Object.values(SPACE_STACKS).flat();
 // 사람 전용 블록(1인칭 글, 그림, 움직이는 견본). 스킬에서는 통째로 지운다.
 const HUMAN_ONLY = ['Story', 'Diagram', 'Demo'];
@@ -56,17 +62,20 @@ async function exists(file) {
   try { await fs.access(file); return true; } catch { return false; }
 }
 
-// content/<영역>/<메뉴>/SKILL.md
-async function findMenus() {
-  const menus = [];
-  for (const space of await fs.readdir(CONTENT, { withFileTypes: true })) {
-    if (!space.isDirectory()) continue;
-    for (const menu of await fs.readdir(path.join(CONTENT, space.name), { withFileTypes: true })) {
-      const dir = path.join(CONTENT, space.name, menu.name);
-      if (menu.isDirectory() && await exists(path.join(dir, 'SKILL.md'))) menus.push({ space: space.name, menu: menu.name, dir });
+// SKILL.md가 있는 content 폴더. rel은 content 기준 경로, out은 스킬 안 경로(앞의 reference/를 뗌),
+// space는 README를 모을 영역(out의 첫 마디), menu는 README 안 절 이름(out의 마지막 마디)이다.
+async function findMenus(dir = CONTENT, menus = []) {
+  for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const next = path.join(dir, entry.name);
+    if (await exists(path.join(next, 'SKILL.md'))) {
+      const rel = path.relative(CONTENT, next).split(path.sep).join('/');
+      const out = rel.replace(/^reference\//, '');
+      menus.push({ rel, out, space: out.split('/')[0], menu: out.split('/').at(-1), dir: next });
     }
+    await findMenus(next, menus);
   }
-  return menus.sort((a, b) => a.space.localeCompare(b.space) || a.menu.localeCompare(b.menu));
+  return dir === CONTENT ? menus.sort((a, b) => a.out.localeCompare(b.out)) : menus;
 }
 
 /** content로 옮긴 지침(메뉴 SKILL.md)의 이름. skills/의 지침이 이 이름의 없는 파일을 가리키면 사이트가 옮긴 페이지로 잇는다. */
@@ -90,11 +99,11 @@ export async function buildContentSkill() {
   const menuAnchor = new Map();
   const plans = [];
 
-  for (const { space, menu, dir } of menus) {
+  for (const { rel, out: outRoot, space, menu, dir } of menus) {
     const skillFile = path.join(dir, 'SKILL.md');
     const { meta } = await parse(skillFile);
     if (!meta.name || !meta.description) throw new Error(`SKILL.md에 name·description이 없습니다: ${skillFile}`);
-    const stacks = SPACE_STACKS[space] ?? [];
+    const stacks = SPACE_STACKS[stackSpace(rel)];
     // SKILL.md에서 링크로 닿는 같은 메뉴 안의 문서
     const docs = [];
     const queue = [skillFile];
@@ -119,7 +128,7 @@ export async function buildContentSkill() {
         if (await exists(old)) throw new Error(`같은 문서가 content와 skills/에 함께 있습니다: ${path.relative(repo, doc)} ↔ ${path.relative(repo, old)}`);
       }
     for (const doc of docs) {
-      const base = `references/${space}/${menu}/${docPath(dir, doc)}`;
+      const base = `references/${outRoot}/${docPath(dir, doc)}`;
       target.set(doc, `${base}/index.md`);
       const stackFiles = [];
       if (path.basename(doc) === 'index.mdx') {

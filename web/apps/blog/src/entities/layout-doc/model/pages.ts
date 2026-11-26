@@ -16,5 +16,5 @@ export const LAYOUT_PAGES: Record<string, { slug: string; hash?: string }> = {
 export function layoutPage(id: string) {
   const page = LAYOUT_PAGES[id];
   if (!page) return undefined;
-  return `/frontend/design-system/${page.slug}${page.hash ? `#${page.hash}` : ""}`;
+  return `/design-system/${page.slug}${page.hash ? `#${page.hash}` : ""}`;
 }

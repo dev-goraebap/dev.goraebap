@@ -1,6 +1,6 @@
 import { Outlet, useParams } from "@tanstack/react-router";
 import { DocsShell } from "@/shared/ui";
-import { SKILL_SLUG, docHref, menuDocs, stacksOf } from "../model/content";
+import { SKILL_SLUG, docHref, menuDocs, stackSpace, stacksOf } from "../model/content";
 import { contentNavGroups } from "../model/nav";
 import { StackSwitcher } from "./StackSwitcher";
 
@@ -16,7 +16,7 @@ export function ContentMenuShell({ menu, label }: { menu: string; label: string 
       groups={contentNavGroups(menuDocs(menu), (doc) => docHref(doc, stack))}
       header={
         <StackSwitcher
-          space={menu.split("/")[0]}
+          space={stackSpace(menu)}
           stacks={stacks}
           current={stack}
           hrefFor={(next) => `/${menu}/${slug}/${next}`}

@@ -1,0 +1,47 @@
+---
+title: Combobox
+group: 동작과 입력
+order: 30
+summary: "텍스트 입력으로 후보 목록을 필터링해 값을 고르는 콤보박스"
+---
+
+import { ComponentAnatomyFigure, ComponentExampleDemo, ComponentPlayground } from "@/entities/component-doc";
+
+후보 목록이 많아 텍스트를 입력해 실시간으로 걸러낸 뒤 하나의 값을 선택할 때 씁니다. 국가, 담당자, 태그처럼 목록을 훑기만 해서는 찾기 어려운 선택에 적합합니다.
+
+<Demo>
+<ComponentPlayground slug="combobox" />
+</Demo>
+
+<Slot name="usage" />
+
+## 구성
+
+| 부분 | 역할 |
+| --- | --- |
+| Combobox | 입력값, 필터링, 선택 상태를 관리하는 최상위 래퍼입니다. |
+| ComboboxInput | 검색어를 입력하고 드롭다운을 여닫는 입력 칸입니다. |
+| ComboboxContent | 필터링된 후보 목록을 띄우는 팝업 컨테이너입니다. |
+| ComboboxList | 후보 항목들을 렌더링하는 목록 영역입니다. |
+| ComboboxItem | 클릭이나 Enter로 선택하는 개별 후보 항목입니다. |
+| ComboboxEmpty | 검색 결과가 없을 때 표시하는 빈 상태 문구입니다. |
+
+## 접근성
+
+| 키 | 동작 |
+| --- | --- |
+| ArrowUp / ArrowDown | 후보 목록에서 이전·다음 항목을 강조합니다. |
+| Enter | 강조된 후보 항목을 선택합니다. |
+| Esc | 후보 목록 팝업을 닫습니다. |
+
+- ComboboxInput에 label이나 aria-label을 연결해 무엇을 검색·선택하는지 알립니다.
+- 일치하는 항목이 없을 때 ComboboxEmpty로 명확한 안내를 보여 줍니다.
+
+## 적응형 UI
+
+가상 키보드가 드롭다운을 가리지 않도록 64rem 미만에서는 useIsMobile로 분기해 BottomSheet에서 검색합니다. 자세한 기준은 [적응형 UI](../../../frontend/interaction/adaptive-ui/index.mdx)에 있습니다.
+
+## 관련 컴포넌트
+
+- [Select](../select/index.mdx): 후보가 적어 검색 없이 목록에서 바로 고를 수 있을 때 씁니다.
+- [Autocomplete](../autocomplete/index.mdx): 목록에 없는 자유 문자열도 그대로 입력값으로 허용해야 할 때 씁니다.

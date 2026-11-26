@@ -1,0 +1,45 @@
+# Popover
+
+트리거 요소 근처에 짧은 설정, 필터 옵션, 보조 정보를 띄우는 비모달 오버레이입니다. 배경 화면을 완전히 가리지 않고 가벼운 조작을 마칠 때 씁니다.
+
+스택별 구현: [react.md](react.md#usage) · [angular.md](angular.md#usage)의 「usage」 절
+
+## 구성
+
+| 부분 | 역할 |
+| - | - |
+| Popover | 팝오버의 열림 상태와 앵커 연결을 관리하는 최상위 래퍼입니다. |
+| PopoverTrigger | 클릭으로 팝오버를 열고 닫는 트리거 요소입니다. |
+| PopoverContent | 트리거 기준으로 배치되는 팝오버 본체입니다. |
+| PopoverTitle | 팝오버의 주제를 알리는 제목입니다. |
+| PopoverDescription | 팝오버 내용을 짧게 보충하는 설명입니다. |
+| PopoverClose | 내부 버튼으로 팝오버를 닫을 때 감싸는 요소입니다. |
+
+## 변형
+
+### Responsive
+
+넓은 화면에서는 팝오버, 좁은 화면에서는 바텀시트로 자동 전환합니다.
+
+스택별 구현: [react.md](react.md#responsive) · [angular.md](angular.md#responsive)의 「responsive」 절
+
+## 접근성
+
+| 키 | 동작 |
+| - | - |
+| Enter / Space | 트리거에서 팝오버를 열거나 닫습니다. |
+| Tab | 팝오버 안의 조작 요소로 포커스를 이동합니다. |
+| Esc | 팝오버를 닫고 트리거로 포커스를 되돌립니다. |
+
+- 팝오버에 제목이 있으면 PopoverTitle을 써서 스크린 리더에 맥락을 연결합니다.
+- 내용이 길거나 좁은 화면에서 잘리기 쉬우면 ResponsivePopover로 [Bottom Sheet](../bottom-sheet/index.md) 전환을 씁니다.
+
+## 적응형 UI
+
+64rem 미만에서는 ResponsivePopover가 팝오버를 BottomSheet로 전환하며, mobile="popover"로 유지할 수도 있습니다. 자세한 기준은 [적응형 UI](../../../frontend/interaction/adaptive-ui/index.md)에 있습니다.
+
+## 관련 컴포넌트
+
+- [Dialog](../dialog/index.md): 배경 조작을 막고 집중된 입력이나 확인이 필요할 때 씁니다.
+- [Tooltip](../tooltip/index.md): 상호작용 없이 한 줄 설명만 호버로 띄울 때 씁니다.
+- [Menu](../menu/index.md): 설정 폼 대신 즉시 실행할 명령 목록을 나열할 때 씁니다.

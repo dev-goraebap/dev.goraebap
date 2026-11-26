@@ -15,4 +15,5 @@ metadata:
 | --- | --- | --- |
 | 레포 구조 | [references/repo/README.md](references/repo/README.md) | 저장소 폴더 구성, 앱·패키지·서버 배치를 다룰 때 |
 | 프론트엔드 | [references/frontend/README.md](references/frontend/README.md) | 페이지·컴포넌트·라우트·프론트 상태·서버 데이터 조회를 다룰 때 |
+| 디자인 시스템 | [references/design-system/README.md](references/design-system/README.md) | 테마·간격·컴포넌트·레이아웃·화면 패턴처럼 화면의 모양을 다룰 때 |
 | 백엔드 | [references/backend/README.md](references/backend/README.md) | API·모듈·데이터 접근·서버 코드를 다룰 때 |

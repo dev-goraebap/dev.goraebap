@@ -70,7 +70,7 @@ import {
 } from "../ui/BottomSheetDemos";
 import { ReactCheckboxDemo, ReactDialogDemo, ReactSwitchDemo } from "../ui/InteractiveDemos";
 
-// 컴포넌트 문서(content/frontend/design-system/components)가 그리는 견본. 글과 코드는 문서에 있고, 여기에는 그림만 둔다.
+// 컴포넌트 문서(content/design-system/components)가 그리는 견본. 글과 코드는 문서에 있고, 여기에는 그림만 둔다.
 interface ComponentExampleDemo {
   id: string;
   renderReactDemo: () => ReactNode;

@@ -47,15 +47,44 @@ function RoutePendingBar() {
 }
 
 const LEGACY_PATHS = /^\/(glossary)(\/|$)/;
+// 옛 /frontend/engineering 문서 이름 → Reference › Frontend의 묶음/문서
+const ENGINEERING_MOVES: Record<string, string> = {
+  layers: "structure/layers",
+  "code-style": "code-style/code-style",
+  navigation: "routing/navigation",
+  "resource-routes": "routing/resource-routes",
+  state: "state/state",
+  "data-flow": "state/data-flow",
+};
 const DETAILS_PATHS = /^(\/frontend)?\/details(\/|$)/;
 const DESIGN_SYSTEM_PATHS =
   /^(\/frontend)?\/(components|overview|packages|foundations|layouts)(\/|$)/;
 
 export const Route = createRootRoute({
-  // 워크스페이스 도입 전 주소로 들어온 링크를 새 주소로 보낸다.
+  // 예전 주소로 들어온 링크를 새 주소로 보낸다.
   beforeLoad: ({ location }) => {
+    // 메뉴 기준으로 옮기기 전 주소(ADR 0008): /frontend/engineering/<문서> → /reference/frontend/<묶음>/<문서>,
+    // /frontend/design-system/… → /design-system/…
+    const engineering = location.pathname.match(
+      /^\/frontend\/engineering(?:\/([^/]+))?(\/[^/]+)?\/?$/,
+    );
+    if (engineering) {
+      const [, slug, stack = ""] = engineering;
+      const moved = slug === "story" ? "overview" : (ENGINEERING_MOVES[slug ?? ""] ?? slug ?? "");
+      const hash = location.hash ? `#${location.hash}` : "";
+      throw redirect({
+        href: `/reference/frontend${moved ? `/${moved}${stack}` : ""}${hash}`,
+        replace: true,
+      });
+    }
+    if (/^\/frontend\/design-system(\/|$)/.test(location.pathname)) {
+      throw redirect({
+        href: location.href.replace(/^\/frontend\/design-system/, "/design-system"),
+        replace: true,
+      });
+    }
     if (/^\/(themes|(frontend\/)?foundations\/color-themes)\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/frontend/design-system/theme", replace: true });
+      throw redirect({ href: "/design-system/theme", replace: true });
     }
     // 파운데이션이 content 문서(테마와 색상, 스타일 레시피)로 옮기기 전 주소
     const foundation = location.pathname.match(
@@ -63,10 +92,10 @@ export const Route = createRootRoute({
     );
     if (foundation) {
       const slug = foundation[1] === "tokens" ? "theme" : "recipes";
-      throw redirect({ href: `/frontend/design-system/${slug}`, replace: true });
+      throw redirect({ href: `/design-system/${slug}`, replace: true });
     }
     if (/^\/(frontend\/)?getting-started\/?$/.test(location.pathname)) {
-      throw redirect({ href: "/frontend/design-system/packages", replace: true });
+      throw redirect({ href: "/design-system/packages", replace: true });
     }
     // 옛 playbook 공간(지움)과 그 앞의 webapp·sdlc 공간 주소. 옮긴 문서는 그 자리로, 나머지는 처음 화면으로 보낸다.
     if (/^\/(playbook|frontend\/agent)(\/|$)/.test(location.pathname)) {
@@ -75,19 +104,18 @@ export const Route = createRootRoute({
     const legacy = location.pathname.match(/^\/(webapp|sdlc)(\/[^/]+)?\/?$/);
     if (legacy) {
       const moved: Record<string, string> = {
-        frontend: "/frontend/engineering/overview",
+        frontend: "/reference/frontend/overview",
         backend: "/backend/engineering/overview",
       };
       throw redirect({ href: moved[legacy[2]?.slice(1) ?? ""] ?? "/", replace: true });
     }
-    const story = location.pathname.match(/^\/(frontend|backend)\/engineering\/story\/?$/);
-    if (story) {
-      throw redirect({ href: `/${story[1]}/engineering/overview`, replace: true });
+    if (/^\/backend\/engineering\/story\/?$/.test(location.pathname)) {
+      throw redirect({ href: "/backend/engineering/overview", replace: true });
     }
-    // Design System 문서가 /frontend/design-system 아래로 모이기 전 주소
+    // Design System 문서가 /design-system 아래로 모이기 전 주소
     if (DESIGN_SYSTEM_PATHS.test(location.pathname)) {
       const rest = location.href.replace(/^\/frontend/, "");
-      throw redirect({ href: `/frontend/design-system${rest}`, replace: true });
+      throw redirect({ href: `/design-system${rest}`, replace: true });
     }
     // Interaction 메뉴의 예전 이름(Details) 주소
     if (DETAILS_PATHS.test(location.pathname)) {
@@ -116,9 +144,11 @@ function RootLayout() {
 
   const current = activeMenu(pathname);
   const subItems = current?.children ?? [];
-  const isFrontend = pathname.startsWith("/frontend");
+  const isDocs = ["/frontend", "/reference", "/design-system"].some((prefix) =>
+    pathname.startsWith(prefix),
+  );
   const isBackend = pathname.startsWith("/backend");
-  const hasDocsShell = isBackend || (isFrontend && !pathname.startsWith("/frontend/glossary"));
+  const hasDocsShell = isBackend || (isDocs && !pathname.startsWith("/frontend/glossary"));
 
   return (
     <DesignConfigProvider>

@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ContentDocView } from "@/entities/content-doc";
-import { skillPageHref } from "../../../lib/skill-pages";
+import { skillPageHref } from "@/pages/lib/skill-pages";
 
 export const Route = createFileRoute("/frontend/interaction/$slug/$stack/")({
   component: FrontendInteractionPage,

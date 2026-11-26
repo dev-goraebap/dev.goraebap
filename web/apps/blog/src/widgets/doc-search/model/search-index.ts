@@ -1,6 +1,6 @@
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import { BACKEND_ENGINEERING_DOCS, type GuideDoc } from "@/entities/webapp-doc";
-import { menuDocs, plainText } from "@/entities/content-doc";
+import { menuDocs, plainText, sectionDocs } from "@/entities/content-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
@@ -49,13 +49,13 @@ const guideKeywords = (doc: GuideDoc & { group?: string; phase?: string }) =>
     .join(" ")}`;
 
 const DOC_ENTRIES: DocEntry[] = [
-  page("디자인 시스템", "개요", "/frontend/design-system/overview", "디자인 시스템의 구조와 쓰임"),
+  page("디자인 시스템", "개요", "/design-system/overview", "디자인 시스템의 구조와 쓰임"),
   // 스택 없는 주소로 걸어 두면 고른 스택의 페이지로 열린다.
-  ...menuDocs("frontend/engineering").map((doc) => ({
-    id: `frontend:${doc.slug}`,
+  ...sectionDocs("reference/frontend").map((doc) => ({
+    id: `frontend:${doc.menu}/${doc.slug}`,
     group: "Engineering" as const,
     title: `프론트엔드 ${doc.meta.title ?? doc.slug}`,
-    href: `/frontend/engineering/${doc.slug}`,
+    href: `/${doc.menu}/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),
@@ -67,40 +67,35 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.summary,
     keywords: guideKeywords(doc),
   })),
-  page("컴포넌트", "컴포넌트 개요", "/frontend/design-system/components", "전체 컴포넌트 목록"),
-  ...menuDocs("frontend/design-system/components")
+  page("컴포넌트", "컴포넌트 개요", "/design-system/components", "전체 컴포넌트 목록"),
+  ...menuDocs("design-system/components")
     .filter((doc) => !doc.isSkill)
     .map((doc) => ({
       id: `component:${doc.slug}`,
       group: "컴포넌트" as const,
       title: doc.meta.title ?? doc.slug,
-      href: `/frontend/design-system/components/${doc.slug}`,
+      href: `/design-system/components/${doc.slug}`,
       description: doc.meta.summary ?? "",
       keywords: `${doc.slug} ${doc.meta.group ?? ""} ${plainText(doc.source)}`,
     })),
-  page(
-    "레이아웃",
-    "레이아웃 개요",
-    "/frontend/design-system/layouts",
-    "앱 외곽과 메인 영역 레이아웃",
-  ),
+  page("레이아웃", "레이아웃 개요", "/design-system/layouts", "앱 외곽과 메인 영역 레이아웃"),
   // 메인 영역 레이아웃은 「페이지 배치」 문서의 절이다. 앱 외곽 레이아웃은 아래 content 문서로 찾는다.
   ...LAYOUT_DOCS.filter((doc) => doc.level === "content").map((doc) => ({
     id: `layout:${doc.id}`,
     group: "레이아웃" as const,
     title: doc.name,
-    href: layoutPage(doc.id) ?? "/frontend/design-system/layouts",
+    href: layoutPage(doc.id) ?? "/design-system/layouts",
     description: doc.summary,
     keywords: `${doc.id} ${doc.summary}`,
   })),
-  ...menuDocs("frontend/design-system").map((doc) => ({
+  ...menuDocs("design-system").map((doc) => ({
     id: `design-system:${doc.slug}`,
     // 머리말의 묶음(파운데이션·레이아웃·패턴 등)을 따르고, 검색 묶음에 없는 것(AI 지침 등)은 패턴에 둔다.
     group: ((DOC_GROUPS as readonly string[]).includes(doc.meta.group ?? "")
       ? doc.meta.group
       : "패턴") as DocEntry["group"],
     title: doc.meta.title ?? doc.slug,
-    href: `/frontend/design-system/${doc.slug}`,
+    href: `/design-system/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),

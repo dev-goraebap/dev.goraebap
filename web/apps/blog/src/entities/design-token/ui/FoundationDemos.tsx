@@ -22,7 +22,7 @@ import {
   type TokenMode,
 } from "../model/token-sets";
 
-// 파운데이션 문서(content/frontend/design-system)가 <Demo>로 그리는 토큰 표. 값은 디자인 시스템 패키지의 CSS에서 읽는다.
+// 파운데이션 문서(content/design-system)가 <Demo>로 그리는 토큰 표. 값은 디자인 시스템 패키지의 CSS에서 읽는다.
 
 function TokenSection({
   title,

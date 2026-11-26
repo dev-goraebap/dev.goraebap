@@ -7,7 +7,7 @@ import { menuDocs } from "@/entities/content-doc";
 
 // 용어가 쓰이는 컴포넌트의 이름은 컴포넌트 문서(content)의 제목을 쓴다.
 const COMPONENT_TITLES = new Map(
-  menuDocs("frontend/design-system/components").map((doc) => [doc.slug, doc.meta.title ?? doc.slug]),
+  menuDocs("design-system/components").map((doc) => [doc.slug, doc.meta.title ?? doc.slug]),
 );
 import { GLOSSARY, GLOSSARY_CATEGORIES, type GlossaryCategory } from "@/shared/lib/glossary";
 
@@ -119,7 +119,7 @@ function GlossaryPage() {
                           {entry.components.map((slug) => (
                             <Link
                               key={slug}
-                              to="/frontend/design-system/components/$slug"
+                              to="/design-system/components/$slug"
                               params={{ slug }}
                               className="border-border bg-background text-muted-foreground hover:text-foreground hover:border-foreground/30 rounded-full border px-2 py-0.5 text-[0.6875rem] font-medium transition-colors"
                             >
