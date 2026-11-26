@@ -55,7 +55,10 @@ function isAtHand(file: string) {
 // 파일의 검은 선과 파란 표시를 두 마스크로 나눠 테마 색으로 칠한다.
 export function StateLandscape({ kind, isCompact }: { kind: StateKind; isCompact?: boolean }) {
   const id = `landscape${useId().replace(/[^\w-]/g, "")}`;
-  const [picked] = useState(() => Math.floor(Math.random() * 3));
+  // 브라우저에서는 세 그림 중 하나를 고르고, 정적 페이지를 그리는 서버에서는 첫 그림으로 고정해 빌드 결과가 매번 같게 한다.
+  const [picked] = useState(() =>
+    typeof window === "undefined" ? 0 : Math.floor(Math.random() * 3),
+  );
   const [file, end] = DRAWINGS[kind][picked];
   const [arrived, setArrived] = useState(() => isAtHand(file));
   const layer = (part: "ink" | "accent") => (
