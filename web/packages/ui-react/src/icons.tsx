@@ -16,6 +16,7 @@ import {
   ChevronUp,
   CircleCheck,
   Code2,
+  Compass,
   Component,
   Copy,
   ExternalLink,
@@ -56,6 +57,7 @@ export type SystemIconName =
   | "chevronRight"
   | "chevronUp"
   | "code"
+  | "compass"
   | "components"
   | "copy"
   | "desktop"
@@ -203,6 +205,12 @@ const SOLAR_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
       <path d="m8 8-4 4 4 4" />
       <path d="m16 8 4 4-4 4" />
       <path d="m13.5 5-3 14" opacity={0.55} />
+    </SolarSvg>
+  ),
+  compass: (props) => (
+    <SolarSvg {...props}>
+      <circle cx="12" cy="12" r="9" opacity={0.55} />
+      <polygon points="15.5 8.5 13.7 13.7 8.5 15.5 10.3 10.3 15.5 8.5" />
     </SolarSvg>
   ),
   components: (props) => (
@@ -367,6 +375,7 @@ const LUCIDE_ICONS: Record<SystemIconName, (props: SvgProps) => ReactNode> = {
   chevronLeft: (props) => <ChevronLeft aria-hidden="true" {...props} />,
   chevronRight: (props) => <ChevronRight aria-hidden="true" {...props} />,
   code: (props) => <Code2 aria-hidden="true" {...props} />,
+  compass: (props) => <Compass aria-hidden="true" {...props} />,
   components: (props) => <Component aria-hidden="true" {...props} />,
   copy: (props) => <Copy aria-hidden="true" {...props} />,
   desktop: (props) => <Monitor aria-hidden="true" {...props} />,

@@ -47,20 +47,8 @@ function RoutePendingBar() {
 }
 
 const LEGACY_PATHS = /^\/(glossary)(\/|$)/;
-// 옛 /frontend/engineering 문서 이름 → Reference › Frontend의 묶음/문서
-const ENGINEERING_MOVES: Record<string, string> = {
-  layers: "structure/layers",
-  "code-style": "code-style/naming",
-  navigation: "routing/navigation",
-  "resource-routes": "routing/resource-routes",
-  state: "state/state",
-  "data-flow": "state/data-flow",
-};
-// 옛 /frontend/interaction 문서 → 새 자리(#58). 나뉜 문서는 앵커로 한 번 더 가른다.
+// 옛 /frontend/interaction 문서 중 디자인 시스템으로 옮긴 항목. 나머지는 /frontend로 보낸다.
 const INTERACTION_MOVES: Record<string, string> = {
-  "page-transition": "/reference/frontend/routing/transitions",
-  "route-masking": "/reference/frontend/routing/route-masking",
-  "initial-load": "/reference/frontend/rendering/initial-load",
   "loading-feedback": "/design-system/loading-feedback",
   "ui-states": "/design-system/ui-states",
   "adaptive-ui": "/design-system/adaptive-ui",
@@ -73,40 +61,9 @@ const DESIGN_SYSTEM_PATHS =
 export const Route = createRootRoute({
   // 예전 주소로 들어온 링크를 새 주소로 보낸다.
   beforeLoad: ({ location }) => {
-    // 메뉴 기준으로 옮기기 전 주소(ADR 0008): /frontend/engineering/<문서> → /reference/frontend/<묶음>/<문서>,
-    // /frontend/design-system/… → /design-system/…
-    const engineering = location.pathname.match(
-      /^\/frontend\/engineering(?:\/([^/]+))?(\/[^/]+)?\/?$/,
-    );
-    if (engineering) {
-      const [, slug, stack = ""] = engineering;
-      const moved =
-        slug === "story" || slug === "overview"
-          ? "structure/layers"
-          : slug === "code-style" && /파생|부수|메모/.test(decodeURIComponent(location.hash))
-            ? "code-style/effects"
-            : (ENGINEERING_MOVES[slug ?? ""] ?? slug ?? "");
-      const hash = location.hash ? `#${location.hash}` : "";
-      throw redirect({
-        href: `/reference/frontend${moved ? `/${moved}${stack}` : ""}${hash}`,
-        replace: true,
-      });
-    }
-    // Frontend Reference를 다섯 묶음으로 나누기 전 주소(#59): 개요는 Blog 글감으로 빠졌고, 코드 규칙은 두 문서로 나뉘었다.
-    const reference = location.pathname.match(
-      /^\/reference\/frontend\/(overview|code-style\/code-style)(\/[^/]+)?\/?$/,
-    );
-    if (reference) {
-      const [, old, stack = ""] = reference;
-      const hash = location.hash ? `#${location.hash}` : "";
-      const effects = /파생|부수|메모/.test(decodeURIComponent(location.hash));
-      const target =
-        old === "overview"
-          ? "structure/layers"
-          : effects
-            ? "code-style/effects"
-            : "code-style/naming";
-      throw redirect({ href: `/reference/frontend/${target}${stack}${hash}`, replace: true });
+    // 예전 프론트엔드 주소(/reference/frontend/…, /frontend/engineering/…)는 새 프론트엔드(/frontend)로 보낸다.
+    if (/^\/(reference\/frontend|frontend\/engineering)(\/|$)/.test(location.pathname)) {
+      throw redirect({ href: "/frontend", replace: true });
     }
     if (/^\/frontend\/design-system(\/|$)/.test(location.pathname)) {
       throw redirect({
@@ -135,7 +92,7 @@ export const Route = createRootRoute({
     const legacy = location.pathname.match(/^\/(webapp|sdlc)(\/[^/]+)?\/?$/);
     if (legacy) {
       const moved: Record<string, string> = {
-        frontend: "/reference/frontend",
+        frontend: "/frontend",
         backend: "/backend",
       };
       throw redirect({ href: moved[legacy[2]?.slice(1) ?? ""] ?? "/", replace: true });
@@ -149,7 +106,7 @@ export const Route = createRootRoute({
       const rest = location.href.replace(/^\/frontend/, "");
       throw redirect({ href: `/design-system${rest}`, replace: true });
     }
-    // Interaction 메뉴(#58에서 없앰)와 그 예전 이름(Details)의 주소: 문서마다 Reference나 Design System의 새 자리로 보낸다.
+    // Interaction 메뉴(#58에서 없앰)와 그 예전 이름(Details)의 주소: 디자인 시스템 항목은 새 자리로, 나머지는 /frontend로 보낸다.
     const interaction = location.pathname.match(
       /^(?:\/frontend)?\/(?:interaction|details)(?:\/([^/]+))?(\/[^/]+)?\/?$/,
     );
@@ -159,17 +116,15 @@ export const Route = createRootRoute({
       const target =
         slug === "page-transition" && /화면-전환|움직임|완료|동작-줄이기/.test(anchor)
           ? "/design-system/motion"
-          : slug === "loading-feedback" && /디바운스|요청-취소/.test(anchor)
-            ? "/reference/frontend/state/search-input"
-            : INTERACTION_MOVES[slug];
+          : INTERACTION_MOVES[slug];
       const hash = location.hash ? `#${location.hash}` : "";
       throw redirect({
-        href: target ? `${target}${stack}${hash}` : "/reference/frontend",
+        href: target ? `${target}${stack}${hash}` : "/frontend",
         replace: true,
       });
     }
     if (LEGACY_PATHS.test(location.pathname)) {
-      throw redirect({ href: `/frontend${location.href}`, replace: true });
+      throw redirect({ href: `/design-system${location.href}`, replace: true });
     }
   },
   component: RootLayout,
@@ -190,10 +145,9 @@ function RootLayout() {
 
   const current = activeMenu(pathname);
   const subItems = current?.children ?? [];
-  const isDocs = ["/frontend", "/backend", "/reference", "/design-system"].some((prefix) =>
+  const hasDocsShell = ["/frontend", "/backend", "/design-system"].some((prefix) =>
     pathname.startsWith(prefix),
   );
-  const hasDocsShell = isDocs && !pathname.startsWith("/frontend/glossary");
 
   return (
     <DesignConfigProvider>

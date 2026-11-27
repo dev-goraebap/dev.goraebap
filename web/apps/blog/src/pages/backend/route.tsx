@@ -1,5 +1,5 @@
 import { Outlet, createFileRoute } from "@tanstack/react-router";
-import { backendNavGroups } from "@/entities/backend-doc";
+import { diataxisNavGroups } from "@/entities/diataxis-doc";
 import { DocsShell } from "@/shared/ui";
 
 export const Route = createFileRoute("/backend")({
@@ -8,7 +8,7 @@ export const Route = createFileRoute("/backend")({
 
 function BackendLayout() {
   return (
-    <DocsShell label="백엔드 탐색" groups={backendNavGroups()}>
+    <DocsShell label="백엔드 탐색" groups={diataxisNavGroups("backend")}>
       <Outlet />
     </DocsShell>
   );

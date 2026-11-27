@@ -16,7 +16,7 @@ interface GlossaryTermProps {
   definition: string;
   distinction?: string;
   stacks?: Record<string, string>;
-  glossaryPath?: "/frontend/glossary" | "/backend/glossary";
+  glossaryPath?: "/design-system/glossary" | "/frontend/glossary" | "/backend/glossary";
   children: ReactNode;
 }
 
@@ -27,7 +27,7 @@ export function GlossaryTerm({
   definition,
   distinction,
   stacks,
-  glossaryPath = "/frontend/glossary",
+  glossaryPath = "/design-system/glossary",
   children,
 }: GlossaryTermProps) {
   return (

@@ -1,11 +1,11 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
 import {
-  BackendArticle,
-  backendAllDocs,
-  backendDocHref,
-  findBackendDoc,
-} from "@/entities/backend-doc";
+  DiataxisArticle,
+  diataxisAllDocs,
+  diataxisDocHref,
+  findDiataxisDoc,
+} from "@/entities/diataxis-doc";
 import { DocPager, PageState } from "@/shared/ui";
 
 export const Route = createFileRoute("/backend/$section/$slug/")({
@@ -20,8 +20,8 @@ function BackendDocPage() {
   const { stack } = Route.useSearch();
   const navigate = useNavigate();
 
-  const docs = backendAllDocs();
-  const doc = findBackendDoc(section, slug);
+  const docs = diataxisAllDocs("backend");
+  const doc = findDiataxisDoc("backend", section, slug);
   const index = doc ? docs.findIndex((d) => d.section === doc.section && d.slug === doc.slug) : -1;
 
   if (!doc) {
@@ -42,7 +42,7 @@ function BackendDocPage() {
   const next = index >= 0 && index + 1 < docs.length ? docs[index + 1] : undefined;
 
   return (
-    <BackendArticle
+    <DiataxisArticle
       doc={doc}
       activeStack={stack ?? "common"}
       onSelectStack={(nextStack) => {
@@ -55,8 +55,12 @@ function BackendDocPage() {
       }}
       trailing={
         <DocPager
-          prevDoc={prev ? { title: prev.meta.title ?? prev.slug, href: backendDocHref(prev) } : undefined}
-          nextDoc={next ? { title: next.meta.title ?? next.slug, href: backendDocHref(next) } : undefined}
+          prevDoc={
+            prev ? { title: prev.meta.title ?? prev.slug, href: diataxisDocHref(prev) } : undefined
+          }
+          nextDoc={
+            next ? { title: next.meta.title ?? next.slug, href: diataxisDocHref(next) } : undefined
+          }
         />
       }
     />

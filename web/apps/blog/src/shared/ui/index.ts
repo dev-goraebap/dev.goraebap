@@ -12,6 +12,13 @@ export { MermaidDiagram } from "./MermaidDiagram";
 export { PageState } from "./page-state/PageState";
 export { ResizableLayoutStage } from "./ResizableLayoutStage";
 export { SiteFooter } from "./SiteFooter";
+export {
+  MobileToc,
+  TableOfContents,
+  extractHeadingsFromMarkdown,
+  headingToAnchor,
+  type TocItem,
+} from "./TableOfContents";
 export { ThemedPortalScope } from "./ThemedPortalScope";
 export { UiSizeControl } from "./UiSizeControl";
 export { Wordmark } from "./Wordmark";

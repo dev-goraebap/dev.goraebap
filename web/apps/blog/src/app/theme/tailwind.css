@@ -133,6 +133,10 @@
 }
 
 @layer utilities {
+  .corner-squircle {
+    corner-shape: squircle;
+  }
+
   .bg-hatch {
     background-image: repeating-linear-gradient(
       135deg,

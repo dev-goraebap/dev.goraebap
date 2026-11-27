@@ -1,11 +1,11 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import { backendAllDocs, backendDocHref } from "@/entities/backend-doc";
+import { diataxisAllDocs, diataxisDocHref } from "@/entities/diataxis-doc";
 
 export const Route = createFileRoute("/backend/")({
   beforeLoad: () => {
-    const first = backendAllDocs()[0];
+    const first = diataxisAllDocs("backend")[0];
     throw redirect({
-      href: first ? backendDocHref(first) : "/backend/glossary",
+      href: first ? diataxisDocHref(first) : "/backend/glossary",
       replace: true,
     });
   },

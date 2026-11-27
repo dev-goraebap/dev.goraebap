@@ -1,17 +1,17 @@
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
 import {
-  BACKEND_GLOSSARY_ENTRIES,
-  BACKEND_SECTION_LABELS,
-  backendAllDocs,
-  backendDocHref,
-} from "@/entities/backend-doc";
-import { blogPosts, docHref, menuDocs, plainText, sectionDocs } from "@/entities/content-doc";
+  DIATAXIS_SECTION_LABELS,
+  diataxisAllDocs,
+  diataxisDocHref,
+  glossaryOf,
+} from "@/entities/diataxis-doc";
+import { blogPosts, docHref, menuDocs, plainText } from "@/entities/content-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
   "Blog",
+  "프론트엔드",
   "백엔드",
-  "Engineering",
   "디자인 시스템",
   "파운데이션",
   "컴포넌트",
@@ -50,25 +50,34 @@ const DOC_ENTRIES: DocEntry[] = [
     keywords: plainText(doc.source),
   })),
   page("디자인 시스템", "개요", "/design-system/overview", "디자인 시스템의 구조와 쓰임"),
-  // 스택 없는 주소로 걸어 두면 고른 스택의 페이지로 열린다.
-  ...sectionDocs("reference/frontend").map((doc) => ({
-    id: `frontend:${doc.menu}/${doc.slug}`,
-    group: "Engineering" as const,
-    title: `프론트엔드 ${doc.meta.title ?? doc.slug}`,
-    href: `/${doc.menu}/${doc.slug}`,
-    description: doc.meta.summary ?? doc.meta.description ?? "",
-    keywords: plainText(doc.source),
+  ...diataxisAllDocs("frontend").map((doc) => ({
+    id: `frontend:${doc.section}/${doc.slug}`,
+    group: "프론트엔드" as const,
+    title: doc.meta.title ?? doc.slug,
+    href: diataxisDocHref(doc),
+    description: `${DIATAXIS_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
+    keywords: [doc.source, ...doc.stacks.map((s) => s.source)].map(plainText).join(" "),
   })),
-  ...backendAllDocs().map((doc) => ({
+  page("용어집", "프론트엔드 용어집", "/frontend/glossary", "프론트엔드 문서에 쓰는 아키텍처·설계 용어 모음"),
+  ...glossaryOf("frontend").entries.map((entry) => ({
+    id: `frontend-glossary:${entry.id}`,
+    group: "용어집" as const,
+    title: `${entry.korean} ${entry.term}`,
+    href: "/frontend/glossary",
+    hash: entry.id,
+    description: entry.definition,
+    keywords: `${entry.category} ${entry.definition} ${entry.distinction ?? ""}`,
+  })),
+  ...diataxisAllDocs("backend").map((doc) => ({
     id: `backend:${doc.section}/${doc.slug}`,
     group: "백엔드" as const,
     title: doc.meta.title ?? doc.slug,
-    href: backendDocHref(doc),
-    description: `${BACKEND_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
+    href: diataxisDocHref(doc),
+    description: `${DIATAXIS_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
     keywords: [doc.source, ...doc.stacks.map((s) => s.source)].map(plainText).join(" "),
   })),
   page("용어집", "백엔드 용어집", "/backend/glossary", "백엔드 문서에 쓰는 아키텍처·설계 용어 모음"),
-  ...BACKEND_GLOSSARY_ENTRIES.map((entry) => ({
+  ...glossaryOf("backend").entries.map((entry) => ({
     id: `backend-glossary:${entry.id}`,
     group: "용어집" as const,
     title: `${entry.korean} ${entry.term}`,
@@ -109,12 +118,12 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),
-  page("용어집", "용어집", "/frontend/glossary", "문서에 쓰는 용어 모음"),
+  page("용어집", "디자인 시스템 용어집", "/design-system/glossary", "디자인 시스템 문서에 쓰는 용어 모음"),
   ...Object.entries(GLOSSARY).map(([key, entry]) => ({
     id: `glossary:${key}`,
     group: "용어집" as const,
     title: entry.korean ? `${entry.korean} ${entry.term}` : entry.term,
-    href: "/frontend/glossary",
+    href: "/design-system/glossary",
     hash: key,
     description: stripGlossaryMarkup(entry.definition),
     keywords: `${entry.category} ${stripGlossaryMarkup(entry.definition)}`,

@@ -3,6 +3,7 @@ title: 명령과 조회의 분리
 summary: 도메인 모델을 명령 중심으로 두고 조회 경로를 분리하는 경량 CQRS와, 단일 DB 모듈러 모놀리스에서 교차 컨텍스트 조회를 다루는 기준을 정리합니다.
 order: 3
 icon: file
+thumbnail: /thumbnails/command-and-query.jpg
 ---
 
 백엔드 코드를 컨텍스트와 3개 내부 계층으로 나눈 뒤에도, 실제 기능을 구현하다 보면 데이터 접근 쪽에서 또 하나의 갈림길을 만나게 됩니다. 바로 **상태를 바꾸는 명령(Command)**과 **데이터를 읽어 보여주는 조회(Query)**를 같은 모델과 경로로 다룰 것인가의 문제입니다. 구체적인 규칙은 [데이터 접근](../reference/data-access/index.md)에 있고, 데이터 접근 도구 선택에 대한 이야기는 [SQL 중심 데이터 접근을 택한 이유](./sql-first-data-access.md)에 따로 정리해 두었습니다.

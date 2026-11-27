@@ -3,6 +3,7 @@ title: 컨텍스트와 레이어 설계
 summary: 백엔드 코드를 컨텍스트 패키지와 3개 내부 계층으로 나누기까지 비교한 선택지와 타협을 정리합니다.
 order: 2
 icon: transition
+thumbnail: /thumbnails/context-and-layers.jpg
 ---
 
 아키텍처 구조에는 프로젝트 규모와 팀 상황에 따라 맞는 답이 달라집니다. 이 글은 백엔드 코드를 컨텍스트 패키지와 3개 내부 계층(`application`, `domain`, `infrastructure`)으로 나누기까지 어떤 선택지들을 비교하고 어디에서 타협했는지 정리한 배경입니다. 구체적인 규칙은 [디렉토리·패키지 구조](../reference/directory-structure/index.md)와 [레이어](../reference/layers/index.md)에 있습니다.

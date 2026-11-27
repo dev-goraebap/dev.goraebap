@@ -1,6 +1,6 @@
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 
-type SiteMenuTarget = "/design-system/overview" | "/reference/frontend" | "/backend";
+type SiteMenuTarget = "/design-system/overview" | "/frontend" | "/backend" | "/blog";
 
 export interface SiteMenu {
   label: string;
@@ -14,6 +14,14 @@ export interface SiteMenu {
 
 export const SITE_MENUS: SiteMenu[] = [
   {
+    label: "블로그",
+    icon: "compass",
+    description: "설계 생각과 프론트·백엔드 아티클 모음",
+    to: "/blog",
+    match: ["/blog"],
+    landing: true,
+  },
+  {
     label: "디자인 시스템",
     icon: "components",
     description: "파운데이션·컴포넌트·레이아웃·패턴",
@@ -23,9 +31,9 @@ export const SITE_MENUS: SiteMenu[] = [
   {
     label: "프론트엔드",
     icon: "layouts",
-    description: "프론트엔드 구현 기준",
-    to: "/reference/frontend",
-    match: ["/reference/frontend", "/frontend"],
+    description: "프론트엔드 플레이북·아티클·레퍼런스",
+    to: "/frontend",
+    match: ["/frontend"],
     landing: true,
   },
   {

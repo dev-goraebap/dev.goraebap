@@ -3,6 +3,7 @@ title: SQL 중심 데이터 접근을 택한 이유
 summary: JPA·TypeORM 같은 객체 중심 ORM을 쓰며 느꼈던 고민과, jOOQ·Drizzle 같은 SQL 중심 접근으로 옮겨 보며 정리한 생각을 담았습니다.
 order: 4
 icon: code
+thumbnail: /thumbnails/sql-first-data-access.jpg
 ---
 
 관계형 데이터베이스를 다루는 백엔드에서 JPA나 TypeORM처럼 엔티티와 객체 그래프를 중심에 두는 ORM은 오랫동안 자연스러운 선택지였습니다. 객체 중심으로 사고할 수 있고, 반복적인 매핑과 CRUD 코드를 크게 줄여 준다는 장점은 지금도 크다고 생각합니다. 그럼에도 최근 프로젝트들에서는 jOOQ(Java)나 Drizzle(TypeScript)처럼 **SQL에 좀 더 가까운 데이터 접근 방식**을 기본으로 두고 있습니다. 거창한 정답이라기보다, 작업을 이어 오며 느꼈던 몇 가지 고민에서 비롯된 선택입니다. 구체적인 사용 규칙은 [데이터 접근](../reference/data-access/index.md)에 정리해 두었습니다.

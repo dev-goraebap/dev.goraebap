@@ -11,8 +11,9 @@ interface ContentMeta {
   group?: string;
   order?: number;
   summary?: string;
-  // Blog 글의 날짜(yyyy-mm-dd)
+  // Blog 글의 날짜(yyyy-mm-dd)와 썸네일 경로
   date?: string;
+  thumbnail?: string;
   // SKILL.md 머리말
   name?: string;
   description?: string;
@@ -54,15 +55,7 @@ export function stackSpace(menu: string): Space {
 }
 
 // 하위 폴더를 묶음으로 나눠 한 사이드바로 보이는 메뉴(섹션). 묶음은 이 순서로 보인다.
-export const SECTION_GROUPS: Record<string, readonly { id: string; title: string }[]> = {
-  "reference/frontend": [
-    { id: "structure", title: "구조" },
-    { id: "routing", title: "라우팅" },
-    { id: "state", title: "상태 관리" },
-    { id: "rendering", title: "렌더링" },
-    { id: "code-style", title: "코드 규칙" },
-  ],
-};
+export const SECTION_GROUPS: Record<string, readonly { id: string; title: string }[]> = {};
 
 // SKILL.md를 사이트에서 보이는 문서의 주소 이름
 export const SKILL_SLUG = "ai";
