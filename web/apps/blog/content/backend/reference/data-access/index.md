@@ -5,7 +5,7 @@ order: 5
 icon: file
 ---
 
-전통 ORM 대신 SQL 중심 도구를 택하고 명령·조회 경로를 나누는 배경은 [명령과 조회, 그리고 SQL 중심 데이터 접근](../../articles/command-query-and-sql.md)을 참고합니다.
+명령·조회 경로를 나누는 배경은 [명령과 조회의 분리](../../articles/command-and-query.md), SQL 중심 도구를 택한 배경은 [SQL 중심 데이터 접근을 택한 이유](../../articles/sql-first-data-access.md)를 참고합니다.
 
 ## 명령(`Repository`)과 조회(`Query`)의 분리
 
