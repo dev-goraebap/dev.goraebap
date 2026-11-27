@@ -1,6 +1,6 @@
 ---
-title: 레이어 (Spring Boot)
-summary: 공통 레이어 규칙을 Spring Boot 코드에 매핑하는 기준입니다.
+title: 구성 요소와 실행 흐름 (Spring Boot)
+summary: 공통 구성 요소와 실행 흐름 규칙을 Spring Boot 코드에 매핑하는 기준입니다.
 ---
 
 ## 계층별 Spring Boot 구성

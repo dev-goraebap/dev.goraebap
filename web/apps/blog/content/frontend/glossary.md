@@ -68,3 +68,41 @@
 - **id**: `atomic-design`
 - **정의**: 브래드 프로스트(Brad Frost)가 제안한 UI 설계 방법론으로, 인터페이스를 `Atoms → Molecules → Organisms → Templates → Pages` 다섯 단계의 시각적 조합 단위로 나눕니다.
 - **구분**: 디자인 시스템이나 순수 UI 컴포넌트 조합에는 유용하지만, 앱 전반의 상태·API·도메인 간 의존성 규칙은 다루지 않습니다.
+
+## 구성 요소와 실행 흐름
+
+### 라우트 경계 (Route Boundary)
+
+- **id**: `route-boundary`
+- **정의**: URL 진입 시 주소 매칭, 검색 파라미터 검증, 인증·권한 가드, 진입 전 데이터 프리로드를 맡는 실행 진입점입니다.
+- **구분**: 화면 마크업이나 폼 상태는 `ui/` 컴포넌트에 위임하고 라우트 진입 파일은 얇게 유지합니다.
+- **스택 매핑**:
+  - React · TanStack: `route.tsx` · `page.tsx`의 `createFileRoute` (`validateSearch`, `beforeLoad`, `loader`)
+  - Angular: `routes.ts`의 `Routes` 정의, 함수형 `canActivate` · `resolve`, `withComponentInputBinding()`
+
+### 서버 상태 (Server State)
+
+- **id**: `server-state`
+- **정의**: 백엔드 API가 원본(Source of Truth)을 소유하고, 프론트엔드가 캐시 형태로 읽어 쓰는 비동기 데이터입니다.
+- **구분**: 로컬 UI 상태와 달리 컴포넌트에 복사해 두지 않고 캐시 계층이 소유하며, 변경(Mutation) 뒤 관련 키를 무효화해 갱신합니다.
+
+### 로컬 UI 상태 (Local UI State)
+
+- **id**: `local-ui-state`
+- **정의**: 모달·드로어 열림, 탭 선택, 저장 전 입력 초안처럼 특정 화면이나 컴포넌트 수명 안에서만 의미가 있는 클라이언트 전용 상태입니다.
+- **구분**: URL로 공유해야 하는 검색·필터 조건(URL 상태)이나 백엔드 원본 데이터(서버 상태)와는 소유를 분리합니다.
+
+### 조회 옵션 (Query Options)
+
+- **id**: `query-options`
+- **정의**: 서버 데이터를 식별하는 캐시 키(`key`), 요청 함수(`fetch`), 신선도 유지 시간(`staleTime`)을 하나로 묶은 정의 객체입니다.
+- **구분**: 라우트 가드·로더와 화면 컴포넌트가 같은 조회 옵션을 공유해 중복 요청과 캐시 키 불일치를 막습니다.
+- **스택 매핑**:
+  - React · TanStack: TanStack Query의 `queryOptions()`
+  - Angular: `queryOptions()` + `ServerState`
+
+### 통신 기반 (Transport Layer)
+
+- **id**: `transport-layer`
+- **정의**: `fetch`나 `HttpClient`를 감싸 인증 자격 증명, 공통 헤더, HTTP 상태 코드별 `ApiError` 변환을 일원화하는 최하단 통신 어댑터(`shared/api`)입니다.
+- **구분**: 업무 규칙이나 토스트·리다이렉트 같은 UI 흐름 제어는 포함하지 않습니다.

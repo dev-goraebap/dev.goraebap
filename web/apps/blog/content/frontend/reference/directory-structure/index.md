@@ -8,6 +8,7 @@ icon: layouts
 기본 개념(레이어·슬라이스·세그먼트·공개 API)은 [Feature-Sliced Design(FSD) 공식 문서](https://feature-sliced.design/kr/docs)를 따릅니다. 이 문서는 공식 FSD v2.1의 레이어 기준에 주소 기반 `pages` 규칙과 프레임워크별 적용 방식을 더해 정리합니다.
 
 - 프레임워크별 라우팅·폴더 적용: 스택 전환(`React · TanStack` · `Angular`)
+- 코드 구성 요소별 실행 책임: [구성 요소와 실행 흐름](../components-and-flow/index.md)
 - 설계 배경: [프론트엔드 폴더 구조를 FSD로 정착시키기까지](../../articles/why-fsd-layers.md)
 - 적용 절차: [화면·슬라이스 추가](../../playbooks/new-page-and-slice/index.md)
 
