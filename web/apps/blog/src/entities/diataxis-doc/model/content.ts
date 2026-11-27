@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
+import type { MaturityStatus } from "@/shared/lib/maturity";
 import type { DocsNavGroup } from "@/shared/ui";
 
 export type DiataxisSpace = "backend" | "frontend";
@@ -46,6 +47,9 @@ export interface DiataxisDocMeta {
   icon?: SystemIconName;
   date?: string;
   thumbnail?: string;
+  maturity?: MaturityStatus;
+  maturityNote?: string;
+  reviewedAt?: string | Date;
 }
 
 export interface DiataxisContentModule {

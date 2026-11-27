@@ -4,6 +4,9 @@ summary: 계층(타입) 기준과 기능 기준 패키지 구조의 트레이드
 order: 1
 icon: layouts
 thumbnail: /thumbnails/type-vs-feature-packaging.jpg
+maturity: stable
+maturityNote: "업무 영역(컨텍스트)과 기술 기반(shared)을 최상위에서 분리하는 원칙은 여러 백엔드 프로젝트에서 오래 써 보며 검증됨. 소규모 단순 CRUD API는 예외 가능"
+reviewedAt: 2026-11-27
 ---
 
 백엔드 프로젝트에서 코드를 어떤 기준으로 폴더와 패키지에 나눌지는 규모와 상관없이 늘 고민이 되는 지점입니다. 이 글은 흔히 비교하는 **타입 기준(Type-Based)**과 **기능 기준(Feature-Based)** 패키지 구조가 각각 어떤 강점과 한계를 갖는지 짚어 보고, 어떤 고민을 거쳐 지금의 **기능(컨텍스트) 중심 구조** 쪽으로 기울게 되었는지 정리합니다. 이어지는 구체적인 구성은 [컨텍스트와 레이어 설계](./context-and-layers.md)에서 다룹니다.

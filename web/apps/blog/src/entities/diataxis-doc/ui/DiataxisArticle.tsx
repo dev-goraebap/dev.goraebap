@@ -22,6 +22,7 @@ import {
   FileTreeView,
   GlossaryTerm,
   LayersDiagram,
+  MaturityMeta,
   MermaidDiagram,
   MobileToc,
   TableOfContents,
@@ -233,6 +234,7 @@ export function DiataxisArticle({
                 {activeSummary}
               </p>
             )}
+            <MaturityMeta primary={variant?.meta} fallback={doc.meta} />
           </div>
           {hasStacks && (
             <div

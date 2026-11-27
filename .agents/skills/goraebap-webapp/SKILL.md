@@ -17,3 +17,12 @@ metadata:
 | 프론트엔드 | [references/frontend/README.md](references/frontend/README.md) | 페이지·컴포넌트·라우트·프론트 상태·서버 데이터 조회를 다룰 때 |
 | 디자인 시스템 | [references/design-system/README.md](references/design-system/README.md) | 테마·간격·컴포넌트·레이아웃·화면 패턴처럼 화면의 모양을 다룰 때 |
 | 백엔드 | [references/backend/README.md](references/backend/README.md) | API·모듈·데이터 접근·서버 코드를 다룰 때 |
+
+## 성숙도(`maturity`)에 따른 적용 강도
+
+문서 머리말에 `maturity` 상태 코드가 적혀 있으면 단계에 맞춰 기준을 적용합니다. `maturity`가 생략된 문서는 기본 권장 기준으로 다룹니다.
+
+| `maturity` | 단계 | 적용 강도 |
+| --- | --- | --- |
+| `stable` | 안정 | 기본 기준 — 프로젝트 규칙 표에 예외가 없으면 그대로 따름 |
+| `refining` | 다듬는 중 | 참고 기준 — 적용을 검토하되 현재 작업 맥락에 맞게 유연하게 판단·확인 |

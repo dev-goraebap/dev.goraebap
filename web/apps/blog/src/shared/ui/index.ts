@@ -11,6 +11,7 @@ export { GlossaryTerm } from "./GlossaryTerm";
 export { Glossed, GlossaryText, useGlossaryText } from "./GlossaryText";
 export { LayersDiagram } from "./LayersDiagram";
 export { LineFieldCanvas } from "./LineFieldCanvas";
+export { MaturityMeta } from "./MaturityMeta";
 export { MermaidDiagram } from "./MermaidDiagram";
 export { PageState } from "./page-state/PageState";
 export { ResizableLayoutStage } from "./ResizableLayoutStage";

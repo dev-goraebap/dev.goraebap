@@ -4,6 +4,9 @@ summary: 백엔드 코드를 컨텍스트 패키지와 3개 내부 계층으로 
 order: 2
 icon: transition
 thumbnail: /thumbnails/context-and-layers.jpg
+maturity: stable
+maturityNote: "단일 팀 모듈러 모놀리스에서 패키지 컨텍스트 + 비대칭 3계층(application·domain·infrastructure) 조합이 여러 프로젝트에서 반복 검증됨. 다수 팀·독립 배포 조직은 멀티모듈·MSA로 전환 검토"
+reviewedAt: 2026-11-27
 ---
 
 아키텍처 구조에는 프로젝트 규모와 팀 상황에 따라 맞는 답이 달라집니다. 이 글은 백엔드 코드를 컨텍스트 패키지와 3개 내부 계층(`application`, `domain`, `infrastructure`)으로 나누기까지 어떤 선택지들을 비교하고 어디에서 타협했는지 정리한 배경입니다. 구체적인 규칙은 [디렉토리·패키지 구조](../reference/directory-structure/index.md)와 [구성 요소와 실행 흐름](../reference/components-and-flow/index.md)에 있습니다.

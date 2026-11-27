@@ -1,5 +1,6 @@
 import type { ComponentType } from "react";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
+import type { MaturityStatus } from "@/shared/lib/maturity";
 
 // 지침 글의 원본(content/)을 읽는다. 문서가 든 폴더가 그 문서의 메뉴이고, SKILL.md가 있는 폴더가 스킬 하나다.
 // 주소는 content 경로를 따른다: reference/frontend/<묶음>/<문서>, design-system/<문서>, design-system/components/<컴포넌트>.
@@ -14,6 +15,10 @@ interface ContentMeta {
   // Blog 글의 날짜(yyyy-mm-dd)와 썸네일 경로
   date?: string;
   thumbnail?: string;
+  // 작성자 성숙도 메타데이터
+  maturity?: MaturityStatus;
+  maturityNote?: string;
+  reviewedAt?: string | Date;
   // SKILL.md 머리말
   name?: string;
   description?: string;

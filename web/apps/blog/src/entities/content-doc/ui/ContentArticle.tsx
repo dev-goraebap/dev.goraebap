@@ -24,6 +24,7 @@ import {
   FileTreeView,
   GlossaryTerm,
   LayersDiagram,
+  MaturityMeta,
   MermaidDiagram,
 } from "@/shared/ui";
 import { STACK_LABELS, type ContentDoc, type ContentModule } from "../model/content";
@@ -328,6 +329,7 @@ export function ContentArticle({
         ) : (
           <p className="text-muted-foreground text-lg leading-relaxed">{doc.meta.summary}</p>
         )}
+        <MaturityMeta primary={doc.stacks[stack]?.module.frontmatter} fallback={doc.meta} />
       </header>
       <div className="space-y-5">{body}</div>
       {trailing}
