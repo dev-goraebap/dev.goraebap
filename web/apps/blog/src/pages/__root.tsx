@@ -67,17 +67,6 @@ const INTERACTION_MOVES: Record<string, string> = {
   "ui-size": "/design-system/ui-size",
   scrollbar: "/design-system/scrollbar",
 };
-// 옛 /backend/engineering 문서 이름 → Reference › Backend의 묶음/문서
-const BACKEND_MOVES: Record<string, string> = {
-  modules: "structure/layers",
-  contracts: "structure/contracts",
-  sharing: "structure/sharing",
-  queries: "data/queries",
-  "code-style": "code-style/code-style",
-  errors: "api/errors",
-  api: "api/api",
-  database: "data/database",
-};
 const DESIGN_SYSTEM_PATHS =
   /^(\/frontend)?\/(components|overview|packages|foundations|layouts)(\/|$)/;
 
@@ -147,19 +136,13 @@ export const Route = createRootRoute({
     if (legacy) {
       const moved: Record<string, string> = {
         frontend: "/reference/frontend",
-        backend: "/reference/backend",
+        backend: "/backend",
       };
       throw redirect({ href: moved[legacy[2]?.slice(1) ?? ""] ?? "/", replace: true });
     }
-    // Backend Reference가 content로 옮기기 전 주소(/backend/engineering/<문서>)
-    const backend = location.pathname.match(/^\/backend(?:\/engineering(?:\/([^/]+))?)?\/?$/);
-    if (backend) {
-      const moved = BACKEND_MOVES[backend[1] ?? ""];
-      const hash = location.hash ? `#${location.hash}` : "";
-      throw redirect({
-        href: `/reference/backend${moved ? `/${moved}` : ""}${hash}`,
-        replace: true,
-      });
+    // 예전 백엔드 주소(/reference/backend/…, /backend/engineering/…)는 새 백엔드(/backend)로 보낸다.
+    if (/^\/(reference\/backend|backend\/engineering)(\/|$)/.test(location.pathname)) {
+      throw redirect({ href: "/backend", replace: true });
     }
     // Design System 문서가 /design-system 아래로 모이기 전 주소
     if (DESIGN_SYSTEM_PATHS.test(location.pathname)) {
@@ -207,7 +190,7 @@ function RootLayout() {
 
   const current = activeMenu(pathname);
   const subItems = current?.children ?? [];
-  const isDocs = ["/frontend", "/reference", "/design-system"].some((prefix) =>
+  const isDocs = ["/frontend", "/backend", "/reference", "/design-system"].some((prefix) =>
     pathname.startsWith(prefix),
   );
   const hasDocsShell = isDocs && !pathname.startsWith("/frontend/glossary");

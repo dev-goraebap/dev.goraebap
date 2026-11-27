@@ -1,9 +1,16 @@
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
+import {
+  BACKEND_GLOSSARY_ENTRIES,
+  BACKEND_SECTION_LABELS,
+  backendAllDocs,
+  backendDocHref,
+} from "@/entities/backend-doc";
 import { blogPosts, docHref, menuDocs, plainText, sectionDocs } from "@/entities/content-doc";
 import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
   "Blog",
+  "백엔드",
   "Engineering",
   "디자인 시스템",
   "파운데이션",
@@ -52,13 +59,23 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),
-  ...sectionDocs("reference/backend").map((doc) => ({
-    id: `backend:${doc.menu}/${doc.slug}`,
-    group: "Engineering" as const,
-    title: `백엔드 ${doc.meta.title ?? doc.slug}`,
-    href: `/${doc.menu}/${doc.slug}`,
-    description: doc.meta.summary ?? doc.meta.description ?? "",
-    keywords: plainText(doc.source),
+  ...backendAllDocs().map((doc) => ({
+    id: `backend:${doc.section}/${doc.slug}`,
+    group: "백엔드" as const,
+    title: doc.meta.title ?? doc.slug,
+    href: backendDocHref(doc),
+    description: `${BACKEND_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
+    keywords: [doc.source, ...doc.stacks.map((s) => s.source)].map(plainText).join(" "),
+  })),
+  page("용어집", "백엔드 용어집", "/backend/glossary", "백엔드 문서에 쓰는 아키텍처·설계 용어 모음"),
+  ...BACKEND_GLOSSARY_ENTRIES.map((entry) => ({
+    id: `backend-glossary:${entry.id}`,
+    group: "용어집" as const,
+    title: `${entry.korean} ${entry.term}`,
+    href: "/backend/glossary",
+    hash: entry.id,
+    description: entry.definition,
+    keywords: `${entry.category} ${entry.definition} ${entry.distinction ?? ""}`,
   })),
   page("컴포넌트", "컴포넌트 개요", "/design-system/components", "전체 컴포넌트 목록"),
   ...menuDocs("design-system/components")

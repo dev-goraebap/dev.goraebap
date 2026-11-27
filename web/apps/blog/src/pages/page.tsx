@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { VISIBLE_MENUS } from "@/shared/config/site-menus";
+import { LANDING_MENUS } from "@/shared/config/site-menus";
 import { BrandMark, DesignSettings, LineFieldCanvas, Wordmark } from "@/shared/ui";
 
 export const Route = createFileRoute("/")({
@@ -26,8 +26,7 @@ function WorkshopPage() {
           aria-label="메뉴"
           className="workshop-reveal mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm [animation-delay:240ms]"
         >
-          {/* 헤더와 같은 메뉴. 글이 없는 메뉴는 보이지 않는다. */}
-          {VISIBLE_MENUS.map((menu) => (
+          {LANDING_MENUS.map((menu) => (
             <Link
               key={menu.label}
               to={menu.to}

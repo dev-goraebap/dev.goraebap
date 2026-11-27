@@ -14,10 +14,22 @@ interface GlossaryTermProps {
   term: string;
   korean?: string;
   definition: string;
+  distinction?: string;
+  stacks?: Record<string, string>;
+  glossaryPath?: "/frontend/glossary" | "/backend/glossary";
   children: ReactNode;
 }
 
-export function GlossaryTerm({ id, term, korean, definition, children }: GlossaryTermProps) {
+export function GlossaryTerm({
+  id,
+  term,
+  korean,
+  definition,
+  distinction,
+  stacks,
+  glossaryPath = "/frontend/glossary",
+  children,
+}: GlossaryTermProps) {
   return (
     <Popover>
       <PopoverTrigger
@@ -28,14 +40,31 @@ export function GlossaryTerm({ id, term, korean, definition, children }: Glossar
       >
         {children}
       </PopoverTrigger>
-      <PopoverContent side="top" className="w-64">
-        <PopoverTitle>{korean ?? term}</PopoverTitle>
-        {korean && <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">{term}</p>}
+      <PopoverContent side="top" className="w-72 space-y-2">
+        <div>
+          <PopoverTitle>{korean ?? term}</PopoverTitle>
+          {korean && <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">{term}</p>}
+        </div>
         <PopoverDescription className="break-keep">{definition}</PopoverDescription>
+        {distinction && (
+          <p className="text-muted-foreground border-border border-t pt-2 text-xs leading-relaxed break-keep">
+            {distinction}
+          </p>
+        )}
+        {stacks && Object.keys(stacks).length > 0 && (
+          <dl className="bg-muted/50 space-y-1 rounded-lg px-2.5 py-2 text-[0.6875rem]">
+            {Object.entries(stacks).map(([name, mapping]) => (
+              <div key={name} className="flex flex-col gap-0.5">
+                <dt className="text-foreground font-medium">{name}</dt>
+                <dd className="text-muted-foreground break-keep">{mapping}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         <Link
-          to="/frontend/glossary"
+          to={glossaryPath}
           hash={id}
-          className="text-muted-foreground hover:text-foreground mt-2.5 inline-flex items-center gap-1 text-[0.6875rem] font-medium transition-colors"
+          className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1 pt-0.5 text-[0.6875rem] font-medium transition-colors"
         >
           용어집에서 보기
           <SystemIcon name="arrowRight" className="size-3" />
