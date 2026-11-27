@@ -21,6 +21,7 @@ export function GlossaryText({ segments }: { segments: GlossarySegment[] }) {
         id={segment.id}
         term={entry.term}
         korean={entry.korean}
+        domainLabel={entry.domainLabel}
         definition={entry.definition}
       >
         {segment.label}

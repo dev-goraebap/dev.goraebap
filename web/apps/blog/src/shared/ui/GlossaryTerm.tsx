@@ -13,10 +13,11 @@ interface GlossaryTermProps {
   id: string;
   term: string;
   korean?: string;
+  domainLabel?: string;
   definition: string;
   distinction?: string;
   stacks?: Record<string, string>;
-  glossaryPath?: "/design-system/glossary" | "/frontend/glossary" | "/backend/glossary";
+  glossaryPath?: "/glossary";
   children: ReactNode;
 }
 
@@ -24,10 +25,11 @@ export function GlossaryTerm({
   id,
   term,
   korean,
+  domainLabel,
   definition,
   distinction,
   stacks,
-  glossaryPath = "/design-system/glossary",
+  glossaryPath = "/glossary",
   children,
 }: GlossaryTermProps) {
   return (
@@ -41,9 +43,16 @@ export function GlossaryTerm({
         {children}
       </PopoverTrigger>
       <PopoverContent side="top" className="w-72 space-y-2">
-        <div>
-          <PopoverTitle>{korean ?? term}</PopoverTitle>
-          {korean && <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">{term}</p>}
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <PopoverTitle>{korean ?? term}</PopoverTitle>
+            {korean && <p className="text-muted-foreground mt-0.5 text-[0.6875rem]">{term}</p>}
+          </div>
+          {domainLabel && (
+            <span className="border-border bg-muted/60 text-muted-foreground shrink-0 rounded-full border px-2 py-0.5 text-[0.625rem] font-medium">
+              {domainLabel}
+            </span>
+          )}
         </div>
         <PopoverDescription className="break-keep">{definition}</PopoverDescription>
         {distinction && (

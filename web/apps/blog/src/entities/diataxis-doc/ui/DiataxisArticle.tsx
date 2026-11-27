@@ -28,12 +28,13 @@ import {
   extractHeadingsFromMarkdown,
   headingToAnchor,
 } from "@/shared/ui";
+import { annotateDomainPlain, glossaryForDomain } from "@/shared/lib/glossary";
 import {
   resolveDiataxisHref,
   type DiataxisContentModule,
   type DiataxisDoc,
+  type DiataxisSpace,
 } from "../model/content";
-import { annotateDiataxisPlain, glossaryOf, type DiataxisSpace } from "../model/glossary";
 
 function codeOf(node: ReactNode) {
   const code = Children.toArray(node).find(isValidElement) as
@@ -133,9 +134,8 @@ const treeOf = (module: DiataxisContentModule) =>
   });
 
 function glossed(space: DiataxisSpace, text: string, seen: Set<string>) {
-  const { byId } = glossaryOf(space);
-  const glossaryPath = space === "backend" ? "/backend/glossary" : "/frontend/glossary";
-  return annotateDiataxisPlain(space, text, seen).map((segment, index) => {
+  const { byId } = glossaryForDomain(space);
+  return annotateDomainPlain(space, text, seen).map((segment, index) => {
     if (typeof segment === "string") return segment;
     const entry = byId[segment.id];
     if (!entry) return segment.label;
@@ -145,10 +145,10 @@ function glossed(space: DiataxisSpace, text: string, seen: Set<string>) {
         id={entry.id}
         term={entry.term}
         korean={entry.korean}
+        domainLabel={entry.domainLabel}
         definition={entry.definition}
         distinction={entry.distinction}
         stacks={entry.stacks}
-        glossaryPath={glossaryPath}
       >
         {segment.label}
       </GlossaryTerm>

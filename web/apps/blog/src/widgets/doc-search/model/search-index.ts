@@ -3,10 +3,9 @@ import {
   DIATAXIS_SECTION_LABELS,
   diataxisAllDocs,
   diataxisDocHref,
-  glossaryOf,
 } from "@/entities/diataxis-doc";
 import { blogPosts, docHref, menuDocs, plainText } from "@/entities/content-doc";
-import { GLOSSARY, stripGlossaryMarkup } from "@/shared/lib/glossary";
+import { GLOSSARY_ENTRIES, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
   "Blog",
@@ -58,16 +57,6 @@ const DOC_ENTRIES: DocEntry[] = [
     description: `${DIATAXIS_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
     keywords: [doc.source, ...doc.stacks.map((s) => s.source)].map(plainText).join(" "),
   })),
-  page("용어집", "프론트엔드 용어집", "/frontend/glossary", "프론트엔드 문서에 쓰는 아키텍처·설계 용어 모음"),
-  ...glossaryOf("frontend").entries.map((entry) => ({
-    id: `frontend-glossary:${entry.id}`,
-    group: "용어집" as const,
-    title: `${entry.korean} ${entry.term}`,
-    href: "/frontend/glossary",
-    hash: entry.id,
-    description: entry.definition,
-    keywords: `${entry.category} ${entry.definition} ${entry.distinction ?? ""}`,
-  })),
   ...diataxisAllDocs("backend").map((doc) => ({
     id: `backend:${doc.section}/${doc.slug}`,
     group: "백엔드" as const,
@@ -75,16 +64,6 @@ const DOC_ENTRIES: DocEntry[] = [
     href: diataxisDocHref(doc),
     description: `${DIATAXIS_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
     keywords: [doc.source, ...doc.stacks.map((s) => s.source)].map(plainText).join(" "),
-  })),
-  page("용어집", "백엔드 용어집", "/backend/glossary", "백엔드 문서에 쓰는 아키텍처·설계 용어 모음"),
-  ...glossaryOf("backend").entries.map((entry) => ({
-    id: `backend-glossary:${entry.id}`,
-    group: "용어집" as const,
-    title: `${entry.korean} ${entry.term}`,
-    href: "/backend/glossary",
-    hash: entry.id,
-    description: entry.definition,
-    keywords: `${entry.category} ${entry.definition} ${entry.distinction ?? ""}`,
   })),
   page("컴포넌트", "컴포넌트 개요", "/design-system/components", "전체 컴포넌트 목록"),
   ...menuDocs("design-system/components")
@@ -118,15 +97,28 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),
-  page("용어집", "디자인 시스템 용어집", "/design-system/glossary", "디자인 시스템 문서에 쓰는 용어 모음"),
-  ...Object.entries(GLOSSARY).map(([key, entry]) => ({
-    id: `glossary:${key}`,
+  page(
+    "용어집",
+    "통합 용어집",
+    "/glossary",
+    "프론트엔드·백엔드·디자인 시스템 등 문서 전반의 아키텍처·설계 용어 모음",
+  ),
+  ...GLOSSARY_ENTRIES.map((entry) => ({
+    id: `glossary:${entry.domain}:${entry.id}`,
     group: "용어집" as const,
-    title: entry.korean ? `${entry.korean} ${entry.term}` : entry.term,
-    href: "/design-system/glossary",
-    hash: key,
-    description: stripGlossaryMarkup(entry.definition),
-    keywords: `${entry.category} ${stripGlossaryMarkup(entry.definition)}`,
+    title: entry.korean ? `${entry.korean} (${entry.term})` : entry.term,
+    href: "/glossary",
+    hash: entry.id,
+    description: `${entry.domainLabel} · ${stripGlossaryMarkup(entry.definition)}`,
+    keywords: [
+      entry.domainLabel,
+      entry.category,
+      entry.term,
+      entry.korean ?? "",
+      stripGlossaryMarkup(entry.definition),
+      entry.distinction ?? "",
+      ...Object.entries(entry.stacks ?? {}).flat(),
+    ].join(" "),
   })),
 ];
 

@@ -46,7 +46,7 @@ function RoutePendingBar() {
   );
 }
 
-const LEGACY_PATHS = /^\/(glossary)(\/|$)/;
+const LEGACY_GLOSSARY_PATHS = /^\/(frontend|backend|design-system)\/glossary\/?$/;
 // 옛 /frontend/interaction 문서 중 디자인 시스템으로 옮긴 항목. 나머지는 /frontend로 보낸다.
 const INTERACTION_MOVES: Record<string, string> = {
   "loading-feedback": "/design-system/loading-feedback",
@@ -123,8 +123,14 @@ export const Route = createRootRoute({
         replace: true,
       });
     }
-    if (LEGACY_PATHS.test(location.pathname)) {
-      throw redirect({ href: `/design-system${location.href}`, replace: true });
+    const legacyGlossary = location.pathname.match(LEGACY_GLOSSARY_PATHS);
+    if (legacyGlossary) {
+      const domain = legacyGlossary[1];
+      const hash = location.hash ? `#${location.hash}` : "";
+      throw redirect({
+        href: hash ? `/glossary${hash}` : `/glossary?domain=${domain}`,
+        replace: true,
+      });
     }
   },
   component: RootLayout,

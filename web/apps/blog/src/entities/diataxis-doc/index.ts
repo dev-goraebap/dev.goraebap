@@ -11,11 +11,6 @@ export {
   findDiataxisDoc,
   type DiataxisDoc,
   type DiataxisSectionId,
-} from "./model/content";
-export {
-  glossaryOf,
-  type DiataxisGlossaryEntry,
   type DiataxisSpace,
-} from "./model/glossary";
+} from "./model/content";
 export { DiataxisArticle } from "./ui/DiataxisArticle";
-export { DiataxisGlossaryView } from "./ui/DiataxisGlossaryView";

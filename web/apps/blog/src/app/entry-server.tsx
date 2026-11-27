@@ -10,11 +10,9 @@ export const routes = () => [
     const stacks = stacksOf(doc.menu);
     return stacks.length ? stacks.map((stack) => docHref(doc, stack)) : [docHref(doc, "")];
   }),
-  "/design-system/glossary",
   ...diataxisAllDocs("frontend").map((doc) => diataxisDocHref(doc)),
-  "/frontend/glossary",
   ...diataxisAllDocs("backend").map((doc) => diataxisDocHref(doc)),
-  "/backend/glossary",
+  "/glossary",
   ...(blogPosts().length ? ["/blog"] : []),
 ];
 

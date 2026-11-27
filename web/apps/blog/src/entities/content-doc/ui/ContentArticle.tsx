@@ -209,6 +209,7 @@ function glossed(text: string, seen: Set<string>) {
         id={segment.id}
         term={entry.term}
         korean={entry.korean}
+        domainLabel={entry.domainLabel}
         definition={entry.definition}
       >
         {segment.label}
@@ -264,7 +265,7 @@ function transform(node: ReactNode, ctx: Context): ReactNode {
     if (!entry || ctx.seen.has(id)) return label;
     ctx.seen.add(id);
     return (
-      <GlossaryTerm key={node.key ?? undefined} id={id} term={entry.term} korean={entry.korean} definition={entry.definition}>
+      <GlossaryTerm key={node.key ?? undefined} id={id} term={entry.term} korean={entry.korean} domainLabel={entry.domainLabel} definition={entry.definition}>
         {label}
       </GlossaryTerm>
     );

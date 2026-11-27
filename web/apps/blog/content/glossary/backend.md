@@ -1,4 +1,8 @@
-# 백엔드 용어집
+---
+domain: backend
+label: 백엔드
+order: 2
+---
 
 ## 구조와 경계
 

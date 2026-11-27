@@ -1,6 +1,6 @@
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 
-type SiteMenuTarget = "/design-system/overview" | "/frontend" | "/backend" | "/blog";
+type SiteMenuTarget = "/design-system/overview" | "/frontend" | "/backend" | "/blog" | "/glossary";
 
 export interface SiteMenu {
   label: string;
@@ -43,6 +43,13 @@ export const SITE_MENUS: SiteMenu[] = [
     to: "/backend",
     match: ["/backend"],
     landing: true,
+  },
+  {
+    label: "용어집",
+    icon: "book",
+    description: "프론트엔드·백엔드·디자인 시스템 통합 용어집",
+    to: "/glossary",
+    match: ["/glossary"],
   },
 ];
 

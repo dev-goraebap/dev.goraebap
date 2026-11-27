@@ -1,7 +1,8 @@
 import type { ComponentType } from "react";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 import type { DocsNavGroup } from "@/shared/ui";
-import type { DiataxisSpace } from "./glossary";
+
+export type DiataxisSpace = "backend" | "frontend";
 
 export type DiataxisSectionId = "playbooks" | "articles" | "reference";
 
@@ -171,7 +172,7 @@ export function diataxisDocHref(doc: DiataxisDoc, stack?: string): string {
 }
 
 export function diataxisNavGroups(space: DiataxisSpace): DocsNavGroup[] {
-  const groups: DocsNavGroup[] = DIATAXIS_SECTIONS.map((section) => ({
+  return DIATAXIS_SECTIONS.map((section) => ({
     title: section.title,
     items: diataxisSectionDocs(space, section.id).map((doc) => ({
       label: doc.meta.title ?? doc.slug,
@@ -179,18 +180,6 @@ export function diataxisNavGroups(space: DiataxisSpace): DocsNavGroup[] {
       icon: doc.meta.icon,
     })),
   })).filter((group) => group.items.length > 0);
-
-  groups.push({
-    items: [
-      {
-        label: "용어집",
-        href: `/${space}/glossary`,
-        icon: "book",
-      },
-    ],
-  });
-
-  return groups;
 }
 
 function joinContentPath(fromFile: string, href: string): string {
@@ -204,11 +193,11 @@ function joinContentPath(fromFile: string, href: string): string {
 
 export function resolveDiataxisHref(fromFile: string, href: string): string | undefined {
   if (/^(https?:|mailto:|#)/.test(href)) return href;
+  if (href.startsWith("/")) return href;
   const [path, anchor] = href.split("#");
   const target = joinContentPath(fromFile, path);
-  const glossaryMatch = /^\/content\/(backend|frontend)\/glossary\.md$/.exec(target);
-  if (glossaryMatch) {
-    return `/${glossaryMatch[1]}/glossary${anchor ? `#${anchor}` : ""}`;
+  if (/^\/content\/(?:(backend|frontend)\/glossary|glossary\/[^/]+)\.md$/.test(target)) {
+    return `/glossary${anchor ? `#${anchor}` : ""}`;
   }
   for (const doc of DIATAXIS_DOCS) {
     if (doc.file === target) {
