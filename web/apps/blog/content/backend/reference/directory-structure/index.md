@@ -9,7 +9,7 @@ icon: layouts
 
 소스 루트 아래는 **업무 영역(컨텍스트)**과 **업무와 무관한 기술 기반**으로 1차 분리합니다. 아래의 `shared/`는 기술 기반 폴더의 기본 예시이며, 프로젝트에서 업무 영역과 기술 기반을 구분하는 기준만 일관되게 지킨다면 폴더 이름(`shared`, `common`, `core` 등)은 자유롭게 정할 수 있습니다.
 
-```text
+```tree
 <source-root>/
   shared/               # 업무 지식이 없는 순수 기술 기반 (이름은 프로젝트별 선택)
     config/             # 전역 설정 (시간, 시크릿 등)
@@ -28,7 +28,7 @@ icon: layouts
 
 각 컨텍스트는 **루트의 공개 계약**과 **내부 3개 계층**으로 구성합니다.
 
-```text
+```tree
 <context>/
   <PublicContract>      # 다른 컨텍스트에 여는 진입 인터페이스(*Facade)와 공개 타입
   application/          # 진입점(Controller), 유스케이스·트랜잭션(Service), 조회 포트(Query), 요청·응답 DTO, 전용 에러 코드

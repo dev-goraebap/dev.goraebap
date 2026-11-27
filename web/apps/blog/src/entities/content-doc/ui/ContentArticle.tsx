@@ -19,7 +19,13 @@ import {
   TableRow,
 } from "@goraebap/ui-react/components/table";
 import { annotatePlain, GLOSSARY } from "@/shared/lib/glossary";
-import { CopyCodeBlock, GlossaryTerm, MermaidDiagram } from "@/shared/ui";
+import {
+  CopyCodeBlock,
+  FileTreeView,
+  GlossaryTerm,
+  LayersDiagram,
+  MermaidDiagram,
+} from "@/shared/ui";
 import { STACK_LABELS, type ContentDoc, type ContentModule } from "../model/content";
 import { resolveHref, type SkillHref } from "../model/link";
 
@@ -66,6 +72,9 @@ function codeOf(node: ReactNode) {
 
 function Pre({ children, label }: { children?: ReactNode; label?: ReactNode }) {
   const { code, language } = codeOf(children);
+  if (language === "mermaid") return <MermaidDiagram code={code} />;
+  if (language === "tree") return <FileTreeView code={code} />;
+  if (language === "layers") return <LayersDiagram code={code} />;
   return <CopyCodeBlock code={code} language={language} label={label} />;
 }
 

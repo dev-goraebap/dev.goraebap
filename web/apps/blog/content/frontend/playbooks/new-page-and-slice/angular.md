@@ -9,7 +9,7 @@ summary: Angular 앱에서 새 라우트 슬라이스를 만들고 부모 routes
 
 예를 들어 `workspace` 아래에 `/projects`와 `/projects/:projectId` 화면을 추가한다면 URL 구조에 맞춰 폴더와 `routes.ts`를 만듭니다.
 
-```text
+```tree
 src/pages/workspace/projects/
   routes.ts                 # /projects와 하위 :projectId 연결
   ui/

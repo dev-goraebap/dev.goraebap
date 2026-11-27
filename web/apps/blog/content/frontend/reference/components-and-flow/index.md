@@ -13,20 +13,16 @@ icon: transition
 
 프론트엔드 코드는 역할에 따라 다섯 개의 실행 구성 요소로 나눕니다.
 
-```text
-URL / 사용자 입력
-  │
-  ▼
-라우트 경계 (Route) ───────────────┐
-  │                                │ (진입 전 프리로드·가드 조회)
-  ▼                                │
-뷰 · 컴포넌트 (ui/)                 │
-  │                                ▼
-  ├─▶ 모델 · 상태 (model/) ──▶ 서버 상태 · API (api/)
-  │                                │
-  └───────────────(조회·변경)───────┘
-                                   ▼
-                           통신 기반 (shared/api)
+```mermaid
+%% caption: URL 진입과 사용자 동작이 다섯 개 실행 구성 요소를 거치는 흐름
+flowchart TB
+  entry(["URL / 사용자 입력"]) --> route["라우트 경계 (Route)"]
+  route --> view["뷰 · 컴포넌트 (ui/)"]
+  route -- "프리로드 · 가드 조회" --> api["서버 상태 · API (api/)"]
+  view --> model["모델 · 상태 (model/)"]
+  model --> api
+  view -- "조회 · 변경" --> api
+  api --> transport["통신 기반 (shared/api)"]
 ```
 
 | 구성 요소 | 주요 위치 | 핵심 책임 | 하지 않는 일 |

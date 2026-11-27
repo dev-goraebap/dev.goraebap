@@ -14,7 +14,7 @@ thumbnail: /thumbnails/why-fsd-layers.jpg
 
 프론트엔드를 처음 시작할 때 가장 자연스럽게 만들게 되는 구조는 `src/components`, `src/store`, `src/hooks`, `src/utils`처럼 **파일의 기술적 역할**로 폴더를 나누는 방식입니다.
 
-```text
+```tree
 src/
   components/
   pages/

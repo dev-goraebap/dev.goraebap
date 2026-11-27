@@ -7,7 +7,7 @@ summary: 파일 기반 라우팅이 없는 Angular 환경에서 설정 기반 ro
 
 ## 1. 폴더 구조와 파일 규약
 
-```text
+```tree
 src/
   app/
     app.ts                  # 루트 컴포넌트 (<router-outlet />)

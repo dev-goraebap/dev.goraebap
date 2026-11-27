@@ -16,14 +16,16 @@ icon: layouts
 
 소스 루트(`src/`) 아래는 공식 FSD v2.1의 **여섯 개 레이어**를 기준으로 나눕니다. 모든 레이어를 처음부터 억지로 만들지 않고, 해당 책임의 코드가 실제로 생길 때 추가합니다.
 
-```text
-src/
-  app/        # 진입점, 전역 설정·프로바이더, 라우터 연결, 전역 앱 셸
-  pages/      # URL 경로와 1:1로 대응하는 라우트 슬라이스
-  widgets/    # (선택) 여러 페이지에서 재사용하는 독립적인 복합 UI 블록
-  features/   # (선택) 여러 화면에서 재사용하는 사용자 동작과 상호작용
-  entities/   # (선택) 도메인 모델, 조회 옵션, 표시용 컴포넌트
-  shared/     # 업무 지식이 없는 UI 키트 어댑터, 제품 공용 UI, HTTP·유틸·설정
+```layers
+# title: FSD v2.1 6개 레이어 (src/)
+# direction: down
+# caption: 상위 레이어는 하위 레이어의 공개 API만 참조합니다. 점선 테두리는 필요 시 추가하는 선택 레이어입니다.
+app | 기본 | 진입점 · 전역 설정 · 프로바이더 · 라우터 등록 · 전역 앱 셸
+pages | 기본 | URL 경로와 1:1로 대응하는 라우트 슬라이스
+widgets | 선택 | 여러 페이지에서 재사용하는 독립적인 복합 UI 블록
+features | 선택 | 여러 화면에서 재사용하는 사용자 동작과 상호작용
+entities | 선택 | 도메인 모델 · 조회 옵션 · 표시용 컴포넌트
+shared | 기본 | 업무 무관 UI 키트 어댑터 · 제품 공용 UI · HTTP · 유틸 · 설정
 ```
 
 | 레이어 | 필수 여부 | 책임 | 슬라이스 구분 |
@@ -75,7 +77,7 @@ src/
 
 `pages`는 화면 컴포넌트를 평평하게 모아 두는 폴더가 아니라 **애플리케이션의 URL 트리**입니다.
 
-```text
+```tree
 pages/
   <parent-group>/          # 부모 경로 또는 경로 없는 레이아웃 (셸·가드·공통 데이터)
     <child-route>/         # /<parent>/<child> 화면
@@ -90,6 +92,7 @@ pages/
 - **조상-자식 참조만 허용**: `pages` 안의 파일은 자기 폴더와 조상 라우트 폴더만 참조합니다. 형제 주소끼리 함께 쓰는 코드가 생기면 공통 조상 폴더로 올리거나 `features`·`entities`로 승격합니다.
 
 ```mermaid
+%% caption: pages는 자기 폴더와 조상 폴더만 참조하고 형제 주소끼리는 참조하지 않습니다.
 flowchart TB
   parent["pages/workspace/ (공통 조상)"] --> a["pages/workspace/items/"]
   parent --> b["pages/workspace/settings/"]

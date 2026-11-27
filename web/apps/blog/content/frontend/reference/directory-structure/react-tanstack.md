@@ -7,7 +7,7 @@ summary: React와 파일 기반 라우팅(TanStack Router) 환경에서 주소 �
 
 ## 1. 폴더 구조와 파일 규약
 
-```text
+```tree
 src/
   app/
     router/

@@ -9,7 +9,7 @@ summary: React(TanStack Router) 앱에서 새 라우트 슬라이스를 추가�
 
 예를 들어 로그인한 영역(`_app`) 아래에 `/projects`와 `/projects/:projectId` 화면을 추가한다면 URL 구조 그대로 폴더를 만듭니다.
 
-```text
+```tree
 src/pages/_app/projects/
   route.tsx          # /projects 하위 공통 레이아웃·권한(필요 시)
   page.tsx           # /projects 목록 화면

@@ -14,6 +14,16 @@ icon: transition
 
 컨텍스트 루트(공개 계약) 아래에 세 개의 내부 계층을 둡니다.
 
+```layers
+# title: 컨텍스트 내부 계층
+# direction: down
+# caption: application은 domain과 Query 포트를 호출하고, infrastructure는 하위 포트를 구현합니다.
+컨텍스트 루트 | 공개 계약 | *Facade 인터페이스 · 공개 DTO·Enum · 확장 SPI
+application | 진입 · 유스케이스 | Controller · Service(트랜잭션) · 읽기 전용 Query 포트 · DTO · 에러 코드
+domain | 순수 도메인 | 애그리거트(Entity · Value Object · 정책) · *Repository 포트
+infrastructure | 기술 구현 | Repository·Query 구현체 · 외부 API 어댑터 · 보안·인프라 설정
+```
+
 | 위치 | 역할 | 주요 구성 요소 |
 | --- | --- | --- |
 | 컨텍스트 루트 | 다른 컨텍스트에 노출하는 공개 계약 | `*Facade` 인터페이스, 공개 DTO·Enum, 확장 SPI |
@@ -23,12 +33,16 @@ icon: transition
 
 ## 호출과 의존 규칙
 
-```text
-외부 요청 ─▶ application (Controller ─▶ Service) ─▶ domain (Entity / Repository 포트)
-                                            │                    ▲
-                                            ├─▶ application (Query 포트) ──┐
-                                            └─▶ 다른 컨텍스트의 공개 계약    │ (구현)
-                                                                  infrastructure
+```mermaid
+%% caption: 외부 요청이 컨텍스트 내부 계층과 포트를 거치는 실행 흐름
+flowchart LR
+  req(["외부 요청"]) --> ctrl["Controller (application)"]
+  ctrl --> svc["Service (application)"]
+  svc --> dom["Entity · Repository 포트 (domain)"]
+  svc --> qry["Query 포트 (application)"]
+  svc --> other["다른 컨텍스트 공개 계약"]
+  infra["구현체 (infrastructure)"] -. "구현" .-> dom
+  infra -. "구현" .-> qry
 ```
 
 ### 진입과 유스케이스 (`application`)

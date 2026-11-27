@@ -27,7 +27,7 @@ summary: 공통 구성 요소와 실행 흐름 규칙을 Spring Boot 코드에 �
 
 한 컨텍스트에 Controller · Service 조합이 여러 개로 늘어나면 `application/` 아래를 피처 단위로 나누고, 여러 피처가 공통으로 참조하는 요소는 `application/` 루트에 둡니다.
 
-```text
+```tree
 <context>/
   *Facade.java              # 컨텍스트 공개 계약
   application/

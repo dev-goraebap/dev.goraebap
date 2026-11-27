@@ -5,7 +5,7 @@ summary: 공통 구조 기준을 Gradle · Spring Boot 프로젝트에 적용한
 
 ## 프로젝트 최상위 디렉토리
 
-```text
+```tree
 server/
   config/
     checkstyle/             # checkstyle.xml, suppressions.xml
@@ -31,7 +31,7 @@ server/
 
 ## Java 패키지 구조
 
-```text
+```tree
 <base-package>/
   ServerApplication.java
   shared/

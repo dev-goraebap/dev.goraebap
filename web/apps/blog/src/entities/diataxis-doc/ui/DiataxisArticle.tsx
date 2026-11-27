@@ -19,7 +19,9 @@ import {
 } from "@goraebap/ui-react/components/table";
 import {
   CopyCodeBlock,
+  FileTreeView,
   GlossaryTerm,
+  LayersDiagram,
   MermaidDiagram,
   MobileToc,
   TableOfContents,
@@ -44,7 +46,9 @@ function codeOf(node: ReactNode) {
 
 function Pre({ children }: { children?: ReactNode }) {
   const { code, language } = codeOf(children);
-  if (language === "mermaid") return <MermaidDiagram code={code} caption="다이어그램" />;
+  if (language === "mermaid") return <MermaidDiagram code={code} />;
+  if (language === "tree") return <FileTreeView code={code} />;
+  if (language === "layers") return <LayersDiagram code={code} />;
   return <CopyCodeBlock code={code} language={language} />;
 }
 
