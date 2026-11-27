@@ -29,9 +29,9 @@ fi
 if [ "${1:-}" = "--local" ]; then
   SHA="$(git rev-parse --short HEAD)-local"
   ID="$(date +%Y%m%d-%H%M%S)-$SHA"
-  echo "로컬 빌드: $SHA"
-  pnpm --dir web --filter @goraebap/blog typecheck
-  pnpm --dir web --filter @goraebap/blog build
+  echo "로컬 빌드 (블로그 + React·Angular 데모): $SHA"
+  pnpm --dir web typecheck
+  pnpm --dir web build
   DIST="web/apps/blog/dist"
 else
   REF="${1:-main}"
@@ -40,13 +40,15 @@ else
   WORK=$(mktemp -d)
   trap 'git worktree remove --force "$WORK" >/dev/null 2>&1 || true; rm -rf "$WORK"' EXIT
 
-  echo "빌드: $REF ($SHA)"
+  echo "빌드 (블로그 + React·Angular 데모): $REF ($SHA)"
   git worktree add --detach "$WORK" "$REF" >/dev/null
-  (cd "$WORK/web" && pnpm install --frozen-lockfile >/dev/null && pnpm --filter @goraebap/blog build >/dev/null)
+  (cd "$WORK/web" && pnpm install --frozen-lockfile >/dev/null && pnpm build >/dev/null)
   DIST="$WORK/web/apps/blog/dist"
 fi
 
 [ -f "$DIST/index.html" ] || { echo "빌드 결과에 index.html이 없습니다"; exit 1; }
+[ -f "$DIST/demos/react/index.html" ] || { echo "빌드 결과에 demos/react/index.html이 없습니다"; exit 1; }
+[ -f "$DIST/demos/angular/index.html" ] || { echo "빌드 결과에 demos/angular/index.html이 없습니다"; exit 1; }
 
 echo "올리기: releases/$ID"
 tar -C "$DIST" --exclude='./brand-drafts' --exclude='brand-drafts' -czf - . | remote "set -e; mkdir -p $SITE/releases/$ID; tar -xzf - -C $SITE/releases/$ID;
