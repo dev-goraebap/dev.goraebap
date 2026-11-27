@@ -2,6 +2,7 @@ export { AdapterCodePanel } from "./AdapterCodePanel";
 export { AdaptiveWireframe } from "./AdaptiveWireframe";
 export { BrandMark } from "./BrandMark";
 export { CopyCodeBlock } from "./CopyCodeBlock";
+export { DemoIframeStage, LIVE_DEMO_SLUGS } from "./DemoIframeStage";
 export { DesignSettings } from "./DesignSettings";
 export { DocPager } from "./DocPager";
 export { DocsShell, type DocsNavGroup } from "./DocsShell";

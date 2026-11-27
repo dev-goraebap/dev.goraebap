@@ -1,8 +1,12 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
   "workspaces": {
-    "apps/sso": {
-      "entry": ["src/main.ts", "src/pages/**/routes.ts"],
+    "apps/react-tanstack-demo": {
+      "entry": ["src/main.tsx"],
+      "ignoreDependencies": ["tailwindcss"]
+    },
+    "apps/angular-demo": {
+      "entry": ["src/main.ts"],
       "ignoreDependencies": ["tailwindcss"]
     },
     "apps/blog": {
@@ -19,6 +23,9 @@
     "packages/ui-react": {
       "entry": ["src/components/*.tsx", "src/lib/*.ts"],
       "ignoreDependencies": ["lucide-react"]
+    },
+    "packages/ui-angular": {
+      "entry": ["src/index.ts"]
     }
   }
 }

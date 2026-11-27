@@ -1,0 +1,35 @@
+{
+  "name": "@goraebap/angular-demo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "ng serve --port 5177 --serve-path /demos/angular/",
+    "build": "ng build --base-href /demos/angular/",
+    "typecheck": "tsc -p tsconfig.app.json --noEmit"
+  },
+  "dependencies": {
+    "@angular/aria": "catalog:",
+    "@angular/cdk": "catalog:",
+    "@angular/common": "catalog:",
+    "@angular/compiler": "catalog:",
+    "@angular/core": "catalog:",
+    "@angular/forms": "catalog:",
+    "@angular/platform-browser": "catalog:",
+    "@goraebap/design-system": "workspace:*",
+    "@goraebap/ui-angular": "workspace:*",
+    "clsx": "catalog:",
+    "rxjs": "catalog:",
+    "tailwind-merge": "catalog:",
+    "tailwind-variants": "catalog:",
+    "tslib": "catalog:"
+  },
+  "devDependencies": {
+    "@angular/build": "catalog:",
+    "@angular/cli": "catalog:",
+    "@angular/compiler-cli": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
+    "tailwindcss": "catalog:",
+    "tw-animate-css": "catalog:",
+    "typescript": "catalog:"
+  }
+}

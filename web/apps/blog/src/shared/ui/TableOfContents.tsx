@@ -54,7 +54,6 @@ function useActiveHeading(items: readonly TocItem[]): string {
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
 
   useEffect(() => {
-    setActiveId(items[0]?.id ?? "");
     if (items.length === 0) return;
 
     const elements = items
@@ -80,12 +79,15 @@ function useActiveHeading(items: readonly TocItem[]): string {
       setActiveId(current);
     };
 
-    update();
+    const raf = window.requestAnimationFrame(update);
     window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", update);
+    };
   }, [items]);
 
-  return activeId;
+  return items.some((item) => item.id === activeId) ? activeId : (items[0]?.id ?? "");
 }
 
 export function TableOfContents({ items }: { items: readonly TocItem[] }) {

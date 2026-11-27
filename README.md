@@ -15,13 +15,13 @@
 | --- | --- |
 | `.agents/skills/goraebap-webapp/` | 배포하는 스킬. content에서 빌드한 결과를 커밋합니다 |
 | `web/apps/blog/` | 지침 사이트 dev.goraebap.xyz (React)와 지침 원본 `content/` |
+| `web/apps/react-tanstack-demo/` | React 어댑터 라이브 데모 앱 (블로그 iframe 연동) |
+| `web/apps/angular-demo/` | Angular 어댑터 라이브 데모 앱 (블로그 iframe 연동) |
 | `plugins/webapp/` | 스킬 빌드·검사 도구와 content에 없는 지침 |
-| `web/apps/sso/` | 계정·로그인 화면 (Angular) |
 | `web/packages/` | 디자인 시스템 레시피와 React·Angular 어댑터 |
-| `server/` | sso의 API (Spring) |
 | `docs/adr/` | 되돌리기 어려운 결정 |
 
-로컬 실행은 `web/`에서 `pnpm install`을 한 뒤 루트에서 `sh dev.sh [all|blog|sso|server]`로 합니다.
+로컬 실행은 `web/`에서 `pnpm install`을 한 뒤 루트에서 `sh dev.sh [all|blog|react-demo|angular-demo]`로 합니다.
 
 ## 설치
 

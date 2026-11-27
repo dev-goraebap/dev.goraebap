@@ -1,0 +1,40 @@
+@import "tailwindcss";
+@import "@goraebap/design-system/styles/base.css";
+@import "@goraebap/design-system/styles/theme-app.css";
+@import "@goraebap/design-system/styles/theme-editorial.css";
+@import "@goraebap/design-system/styles/theme-ocean.css";
+@import "@goraebap/design-system/styles/theme-forest.css";
+@import "@goraebap/design-system/styles/theme-terracotta.css";
+
+@source "../../../packages/design-system/src";
+@source "../../../packages/ui-react/src";
+
+@supports (corner-shape: squircle) {
+  @layer base {
+    *,
+    ::before,
+    ::after {
+      corner-shape: var(--ds-corner-shape, round);
+    }
+
+    .rounded-full {
+      corner-shape: round;
+    }
+  }
+}
+
+@layer base {
+  html {
+    font-size: var(--ui-size, 100%);
+  }
+}
+
+@layer utilities {
+  .bg-dots {
+    background-image: radial-gradient(
+      color-mix(in oklch, var(--border) 85%, transparent) 1px,
+      transparent 1px
+    );
+    background-size: 16px 16px;
+  }
+}

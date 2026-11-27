@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { useParams } from "@tanstack/react-router";
 import {
   Select,
   SelectContent,
@@ -8,7 +9,12 @@ import {
 } from "@goraebap/ui-react/components/select";
 import { Switch } from "@goraebap/ui-react/components/switch";
 import { useDesignConfig } from "@/shared/lib/design-config";
-import { AdapterCodePanel, ThemedPortalScope } from "@/shared/ui";
+import {
+  AdapterCodePanel,
+  DemoIframeStage,
+  LIVE_DEMO_SLUGS,
+  ThemedPortalScope,
+} from "@/shared/ui";
 import { CLASS_GROUPS, classColor, classGroup } from "../lib/recipe-classes";
 import { getRecipeAxes, getRecipeParts, type RecipePart } from "../lib/recipe-parts";
 import type { ComponentDemoSpec } from "../model/catalog";
@@ -114,6 +120,17 @@ export function RecipePlayground({
   recipeCode?: string;
 }) {
   const { config: designConfig } = useDesignConfig();
+  const { stack } = useParams({ strict: false }) as { stack?: string };
+  const hasLiveDemo = LIVE_DEMO_SLUGS.has(slug);
+  const stageKey = `${slug}:${stack ?? "react"}`;
+  const defaultStageMode = hasLiveDemo && stack === "angular" ? "angular-iframe" : "playground";
+  const [stageOverride, setStageOverride] = useState<{
+    key: string;
+    mode: "playground" | "react-iframe" | "angular-iframe";
+  } | null>(null);
+  const stageMode =
+    hasLiveDemo && stageOverride?.key === stageKey ? stageOverride.mode : defaultStageMode;
+
   const [parts] = useState(() =>
     getRecipeParts(slug).filter((part) =>
       toTokens(part.recipe({})).some((token) => classGroup(token) !== null),
@@ -176,80 +193,122 @@ export function RecipePlayground({
         aria-label="레시피 플레이그라운드"
         className="border-border bg-card overflow-hidden rounded-2xl border"
       >
-        <div
-          className={`grid grid-cols-[minmax(0,1fr)] ${
-            hasProperties ? "lg:grid-cols-[minmax(0,1fr)_18rem]" : ""
-          }`}
-        >
+        {hasLiveDemo && (
           <div
-            data-ds-theme={designConfig.theme}
-            className="bg-dots bg-background/70 text-foreground flex min-h-72 min-w-0 items-center justify-center p-5 transition-colors sm:p-8"
+            role="tablist"
+            aria-label="데모 실행 환경"
+            className="border-border bg-muted/35 flex flex-wrap items-center gap-1 border-b px-3 py-2 text-xs"
           >
-            {config?.fillsContainer || flags.fullWidth ? (
-              <ContainerPreview>{preview}</ContainerPreview>
-            ) : config ? (
-              preview
-            ) : (
-              <div className="w-full max-w-2xl">{preview}</div>
+            {(
+              [
+                { id: "playground", label: "레시피 플레이그라운드" },
+                { id: "react-iframe", label: "React · TanStack (iframe)" },
+                { id: "angular-iframe", label: "Angular (iframe)" },
+              ] as const
+            ).map((tab) => {
+              const active = stageMode === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={active}
+                  onClick={() => setStageOverride({ key: stageKey, mode: tab.id })}
+                  className={
+                    active
+                      ? "bg-background text-foreground border-border rounded-full border px-3 py-1 font-medium shadow-2xs transition-colors"
+                      : "text-muted-foreground hover:text-foreground rounded-full px-3 py-1 transition-colors"
+                  }
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {stageMode === "react-iframe" ? (
+          <DemoIframeStage slug={slug} framework="react" />
+        ) : stageMode === "angular-iframe" ? (
+          <DemoIframeStage slug={slug} framework="angular" />
+        ) : (
+          <div
+            className={`grid grid-cols-[minmax(0,1fr)] ${
+              hasProperties ? "lg:grid-cols-[minmax(0,1fr)_18rem]" : ""
+            }`}
+          >
+            <div
+              data-ds-theme={designConfig.theme}
+              className="bg-dots bg-background/70 text-foreground flex min-h-72 min-w-0 items-center justify-center p-5 transition-colors sm:p-8"
+            >
+              {config?.fillsContainer || flags.fullWidth ? (
+                <ContainerPreview>{preview}</ContainerPreview>
+              ) : config ? (
+                preview
+              ) : (
+                <div className="w-full max-w-2xl">{preview}</div>
+              )}
+            </div>
+
+            {hasProperties && (
+              <div className="border-border space-y-1 border-t p-4 lg:border-t-0 lg:border-l">
+                {hasPartSelect && (
+                  <>
+                    <PropertySelect
+                      label="part"
+                      value={partName}
+                      options={parts.map((item) => item.name)}
+                      onChange={(next) => {
+                        setPartName(next);
+                        setChanged({ revision: changed.revision + 1, tokens: new Set() });
+                      }}
+                    />
+                    {(selectAxes.length > 0 || hasToggles) && (
+                      <div className="border-border my-2 border-t" />
+                    )}
+                  </>
+                )}
+                {selectAxes.map((axis) => (
+                  <PropertySelect
+                    key={axis.name}
+                    label={axis.name}
+                    value={selection[axis.name]}
+                    options={axis.options}
+                    onChange={(value) =>
+                      update({ ...state, selection: { ...selection, [axis.name]: value } })
+                    }
+                  />
+                ))}
+                {selectAxes.length > 0 && hasToggles && (
+                  <div className="border-border my-2 border-t" />
+                )}
+                {booleanAxes.map((axis) => (
+                  <PropertySwitch
+                    key={axis.name}
+                    label={axis.name}
+                    checked={selection[axis.name] === "true"}
+                    onChange={(checked) =>
+                      update({
+                        ...state,
+                        selection: { ...selection, [axis.name]: String(checked) },
+                      })
+                    }
+                  />
+                ))}
+                {configFlags.map((flag) => (
+                  <PropertySwitch
+                    key={flag}
+                    label={FLAG_LABELS[flag]}
+                    checked={flags[flag]}
+                    onChange={(checked) =>
+                      update({ ...state, flags: { ...flags, [flag]: checked } })
+                    }
+                  />
+                ))}
+              </div>
             )}
           </div>
-
-          {hasProperties && (
-            <div className="border-border space-y-1 border-t p-4 lg:border-t-0 lg:border-l">
-              {hasPartSelect && (
-                <>
-                  <PropertySelect
-                    label="part"
-                    value={partName}
-                    options={parts.map((item) => item.name)}
-                    onChange={(next) => {
-                      setPartName(next);
-                      setChanged({ revision: changed.revision + 1, tokens: new Set() });
-                    }}
-                  />
-                  {(selectAxes.length > 0 || hasToggles) && (
-                    <div className="border-border my-2 border-t" />
-                  )}
-                </>
-              )}
-              {selectAxes.map((axis) => (
-                <PropertySelect
-                  key={axis.name}
-                  label={axis.name}
-                  value={selection[axis.name]}
-                  options={axis.options}
-                  onChange={(value) =>
-                    update({ ...state, selection: { ...selection, [axis.name]: value } })
-                  }
-                />
-              ))}
-              {selectAxes.length > 0 && hasToggles && (
-                <div className="border-border my-2 border-t" />
-              )}
-              {booleanAxes.map((axis) => (
-                <PropertySwitch
-                  key={axis.name}
-                  label={axis.name}
-                  checked={selection[axis.name] === "true"}
-                  onChange={(checked) =>
-                    update({
-                      ...state,
-                      selection: { ...selection, [axis.name]: String(checked) },
-                    })
-                  }
-                />
-              ))}
-              {configFlags.map((flag) => (
-                <PropertySwitch
-                  key={flag}
-                  label={FLAG_LABELS[flag]}
-                  checked={flags[flag]}
-                  onChange={(checked) => update({ ...state, flags: { ...flags, [flag]: checked } })}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        )}
 
         {SHOW_CLASSES && (
           <dl className="border-border divide-border divide-y border-t">

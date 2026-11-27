@@ -1,7 +1,0 @@
-@import "@goraebap/design-system/styles/base.css";
-@import "@goraebap/design-system/styles/theme-app.css";
-@import "@angular/cdk/overlay-prebuilt.css";
-
-/* 디자인 시스템 레시피가 쓰는 유틸리티를 화면 부품 패키지에서도 찾게 한다. */
-@source "../../../packages/ui-angular/src";
-@source "../../../packages/design-system/src";

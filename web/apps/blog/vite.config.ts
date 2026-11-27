@@ -54,6 +54,18 @@ export default defineConfig({
   },
   server: {
     port: 5175,
+    proxy: {
+      "/demos/react": {
+        target: "http://localhost:5176",
+        changeOrigin: true,
+        ws: true,
+      },
+      "/demos/angular": {
+        target: "http://localhost:5177",
+        changeOrigin: true,
+        ws: true,
+      },
+    },
     fs: {
       allow: [
         path.resolve(__dirname, "../.."),
