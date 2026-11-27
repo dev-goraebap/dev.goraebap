@@ -1,7 +1,7 @@
 ---
 title: 표준 라이브러리
 summary: 프론트엔드 앱에서 표준 도구를 지정하는 기능 영역과 도입 원칙입니다.
-order: 3
+order: 8
 icon: swatch
 ---
 
