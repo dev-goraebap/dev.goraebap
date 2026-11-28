@@ -5,6 +5,7 @@
 @import "@goraebap/design-system/styles/theme-ocean.css";
 @import "@goraebap/design-system/styles/theme-forest.css";
 @import "@goraebap/design-system/styles/theme-terracotta.css";
+@import "../../shared/ui/brand-draw.css";
 
 @source "../../../../../packages/design-system/src";
 @source "../../../../../packages/ui-react/src";
@@ -170,23 +171,6 @@
   text-decoration: var(--shiki-dark-text-decoration, inherit);
 }
 
-.brand-draw path[fill="none"] {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: brand-draw 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-
-.brand-draw path:nth-child(2) {
-  animation-delay: 0.45s;
-}
-
-.brand-draw path[fill="currentColor"] {
-  opacity: 0;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: brand-spark 0.5s ease-out 1.35s forwards;
-}
-
 .wordmark-write {
   mask-image: linear-gradient(100deg, #000 42%, transparent 58%);
   mask-position: 100% 0;
@@ -217,18 +201,6 @@
   }
 }
 
-@keyframes brand-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes brand-spark {
-  to {
-    opacity: 1;
-  }
-}
-
 @keyframes workshop-reveal {
   from {
     opacity: 0;
@@ -240,13 +212,25 @@
   }
 }
 
+@keyframes route-pending-shimmer {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.route-pending-shimmer {
+  animation: route-pending-shimmer 1.35s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .brand-draw path[fill="none"] {
-    stroke-dashoffset: 0;
+  .route-pending-shimmer {
     animation: none;
+    transform: translateX(65%);
   }
 
-  .brand-draw path[fill="currentColor"],
   .workshop-reveal {
     opacity: 1;
     animation: none;

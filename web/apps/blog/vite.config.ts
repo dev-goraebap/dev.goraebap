@@ -1,3 +1,4 @@
+import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/vite";
@@ -8,8 +9,21 @@ import remarkFrontmatter from "remark-frontmatter";
 import remarkGfm from "remark-gfm";
 import remarkMdxFrontmatter from "remark-mdx-frontmatter";
 import { defineConfig, type PluginOption } from "vite";
+import { renderBrandMarkSvg } from "./src/shared/ui/brand-mark-geometry";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const BRAND_DRAW_CSS_PATH = path.resolve(__dirname, "src/shared/ui/brand-draw.css");
+
+// 정적 부트 스플래시(index.html)에 React BrandMark와 동일한 SVG·그리기 CSS 원본을 주입해 중복을 없앤다.
+const brandSplashPlugin: PluginOption = {
+  name: "brand-splash-inline",
+  transformIndexHtml(html) {
+    const drawCss = fs.readFileSync(BRAND_DRAW_CSS_PATH, "utf8");
+    return html
+      .replace("/* <!--brand-draw-css--> */", drawCss)
+      .replace("<!--brand-mark-->", renderBrandMarkSvg("splash-logo brand-draw-loop"));
+  },
+};
 
 const mdxPlugin = mdx({
   mdExtensions: [".md"],
@@ -32,6 +46,7 @@ const contentMdxPlugin = {
 
 export default defineConfig({
   plugins: [
+    brandSplashPlugin,
     // 지침 글의 원본(content/). SKILL.md도 같은 방식으로 읽어 사이트에 보인다.
     contentMdxPlugin,
     tanstackRouter({

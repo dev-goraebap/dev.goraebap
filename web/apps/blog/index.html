@@ -9,8 +9,8 @@
       name="description"
       content="웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실입니다."
     />
-    <meta name="theme-color" content="#0f0f10" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1b1b1e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f9f9fa" media="(prefers-color-scheme: light)" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://dev.goraebap.xyz/" />
     <meta property="og:title" content="dev.goraebap" />
@@ -32,45 +32,165 @@
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap"
     />
     <style>
-      html.fonts-loading {
-        opacity: 0;
-      }
+      /* CSS·JS 번들이 도착하기 전에 테마 배경색과 스크롤바 거터를 먼저 고정해 번쩍임·좌우 흔들림을 막는다. */
       html {
-        transition: opacity 120ms ease-out;
+        color-scheme: light;
+        scrollbar-gutter: stable;
+        --splash-bg: #f9f9fa;
+        --splash-fg: #1b1b1b;
+        background-color: var(--splash-bg);
+        color: var(--splash-fg);
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      html[data-ds-theme="editorial"] {
+        --splash-bg: oklch(0.992 0.002 95);
+        --splash-fg: oklch(0.165 0.006 260);
+      }
+      html[data-ds-theme="ocean"] {
+        --splash-bg: oklch(0.985 0.006 245);
+        --splash-fg: oklch(0.205 0.032 252);
+      }
+      html[data-ds-theme="forest"] {
+        --splash-bg: oklch(0.986 0.006 155);
+        --splash-fg: oklch(0.21 0.026 160);
+      }
+      html[data-ds-theme="terracotta"] {
+        --splash-bg: oklch(0.986 0.008 68);
+        --splash-fg: oklch(0.22 0.024 45);
+      }
+      html.dark {
+        color-scheme: dark;
+        --splash-bg: #1b1b1e;
+        --splash-fg: #f2f2f3;
+      }
+      html.dark[data-ds-theme="editorial"] {
+        --splash-bg: oklch(0.145 0.006 260);
+        --splash-fg: oklch(0.945 0.004 95);
+      }
+      html.dark[data-ds-theme="ocean"] {
+        --splash-bg: oklch(0.175 0.024 252);
+        --splash-fg: oklch(0.94 0.01 245);
+      }
+      html.dark[data-ds-theme="forest"] {
+        --splash-bg: oklch(0.175 0.018 160);
+        --splash-fg: oklch(0.94 0.008 155);
+      }
+      html.dark[data-ds-theme="terracotta"] {
+        --splash-bg: oklch(0.18 0.016 48);
+        --splash-fg: oklch(0.945 0.008 68);
+      }
+      body {
+        margin: 0;
+        background-color: var(--splash-bg);
+        color: var(--splash-fg);
+      }
+      #app-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 6dvh;
+        background-color: var(--splash-bg);
+        color: var(--splash-fg);
+        opacity: 1;
+        contain: strict;
+        will-change: opacity;
+        /* 투명도 전환은 초반 급강하를 피하고 전체 구간에 걸쳐 고르게 사라지도록 대칭 커브를 쓴다. */
+        transition: opacity 460ms cubic-bezier(0.45, 0, 0.55, 1) 60ms;
+      }
+      #app-splash.is-ready {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #app-splash .splash-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+        will-change: opacity, transform;
+        transition:
+          opacity 280ms cubic-bezier(0.4, 0, 0.2, 1),
+          transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      #app-splash.is-ready .splash-inner {
+        opacity: 0;
+        transform: translate3d(0, -4px, 0) scale(0.95);
+      }
+      #app-splash .splash-logo {
+        width: 84px;
+        height: 84px;
+        display: block;
+      }
+      /* <!--brand-draw-css--> */
+      @media (prefers-reduced-motion: reduce) {
+        #app-splash {
+          transition: opacity 140ms linear;
+        }
+        #app-splash .splash-inner {
+          transition: opacity 100ms linear;
+        }
+        #app-splash.is-ready .splash-inner {
+          transform: none;
+        }
       }
     </style>
+    <noscript>
+      <style>
+        #app-splash {
+          display: none !important;
+        }
+      </style>
+    </noscript>
     <script>
       (() => {
         const root = document.documentElement;
-        const stored = localStorage.getItem("goraebap-design-mode");
-        if (stored === "light") {
-          root.classList.remove("dark");
-        } else {
-          root.classList.add("dark");
-        }
         try {
+          const stored = localStorage.getItem("goraebap-design-mode");
+          if (stored === "light") {
+            root.classList.remove("dark");
+          } else {
+            root.classList.add("dark");
+          }
           const config = JSON.parse(localStorage.getItem("goraebap-design-config-v2") || "{}");
+          if (["app", "editorial", "ocean", "forest", "terracotta"].includes(config.theme)) {
+            root.setAttribute("data-ds-theme", config.theme);
+          }
           if (["93.75%", "100%", "112.5%", "125%"].includes(config.uiSize)) {
             root.style.setProperty("--ui-size", config.uiSize);
           }
         } catch {
-          // 저장값이 깨졌으면 기본 크기로 시작한다.
+          // 저장소 접근 불가·손상 시 기본 다크 테마로 시작한다.
         }
-        root.classList.add("fonts-loading");
-        const reveal = () => root.classList.remove("fonts-loading");
-        const timer = setTimeout(reveal, 180);
-        if (document.fonts && document.fonts.ready) {
-          document.fonts.ready.then(() => {
-            clearTimeout(timer);
-            reveal();
-          });
-        } else {
-          reveal();
-        }
+        // 모듈 스크립트 로드 실패 등 예외 상황에서도 화면이 영구히 가리지 않도록 load 이후에만 안전장치를 건다.
+        window.addEventListener(
+          "load",
+          () => {
+            window.setTimeout(() => {
+              const splash = document.getElementById("app-splash");
+              if (splash && !splash.dataset.dismissed) {
+                splash.dataset.dismissed = "1";
+                splash.classList.add("is-ready");
+                window.setTimeout(() => splash.remove(), 620);
+              }
+            }, 2500);
+          },
+          { once: true },
+        );
       })();
     </script>
   </head>
   <body>
+    <div id="app-splash" role="status" aria-label="화면을 준비하는 중">
+      <div class="splash-inner" aria-hidden="true">
+        <!--brand-mark-->
+      </div>
+    </div>
     <div id="root"><!--app--></div>
     <script type="module" src="/src/app/entry.tsx"></script>
   </body>
