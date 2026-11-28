@@ -9,6 +9,7 @@ export interface SiteMenu {
   to: SiteMenuTarget;
   match: string[];
   landing?: boolean;
+  hideInHeader?: boolean;
   children?: { label: string; to: SiteMenuTarget; match: string[] }[];
 }
 
@@ -50,10 +51,13 @@ export const SITE_MENUS: SiteMenu[] = [
     description: "프론트엔드·백엔드·디자인 시스템 통합 용어집",
     to: "/glossary",
     match: ["/glossary"],
+    hideInHeader: true,
   },
 ];
 
 export const VISIBLE_MENUS = SITE_MENUS;
+
+export const HEADER_MENUS = VISIBLE_MENUS.filter((menu) => !menu.hideInHeader);
 
 export const LANDING_MENUS = SITE_MENUS.filter((menu) => menu.landing);
 

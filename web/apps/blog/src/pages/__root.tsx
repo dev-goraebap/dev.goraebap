@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, createRootRoute, redirect, useRouterState } from "@tanstack/react-router";
 import Lenis from "lenis";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { VISIBLE_MENUS, activeMenu, isUnder } from "@/shared/config/site-menus";
+import { HEADER_MENUS, activeMenu, isUnder } from "@/shared/config/site-menus";
 import { DesignConfigProvider } from "@/shared/lib/design-config";
 import { BrandMark, DesignSettings, SiteFooter, Wordmark } from "@/shared/ui";
 import { DocSearch } from "@/widgets/doc-search";
@@ -175,7 +175,7 @@ function RootLayout() {
 
             {/* Center Primary Nav: 어느 페이지에서나 같은 메뉴 */}
             <nav aria-label="주요 메뉴" className="hidden items-center gap-1 md:flex">
-              {VISIBLE_MENUS.map((menu) => (
+              {HEADER_MENUS.map((menu) => (
                 <Link
                   key={menu.label}
                   to={menu.to}
@@ -204,7 +204,7 @@ function RootLayout() {
             aria-label="모바일 주요 메뉴"
             className="border-border/60 flex items-center gap-1 overflow-x-auto border-t px-4 py-1.5 md:hidden"
           >
-            {VISIBLE_MENUS.map((menu) => (
+            {HEADER_MENUS.map((menu) => (
               <Link
                 key={menu.label}
                 to={menu.to}
