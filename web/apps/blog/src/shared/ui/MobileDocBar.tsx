@@ -6,7 +6,7 @@ import {
 } from "@goraebap/ui-react/components/bottom-sheet";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { useMobileDocBarState } from "@/shared/lib/mobile-doc-bar";
-import { useActiveHeading } from "./TableOfContents";
+import { pinActiveHeading, useActiveHeading } from "./TableOfContents";
 
 function TocListIcon({ className }: { className?: string }) {
   return (
@@ -45,6 +45,7 @@ export function MobileDocBar() {
   }
 
   function jumpToHeading(id: string) {
+    pinActiveHeading(id);
     setTocOpen(false);
     window.history.replaceState(null, "", `#${id}`);
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

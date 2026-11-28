@@ -3,7 +3,6 @@ import { Button } from "@goraebap/ui-react/components/button";
 import { Input } from "@goraebap/ui-react/components/input";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { useDebouncedValue } from "@/shared/lib/use-debounced-value";
-import { useHeightTransition } from "@/shared/lib/use-height-transition";
 import { PageState } from "@/shared/ui";
 import { DOC_GROUPS, searchDocs, type DocEntry } from "../model/search-index";
 
@@ -31,7 +30,6 @@ export function DocSearchPanel({
   closeButton,
   onOpen,
 }: DocSearchPanelProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const keyboardNavRef = useRef(false);
@@ -45,7 +43,6 @@ export function DocSearchPanel({
   const onQueryChangeRef = useRef(onQueryChange);
   const sentQueryRef = useRef(initialQuery);
   const isDialog = surface === "dialog";
-  useHeightTransition(rootRef, isDialog);
 
   useEffect(() => {
     inputRef.current?.focus({ preventScroll: true });
@@ -218,10 +215,7 @@ export function DocSearchPanel({
 
   if (isDialog) {
     return (
-      <div
-        ref={rootRef}
-        className="flex min-h-[24rem] flex-col motion-safe:animate-[page-state-enter_240ms_cubic-bezier(0.2,0,0,1)_both]"
-      >
+      <div className="flex min-h-[24rem] flex-col motion-safe:animate-[page-state-enter_240ms_cubic-bezier(0.2,0,0,1)_both]">
         <div className="border-border flex items-center gap-1 border-b p-2">
           {inputField}
           {onExpand && (
@@ -245,7 +239,7 @@ export function DocSearchPanel({
   }
 
   return (
-    <div ref={rootRef} className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col">
       <header className="border-border/80 bg-background/85 sticky top-0 z-30 border-b backdrop-blur-md">
         <div className="mx-auto flex h-14 w-full max-w-2xl items-center gap-2 px-4 sm:px-6">
           {onBack && (

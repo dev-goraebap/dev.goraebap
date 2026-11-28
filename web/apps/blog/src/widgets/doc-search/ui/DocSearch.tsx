@@ -9,6 +9,7 @@ import {
 } from "@goraebap/ui-react/components/dialog";
 import { SystemIcon } from "@goraebap/ui-react/icons";
 import { useIsMobile } from "@goraebap/ui-react/lib/use-is-mobile";
+import { useHeightTransition } from "@/shared/lib/use-height-transition";
 import type { DocSearchPanelProps } from "./DocSearchPanel";
 
 // 문서 전체 목록은 검색을 열 때만 불러온다.
@@ -44,10 +45,15 @@ function SearchLoading() {
 }
 
 export function DocSearchContent(props: DocSearchPanelProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  useHeightTransition(containerRef, props.surface === "dialog");
+
   return (
-    <Suspense fallback={<SearchLoading />}>
-      <LazyDocSearchPanel {...props} />
-    </Suspense>
+    <div ref={containerRef}>
+      <Suspense fallback={<SearchLoading />}>
+        <LazyDocSearchPanel {...props} />
+      </Suspense>
+    </div>
   );
 }
 

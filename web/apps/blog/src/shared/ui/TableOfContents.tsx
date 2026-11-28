@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 export interface TocItem {
   id: string;
@@ -49,49 +49,167 @@ export function extractHeadingsFromMarkdown(source: string): TocItem[] {
   return items;
 }
 
+// 클릭으로 선택한 목차(특히 페이지 하단이라 상단 기준선까지 못 올라오는 절)는
+// 사용자가 다시 직접 스크롤할 때까지 선택 상태를 유지한다.
+let pinnedHeadingId: string | null = null;
+let pinnedAt = 0;
+let pinnedScrollY: number | null = null;
+let lastItemsKey = "";
+const pinListeners = new Set<() => void>();
+
+function emitPin() {
+  for (const listener of pinListeners) listener();
+}
+
+function subscribePin(listener: () => void) {
+  pinListeners.add(listener);
+  return () => {
+    pinListeners.delete(listener);
+  };
+}
+
+function getPinnedSnapshot() {
+  return pinnedHeadingId;
+}
+
+function getPinnedServerSnapshot() {
+  return null;
+}
+
+export function pinActiveHeading(id: string) {
+  pinnedHeadingId = id;
+  pinnedAt = typeof performance !== "undefined" ? performance.now() : 0;
+  pinnedScrollY = null;
+  emitPin();
+}
+
+function clearPinnedHeading() {
+  if (pinnedHeadingId === null) return;
+  pinnedHeadingId = null;
+  pinnedScrollY = null;
+  emitPin();
+}
+
+const TOP_OFFSET = 120;
+const SCROLL_KEYS = new Set([
+  "ArrowUp",
+  "ArrowDown",
+  "PageUp",
+  "PageDown",
+  "Home",
+  "End",
+  " ",
+]);
+
 export function useActiveHeading(items: readonly TocItem[]): string {
-  const [activeId, setActiveId] = useState(items[0]?.id ?? "");
+  const itemsKey = items.map((item) => item.id).join("\n");
+  const [scrollActiveId, setScrollActiveId] = useState(items[0]?.id ?? "");
+  const pinnedId = useSyncExternalStore(
+    subscribePin,
+    getPinnedSnapshot,
+    getPinnedServerSnapshot,
+  );
 
   useEffect(() => {
-    if (items.length === 0) return;
+    if (!itemsKey) return;
+    const ids = itemsKey.split("\n");
 
-    const elements = items
-      .map((item) => document.getElementById(item.id))
+    if (itemsKey !== lastItemsKey) {
+      lastItemsKey = itemsKey;
+      clearPinnedHeading();
+      const hashId = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+      if (hashId && ids.includes(hashId)) {
+        pinActiveHeading(hashId);
+      }
+    }
+
+    const elements = ids
+      .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
     if (elements.length === 0) return;
 
-    const update = () => {
+    const computeScrollActive = () => {
       const scrollY = window.scrollY;
-      const offset = 120;
-      if (scrollY + window.innerHeight >= document.documentElement.scrollHeight - 24) {
-        setActiveId(elements[elements.length - 1].id);
-        return;
-      }
+      const maxScroll = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      const remaining = Math.max(0, maxScroll - scrollY);
+
+      // 하단 영역의 짧은 절들이 TOP_OFFSET까지 못 올라오더라도 순차적으로 선택되도록
+      // 페이지 끝부분에서는 기준선을 마지막 제목의 최종 위치까지 부드럽게 내린다.
+      const lastRestTop = elements[elements.length - 1].getBoundingClientRect().top - remaining;
+      const maxThreshold = Math.max(TOP_OFFSET, lastRestTop + 8);
+      const bottomZone = Math.min(maxScroll, Math.max(180, window.innerHeight * 0.45));
+      const progress =
+        bottomZone > 0 && remaining < bottomZone ? 1 - remaining / bottomZone : 0;
+      const threshold = TOP_OFFSET + progress * (maxThreshold - TOP_OFFSET);
+
       let current = elements[0].id;
       for (const el of elements) {
-        if (el.getBoundingClientRect().top <= offset) {
+        if (el.getBoundingClientRect().top <= threshold) {
           current = el.id;
         } else {
           break;
         }
       }
-      setActiveId(current);
+      setScrollActiveId(current);
     };
 
-    const raf = window.requestAnimationFrame(update);
-    window.addEventListener("scroll", update, { passive: true });
+    const handleScroll = () => {
+      if (pinnedHeadingId !== null) {
+        // 클릭 직후 프로그래밍 스크롤(최대 ~650ms)이 끝난 뒤 스크롤바 드래그 등으로
+        // 위치가 달라지면 고정을 푼다.
+        const elapsed = performance.now() - pinnedAt;
+        if (elapsed > 650) {
+          if (pinnedScrollY === null) {
+            pinnedScrollY = window.scrollY;
+          } else if (Math.abs(window.scrollY - pinnedScrollY) > 6) {
+            clearPinnedHeading();
+          }
+        }
+      }
+      computeScrollActive();
+    };
+
+    const handleUserScrollInput = () => {
+      if (pinnedHeadingId !== null) clearPinnedHeading();
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (pinnedHeadingId !== null && SCROLL_KEYS.has(event.key)) {
+        clearPinnedHeading();
+      }
+    };
+
+    const raf = window.requestAnimationFrame(computeScrollActive);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("wheel", handleUserScrollInput, { passive: true });
+    window.addEventListener("touchmove", handleUserScrollInput, { passive: true });
+    window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.cancelAnimationFrame(raf);
-      window.removeEventListener("scroll", update);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", handleUserScrollInput);
+      window.removeEventListener("touchmove", handleUserScrollInput);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [items]);
+  }, [itemsKey]);
 
-  return items.some((item) => item.id === activeId) ? activeId : (items[0]?.id ?? "");
+  if (pinnedId && items.some((item) => item.id === pinnedId)) return pinnedId;
+  return items.some((item) => item.id === scrollActiveId) ? scrollActiveId : (items[0]?.id ?? "");
 }
 
 export function TableOfContents({ items }: { items: readonly TocItem[] }) {
   const activeId = useActiveHeading(items);
   if (items.length === 0) return null;
+
+  function handleSelect(id: string) {
+    pinActiveHeading(id);
+    window.history.replaceState(null, "", `#${id}`);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById(id)?.scrollIntoView({
+      behavior: reduced ? "auto" : "smooth",
+      block: "start",
+    });
+  }
 
   return (
     <nav aria-label="이 페이지의 목차" className="space-y-2.5">
@@ -104,6 +222,10 @@ export function TableOfContents({ items }: { items: readonly TocItem[] }) {
               <a
                 href={`#${item.id}`}
                 aria-current={isActive ? "location" : undefined}
+                onClick={(event) => {
+                  event.preventDefault();
+                  handleSelect(item.id);
+                }}
                 className={`block py-1.5 break-keep transition-colors ${
                   item.level === 3 ? "pl-6" : "pl-3"
                 } ${

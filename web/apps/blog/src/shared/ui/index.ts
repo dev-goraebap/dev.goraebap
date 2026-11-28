@@ -24,6 +24,7 @@ export {
   TableOfContents,
   extractHeadingsFromMarkdown,
   headingToAnchor,
+  pinActiveHeading,
   useActiveHeading,
   type TocItem,
 } from "./TableOfContents";
