@@ -69,6 +69,6 @@ node scripts/sync-local-plugins.mjs
 
 - **`check.yml`**: PR 및 `main` 푸시 시 플러그인·웹 린트·타입·빌드 검증
 - **`deploy.yml`**: `main` 푸시 시 `dev.goraebap.xyz` 통합 빌드 및 홈서버 SSH 자동 배포
-- **`audit-l1.yml`**: 매주 월요일 토큰 0원 정적·보안·링크·성숙도 감사 → 이상 시 `inbox:audit` 이슈 갱신
+- **`audit-l1.yml`**: 매주 월요일 정적·보안·링크·성숙도 감사 → 이상 시 `inbox:audit` 이슈 갱신
 - **`audit-l2.yml`**: 매월 1일 Gemini CLI 기반 공식문서 최신화 감사 → `inbox:upgrade` 이슈 등록
 - **`weekly-triage.yml`**: 매주 일요일(및 수동 실행) 신뢰된 `inbox:*` 이슈를 주간 묶음 PR 1개로 정리 + 소유자의 `@gemini-cli` PR 댓글 수정 응답

@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   audit-l1:
-    name: Zero-Token Static & Security Audit
+    name: Static & Security Audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

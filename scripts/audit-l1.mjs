@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * L1 무인 정적 감사 스크립트 (AI 토큰 0원).
+ * L1 정적 감사 스크립트.
  *
  * 점검 항목:
  * 1. plugins/fullstack 빌드 정합성 · 중립성 · 로컬 링크 · 앵커 (npm run check)
@@ -149,7 +149,7 @@ const markdown = [
   `## L1 정적 · 보안 · 링크 감사 결과 (${today})`,
   "",
   findings.length > 0
-    ? `발견된 항목: **${findings.length}건** (AI 토큰 미사용 정적 검사)`
+    ? `발견된 항목: **${findings.length}건**`
     : "모든 L1 정적 검사 항목이 정상입니다.",
   "",
   ...sections,

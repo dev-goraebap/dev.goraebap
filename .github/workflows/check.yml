@@ -37,7 +37,7 @@ jobs:
         working-directory: web
       - run: pnpm lint
         working-directory: web
-      - run: pnpm typecheck
-        working-directory: web
       - run: pnpm build
+        working-directory: web
+      - run: pnpm typecheck
         working-directory: web
