@@ -5,24 +5,25 @@ order: 2
 icon: file
 ---
 
-프레임워크별 라우트 파일 작성법은 스택 전환(`React · TanStack` · `Angular`)을, 상세 경계 규칙은 [디렉토리 구조](../../reference/directory-structure/index.md)를 참고합니다.
+프레임워크별 라우트 파일 작성법은 스택 전환(`React · TanStack` · `Angular`)을 따르고, 각 단계에서 필요한 레퍼런스([디렉토리 구조](../../reference/directory-structure/index.md) · [구성 요소와 실행 흐름](../../reference/components-and-flow/index.md) · [상태 관리와 데이터 흐름](../../reference/state-and-data-flow/index.md) · [라우팅과 화면 전환](../../reference/routing/index.md) · [코드 스타일과 네이밍](../../reference/code-style/index.md))를 함께 확인합니다.
 
 ## 1. URL 경로 확정과 라우트 슬라이스 생성
 
-1. 새 화면이 열릴 URL 경로를 먼저 확정합니다.
+1. [라우팅과 화면 전환](../../reference/routing/index.md) 기준에 맞춰 새 화면이 열릴 URL 경로와 모달·마스크 여부를 먼저 확정합니다. 모달과 URL 경계가 애매하면 [URL과 라우티드 모달](../../articles/url-and-routed-modals.md)을 참고합니다.
 2. `src/pages/` 아래에 URL 경로와 1:1로 대응하는 폴더(라우트 슬라이스)를 만듭니다.
 3. 하위 주소 여러 개에 공통 레이아웃·권한 가드·초기 데이터 준비가 필요하면 부모 폴더(또는 경로 없는 레이아웃)에 분리합니다.
 
-## 2. 코로케이션으로 화면 먼저 구현
+## 2. 코로케이션으로 화면과 상태 흐름 구현
 
 처음부터 코드를 여러 레이어로 미리 나누지 않습니다.
 
 1. 이 화면에서만 쓰는 UI 조각, 상태·로직, API 요청은 해당 `pages/<route>/` 폴더 안에 둡니다.
-2. 파일이 한두 개뿐이라면 굳이 세그먼트 폴더를 나누지 않고, 파일이 늘어나 역할 구분이 필요해질 때 `ui/`, `model/`, `api/`로 정리합니다.
+2. [구성 요소와 실행 흐름](../../reference/components-and-flow/index.md)과 [상태 관리와 데이터 흐름](../../reference/state-and-data-flow/index.md)에 맞춰 URL·서버 데이터·초안·로컬 UI 상태의 소유자를 나눕니다. 상태 소유 경계나 이펙트 사용이 애매하면 [상태 소유권 경계](../../articles/state-ownership-boundaries.md)와 [이펙트와 파생 상태](../../articles/effects-and-derived-state.md)를 참고합니다.
+3. 파일이 한두 개뿐이라면 굳이 세그먼트 폴더를 나누지 않고, 파일이 늘어나 역할 구분이 필요해질 때 `ui/`, `model/`, `api/`로 정리합니다.
 
 ## 3. 재사용 시점에 하위 레이어로 승격
 
-두 개 이상의 라우트 슬라이스가 같은 코드를 필요로 하면 아래 기준에 따라 위치를 옮깁니다.
+두 개 이상의 라우트 슬라이스가 같은 코드를 필요로 하면 아래 기준에 따라 위치를 옮깁니다. 레이어 분리의 판단 근거가 필요하면 [왜 FSD 레이어인가](../../articles/why-fsd-layers.md)를 참고합니다.
 
 | 상황 | 옮길 위치 |
 | --- | --- |

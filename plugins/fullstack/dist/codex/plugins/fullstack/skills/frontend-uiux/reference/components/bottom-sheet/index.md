@@ -1,0 +1,38 @@
+# Bottom Sheet
+
+화면 아래에서 올라와 한 손으로 조작하고 아래로 끌어내려 닫는 오버레이 패널입니다. 필터 선택, 항목 작업 목록, 짧은 입력처럼 좁은 화면에서 엄지가 닿는 영역에 두어야 하는 작업에 씁니다.
+
+스택별 구현: [react.md](react.md#usage) · [angular.md](angular.md#usage)의 「usage」 절
+
+## 구성
+
+| 부분 | 역할 |
+| - | - |
+| BottomSheet | 바텀시트의 열림 상태와 아래로 끌어내려 닫는 제스처를 관리하는 최상위 래퍼입니다. |
+| BottomSheetTrigger | 탭이나 키보드 입력으로 바텀시트를 여는 트리거 요소입니다. |
+| BottomSheetContent | 배경 딤과 시트 본체를 렌더링하며 최대 높이 85dvh, 내부 스크롤, 하단 safe area 여백을 기본 적용합니다. |
+| BottomSheetTitle | 바텀시트의 목적을 알리는 제목이며 스크린 리더의 레이블로 연결됩니다. |
+| BottomSheetDescription | 선택이나 입력의 맥락을 한두 문장으로 보충하는 설명입니다. |
+| BottomSheetFooter | 확인·적용 같은 하단 실행 버튼을 배치하는 영역입니다. |
+| BottomSheetClose | 취소나 완료 버튼으로 바텀시트를 닫을 때 감싸는 요소입니다. |
+
+## 접근성
+
+| 키 | 동작 |
+| - | - |
+| Tab | 바텀시트 안의 다음 포커스 가능한 요소로 이동합니다. |
+| Shift+Tab | 바텀시트 안의 이전 포커스 가능한 요소로 이동합니다. |
+| Esc | 바텀시트를 닫고 열었던 트리거로 포커스를 되돌립니다. |
+
+- BottomSheetTitle은 스크린 리더가 시트 이름을 읽을 수 있도록 반드시 포함합니다.
+- 열려 있는 동안 포커스를 시트 안에 가두며, 스와이프·Esc·바깥 클릭으로 닫으면 트리거로 포커스가 돌아옵니다.
+
+## 적응형 UI
+
+64rem 미만에서 어떤 오버레이를 BottomSheet로 전환하고 유지할지 기준을 확인합니다. 자세한 기준은 [적응형 UI](../../adaptive-ui/index.md)에 있습니다.
+
+## 관련 컴포넌트
+
+- [Dialog](../dialog/index.md): 화면 폭에 따라 중앙 모달과 바텀시트를 자동 전환할 때 ResponsiveDialog를 씁니다.
+- [Drawer](../drawer/index.md): 화면 아래가 아니라 좌우 측면에서 열리는 탐색·필터 패널은 Drawer를 씁니다.
+- [Alert Dialog](../alert-dialog/index.md): 스와이프나 바깥 클릭으로 실수로 닫히면 안 되는 확인은 Alert Dialog를 씁니다.

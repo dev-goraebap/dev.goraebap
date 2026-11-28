@@ -1,0 +1,18 @@
+# Alert (react)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## usage
+
+```tsx
+import { Alert, AlertDescription, AlertTitle } from "@goraebap/ui-react/components/alert";
+
+export function Example() {
+  return (
+    <Alert variant="info">
+      <AlertTitle>서브도메인 SSO 활성화</AlertTitle>
+      <AlertDescription>로그인 세션이 *.goraebap.xyz 전체에 공유됩니다.</AlertDescription>
+    </Alert>
+  );
+}
+```

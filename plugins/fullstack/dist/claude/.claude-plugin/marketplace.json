@@ -1,0 +1,14 @@
+{
+  "name": "dev-goraebap",
+  "description": "웹 앱 풀스택 개발 지침(프론트엔드 UI/UX·프론트엔드 엔지니어링·백엔드 엔지니어링)과 스택별 구현 기준",
+  "owner": {
+    "name": "dev-goraebap"
+  },
+  "plugins": [
+    {
+      "name": "fullstack",
+      "source": "./plugins/fullstack",
+      "description": "웹 앱 풀스택 개발 지침(프론트엔드 UI/UX·프론트엔드 엔지니어링·백엔드 엔지니어링)과 스택별 구현 기준"
+    }
+  ]
+}

@@ -9,11 +9,16 @@ import {
   type ContentDoc,
 } from "@/entities/content-doc";
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
-import { DocsShell, type DocsNavGroup } from "@/shared/ui";
+import { DocsShell, SidebarSectionTabs, type DocsNavGroup, type SidebarSectionTab } from "@/shared/ui";
 
 export const Route = createFileRoute("/design-system")({
   component: LibraryLayout,
 });
+
+const FRONTEND_TABS: SidebarSectionTab[] = [
+  { label: "엔지니어링", to: "/frontend", active: false },
+  { label: "디자인 시스템", to: "/design-system/overview", active: true, badge: "Beta" },
+];
 
 const GUIDE_GROUPS: DocsNavGroup[] = [
   {
@@ -83,12 +88,25 @@ function contentGroups(stack?: string): DocsNavGroup[] {
   );
 }
 
-// 파운데이션은 개요 바로 아래에, 나머지 content 묶음(패턴·AI 지침)은 컴포넌트·레이아웃 뒤에 둔다.
+// 개요 → 플레이북 → 아티클(있을 때) → 레퍼런스(파운데이션·컴포넌트·레이아웃·패턴·컴포넌트 기준·AI 지침) 순으로 배치한다.
 function sidebarGroups(stack?: string): DocsNavGroup[] {
   const content = contentGroups(stack);
+  const playbooks = content.filter((group) => group.title === "플레이북");
+  const articles = content.filter((group) => group.title === "아티클");
   const foundations = content.filter((group) => group.title === "파운데이션");
-  const rest = content.filter((group) => group.title !== "파운데이션");
-  return [...GUIDE_GROUPS, ...foundations, componentGroup(stack), LAYOUT_GROUP, ...rest];
+  const rest = content.filter(
+    (group) =>
+      group.title !== "플레이북" && group.title !== "아티클" && group.title !== "파운데이션",
+  );
+  return [
+    ...GUIDE_GROUPS,
+    ...playbooks,
+    ...articles,
+    ...foundations,
+    componentGroup(stack),
+    LAYOUT_GROUP,
+    ...rest,
+  ];
 }
 
 function LibraryLayout() {
@@ -97,8 +115,9 @@ function LibraryLayout() {
   const stack = params.stack && STACKS.includes(params.stack) ? params.stack : undefined;
   return (
     <DocsShell
-      label="문서 탐색"
+      label="프론트엔드 탐색"
       groups={sidebarGroups(stack)}
+      stickyHeader={<SidebarSectionTabs label="프론트엔드 영역" items={FRONTEND_TABS} />}
       header={
         stack && params.slug ? (
           <StackSwitcher

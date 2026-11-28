@@ -1,0 +1,34 @@
+# Dialog (react)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## usage
+
+```tsx
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@goraebap/ui-react/components/dialog";
+import { Button } from "@goraebap/ui-react/components/button";
+
+export function Example() {
+  return (
+    <Dialog>
+      <DialogTrigger render={<Button />}>대화상자 열기</DialogTrigger>
+      <DialogContent>
+        <DialogTitle>프로젝트 이름 바꾸기</DialogTitle>
+        <DialogDescription>새 이름을 입력합니다.</DialogDescription>
+      </DialogContent>
+    </Dialog>
+  );
+}
+```
+
+## responsive
+
+```tsx
+<ResponsiveDialog>
+  <ResponsiveDialogTrigger render={<Button variant="outline" />}>필터 설정</ResponsiveDialogTrigger>
+  <ResponsiveDialogContent>
+    <ResponsiveDialogTitle>필터 설정</ResponsiveDialogTitle>
+    <ResponsiveDialogDescription>조건을 고릅니다.</ResponsiveDialogDescription>
+  </ResponsiveDialogContent>
+</ResponsiveDialog>
+```

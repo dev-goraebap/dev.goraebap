@@ -1,0 +1,64 @@
+# 스크롤바
+
+## 스크롤바 거터
+
+세로 스크롤바가 공간을 차지하는 환경에서는 스크롤이 없는 짧은 페이지와 스크롤이 생기는 긴 페이지 사이를 이동할 때마다 뷰포트 폭이 달라져 배치가 좌우로 흔들립니다. `scrollbar-gutter: stable`은 스크롤이 없는 화면에서도 그 자리를 미리 비워 두어 페이지 전환 때 폭을 일정하게 유지합니다.
+
+```css
+html {
+  scrollbar-gutter: stable;
+}
+```
+
+페이지 전환이 잦은 루트 스크롤 컨테이너나 목록·패널에 적용합니다. 스크롤이 항상 없는 고정 영역에는 쓰지 않으며, 스크롤바가 내용 위에 겹쳐 뜨는 휴대폰이나 macOS 기본 설정에서는 변화가 없습니다.
+
+## 얇은 스크롤바
+
+기본 스크롤바는 좁은 사이드바, 패널, 코드 블록에서 내용에 비해 두껍게 보입니다. `scrollbar-width: thin`으로 폭을 줄이고, `scrollbar-color`의 첫 값에 막대 색, 둘째 값에 트랙 색을 지정합니다.
+
+```css
+/* Firefox용 표준 속성 (Chromium에서는 ::-webkit-scrollbar가 우선 적용되도록 분리) */
+@supports not selector(::-webkit-scrollbar) {
+  html,
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
+}
+```
+
+색을 디자인 토큰으로 지정하면 라이트, 다크, 테마를 함께 따라갑니다. 스크롤바는 스크롤할 수 있다는 단서이므로 숨기지 않고 배경과 구분되는 색을 씁니다.
+
+## 부드러운 스크롤
+
+마우스 휠의 단계별 스크롤은 긴 문서나 브랜드 페이지를 읽을 때 딱딱하게 끊겨 보일 수 있습니다. CSS의 `scroll-behavior: smooth`는 앵커 이동에만 적용되므로, 휠 스크롤까지 관성으로 부드럽게 다루려면 lenis 같은 전용 라이브러리가 필요합니다.
+
+```ts
+import Lenis from "lenis";
+
+// 빌드 때 정적 페이지를 만드는 서버에는 window가 없다.
+const prefersReducedMotion =
+  typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (!prefersReducedMotion) {
+  const lenis = new Lenis({ autoRaf: true });
+  // 언마운트 시 lenis.destroy() 호출
+}
+
+// 독립 스크롤 컨테이너(사이드바·모달 등)에는 data-lenis-prevent 속성 추가
+```
+
+모든 업무 앱에 필수로 넣지는 않고, 문서·블로그·랜딩처럼 읽기 감촉이 중요한 사이트에서 필요할 때 골라 적용합니다. `prefers-reduced-motion: reduce` 환경에서는 끄고, 독립 스크롤이 필요한 사이드바나 대화상자에는 `data-lenis-prevent`를 붙여 스크롤 충돌을 막습니다.

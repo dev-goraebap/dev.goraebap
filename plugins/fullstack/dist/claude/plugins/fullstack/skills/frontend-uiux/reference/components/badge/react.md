@@ -1,0 +1,21 @@
+# Badge (react)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## usage
+
+```tsx
+import { Badge } from "@goraebap/ui-react/components/badge";
+
+export function Example() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <Badge variant="default">원칙</Badge>
+      <Badge variant="secondary">진행 중</Badge>
+      <Badge variant="outline">Base UI</Badge>
+      <Badge variant="muted">보관됨</Badge>
+      <Badge variant="destructive">만료됨</Badge>
+    </div>
+  );
+}
+```

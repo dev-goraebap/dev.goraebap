@@ -1,0 +1,15 @@
+# Skeleton
+
+데이터를 불러오는 로딩 상태에서 콘텐츠가 들어올 자리를 미리 보여 줄 때 씁니다. 실제 카드나 텍스트 높이에 맞춰 배치해 로딩 완료 시 화면 흔들림을 줄입니다.
+
+스택별 구현: [react.md](react.md#usage) · [angular.md](angular.md#usage)의 「usage」 절
+
+## 접근성
+
+- 개별 스켈레톤은 aria-hidden="true"로 숨기고, 감싸는 컨테이너에 aria-busy="true"를 붙여 로딩 중임을 알립니다.
+- 로딩이 끝나면 aria-busy를 해제해 스크린 리더가 새 콘텐츠를 읽을 수 있게 합니다.
+
+## 관련 컴포넌트
+
+- [Progress](../progress/index.md): 파일 업로드처럼 진행률을 수치로 보여 줄 수 있는 작업은 Progress를 씁니다.
+- [Card](../card/index.md): 실제 데이터가 도착했을 때 스켈레톤과 같은 크기의 카드로 교체합니다.

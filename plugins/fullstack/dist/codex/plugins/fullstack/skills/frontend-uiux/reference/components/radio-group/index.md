@@ -1,0 +1,29 @@
+# Radio Group
+
+결제 수단이나 공개 범위처럼 서로 배타적인 선택지 중에서 반드시 하나만 고를 때 씁니다. 선택지가 적어 모든 옵션을 한눈에 펼쳐 두고 비교할 때 적합합니다.
+
+스택별 구현: [react.md](react.md#usage) · [angular.md](angular.md#usage)의 「usage」 절
+
+## 구성
+
+| 부분 | 역할 |
+| - | - |
+| RadioGroup | 선택된 값과 그룹 내부의 화살표 키 순환을 관리하는 컨테이너입니다. |
+| RadioGroupItem | 그룹 안에서 하나의 옵션을 나타내는 라디오 버튼입니다. |
+
+## 접근성
+
+| 키 | 동작 |
+| - | - |
+| Tab | 라디오 그룹으로 포커스를 이동합니다. |
+| ArrowUp / ArrowDown / ArrowLeft / ArrowRight | 이전·다음 옵션으로 이동하며 선택합니다. |
+| Space | 포커스된 옵션을 선택합니다. |
+
+- 그룹 전체에 aria-label이나 fieldset·legend로 선택 주제를 연결합니다.
+- 각 RadioGroupItem은 label로 감싸 텍스트 전체가 터치 영역이 되게 합니다.
+
+## 관련 컴포넌트
+
+- [Checkbox](../checkbox/index.md): 여러 항목을 동시에 선택하거나 해제할 수 있어야 할 때 씁니다.
+- [Select](../select/index.md): 선택지가 많아 화면에 모두 펼쳐 두기 어려울 때 씁니다.
+- [Toggle Group](../toggle-group/index.md): 폼 항목 대신 툴바에서 버튼 묶음 형태로 옵션을 고를 때 씁니다.

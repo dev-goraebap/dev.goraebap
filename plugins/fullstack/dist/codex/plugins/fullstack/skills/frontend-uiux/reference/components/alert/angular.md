@@ -1,0 +1,11 @@
+# Alert (angular)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## usage
+
+```html
+<div role="alert" [class]="alertVariants({ variant: 'info' })">
+  <h5 class="font-medium">서브도메인 SSO 활성화</h5>
+</div>
+```

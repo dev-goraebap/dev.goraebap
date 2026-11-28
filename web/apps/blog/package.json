@@ -8,7 +8,6 @@
     "build": "node ../../scripts/build-registry.mjs && vite build && vite build --ssr src/app/entry-server.tsx --outDir dist-server && node scripts/prerender.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "check:skills": "node scripts/check-skills.mjs",
     "build:registry": "node ../../scripts/build-registry.mjs"
   },
   "dependencies": {

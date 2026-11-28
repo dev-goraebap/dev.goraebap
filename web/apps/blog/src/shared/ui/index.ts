@@ -15,6 +15,7 @@ export { MaturityMeta } from "./MaturityMeta";
 export { MermaidDiagram } from "./MermaidDiagram";
 export { PageState } from "./page-state/PageState";
 export { ResizableLayoutStage } from "./ResizableLayoutStage";
+export { SidebarSectionTabs, type SidebarSectionTab } from "./SidebarSectionTabs";
 export { SiteFooter } from "./SiteFooter";
 export {
   MobileToc,

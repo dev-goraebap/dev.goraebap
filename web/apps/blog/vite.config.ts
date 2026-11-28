@@ -48,8 +48,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // 사이트가 예시 파일을 그대로 읽는 Webapp 플러그인 지침
-      "@webapp-skills": path.resolve(__dirname, "../../../plugins/webapp/skills"),
     },
   },
   server: {
@@ -67,10 +65,7 @@ export default defineConfig({
       },
     },
     fs: {
-      allow: [
-        path.resolve(__dirname, "../.."),
-        path.resolve(__dirname, "../../../plugins/webapp/skills"),
-      ],
+      allow: [path.resolve(__dirname, "../..")],
     },
   },
 });

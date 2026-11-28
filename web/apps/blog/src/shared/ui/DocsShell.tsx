@@ -27,7 +27,9 @@ export interface DocsNavGroup {
 interface DocsShellProps {
   label: string;
   groups: DocsNavGroup[];
-  // 사이드바 맨 위에 두는 요소(예: 스택 선택기)
+  // 사이드바 최상단에 고정해 두는 요소(예: 도메인 영역 전환 탭)
+  stickyHeader?: ReactNode;
+  // 사이드바 스크롤 목록 맨 위에 두는 요소(예: 스택 선택기)
   header?: ReactNode;
   children: ReactNode;
 }
@@ -155,7 +157,7 @@ function findTrail(groups: DocsNavGroup[], pathname: string) {
   return undefined;
 }
 
-export function DocsShell({ label, groups, header, children }: DocsShellProps) {
+export function DocsShell({ label, groups, stickyHeader, header, children }: DocsShellProps) {
   const pathname = useRouterState({
     select: (state) => state.location.pathname.replace(/\/$/, "") || "/",
   });
@@ -189,6 +191,16 @@ export function DocsShell({ label, groups, header, children }: DocsShellProps) {
           className="flex w-[85%] max-w-xs flex-col p-0"
         >
           <DrawerTitle className="px-5 pt-5 pb-3">{label}</DrawerTitle>
+          {stickyHeader && (
+            <div
+              onClick={(event) => {
+                if ((event.target as Element).closest("a")) setOpenedAt(null);
+              }}
+              className="shrink-0 px-3 pb-3"
+            >
+              {stickyHeader}
+            </div>
+          )}
           <nav
             ref={drawerNavRef}
             data-lenis-prevent
@@ -216,10 +228,11 @@ export function DocsShell({ label, groups, header, children }: DocsShellProps) {
               "linear-gradient(to bottom, transparent 0%, var(--border) 18%, var(--border) 82%, transparent 100%)",
           }}
         />
+        {stickyHeader && <div className="shrink-0 pr-3 pb-1">{stickyHeader}</div>}
         <nav
           id="docs-nav"
           data-lenis-prevent
-          className="-mt-4 min-h-0 flex-1 [scrollbar-width:none] space-y-5 overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,black_1rem,black_calc(100%-2.5rem),transparent)] pt-4 pr-3 pb-10 [&::-webkit-scrollbar]:hidden"
+          className={`${stickyHeader ? "" : "-mt-4"} min-h-0 flex-1 [scrollbar-width:none] space-y-5 overflow-y-auto overscroll-contain [mask-image:linear-gradient(to_bottom,transparent,black_1rem,black_calc(100%-2.5rem),transparent)] pt-4 pr-3 pb-10 [&::-webkit-scrollbar]:hidden`}
         >
           {header}
           <DocsNavList groups={groups} pathname={pathname} />

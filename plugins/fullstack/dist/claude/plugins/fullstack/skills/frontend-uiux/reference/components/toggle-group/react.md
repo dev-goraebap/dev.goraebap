@@ -1,0 +1,18 @@
+# Toggle Group (react)
+
+공통 규칙은 [index.md](index.md)에 있습니다.
+
+## usage
+
+```tsx
+import { ToggleGroup, ToggleGroupItem } from "@goraebap/ui-react/components/toggle-group";
+
+export function Example() {
+  return (
+    <ToggleGroup shape="pill" defaultValue={["app"]}>
+      <ToggleGroupItem value="app" shape="pill">App</ToggleGroupItem>
+      <ToggleGroupItem value="editorial" shape="pill">Editorial</ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```

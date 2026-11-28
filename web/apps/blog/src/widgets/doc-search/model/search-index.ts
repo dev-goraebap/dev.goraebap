@@ -88,10 +88,10 @@ const DOC_ENTRIES: DocEntry[] = [
   })),
   ...menuDocs("design-system").map((doc) => ({
     id: `design-system:${doc.slug}`,
-    // 머리말의 묶음(파운데이션·레이아웃·패턴 등)을 따르고, 검색 묶음에 없는 것(AI 지침 등)은 패턴에 둔다.
+    // 머리말의 묶음(파운데이션·레이아웃·패턴 등)을 따르고, 플레이북·아티클·AI 지침은 디자인 시스템에 둔다.
     group: ((DOC_GROUPS as readonly string[]).includes(doc.meta.group ?? "")
       ? doc.meta.group
-      : "패턴") as DocEntry["group"],
+      : "디자인 시스템") as DocEntry["group"],
     title: doc.meta.title ?? doc.slug,
     href: `/design-system/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",

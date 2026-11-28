@@ -23,18 +23,11 @@ export const SITE_MENUS: SiteMenu[] = [
     landing: true,
   },
   {
-    label: "디자인 시스템",
-    icon: "components",
-    description: "파운데이션·컴포넌트·레이아웃·패턴",
-    to: "/design-system/overview",
-    match: ["/design-system"],
-  },
-  {
     label: "프론트엔드",
     icon: "layouts",
-    description: "프론트엔드 플레이북·아티클·레퍼런스",
+    description: "프론트엔드 엔지니어링·디자인 시스템",
     to: "/frontend",
-    match: ["/frontend"],
+    match: ["/frontend", "/design-system"],
     landing: true,
   },
   {
@@ -44,6 +37,14 @@ export const SITE_MENUS: SiteMenu[] = [
     to: "/backend",
     match: ["/backend"],
     landing: true,
+  },
+  {
+    label: "디자인 시스템",
+    icon: "components",
+    description: "파운데이션·컴포넌트·레이아웃·패턴",
+    to: "/design-system/overview",
+    match: ["/design-system"],
+    hideInHeader: true,
   },
   {
     label: "용어집",
