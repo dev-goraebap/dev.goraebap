@@ -51,6 +51,8 @@ function BackendDocPage() {
           params: { section: doc.section, slug: doc.slug },
           search: nextStack === "common" ? {} : { stack: nextStack },
           replace: true,
+          resetScroll: false,
+          viewTransition: false,
         });
       }}
       trailing={

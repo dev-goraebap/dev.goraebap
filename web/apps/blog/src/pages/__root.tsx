@@ -233,6 +233,7 @@ function MobileSpaceNav({
           <Link
             key={menu.label}
             to={menu.to}
+            activeOptions={{ exact: true }}
             aria-current={menu === current ? "page" : undefined}
             className={
               menu === current
@@ -315,6 +316,7 @@ function RootLayout() {
                   <Link
                     key={menu.label}
                     to={menu.to}
+                    activeOptions={{ exact: true }}
                     aria-current={menu === current ? "page" : undefined}
                     className={
                       menu === current

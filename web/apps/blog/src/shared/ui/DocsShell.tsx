@@ -144,8 +144,10 @@ function DocsNavList({ groups, pathname }: { groups: DocsNavGroup[]; pathname: s
 }
 
 export function DocsShell({ label, groups, stickyHeader, header, children }: DocsShellProps) {
+  // resolvedLocation을 써야 ViewTransition 스냅샷 전에 사이드바 활성 항목이 먼저 바뀌어 깜빡이지 않는다.
   const pathname = useRouterState({
-    select: (state) => state.location.pathname.replace(/\/$/, "") || "/",
+    select: (state) =>
+      (state.resolvedLocation?.pathname ?? state.location.pathname).replace(/\/$/, "") || "/",
   });
   const isMobile = useIsMobile();
   const drawerNavRef = useRef<HTMLElement>(null);

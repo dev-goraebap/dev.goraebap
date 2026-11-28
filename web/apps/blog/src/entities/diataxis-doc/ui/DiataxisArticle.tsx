@@ -255,8 +255,8 @@ export function DiataxisArticle({
                     onClick={() => onSelectStack(tab.id)}
                     className={
                       selected
-                        ? "bg-background text-foreground cursor-pointer rounded-full px-3.5 py-1 text-sm font-medium shadow-sm transition-colors"
-                        : "text-muted-foreground hover:text-foreground cursor-pointer rounded-full px-3.5 py-1 text-sm transition-colors"
+                        ? "bg-background text-foreground cursor-pointer rounded-full px-3.5 py-1 text-sm font-medium shadow-sm"
+                        : "text-muted-foreground hover:text-foreground cursor-pointer rounded-full px-3.5 py-1 text-sm"
                     }
                   >
                     {tab.label}
@@ -304,10 +304,10 @@ export function DiataxisArticle({
                         role="tab"
                         aria-selected={selected}
                         onClick={() => onSelectStack(tab.id)}
-                        className={`cursor-pointer py-1.5 pl-3 text-left transition-colors ${
+                        className={`-ml-px cursor-pointer border-l-2 py-1.5 pl-3 text-left ${
                           selected
-                            ? "border-foreground text-foreground -ml-px border-l-2 font-medium"
-                            : "text-muted-foreground hover:text-foreground"
+                            ? "border-foreground text-foreground font-medium"
+                            : "text-muted-foreground hover:text-foreground border-transparent"
                         }`}
                       >
                         {tab.label}

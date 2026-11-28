@@ -100,12 +100,14 @@ export function ContentDocView({
                   <Link
                     key={item}
                     to={docHref(doc, item)}
+                    resetScroll={false}
+                    viewTransition={false}
                     aria-current={selected ? "page" : undefined}
                     onClick={() => rememberStack(space, item)}
                     className={
                       selected
-                        ? "bg-background text-foreground rounded-full px-3.5 py-1 text-sm font-medium shadow-sm transition-colors"
-                        : "text-muted-foreground hover:text-foreground rounded-full px-3.5 py-1 text-sm transition-colors"
+                        ? "bg-background text-foreground rounded-full px-3.5 py-1 text-sm font-medium shadow-sm"
+                        : "text-muted-foreground hover:text-foreground rounded-full px-3.5 py-1 text-sm"
                     }
                   >
                     {STACK_LABELS[item] ?? item}
@@ -142,12 +144,14 @@ export function ContentDocView({
                       <Link
                         key={item}
                         to={docHref(doc, item)}
+                        resetScroll={false}
+                        viewTransition={false}
                         aria-current={selected ? "page" : undefined}
                         onClick={() => rememberStack(space, item)}
-                        className={`py-1.5 pl-3 text-left transition-colors ${
+                        className={`-ml-px border-l-2 py-1.5 pl-3 text-left ${
                           selected
-                            ? "border-foreground text-foreground -ml-px border-l-2 font-medium"
-                            : "text-muted-foreground hover:text-foreground"
+                            ? "border-foreground text-foreground font-medium"
+                            : "text-muted-foreground hover:text-foreground border-transparent"
                         }`}
                       >
                         {STACK_LABELS[item] ?? item}

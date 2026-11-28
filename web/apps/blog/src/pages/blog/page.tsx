@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Button } from "@goraebap/ui-react/components/button";
 import { diataxisDocHref, diataxisSectionDocs } from "@/entities/diataxis-doc";
 import { blogPosts, docHref } from "@/entities/content-doc";
 import { DominantColorImage, PromoBannerCard } from "@/shared/ui";
@@ -116,15 +115,16 @@ function TagFilterGroup({
       {TAG_FILTERS.map((entry) => {
         const active = filter === entry.id;
         return (
-          <Button
+          <button
             key={entry.id ?? "all"}
             type="button"
-            size="sm"
-            shape="pill"
-            variant={active ? "default" : "outline"}
             aria-pressed={active}
             onClick={() => onChange(entry.id)}
-            className="h-7 gap-1.5 px-3 text-xs"
+            className={`focus-visible:outline-ring inline-flex h-7 cursor-pointer items-center gap-1.5 rounded-full border px-3 text-xs font-medium focus-visible:outline-2 focus-visible:outline-offset-2 active:scale-[0.98] ${
+              active
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-transparent text-foreground hover:bg-accent"
+            }`}
           >
             <span>{entry.label}</span>
             <span
@@ -136,7 +136,7 @@ function TagFilterGroup({
             >
               {entry.count}
             </span>
-          </Button>
+          </button>
         );
       })}
     </div>

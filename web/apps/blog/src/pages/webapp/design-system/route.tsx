@@ -4,7 +4,9 @@ import {
   contentNavGroups,
   docHref,
   menuDocs,
+  stackSpace,
   stacksOf,
+  storedStack,
   type ContentDoc,
 } from "@/entities/content-doc";
 import { LAYOUT_DOCS, layoutPage } from "@/entities/layout-doc";
@@ -105,7 +107,10 @@ function sidebarGroups(stack?: string): DocsNavGroup[] {
 
 function LibraryLayout() {
   const params = useParams({ strict: false }) as { slug?: string; stack?: string };
-  const stack = params.stack && STACKS.includes(params.stack) ? params.stack : undefined;
+  const stack =
+    params.stack && STACKS.includes(params.stack)
+      ? params.stack
+      : storedStack(stackSpace(MENU), STACKS);
   return (
     <DocsShell label="디자인 시스템 탐색" groups={sidebarGroups(stack)}>
       <Outlet />

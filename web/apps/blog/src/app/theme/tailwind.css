@@ -127,6 +127,14 @@
   animation-timing-function: ease-out;
 }
 
+/* View Transition 캡처 중에는 네비게이션·탭의 색상 전환이 0ms로 즉시 확정되게 해
+   이전 활성 버튼이 old/new 양쪽 스냅샷에 겹쳐 다시 번쩍이는 잔상을 막는다. */
+:active-view-transition header a,
+:active-view-transition aside a,
+:active-view-transition [role="tab"] {
+  transition-duration: 0ms !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-group(root),
   ::view-transition-old(root),
