@@ -19,6 +19,7 @@ import {
 } from "@goraebap/ui-react/components/table";
 import {
   CopyCodeBlock,
+  DominantColorImage,
   FileTreeView,
   GlossaryTerm,
   LayersDiagram,
@@ -267,13 +268,13 @@ export function DiataxisArticle({
         </header>
 
         {doc.meta.thumbnail && (
-          <div className="corner-squircle overflow-hidden rounded-[22px]">
-            <img
-              src={doc.meta.thumbnail}
-              alt={doc.meta.title ?? doc.slug}
-              className="aspect-[16/9] w-full object-cover"
-            />
-          </div>
+          <DominantColorImage
+            src={doc.meta.thumbnail}
+            alt={doc.meta.title ?? doc.slug}
+            dominantColor={doc.meta.thumbnailColor}
+            loading="eager"
+            className="corner-squircle aspect-[16/9] w-full rounded-[22px]"
+          />
         )}
 
         <div className="space-y-5">{body}</div>

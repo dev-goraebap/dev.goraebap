@@ -4,6 +4,7 @@ summary: 백엔드 코드를 컨텍스트 패키지와 3개 내부 계층으로 
 order: 2
 icon: transition
 thumbnail: /thumbnails/context-and-layers.jpg
+thumbnailColor: "#EFDECE"
 maturity: stable
 maturityNote: "단일 팀 모듈러 모놀리스에서 패키지 컨텍스트 + 비대칭 3계층(application·domain·infrastructure) 조합이 여러 프로젝트에서 반복 검증됨. 다수 팀·독립 배포 조직은 멀티모듈·MSA로 전환 검토"
 reviewedAt: 2026-11-27

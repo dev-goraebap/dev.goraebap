@@ -4,6 +4,7 @@ summary: 데스크톱의 목록 위 모달 편의성과 웹의 고유 주소·�
 order: 3
 icon: route
 thumbnail: /thumbnails/url-and-routed-modals.jpg
+thumbnailColor: "#D9DDD6"
 ---
 
 목록에서 항목을 눌러 상세를 보거나 새 글을 작성하는 흐름을 설계할 때, 데스크톱과 웹의 기본 특성 사이에서 자주 고민에 빠지게 됩니다.

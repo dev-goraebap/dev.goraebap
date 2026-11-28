@@ -4,6 +4,7 @@ summary: JPA·TypeORM 같은 객체 중심 ORM을 쓰며 느꼈던 고민과, jO
 order: 4
 icon: code
 thumbnail: /thumbnails/sql-first-data-access.jpg
+thumbnailColor: "#EBE4C8"
 maturity: stable
 maturityNote: "도메인 순수성, 조회 SQL 투명성, AI 에이전트 코드 리뷰 용이성 면에서 jOOQ·Drizzle 중심 접근이 실무에서 검증됨. 객체 그래프 쓰기 중심·JPA 숙련 팀은 예외 가능"
 reviewedAt: 2026-11-27

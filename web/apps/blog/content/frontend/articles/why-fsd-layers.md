@@ -4,6 +4,7 @@ summary: 역할별 폴더와 아토믹 디자인을 거쳐, FSD에서 기능 중
 order: 1
 icon: layouts
 thumbnail: /thumbnails/why-fsd-layers.jpg
+thumbnailColor: "#D9DED7"
 ---
 
 프론트엔드 프로젝트를 새로 열 때마다 `src/` 아래를 어떻게 나눌지는 늘 비슷한 고민으로 돌아옵니다. 처음 몇 주 동안은 어떤 구조든 크게 불편하지 않지만, 화면과 상태가 쌓이기 시작하면 “이 파일은 어디에 두어야 하지?”, “저 폴더의 컴포넌트를 여기서 가져다 써도 되나?” 같은 질문이 반복됩니다.

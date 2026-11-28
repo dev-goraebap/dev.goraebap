@@ -64,7 +64,7 @@ content/<space>/
 
 - 공통 문서(`index.md`, `<slug>.md`): `title`, `summary`, `order`, `icon`을 작성합니다. 본문에 H1(`# 제목`)을 중복해서 쓰지 않습니다.
 - 스택 문서(`<stack>.md`): `title`, `summary`를 작성합니다. 본문에 H1(`# 제목`)을 중복해서 쓰지 않습니다.
-- 아티클·블로그 글: 카드뷰에 노출할 `thumbnail: /thumbnails/<slug>.jpg`를 함께 둡니다. 썸네일은 단색 배경 중앙에 주제를 추상적으로 표현하는 한 손 미니멀 잉크 스케치(16:9, 텍스트·테두리 없음)로 통일해 `web/apps/blog/public/thumbnails/`에 저장합니다.
+- 아티클·블로그 글: 카드뷰에 노출할 `thumbnail: /thumbnails/<slug>.jpg`와 이미지 배경의 지배적 색상 `thumbnailColor: "#XXXXXX"`를 함께 둡니다(로딩 전 자리 표시 배경색으로 먼저 그린 뒤 이미지를 부드럽게 페이드인). 썸네일은 단색 배경 중앙에 주제를 추상적으로 표현하는 한 손 미니멀 잉크 스케치(16:9, 텍스트·테두리 없음)로 통일해 `web/apps/blog/public/thumbnails/`에 저장합니다.
 
 ## 4. 통합 용어집 (`content/glossary/*.md`) 스키마
 

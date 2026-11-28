@@ -3,7 +3,12 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
 import { BLOG_MENU, ContentArticle, menuDocs } from "@/entities/content-doc";
 import { useRegisterMobileToc } from "@/shared/lib/mobile-doc-bar";
-import { PageState, TableOfContents, extractHeadingsFromMarkdown } from "@/shared/ui";
+import {
+  DominantColorImage,
+  PageState,
+  TableOfContents,
+  extractHeadingsFromMarkdown,
+} from "@/shared/ui";
 import { skillPageHref } from "@/pages/lib/skill-pages";
 
 export const Route = createFileRoute("/blog/$slug/")({
@@ -40,13 +45,13 @@ function BlogPostPage() {
           </time>
         )}
         {post.meta.thumbnail && (
-          <div className="corner-squircle overflow-hidden rounded-[22px]">
-            <img
-              src={post.meta.thumbnail}
-              alt={post.meta.title ?? post.slug}
-              className="aspect-[16/9] w-full object-cover"
-            />
-          </div>
+          <DominantColorImage
+            src={post.meta.thumbnail}
+            alt={post.meta.title ?? post.slug}
+            dominantColor={post.meta.thumbnailColor}
+            loading="eager"
+            className="corner-squircle aspect-[16/9] w-full rounded-[22px]"
+          />
         )}
         <ContentArticle doc={post} stack="" skillHref={skillPageHref} />
       </div>

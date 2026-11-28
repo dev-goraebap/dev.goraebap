@@ -12,9 +12,10 @@ interface ContentMeta {
   group?: string;
   order?: number;
   summary?: string;
-  // Blog 글의 날짜(yyyy-mm-dd)와 썸네일 경로
+  // Blog 글의 날짜(yyyy-mm-dd)와 썸네일 경로·지배적 배경색
   date?: string;
   thumbnail?: string;
+  thumbnailColor?: string;
   // 작성자 성숙도 메타데이터
   maturity?: MaturityStatus;
   maturityNote?: string;

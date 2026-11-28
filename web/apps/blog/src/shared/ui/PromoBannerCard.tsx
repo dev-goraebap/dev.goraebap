@@ -1,9 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
+import { DominantColorImage } from "./DominantColorImage";
 
 export interface PromoBannerCardProps {
   imageSrc: string;
   imageAlt: string;
+  imageColor?: string;
   title: string;
   badge?: string;
   description: string;
@@ -14,6 +16,7 @@ export interface PromoBannerCardProps {
 export function PromoBannerCard({
   imageSrc,
   imageAlt,
+  imageColor,
   title,
   badge,
   description,
@@ -25,9 +28,12 @@ export function PromoBannerCard({
       aria-label={title}
       className="border-border bg-card overflow-hidden rounded-2xl border shadow-xs"
     >
-      <div className="bg-muted/40 aspect-[16/9] w-full overflow-hidden">
-        <img src={imageSrc} alt={imageAlt} loading="lazy" className="size-full object-cover" />
-      </div>
+      <DominantColorImage
+        src={imageSrc}
+        alt={imageAlt}
+        dominantColor={imageColor}
+        className="aspect-[16/9] w-full"
+      />
       <div className="space-y-3 p-4">
         <div className="space-y-1.5">
           <div className="flex items-center gap-1.5">

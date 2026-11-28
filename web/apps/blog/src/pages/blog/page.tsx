@@ -3,7 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui-react/components/button";
 import { diataxisDocHref, diataxisSectionDocs } from "@/entities/diataxis-doc";
 import { blogPosts, docHref } from "@/entities/content-doc";
-import { PromoBannerCard } from "@/shared/ui";
+import { DominantColorImage, PromoBannerCard } from "@/shared/ui";
 
 export const Route = createFileRoute("/blog/")({
   component: BlogListPage,
@@ -20,6 +20,7 @@ interface FeedItem {
   href: string;
   date?: string;
   thumbnail?: string;
+  thumbnailColor?: string;
 }
 
 function buildFeed(): FeedItem[] {
@@ -32,6 +33,7 @@ function buildFeed(): FeedItem[] {
     href: docHref(post, ""),
     date: post.meta.date,
     thumbnail: post.meta.thumbnail,
+    thumbnailColor: post.meta.thumbnailColor,
   }));
 
   const frontend: FeedItem[] = diataxisSectionDocs("frontend", "articles").map((doc) => ({
@@ -43,6 +45,7 @@ function buildFeed(): FeedItem[] {
     href: diataxisDocHref(doc),
     date: doc.meta.date,
     thumbnail: doc.meta.thumbnail,
+    thumbnailColor: doc.meta.thumbnailColor,
   }));
 
   const backend: FeedItem[] = diataxisSectionDocs("backend", "articles").map((doc) => ({
@@ -54,6 +57,7 @@ function buildFeed(): FeedItem[] {
     href: diataxisDocHref(doc),
     date: doc.meta.date,
     thumbnail: doc.meta.thumbnail,
+    thumbnailColor: doc.meta.thumbnailColor,
   }));
 
   return [...own, ...frontend, ...backend];
@@ -85,6 +89,7 @@ const TAG_FILTERS = RAW_TAG_FILTERS.filter((entry) => entry.id === null || entry
 const DESIGN_SYSTEM_PROMO = {
   imageSrc: "/banners/design-system-beta.jpg",
   imageAlt: "디자인 시스템 Beta 모듈형 UI 블록 일러스트",
+  imageColor: "#F5F1E6",
   title: "디자인 시스템",
   badge: "Beta",
   description:
@@ -163,18 +168,17 @@ function BlogListPage() {
                   to={item.href}
                   className="group corner-squircle sm:border-border sm:hover:border-foreground/20 bg-background sm:hover:bg-muted/65 flex h-full flex-col transition-colors duration-200 sm:rounded-[28px] sm:border sm:p-3.5"
                 >
-                  <div className="corner-squircle bg-muted/40 aspect-[16/9] w-full overflow-hidden rounded-[18px]">
-                    {item.thumbnail ? (
-                      <img
-                        src={item.thumbnail}
-                        alt={item.title}
-                        loading="lazy"
-                        className="size-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                      />
-                    ) : (
-                      <div className="size-full" />
-                    )}
-                  </div>
+                  {item.thumbnail ? (
+                    <DominantColorImage
+                      src={item.thumbnail}
+                      alt={item.title}
+                      dominantColor={item.thumbnailColor}
+                      className="corner-squircle aspect-[16/9] w-full rounded-[18px]"
+                      imgClassName="group-hover:scale-[1.03]"
+                    />
+                  ) : (
+                    <div className="corner-squircle bg-muted/40 aspect-[16/9] w-full rounded-[18px]" />
+                  )}
                   <div className="flex flex-1 flex-col gap-2 pt-4 sm:px-1.5 sm:pb-2">
                     <div className="text-muted-foreground flex items-center gap-1.5 text-xs">
                       <span>{item.sourceLabel}</span>

@@ -50,6 +50,7 @@ export interface DiataxisDocMeta {
   icon?: SystemIconName;
   date?: string;
   thumbnail?: string;
+  thumbnailColor?: string;
   maturity?: MaturityStatus;
   maturityNote?: string;
   reviewedAt?: string | Date;

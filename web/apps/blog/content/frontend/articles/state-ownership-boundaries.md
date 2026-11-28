@@ -4,6 +4,7 @@ summary: 전역 스토어 하나로 모든 상태를 다루려다 겪은 동기�
 order: 2
 icon: file
 thumbnail: /thumbnails/state-ownership-boundaries.jpg
+thumbnailColor: "#D8DCD6"
 ---
 
 프론트엔드 앱의 규모가 커지기 시작하면 자연스럽게 “상태 관리를 어떤 도구로 통일할까”라는 질문에 닿게 됩니다. 예전에는 전역 스토어 라이브러리 하나를 정하고 로그인 사용자 정보, 서버에서 받아 온 목록, 현재 선택된 필터, 심지어 모달이 열려 있는지 여부까지 모두 한 저장소에 넣어 관리하던 시기가 있었습니다.

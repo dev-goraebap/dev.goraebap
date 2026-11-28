@@ -4,6 +4,7 @@ summary: 계층(타입) 기준과 기능 기준 패키지 구조의 트레이드
 order: 1
 icon: layouts
 thumbnail: /thumbnails/type-vs-feature-packaging.jpg
+thumbnailColor: "#BDCDDC"
 maturity: stable
 maturityNote: "업무 영역(컨텍스트)과 기술 기반(shared)을 최상위에서 분리하는 원칙은 여러 백엔드 프로젝트에서 오래 써 보며 검증됨. 소규모 단순 CRUD API는 예외 가능"
 reviewedAt: 2026-11-27

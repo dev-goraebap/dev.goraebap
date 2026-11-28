@@ -4,6 +4,7 @@ summary: 상태 동기화용 effect와 습관적 메모이제이션이 코드를
 order: 4
 icon: code
 thumbnail: /thumbnails/effects-and-derived-state.jpg
+thumbnailColor: "#D9DDD6"
 ---
 
 프론트엔드 코드를 리뷰하거나 몇 달 전에 내가 짠 컴포넌트를 다시 열어 볼 때, 흐름을 따라가기 가장 버거운 부분은 대개 **부수 효과(`useEffect`, `effect`)가 길게 이어진 구간**이었습니다.

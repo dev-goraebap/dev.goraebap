@@ -4,6 +4,7 @@ summary: 도메인 모델을 명령 중심으로 두고 조회 경로를 분리�
 order: 3
 icon: file
 thumbnail: /thumbnails/command-and-query.jpg
+thumbnailColor: "#D3D1DF"
 maturity: stable
 maturityNote: "단일 DB에서 명령(도메인·Repository)과 조회(Query·View DTO) 경로를 분리하고 집합 결정 조인만 제한 허용하는 경량 CQRS가 실무에서 오래 검증됨. 물리 DB 분리 시 Projection으로 전환"
 reviewedAt: 2026-11-27
