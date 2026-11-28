@@ -290,11 +290,15 @@ export function ContentArticle({
   doc,
   stack,
   skillHref,
+  headerExtra,
+  beforeBody,
   trailing,
 }: {
   doc: ContentDoc;
   stack: string;
   skillHref: SkillHref;
+  headerExtra?: ReactNode;
+  beforeBody?: ReactNode;
   trailing?: ReactNode;
 }) {
   const body = useMemo(() => {
@@ -312,8 +316,8 @@ export function ContentArticle({
   }, [doc, stack, skillHref]);
 
   return (
-    <article className="max-w-3xl space-y-8">
-      <header className="border-border space-y-3 border-b pb-8">
+    <article className="min-w-0 flex-1 max-w-3xl space-y-8">
+      <header className="border-border space-y-3 border-b pb-6">
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-3xl font-bold tracking-tight">{doc.meta.title}</h1>
           {doc.isSkill && <Badge variant="secondary">AI</Badge>}
@@ -330,7 +334,9 @@ export function ContentArticle({
           <p className="text-muted-foreground text-lg leading-relaxed">{doc.meta.summary}</p>
         )}
         <MaturityMeta primary={doc.stacks[stack]?.module.frontmatter} fallback={doc.meta} />
+        {headerExtra}
       </header>
+      {beforeBody}
       <div className="space-y-5">{body}</div>
       {trailing}
     </article>

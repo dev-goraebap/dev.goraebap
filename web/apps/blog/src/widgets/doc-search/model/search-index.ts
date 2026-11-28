@@ -9,6 +9,7 @@ import { GLOSSARY_ENTRIES, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
   "Blog",
+  "Agents",
   "프론트엔드",
   "백엔드",
   "디자인 시스템",
@@ -49,6 +50,14 @@ const DOC_ENTRIES: DocEntry[] = [
     keywords: plainText(doc.source),
   })),
   page("디자인 시스템", "개요", "/design-system/overview", "디자인 시스템의 구조와 쓰임"),
+  ...diataxisAllDocs("agents").map((doc) => ({
+    id: `agents:${doc.section}/${doc.slug}`,
+    group: "Agents" as const,
+    title: doc.meta.title ?? doc.slug,
+    href: diataxisDocHref(doc),
+    description: `${DIATAXIS_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
+    keywords: [doc.source, ...doc.stacks.map((s) => s.source)].map(plainText).join(" "),
+  })),
   ...diataxisAllDocs("frontend").map((doc) => ({
     id: `frontend:${doc.section}/${doc.slug}`,
     group: "프론트엔드" as const,

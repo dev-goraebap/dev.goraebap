@@ -1,9 +1,10 @@
-// 사이트 content(web/apps/blog/content)에서 fullstack 플러그인의 3개 스킬(frontend-uiux, frontend-engineering, backend-engineering)을 빌드한다.
+// 사이트 content(web/apps/blog/content)에서 fullstack 플러그인의 4개 스킬을 빌드한다.
+// - goraebap-mode (전역 오케스트레이터 — content/agents/{playbooks,articles,reference} + 도메인 스킬 카탈로그)
+// - frontend-uiux (content/design-system/)
+// - frontend-engineering (content/frontend/{playbooks,articles,reference})
+// - backend-engineering (content/backend/{playbooks,articles,reference})
 // 각 스킬 폴더 직하에 SKILL.md(얇은 라우터), playbooks/, articles/, reference/를 평탄하게 둔다.
-// 두 가지 원본 형식을 모두 지원한다:
-// 1) MDX 메뉴(content/design-system/SKILL.md): SKILL.md에서 링크로 닿는 .mdx와 <Slot>/<Fill> 스택 파일
-// 2) Diátaxis 영역(content/{frontend,backend}/{playbooks,articles,reference}): 순수 .md 공통과 스택 파일(<stack>.md)
-// 사람 전용 글(blog/, glossary/)과 시각 전용 JSX(<Story>/<Diagram>/<Demo>)는 스킬에서 제외한다.
+// 사람 전용 글(blog/, glossary/, agents/tutorials/)과 시각 전용 JSX(<Story>/<Diagram>/<Demo>)는 스킬에서 제외한다.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -19,7 +20,7 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 export const REPO = path.resolve(root, '../..');
 export const CONTENT = path.join(REPO, 'web/apps/blog/content');
 
-export const SKILL_NAMES = ['frontend-uiux', 'frontend-engineering', 'backend-engineering'];
+export const SKILL_NAMES = ['goraebap-mode', 'frontend-uiux', 'frontend-engineering', 'backend-engineering'];
 
 // MDX 메뉴 폴더명 → 배포 스킬 이름 매핑
 const MDX_SKILL_NAME = {
@@ -33,8 +34,9 @@ export const SPACE_STACKS = {
 };
 
 const DIATAXIS_SPACES = [
-  { space: 'frontend', skill: 'frontend-engineering' },
-  { space: 'backend', skill: 'backend-engineering' },
+  { space: 'agents', skill: 'goraebap-mode', isOrchestrator: true },
+  { space: 'frontend', skill: 'frontend-engineering', isOrchestrator: false },
+  { space: 'backend', skill: 'backend-engineering', isOrchestrator: false },
 ];
 const DIATAXIS_SECTIONS = [
   { id: 'playbooks', title: '플레이북' },
@@ -44,6 +46,11 @@ const DIATAXIS_SECTIONS = [
 const DIATAXIS_STACK_ORDER = ['react-tanstack', 'react', 'angular', 'springboot', 'nestjs'];
 
 const DIATAXIS_SKILL_META = {
+  'goraebap-mode': {
+    title: '고래밥 모드 (전역 오케스트레이터)',
+    description:
+      '프로젝트의 AGENTS.md와 전역 플레이북(모노레포 구성·풀스택 기능 추가·에이전트 문서 구성)을 기준으로 프론트엔드·백엔드·UI/UX 도메인 스킬을 조합해 실행하는 전역 진입점입니다.',
+  },
   'frontend-engineering': {
     title: '프론트엔드 엔지니어링',
     description:
@@ -189,10 +196,6 @@ function yamlScalar(value) {
 
 /**
  * skills/ 루트 기준 Map<'<skill>/...', content>을 생성한다.
- * 예: 'frontend-uiux/SKILL.md', 'frontend-uiux/playbooks/new-screen-ui/index.md',
- *     'frontend-engineering/playbooks/new-page-and-slice/index.md',
- *     'frontend-engineering/articles/why-fsd-layers.md',
- *     'frontend-engineering/reference/routing/index.md'
  */
 export async function buildContentSkills() {
   const out = new Map();
@@ -201,12 +204,14 @@ export async function buildContentSkills() {
   const siteRouteTarget = new Map();
   const mdxPlans = [];
   const diataxisPlans = [];
+  const domainCatalog = new Map();
 
   // 1) MDX 메뉴 수집 (design-system → frontend-uiux)
   for (const { rel, out: outRoot, skill, dir } of menus) {
     const skillFile = path.join(dir, 'SKILL.md');
     const { meta } = await parseMdx(skillFile);
     if (!meta.name || !meta.description) throw new Error(`SKILL.md에 name·description이 없습니다: ${skillFile}`);
+    domainCatalog.set(skill, meta.description);
     const stacks = SPACE_STACKS[stackSpace(rel)];
     const docs = [];
     const queue = [skillFile];
@@ -254,12 +259,16 @@ export async function buildContentSkills() {
     target.set(skillFile, `${skill}/SKILL.md`);
   }
 
-  // 2) Diátaxis 영역 수집 (frontend-engineering, backend-engineering — playbooks + articles + reference)
+  // 2) Diátaxis 영역 수집 (agents → goraebap-mode, frontend → frontend-engineering, backend → backend-engineering)
   const diataxisSpaces = [];
-  for (const { space, skill } of DIATAXIS_SPACES) {
+  for (const entrySpec of DIATAXIS_SPACES) {
+    const { space, skill, isOrchestrator } = entrySpec;
     const spaceDir = path.join(CONTENT, space);
     if (!(await exists(spaceDir))) continue;
-    diataxisSpaces.push({ space, skill });
+    diataxisSpaces.push(entrySpec);
+    if (!isOrchestrator && DIATAXIS_SKILL_META[skill]) {
+      domainCatalog.set(skill, DIATAXIS_SKILL_META[skill].description);
+    }
 
     for (const { id: section } of DIATAXIS_SECTIONS) {
       const sectionDir = path.join(spaceDir, section);
@@ -303,7 +312,8 @@ export async function buildContentSkills() {
 
   const isHumanOnlyContent = absPath =>
     absPath.startsWith(path.join(CONTENT, 'blog') + path.sep) ||
-    absPath.startsWith(path.join(CONTENT, 'glossary') + path.sep);
+    absPath.startsWith(path.join(CONTENT, 'glossary') + path.sep) ||
+    absPath.startsWith(path.join(CONTENT, 'agents', 'tutorials') + path.sep);
 
   const relink = (from, to) => node => {
     if (node.type !== 'link' || node.data?.final || /^(https?:|mailto:|#)/.test(node.url)) return;
@@ -390,7 +400,7 @@ export async function buildContentSkills() {
     out.set(to, `${frontmatter}${stringifyMdx(tree).trim()}\n\n${MATURITY_GUIDE}\n`);
   }
 
-  // 5) Diátaxis 문서 빌드 (frontend-engineering, backend-engineering)
+  // 5) Diátaxis 문서 빌드 (goraebap-mode, frontend-engineering, backend-engineering)
   for (const { indexFile, stackFiles } of diataxisPlans) {
     const to = target.get(indexFile);
     const { tree, meta } = await parseMd(indexFile);
@@ -437,8 +447,8 @@ export async function buildContentSkills() {
     }
   }
 
-  // 6) Diátaxis 스킬 얇은 라우터 SKILL.md 생성 (frontend-engineering/SKILL.md, backend-engineering/SKILL.md)
-  for (const { space, skill } of diataxisSpaces) {
+  // 6) Diátaxis 스킬 얇은 라우터 SKILL.md 생성
+  for (const { space, skill, isOrchestrator } of diataxisSpaces) {
     const info = DIATAXIS_SKILL_META[skill];
     if (!info) throw new Error(`스킬 메타데이터가 정의되지 않았습니다: ${skill}`);
     const to = `${skill}/SKILL.md`;
@@ -454,27 +464,49 @@ export async function buildContentSkills() {
 
     let body = `---\nname: ${skill}\ndescription: ${yamlScalar(info.description)}\n---\n\n`;
     body += `# ${info.title}\n\n`;
-    body += `사용자 요청을 아래 플레이북으로 먼저 분류하고, 플레이북이 안내하는 레퍼런스와 필요 시 아티클을 조합해 작업을 진행합니다. 프로젝트의 \`AGENTS.md\`에 별도 프로젝트 규칙이 있으면 그 규칙을 우선합니다.\n\n`;
-    body += `공통 기준(\`index.md\`)을 먼저 읽고, 프로젝트 스택에 해당하는 구현 파일만 함께 읽습니다.\n\n`;
-    if (availableStacks.length) {
-      body += `스택별 구현 파일: ${availableStacks.map(stack => `\`${stack}.md\``).join(' · ')}\n\n`;
+
+    if (isOrchestrator) {
+      body += `전역 작업을 분류하고 프로젝트 문서와 도메인 스킬을 조합해 실행하는 최상위 라우터입니다.\n\n`;
+      body += `## 0단계: 프로젝트 지침 먼저 확인\n\n`;
+      body += `1. 작업 시작 전 현재 저장소 루트의 \`AGENTS.md\`를 반드시 읽습니다.\n`;
+      body += `2. \`AGENTS.md\`의 라우팅 표에서 현재 작업 경로·유형에 해당하는 \`docs/\` 문서를 먼저 로드합니다.\n`;
+      body += `3. 프로젝트 규칙(\`AGENTS.md\` · \`docs/\`)이 이 플러그인 기준과 다르면 프로젝트 규칙을 우선합니다.\n\n`;
+    } else {
+      body += `사용자 요청을 아래 플레이북으로 먼저 분류하고, 플레이북이 안내하는 레퍼런스와 필요 시 아티클을 조합해 작업을 진행합니다. 프로젝트의 \`AGENTS.md\`에 별도 프로젝트 규칙이 있으면 그 규칙을 우선합니다.\n\n`;
+      body += `공통 기준(\`index.md\`)을 먼저 읽고, 프로젝트 스택에 해당하는 구현 파일만 함께 읽습니다.\n\n`;
+      if (availableStacks.length) {
+        body += `스택별 구현 파일: ${availableStacks.map(stack => `\`${stack}.md\``).join(' · ')}\n\n`;
+      }
     }
 
     const playbooks = sortDocs('playbooks');
     if (playbooks.length) {
-      body += `## 요청 분류 (플레이북)\n\n`;
+      body += isOrchestrator ? `## 1단계: 전역 요청 분류 (플레이북)\n\n` : `## 요청 분류 (플레이북)\n\n`;
       body += `| 요청 유형 | 플레이북 |\n`;
       body += `| --- | --- |\n`;
       for (const doc of playbooks) {
         const trigger = (doc.meta.summary ?? doc.meta.title ?? doc.slug).replace(/\|/g, '\\|');
         body += `| ${trigger} | [${doc.meta.title ?? doc.slug}](${relOf(doc)})${maturityTag(doc)} |\n`;
       }
-      body += `\n해당하는 플레이북이 없는 단일 수정·질문·규격 확인은 아래 레퍼런스에서 필요한 문서만 직접 읽습니다.\n\n`;
+      body += isOrchestrator
+        ? `\n단일 영역 작업이거나 전역 플레이북이 도메인 작업을 위임하면 아래 도메인 스킬 라우터를 이어서 실행합니다.\n\n`
+        : `\n해당하는 플레이북이 없는 단일 수정·질문·규격 확인은 아래 레퍼런스에서 필요한 문서만 직접 읽습니다.\n\n`;
+    }
+
+    if (isOrchestrator && domainCatalog.size) {
+      body += `## 2단계: 도메인 스킬 라우터\n\n`;
+      body += `맥락에 맞는 도메인 스킬의 \`SKILL.md\`를 열어 해당 영역의 플레이북과 레퍼런스로 이어서 진행합니다.\n\n`;
+      body += `| 도메인 스킬 | 맡는 영역 |\n`;
+      body += `| --- | --- |\n`;
+      for (const [domainSkill, desc] of domainCatalog) {
+        body += `| [${domainSkill}](../${domainSkill}/SKILL.md) | ${desc.replace(/\|/g, '\\|')} |\n`;
+      }
+      body += '\n';
     }
 
     const references = sortDocs('reference');
     if (references.length) {
-      body += `## 레퍼런스 (직접 참조)\n\n`;
+      body += isOrchestrator ? `## 공통 레퍼런스 (직접 참조)\n\n` : `## 레퍼런스 (직접 참조)\n\n`;
       for (const doc of references) {
         const summary = doc.meta.summary ? `: ${doc.meta.summary}` : '';
         body += `- [${doc.meta.title ?? doc.slug}](${relOf(doc)})${maturityTag(doc)}${summary}\n`;

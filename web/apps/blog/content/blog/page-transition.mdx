@@ -9,9 +9,9 @@ thumbnail: /thumbnails/page-transition.jpg
 
 ## 대기 화면이 기본값이 된 이유
 
-스켈레톤은 페이지가 그려질 자리를 회색 틀로 먼저 보여 주는 자리 표시입니다. Nielsen Norman Group은 스켈레톤이 전체 페이지를 불러올 때 체감 대기를 줄인다고 설명하면서도, 성능 개선을 대신하지는 않는다고 덧붙입니다. 사용자가 어쩔 수 없이 기다려야 할 때 그 시간을 덜 지루하게 만드는 도구라는 뜻입니다.
+스켈레톤은 페이지가 그려질 자리를 회색 틀로 먼저 보여 주는 자리 표시입니다. [Nielsen Norman Group의 스켈레톤 가이드](https://www.nngroup.com/articles/skeleton-screens/)처럼 UX 업계에서는 전체 페이지를 불러올 때 빈 화면이나 스피너 대신 스켈레톤을 써서 체감 대기 시간을 줄이는 방식을 표준 패턴으로 권합니다. 다만 같은 가이드에서도 1초 미만의 빠른 로딩에는 오히려 깜빡임이 거슬릴 수 있고, 스켈레톤이 실제 성능 개선을 대신하지는 않는다고 선을 긋습니다.
 
-문제는 "어쩔 수 없이 기다리는 경우"가 생각보다 적다는 점입니다. Nielsen이 정리한 응답 시간의 세 한계를 보면, 0.1초 안에 반응하면 사용자는 자기가 직접 화면을 바꾼 것처럼 느끼고, 1초 안이면 지연을 느끼더라도 흐름이 끊기지 않습니다. 진행 표시가 필요해지는 것은 대략 1초를 넘길 때부터입니다. 그런데 업무 앱의 페이지 이동은 대부분 이 1초 안에 끝납니다. 그 짧은 시간에 화면 전체를 회색 틀로 바꿨다가 다시 내용으로 바꾸면, 기다림을 줄이는 대신 깜빡임을 하나 더 만들게 됩니다.
+문제는 "어쩔 수 없이 기다리는 경우"가 생각보다 적다는 점입니다. [Jakob Nielsen의 응답 시간 세 한계](https://www.nngroup.com/articles/response-times-3-important-limits/)를 보면, 0.1초 안에 반응하면 사용자는 자기가 직접 화면을 바꾼 것처럼 느끼고, 1초 안이면 지연을 느끼더라도 흐름이 끊기지 않습니다. 진행 표시가 필요해지는 것은 대략 1초를 넘길 때부터입니다. 그런데 업무 앱의 페이지 이동은 대부분 이 1초 안에 끝납니다. 그 짧은 시간에 화면 전체를 회색 틀로 바꿨다가 다시 내용으로 바꾸면, 기다림을 줄이는 대신 깜빡임을 하나 더 만들게 됩니다.
 
 ## 스켈레톤이 맞지 않는 페이지
 
@@ -59,14 +59,7 @@ thumbnail: /thumbnails/page-transition.jpg
 
 ## 참고 자료
 
-- Jakob Nielsen, [Response Times: The 3 Important Limits](https://www.nngroup.com/articles/response-times-3-important-limits/), Nielsen Norman Group
-- Nielsen Norman Group, [Skeleton Screens 101](https://www.nngroup.com/articles/skeleton-screens/)
-- Nielsen Norman Group, [Skeleton Screens vs. Progress Bars vs. Spinners](https://www.nngroup.com/videos/skeleton-screens-vs-progress-bars-vs-spinners/)
-- web.dev, [Cumulative Layout Shift (CLS)](https://web.dev/articles/cls)
-- React, [Suspense](https://react.dev/reference/react/Suspense), [useTransition](https://react.dev/reference/react/useTransition)
-- React Router, [React Transitions](https://reactrouter.com/explanation/react-transitions)
-- TanStack Router, [Data Loading](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading), [Preloading](https://tanstack.com/router/latest/docs/framework/react/guide/preloading)
-- TanStack Query, [Important Defaults](https://tanstack.com/query/latest/docs/framework/react/guides/important-defaults), [Caching](https://tanstack.com/query/latest/docs/framework/react/guides/caching)
-- Angular, [Data resolvers](https://angular.dev/guide/routing/data-resolvers), [withViewTransitions](https://angular.dev/api/router/withViewTransitions)
-- MDN, [Document.startViewTransition()](https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition)
-- Chrome for Developers, [Same-document view transitions for single-page applications](https://developer.chrome.com/docs/web-platform/view-transitions/same-document)
+- Jakob Nielsen, [Response Times: The 3 Important Limits](https://www.nngroup.com/articles/response-times-3-important-limits/) — 0.1초·1초·10초 응답 시간 체감 한계 기준
+- Nielsen Norman Group, [Skeleton Screens 101](https://www.nngroup.com/articles/skeleton-screens/) — 스켈레톤의 일반적 권장 기준과 1초 미만 예외·성능 최적화 한계 *(대조 참고)*
+- web.dev, [Cumulative Layout Shift (CLS)](https://web.dev/articles/cls) — 지연 도착 콘텐츠로 인한 레이아웃 흔들림 지표
+- 공식 전환·선로딩 명세: React [useTransition](https://react.dev/reference/react/useTransition), React Router [React Transitions](https://reactrouter.com/explanation/react-transitions), TanStack Router [Data Loading](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading) · [Preloading](https://tanstack.com/router/latest/docs/framework/react/guide/preloading), TanStack Query [Caching](https://tanstack.com/query/latest/docs/framework/react/guides/caching), Angular [Data resolvers](https://angular.dev/guide/routing/data-resolvers) · [withViewTransitions](https://angular.dev/api/router/withViewTransitions), MDN [Document.startViewTransition()](https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition)

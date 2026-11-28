@@ -151,7 +151,8 @@ function RootLayout() {
 
   const current = activeMenu(pathname);
   const subItems = current?.children ?? [];
-  const hasDocsShell = ["/frontend", "/backend", "/design-system"].some((prefix) =>
+  const isAgents = isUnder(pathname, ["/agents"]);
+  const hasDocsShell = ["/frontend", "/backend", "/design-system", "/agents"].some((prefix) =>
     pathname.startsWith(prefix),
   );
 
@@ -193,7 +194,20 @@ function RootLayout() {
             </nav>
 
             {/* Right Utilities */}
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-2">
+              <Link
+                to="/agents"
+                aria-label="Agents 공간으로 이동"
+                aria-current={isAgents ? "page" : undefined}
+                className={
+                  isAgents
+                    ? "border-border bg-secondary text-foreground inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-xs font-medium transition-colors"
+                    : "border-border/70 text-muted-foreground hover:bg-accent/70 hover:text-foreground inline-flex h-8 items-center gap-1.5 rounded-full border px-2.5 text-xs transition-colors"
+                }
+              >
+                <SystemIcon name="details" className="size-3.5 shrink-0" />
+                <span className="hidden sm:inline">Agents</span>
+              </Link>
               <DesignSettings />
               <DocSearch />
             </div>

@@ -1,6 +1,12 @@
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 
-type SiteMenuTarget = "/design-system/overview" | "/frontend" | "/backend" | "/blog" | "/glossary";
+type SiteMenuTarget =
+  | "/design-system/overview"
+  | "/frontend"
+  | "/backend"
+  | "/agents"
+  | "/blog"
+  | "/glossary";
 
 export interface SiteMenu {
   label: string;
@@ -44,6 +50,14 @@ export const SITE_MENUS: SiteMenu[] = [
     description: "파운데이션·컴포넌트·레이아웃·패턴",
     to: "/design-system/overview",
     match: ["/design-system"],
+    hideInHeader: true,
+  },
+  {
+    label: "Agents",
+    icon: "details",
+    description: "fullstack 플러그인 튜토리얼·전역 플레이북·모노레포 기준",
+    to: "/agents",
+    match: ["/agents"],
     hideInHeader: true,
   },
   {

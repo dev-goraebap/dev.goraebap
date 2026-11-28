@@ -2,7 +2,7 @@
   "name": "fullstack",
   "displayName": "Fullstack",
   "version": "0.1.0",
-  "description": "웹 앱 풀스택 개발 지침(프론트엔드 UI/UX·프론트엔드 엔지니어링·백엔드 엔지니어링)과 스택별 구현 기준",
+  "description": "웹 앱 풀스택 개발 지침(고래밥 모드·프론트엔드 UI/UX·프론트엔드 엔지니어링·백엔드 엔지니어링)과 스택별 구현 기준",
   "author": {
     "name": "dev-goraebap"
   },
@@ -12,7 +12,7 @@
     "url": "https://github.com/dev-goraebap/dev.goraebap"
   },
   "suggestedPrompts": [
-    "frontend-uiux 스킬 기준으로 이 화면 레이아웃과 컴포넌트를 검토해 줘",
+    "goraebap-mode 스킬로 프로젝트 맥락을 파악하고 새 풀스택 기능을 구현해 줘",
     "frontend-engineering 스킬 기준으로 새 페이지와 상태 흐름을 설계해 줘",
     "backend-engineering 스킬 기준으로 API와 데이터 접근 계층을 구현해 줘"
   ]

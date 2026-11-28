@@ -1,7 +1,6 @@
-import { Outlet, createFileRoute, useLocation, useParams } from "@tanstack/react-router";
+import { Outlet, createFileRoute, useParams } from "@tanstack/react-router";
 import type { SystemIconName } from "@goraebap/ui-react/icons";
 import {
-  StackSwitcher,
   contentNavGroups,
   docHref,
   menuDocs,
@@ -111,23 +110,12 @@ function sidebarGroups(stack?: string): DocsNavGroup[] {
 
 function LibraryLayout() {
   const params = useParams({ strict: false }) as { slug?: string; stack?: string };
-  const location = useLocation();
   const stack = params.stack && STACKS.includes(params.stack) ? params.stack : undefined;
   return (
     <DocsShell
       label="프론트엔드 탐색"
       groups={sidebarGroups(stack)}
       stickyHeader={<SidebarSectionTabs label="프론트엔드 영역" items={FRONTEND_TABS} />}
-      header={
-        stack && params.slug ? (
-          <StackSwitcher
-            space="frontend"
-            stacks={STACKS}
-            current={stack}
-            hrefFor={(next) => `${location.pathname.split("/").slice(0, -1).join("/")}/${next}`}
-          />
-        ) : undefined
-      }
     >
       <Outlet />
     </DocsShell>

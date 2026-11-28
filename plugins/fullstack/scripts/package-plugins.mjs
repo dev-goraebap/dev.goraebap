@@ -1,5 +1,5 @@
 // Claude Code · Codex · Antigravity용 fullstack 플러그인을 plugins/fullstack/dist/에 빌드한다.
-// 내부 스킬(frontend-uiux, frontend-engineering, backend-engineering)은 모두 명시 호출 전용으로 설정한다.
+// 내부 스킬(goraebap-mode, frontend-uiux, frontend-engineering, backend-engineering)은 모두 명시 호출 전용으로 설정한다.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -13,7 +13,7 @@ export const EXPLICIT_ONLY_SKILLS = [...SKILL_NAMES];
 const pkg = JSON.parse(await fs.readFile(path.join(ROOT, 'package.json'), 'utf8'));
 const PLUGIN_NAME = pkg.name;
 const DISPLAY_NAME = 'Fullstack';
-const DESCRIPTION = '웹 앱 풀스택 개발 지침(프론트엔드 UI/UX·프론트엔드 엔지니어링·백엔드 엔지니어링)과 스택별 구현 기준';
+const DESCRIPTION = '웹 앱 풀스택 개발 지침(고래밥 모드·프론트엔드 UI/UX·프론트엔드 엔지니어링·백엔드 엔지니어링)과 스택별 구현 기준';
 const MARKETPLACE_NAME = 'dev-goraebap';
 const HOMEPAGE_URL = 'https://dev.goraebap.xyz';
 const REPO_URL = 'https://github.com/dev-goraebap/dev.goraebap';
@@ -114,7 +114,7 @@ export async function buildPluginTree() {
           homepage: HOMEPAGE_URL,
           repository: { type: 'git', url: REPO_URL },
           suggestedPrompts: [
-            'frontend-uiux 스킬 기준으로 이 화면 레이아웃과 컴포넌트를 검토해 줘',
+            'goraebap-mode 스킬로 프로젝트 맥락을 파악하고 새 풀스택 기능을 구현해 줘',
             'frontend-engineering 스킬 기준으로 새 페이지와 상태 흐름을 설계해 줘',
             'backend-engineering 스킬 기준으로 API와 데이터 접근 계층을 구현해 줘',
           ],
