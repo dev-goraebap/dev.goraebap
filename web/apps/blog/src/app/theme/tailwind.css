@@ -119,6 +119,7 @@
   background-clip: content-box;
 }
 
+::view-transition-group(root),
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation-duration: 160ms;
@@ -126,6 +127,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
   ::view-transition-old(root),
   ::view-transition-new(root) {
     animation-duration: 0ms;

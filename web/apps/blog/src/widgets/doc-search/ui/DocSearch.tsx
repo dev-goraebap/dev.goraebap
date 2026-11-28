@@ -1,5 +1,5 @@
 import { Suspense, lazy, useEffect, useRef } from "react";
-import { useLocation, useNavigate, useRouter } from "@tanstack/react-router";
+import { useNavigate, useRouter, useRouterState } from "@tanstack/react-router";
 import { Button } from "@goraebap/ui-react/components/button";
 import {
   Dialog,
@@ -54,7 +54,9 @@ export function DocSearchContent(props: DocSearchPanelProps) {
 export function DocSearch() {
   const router = useRouter();
   const navigate = useNavigate();
-  const location = useLocation();
+  const location = useRouterState({
+    select: (state) => state.resolvedLocation ?? state.location,
+  });
   const isMobile = useIsMobile();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const currentSearch = location.search as Record<string, unknown>;

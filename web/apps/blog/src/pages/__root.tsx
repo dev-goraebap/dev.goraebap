@@ -221,14 +221,29 @@ function MobileSpaceNav({
 }
 
 function RootLayout() {
-  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  // resolvedLocation을 써야 <Outlet /> 전환(ViewTransition 스냅샷)과 헤더·푸터 레이아웃이 같은 커밋에 함께 바뀐다.
+  const pathname = useRouterState({
+    select: (state) => state.resolvedLocation?.pathname ?? state.location.pathname,
+  });
   const isLanding = pathname === "/";
+  const isSearchPage = pathname.replace(/\/$/, "") === "/search";
   useSmoothScroll(!isLanding);
 
   if (isLanding) {
     return (
       <DesignConfigProvider>
         <Outlet />
+      </DesignConfigProvider>
+    );
+  }
+
+  if (isSearchPage) {
+    return (
+      <DesignConfigProvider>
+        <RoutePendingBar />
+        <div className="bg-background text-foreground min-h-screen">
+          <Outlet />
+        </div>
       </DesignConfigProvider>
     );
   }

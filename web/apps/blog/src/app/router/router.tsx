@@ -41,10 +41,14 @@ export const createAppRouter = (history?: RouterHistory) =>
     routeTree,
     history,
     scrollRestoration: true,
-    // 모달을 열고 닫을 때는 페이지 전환 효과를 쓰지 않는다.
+    // 같은 경로에서 모달(panel)만 열고 닫을 때만 페이지 전환 효과를 끈다.
     defaultViewTransition: {
-      types: ({ fromLocation, toLocation }) =>
-        hasPanel(fromLocation?.search) || hasPanel(toLocation.search) ? false : ["page"],
+      types: ({ fromLocation, toLocation }) => {
+        const samePath = fromLocation?.pathname === toLocation.pathname;
+        return samePath && (hasPanel(fromLocation?.search) || hasPanel(toLocation.search))
+          ? false
+          : ["page"];
+      },
     },
     defaultPendingMs: 150,
     defaultNotFoundComponent: RouteNotFound,

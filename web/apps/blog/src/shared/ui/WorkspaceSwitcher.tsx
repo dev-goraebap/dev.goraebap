@@ -8,7 +8,9 @@ import { Wordmark } from "./Wordmark";
 
 export function WorkspaceSwitcher() {
   const [open, setOpen] = useState(false);
-  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const pathname = useRouterState({
+    select: (state) => state.resolvedLocation?.pathname ?? state.location.pathname,
+  });
   const current = activeSpace(pathname);
 
   return (

@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { DocSearchContent } from "@/widgets/doc-search";
+import { createFileRoute, useCanGoBack, useRouter } from "@tanstack/react-router";
+import { DocSearchPanel } from "@/widgets/doc-search/panel";
 
 export const Route = createFileRoute("/search/")({
   validateSearch: (search: Record<string, unknown>): { q?: string } => ({
@@ -11,23 +11,31 @@ export const Route = createFileRoute("/search/")({
 function SearchPage() {
   const { q } = Route.useSearch();
   const navigate = Route.useNavigate();
+  const router = useRouter();
+  const canGoBack = useCanGoBack();
+
+  function handleBack() {
+    if (canGoBack) {
+      router.history.back();
+    } else {
+      void navigate({ to: "/blog" });
+    }
+  }
 
   return (
-    <main className="mx-auto w-full max-w-2xl px-5 py-8 sm:px-6 lg:py-12">
-      <h1 className="mb-5 text-3xl font-bold tracking-tight">문서 검색</h1>
-      <DocSearchContent
-        surface="page"
-        initialQuery={q}
-        onQueryChange={(query) =>
-          void navigate({
-            search: { q: query.trim() ? query : undefined },
-            replace: true,
-            resetScroll: false,
-            viewTransition: false,
-          })
-        }
-        onOpen={(entry) => void navigate({ to: entry.href, hash: entry.hash })}
-      />
-    </main>
+    <DocSearchPanel
+      surface="page"
+      initialQuery={q}
+      onBack={handleBack}
+      onQueryChange={(query) =>
+        void navigate({
+          search: { q: query.trim() ? query : undefined },
+          replace: true,
+          resetScroll: false,
+          viewTransition: false,
+        })
+      }
+      onOpen={(entry) => void navigate({ to: entry.href, hash: entry.hash })}
+    />
   );
 }
