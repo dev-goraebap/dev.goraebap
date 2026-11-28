@@ -43,7 +43,7 @@
 ```text
 content/<space>/
   tutorials/
-    <slug>.md           # 단일 공통 입문 안내 (/agents 전용)
+    <slug>.md           # 단일 공통 입문 안내 (/webapp 홈 전용)
   playbooks/
     <slug>/
       index.md          # 공통 절차 (프레임워크 이름 없음)

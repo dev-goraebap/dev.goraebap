@@ -1,5 +1,7 @@
 node_modules/
 deploy/.env
+.vscode/
+/.worktrees/
 /.claude/*
 !/.claude/settings.json
 skills-lock.json

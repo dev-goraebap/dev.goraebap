@@ -6,8 +6,8 @@ on:
 permissions:
   contents: read
 jobs:
-  skills:
-    name: Skills Check
+  plugins:
+    name: Fullstack Plugin Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -15,10 +15,10 @@ jobs:
         with:
           node-version: 22
       - run: npm ci
-        working-directory: plugins/webapp
-      # content에서 만든 .agents/skills/goraebap-webapp이 최신인지도 함께 본다.
+        working-directory: plugins/fullstack
+      # content에서 만든 plugins/fullstack/dist와 마켓플레이스 파일이 최신인지 함께 본다.
       - run: npm run check
-        working-directory: plugins/webapp
+        working-directory: plugins/fullstack
 
   web:
     name: Web Check
