@@ -7,8 +7,11 @@ import { REPO, SKILL_NAMES, buildContentSkills } from './content-skills.mjs';
 
 export const ROOT = fileURLToPath(new URL('../', import.meta.url));
 export const DIST = path.join(ROOT, 'dist');
+export const STATIC_SKILLS_DIR = path.join(ROOT, 'skills');
+export const STATIC_SKILL_NAMES = ['feedback'];
+export const ALL_SKILL_NAMES = [...SKILL_NAMES, ...STATIC_SKILL_NAMES];
 export const AGENTS = ['claude', 'codex', 'antigravity'];
-export const EXPLICIT_ONLY_SKILLS = [...SKILL_NAMES];
+export const EXPLICIT_ONLY_SKILLS = [...ALL_SKILL_NAMES];
 
 const pkg = JSON.parse(await fs.readFile(path.join(ROOT, 'package.json'), 'utf8'));
 const PLUGIN_NAME = pkg.name;
@@ -74,16 +77,36 @@ export function buildRootMarketplaces() {
   return files;
 }
 
+async function collectStaticSkills() {
+  const out = new Map();
+  async function walk(directory) {
+    for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+      const full = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        await walk(full);
+      } else {
+        const rel = path.relative(STATIC_SKILLS_DIR, full).split(path.sep).join('/');
+        const body = (await fs.readFile(full, 'utf8')).replace(/\r\n/g, '\n');
+        out.set(rel, body);
+      }
+    }
+  }
+  for (const skillName of STATIC_SKILL_NAMES) {
+    await walk(path.join(STATIC_SKILLS_DIR, skillName));
+  }
+  return out;
+}
+
 /** plugins/fullstack/dist/ 기준 상대 경로 → 파일 내용 맵을 생성한다. */
 export async function buildPluginTree() {
-  const contentSkills = await buildContentSkills();
+  const allSkills = new Map([...(await buildContentSkills()), ...(await collectStaticSkills())]);
   const usageDoc = (await fs.readFile(path.join(ROOT, 'docs/plugin-usage.md'), 'utf8')).replace(/\r\n/g, '\n');
   const files = new Map();
 
   for (const agent of AGENTS) {
     const pluginPath = `${agent}/plugins/${PLUGIN_NAME}`;
 
-    for (const [relPath, content] of contentSkills) {
+    for (const [relPath, content] of allSkills) {
       let body = content;
       const skillName = relPath.split('/')[0];
       const isSkillEntry = relPath === `${skillName}/SKILL.md`;

@@ -79,6 +79,12 @@ const MATURITY_GUIDE = [
   '| `refining` | 다듬는 중 | 참고 기준 — 적용을 검토하되 현재 작업 맥락에 맞게 유연하게 판단·확인 |',
 ].join('\n');
 
+const FRICTION_FEEDBACK_GUIDE = [
+  '## 지침 피드백 (마찰 시에만)',
+  '',
+  '정상 작업 중에는 언급하지 않습니다. 지침대로 구현했는데 빌드·런타임 오류가 나거나, 사용자가 지침·디자인 결과물을 명시적으로 거절한 경우에만 해당 턴 끝에 한 줄로 `/fullstack:feedback` 기록 여부를 묻습니다.',
+].join('\n');
+
 const stackSpace = rel => {
   const [first, second] = rel.split('/');
   if (first === 'reference') return second === 'backend' ? 'backend' : 'frontend';
@@ -397,7 +403,7 @@ export async function buildContentSkills() {
     tree.children = tree.children.filter(node => node.type !== 'yaml');
     rewrite(tree, relink(file, to));
     const frontmatter = `---\nname: ${skill}\ndescription: ${yamlScalar(meta.description)}\n---\n\n`;
-    out.set(to, `${frontmatter}${stringifyMdx(tree).trim()}\n\n${MATURITY_GUIDE}\n`);
+    out.set(to, `${frontmatter}${stringifyMdx(tree).trim()}\n\n${MATURITY_GUIDE}\n\n${FRICTION_FEEDBACK_GUIDE}\n`);
   }
 
   // 5) Diátaxis 문서 빌드 (goraebap-mode, frontend-engineering, backend-engineering)
@@ -525,7 +531,7 @@ export async function buildContentSkills() {
       body += '\n';
     }
 
-    body += `${MATURITY_GUIDE}\n`;
+    body += `${MATURITY_GUIDE}\n\n${FRICTION_FEEDBACK_GUIDE}\n`;
     out.set(to, body);
   }
 

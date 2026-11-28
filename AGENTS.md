@@ -1,6 +1,6 @@
 # dev-goraebap
 
-웹 앱 풀스택 구현 기준 플러그인 **fullstack**(`goraebap-mode`, `frontend-engineering`, `frontend-uiux`, `backend-engineering`)과 그 기준을 사람이 읽는 사이트(`dev.goraebap.xyz`)를 관리합니다. 지침과 문서는 한국어로 씁니다. Claude Code는 `CLAUDE.md`(`@AGENTS.md` 한 줄)를 거쳐 이 파일을 읽습니다.
+웹 앱 풀스택 구현 기준 플러그인 **fullstack**(`goraebap-mode`, `frontend-engineering`, `frontend-uiux`, `backend-engineering`, `feedback`)과 그 기준을 사람이 읽는 사이트(`dev.goraebap.xyz`)를 관리합니다. 지침과 문서는 한국어로 씁니다. Claude Code는 `CLAUDE.md`(`@AGENTS.md` 한 줄)를 거쳐 이 파일을 읽습니다.
 
 | 경로 | 역할 |
 | --- | --- |

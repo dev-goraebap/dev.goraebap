@@ -1,0 +1,50 @@
+name: L2 Monthly Official Docs Audit
+on:
+  schedule:
+    # 매월 1일 09:30 KST (00:30 UTC)
+    - cron: "30 0 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  audit-l2:
+    name: Monthly Official Docs & Pattern Freshness Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Gemini API key
+        id: check
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "::warning::GEMINI_API_KEY 시크릿이 등록되지 않아 L2 월간 감사를 건너뜁니다."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.ready == 'true'
+
+      - name: Run Gemini CLI monthly docs audit
+        if: steps.check.outputs.ready == 'true'
+        uses: google-github-actions/run-gemini-cli@v0
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          gemini_api_key: ${{ secrets.GEMINI_API_KEY }}
+          prompt: |
+            너는 dev-goraebap/dev.goraebap 저장소의 월간 공식문서 최신화 감사 에이전트다.
+            반드시 한국어로 작성하고, 코드는 수정하지 않는다(이슈 등록 전용).
+
+            절차:
+            1. `AGENTS.md`, `docs/guides/diataxis.md`, `web/apps/blog/content/`의 주요 스택 문서(`react-tanstack.md`, `angular.md`, `springboot.md`, `design-system/`)를 훑는다.
+            2. `gh issue list --label "inbox:upgrade" --state open --limit 30`으로 이미 열려 있는 업그레이드 이슈를 먼저 확인해 중복을 피한다.
+            3. 핵심 스택(React, TanStack Router/Query, Angular, Spring Boot, Tailwind CSS, Base UI)의 최신 공식 문서·권장 패턴·폐기(deprecated) API와 현재 지침을 대조한다.
+            4. 중립 문서(`index.md`)에 단어로는 안 걸리지만 개념상 특정 프레임워크에만 해당하는 은근한 편향이 있는지도 함께 본다.
+            5. 실제로 바꿀 가치가 명확한 항목만 **최대 3건**까지 `gh issue create --label "inbox:upgrade"`로 등록한다.
+               - 근거 없는 추측 금지: 공식 문서 근거와 현재 문서 경로를 반드시 명시한다.
+               - 바꿀 만한 실질적 변경이 없으면 이슈를 만들지 않고 종료한다.

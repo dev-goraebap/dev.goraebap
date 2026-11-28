@@ -12,6 +12,7 @@
 | `frontend-uiux` | 테마·타이포그래피·간격·면 위계·레이아웃·화면 패턴·컴포넌트·UI 플레이북 | `react.md`, `angular.md` |
 | `frontend-engineering` | 프론트엔드 구조·상태·데이터 흐름·라우팅·렌더링·코드 스타일·플레이북·아티클 | `react-tanstack.md`, `angular.md` |
 | `backend-engineering` | 백엔드 패키지 구조·실행 흐름·API·오류 처리·데이터 접근·코드 스타일·플레이북·아티클 | `springboot.md` |
+| `feedback` | 작업 흐름을 끊지 않고 지침 오류·빈틈·디자인 불만을 `dev.goraebap` 이슈로 투척하거나, 프로젝트 `AGENTS.md`·`docs/`의 범용 규칙을 수확(`harvest`) | 플러그인 전용 |
 
 ## 스킬 폴더 구조와 실행 흐름
 

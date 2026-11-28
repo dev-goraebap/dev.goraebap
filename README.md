@@ -1,6 +1,6 @@
 # dev-goraebap
 
-웹 앱 풀스택 구현 기준 플러그인 **`fullstack`**(`goraebap-mode`, `frontend-engineering`, `frontend-uiux`, `backend-engineering`)과 같은 기준을 사람이 읽는 사이트([dev.goraebap.xyz](https://dev.goraebap.xyz))를 함께 관리하는 저장소입니다.
+웹 앱 풀스택 구현 기준 플러그인 **`fullstack`**(`goraebap-mode`, `frontend-engineering`, `frontend-uiux`, `backend-engineering`, `feedback`)과 같은 기준을 사람이 읽는 사이트([dev.goraebap.xyz](https://dev.goraebap.xyz))를 함께 관리하는 저장소입니다.
 
 ## 설계 방식
 
@@ -40,7 +40,7 @@
 
 `plugins/fullstack/dist/antigravity/plugins/fullstack/` 디렉토리를 `~/.gemini/config/plugins/fullstack/`에 배치하면 자동으로 로드됩니다.
 
-설치 후 필요에 따라 `/fullstack:goraebap-mode`, `/fullstack:frontend-engineering`, `/fullstack:frontend-uiux`, `/fullstack:backend-engineering`을 명시 호출해 사용합니다.
+설치 후 필요에 따라 `/fullstack:goraebap-mode`, `/fullstack:frontend-engineering`, `/fullstack:frontend-uiux`, `/fullstack:backend-engineering`, `/fullstack:feedback`을 명시 호출해 사용합니다.
 
 ## 로컬 실행과 검사
 
@@ -57,4 +57,18 @@ pnpm lint && pnpm typecheck && pnpm build
 
 # 플러그인 빌드 · 검사 (plugins/fullstack/)
 npm run build && npm run check
+
+# L1 정적 · 보안 · 링크 감사 (루트)
+node scripts/audit-l1.mjs
+
+# 로컬 3종 에이전트(Claude · Codex · Antigravity) 플러그인 일괄 동기화 (루트)
+node scripts/sync-local-plugins.mjs
 ```
+
+## 자동화 운영 파이프라인 (`.github/workflows/`)
+
+- **`check.yml`**: PR 및 `main` 푸시 시 플러그인·웹 린트·타입·빌드 검증
+- **`deploy.yml`**: `main` 푸시 시 `dev.goraebap.xyz` 통합 빌드 및 홈서버 SSH 자동 배포
+- **`audit-l1.yml`**: 매주 월요일 토큰 0원 정적·보안·링크·성숙도 감사 → 이상 시 `inbox:audit` 이슈 갱신
+- **`audit-l2.yml`**: 매월 1일 Gemini CLI 기반 공식문서 최신화 감사 → `inbox:upgrade` 이슈 등록
+- **`weekly-triage.yml`**: 매주 일요일(및 수동 실행) 신뢰된 `inbox:*` 이슈를 주간 묶음 PR 1개로 정리 + 소유자의 `@gemini-cli` PR 댓글 수정 응답

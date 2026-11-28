@@ -1,0 +1,82 @@
+name: Deploy Blog
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-blog
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build & Deploy dev.goraebap.xyz
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check deploy secrets
+        id: check
+        env:
+          DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          if [ -z "$DEPLOY_SERVER" ] || [ -z "$DEPLOY_PORT" ] || [ -z "$DEPLOY_SSH_KEY" ]; then
+            echo "::warning::DEPLOY_SERVER / DEPLOY_PORT / DEPLOY_SSH_KEY 시크릿이 아직 등록되지 않아 배포를 건너뜁니다."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.check.outputs.ready == 'true'
+
+      - uses: pnpm/action-setup@v4
+        if: steps.check.outputs.ready == 'true'
+
+      - uses: actions/setup-node@v4
+        if: steps.check.outputs.ready == 'true'
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+
+      - name: Install & build (blog + React/Angular demos + registry)
+        if: steps.check.outputs.ready == 'true'
+        working-directory: web
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+          test -f apps/blog/dist/index.html
+          test -f apps/blog/dist/demos/react/index.html
+          test -f apps/blog/dist/demos/angular/index.html
+
+      - name: Upload release to homeserver
+        if: steps.check.outputs.ready == 'true'
+        env:
+          DEPLOY_SERVER: ${{ secrets.DEPLOY_SERVER }}
+          DEPLOY_PORT: ${{ secrets.DEPLOY_PORT }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          HOST="${DEPLOY_SERVER#*@}"
+          ssh-keyscan -p "$DEPLOY_PORT" "$HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+          SHA="$(git rev-parse --short HEAD)"
+          ID="$(date +%Y%m%d-%H%M%S)-$SHA"
+          SITE='~/sites/dev.goraebap.xyz'
+
+          echo "올리기: releases/$ID"
+          tar -C web/apps/blog/dist --exclude='./brand-drafts' --exclude='brand-drafts' -czf - . | \
+            ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new -p "$DEPLOY_PORT" "$DEPLOY_SERVER" \
+            "set -e; mkdir -p $SITE/releases/$ID; tar -xzf - -C $SITE/releases/$ID;
+             cd $SITE; ln -sfn releases/$ID current.tmp && mv -T current.tmp current;
+             ls -1 releases | sort | head -n -5 | while read old; do rm -rf \"releases/\$old\"; done;
+             echo \"current -> \$(readlink current)\""

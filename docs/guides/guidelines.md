@@ -10,8 +10,9 @@
 | `design-system/` | `frontend-uiux` | MDX + `<Slot>/<Fill>` (`react.mdx` · `angular.mdx`) |
 | `frontend/{playbooks,articles,reference}/` | `frontend-engineering` | Diátaxis 순수 MD (`react-tanstack.md` · `angular.md`) |
 | `backend/{playbooks,articles,reference}/` | `backend-engineering` | Diátaxis 순수 MD (`springboot.md`) |
+| `plugins/fullstack/skills/feedback/` *(플러그인 전용)* | `feedback` | 사이트 메뉴 제외, 피드백 투척·규칙 수확(`harvest`) 유틸리티 |
 
-- 각 스킬은 `SKILL.md`(얇은 라우터)와 같은 레벨에 `playbooks/`, `articles/`, `reference/`를 평탄하게 둡니다.
+- content 기반 4개 스킬은 `SKILL.md`(얇은 라우터)와 같은 레벨에 `playbooks/`, `articles/`, `reference/`를 평탄하게 두고, 말미에 실제 마찰 시에만 `/fullstack:feedback` 기록 여부를 묻는 1줄 안내를 붙입니다.
 - 모든 스킬은 명시 호출 전용으로 패키징합니다(Claude `disable-model-invocation: true`, Codex `agents/openai.yaml`, Antigravity `description` 명시 호출 안내).
 - 특정 회사 제품의 동작·업무 데이터·접속 정보는 넣지 않습니다.
 

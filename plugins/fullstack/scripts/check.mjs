@@ -3,7 +3,14 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { parse as parseYaml } from 'yaml';
 import { REPO, SKILL_NAMES } from './content-skills.mjs';
-import { AGENTS, DIST, EXPLICIT_ONLY_SKILLS, buildPluginTree, buildRootMarketplaces } from './package-plugins.mjs';
+import {
+  AGENTS,
+  ALL_SKILL_NAMES,
+  DIST,
+  EXPLICIT_ONLY_SKILLS,
+  buildPluginTree,
+  buildRootMarketplaces,
+} from './package-plugins.mjs';
 
 const PLUGIN_NAME = 'fullstack';
 const STACKS = ['react', 'react-tanstack', 'angular', 'spring', 'springboot', 'nestjs'];
@@ -94,9 +101,9 @@ async function checkSkillsTree(skillsRoot, agent) {
     .filter(entry => entry.isDirectory())
     .map(entry => entry.name)
     .sort();
-  assert.deepEqual(entries, [...SKILL_NAMES].sort(), `${agent} 스킬 목록이 다릅니다: ${entries.join(', ')}`);
+  assert.deepEqual(entries, [...ALL_SKILL_NAMES].sort(), `${agent} 스킬 목록이 다릅니다: ${entries.join(', ')}`);
 
-  for (const skillName of SKILL_NAMES) {
+  for (const skillName of ALL_SKILL_NAMES) {
     const skillDir = path.join(skillsRoot, skillName);
     const skillFile = path.join(skillDir, 'SKILL.md');
     const content = (await fs.readFile(skillFile, 'utf8')).replace(/\r\n/g, '\n');
@@ -119,10 +126,12 @@ async function checkSkillsTree(skillsRoot, agent) {
         assert(fm.description.includes('명시적으로 호출'), `Antigravity 명시 호출 안내가 없습니다: ${skillFile}`);
       }
     }
-    // 스킬 직하에 playbooks/와 reference/가 평탄하게 배치되어 있는지 확인
-    for (const requiredDir of ['playbooks', 'reference']) {
-      const stat = await fs.stat(path.join(skillDir, requiredDir)).catch(() => null);
-      assert(stat?.isDirectory(), `${agent}/${skillName} 아래에 ${requiredDir}/ 폴더가 없습니다.`);
+    // content 기반 스킬 직하에 playbooks/와 reference/가 평탄하게 배치되어 있는지 확인
+    if (SKILL_NAMES.includes(skillName)) {
+      for (const requiredDir of ['playbooks', 'reference']) {
+        const stat = await fs.stat(path.join(skillDir, requiredDir)).catch(() => null);
+        assert(stat?.isDirectory(), `${agent}/${skillName} 아래에 ${requiredDir}/ 폴더가 없습니다.`);
+      }
     }
     checkedSkills++;
   }
@@ -178,7 +187,7 @@ async function checkSkillsTree(skillsRoot, agent) {
     }
   }
 
-  for (const skillName of SKILL_NAMES) {
+  for (const skillName of ALL_SKILL_NAMES) {
     await walk(path.join(skillsRoot, skillName), path.join(skillsRoot, skillName));
   }
 }
