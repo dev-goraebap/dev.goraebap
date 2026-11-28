@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { SystemIcon } from "@goraebap/ui-react/icons";
 
 export interface TocItem {
   id: string;
@@ -50,7 +49,7 @@ export function extractHeadingsFromMarkdown(source: string): TocItem[] {
   return items;
 }
 
-function useActiveHeading(items: readonly TocItem[]): string {
+export function useActiveHeading(items: readonly TocItem[]): string {
   const [activeId, setActiveId] = useState(items[0]?.id ?? "");
 
   useEffect(() => {
@@ -120,61 +119,5 @@ export function TableOfContents({ items }: { items: readonly TocItem[] }) {
         })}
       </ul>
     </nav>
-  );
-}
-
-export function MobileToc({ items }: { items: readonly TocItem[] }) {
-  const [open, setOpen] = useState(false);
-  const activeId = useActiveHeading(items);
-  if (items.length === 0) return null;
-
-  const activeItem = items.find((item) => item.id === activeId) ?? items[0];
-
-  return (
-    <div className="border-border bg-card/50 rounded-xl border xl:hidden">
-      <button
-        type="button"
-        aria-expanded={open}
-        onClick={() => setOpen((prev) => !prev)}
-        className="flex w-full cursor-pointer items-center justify-between gap-2 px-3.5 py-2.5 text-left text-xs"
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          <span className="text-muted-foreground shrink-0 font-semibold">목차</span>
-          {activeItem && (
-            <span className="text-foreground truncate font-medium">{activeItem.text}</span>
-          )}
-        </span>
-        <SystemIcon
-          name="chevronDown"
-          className={`text-muted-foreground size-3.5 shrink-0 transition-transform duration-150 ${
-            open ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-      {open && (
-        <ul className="border-border space-y-0.5 border-t px-2 py-2 text-xs">
-          {items.map((item) => {
-            const isActive = item.id === activeId;
-            return (
-              <li key={item.id}>
-                <a
-                  href={`#${item.id}`}
-                  onClick={() => setOpen(false)}
-                  className={`block rounded-lg py-1.5 break-keep transition-colors ${
-                    item.level === 3 ? "pr-2.5 pl-6" : "px-2.5"
-                  } ${
-                    isActive
-                      ? "bg-secondary text-foreground font-medium"
-                      : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
-                  }`}
-                >
-                  {item.text}
-                </a>
-              </li>
-            );
-          })}
-        </ul>
-      )}
-    </div>
   );
 }

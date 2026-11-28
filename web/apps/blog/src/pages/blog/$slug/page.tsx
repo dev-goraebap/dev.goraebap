@@ -2,12 +2,8 @@ import { useMemo } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
 import { BLOG_MENU, ContentArticle, menuDocs } from "@/entities/content-doc";
-import {
-  MobileToc,
-  PageState,
-  TableOfContents,
-  extractHeadingsFromMarkdown,
-} from "@/shared/ui";
+import { useRegisterMobileToc } from "@/shared/lib/mobile-doc-bar";
+import { PageState, TableOfContents, extractHeadingsFromMarkdown } from "@/shared/ui";
 import { skillPageHref } from "@/pages/lib/skill-pages";
 
 export const Route = createFileRoute("/blog/$slug/")({
@@ -19,6 +15,7 @@ function BlogPostPage() {
   const { slug } = Route.useParams();
   const post = menuDocs(BLOG_MENU).find((doc) => doc.slug === slug);
   const headings = useMemo(() => extractHeadingsFromMarkdown(post?.source ?? ""), [post?.source]);
+  useRegisterMobileToc(headings);
 
   if (!post) {
     return (
@@ -51,7 +48,6 @@ function BlogPostPage() {
             />
           </div>
         )}
-        <MobileToc items={headings} />
         <ContentArticle doc={post} stack="" skillHref={skillPageHref} />
       </div>
 

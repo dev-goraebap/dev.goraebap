@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link, Outlet, createRootRoute, redirect, useRouterState } from "@tanstack/react-router";
 import Lenis from "lenis";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { activeMenu, activeSpace } from "@/shared/config/site-menus";
+import { activeMenu, activeSpace, type SiteMenu } from "@/shared/config/site-menus";
 import { DesignConfigProvider } from "@/shared/lib/design-config";
-import { DesignSettings, SiteFooter, WorkspaceSwitcher } from "@/shared/ui";
+import { DesignSettings, MobileDocBar, SiteFooter, WorkspaceSwitcher } from "@/shared/ui";
 import { DocSearch } from "@/widgets/doc-search";
 
 // 이 시간 안에 끝나는 이동에는 진행 막대를 띄우지 않고, 한 번 띄운 막대는 최소 시간만큼 둔다.
@@ -144,6 +144,82 @@ export const Route = createRootRoute({
   component: RootLayout,
 });
 
+function MobileSpaceNav({
+  spaceLabel,
+  menus,
+  current,
+}: {
+  spaceLabel: string;
+  menus: readonly SiteMenu[];
+  current?: SiteMenu;
+}) {
+  const navRef = useRef<HTMLElement>(null);
+  const [edges, setEdges] = useState({ left: false, right: false });
+
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+
+    const update = () => {
+      const left = el.scrollLeft > 1;
+      const right = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+      setEdges((prev) => (prev.left === left && prev.right === right ? prev : { left, right }));
+    };
+
+    const raf = window.requestAnimationFrame(update);
+    el.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+
+    return () => {
+      window.cancelAnimationFrame(raf);
+      el.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, [menus.length]);
+
+  const maskImage =
+    edges.left && edges.right
+      ? "linear-gradient(to right, transparent, black 2.25rem, black calc(100% - 2.25rem), transparent)"
+      : edges.left
+        ? "linear-gradient(to right, transparent, black 2.25rem, black 100%)"
+        : edges.right
+          ? "linear-gradient(to right, black 0, black calc(100% - 2.25rem), transparent)"
+          : undefined;
+
+  return (
+    <div className="border-border/60 relative border-t md:hidden">
+      <nav
+        ref={navRef}
+        aria-label={`${spaceLabel} 모바일 메뉴`}
+        style={maskImage ? { maskImage, WebkitMaskImage: maskImage } : undefined}
+        className="flex items-center gap-1 overflow-x-auto px-4 py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {menus.map((menu) => (
+          <Link
+            key={menu.label}
+            to={menu.to}
+            aria-current={menu === current ? "page" : undefined}
+            className={
+              menu === current
+                ? "bg-secondary text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+                : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
+            }
+          >
+            <SystemIcon name={menu.icon} className="size-3.5" />
+            <span>{menu.label}</span>
+            {menu.badge && (
+              <span className="border-border/80 text-muted-foreground rounded-full border px-1 py-px font-mono text-[0.5625rem] leading-tight">
+                {menu.badge}
+              </span>
+            )}
+          </Link>
+        ))}
+      </nav>
+    </div>
+  );
+}
+
 function RootLayout() {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const isLanding = pathname === "/";
@@ -206,31 +282,11 @@ function RootLayout() {
 
           {/* Mobile: 현재 공간 메뉴 줄 */}
           {spaceMenus.length > 0 && (
-            <nav
-              aria-label={`${space?.label ?? ""} 모바일 메뉴`}
-              className="border-border/60 flex items-center gap-1 overflow-x-auto border-t px-4 py-1.5 md:hidden"
-            >
-              {spaceMenus.map((menu) => (
-                <Link
-                  key={menu.label}
-                  to={menu.to}
-                  aria-current={menu === current ? "page" : undefined}
-                  className={
-                    menu === current
-                      ? "bg-secondary text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
-                      : "text-muted-foreground hover:text-foreground inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs"
-                  }
-                >
-                  <SystemIcon name={menu.icon} className="size-3.5" />
-                  <span>{menu.label}</span>
-                  {menu.badge && (
-                    <span className="border-border/80 text-muted-foreground rounded-full border px-1 py-px font-mono text-[0.5625rem] leading-tight">
-                      {menu.badge}
-                    </span>
-                  )}
-                </Link>
-              ))}
-            </nav>
+            <MobileSpaceNav
+              spaceLabel={space?.label ?? ""}
+              menus={spaceMenus}
+              current={current}
+            />
           )}
         </header>
 
@@ -239,6 +295,7 @@ function RootLayout() {
         </div>
 
         {!hasDocsShell && <SiteFooter />}
+        <MobileDocBar />
       </div>
     </DesignConfigProvider>
   );

@@ -1,13 +1,9 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useCallback, useRef, useState, type ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@goraebap/ui-react/components/drawer";
+import { Drawer, DrawerContent, DrawerTitle } from "@goraebap/ui-react/components/drawer";
 import { SystemIcon, type SystemIconName } from "@goraebap/ui-react/icons";
 import { useIsMobile } from "@goraebap/ui-react/lib/use-is-mobile";
+import { useRegisterMobileSidebar } from "@/shared/lib/mobile-doc-bar";
 import { SiteFooter } from "./SiteFooter";
 
 interface DocsNavItem {
@@ -147,16 +143,6 @@ function DocsNavList({ groups, pathname }: { groups: DocsNavGroup[]; pathname: s
   ));
 }
 
-function findTrail(groups: DocsNavGroup[], pathname: string) {
-  for (const group of groups) {
-    for (const item of group.items) {
-      const match = [item, ...(item.children ?? [])].find((entry) => entry.href === pathname);
-      if (match) return { section: group.title, page: match.label };
-    }
-  }
-  return undefined;
-}
-
 export function DocsShell({ label, groups, stickyHeader, header, children }: DocsShellProps) {
   const pathname = useRouterState({
     select: (state) => state.location.pathname.replace(/\/$/, "") || "/",
@@ -165,24 +151,19 @@ export function DocsShell({ label, groups, stickyHeader, header, children }: Doc
   const drawerNavRef = useRef<HTMLElement>(null);
   const [openedAt, setOpenedAt] = useState<string | null>(null);
   const isOpen = isMobile && openedAt === pathname;
-  const trail = findTrail(groups, pathname);
+
+  const openSidebar = useCallback(() => {
+    setOpenedAt(pathname);
+  }, [pathname]);
+  useRegisterMobileSidebar(label, openSidebar);
 
   return (
-    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-6 pt-4 lg:flex-row lg:items-start lg:gap-10 lg:pt-0">
+    <div className="mx-auto flex max-w-7xl flex-col px-6 pt-8 lg:flex-row lg:items-start lg:gap-10 lg:pt-0">
       <Drawer
         open={isOpen}
         swipeDirection="left"
         onOpenChange={(next) => setOpenedAt(next ? pathname : null)}
       >
-        <DrawerTrigger
-          aria-label={`${label} 열기${trail ? `, 현재 ${trail.page}` : ""}`}
-          className="border-border text-muted-foreground hover:text-foreground focus-visible:outline-ring flex h-10 w-full cursor-pointer items-center gap-2 border-b text-sm focus-visible:outline-2 lg:hidden"
-        >
-          <SystemIcon name="workspace" className="size-4 shrink-0" />
-          {trail?.section && <span className="shrink-0">{trail.section}</span>}
-          {trail?.section && <SystemIcon name="chevronRight" className="size-3 shrink-0" />}
-          <span className="text-foreground truncate font-medium">{trail?.page ?? label}</span>
-        </DrawerTrigger>
         <DrawerContent
           side="left"
           initialFocus={() =>

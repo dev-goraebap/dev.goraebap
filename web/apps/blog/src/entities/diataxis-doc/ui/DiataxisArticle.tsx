@@ -24,12 +24,12 @@ import {
   LayersDiagram,
   MaturityMeta,
   MermaidDiagram,
-  MobileToc,
   TableOfContents,
   extractHeadingsFromMarkdown,
   headingToAnchor,
 } from "@/shared/ui";
 import { annotateDomainPlain, glossaryForDomain } from "@/shared/lib/glossary";
+import { useRegisterMobileToc } from "@/shared/lib/mobile-doc-bar";
 import {
   resolveDiataxisHref,
   type DiataxisContentModule,
@@ -205,6 +205,7 @@ export function DiataxisArticle({
   const activeSummary = variant?.meta.summary ?? doc.meta.summary;
 
   const headings = useMemo(() => extractHeadingsFromMarkdown(activeSource), [activeSource]);
+  useRegisterMobileToc(headings);
 
   const body = useMemo(() => {
     const tree = treeOf(activeModule);
@@ -264,8 +265,6 @@ export function DiataxisArticle({
             </div>
           )}
         </header>
-
-        <MobileToc items={headings} />
 
         {doc.meta.thumbnail && (
           <div className="corner-squircle overflow-hidden rounded-[22px]">

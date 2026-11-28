@@ -13,16 +13,17 @@ export { LayersDiagram } from "./LayersDiagram";
 export { LineFieldCanvas } from "./LineFieldCanvas";
 export { MaturityMeta } from "./MaturityMeta";
 export { MermaidDiagram } from "./MermaidDiagram";
+export { MobileDocBar } from "./MobileDocBar";
 export { PageState } from "./page-state/PageState";
 export { PromoBannerCard, type PromoBannerCardProps } from "./PromoBannerCard";
 export { ResizableLayoutStage } from "./ResizableLayoutStage";
 export { SidebarSectionTabs, type SidebarSectionTab } from "./SidebarSectionTabs";
 export { SiteFooter } from "./SiteFooter";
 export {
-  MobileToc,
   TableOfContents,
   extractHeadingsFromMarkdown,
   headingToAnchor,
+  useActiveHeading,
   type TocItem,
 } from "./TableOfContents";
 export { ThemedPortalScope } from "./ThemedPortalScope";

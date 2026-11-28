@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { buttonVariants } from "@goraebap/ui-react/components/button";
+import { useRegisterMobileToc } from "@/shared/lib/mobile-doc-bar";
 import {
   DocPager,
-  MobileToc,
   PageState,
   TableOfContents,
   extractHeadingsFromMarkdown,
@@ -57,9 +57,13 @@ export function ContentDocView({
   const known = stacks.includes(stack);
   const space = stackSpace(menu);
 
+  const headings = extractHeadingsFromMarkdown(doc && known ? doc.source : "");
+
   useEffect(() => {
     if (known) rememberStack(space, stack);
   }, [known, space, stack]);
+
+  useRegisterMobileToc(headings);
 
   if (!doc || !known) {
     return (
@@ -75,7 +79,6 @@ export function ContentDocView({
     );
   }
 
-  const headings = extractHeadingsFromMarkdown(doc.source);
   const hasStacks = stacks.length >= 2;
   const showAside = hasStacks || headings.length > 0;
 
@@ -112,7 +115,6 @@ export function ContentDocView({
             </nav>
           ) : undefined
         }
-        beforeBody={<MobileToc items={headings} />}
         trailing={
           <DocPager
             prevDoc={toLink(stack, docs[index - 1])}
