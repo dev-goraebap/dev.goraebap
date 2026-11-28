@@ -45,13 +45,14 @@ jobs:
         if: steps.check_key.outputs.ready == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_OWNER: ${{ github.repository_owner }}
         run: |
           set -euo pipefail
-          # 공개 저장소 보안 가드레일: OWNER 또는 github-actions[bot]이 작성한 inbox:* 이슈만 처리
-          gh issue list --state open --limit 50 --json number,title,body,labels,author,authorAssociation \
-            | jq '[.[] | select(
+          # 공개 저장소 보안 가드레일: 저장소 소유자 또는 github-actions 봇이 작성한 inbox:* 이슈만 처리
+          gh issue list --state open --limit 50 --json number,title,body,labels,author \
+            | jq --arg owner "$REPO_OWNER" '[.[] | select(
                 ([.labels[].name] | any(startswith("inbox:")))
-                and (.authorAssociation == "OWNER" or .author.login == "app/github-actions" or .author.login == "github-actions")
+                and (.author.login == $owner or .author.login == "app/github-actions" or .author.login == "github-actions")
               )]' > /tmp/inbox-issues.json
           COUNT="$(jq 'length' /tmp/inbox-issues.json)"
           echo "count=$COUNT" >> "$GITHUB_OUTPUT"
