@@ -91,31 +91,32 @@ if (!force && prevState.sha === remoteSha && fs.existsSync(path.join(ANTIGRAVITY
 console.log(`fullstack 플러그인 동기화 시작 (origin/main ${shortSha})`);
 const results = [];
 
-// 2) Claude Code
+// 2) Claude Code (버전 문자열이 같아도 최신 커밋 캐시가 반영되도록 마켓플레이스 갱신 후 재설치)
 const hasClaude = runCommand(isWin ? "where" : "which", ["claude"]).ok;
 if (hasClaude) {
-  runCommand("claude", ["plugin", "marketplace", "update", "dev-goraebap"]);
-  let upd = runCommand("claude", ["plugin", "update", "fullstack@dev-goraebap"]);
-  if (!upd.ok) {
+  const mkt = runCommand("claude", ["plugin", "marketplace", "update", "dev-goraebap"]);
+  if (!mkt.ok) {
     runCommand("claude", ["plugin", "marketplace", "add", "dev-goraebap/dev.goraebap"]);
-    upd = runCommand("claude", ["plugin", "install", "fullstack@dev-goraebap"]);
   }
+  runCommand("claude", ["plugin", "uninstall", "fullstack@dev-goraebap"]);
+  const inst = runCommand("claude", ["plugin", "install", "fullstack@dev-goraebap"]);
   results.push({
     agent: "Claude Code",
-    ok: upd.ok,
-    note: upd.ok ? "최신화 완료" : (upd.stderr || upd.stdout).split("\n")[0],
+    ok: inst.ok,
+    note: inst.ok ? "최신화 완료" : (inst.stderr || inst.stdout).split("\n")[0],
   });
 } else {
   results.push({ agent: "Claude Code", ok: true, note: "CLI 미설치(건너뜀)" });
 }
 
-// 3) Codex
+// 3) Codex (버전 문자열이 같아도 캐시가 갱신되도록 마켓플레이스 업그레이드 후 재설치)
 const hasCodex = runCommand(isWin ? "where" : "which", ["codex"]).ok;
 if (hasCodex) {
   const mkt = runCommand("codex", ["plugin", "marketplace", "upgrade", "dev-goraebap"]);
   if (!mkt.ok) {
     runCommand("codex", ["plugin", "marketplace", "add", "dev-goraebap/dev.goraebap", "--ref", "main"]);
   }
+  runCommand("codex", ["plugin", "remove", "fullstack@dev-goraebap"]);
   const add = runCommand("codex", ["plugin", "add", "fullstack@dev-goraebap"]);
   results.push({
     agent: "Codex",
