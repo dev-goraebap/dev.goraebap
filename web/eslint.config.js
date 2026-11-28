@@ -38,6 +38,11 @@ export default tseslint.config(
     languageOptions: { globals: globals.node },
   },
   {
+    // 정적 PWA 서비스 워커는 ServiceWorkerGlobalScope에서 돈다.
+    files: ["**/public/sw.js"],
+    languageOptions: { globals: globals.serviceworker },
+  },
+  {
     files: [
       "apps/*/src/pages/**/{__root,route,page}.tsx",
       "packages/ui-react/src/components/**/*.{ts,tsx}",

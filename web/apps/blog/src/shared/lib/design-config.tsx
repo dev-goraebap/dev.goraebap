@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { IconProvider, type IconSetId } from "@goraebap/ui-react/icons";
+import { syncThemeColor } from "./pwa-install";
 
 type ThemePresetId = "app" | "editorial" | "ocean" | "forest" | "terracotta";
 export type RadiusOptionId = "0rem" | "0.25rem" | "0.5rem" | "0.75rem" | "1rem";
@@ -269,6 +270,7 @@ export function DesignConfigProvider({ children }: { children: ReactNode }) {
     const root = document.documentElement;
     root.setAttribute("data-ds-theme", config.theme);
     root.removeAttribute("data-ds-accent");
+    syncThemeColor(config.theme);
     root.style.setProperty("--radius", config.radius);
 
     root.style.setProperty("--ds-corner-shape", config.cornerShape);

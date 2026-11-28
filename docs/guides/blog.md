@@ -18,6 +18,7 @@
 - 문서를 더하거나 주소를 옮기면 검색 목록(`src/widgets/doc-search/model/search-index.ts`), 정적 프리렌더 목록(`src/app/entry-server.tsx`), 예전 주소 리다이렉트(`src/pages/__root.tsx`)를 함께 확인합니다.
 - 메뉴를 바꾸거나 추가할 때는 `src/shared/config/site-menus.ts`를 수정합니다.
 - 정적 프리렌더 대상 컴포넌트는 모듈 로드나 렌더 중에 `window`·`document`·`localStorage`를 직접 참조하지 않습니다.
+- PWA 매니페스트·아이콘·서비스 워커 원본은 `public/manifest.webmanifest`, `public/icons/`, `public/sw.js`에 두고 `src/app/pwa.ts`에서 프로덕션 등록을 맡습니다. `vite.config.ts`가 빌드 시 `dist/sw.js`의 캐시 버전을 자동 치환합니다.
 
 ## 실행과 검사
 

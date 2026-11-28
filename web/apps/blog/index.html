@@ -4,13 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
     <title>dev.goraebap</title>
     <meta
       name="description"
       content="웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실입니다."
     />
-    <meta name="theme-color" content="#1b1b1e" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f9f9fa" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1b1b1e" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="dev.goraebap" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://dev.goraebap.xyz/" />
     <meta property="og:title" content="dev.goraebap" />
@@ -152,14 +157,31 @@
         const root = document.documentElement;
         try {
           const stored = localStorage.getItem("goraebap-design-mode");
-          if (stored === "light") {
+          const isLight = stored === "light";
+          if (isLight) {
             root.classList.remove("dark");
           } else {
             root.classList.add("dark");
           }
           const config = JSON.parse(localStorage.getItem("goraebap-design-config-v2") || "{}");
-          if (["app", "editorial", "ocean", "forest", "terracotta"].includes(config.theme)) {
-            root.setAttribute("data-ds-theme", config.theme);
+          const activeTheme = ["app", "editorial", "ocean", "forest", "terracotta"].includes(
+            config.theme,
+          )
+            ? config.theme
+            : "app";
+          if (activeTheme !== "app") {
+            root.setAttribute("data-ds-theme", activeTheme);
+          }
+          const themeColors = {
+            app: isLight ? "#f9f9fa" : "#1b1b1e",
+            editorial: isLight ? "#fdfcfa" : "#18181b",
+            ocean: isLight ? "#f7f9fc" : "#171f2c",
+            forest: isLight ? "#f7faf8" : "#17201c",
+            terracotta: isLight ? "#fbf9f6" : "#211c19",
+          };
+          const themeMeta = document.querySelector('meta[name="theme-color"]');
+          if (themeMeta) {
+            themeMeta.setAttribute("content", themeColors[activeTheme] || themeColors.app);
           }
           if (["93.75%", "100%", "112.5%", "125%"].includes(config.uiSize)) {
             root.style.setProperty("--ui-size", config.uiSize);

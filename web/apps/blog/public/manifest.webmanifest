@@ -1,0 +1,55 @@
+{
+  "id": "/",
+  "name": "dev.goraebap",
+  "short_name": "dev.goraebap",
+  "description": "웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실입니다.",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#1b1b1e",
+  "theme_color": "#1b1b1e",
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "블로그",
+      "short_name": "블로그",
+      "url": "/blog"
+    },
+    {
+      "name": "웹 애플리케이션 지침",
+      "short_name": "웹 앱",
+      "url": "/webapp/tutorials/getting-started"
+    },
+    {
+      "name": "디자인 시스템",
+      "short_name": "디자인",
+      "url": "/webapp/design-system/overview"
+    },
+    {
+      "name": "문서 검색",
+      "short_name": "검색",
+      "url": "/search"
+    }
+  ]
+}

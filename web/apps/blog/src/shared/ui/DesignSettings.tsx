@@ -27,6 +27,7 @@ import {
   useDesignConfig,
   type DesignConfig,
 } from "../lib/design-config";
+import { syncThemeColor, usePwaInstall } from "../lib/pwa-install";
 import { UiSizeControl } from "./UiSizeControl";
 
 function SettingRow({
@@ -97,6 +98,7 @@ const supportsSquircle = typeof CSS !== "undefined" && CSS.supports("corner-shap
 
 export function DesignSettings() {
   const { config, rootScale, updateConfig, resetConfig } = useDesignConfig();
+  const { canInstall, promptInstall } = usePwaInstall();
   const isMobile = useIsMobile();
   const [dark, setDark] = useState(
     () => typeof document === "undefined" || document.documentElement.classList.contains("dark"),
@@ -107,6 +109,7 @@ export function DesignSettings() {
     setDark(next);
     document.documentElement.classList.toggle("dark", next);
     localStorage.setItem("goraebap-design-mode", next ? "dark" : "light");
+    syncThemeColor(config.theme, next);
   }
 
   return (
@@ -277,6 +280,21 @@ export function DesignSettings() {
               ))}
             </ToggleGroup>
           </SettingRow>
+
+          {canInstall && (
+            <div className="border-border border-t pt-3">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => void promptInstall()}
+                className="w-full gap-1.5"
+              >
+                <SystemIcon name="mobile" className="size-3.5" />
+                <span>앱으로 설치</span>
+              </Button>
+            </div>
+          )}
         </div>
       </ResponsivePopoverContent>
     </ResponsivePopover>

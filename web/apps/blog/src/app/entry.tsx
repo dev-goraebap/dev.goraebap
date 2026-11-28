@@ -1,8 +1,11 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
+import { registerPwa } from "./pwa";
 import { router } from "./router/router";
 import "./theme/tailwind.css";
+
+registerPwa();
 
 function dismissSplash() {
   const splash = document.getElementById("app-splash");
