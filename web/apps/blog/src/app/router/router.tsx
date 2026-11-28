@@ -1,4 +1,10 @@
-import { Link, createRouter, type RouterHistory } from "@tanstack/react-router";
+import {
+  Link,
+  createRouter,
+  useCanGoBack,
+  useRouter,
+  type RouterHistory,
+} from "@tanstack/react-router";
 import { Button, buttonVariants } from "@goraebap/ui-react/components/button";
 import { PageState } from "@/shared/ui";
 import { routeTree } from "./routeTree.gen";
@@ -6,15 +12,26 @@ import { routeTree } from "./routeTree.gen";
 const hasPanel = (search: unknown) => Boolean((search as { panel?: unknown } | undefined)?.panel);
 
 function RouteNotFound() {
+  const router = useRouter();
+  const canGoBack = useCanGoBack();
+
   return (
     <PageState
       kind="not-found"
+      isFullScreen
       title="페이지를 찾을 수 없습니다"
       description="주소가 바뀌었거나 없는 문서입니다."
       action={
-        <Link to="/" className={buttonVariants({ variant: "outline", size: "sm" })}>
-          처음으로
-        </Link>
+        <>
+          {canGoBack && (
+            <Button variant="outline" size="sm" onClick={() => router.history.back()}>
+              이전으로
+            </Button>
+          )}
+          <Link to="/" className={buttonVariants({ variant: canGoBack ? "default" : "outline", size: "sm" })}>
+            처음으로
+          </Link>
+        </>
       }
     />
   );
@@ -24,12 +41,18 @@ function RouteError({ reset }: { reset: () => void }) {
   return (
     <PageState
       kind="error"
+      isFullScreen
       title="화면을 불러오지 못했습니다"
       description="잠시 후 다시 시도해 주세요."
       action={
-        <Button variant="outline" size="sm" onClick={reset}>
-          다시 시도
-        </Button>
+        <>
+          <Button variant="default" size="sm" onClick={reset}>
+            다시 시도
+          </Button>
+          <Link to="/" className={buttonVariants({ variant: "outline", size: "sm" })}>
+            처음으로
+          </Link>
+        </>
       }
     />
   );

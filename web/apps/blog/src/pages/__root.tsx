@@ -40,9 +40,43 @@ function RoutePendingBar() {
     return () => window.clearTimeout(timer);
   }, [isLoading]);
 
-  if (!visible) return null;
   return (
-    <div aria-hidden="true" className="bg-primary fixed inset-x-0 top-0 z-50 h-0.5 animate-pulse" />
+    <div
+      aria-hidden="true"
+      className={`pointer-events-none fixed inset-x-0 top-0 z-50 h-3 overflow-hidden transition-opacity duration-200 ease-out ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      {/* 양 끝으로 갈수록 얇고 투명해지며 중앙이 미세하게 도톰하고 은은히 빛나는 기준선 */}
+      <div
+        className="absolute inset-x-0 top-0 h-[1.5px]"
+        style={{
+          clipPath: "ellipse(52% 100% at 50% 0%)",
+          background:
+            "linear-gradient(to right, transparent 0%, color-mix(in oklch, var(--primary) 26%, transparent) 18%, color-mix(in oklch, var(--primary) 68%, transparent) 50%, color-mix(in oklch, var(--primary) 26%, transparent) 82%, transparent 100%)",
+        }}
+      />
+      {/* 중앙 아래로 부드럽게 퍼지는 은은한 발광 */}
+      <div
+        className="absolute inset-x-0 top-0 h-2.5"
+        style={{
+          background:
+            "radial-gradient(ellipse 46% 100% at 50% 0%, color-mix(in oklch, var(--primary) 22%, transparent) 0%, transparent 100%)",
+        }}
+      />
+      {/* 선 위를 가로지르며 은은하게 흐르는 광택 */}
+      {visible && (
+        <div
+          className="route-pending-shimmer absolute top-0 left-0 h-[1.5px] w-[42%]"
+          style={{
+            background:
+              "linear-gradient(90deg, transparent 0%, color-mix(in oklch, var(--primary) 45%, transparent) 28%, var(--primary) 50%, color-mix(in oklch, var(--primary) 45%, transparent) 72%, transparent 100%)",
+            boxShadow:
+              "0 0 8px color-mix(in oklch, var(--primary) 55%, transparent), 0 1px 14px color-mix(in oklch, var(--primary) 28%, transparent)",
+          }}
+        />
+      )}
+    </div>
   );
 }
 
@@ -225,6 +259,18 @@ function RootLayout() {
   const pathname = useRouterState({
     select: (state) => state.resolvedLocation?.pathname ?? state.location.pathname,
   });
+  const isStatusScreen = useRouterState({
+    select: (state) =>
+      (state.status !== "pending" &&
+        state.matches.length === 1 &&
+        state.matches[0]?.routeId === "__root__") ||
+      state.matches.some(
+        (match) =>
+          ("globalNotFound" in match && Boolean(match.globalNotFound)) ||
+          match.status === "notFound" ||
+          match.status === "error",
+      ),
+  });
   const isLanding = pathname === "/";
   const isSearchPage = pathname.replace(/\/$/, "") === "/search";
   useSmoothScroll(!isLanding);
@@ -237,11 +283,11 @@ function RootLayout() {
     );
   }
 
-  if (isSearchPage) {
+  if (isSearchPage || isStatusScreen) {
     return (
       <DesignConfigProvider>
         <RoutePendingBar />
-        <div className="bg-background text-foreground min-h-screen">
+        <div className="bg-background text-foreground min-h-dvh">
           <Outlet />
         </div>
       </DesignConfigProvider>
