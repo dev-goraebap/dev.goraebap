@@ -1,47 +1,20 @@
 # 프론트엔드
 
-## frontend
+공통 기준(`index.md`)을 먼저 읽고, 프로젝트 스택에 해당하는 구현 파일만 함께 읽습니다.
 
-웹 앱의 화면 계층·코드 규칙, 서버 데이터 캐시와 상태 소유, 라우트와 화면 전환을 구현합니다. 페이지·컴포넌트 코드·프론트 상태·라우트를 만들거나 고칠 때 사용합니다.
+스택별 구현 파일: `react-tanstack.md` · `angular.md`
 
-웹 앱은 컴포넌트 기반 화면, 검증한 URL을 다루는 라우터, 서버 데이터 캐시를 맡는 조회 도구로 짭니다. 파일 구조는 FSD(Feature-Sliced Design)를 따르며, 이 지침이 쓰는 층과 묶는 법은 [화면 계층](structure/layers/index.md)에 있습니다. 공식 `feature-sliced-design` 스킬이 설치되어 있으면 함께 읽습니다. 어떤 라이브러리와 판을 쓰는지는 프로젝트에서 정하며, 프로젝트가 채택한 스택을 다른 것으로 바꾸는 일을 작업에 끼워 넣지 않습니다.
+## 플레이북
 
-### 예시
+- [프로젝트 구성](playbooks/project-setup/index.md): 새 프론트엔드 앱을 FSD 레이어, 표준 라이브러리, 품질 검사까지 갖춰 세팅하는 공통 절차입니다.
+- [화면·슬라이스 추가](playbooks/new-page-and-slice/index.md): 새 화면이나 기능을 만들 때 어느 레이어와 폴더에 배치하고, 언제 하위 레이어로 승격할지 다루는 공통 절차입니다.
 
-구현 모양은 각 자료 폴더의 스택 글(`react.md`·`angular.md`)에서 프로젝트 스택의 것만 읽습니다(예시 읽기).
+## 레퍼런스
 
-### 읽을 자료
-
-#### 구조
-
-- [화면 계층](structure/layers/index.md): 층과 pages 폴더, 키트·앱 셸의 경계를 다룰 때 읽습니다.
-
-#### 라우팅
-
-- [화면 전환](routing/navigation/index.md): 미리 준비·캐시 우선 표시·지연 진행 표시·목록 복귀를 다룰 때 읽습니다.
-- [리소스 주소](routing/resource-routes/index.md): 목록·상세·생성·수정의 주소, 대화상자 안 이동, 공간 주소를 다룰 때 읽습니다.
-- [전환과 대기 표시](routing/transitions/index.md): 이전 화면을 두고 기다리기, 진행 막대의 시점, 전환 점검을 다룰 때 읽습니다.
-- [라우팅 마스크](routing/route-masking/index.md): 목록 위 대화상자와 대상 주소, 새로고침·휴대폰 전환을 다룰 때 읽습니다.
-
-#### 상태 관리
-
-- [상태 소유](state/state/index.md): 서버 데이터·URL·입력 초안의 소유와 저장 중 편집을 다룰 때 읽습니다.
-- [조회와 변경](state/data-flow/index.md): 조회 옵션·준비 함수·변경 후 무효화·큰 목록을 다룰 때 읽습니다.
-- [입력 지연과 요청 취소](state/search-input/index.md): 입력 중 검색의 지연과 지난 요청 취소를 다룰 때 읽습니다.
-
-#### 렌더링
-
-- [렌더링 방식](rendering/render-modes/index.md): CSR·SSG·SSR 중 무엇으로 그려 내보낼지 정할 때 읽습니다.
-- [지연 로딩](rendering/lazy-loading/index.md): 지연 로딩하는 화면 코드와 큰 컴포넌트를 준비할 때 읽습니다.
-- [초기 진입과 새로고침](rendering/initial-load/index.md): 폰트 로딩, 스플래시 화면, 빌드 때 넣는 첫 화면을 다룰 때 읽습니다.
-
-#### 코드 규칙
-
-- [파일과 이름](code-style/naming/index.md): 파일 이름과 컴포넌트 배치를 다룰 때 읽습니다.
-- [파생값과 부수 효과](code-style/effects/index.md): 파생값·부수 효과·메모이제이션을 다룰 때 읽습니다.
-
-화면 패턴을 구현·수정할 때는 디자인 시스템 지침의 [패턴 카탈로그](../design-system/pattern-catalog/index.md)에서 사용 기준과 실제 컴포넌트를 함께 찾습니다. 견본에는 제품과 같은 라우터·상태 경계를 연결하고 데이터와 시작 상태를 제어합니다.
-
-새 화면이나 시각적 변경은 [디자인 시스템](../design-system/README.md#design-system)을, 상태 화면·대기 표시·움직임·휴대폰 표면 전환은 디자인 시스템의 패턴과 파운데이션을 함께 읽습니다. 이 스킬은 코드 배치·상태·URL·비동기 흐름을 소유하고, 컴포넌트 선택·테마·레이아웃·반응형 표현과 화면이 반응하고 움직이는 모양은 디자인 시스템을 따릅니다. 같은 규칙을 두 곳에 복제하지 않습니다.
-
-경로·개발 포트·로그인 방법·검사 명령은 프로젝트의 실제 설정에서 확인합니다. 완료 시 프로젝트 검사와 바뀐 사용자 동작을 확인합니다.
+- [디렉토리 구조](reference/directory-structure/index.md): FSD v2.1의 6개 레이어(선택 레이어 포함)와 주소 기반 pages 규칙, 의존성 경계를 정리합니다.
+- [구성 요소와 실행 흐름](reference/components-and-flow/index.md): URL 진입과 사용자 동작이 라우트·뷰·모델·서버 상태·통신 구성 요소를 거쳐 흐르는 책임과 경계 규칙입니다.
+- [상태 관리와 데이터 흐름](reference/state-and-data-flow/index.md): 상태 소유자 구분, 서버 데이터와 초안 분리, 조회 옵션·캐시 무효화, 검색 디바운스와 요청 취소 기준입니다.
+- [라우팅과 화면 전환](reference/routing/index.md): 리소스 주소 계약, intent prefetch·캐시 우선 전환, 지연 진행 막대, 라우팅 마스크 기준입니다.
+- [렌더링과 초기 로딩](reference/rendering/index.md): CSR·SSG·SSR 선택 기준, 초기 진입 스플래시와 웹폰트 흔들림 방지, 지연 로딩 코드·데이터 동시 준비 기준입니다.
+- [표준 라이브러리](reference/standard-libraries/index.md): 프론트엔드 앱에서 표준 도구를 지정하는 기능 영역과 도입 원칙입니다.
+- [코드 스타일과 네이밍](reference/code-style/index.md): 컴포넌트·페이지 파일 명명, 파생값과 부수 효과 분리, 메모이제이션과 TypeScript 위생 기준입니다.

@@ -6,7 +6,8 @@ on:
 permissions:
   contents: read
 jobs:
-  check:
+  skills:
+    name: Skills Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,3 +19,23 @@ jobs:
       # content에서 만든 .agents/skills/goraebap-webapp이 최신인지도 함께 본다.
       - run: npm run check
         working-directory: plugins/webapp
+
+  web:
+    name: Web Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: web
+      - run: pnpm lint
+        working-directory: web
+      - run: pnpm typecheck
+        working-directory: web
+      - run: pnpm build
+        working-directory: web

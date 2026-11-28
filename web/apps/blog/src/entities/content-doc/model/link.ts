@@ -24,10 +24,20 @@ export function resolveHref(
   skillHref: SkillHref,
 ): string | undefined {
   if (/^(https?:|mailto:|#)/.test(href)) return href;
+  if (href.startsWith("/")) return href;
   const [path, anchor] = href.split("#");
   const target = join(from, path);
   if (target.startsWith(`${APP}/content/`)) {
-    const doc = findDocByFile(target.slice(APP.length));
+    const contentPath = target.slice(APP.length);
+    const diataxis = /^\/content\/(frontend|backend)\/(playbooks|articles|reference)\/([^/]+)(?:\/([^/]+))?\.md$/.exec(
+      contentPath,
+    );
+    if (diataxis) {
+      const [, space, section, slug, variant] = diataxis;
+      const query = variant && variant !== "index" ? `?stack=${encodeURIComponent(variant)}` : "";
+      return `/${space}/${section}/${slug}${query}${anchor ? `#${anchor}` : ""}`;
+    }
+    const doc = findDocByFile(contentPath);
     return doc ? docHref(doc, stack) + (anchor ? `#${anchor}` : "") : undefined;
   }
   if (target.startsWith(SKILLS)) return skillHref(target.slice(SKILLS.length));

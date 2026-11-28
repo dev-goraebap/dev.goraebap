@@ -9,7 +9,7 @@ metadata:
 
 웹 앱을 구현할 때 따르는 기준입니다. 이 기준이 다른 스킬이나 일반 관례와 다르면 이 기준을 따르고, 프로젝트가 다르게 정한 것은 AGENTS.md의 프로젝트 규칙 표를 따릅니다.
 
-바꾸는 영역의 목록을 먼저 읽고, 작업에 해당하는 문서만 읽습니다. 문서 폴더마다 공통 글 `index.md`를 읽고, 프로젝트 스택의 파일(`react.md`·`angular.md`·`spring.md`)이 있으면 그것만 함께 읽습니다. 프로젝트 스택은 AGENTS.md의 goraebap-webapp 블록에 있습니다.
+바꾸는 영역의 목록을 먼저 읽고, 작업에 해당하는 문서만 읽습니다. 문서 폴더마다 공통 글 `index.md`를 읽고, 프로젝트 스택에 맞는 구현 파일(프론트엔드 `react-tanstack.md`·`angular.md`, 디자인 시스템 `react.md`·`angular.md`, 백엔드 `springboot.md` 등)이 있으면 그것만 함께 읽습니다. 프로젝트 스택은 AGENTS.md의 goraebap-webapp 블록에 있습니다.
 
 | 영역 | 목록 | 읽을 때 |
 | --- | --- | --- |
