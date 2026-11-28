@@ -5,7 +5,7 @@ export const toastViewportVariants = tv({
 });
 
 export const toastRootVariants = tv({
-  base: "relative flex w-full items-start justify-between gap-3 rounded-xl border p-4 shadow-lg transition-[opacity,transform] duration-200 ease-out data-[starting-style]:translate-y-2 data-[starting-style]:opacity-0 data-[ending-style]:translate-y-2 data-[ending-style]:opacity-0",
+  base: "relative flex w-full items-start justify-between gap-3 rounded-xl border p-4 shadow-lg transition-[opacity,translate,transform] duration-200 ease-out data-[starting-style]:translate-y-2 data-[starting-style]:opacity-0 data-[ending-style]:translate-y-2 data-[ending-style]:opacity-0",
   variants: {
     variant: {
       default: "border-border bg-popover text-popover-foreground",
