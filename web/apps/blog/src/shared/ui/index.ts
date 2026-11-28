@@ -14,6 +14,7 @@ export { LineFieldCanvas } from "./LineFieldCanvas";
 export { MaturityMeta } from "./MaturityMeta";
 export { MermaidDiagram } from "./MermaidDiagram";
 export { PageState } from "./page-state/PageState";
+export { PromoBannerCard, type PromoBannerCardProps } from "./PromoBannerCard";
 export { ResizableLayoutStage } from "./ResizableLayoutStage";
 export { SidebarSectionTabs, type SidebarSectionTab } from "./SidebarSectionTabs";
 export { SiteFooter } from "./SiteFooter";
