@@ -120,6 +120,9 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
+          # 0) run-gemini-cli가 남긴 임시 디렉토리 정리
+          rm -rf .gemini gemini-artifacts
+
           # 1) 보호 경로 수정 여부 강제 검증 (push 이전 차단)
           CHANGED="$(git diff --name-only origin/main...HEAD; git status --porcelain | awk '{print $2}')"
           if echo "$CHANGED" | grep -Eq '^(\.github/workflows/|deploy/)'; then
@@ -235,6 +238,7 @@ jobs:
           PR_NUMBER: ${{ github.event.issue.number }}
         run: |
           set -euo pipefail
+          rm -rf .gemini gemini-artifacts
           CHANGED="$(git diff --name-only origin/main...HEAD; git status --porcelain | awk '{print $2}')"
           if echo "$CHANGED" | grep -Eq '^(\.github/workflows/|deploy/)'; then
             echo "::error::보안 가드레일 위반: AI가 보호 경로(.github/workflows/ 또는 deploy/)를 수정했습니다."
