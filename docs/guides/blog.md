@@ -2,14 +2,15 @@
 
 `web/apps/blog`는 지침과 아티클을 사람이 읽는 사이트(`dev.goraebap.xyz`)입니다. 메뉴 목록과 각 메뉴에 속한 주소는 `src/shared/config/site-menus.ts` 한 곳에 있고, 헤더·랜딩·푸터가 모두 이것을 읽습니다.
 
-- 상단 중앙 메뉴: `블로그` · `프론트엔드` · `백엔드` (`HEADER_MENUS`)
-- 상단 우측 유틸리티: `Agents` (`/agents`), 디자인 설정, 통합 검색(`Cmd+K`)
-- 프론트엔드 사이드바 최상단 스티키 탭: `엔지니어링` (`/frontend`) | `디자인 시스템 Beta` (`/design-system/overview`)
+- 최상위 공간 (`SITE_SPACES`, 랜딩 페이지 + 로고 옆 `WorkspaceSwitcher` `/ <공간>` 전환):
+  - **`블로그`** (`/blog`): 헤더 중앙 메뉴 없음
+  - **`웹 애플리케이션`** (`/webapp`, `fullstack` 플러그인 대응): 헤더 중앙 메뉴 `홈` (`/webapp`) · `디자인 시스템 Beta` (`/webapp/design-system/overview`) · `프론트엔드` (`/webapp/frontend`) · `백엔드` (`/webapp/backend`)
+- 상단 우측 유틸리티: 디자인 설정, 통합 검색(`Cmd+K`)
 
 ## 두 가지 문서 엔진
 
-- **Diátaxis 순수 마크다운 (`/frontend`, `/backend`, `/agents`)**: `src/entities/diataxis-doc/`가 `content/{frontend,backend,agents}/{tutorials,playbooks,articles,reference}/**/*.md`를 읽어 렌더링합니다. 공통(`index.md`)과 스택 파일(`<stack>.md`)을 우측 레일(데스크톱)과 상단 필(모바일)로 전환합니다.
-- **MDX 메뉴 (`/design-system`, `/blog`)**: `src/entities/content-doc/`가 `content/design-system/`의 `.mdx`와 `<Slot>/<Fill>` 스택 파일, 라이브 데모(`react-tanstack-demo`, `angular-demo` iframe)를 렌더링합니다.
+- **Diátaxis 순수 마크다운 (`/webapp`, `/webapp/frontend`, `/webapp/backend`)**: `src/entities/diataxis-doc/`가 `content/{webapp,frontend,backend}/{tutorials,playbooks,articles,reference}/**/*.md`를 읽어 렌더링합니다. 공통(`index.md`)과 스택 파일(`<stack>.md`)을 우측 레일(데스크톱)과 상단 필(모바일)로 전환합니다.
+- **MDX 메뉴 (`/webapp/design-system`, `/blog`)**: `src/entities/content-doc/`가 `content/design-system/`의 `.mdx`와 `<Slot>/<Fill>` 스택 파일, 라이브 데모(`react-tanstack-demo`, `angular-demo` iframe)를 렌더링합니다.
 - **통합 용어집 (`/glossary`)**: `content/glossary/*.md`를 단일 폴더에서 파싱해 4열 테이블 뷰와 본문 용어 팝오버에 연결합니다.
 
 ## 함께 고칠 곳

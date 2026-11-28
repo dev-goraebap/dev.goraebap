@@ -6,7 +6,7 @@
 
 | 원본 (`web/apps/blog/content/`) | 빌드되는 스킬 (`fullstack`) | 형식 |
 | --- | --- | --- |
-| `agents/{playbooks,articles,reference}/` | `goraebap-mode` (전역 오케스트레이터) | Diátaxis 순수 MD (`tutorials/`는 사람 전용으로 제외) |
+| `webapp/{playbooks,articles,reference}/` | `goraebap-mode` (전역 오케스트레이터) | Diátaxis 순수 MD (`tutorials/`는 사람 전용으로 제외) |
 | `design-system/` | `frontend-uiux` | MDX + `<Slot>/<Fill>` (`react.mdx` · `angular.mdx`) |
 | `frontend/{playbooks,articles,reference}/` | `frontend-engineering` | Diátaxis 순수 MD (`react-tanstack.md` · `angular.md`) |
 | `backend/{playbooks,articles,reference}/` | `backend-engineering` | Diátaxis 순수 MD (`springboot.md`) |

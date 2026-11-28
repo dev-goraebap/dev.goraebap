@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { VISIBLE_MENUS } from "@/shared/config/site-menus";
+import { FOOTER_MENUS } from "@/shared/config/site-menus";
 import { Wordmark } from "./Wordmark";
 
 export function SiteFooter({ isContained = true }: { isContained?: boolean }) {
@@ -12,7 +12,7 @@ export function SiteFooter({ isContained = true }: { isContained?: boolean }) {
       >
         <Wordmark className="text-foreground h-4.5 w-auto self-start sm:self-auto" />
         <div className="flex flex-wrap items-center gap-4">
-          {VISIBLE_MENUS.map((menu) => (
+          {FOOTER_MENUS.map((menu) => (
             <Link key={menu.label} to={menu.to} className="hover:text-foreground transition-colors">
               {menu.label}
             </Link>

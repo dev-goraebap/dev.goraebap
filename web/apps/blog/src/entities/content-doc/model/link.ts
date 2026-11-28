@@ -35,7 +35,7 @@ export function resolveHref(
     if (diataxis) {
       const [, space, section, slug, variant] = diataxis;
       const query = variant && variant !== "index" ? `?stack=${encodeURIComponent(variant)}` : "";
-      return `/${space}/${section}/${slug}${query}${anchor ? `#${anchor}` : ""}`;
+      return `/webapp/${space}/${section}/${slug}${query}${anchor ? `#${anchor}` : ""}`;
     }
     const doc = findDocByFile(contentPath);
     return doc ? docHref(doc, stack) + (anchor ? `#${anchor}` : "") : undefined;

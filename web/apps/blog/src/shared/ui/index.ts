@@ -27,3 +27,4 @@ export {
 export { ThemedPortalScope } from "./ThemedPortalScope";
 export { UiSizeControl } from "./UiSizeControl";
 export { Wordmark } from "./Wordmark";
+export { WorkspaceSwitcher } from "./WorkspaceSwitcher";

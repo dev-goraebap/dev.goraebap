@@ -9,7 +9,7 @@ import { GLOSSARY_ENTRIES, stripGlossaryMarkup } from "@/shared/lib/glossary";
 
 export const DOC_GROUPS = [
   "Blog",
-  "Agents",
+  "웹 애플리케이션",
   "프론트엔드",
   "백엔드",
   "디자인 시스템",
@@ -49,10 +49,10 @@ const DOC_ENTRIES: DocEntry[] = [
     description: doc.meta.summary ?? "",
     keywords: plainText(doc.source),
   })),
-  page("디자인 시스템", "개요", "/design-system/overview", "디자인 시스템의 구조와 쓰임"),
-  ...diataxisAllDocs("agents").map((doc) => ({
-    id: `agents:${doc.section}/${doc.slug}`,
-    group: "Agents" as const,
+  page("디자인 시스템", "개요", "/webapp/design-system/overview", "디자인 시스템의 구조와 쓰임"),
+  ...diataxisAllDocs("webapp").map((doc) => ({
+    id: `webapp:${doc.section}/${doc.slug}`,
+    group: "웹 애플리케이션" as const,
     title: doc.meta.title ?? doc.slug,
     href: diataxisDocHref(doc),
     description: `${DIATAXIS_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
@@ -74,24 +74,24 @@ const DOC_ENTRIES: DocEntry[] = [
     description: `${DIATAXIS_SECTION_LABELS[doc.section]} · ${doc.meta.summary ?? ""}`,
     keywords: [doc.source, ...doc.stacks.map((s) => s.source)].map(plainText).join(" "),
   })),
-  page("컴포넌트", "컴포넌트 개요", "/design-system/components", "전체 컴포넌트 목록"),
+  page("컴포넌트", "컴포넌트 개요", "/webapp/design-system/components", "전체 컴포넌트 목록"),
   ...menuDocs("design-system/components")
     .filter((doc) => !doc.isSkill)
     .map((doc) => ({
       id: `component:${doc.slug}`,
       group: "컴포넌트" as const,
       title: doc.meta.title ?? doc.slug,
-      href: `/design-system/components/${doc.slug}`,
+      href: `/webapp/design-system/components/${doc.slug}`,
       description: doc.meta.summary ?? "",
       keywords: `${doc.slug} ${doc.meta.group ?? ""} ${plainText(doc.source)}`,
     })),
-  page("레이아웃", "레이아웃 개요", "/design-system/layouts", "앱 외곽과 메인 영역 레이아웃"),
+  page("레이아웃", "레이아웃 개요", "/webapp/design-system/layouts", "앱 외곽과 메인 영역 레이아웃"),
   // 메인 영역 레이아웃은 「페이지 배치」 문서의 절이다. 앱 외곽 레이아웃은 아래 content 문서로 찾는다.
   ...LAYOUT_DOCS.filter((doc) => doc.level === "content").map((doc) => ({
     id: `layout:${doc.id}`,
     group: "레이아웃" as const,
     title: doc.name,
-    href: layoutPage(doc.id) ?? "/design-system/layouts",
+    href: layoutPage(doc.id) ?? "/webapp/design-system/layouts",
     description: doc.summary,
     keywords: `${doc.id} ${doc.summary}`,
   })),
@@ -102,7 +102,7 @@ const DOC_ENTRIES: DocEntry[] = [
       ? doc.meta.group
       : "디자인 시스템") as DocEntry["group"],
     title: doc.meta.title ?? doc.slug,
-    href: `/design-system/${doc.slug}`,
+    href: `/webapp/design-system/${doc.slug}`,
     description: doc.meta.summary ?? doc.meta.description ?? "",
     keywords: plainText(doc.source),
   })),

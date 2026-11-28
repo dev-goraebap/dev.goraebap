@@ -154,9 +154,13 @@ const isStackless = (menu: string) => menu === BLOG_MENU;
 
 export const stacksOf = (menu: string): readonly string[] =>
   isStackless(menu) ? [] : SPACE_STACKS[stackSpace(menu)];
+export const menuRoutePrefix = (menu: string) =>
+  isStackless(menu) ? `/${menu}` : `/webapp/${menu}`;
 // 스택을 모르면(스택 없는 Blog 글에서 거는 링크 등) 스택 없는 주소를 돌려준다. 그 주소는 독자가 고른 스택으로 다시 보낸다.
 export const docHref = (doc: ContentDoc, stack: string) =>
-  isStackless(doc.menu) || !stack ? `/${doc.menu}/${doc.slug}` : `/${doc.menu}/${doc.slug}/${stack}`;
+  isStackless(doc.menu) || !stack
+    ? `${menuRoutePrefix(doc.menu)}/${doc.slug}`
+    : `${menuRoutePrefix(doc.menu)}/${doc.slug}/${stack}`;
 
 // Blog 글을 날짜가 늦은 것부터.
 export const blogPosts = () =>

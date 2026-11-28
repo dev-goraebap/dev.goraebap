@@ -3,7 +3,7 @@ import type { SystemIconName } from "@goraebap/ui-react/icons";
 import type { MaturityStatus } from "@/shared/lib/maturity";
 import type { DocsNavGroup } from "@/shared/ui";
 
-export type DiataxisSpace = "backend" | "frontend" | "agents";
+export type DiataxisSpace = "backend" | "frontend" | "webapp";
 
 export type DiataxisSectionId = "tutorials" | "playbooks" | "articles" | "reference";
 
@@ -28,7 +28,7 @@ export const DIATAXIS_SECTION_LABELS: Record<DiataxisSectionId, string> = {
 export const DIATAXIS_SPACE_LABELS: Record<DiataxisSpace, string> = {
   backend: "백엔드",
   frontend: "프론트엔드",
-  agents: "Agents",
+  webapp: "웹 애플리케이션",
 };
 
 export const DIATAXIS_STACK_LABELS: Record<string, string> = {
@@ -81,11 +81,11 @@ export interface DiataxisDoc {
 }
 
 const MODULES = import.meta.glob<DiataxisContentModule>(
-  "/content/{backend,frontend,agents}/{tutorials,playbooks,articles,reference}/**/*.md",
+  "/content/{backend,frontend,webapp}/{tutorials,playbooks,articles,reference}/**/*.md",
   { eager: true },
 );
 const SOURCES = import.meta.glob<string>(
-  "/content/{backend,frontend,agents}/{tutorials,playbooks,articles,reference}/**/*.md",
+  "/content/{backend,frontend,webapp}/{tutorials,playbooks,articles,reference}/**/*.md",
   { query: "?raw", import: "default", eager: true },
 );
 
@@ -101,7 +101,7 @@ function buildDocs(): DiataxisDoc[] {
 
   for (const [file, mod] of Object.entries(MODULES)) {
     const match =
-      /^\/content\/(backend|frontend|agents)\/(tutorials|playbooks|articles|reference)\/([^/]+)\/([^/]+)\.md$/.exec(
+      /^\/content\/(backend|frontend|webapp)\/(tutorials|playbooks|articles|reference)\/([^/]+)\/([^/]+)\.md$/.exec(
         file,
       );
     if (!match || match[4] === "index") continue;
@@ -122,11 +122,11 @@ function buildDocs(): DiataxisDoc[] {
   const docs: DiataxisDoc[] = [];
   for (const [file, mod] of Object.entries(MODULES)) {
     const folder =
-      /^\/content\/(backend|frontend|agents)\/(tutorials|playbooks|articles|reference)\/([^/]+)\/index\.md$/.exec(
+      /^\/content\/(backend|frontend|webapp)\/(tutorials|playbooks|articles|reference)\/([^/]+)\/index\.md$/.exec(
         file,
       );
     const single =
-      /^\/content\/(backend|frontend|agents)\/(tutorials|playbooks|articles|reference)\/([^/]+)\.md$/.exec(
+      /^\/content\/(backend|frontend|webapp)\/(tutorials|playbooks|articles|reference)\/([^/]+)\.md$/.exec(
         file,
       );
     const found = folder ?? single;
@@ -176,7 +176,10 @@ export function findDiataxisDoc(
 }
 
 export function diataxisDocHref(doc: DiataxisDoc, stack?: string): string {
-  const base = `/${doc.space}/${doc.section}/${doc.slug}`;
+  const base =
+    doc.space === "webapp"
+      ? `/webapp/${doc.section}/${doc.slug}`
+      : `/webapp/${doc.space}/${doc.section}/${doc.slug}`;
   return stack && stack !== "common" ? `${base}?stack=${encodeURIComponent(stack)}` : base;
 }
 
@@ -210,10 +213,10 @@ export function resolveDiataxisHref(fromFile: string, href: string): string | un
   }
   const designSystem = /^\/content\/design-system\/(.+?)(?:\/index)?\.mdx$/.exec(target);
   if (designSystem) {
-    return `/design-system/${designSystem[1]}${anchor ? `#${anchor}` : ""}`;
+    return `/webapp/design-system/${designSystem[1]}${anchor ? `#${anchor}` : ""}`;
   }
   if (target === "/content/design-system/SKILL.md") {
-    return `/design-system/overview${anchor ? `#${anchor}` : ""}`;
+    return `/webapp/design-system/overview${anchor ? `#${anchor}` : ""}`;
   }
   for (const doc of DIATAXIS_DOCS) {
     if (doc.file === target) {

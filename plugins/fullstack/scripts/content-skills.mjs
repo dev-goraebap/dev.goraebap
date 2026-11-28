@@ -1,10 +1,10 @@
 // 사이트 content(web/apps/blog/content)에서 fullstack 플러그인의 4개 스킬을 빌드한다.
-// - goraebap-mode (전역 오케스트레이터 — content/agents/{playbooks,articles,reference} + 도메인 스킬 카탈로그)
+// - goraebap-mode (전역 오케스트레이터 — content/webapp/{playbooks,articles,reference} + 도메인 스킬 카탈로그)
 // - frontend-uiux (content/design-system/)
 // - frontend-engineering (content/frontend/{playbooks,articles,reference})
 // - backend-engineering (content/backend/{playbooks,articles,reference})
 // 각 스킬 폴더 직하에 SKILL.md(얇은 라우터), playbooks/, articles/, reference/를 평탄하게 둔다.
-// 사람 전용 글(blog/, glossary/, agents/tutorials/)과 시각 전용 JSX(<Story>/<Diagram>/<Demo>)는 스킬에서 제외한다.
+// 사람 전용 글(blog/, glossary/, webapp/tutorials/)과 시각 전용 JSX(<Story>/<Diagram>/<Demo>)는 스킬에서 제외한다.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -34,7 +34,7 @@ export const SPACE_STACKS = {
 };
 
 const DIATAXIS_SPACES = [
-  { space: 'agents', skill: 'goraebap-mode', isOrchestrator: true },
+  { space: 'webapp', skill: 'goraebap-mode', isOrchestrator: true },
   { space: 'frontend', skill: 'frontend-engineering', isOrchestrator: false },
   { space: 'backend', skill: 'backend-engineering', isOrchestrator: false },
 ];
@@ -313,7 +313,7 @@ export async function buildContentSkills() {
   const isHumanOnlyContent = absPath =>
     absPath.startsWith(path.join(CONTENT, 'blog') + path.sep) ||
     absPath.startsWith(path.join(CONTENT, 'glossary') + path.sep) ||
-    absPath.startsWith(path.join(CONTENT, 'agents', 'tutorials') + path.sep);
+    absPath.startsWith(path.join(CONTENT, 'webapp', 'tutorials') + path.sep);
 
   const relink = (from, to) => node => {
     if (node.type !== 'link' || node.data?.final || /^(https?:|mailto:|#)/.test(node.url)) return;

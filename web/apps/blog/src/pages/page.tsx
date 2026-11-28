@@ -1,6 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { SystemIcon } from "@goraebap/ui-react/icons";
-import { LANDING_MENUS } from "@/shared/config/site-menus";
+import { SITE_SPACES } from "@/shared/config/site-menus";
 import { BrandMark, DesignSettings, LineFieldCanvas, Wordmark } from "@/shared/ui";
 
 export const Route = createFileRoute("/")({
@@ -20,20 +20,20 @@ function WorkshopPage() {
           <Wordmark className="wordmark-write h-10 w-auto sm:h-12" />
         </h1>
         <p className="workshop-reveal text-muted-foreground mt-2 text-sm break-keep [animation-delay:120ms] sm:text-base">
-          웹 애플리케이션을 만들며 다듬어 온 방식을 정리해 두는 작업실
+          개발하며 다듬어 온 방식과 도구를 정리해 두는 작업실
         </p>
         <nav
-          aria-label="메뉴"
+          aria-label="공간"
           className="workshop-reveal mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm [animation-delay:240ms]"
         >
-          {LANDING_MENUS.map((menu) => (
+          {SITE_SPACES.map((space) => (
             <Link
-              key={menu.label}
-              to={menu.to}
-              title={menu.description}
+              key={space.id}
+              to={space.to}
+              title={space.description}
               className="group decoration-foreground/30 hover:decoration-foreground inline-flex items-center gap-1.5 font-medium underline underline-offset-6 transition-colors"
             >
-              {menu.label}
+              {space.label}
               <SystemIcon
                 name="arrowRight"
                 className="size-3.5 transition-transform group-hover:translate-x-0.5"

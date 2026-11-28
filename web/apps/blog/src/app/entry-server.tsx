@@ -12,7 +12,7 @@ export const routes = () => [
   }),
   ...diataxisAllDocs("frontend").map((doc) => diataxisDocHref(doc)),
   ...diataxisAllDocs("backend").map((doc) => diataxisDocHref(doc)),
-  ...diataxisAllDocs("agents").map((doc) => diataxisDocHref(doc)),
+  ...diataxisAllDocs("webapp").map((doc) => diataxisDocHref(doc)),
   "/glossary",
   ...(blogPosts().length ? ["/blog"] : []),
 ];
